@@ -126,7 +126,7 @@ public class Q036_MakeASewingKit extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(REINFORCED_STEEL, 1, 5))
+		if (st.dropItems(REINFORCED_STEEL, 1, 5, 500000))
 			st.set("cond", "2");
 		
 		return null;

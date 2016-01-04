@@ -349,10 +349,10 @@
 		<for>
 			<effect name="Buff" time="7" val="0" stackOrder="1" stackType="combination">
 				<mul order="0x30" stat="pAtk" val="1.2">
-					<using kind="Bow" />
+					<using kind="BOW" />
 				</mul>
 				<add order="0x40" stat="accCombat" val="10">
-					<using kind="Bow" />
+					<using kind="BOW" />
 				</add>
 			</effect>
 		</for>

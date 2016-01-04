@@ -12,6 +12,9 @@
  */
 package quests.Q366_SilverHairedShaman;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -27,9 +30,17 @@ public class Q366_SilverHairedShaman extends Quest
 	// Item
 	private static final int HAIR = 5874;
 	
-	public Q366_SilverHairedShaman(int questId, String name, String descr)
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		super(questId, name, descr);
+		CHANCES.put(20986, 560000);
+		CHANCES.put(20987, 660000);
+		CHANCES.put(20988, 620000);
+	}
+	
+	public Q366_SilverHairedShaman()
+	{
+		super(366, qn, "Silver Haired Shaman");
 		
 		setItemsIds(HAIR);
 		
@@ -49,8 +60,8 @@ public class Q366_SilverHairedShaman extends Quest
 		
 		if (event.equalsIgnoreCase("30111-2.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30111-6.htm"))
@@ -73,17 +84,11 @@ public class Q366_SilverHairedShaman extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 48)
-					htmltext = "30111-1.htm";
-				else
-				{
-					htmltext = "30111-0.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 48) ? "30111-0.htm" : "30111-1.htm";
 				break;
 			
 			case STATE_STARTED:
-				int count = st.getQuestItemsCount(HAIR);
+				final int count = st.getQuestItemsCount(HAIR);
 				if (count == 0)
 					htmltext = "30111-3.htm";
 				else
@@ -105,15 +110,13 @@ public class Q366_SilverHairedShaman extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItems(HAIR, 1, -1, 550000);
+		partyMember.getQuestState(qn).dropItems(HAIR, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q366_SilverHairedShaman(366, qn, "Silver Haired Shaman");
+		new Q366_SilverHairedShaman();
 	}
 }

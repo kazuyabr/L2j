@@ -16,6 +16,7 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.util.Rnd;
 
 public class Q246_PossessorOfAPreciousSoul extends Quest
@@ -106,6 +107,7 @@ public class Q246_PossessorOfAPreciousSoul extends Quest
 				st.takeItems(RELIC_BOX, 1);
 				st.giveItems(CARADINE_LETTER_2, 1);
 				st.rewardExpAndSp(719843, 0);
+				player.broadcastPacket(new SocialAction(player, 3));
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(false);
 			}

@@ -120,10 +120,7 @@ public class Q276_TotemOfTheHestui extends Quest
 						st.takeItems(KASHA_PARASITE, count);
 					}
 					else
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						st.giveItems(KASHA_PARASITE, 1);
-					}
+						st.dropItemsAlways(KASHA_PARASITE, 1, 0);
 					break;
 				
 				case 27044:

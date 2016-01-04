@@ -12,6 +12,9 @@
  */
 package quests.Q300_HuntingLetoLizardman;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -25,6 +28,23 @@ public class Q300_HuntingLetoLizardman extends Quest
 	// Item
 	private static final int BRACELET = 7139;
 	
+	// Monsters
+	private static final int LETO_LIZARDMAN = 20577;
+	private static final int LETO_LIZARDMAN_ARCHER = 20578;
+	private static final int LETO_LIZARDMAN_SOLDIER = 20579;
+	private static final int LETO_LIZARDMAN_WARRIOR = 20580;
+	private static final int LETO_LIZARDMAN_OVERLORD = 20582;
+	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(LETO_LIZARDMAN, 300000);
+		CHANCES.put(LETO_LIZARDMAN_ARCHER, 320000);
+		CHANCES.put(LETO_LIZARDMAN_SOLDIER, 350000);
+		CHANCES.put(LETO_LIZARDMAN_WARRIOR, 650000);
+		CHANCES.put(LETO_LIZARDMAN_OVERLORD, 700000);
+	}
+	
 	public Q300_HuntingLetoLizardman()
 	{
 		super(300, qn, "Hunting Leto Lizardman");
@@ -34,7 +54,7 @@ public class Q300_HuntingLetoLizardman extends Quest
 		addStartNpc(30126); // Rath
 		addTalkId(30126);
 		
-		addKillId(20577, 20578, 20579, 20580, 20582);
+		addKillId(LETO_LIZARDMAN, LETO_LIZARDMAN_ARCHER, LETO_LIZARDMAN_SOLDIER, LETO_LIZARDMAN_WARRIOR, LETO_LIZARDMAN_OVERLORD);
 	}
 	
 	@Override
@@ -105,7 +125,7 @@ public class Q300_HuntingLetoLizardman extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(BRACELET, 1, 60, 330000))
+		if (st.dropItems(BRACELET, 1, 60, CHANCES.get(npc.getNpcId())))
 			st.set("cond", "2");
 		
 		return null;

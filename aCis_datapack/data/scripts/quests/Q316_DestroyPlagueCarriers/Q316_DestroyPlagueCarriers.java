@@ -115,11 +115,11 @@ public class Q316_DestroyPlagueCarriers extends Quest
 		{
 			case SUKAR_WERERAT:
 			case SUKAR_WERERAT_LEADER:
-				st.dropItems(WERERAT_FANG, 1, 0, 600000);
+				st.dropItems(WERERAT_FANG, 1, 0, 400000);
 				break;
 			
 			case VAROOL_FOULCLAW:
-				st.dropItems(VAROOL_FOULCLAW_FANG, 1, 1, 100000);
+				st.dropItems(VAROOL_FOULCLAW_FANG, 1, 1, 200000);
 				break;
 		}
 		

@@ -12,6 +12,9 @@
  */
 package quests.Q330_AdeptOfTaste;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -69,6 +72,41 @@ public class Q330_AdeptOfTaste extends Quest
 	private static final int JONAS_SALAD_RECIPE = 1455;
 	private static final int JONAS_SAUCE_RECIPE = 1456;
 	private static final int JONAS_STEAK_RECIPE = 1457;
+	
+	// Drop chances
+	private static final Map<Integer, int[]> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(20204, new int[]
+		{
+			92,
+			100
+		});
+		CHANCES.put(20229, new int[]
+		{
+			80,
+			95
+		});
+		CHANCES.put(20223, new int[]
+		{
+			70,
+			77
+		});
+		CHANCES.put(20154, new int[]
+		{
+			70,
+			77
+		});
+		CHANCES.put(20155, new int[]
+		{
+			87,
+			96
+		});
+		CHANCES.put(20156, new int[]
+		{
+			77,
+			85
+		});
+	}
 	
 	public Q330_AdeptOfTaste()
 	{
@@ -428,15 +466,25 @@ public class Q330_AdeptOfTaste extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
+		final int npcId = npc.getNpcId();
+		
+		switch (npcId)
 		{
 			case 20265:
+				if (st.hasQuestItems(ROLANT_CREATURE_BOOK))
+					st.dropItems(MONSTER_EYE_BODY, (Rnd.get(97) < 77) ? 2 : 3, 30, 970000);
+				break;
+			
 			case 20266:
 				if (st.hasQuestItems(ROLANT_CREATURE_BOOK))
-					st.dropItemsAlways(MONSTER_EYE_BODY, Rnd.get(2, 3), 30);
+					st.dropItemsAlways(MONSTER_EYE_BODY, (Rnd.get(10) < 7) ? 1 : 2, 30);
 				break;
 			
 			case 20226:
+				if (st.hasQuestItems(GLYVKA_BOTANY_BOOK))
+					st.dropItems(((Rnd.get(96) < 87) ? GREEN_MARSH_MOSS : BROWN_MARSH_MOSS), 1, 20, 960000);
+				break;
+			
 			case 20228:
 				if (st.hasQuestItems(GLYVKA_BOTANY_BOOK))
 					st.dropItemsAlways(((Rnd.get(10) < 9) ? GREEN_MARSH_MOSS : BROWN_MARSH_MOSS), 1, 20);
@@ -451,8 +499,12 @@ public class Q330_AdeptOfTaste extends Quest
 			case 20229:
 				if (st.hasQuestItems(JACOB_INSECT_BOOK))
 				{
-					if (!st.dropItems(ROYAL_JELLY, 1, 10, 50000))
+					final int random = Rnd.get(100);
+					final int[] chances = CHANCES.get(npcId);
+					if (random < chances[0])
 						st.dropItemsAlways(NECTAR, 1, 20);
+					else if (random < chances[1])
+						st.dropItemsAlways(ROYAL_JELLY, 1, 10);
 				}
 				break;
 			
@@ -461,7 +513,12 @@ public class Q330_AdeptOfTaste extends Quest
 			case 20155:
 			case 20156:
 				if (st.hasQuestItems(SONIA_BOTANY_BOOK))
-					st.dropItemsAlways(((Rnd.get(1000) < 975) ? RED_MANDRAGORA_ROOT : WHITE_MANDRAGORA_ROOT), 1, 40);
+				{
+					final int random = Rnd.get(100);
+					final int[] chances = CHANCES.get(npcId);
+					if (random < chances[1])
+						st.dropItemsAlways((random < chances[0]) ? RED_MANDRAGORA_ROOT : WHITE_MANDRAGORA_ROOT, 1, 40);
+				}
 				break;
 		}
 		

@@ -338,12 +338,12 @@ public class Q215_TrialOfThePilgrim extends Quest
 		switch (npc.getNpcId())
 		{
 			case LAVA_SALAMANDER:
-				if (st.getInt("cond") == 3 && st.dropItems(ESSENCE_OF_FLAME, 1, 1, 300000))
+				if (st.getInt("cond") == 3 && st.dropItems(ESSENCE_OF_FLAME, 1, 1, 200000))
 					st.set("cond", "4");
 				break;
 			
 			case NAHIR:
-				if (st.getInt("cond") == 10 && st.dropItemsAlways(HAIR_OF_NAHIR, 1, 1))
+				if (st.getInt("cond") == 10 && st.dropItems(HAIR_OF_NAHIR, 1, 1, 200000))
 					st.set("cond", "11");
 				break;
 			

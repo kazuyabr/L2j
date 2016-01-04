@@ -94,7 +94,8 @@ public class Q214_TrialOfTheScholar extends Quest
 	private static final int MONSTER_EYE_DESTROYER = 20068;
 	private static final int MEDUSA = 20158;
 	private static final int GHOUL = 20201;
-	private static final int SHACKLE = 20235;
+	private static final int SHACKLE_1 = 20235;
+	private static final int SHACKLE_2 = 20279;
 	private static final int BREKA_ORC_SHAMAN = 20269;
 	private static final int FETTERED_SOUL = 20552;
 	private static final int GRANDIS = 20554;
@@ -110,7 +111,7 @@ public class Q214_TrialOfTheScholar extends Quest
 		addStartNpc(MIRIEN);
 		addTalkId(MIRIEN, SYLVAIN, LUCAS, VALKON, DIETER, JUREK, EDROC, RAUT, POITAN, MARIA, CRETA, CRONOS, TRIFF, CASIAN);
 		
-		addKillId(MONSTER_EYE_DESTROYER, MEDUSA, GHOUL, SHACKLE, BREKA_ORC_SHAMAN, FETTERED_SOUL, GRANDIS, ENCHANTED_GARGOYLE, LETO_LIZARDMAN_WARRIOR);
+		addKillId(MONSTER_EYE_DESTROYER, MEDUSA, GHOUL, SHACKLE_1, SHACKLE_2, BREKA_ORC_SHAMAN, FETTERED_SOUL, GRANDIS, ENCHANTED_GARGOYLE, LETO_LIZARDMAN_WARRIOR);
 	}
 	
 	@Override
@@ -647,69 +648,56 @@ public class Q214_TrialOfTheScholar extends Quest
 		switch (npc.getNpcId())
 		{
 			case LETO_LIZARDMAN_WARRIOR:
-				if (st.getInt("cond") == 11 && st.dropItemsAlways(BROWN_SCROLL_SCRAP, 1, 5))
+				if (st.getInt("cond") == 11 && st.dropItems(BROWN_SCROLL_SCRAP, 1, 5, 500000))
 					st.set("cond", "12");
 				break;
 			
-			case SHACKLE:
-				if (st.getInt("cond") == 16 && st.dropItemsAlways(SHACKLE_SCALP, 1, 2))
-				{
+			case SHACKLE_1:
+			case SHACKLE_2:
+				if (st.getInt("cond") == 16 && st.dropItems(SHACKLE_SCALP, 1, 2, 500000))
 					if (st.getQuestItemsCount(MONSTER_EYE_DESTROYER_SKIN) == 5 && st.getQuestItemsCount(SHAMAN_NECKLACE) == 5)
 						st.set("cond", "17");
-				}
 				break;
 			
 			case MONSTER_EYE_DESTROYER:
-				if (st.getInt("cond") == 16 && st.dropItemsAlways(MONSTER_EYE_DESTROYER_SKIN, 1, 5))
-				{
+				if (st.getInt("cond") == 16 && st.dropItems(MONSTER_EYE_DESTROYER_SKIN, 1, 5, 500000))
 					if (st.getQuestItemsCount(SHACKLE_SCALP) == 2 && st.getQuestItemsCount(SHAMAN_NECKLACE) == 5)
 						st.set("cond", "17");
-				}
 				break;
 			
 			case BREKA_ORC_SHAMAN:
-				if (st.getInt("cond") == 16 && st.dropItemsAlways(SHAMAN_NECKLACE, 1, 5))
-				{
+				if (st.getInt("cond") == 16 && st.dropItems(SHAMAN_NECKLACE, 1, 5, 500000))
 					if (st.getQuestItemsCount(SHACKLE_SCALP) == 2 && st.getQuestItemsCount(MONSTER_EYE_DESTROYER_SKIN) == 5)
 						st.set("cond", "17");
-				}
 				break;
 			
 			case GRANDIS:
 				if (st.hasQuestItems(TRIFF_RING))
-					st.dropItemsAlways(SCRIPTURE_CHAPTER_3, 1, 1);
+					st.dropItems(SCRIPTURE_CHAPTER_3, 1, 1, 300000);
 				break;
 			
 			case MEDUSA:
 				if (st.getInt("cond") == 28 && st.dropItemsAlways(MEDUSA_BLOOD, 1, 12))
-				{
 					if (st.getQuestItemsCount(GHOUL_SKIN) == 10 && st.getQuestItemsCount(FETTERED_SOUL_ICHOR) == 5 && st.getQuestItemsCount(ENCHANTED_GARGOYLE_NAIL) == 5)
 						st.set("cond", "29");
-				}
 				break;
 			
 			case GHOUL:
 				if (st.getInt("cond") == 28 && st.dropItemsAlways(GHOUL_SKIN, 1, 10))
-				{
 					if (st.getQuestItemsCount(MEDUSA_BLOOD) == 12 && st.getQuestItemsCount(FETTERED_SOUL_ICHOR) == 5 && st.getQuestItemsCount(ENCHANTED_GARGOYLE_NAIL) == 5)
 						st.set("cond", "29");
-				}
 				break;
 			
 			case FETTERED_SOUL:
 				if (st.getInt("cond") == 28 && st.dropItemsAlways(FETTERED_SOUL_ICHOR, 1, 5))
-				{
 					if (st.getQuestItemsCount(MEDUSA_BLOOD) == 12 && st.getQuestItemsCount(GHOUL_SKIN) == 10 && st.getQuestItemsCount(ENCHANTED_GARGOYLE_NAIL) == 5)
 						st.set("cond", "29");
-				}
 				break;
 			
 			case ENCHANTED_GARGOYLE:
 				if (st.getInt("cond") == 28 && st.dropItemsAlways(ENCHANTED_GARGOYLE_NAIL, 1, 5))
-				{
 					if (st.getQuestItemsCount(MEDUSA_BLOOD) == 12 && st.getQuestItemsCount(GHOUL_SKIN) == 10 && st.getQuestItemsCount(FETTERED_SOUL_ICHOR) == 5)
 						st.set("cond", "29");
-				}
 				break;
 		}
 		

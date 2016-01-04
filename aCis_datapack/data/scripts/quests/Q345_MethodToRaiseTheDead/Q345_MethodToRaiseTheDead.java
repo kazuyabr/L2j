@@ -217,15 +217,17 @@ public class Q345_MethodToRaiseTheDead extends Quest
 		if (st == null)
 			return null;
 		
-		if (!st.dropItems(USELESS_BONE_PIECES, 1, 0, 660000))
+		if (Rnd.get(4) == 0)
 		{
 			final int randomPart = Rnd.get(VICTIM_ARM_BONE, VICTIM_SPINE);
 			if (!st.hasQuestItems(randomPart))
 			{
+				st.playSound(QuestState.SOUND_ITEMGET);
 				st.giveItems(randomPart, 1);
-				st.playSound(QuestState.SOUND_MIDDLE);
+				return null;
 			}
 		}
+		st.dropItemsAlways(USELESS_BONE_PIECES, 1, 0);
 		
 		return null;
 	}

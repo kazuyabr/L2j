@@ -99,7 +99,7 @@ public class Q157_RecoverSmuggledGoods extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(ADAMANTITE_ORE, 1, 20))
+		if (st.dropItems(ADAMANTITE_ORE, 1, 20, 400000))
 			st.set("cond", "2");
 		
 		return null;

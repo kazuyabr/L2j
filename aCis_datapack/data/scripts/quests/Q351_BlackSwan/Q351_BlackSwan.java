@@ -42,7 +42,7 @@ public class Q351_BlackSwan extends Quest
 		addStartNpc(GOSTA);
 		addTalkId(GOSTA, IASON_HEINE, ROMAN);
 		
-		addKillId(20784, 20785, 21639, 21640, 21642, 21643);
+		addKillId(20784, 20785, 21639, 21640);
 	}
 	
 	@Override
@@ -145,20 +145,14 @@ public class Q351_BlackSwan extends Quest
 		if (st == null)
 			return null;
 		
-		final int random = Rnd.get(100);
-		if (random < 75)
+		final int random = Rnd.get(4);
+		if (random < 3)
 		{
-			st.giveItems(LIZARD_FANG, (random < 50) ? 1 : 2);
-			st.playSound(QuestState.SOUND_ITEMGET);
-			
-			if (Rnd.get(20) == 0)
-				st.giveItems(BARREL_OF_LEAGUE, 1);
+			st.dropItemsAlways(LIZARD_FANG, (random < 2) ? 1 : 2, 0);
+			st.dropItems(BARREL_OF_LEAGUE, 1, 0, 50000);
 		}
-		else if (random < 79)
-		{
-			st.giveItems(BARREL_OF_LEAGUE, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		else
+			st.dropItems(BARREL_OF_LEAGUE, 1, 0, (npc.getNpcId() > 20785) ? 30000 : 40000);
 		
 		return null;
 	}

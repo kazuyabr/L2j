@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.util.Rnd;
 
 public class Q292_BrigandsSweep extends Quest
 {
@@ -162,24 +163,28 @@ public class Q292_BrigandsSweep extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
-		{
-			case GOBLIN_BRIGAND:
-			case GOBLIN_SNOOPER:
-				st.dropItems(GOBLIN_NECKLACE, 1, 0, 500000);
-				break;
-			
-			case GOBLIN_BRIGAND_LEADER:
-			case GOBLIN_BRIGAND_LIEUTENANT:
-				st.dropItems(GOBLIN_PENDANT, 1, 0, 400000);
-				break;
-			
-			case GOBLIN_LORD:
-				st.dropItems(GOBLIN_LORD_PENDANT, 1, 0, 300000);
-				break;
-		}
+		final int chance = Rnd.get(10);
 		
-		if (st.getInt("cond") == 1 && st.dropItems(SUSPICIOUS_MEMO, 1, 3, 100000))
+		if (chance > 5)
+		{
+			switch (npc.getNpcId())
+			{
+				case GOBLIN_BRIGAND:
+				case GOBLIN_SNOOPER:
+				case GOBLIN_BRIGAND_LIEUTENANT:
+					st.dropItemsAlways(GOBLIN_NECKLACE, 1, 0);
+					break;
+			
+				case GOBLIN_BRIGAND_LEADER:
+					st.dropItemsAlways(GOBLIN_PENDANT, 1, 0);
+					break;
+			
+				case GOBLIN_LORD:
+					st.dropItemsAlways(GOBLIN_LORD_PENDANT, 1, 0);
+					break;
+			}
+		}
+		else if (chance > 4 && st.getInt("cond") == 1 && st.dropItemsAlways(SUSPICIOUS_MEMO, 1, 3))
 		{
 			st.set("cond", "2");
 			st.takeItems(SUSPICIOUS_MEMO, -1);

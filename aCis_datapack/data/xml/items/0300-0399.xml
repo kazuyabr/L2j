@@ -2,14 +2,14 @@
 <list>
 	<item id="300" type="Weapon" name="Great Axe">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="1157" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="damascus" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="DAMASCUS" />
 		<set name="weight" val="1940" />
 		<set name="price" val="8680000" />
 		<set name="soulshots" val="1" />
@@ -27,14 +27,14 @@
 	</item>
 	<item id="301" type="Weapon" name="Scorpion">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="1912" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1990" />
 		<set name="price" val="4780000" />
 		<set name="soulshots" val="3" />
@@ -52,14 +52,14 @@
 	</item>
 	<item id="302" type="Weapon" name="Body Slasher">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="916" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="2030" />
 		<set name="price" val="2290000" />
 		<set name="soulshots" val="2" />
@@ -77,14 +77,14 @@
 	</item>
 	<item id="303" type="Weapon" name="Widow Maker">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="1912" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1980" />
 		<set name="price" val="4780000" />
 		<set name="soulshots" val="3" />
@@ -102,14 +102,14 @@
 	</item>
 	<item id="304" type="Weapon" name="Orcish Halberd">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="1704" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="blood_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="1880" />
 		<set name="price" val="21300000" />
 		<set name="soulshots" val="1" />
@@ -127,14 +127,14 @@
 	</item>
 	<item id="305" type="Weapon" name="Tallum Glaive">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="2160" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="chrysolite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="CHRYSOLITE" />
 		<set name="weight" val="1840" />
 		<set name="price" val="27000000" />
 		<set name="soulshots" val="1" />
@@ -152,14 +152,14 @@
 	</item>
 	<item id="306" type="Weapon" name="Dragon Claw Axe">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="1765" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="bone" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="BONE" />
 		<set name="weight" val="1820" />
 		<set name="price" val="35300000" />
 		<set name="soulshots" val="1" />
@@ -177,13 +177,13 @@
 	</item>
 	<item id="307" type="Weapon" name="Aurakyria Lance">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1800" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -204,12 +204,12 @@
 	<item id="308" type="Weapon" name="Buffalo's Horn">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="660" />
 		<set name="price" val="768" />
 		<set name="soulshots" val="1" />
@@ -224,12 +224,12 @@
 	<item id="309" type="Weapon" name="Tears of Eva">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="630" />
 		<set name="price" val="136000" />
 		<set name="soulshots" val="2" />
@@ -244,12 +244,12 @@
 	<item id="310" type="Weapon" name="Relic of The Saints">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="610" />
 		<set name="price" val="136000" />
 		<set name="soulshots" val="2" />
@@ -264,12 +264,12 @@
 	<item id="311" type="Weapon" name="Crucifix of Blessing">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="620" />
 		<set name="price" val="244000" />
 		<set name="soulshots" val="2" />
@@ -284,14 +284,14 @@
 	<item id="312" type="Weapon" name="Branch of Life">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="743" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="620" />
 		<set name="price" val="409000" />
 		<set name="soulshots" val="2" />
@@ -308,14 +308,14 @@
 	<item id="313" type="Weapon" name="Temptation of Abyss">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="743" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="610" />
 		<set name="price" val="409000" />
 		<set name="soulshots" val="2" />
@@ -332,14 +332,14 @@
 	<item id="314" type="Weapon" name="Proof of Revenge">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="743" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="600" />
 		<set name="price" val="409000" />
 		<set name="soulshots" val="2" />
@@ -356,14 +356,14 @@
 	<item id="315" type="Weapon" name="Divine Tome">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1170" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="570" />
 		<set name="price" val="644000" />
 		<set name="soulshots" val="2" />
@@ -380,14 +380,14 @@
 	<item id="316" type="Weapon" name="Blood of Saints">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1758" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="580" />
 		<set name="price" val="967000" />
 		<set name="soulshots" val="2" />
@@ -404,14 +404,14 @@
 	<item id="317" type="Weapon" name="Tome of Blood">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1758" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="570" />
 		<set name="price" val="967000" />
 		<set name="soulshots" val="2" />
@@ -428,14 +428,14 @@
 	<item id="318" type="Weapon" name="Crucifix of Blood">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2545" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="540" />
 		<set name="price" val="1400000" />
 		<set name="soulshots" val="3" />
@@ -452,14 +452,14 @@
 	<item id="319" type="Weapon" name="Eye of Infinity">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2545" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="1400000" />
 		<set name="soulshots" val="3" />
@@ -476,14 +476,14 @@
 	<item id="320" type="Weapon" name="Blue Crystal Skull">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2763" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="1520000" />
 		<set name="soulshots" val="3" />
@@ -500,14 +500,14 @@
 	<item id="321" type="Weapon" name="Demon Fangs">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2763" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="1520000" />
 		<set name="soulshots" val="3" />
@@ -524,14 +524,14 @@
 	<item id="322" type="Weapon" name="Vajra Wands">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="3272" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="1800000" />
 		<set name="soulshots" val="3" />
@@ -548,14 +548,14 @@
 	<item id="323" type="Weapon" name="Ancient Reagent">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="3272" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="1800000" />
 		<set name="soulshots" val="3" />
@@ -572,14 +572,14 @@
 	<item id="324" type="Weapon" name="Tears of Fairy">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1148" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="2870000" />
 		<set name="soulshots" val="2" />
@@ -596,14 +596,14 @@
 	<item id="325" type="Weapon" name="Horn of Glory">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1148" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="540" />
 		<set name="price" val="2870000" />
 		<set name="soulshots" val="2" />
@@ -620,14 +620,14 @@
 	<item id="326" type="Weapon" name="Heathen's Book">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="560" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -644,14 +644,14 @@
 	<item id="327" type="Weapon" name="Hex Doll">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -668,14 +668,14 @@
 	<item id="328" type="Weapon" name="Candle of Wisdom">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2452" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="6130000" />
 		<set name="soulshots" val="3" />
@@ -692,14 +692,14 @@
 	<item id="329" type="Weapon" name="Blessed Branch">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2452" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="800" />
 		<set name="price" val="6130000" />
 		<set name="soulshots" val="3" />
@@ -716,14 +716,14 @@
 	<item id="330" type="Weapon" name="Phoenix Feather">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2452" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="800" />
 		<set name="price" val="6130000" />
 		<set name="soulshots" val="3" />
@@ -740,14 +740,14 @@
 	<item id="331" type="Weapon" name="Cerberus Eye">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2452" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="6130000" />
 		<set name="soulshots" val="3" />
@@ -764,14 +764,14 @@
 	<item id="332" type="Weapon" name="Scroll of Destruction">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2452" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="6130000" />
 		<set name="soulshots" val="3" />
@@ -788,14 +788,14 @@
 	<item id="333" type="Weapon" name="Claws of Black Dragon">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2452" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="6130000" />
 		<set name="soulshots" val="3" />
@@ -812,14 +812,14 @@
 	<item id="334" type="Weapon" name="Three Eyed Crow's Feather">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2452" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="6130000" />
 		<set name="soulshots" val="3" />
@@ -836,14 +836,14 @@
 	<item id="335" type="Weapon" name="Soul Crystal">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1746" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="13100000" />
 		<set name="soulshots" val="1" />
@@ -860,14 +860,14 @@
 	<item id="336" type="Weapon" name="Scroll of Mana">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="18300000" />
 		<set name="soulshots" val="1" />
@@ -884,14 +884,14 @@
 	<item id="337" type="Weapon" name="Scroll of Massacre">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="18300000" />
 		<set name="soulshots" val="1" />
@@ -908,14 +908,14 @@
 	<item id="338" type="Weapon" name="Wyvern's Skull">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="4800" />
 		<set name="price" val="18300000" />
 		<set name="soulshots" val="1" />
@@ -932,14 +932,14 @@
 	<item id="339" type="Weapon" name="Blood Crystal">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="18300000" />
 		<set name="soulshots" val="1" />
@@ -956,14 +956,14 @@
 	<item id="340" type="Weapon" name="Unicorn's Horn">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="18300000" />
 		<set name="soulshots" val="1" />
@@ -980,14 +980,14 @@
 	<item id="341" type="Weapon" name="Forgotten Tome">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2160" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="27000000" />
 		<set name="soulshots" val="1" />
@@ -1004,14 +1004,14 @@
 	<item id="342" type="Weapon" name="Enchanted Flute">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2160" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="27000000" />
 		<set name="soulshots" val="1" />
@@ -1028,14 +1028,14 @@
 	<item id="343" type="Weapon" name="Headless Arrow">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2160" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="27000000" />
 		<set name="soulshots" val="1" />
@@ -1052,14 +1052,14 @@
 	<item id="344" type="Weapon" name="Proof of Overlord">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2160" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="27000000" />
 		<set name="soulshots" val="1" />
@@ -1076,14 +1076,14 @@
 	<item id="345" type="Weapon" name="Deathbringer Sword">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2160" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="4800" />
 		<set name="price" val="27000000" />
 		<set name="soulshots" val="1" />
@@ -1100,14 +1100,14 @@
 	<item id="346" type="Weapon" name="Tears of Fallen Angel">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="etc" />
+		<set name="weapon_type" val="ETC" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1765" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="1600" />
 		<set name="price" val="35300000" />
 		<set name="soulshots" val="1" />
@@ -1123,11 +1123,11 @@
 	</item>
 	<item id="347" type="Armor" name="Ring Mail Breastplate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="151" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="8820" />
 		<set name="price" val="83500" />
 		<for>
@@ -1137,11 +1137,11 @@
 	</item>
 	<item id="348" type="Armor" name="Scale Mail">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="241" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="8720" />
 		<set name="price" val="133000" />
 		<for>
@@ -1151,11 +1151,11 @@
 	</item>
 	<item id="349" type="Armor" name="Compound Scale Mail">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="332" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="8620" />
 		<set name="price" val="183000" />
 		<for>
@@ -1165,11 +1165,11 @@
 	</item>
 	<item id="350" type="Armor" name="Dwarven Scale Mail">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="332" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="8540" />
 		<set name="price" val="183000" />
 		<for>
@@ -1179,11 +1179,11 @@
 	</item>
 	<item id="351" type="Armor" name="Blast Plate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="369" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="8420" />
 		<set name="price" val="203000" />
 		<for>
@@ -1193,11 +1193,11 @@
 	</item>
 	<item id="352" type="Armor" name="Brigandine Tunic">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="543" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="8320" />
 		<set name="price" val="299000" />
 		<for>
@@ -1207,11 +1207,11 @@
 	</item>
 	<item id="353" type="Armor" name="Half Plate Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="710" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="8220" />
 		<set name="price" val="391000" />
 		<for>
@@ -1221,11 +1221,11 @@
 	</item>
 	<item id="354" type="Armor" name="Chain Mail Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="202" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="8120" />
 		<set name="price" val="505000" />
 		<for>
@@ -1235,11 +1235,11 @@
 	</item>
 	<item id="355" type="Armor" name="Dwarven Chain Mail Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="257" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="8070" />
 		<set name="price" val="644000" />
 		<for>
@@ -1249,11 +1249,11 @@
 	</item>
 	<item id="356" type="Armor" name="Full Plate Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="836" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="10480" />
 		<set name="price" val="2090000" />
 		<for>
@@ -1263,11 +1263,11 @@
 	</item>
 	<item id="357" type="Armor" name="Zubei's Breastplate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="277" />
-		<set name="material" val="mithril" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="7970" />
 		<set name="price" val="2080000" />
 		<for>
@@ -1277,11 +1277,11 @@
 	</item>
 	<item id="358" type="Armor" name="Blue Wolf Breastplate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="429" />
-		<set name="material" val="oriharukon" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="7820" />
 		<set name="price" val="3220000" />
 		<for>
@@ -1291,11 +1291,11 @@
 	</item>
 	<item id="359" type="Armor" name="Shining Dragon Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="902" />
-		<set name="material" val="mithril" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="6400" />
 		<set name="price" val="6770000" />
 		<for>
@@ -1305,11 +1305,11 @@
 	</item>
 	<item id="360" type="Armor" name="Armor of Victory">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="429" />
-		<set name="material" val="oriharukon" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="3360" />
 		<set name="price" val="3220000" />
 		<for>
@@ -1319,11 +1319,11 @@
 	</item>
 	<item id="361" type="Armor" name="Breastplate of Valor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="617" />
-		<set name="material" val="blood_steel" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="3360" />
 		<set name="price" val="4630000" />
 		<for>
@@ -1333,11 +1333,11 @@
 	</item>
 	<item id="362" type="Armor" name="Glorious Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="628" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="6720" />
 		<set name="price" val="4710000" />
 		<for>
@@ -1347,11 +1347,11 @@
 	</item>
 	<item id="363" type="Armor" name="Red Flame Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="902" />
-		<set name="material" val="blood_steel" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="6400" />
 		<set name="price" val="6770000" />
 		<for>
@@ -1361,11 +1361,11 @@
 	</item>
 	<item id="364" type="Armor" name="Elven Crystal Breastplate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="429" />
-		<set name="material" val="crystal" />
+		<set name="material" val="CRYSTAL" />
 		<set name="weight" val="2400" />
 		<set name="price" val="3220000" />
 		<for>
@@ -1375,11 +1375,11 @@
 	</item>
 	<item id="365" type="Armor" name="Dark Crystal Breastplate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="a" />
+		<set name="crystal_type" val="A" />
 		<set name="crystal_count" val="370" />
-		<set name="material" val="crystal" />
+		<set name="material" val="CRYSTAL" />
 		<set name="weight" val="7700" />
 		<set name="price" val="4630000" />
 		<for>
@@ -1389,11 +1389,11 @@
 	</item>
 	<item id="366" type="Armor" name="Implosion Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="628" />
-		<set name="material" val="damascus" />
+		<set name="material" val="DAMASCUS" />
 		<set name="weight" val="6080" />
 		<set name="price" val="4710000" />
 		<for>
@@ -1403,11 +1403,11 @@
 	</item>
 	<item id="367" type="Armor" name="Dark Dragon Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="902" />
-		<set name="material" val="damascus" />
+		<set name="material" val="DAMASCUS" />
 		<set name="weight" val="5760" />
 		<set name="price" val="6770000" />
 		<for>
@@ -1417,11 +1417,11 @@
 	</item>
 	<item id="368" type="Armor" name="Elven Vagian Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="628" />
-		<set name="material" val="mithril" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="2400" />
 		<set name="price" val="4710000" />
 		<for>
@@ -1431,11 +1431,11 @@
 	</item>
 	<item id="369" type="Armor" name="Dark Vagian Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="902" />
-		<set name="material" val="mithril" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="2400" />
 		<set name="price" val="6770000" />
 		<for>
@@ -1445,11 +1445,11 @@
 	</item>
 	<item id="370" type="Armor" name="Complete Set of Plate Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="628" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="6400" />
 		<set name="price" val="4710000" />
 		<for>
@@ -1459,11 +1459,11 @@
 	</item>
 	<item id="371" type="Armor" name="Hell Plate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="902" />
-		<set name="material" val="blood_steel" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="6400" />
 		<set name="price" val="6770000" />
 		<for>
@@ -1473,11 +1473,11 @@
 	</item>
 	<item id="372" type="Armor" name="Art of Plate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="628" />
-		<set name="material" val="chrysolite" />
+		<set name="material" val="CHRYSOLITE" />
 		<set name="weight" val="6720" />
 		<set name="price" val="4710000" />
 		<for>
@@ -1487,11 +1487,11 @@
 	</item>
 	<item id="373" type="Armor" name="Masterpiece Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="902" />
-		<set name="material" val="oriharukon" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="5600" />
 		<set name="price" val="6770000" />
 		<for>
@@ -1501,11 +1501,11 @@
 	</item>
 	<item id="374" type="Armor" name="Armor of Nightmare">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="a" />
+		<set name="crystal_type" val="A" />
 		<set name="crystal_count" val="824" />
-		<set name="material" val="blood_steel" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="9580" />
 		<set name="price" val="10300000" />
 		<for>
@@ -1515,11 +1515,11 @@
 	</item>
 	<item id="375" type="Armor" name="Dragon Scale Mail">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="525" />
-		<set name="material" val="scale_of_dragon" />
+		<set name="material" val="SCALE_OF_DRAGON" />
 		<set name="weight" val="7620" />
 		<set name="price" val="10500000" />
 		<set name="is_tradable" val="false" />
@@ -1532,11 +1532,11 @@
 	</item>
 	<item id="376" type="Armor" name="Iron Plate Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="94" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="3820" />
 		<set name="price" val="52200" />
 		<for>
@@ -1546,11 +1546,11 @@
 	</item>
 	<item id="377" type="Armor" name="Scale Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="151" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="3860" />
 		<set name="price" val="83300" />
 		<for>
@@ -1560,11 +1560,11 @@
 	</item>
 	<item id="378" type="Armor" name="Compound Scale Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="230" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="3770" />
 		<set name="price" val="127000" />
 		<for>
@@ -1574,11 +1574,11 @@
 	</item>
 	<item id="379" type="Armor" name="Dwarven Scale Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="230" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="3840" />
 		<set name="price" val="127000" />
 		<for>
@@ -1588,11 +1588,11 @@
 	</item>
 	<item id="380" type="Armor" name="Plate Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="443" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="3770" />
 		<set name="price" val="244000" />
 		<for>
@@ -1602,11 +1602,11 @@
 	</item>
 	<item id="381" type="Armor" name="Chain Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="126" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="3680" />
 		<set name="price" val="316000" />
 		<for>
@@ -1616,11 +1616,11 @@
 	</item>
 	<item id="382" type="Armor" name="Dwarven Chain Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="161" />
-		<set name="material" val="fine_steel" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="3620" />
 		<set name="price" val="403000" />
 		<for>
@@ -1630,11 +1630,11 @@
 	</item>
 	<item id="383" type="Armor" name="Zubei's Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="173" />
-		<set name="material" val="mithril" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="3570" />
 		<set name="price" val="1300000" />
 		<for>
@@ -1644,11 +1644,11 @@
 	</item>
 	<item id="384" type="Armor" name="Wolf Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="268" />
-		<set name="material" val="oriharukon" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="2560" />
 		<set name="price" val="2010000" />
 		<for>
@@ -1658,11 +1658,11 @@
 	</item>
 	<item id="385" type="Armor" name="Gaiters of Victory">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="268" />
-		<set name="material" val="oriharukon" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="2240" />
 		<set name="price" val="2010000" />
 		<for>
@@ -1672,11 +1672,11 @@
 	</item>
 	<item id="386" type="Armor" name="Gaiters of Valor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="385" />
-		<set name="material" val="blood_steel" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="2240" />
 		<set name="price" val="2890000" />
 		<for>
@@ -1686,11 +1686,11 @@
 	</item>
 	<item id="387" type="Armor" name="Elven Crystal Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="268" />
-		<set name="material" val="crystal" />
+		<set name="material" val="CRYSTAL" />
 		<set name="weight" val="2240" />
 		<set name="price" val="2010000" />
 		<for>
@@ -1700,11 +1700,11 @@
 	</item>
 	<item id="388" type="Armor" name="Dark Crystal Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="a" />
+		<set name="crystal_type" val="A" />
 		<set name="crystal_count" val="231" />
-		<set name="material" val="crystal" />
+		<set name="material" val="CRYSTAL" />
 		<set name="weight" val="3320" />
 		<set name="price" val="2890000" />
 		<for>
@@ -1714,11 +1714,11 @@
 	</item>
 	<item id="389" type="Armor" name="Dragon Scale Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="299" />
-		<set name="material" val="scale_of_dragon" />
+		<set name="material" val="SCALE_OF_DRAGON" />
 		<set name="weight" val="3260" />
 		<set name="price" val="5980000" />
 		<set name="is_tradable" val="false" />
@@ -1731,9 +1731,9 @@
 	</item>
 	<item id="390" type="Armor" name="Cotton Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="material" val="cloth" />
+		<set name="material" val="CLOTH" />
 		<set name="weight" val="4770" />
 		<set name="price" val="20300" />
 		<for>
@@ -1742,11 +1742,11 @@
 	</item>
 	<item id="391" type="Armor" name="Puma Skin Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="113" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="4700" />
 		<set name="price" val="62600" />
 		<for>
@@ -1756,11 +1756,11 @@
 	</item>
 	<item id="392" type="Armor" name="Lion Skin Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="181" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="4580" />
 		<set name="price" val="99900" />
 		<for>
@@ -1770,11 +1770,11 @@
 	</item>
 	<item id="393" type="Armor" name="Mithril Banded Mail">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="276" />
-		<set name="material" val="mithril" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="4570" />
 		<set name="price" val="152000" />
 		<for>
@@ -1784,11 +1784,11 @@
 	</item>
 	<item id="394" type="Armor" name="Reinforced Leather Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="276" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="4570" />
 		<set name="price" val="152000" />
 		<for>
@@ -1798,11 +1798,11 @@
 	</item>
 	<item id="395" type="Armor" name="Manticore Skin Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="407" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="4520" />
 		<set name="price" val="224000" />
 		<for>
@@ -1812,11 +1812,11 @@
 	</item>
 	<item id="396" type="Armor" name="Salamander Skin Mail">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="d" />
+		<set name="crystal_type" val="D" />
 		<set name="crystal_count" val="780" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="6100" />
 		<set name="price" val="429000" />
 		<for>
@@ -1826,11 +1826,11 @@
 	</item>
 	<item id="397" type="Armor" name="Mithril Shirt">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="151" />
-		<set name="material" val="mithril" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="4470" />
 		<set name="price" val="379000" />
 		<for>
@@ -1840,11 +1840,11 @@
 	</item>
 	<item id="398" type="Armor" name="Plated Leather">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="178" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="4450" />
 		<set name="price" val="446000" />
 		<for>
@@ -1854,11 +1854,11 @@
 	</item>
 	<item id="399" type="Armor" name="Rind Leather Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="c" />
+		<set name="crystal_type" val="C" />
 		<set name="crystal_count" val="193" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="4420" />
 		<set name="price" val="483000" />
 		<for>

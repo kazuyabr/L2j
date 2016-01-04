@@ -113,24 +113,21 @@ public class Q003_WillTheSealBeBroken extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20031:
-				if (st.dropItemsAlways(ONYX_BEAST_EYE, 1, 1))
-					if (st.hasQuestItems(TAINT_STONE, SUCCUBUS_BLOOD))
-						st.set("cond", "2");
+				if (st.dropItemsAlways(ONYX_BEAST_EYE, 1, 1) && st.hasQuestItems(TAINT_STONE, SUCCUBUS_BLOOD))
+					st.set("cond", "2");
 				break;
 			
 			case 20041:
 			case 20046:
-				if (st.dropItemsAlways(TAINT_STONE, 1, 1))
-					if (st.hasQuestItems(ONYX_BEAST_EYE, SUCCUBUS_BLOOD))
-						st.set("cond", "2");
+				if (st.dropItemsAlways(TAINT_STONE, 1, 1) && st.hasQuestItems(ONYX_BEAST_EYE, SUCCUBUS_BLOOD))
+					st.set("cond", "2");
 				break;
 			
 			case 20048:
 			case 20052:
 			case 20057:
-				if (st.dropItemsAlways(SUCCUBUS_BLOOD, 1, 1))
-					if (st.hasQuestItems(ONYX_BEAST_EYE, TAINT_STONE))
-						st.set("cond", "2");
+				if (st.dropItemsAlways(SUCCUBUS_BLOOD, 1, 1) && st.hasQuestItems(ONYX_BEAST_EYE, TAINT_STONE))
+					st.set("cond", "2");
 				break;
 		}
 		

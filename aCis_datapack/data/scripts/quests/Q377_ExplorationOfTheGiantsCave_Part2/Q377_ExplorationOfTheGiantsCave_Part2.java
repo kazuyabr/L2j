@@ -22,9 +22,6 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 {
 	private static final String qn = "Q377_ExplorationOfTheGiantsCave_Part2";
 	
-	// Rates
-	private static final int ANCIENT_BOOK_RATE = 18000; // 1,8%
-	
 	// Items
 	private static final int ANCIENT_BOOK = 5955;
 	private static final int DICTIONARY_INTERMEDIATE = 5892;
@@ -64,9 +61,9 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 		}
 	};
 	
-	public Q377_ExplorationOfTheGiantsCave_Part2(int questId, String name, String descr)
+	public Q377_ExplorationOfTheGiantsCave_Part2()
 	{
-		super(questId, name, descr);
+		super(377, qn, "Exploration of the Giants' Cave, Part 2");
 		
 		addStartNpc(31147); // Sobling
 		addTalkId(31147);
@@ -84,8 +81,8 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 		
 		if (event.equalsIgnoreCase("31147-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31147-04.htm"))
@@ -112,13 +109,7 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 57 || !st.hasQuestItems(DICTIONARY_INTERMEDIATE))
-				{
-					htmltext = "31147-01.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "31147-02.htm";
+				htmltext = (player.getLevel() < 57 || !st.hasQuestItems(DICTIONARY_INTERMEDIATE)) ? "31147-01.htm" : "31147-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -136,7 +127,8 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 		if (partyMember == null)
 			return null;
 		
-		partyMember.getQuestState(qn).dropItems(ANCIENT_BOOK, 1, 0, ANCIENT_BOOK_RATE);
+		partyMember.getQuestState(qn).dropItems(ANCIENT_BOOK, 1, 0, 18000);
+		
 		return null;
 	}
 	
@@ -165,6 +157,6 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q377_ExplorationOfTheGiantsCave_Part2(377, qn, "Exploration of the Giants' Cave, Part 2");
+		new Q377_ExplorationOfTheGiantsCave_Part2();
 	}
 }

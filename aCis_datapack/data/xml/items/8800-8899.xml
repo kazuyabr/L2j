@@ -2,14 +2,14 @@
 <list>
 	<item id="8800" type="Weapon" name="Naga Storm - Focus">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="930" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -26,14 +26,14 @@
 	</item>
 	<item id="8801" type="Weapon" name="Naga Storm - Critical Damage">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="930" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -50,14 +50,14 @@
 	</item>
 	<item id="8802" type="Weapon" name="Naga Storm - Back Blow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="930" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -74,14 +74,14 @@
 	</item>
 	<item id="8803" type="Weapon" name="Tiphon's Spear - Critical Stun">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="chrysolite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="CHRYSOLITE" />
 		<set name="weight" val="1820" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -100,14 +100,14 @@
 	</item>
 	<item id="8804" type="Weapon" name="Tiphon's Spear - Towering Blow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;80;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="chrysolite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="CHRYSOLITE" />
 		<set name="weight" val="1820" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -125,14 +125,14 @@
 	</item>
 	<item id="8805" type="Weapon" name="Tiphon's Spear - Wild Blow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;180" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="chrysolite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="CHRYSOLITE" />
 		<set name="weight" val="1820" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -150,14 +150,14 @@
 	</item>
 	<item id="8806" type="Weapon" name="Shyeed's Bow - Cheap Shot">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="1640" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="1" />
@@ -182,14 +182,14 @@
 	</item>
 	<item id="8807" type="Weapon" name="Shyeed's Bow - Focus">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="1640" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="1" />
@@ -208,14 +208,14 @@
 	</item>
 	<item id="8808" type="Weapon" name="Shyeed's Bow - Quick Recovery">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="1640" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="1" />
@@ -234,14 +234,14 @@
 	</item>
 	<item id="8809" type="Weapon" name="Sobekk's Hurricane - Rsk. Haste">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1330" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -258,14 +258,14 @@
 	</item>
 	<item id="8810" type="Weapon" name="Sobekk's Hurricane - Haste">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1330" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -282,19 +282,19 @@
 	</item>
 	<item id="8811" type="Weapon" name="Sobekk's Hurricane - Critical Drain">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1330" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
 		<set name="oncrit_chance" val="10" />
-		<set name="oncrit_skill" val="3039-7" />
+		<set name="oncrit_skill" val="3039-6" />
 		<set name="item_skill" val="3552-1" />
 		<for>
 			<set order="0x08" stat="pAtk" val="305" />
@@ -309,14 +309,14 @@
 	<item id="8812" type="Weapon" name="Themis' Tongue - Mana Up">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="820" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -333,14 +333,14 @@
 	<item id="8813" type="Weapon" name="Themis' Tongue - Magic Mental Shield">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="820" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -359,14 +359,14 @@
 	<item id="8814" type="Weapon" name="Themis' Tongue - Magic Focus">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="820" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -385,14 +385,14 @@
 	<item id="8815" type="Weapon" name="Cabrio's Hand - Conversion">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1510" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -410,14 +410,14 @@
 	<item id="8816" type="Weapon" name="Cabrio's Hand - Mana Up">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1510" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -435,14 +435,14 @@
 	<item id="8817" type="Weapon" name="Cabrio's Hand - Magic Silence">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1510" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -462,14 +462,14 @@
 	<item id="8818" type="Weapon" name="Daimon Crystal - Mana Up">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="880" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -487,14 +487,14 @@
 	<item id="8819" type="Weapon" name="Daimon Crystal - Acumen">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="880" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -512,14 +512,14 @@
 	<item id="8820" type="Weapon" name="Daimon Crystal - Magic Mental Shield">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2824" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="880" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -538,13 +538,13 @@
 	</item>
 	<item id="8821" type="Weapon" name="Shadow Item: Two Handed Sword">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="730" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -561,13 +561,13 @@
 	</item>
 	<item id="8822" type="Weapon" name="Shadow Item: Crimson Sword">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="500" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -584,13 +584,13 @@
 	</item>
 	<item id="8823" type="Weapon" name="Shadow Item: Spiked Club">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="590" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -609,13 +609,13 @@
 	<item id="8824" type="Weapon" name="Shadow Item: Staff of Magic">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="340" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -633,13 +633,13 @@
 	</item>
 	<item id="8825" type="Weapon" name="Shadow Item: Kukuri">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="360" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -658,13 +658,13 @@
 	<item id="8826" type="Weapon" name="Shadow Item: Dagger of Mana">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="250" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -682,13 +682,13 @@
 	</item>
 	<item id="8827" type="Weapon" name="Shadow Item: Triple-Edged Jamadhr">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="520" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -706,13 +706,13 @@
 	</item>
 	<item id="8828" type="Weapon" name="Shadow Item: Gastraphetes">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="620" />
 		<set name="soulshots" val="8" />
 		<set name="spiritshots" val="2" />
@@ -732,13 +732,13 @@
 	</item>
 	<item id="8829" type="Weapon" name="Shadow Item: War Hammer">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="700" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -757,13 +757,13 @@
 	</item>
 	<item id="8830" type="Weapon" name="Shadow Item: Katana">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="480" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -780,13 +780,13 @@
 	</item>
 	<item id="8831" type="Weapon" name="Shadow Item: Bec de Corbin">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="680" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -806,13 +806,13 @@
 	<item id="8832" type="Weapon" name="Shadow Item: Cursed Staff">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="340" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -830,13 +830,13 @@
 	</item>
 	<item id="8833" type="Weapon" name="Shadow Item: Stiletto">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="350" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -855,13 +855,13 @@
 	<item id="8834" type="Weapon" name="Shadow Item: Soulfire Dirk">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="250" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -879,13 +879,13 @@
 	</item>
 	<item id="8835" type="Weapon" name="Shadow Item: Elemental Bow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="590" />
 		<set name="soulshots" val="8" />
 		<set name="spiritshots" val="2" />
@@ -905,13 +905,13 @@
 	</item>
 	<item id="8836" type="Weapon" name="Shadow Item: Dwarven War Hammer">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="560" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -929,13 +929,13 @@
 	</item>
 	<item id="8837" type="Weapon" name="Shadow Item: Sword of Revolution">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dual" />
+		<set name="weapon_type" val="DUAL" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="790" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -952,13 +952,13 @@
 	</item>
 	<item id="8838" type="Weapon" name="Shadow Item: Knuckle Duster">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="500" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -976,13 +976,13 @@
 	</item>
 	<item id="8839" type="Weapon" name="Shadow Item: Sword of Delusion">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="mithril" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="470" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -999,13 +999,13 @@
 	</item>
 	<item id="8840" type="Weapon" name="Shadow Item: Poleaxe">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="bronze" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="BRONZE" />
 		<set name="weight" val="670" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1025,13 +1025,13 @@
 	<item id="8841" type="Weapon" name="Shadow Item: Stick of Eternity">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="380" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1050,13 +1050,13 @@
 	<item id="8842" type="Weapon" name="Shadow Item: Inferno Staff">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="340" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1075,13 +1075,13 @@
 	<item id="8843" type="Weapon" name="Shadow Item: Pa'agrian Hammer">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="blood_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="340" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1099,13 +1099,13 @@
 	</item>
 	<item id="8844" type="Weapon" name="Shadow Item: Dark Screamer">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="340" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1123,13 +1123,13 @@
 	</item>
 	<item id="8845" type="Weapon" name="Shadow Item: Akat Long Bow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="horn" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="HORN" />
 		<set name="weight" val="580" />
 		<set name="soulshots" val="9" />
 		<set name="spiritshots" val="3" />
@@ -1149,13 +1149,13 @@
 	</item>
 	<item id="8846" type="Weapon" name="Shadow Item: Pa'agrian Sword">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="660" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1172,13 +1172,13 @@
 	</item>
 	<item id="8847" type="Weapon" name="Shadow Item: Fisted Blade">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;90" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="500" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1196,13 +1196,13 @@
 	</item>
 	<item id="8848" type="Weapon" name="Shadow Item: Stormbringer">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dual" />
+		<set name="weapon_type" val="DUAL" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="780" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -1219,13 +1219,13 @@
 	</item>
 	<item id="8849" type="Weapon" name="Shadow Item: Great Sword">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="650" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1242,13 +1242,13 @@
 	</item>
 	<item id="8850" type="Weapon" name="Shadow Item: Heavy War Axe">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="540" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1267,13 +1267,13 @@
 	<item id="8851" type="Weapon" name="Shadow Item: Sprite's Staff">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="320" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1291,13 +1291,13 @@
 	</item>
 	<item id="8852" type="Weapon" name="Shadow Item: Keshanberk">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="460" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1315,13 +1315,13 @@
 	<item id="8853" type="Weapon" name="Shadow Item: Sword of Valhalla">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="300" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1338,13 +1338,13 @@
 	</item>
 	<item id="8854" type="Weapon" name="Shadow Item: Kris">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="mithril" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="330" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1362,13 +1362,13 @@
 	</item>
 	<item id="8855" type="Weapon" name="Shadow Item: Arthro Nail">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;52;90" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="blood_steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="480" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1386,13 +1386,13 @@
 	</item>
 	<item id="8856" type="Weapon" name="Shadow Item: Dark Elven Long Bow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="580" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="1" />
@@ -1412,13 +1412,13 @@
 	</item>
 	<item id="8857" type="Weapon" name="Shadow Item: Swords of Delusion">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dual" />
+		<set name="weapon_type" val="DUAL" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="720" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1435,13 +1435,13 @@
 	</item>
 	<item id="8858" type="Weapon" name="Shadow Item: Great Axe">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="damascus" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="DAMASCUS" />
 		<set name="weight" val="650" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1460,13 +1460,13 @@
 	</item>
 	<item id="8859" type="Weapon" name="Shadow Item: Tallum Blade">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="450" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1483,13 +1483,13 @@
 	</item>
 	<item id="8860" type="Weapon" name="Shadow Item: Halberd">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="640" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1509,13 +1509,13 @@
 	<item id="8861" type="Weapon" name="Shadow Item: Dasparion's Staff">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="310" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1533,13 +1533,13 @@
 	</item>
 	<item id="8862" type="Weapon" name="Shadow Item: Bloody Orchid">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="blood_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="320" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1557,13 +1557,13 @@
 	</item>
 	<item id="8863" type="Weapon" name="Shadow Item: Blood Tornado">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="blood_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="460" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1581,13 +1581,13 @@
 	</item>
 	<item id="8864" type="Weapon" name="Shadow Item: Carnage Bow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="damascus" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="DAMASCUS" />
 		<set name="weight" val="560" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="1" />
@@ -1607,13 +1607,13 @@
 	</item>
 	<item id="8865" type="Weapon" name="Shadow Item: Dual Keshanberk">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dual" />
+		<set name="weapon_type" val="DUAL" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="700" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1630,13 +1630,13 @@
 	</item>
 	<item id="8866" type="Weapon" name="Shadow Item: Meteor Shower">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="540" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1654,13 +1654,13 @@
 	</item>
 	<item id="8867" type="Weapon" name="Shadow Item: Inferno Master">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="640" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -1676,18 +1676,18 @@
 		</for>
 	</item>
 	<item id="8868" type="EtcItem" name="Ziggo's Gemstone">
-		<set name="material" val="crystal" />
+		<set name="material" val="CRYSTAL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="8869" type="EtcItem" name="Shadow Item Exchange Coupon: D Grade">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="8870" type="EtcItem" name="Shadow Item Exchange Coupon: C Grade">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -1695,134 +1695,134 @@
 	</item>
 	<item id="8871" type="EtcItem" name="Strategy Guide">
 		<set name="default_action" val="create_mpcc" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<cond msgId="113">
 			<player level="20" />
 		</cond>
 	</item>
 	<item id="8872" type="EtcItem" name="Flash Gunpowder">
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="8873" type="EtcItem" name="Phoenix Blood">
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="8874" type="EtcItem" name="Einhasad's Holy Water">
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<set name="price" val="20000" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="8875" type="EtcItem" name="Battle Symbol">
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="8876" type="EtcItem" name="Magic Symbol">
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="8877" type="EtcItem" name="Spellbook: Soul of the Phoenix">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8878" type="EtcItem" name="Spellbook: Summon Feline King">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8879" type="EtcItem" name="Spellbook: Summon Magnus the Unicorn">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8880" type="EtcItem" name="Spellbook: Summon Spectral Knight">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8881" type="EtcItem" name="Spellbook: Cleanse">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8882" type="EtcItem" name="Spellbook: Salvation">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="110000" />
 	</item>
 	<item id="8883" type="EtcItem" name="Spellbook: Mystic Immunity">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="110000" />
 	</item>
 	<item id="8884" type="EtcItem" name="Spellbook: Spell Turning">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8885" type="EtcItem" name="Amulet: Magnus' Chant">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8886" type="EtcItem" name="Amulet: Victories of Pa'agrio">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8887" type="EtcItem" name="Amulet: Pa'agrio's Emblem">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8888" type="EtcItem" name="Amulet: Pa'agrio's Fist">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="110000" />
 	</item>
 	<item id="8889" type="EtcItem" name="Amulet: Gate Chant">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8890" type="EtcItem" name="Spellbook: Summon Attractive Cubic">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="7700" />
 	</item>
 	<item id="8891" type="EtcItem" name="Spellbook: Aura Flash">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="6750" />
 	</item>
 	<item id="8892" type="EtcItem" name="Ancient Tactical Manual: Symbol of Defense">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8893" type="EtcItem" name="Ancient Tactical Manual: Symbol of Noise">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8894" type="EtcItem" name="Ancient Tactical Manual: Symbol of Resistance">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8895" type="EtcItem" name="Ancient Tactical Manual: Symbol of Honor">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8896" type="EtcItem" name="Ancient Tactical Manual: Symbol of Energy">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="120000" />
 	</item>
 	<item id="8897" type="EtcItem" name="Ancient Tactical Manual: Symbol of the Sniper">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8898" type="EtcItem" name="Ancient Tactical Manual: Symbol of the Assassin">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 	<item id="8899" type="EtcItem" name="Ancient Spellbook: Volcano">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 	</item>
 </list>

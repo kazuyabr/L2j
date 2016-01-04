@@ -20,7 +20,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q022_TragedyInVonHellmannForest extends Quest
 {
@@ -387,12 +386,8 @@ public class Q022_TragedyInVonHellmannForest extends Quest
 		
 		if (npc.getNpcId() != SOUL_OF_WELL)
 		{
-			if (st.getInt("cond") == 4 && Rnd.get(100) < 10)
-			{
+			if (st.getInt("cond") == 4 && st.dropItems(LOST_SKULL_OF_ELF, 1, 1, 100000))
 				st.set("cond", "5");
-				st.giveItems(LOST_SKULL_OF_ELF, 1);
-				st.playSound(QuestState.SOUND_MIDDLE);
-			}
 		}
 		else
 		{

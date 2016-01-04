@@ -2,7 +2,7 @@
 <list>
 	<item id="7100" type="EtcItem" name="Importance of Strain">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -12,7 +12,7 @@
 	</item>
 	<item id="7101" type="EtcItem" name="Danger of Ice Spirit">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -22,7 +22,7 @@
 	</item>
 	<item id="7102" type="EtcItem" name="Guardian Angel of the Tablet - Vol. 1">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -32,7 +32,7 @@
 	</item>
 	<item id="7103" type="EtcItem" name="Guardian Angel of the Tablet - Vol. 1">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -42,7 +42,7 @@
 	</item>
 	<item id="7104" type="EtcItem" name="Guardian Angel of the Tablet - Vol. 1">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -52,7 +52,7 @@
 	</item>
 	<item id="7105" type="EtcItem" name="Guardian Angel of the Tablet - Vol. 2">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -62,7 +62,7 @@
 	</item>
 	<item id="7106" type="EtcItem" name="Guardian Angel of the Tablet - Vol. 2">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -72,7 +72,7 @@
 	</item>
 	<item id="7107" type="EtcItem" name="Guardian Angel of the Tablet - Vol. 2">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -82,7 +82,7 @@
 	</item>
 	<item id="7108" type="EtcItem" name="Guild's Secret Report">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -92,7 +92,7 @@
 	</item>
 	<item id="7109" type="EtcItem" name="Guild's Secret Report">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -102,7 +102,7 @@
 	</item>
 	<item id="7110" type="EtcItem" name="Research Report">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -112,7 +112,7 @@
 	</item>
 	<item id="7111" type="EtcItem" name="Research Report">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -122,7 +122,7 @@
 	</item>
 	<item id="7112" type="EtcItem" name="Research Report">
 		<set name="default_action" val="show_html" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_destroyable" val="false" />
@@ -131,7 +131,7 @@
 		<set name="handler" val="Book" />
 	</item>
 	<item id="7113" type="EtcItem" name="Dress Shoe Box">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -139,20 +139,20 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7114" type="EtcItem" name="Voucher - Buffalo">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="7115" type="EtcItem" name="Voucher - Cougar">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="7116" type="EtcItem" name="Voucher - Kookaburra">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="7117" type="EtcItem" name="Scroll of Escape to Talking Island">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -163,7 +163,7 @@
 	</item>
 	<item id="7118" type="EtcItem" name="Scroll of Escape to Elven Village">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -174,7 +174,7 @@
 	</item>
 	<item id="7119" type="EtcItem" name="Scroll of Escape to Dark Elf Village">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -185,7 +185,7 @@
 	</item>
 	<item id="7120" type="EtcItem" name="Scroll of Escape to Orc Village">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -196,7 +196,7 @@
 	</item>
 	<item id="7121" type="EtcItem" name="Scroll of Escape to Dwarven Village">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -207,7 +207,7 @@
 	</item>
 	<item id="7122" type="EtcItem" name="Scroll of Escape to Gludin Village">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -218,7 +218,7 @@
 	</item>
 	<item id="7123" type="EtcItem" name="Scroll of Escape to the Town of Gludio">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -229,7 +229,7 @@
 	</item>
 	<item id="7124" type="EtcItem" name="Scroll of Escape to the Town of Dion">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -240,7 +240,7 @@
 	</item>
 	<item id="7125" type="EtcItem" name="Scroll of Escape to Floran">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -251,7 +251,7 @@
 	</item>
 	<item id="7126" type="EtcItem" name="Scroll of Escape to Giran Castle Town">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -262,7 +262,7 @@
 	</item>
 	<item id="7127" type="EtcItem" name="Scroll of Escape to Hardin's Private Academy">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -273,7 +273,7 @@
 	</item>
 	<item id="7128" type="EtcItem" name="Scroll of Escape to Heine">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -284,7 +284,7 @@
 	</item>
 	<item id="7129" type="EtcItem" name="Scroll of Escape to the Town of Oren">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -295,7 +295,7 @@
 	</item>
 	<item id="7130" type="EtcItem" name="Scroll of Escape to Ivory Tower">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -306,7 +306,7 @@
 	</item>
 	<item id="7131" type="EtcItem" name="Scroll of Escape to Hunters Village">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -317,7 +317,7 @@
 	</item>
 	<item id="7132" type="EtcItem" name="Scroll of Escape to Aden Castle Town">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -328,7 +328,7 @@
 	</item>
 	<item id="7133" type="EtcItem" name="Scroll of Escape to the Town of Goddard">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -339,7 +339,7 @@
 	</item>
 	<item id="7134" type="EtcItem" name="Scroll of Escape to the Rune Township">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -350,7 +350,7 @@
 	</item>
 	<item id="7135" type="EtcItem" name="Scroll of Escape to the Town of Schuttgart">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="35000" />
 		<set name="is_stackable" val="true" />
@@ -360,7 +360,7 @@
 		<set name="use_condition" val="{{uc_transmode_exclude;{tt_flying}}}" />
 	</item>
 	<item id="7136" type="EtcItem" name="Fruit Basket">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -369,7 +369,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7137" type="EtcItem" name="Avellan Spice">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -378,7 +378,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7138" type="EtcItem" name="Honey Pouch">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -387,7 +387,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7139" type="EtcItem" name="Bracelet of Lizardman">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -396,7 +396,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7140" type="EtcItem" name="Cross of Einhasad">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -405,7 +405,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7141" type="EtcItem" name="Cross of Einhasad">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -414,7 +414,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7142" type="EtcItem" name="Lost Skull of Elf">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -423,7 +423,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7143" type="EtcItem" name="Letter of Innocentin">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -432,7 +432,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7144" type="EtcItem" name="Jewel of Adventurer">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -441,7 +441,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7145" type="EtcItem" name="Jewel of Adventurer">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -450,7 +450,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7146" type="EtcItem" name="Sealed Report Box">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -459,7 +459,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7147" type="EtcItem" name="Report Box">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -468,7 +468,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7148" type="EtcItem" name="Lidia's Hairpin">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -477,7 +477,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7149" type="EtcItem" name="Silver Key">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -486,7 +486,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7150" type="EtcItem" name="Silver Spear">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -495,7 +495,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7151" type="EtcItem" name="Suspicious Totem Doll">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -504,7 +504,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7152" type="EtcItem" name="Flower Bouquet">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -513,7 +513,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7153" type="EtcItem" name="Silver Cross of Einhasad">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -522,7 +522,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7154" type="EtcItem" name="Broken Silver Cross of Einhasad">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -531,7 +531,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7155" type="EtcItem" name="Lidia's Dress">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -540,7 +540,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7156" type="EtcItem" name="Suspicious Totem Doll">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -549,7 +549,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7157" type="EtcItem" name="Gemstone Key">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -558,7 +558,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7158" type="EtcItem" name="Suspicious Totem Doll">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -567,7 +567,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7159" type="EtcItem" name="Box of Cookies">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -576,7 +576,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7160" type="EtcItem" name="Luxury Wine">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -585,7 +585,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7161" type="EtcItem" name="Skein of Yarn">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -594,7 +594,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7162" type="EtcItem" name="Rough Jewel">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -603,7 +603,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7163" type="EtcItem" name="Enchanted Iron">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -612,7 +612,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7164" type="EtcItem" name="Signet Ring">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -621,7 +621,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7165" type="EtcItem" name="Map">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -630,7 +630,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7166" type="EtcItem" name="Medicinal Herb">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -639,7 +639,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7167" type="EtcItem" name="Crystal of Seal">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -648,7 +648,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7168" type="EtcItem" name="Blood of Saint">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -657,7 +657,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7169" type="EtcItem" name="Blood of Saint">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -666,7 +666,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7170" type="EtcItem" name="Seal of Light">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -675,7 +675,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7171" type="EtcItem" name="Bead of Obedience">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -684,7 +684,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7172" type="EtcItem" name="Gem of Saints">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -693,7 +693,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7173" type="EtcItem" name="Feather Ornament">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -702,7 +702,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7174" type="EtcItem" name="Tooth of Totem">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -711,7 +711,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7175" type="EtcItem" name="Tooth of Dragon">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -720,7 +720,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7176" type="EtcItem" name="Letter of Iris">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -729,7 +729,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7177" type="EtcItem" name="Letter of Rohmer">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -738,7 +738,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7178" type="EtcItem" name="Black Bone Necklace">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -747,7 +747,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7179" type="EtcItem" name="Red Bone Necklace">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -756,7 +756,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7180" type="EtcItem" name="Incense Pouch">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -765,7 +765,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7181" type="EtcItem" name="Gem of Maille Lizardman">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -774,7 +774,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7182" type="EtcItem" name="Patrol's Report">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -783,7 +783,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7183" type="EtcItem" name="Shining Gem">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -792,7 +792,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7184" type="EtcItem" name="Shining Red Gem">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -801,7 +801,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7185" type="EtcItem" name="Jewel of Innocence">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -810,7 +810,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7186" type="EtcItem" name="Horn of Buffalo">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -819,7 +819,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7187" type="EtcItem" name="Nepenthes Seed">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -828,7 +828,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7188" type="EtcItem" name="Proof of Avenger">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -837,7 +837,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7189" type="EtcItem" name="Eye of Darkness">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -846,7 +846,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7190" type="EtcItem" name="Evil Spirit of Darkness">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -855,7 +855,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7191" type="EtcItem" name="Broken Crystal">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -864,7 +864,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7192" type="EtcItem" name="Unfinished Summon Crystal">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -873,7 +873,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7193" type="EtcItem" name="Summon Crystal">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -882,7 +882,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7194" type="EtcItem" name="Essence of Daimon">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -891,7 +891,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7195" type="EtcItem" name="Boiled Eggs">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -900,7 +900,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7196" type="EtcItem" name="Fee of Boiled Egg">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -909,7 +909,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7197" type="EtcItem" name="Special Drink">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -918,7 +918,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7198" type="EtcItem" name="Fee of Special Drink">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -927,7 +927,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="7199" type="EtcItem" name="Leaf of Flava">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />

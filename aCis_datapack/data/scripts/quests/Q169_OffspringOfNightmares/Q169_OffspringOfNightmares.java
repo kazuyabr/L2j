@@ -17,7 +17,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q169_OffspringOfNightmares extends Quest
 {
@@ -115,18 +114,10 @@ public class Q169_OffspringOfNightmares extends Quest
 		if (st == null)
 			return null;
 		
-		int chance = Rnd.get(100);
-		if (st.getInt("cond") == 1 && chance < 10)
-		{
+		if (st.getInt("cond") == 1 && st.dropItems(PERFECT_SKULL, 1, 1, 200000))
 			st.set("cond", "2");
-			st.playSound(QuestState.SOUND_MIDDLE);
-			st.giveItems(PERFECT_SKULL, 1);
-		}
-		else if (chance > 60)
-		{
-			st.playSound(QuestState.SOUND_ITEMGET);
-			st.giveItems(CRACKED_SKULL, 1);
-		}
+		else
+			st.dropItems(CRACKED_SKULL, 1, 0, 500000);
 		
 		return null;
 	}

@@ -12,6 +12,9 @@
  */
 package quests.Q162_CurseOfTheUndergroundFortress;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
@@ -36,6 +39,17 @@ public class Q162_CurseOfTheUndergroundFortress extends Quest
 	
 	// Rewards
 	private static final int BONE_SHIELD = 625;
+	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(SHADE_HORROR, 250000);
+		CHANCES.put(DARK_TERROR, 260000);
+		CHANCES.put(MIST_TERROR, 230000);
+		CHANCES.put(DUNGEON_SKELETON_ARCHER, 250000);
+		CHANCES.put(DUNGEON_SKELETON, 230000);
+		CHANCES.put(DREAD_SOLDIER, 260000);
+	}
 	
 	public Q162_CurseOfTheUndergroundFortress()
 	{
@@ -117,22 +131,22 @@ public class Q162_CurseOfTheUndergroundFortress extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
+		final int npcId = npc.getNpcId();
+		
+		switch (npcId)
 		{
 			case DUNGEON_SKELETON:
 			case DUNGEON_SKELETON_ARCHER:
 			case DREAD_SOLDIER:
-				if (st.dropItems(BONE_FRAGMENT, 1, 10, 250000))
-					if (st.getQuestItemsCount(ELF_SKULL) >= 3)
-						st.set("cond", "2");
+				if (st.dropItems(BONE_FRAGMENT, 1, 10, CHANCES.get(npcId)) && st.getQuestItemsCount(ELF_SKULL) >= 3)
+					st.set("cond", "2");
 				break;
 			
 			case SHADE_HORROR:
 			case DARK_TERROR:
 			case MIST_TERROR:
-				if (st.dropItems(ELF_SKULL, 1, 3, 250000))
-					if (st.getQuestItemsCount(BONE_FRAGMENT) >= 10)
-						st.set("cond", "2");
+				if (st.dropItems(ELF_SKULL, 1, 3, CHANCES.get(npcId)) && st.getQuestItemsCount(BONE_FRAGMENT) >= 10)
+					st.set("cond", "2");
 				break;
 		}
 		

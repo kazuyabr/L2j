@@ -27,11 +27,11 @@ import net.sf.l2j.gameserver.model.actor.L2Attackable;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2TamedBeastInstance;
+import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.quest.QuestEventType;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.serverpackets.NpcSay;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
-import net.sf.l2j.gameserver.templates.chars.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Rnd;
 
@@ -611,7 +611,7 @@ public class FeedableBeasts extends AbstractNpcAI
 			if (player.getTrainedBeast() != null && !(player.getTrainedBeast() == null))
 				player.getTrainedBeast().deleteMe();
 			
-			L2NpcTemplate template = NpcTable.getInstance().getTemplate(nextNpcId);
+			NpcTemplate template = NpcTable.getInstance().getTemplate(nextNpcId);
 			L2TamedBeastInstance nextNpc = new L2TamedBeastInstance(IdFactory.getInstance().getNextId(), template, player, food, npc.getX(), npc.getY(), npc.getZ());
 			nextNpc.setRunning();
 			

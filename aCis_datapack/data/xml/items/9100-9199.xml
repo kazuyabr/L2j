@@ -3,8 +3,8 @@
 	<item id="9100" type="Armor" name="Shadow Item: Majestic Boots">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="feet" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="blood_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="370" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
@@ -16,10 +16,10 @@
 	</item>
 	<item id="9101" type="Armor" name="Shadow Item: Majestic Robe">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="magic" />
+		<set name="armor_type" val="MAGIC" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="leather" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="777" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
@@ -33,8 +33,8 @@
 	<item id="9102" type="Armor" name="Shadow Item: Majestic Gauntlet">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="gloves" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="leather" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="180" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
@@ -47,8 +47,8 @@
 	<item id="9103" type="Armor" name="Shadow Item: Majestic Boots">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="feet" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="blood_steel" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="BLOOD_STEEL" />
 		<set name="weight" val="370" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
@@ -60,7 +60,7 @@
 	</item>
 	<item id="9104" type="EtcItem" name="Composition Bow and Wooden Arrow">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -68,7 +68,7 @@
 	</item>
 	<item id="9105" type="EtcItem" name="Gastraphetes and Bone Arrow">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -76,7 +76,7 @@
 	</item>
 	<item id="9106" type="EtcItem" name="Akat Long Bow and Steel Arrow">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -84,7 +84,7 @@
 	</item>
 	<item id="9107" type="EtcItem" name="Dark Elven Long Bow and Silver Arrow">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -92,7 +92,7 @@
 	</item>
 	<item id="9108" type="EtcItem" name="Carnage Bow and Mithril Arrow">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -100,7 +100,7 @@
 	</item>
 	<item id="9109" type="EtcItem" name="Soul Bow and Mithril Arrow">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -108,7 +108,7 @@
 	</item>
 	<item id="9110" type="EtcItem" name="No Grade Shadow Armor Set Box (Heavy Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -116,7 +116,7 @@
 	</item>
 	<item id="9111" type="EtcItem" name="D-Grade Shadow Armor Set Box (Heavy Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -124,7 +124,7 @@
 	</item>
 	<item id="9112" type="EtcItem" name="C-Grade Shadow Armor Set Box (Heavy Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -132,7 +132,7 @@
 	</item>
 	<item id="9113" type="EtcItem" name="B-Grade Shadow Armor Set Box (Heavy Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -140,7 +140,7 @@
 	</item>
 	<item id="9114" type="EtcItem" name="Low A-Grade Shadow Armor Set Box (Heavy Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -148,7 +148,7 @@
 	</item>
 	<item id="9115" type="EtcItem" name="High A-Grade Shadow Armor Set Box (Heavy Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -156,7 +156,7 @@
 	</item>
 	<item id="9116" type="EtcItem" name="No Grade Shadow Armor Set Box (Light Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -164,7 +164,7 @@
 	</item>
 	<item id="9117" type="EtcItem" name="D-Grade Shadow Armor Set Box (Light Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -172,7 +172,7 @@
 	</item>
 	<item id="9118" type="EtcItem" name="C-Grade Shadow Armor Set Box (Light Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -180,7 +180,7 @@
 	</item>
 	<item id="9119" type="EtcItem" name="B-Grade Shadow Armor Set Box (Light Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -188,7 +188,7 @@
 	</item>
 	<item id="9120" type="EtcItem" name="Low A-Grade Shadow Armor Set Box (Light Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -196,7 +196,7 @@
 	</item>
 	<item id="9121" type="EtcItem" name="High A-Grade Shadow Armor Set Box (Light Armor Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -204,7 +204,7 @@
 	</item>
 	<item id="9122" type="EtcItem" name="No Grade Shadow Armor Set Box (Robe Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -212,7 +212,7 @@
 	</item>
 	<item id="9123" type="EtcItem" name="D-Grade Shadow Armor Set Box (Robe Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -220,7 +220,7 @@
 	</item>
 	<item id="9124" type="EtcItem" name="C-Grade Shadow Armor Set Box (Robe Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -228,7 +228,7 @@
 	</item>
 	<item id="9125" type="EtcItem" name="B-Grade Shadow Armor Set Box (Robe Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -236,7 +236,7 @@
 	</item>
 	<item id="9126" type="EtcItem" name="Low A-Grade Shadow Armor Set Box (Robe Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -244,7 +244,7 @@
 	</item>
 	<item id="9127" type="EtcItem" name="High A-Grade Shadow Armor Set Box (Robe Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -253,8 +253,8 @@
 	<item id="9128" type="Armor" name="Shadow Item: Mithril Gauntlet">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="gloves" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="mithril" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="MITHRIL" />
 		<set name="weight" val="200" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
@@ -267,8 +267,8 @@
 	<item id="9129" type="Armor" name="Shadow Item: Shield of Nightmare">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="lhand" />
-		<set name="crystal_type" val="a" />
-		<set name="material" val="leather" />
+		<set name="crystal_type" val="A" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="400" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
@@ -282,7 +282,7 @@
 	</item>
 	<item id="9130" type="EtcItem" name="No Grade Item Set Box (Magic Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -290,7 +290,7 @@
 	</item>
 	<item id="9131" type="EtcItem" name="D Grade Item Set Box (Magic Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -298,7 +298,7 @@
 	</item>
 	<item id="9132" type="EtcItem" name="C Grade Item Set Box (Magic Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -306,7 +306,7 @@
 	</item>
 	<item id="9133" type="EtcItem" name="B Grade Item Set Box (Magic Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -314,7 +314,7 @@
 	</item>
 	<item id="9134" type="EtcItem" name="A Grade Item Set Box (Magic Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -322,7 +322,7 @@
 	</item>
 	<item id="9135" type="EtcItem" name="A, S Grade Item Set Box (Magic Use)">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -330,13 +330,13 @@
 	</item>
 	<item id="9136" type="Weapon" name="Sword of Valakas (1-Handed)">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="1380" />
 		<set name="soulshots" val="3" />
 		<set name="spiritshots" val="3" />
@@ -349,13 +349,13 @@
 	</item>
 	<item id="9137" type="Weapon" name="Sword of Valakas (2-Handed)">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
-		<set name="crystal_type" val="d" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="D" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="2180" />
 		<set name="soulshots" val="2" />
 		<set name="spiritshots" val="2" />
@@ -369,21 +369,21 @@
 	<item id="9138" type="Armor" name="Santa's Hat">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 	</item>
 	<item id="9139" type="EtcItem" name="Santa's Hat">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="10" />
 	</item>
 	<item id="9140" type="Weapon" name="Salvation Bow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="1" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="900" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -400,12 +400,12 @@
 	</item>
 	<item id="9141" type="Weapon" name="Redemption Bow - Event Use">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="1" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="300" />
 		<set name="soulshots" val="1" />
 		<set name="spiritshots" val="1" />
@@ -423,11 +423,11 @@
 		</for>
 	</item>
 	<item id="9142" type="EtcItem" name="Apiga">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="9143" type="EtcItem" name="Golden Apiga">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -435,7 +435,7 @@
 	</item>
 	<item id="9144" type="EtcItem" name="Pirate's Booty">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -444,7 +444,7 @@
 	<item id="9145" type="Armor" name="Little Angel Wings (Event)">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hair" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
@@ -453,7 +453,7 @@
 	<item id="9146" type="EtcItem" name="Scroll of Guidance - For Event">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -464,7 +464,7 @@
 	<item id="9147" type="EtcItem" name="Scroll of Death Whisper - For Event">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -475,7 +475,7 @@
 	<item id="9148" type="EtcItem" name="Scroll of Focus (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -486,7 +486,7 @@
 	<item id="9149" type="EtcItem" name="Scroll of Acumen (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -497,7 +497,7 @@
 	<item id="9150" type="EtcItem" name="Scroll of Haste (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -508,7 +508,7 @@
 	<item id="9151" type="EtcItem" name="Scroll of Agility (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -519,7 +519,7 @@
 	<item id="9152" type="EtcItem" name="Scroll of Empower (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -530,7 +530,7 @@
 	<item id="9153" type="EtcItem" name="Scroll of Might (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -541,7 +541,7 @@
 	<item id="9154" type="EtcItem" name="Scroll of Wind Walk (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -552,7 +552,7 @@
 	<item id="9155" type="EtcItem" name="Scroll of Shield (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -563,7 +563,7 @@
 	<item id="9156" type="EtcItem" name="Blessed Scroll of Escape (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -573,7 +573,7 @@
 	<item id="9157" type="EtcItem" name="Blessed Scroll of Resurrection (Event)">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="is_stackable" val="true" />
 		<set name="is_oly_restricted" val="true" />
@@ -583,29 +583,29 @@
 	<item id="9158" type="Armor" name="Golden Circlet of Redemption">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 	</item>
 	<item id="9159" type="Armor" name="Silver Circlet of Salvation">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 	</item>
 	<item id="9160" type="Armor" name="Pig Wrangler's Cap">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 	</item>
 	<item id="9161" type="EtcItem" name="Santa's Antlers">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="10" />
 	</item>
 	<item id="9162" type="EtcItem" name="Red Philosopher's Stone Transmutation Circle">
 		<set name="default_action" val="recipe" />
 		<set name="etcitem_type" val="recipe" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="Recipes" />
@@ -613,7 +613,7 @@
 	<item id="9163" type="EtcItem" name="Blue Philosopher's Stone Transmutation Circle">
 		<set name="default_action" val="recipe" />
 		<set name="etcitem_type" val="recipe" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="Recipes" />
@@ -621,7 +621,7 @@
 	<item id="9164" type="EtcItem" name="Orange Philosopher's Stone Transmutation Circle">
 		<set name="default_action" val="recipe" />
 		<set name="etcitem_type" val="recipe" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="Recipes" />
@@ -629,7 +629,7 @@
 	<item id="9165" type="EtcItem" name="Black Philosopher's Stone Transmutation Circle">
 		<set name="default_action" val="recipe" />
 		<set name="etcitem_type" val="recipe" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="Recipes" />
@@ -637,7 +637,7 @@
 	<item id="9166" type="EtcItem" name="White Philosopher's Stone Transmutation Circle">
 		<set name="default_action" val="recipe" />
 		<set name="etcitem_type" val="recipe" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="Recipes" />
@@ -645,32 +645,32 @@
 	<item id="9167" type="EtcItem" name="Green Philosopher's Stone Transmutation Circle">
 		<set name="default_action" val="recipe" />
 		<set name="etcitem_type" val="recipe" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="Recipes" />
 	</item>
 	<item id="9168" type="EtcItem" name="Philosopher's Stone Ore">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="2" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="9169" type="EtcItem" name="Philosopher's Stone Conversion Formula">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="2" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="9170" type="EtcItem" name="Magic Reagents">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="2" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="9171" type="EtcItem" name="Red Philosopher's Stone">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -678,7 +678,7 @@
 	</item>
 	<item id="9172" type="EtcItem" name="Blue Philosopher's Stone">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -686,7 +686,7 @@
 	</item>
 	<item id="9173" type="EtcItem" name="Orange Philosopher's Stone">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -694,7 +694,7 @@
 	</item>
 	<item id="9174" type="EtcItem" name="Black Philosopher's Stone">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -702,7 +702,7 @@
 	</item>
 	<item id="9175" type="EtcItem" name="White Philosopher's Stone">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -710,7 +710,7 @@
 	</item>
 	<item id="9176" type="EtcItem" name="Green Philosopher's Stone">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="20" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -719,7 +719,7 @@
 	<item id="9177" type="Armor" name="Teddy Bear Hat - Blessed Resurrection Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -731,7 +731,7 @@
 	<item id="9178" type="Armor" name="Piggy Hat - Blessed Resurrection Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -743,7 +743,7 @@
 	<item id="9179" type="Armor" name="Jester Hat - Blessed Resurrection Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -755,7 +755,7 @@
 	<item id="9180" type="Armor" name="Wizard Hat - Blessed Resurrection Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -767,7 +767,7 @@
 	<item id="9181" type="Armor" name="Dapper Cap - Blessed Resurrection Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -779,7 +779,7 @@
 	<item id="9182" type="Armor" name="Romantic Chapeau - Blessed Resurrection Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -791,7 +791,7 @@
 	<item id="9183" type="Armor" name="Iron Circlet - Blessed Resurrection Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -803,7 +803,7 @@
 	<item id="9184" type="Armor" name="Teddy Bear Hat - Blessed Escape Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -815,7 +815,7 @@
 	<item id="9185" type="Armor" name="Piggy Hat - Blessed Escape Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -827,7 +827,7 @@
 	<item id="9186" type="Armor" name="Jester Hat - Blessed Escape Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -839,7 +839,7 @@
 	<item id="9187" type="Armor" name="Wizard Hat - Blessed Escape Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -851,7 +851,7 @@
 	<item id="9188" type="Armor" name="Dapper Cap - Blessed Escape Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -863,7 +863,7 @@
 	<item id="9189" type="Armor" name="Romantic Chapeau - Blessed Escape Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -875,7 +875,7 @@
 	<item id="9190" type="Armor" name="Iron Circlet - Blessed Escape Effect">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -887,7 +887,7 @@
 	<item id="9191" type="Armor" name="Teddy Bear Hat - Big Head">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -899,7 +899,7 @@
 	<item id="9192" type="Armor" name="Piggy Hat - Big Head">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -911,7 +911,7 @@
 	<item id="9193" type="Armor" name="Jester Hat - Big Head">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -923,7 +923,7 @@
 	<item id="9194" type="Armor" name="Wizard Hat - Big Head">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -935,7 +935,7 @@
 	<item id="9195" type="Armor" name="Dapper Hat - Big Head">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -947,7 +947,7 @@
 	<item id="9196" type="Armor" name="Romantic Chapeau - Big Head">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -959,7 +959,7 @@
 	<item id="9197" type="Armor" name="Iron Circlet - Big Head">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -971,7 +971,7 @@
 	<item id="9198" type="Armor" name="Teddy Bear Hat - Firework">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />
@@ -983,7 +983,7 @@
 	<item id="9199" type="Armor" name="Piggy Hat - Firework">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="hairall" />
-		<set name="material" val="wood" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="10" />
 		<set name="equip_reuse_delay" val="30" />
 		<set name="is_tradable" val="false" />

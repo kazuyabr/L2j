@@ -5319,7 +5319,7 @@
 		<set name="runSpd" val="1"/>
 		<set name="dropHerbGroup" val="0"/>
 		<set name="attackRange" val="40"/>
-		<ai type="default" ssCount="0" ssRate="0" spsCount="0" spsRate="0" aggro="0" canMove="true" seedable="false"/>
+		<ai type="default" ssCount="0" ssRate="0" spsCount="0" spsRate="0" aggro="0" canMove="false" seedable="false"/>
 		<skills>
 			<skill id="4275" level="2"/>
 			<skill id="4278" level="1"/>

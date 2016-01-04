@@ -218,7 +218,7 @@ public class Q032_AnObviousLie extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(MEDICINAL_HERB, 1, 20, 300000))
+		if (st.dropItemsAlways(MEDICINAL_HERB, 1, 20))
 			st.set("cond", "4");
 		
 		return null;

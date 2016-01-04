@@ -31,18 +31,18 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 	private static final int POITAN = 30458;
 	
 	// Item
-	private static final int NANARINS_FLUTE = 4319;
+	private static final int NANARIN_FLUTE = 4319;
 	private static final int BLACK_BEER = 4320;
 	private static final int CLOTHES = 4318;
 	
 	// Reward
 	private static final int THEME_OF_SOLITUDE = 4420;
 	
-	public Q363_SorrowfulSoundOfFlute(int questId, String name, String descr)
+	public Q363_SorrowfulSoundOfFlute()
 	{
-		super(questId, name, descr);
+		super(363, qn, "Sorrowful Sound of Flute");
 		
-		setItemsIds(NANARINS_FLUTE, BLACK_BEER, CLOTHES);
+		setItemsIds(NANARIN_FLUTE, BLACK_BEER, CLOTHES);
 		
 		addStartNpc(NANARIN);
 		addTalkId(NANARIN, OPIX, ALDO, RANSPO, HOLVAS, BARBADO, POITAN);
@@ -58,8 +58,8 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 		
 		if (event.equalsIgnoreCase("30956-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30956-05.htm"))
@@ -72,7 +72,7 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 		{
 			st.set("cond", "3");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.giveItems(NANARINS_FLUTE, 1);
+			st.giveItems(NANARIN_FLUTE, 1);
 		}
 		else if (event.equalsIgnoreCase("30956-07.htm"))
 		{
@@ -95,13 +95,7 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 15)
-				{
-					htmltext = "30956-03.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "30956-01.htm";
+				htmltext = (player.getLevel() < 15) ? "30956-03.htm" : "30956-01.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -151,7 +145,7 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 							st.set("cond", "4");
 							st.playSound(QuestState.SOUND_MIDDLE);
 							
-							if (st.hasQuestItems(NANARINS_FLUTE))
+							if (st.hasQuestItems(NANARIN_FLUTE))
 							{
 								htmltext = "30959-02.htm";
 								st.set("success", "1");
@@ -161,7 +155,7 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 							
 							st.takeItems(BLACK_BEER, -1);
 							st.takeItems(CLOTHES, -1);
-							st.takeItems(NANARINS_FLUTE, -1);
+							st.takeItems(NANARIN_FLUTE, -1);
 						}
 						else if (cond == 4)
 							htmltext = "30959-03.htm";
@@ -174,6 +168,6 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q363_SorrowfulSoundOfFlute(363, qn, "Sorrowful Sound of Flute");
+		new Q363_SorrowfulSoundOfFlute();
 	}
 }

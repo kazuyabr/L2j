@@ -104,7 +104,7 @@ public class Q004_LongliveThePaagrioLord extends Quest
 				else
 				{
 					int i = NPC_GIFTS.get(npcId);
-					if (st.getQuestItemsCount(i) >= 1)
+					if (st.hasQuestItems(i))
 						htmltext = npcId + "-02.htm";
 					else
 					{

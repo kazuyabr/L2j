@@ -54,8 +54,10 @@ public class Q337_AudienceWithTheLandDragon extends Quest
 	private static final int JEWEL_GUARDIAN_MARA = 27168;
 	private static final int ABYSSAL_JEWEL_2 = 27166; // 2nd abyssal
 	private static final int JEWEL_GUARDIAN_MUSFEL = 27169;
-	private static final int CAVE_MAIDEN = 20134; // 3rd abyssal
-	private static final int CAVE_KEEPER = 20246;
+	private static final int CAVE_MAIDEN_1 = 20134; // 3rd abyssal
+	private static final int CAVE_MAIDEN_2 = 20287;
+	private static final int CAVE_KEEPER_1 = 20246;
+	private static final int CAVE_KEEPER_2 = 20277;
 	private static final int ABYSSAL_JEWEL_3 = 27167;
 	private static final int JEWEL_GUARDIAN_PYTON = 27170;
 	
@@ -85,56 +87,48 @@ public class Q337_AudienceWithTheLandDragon extends Quest
 			SACRIFICE_OF_THE_SACRIFICED,
 			1,
 			1,
-			5,
 			REMAINS_OF_SACRIFIED
 		},
 		{
 			HARIT_LIZARDMAN_ZEALOT,
 			1,
 			2,
-			25,
 			TOTEM_OF_LAND_DRAGON
 		},
 		{
 			KRANROT,
 			1,
 			3,
-			20,
 			KRANROT_SKIN
 		},
 		{
 			HAMRUT,
 			1,
 			3,
-			20,
 			HAMRUT_LEG
 		},
 		{
 			MARSH_DRAKE,
 			1,
 			4,
-			20,
 			MARSH_DRAKE_TALONS
 		},
 		{
 			MARSH_STALKER,
 			1,
 			4,
-			20,
 			MARSH_STALKER_HORN
 		},
 		{
 			JEWEL_GUARDIAN_MARA,
 			2,
 			5,
-			20,
 			MARA_FANG
 		},
 		{
 			JEWEL_GUARDIAN_MUSFEL,
 			2,
 			6,
-			20,
 			MUSFEL_FANG
 		}
 	};
@@ -180,7 +174,7 @@ public class Q337_AudienceWithTheLandDragon extends Quest
 		addTalkId(GABRIELLE, ORVEN, KENDRA, CHAKIRIS, KAIENA, MOKE, HELTON, GILMORE, THEODRIC);
 		
 		addAttackId(ABYSSAL_JEWEL_1, ABYSSAL_JEWEL_2, ABYSSAL_JEWEL_3);
-		addKillId(BLOOD_QUEEN, SACRIFICE_OF_THE_SACRIFICED, HARIT_LIZARDMAN_SHAMAN, HARIT_LIZARDMAN_MATRIARCH, HARIT_LIZARDMAN_ZEALOT, KRANROT, HAMRUT, MARSH_DRAKE, MARSH_STALKER, JEWEL_GUARDIAN_MARA, JEWEL_GUARDIAN_MUSFEL, CAVE_MAIDEN, CAVE_KEEPER, JEWEL_GUARDIAN_PYTON);
+		addKillId(BLOOD_QUEEN, SACRIFICE_OF_THE_SACRIFICED, HARIT_LIZARDMAN_SHAMAN, HARIT_LIZARDMAN_MATRIARCH, HARIT_LIZARDMAN_ZEALOT, KRANROT, HAMRUT, MARSH_DRAKE, MARSH_STALKER, JEWEL_GUARDIAN_MARA, JEWEL_GUARDIAN_MUSFEL, CAVE_MAIDEN_1, CAVE_MAIDEN_2, CAVE_KEEPER_1, CAVE_KEEPER_2, JEWEL_GUARDIAN_PYTON);
 	}
 	
 	@Override
@@ -572,9 +566,9 @@ public class Q337_AudienceWithTheLandDragon extends Quest
 					if (npcInfo[0] != npcId)
 						continue;
 					
-					if (npcInfo[1] == cond && st.getInt("drop" + npcInfo[2]) == 1 && Rnd.get(100) < npcInfo[3])
+					if (npcInfo[1] == cond && st.getInt("drop" + npcInfo[2]) == 1)
 					{
-						int itemId = npcInfo[4];
+						int itemId = npcInfo[3];
 						if (!st.hasQuestItems(itemId))
 						{
 							st.giveItems(itemId, 1);
@@ -586,29 +580,28 @@ public class Q337_AudienceWithTheLandDragon extends Quest
 				break;
 			
 			case BLOOD_QUEEN:// Orven's request
-				if (cond == 1 && Rnd.get(100) < 25)
-					if (st.getInt("drop1") == 1 && !st.hasQuestItems(REMAINS_OF_SACRIFIED))
-					{
-						for (int i = 0; i < 10; i++)
-							addSpawn(SACRIFICE_OF_THE_SACRIFICED, npc.getX() + Rnd.get(-100, 100), npc.getY() + Rnd.get(-100, 100), npc.getZ(), npc.getHeading(), true, 60000, false);
-					}
+				if (cond == 1 && st.getInt("drop1") == 1 && !st.hasQuestItems(REMAINS_OF_SACRIFIED))
+				{
+					for (int i = 0; i < 8; i++)
+						addSpawn(SACRIFICE_OF_THE_SACRIFICED, npc.getX() + Rnd.get(-100, 100), npc.getY() + Rnd.get(-100, 100), npc.getZ(), npc.getHeading(), true, 60000, false);
+				}
 				break;
 			
 			case HARIT_LIZARDMAN_SHAMAN:// Kendra's request
 			case HARIT_LIZARDMAN_MATRIARCH:
-				if (cond == 1 && Rnd.get(100) < 15)
-					if (st.getInt("drop2") == 1 && !st.hasQuestItems(TOTEM_OF_LAND_DRAGON))
-					{
-						for (int i = 0; i < 3; i++)
-							addSpawn(HARIT_LIZARDMAN_ZEALOT, npc.getX() + Rnd.get(-50, 50), npc.getY() + Rnd.get(-50, 50), npc.getZ(), npc.getHeading(), true, 60000, false);
-					}
+				if (cond == 1 && Rnd.get(5) == 0 && st.getInt("drop2") == 1 && !st.hasQuestItems(TOTEM_OF_LAND_DRAGON))
+				{
+					for (int i = 0; i < 3; i++)
+						addSpawn(HARIT_LIZARDMAN_ZEALOT, npc.getX() + Rnd.get(-50, 50), npc.getY() + Rnd.get(-50, 50), npc.getZ(), npc.getHeading(), true, 60000, false);
+				}
 				break;
 			
-			case CAVE_MAIDEN:// Gilmore's request
-			case CAVE_KEEPER:
-				if (cond == 4 && Rnd.get(100) < 15)
-					if (!st.hasQuestItems(THIRD_FRAGMENT_OF_ABYSS_JEWEL))
-						addSpawn(ABYSSAL_JEWEL_3, npc.getX() + Rnd.get(-50, 50), npc.getY() + Rnd.get(-50, 50), npc.getZ(), npc.getHeading(), true, 60000, false);
+			case CAVE_MAIDEN_1:// Gilmore's request
+			case CAVE_MAIDEN_2:
+			case CAVE_KEEPER_1:
+			case CAVE_KEEPER_2:
+				if (cond == 4 && Rnd.get(5) == 0 && !st.hasQuestItems(THIRD_FRAGMENT_OF_ABYSS_JEWEL))
+					addSpawn(ABYSSAL_JEWEL_3, npc.getX() + Rnd.get(-50, 50), npc.getY() + Rnd.get(-50, 50), npc.getZ(), npc.getHeading(), true, 60000, false);
 				break;
 		}
 		

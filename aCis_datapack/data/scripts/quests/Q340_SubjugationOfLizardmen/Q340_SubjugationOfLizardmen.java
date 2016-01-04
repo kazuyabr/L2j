@@ -42,7 +42,7 @@ public class Q340_SubjugationOfLizardmen extends Quest
 		addStartNpc(WEISZ);
 		addTalkId(WEISZ, ADONIUS, LEVIAN, CHEST);
 		
-		addKillId(20008, 20010, 20014, 20357, 21100, 20356, 21101, 25146);
+		addKillId(20008, 20010, 20014, 20024, 20027, 20030, 25146);
 	}
 	
 	@Override
@@ -184,13 +184,6 @@ public class Q340_SubjugationOfLizardmen extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		// Bifron's Chest.
-		if (npc.getNpcId() == 25146)
-		{
-			addSpawn(CHEST, npc, false, 30000, false);
-			return null;
-		}
-		
 		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
@@ -198,21 +191,32 @@ public class Q340_SubjugationOfLizardmen extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20008:
-			case 20010:
-			case 20014:
 				if (st.getInt("cond") == 1)
-					st.dropItems(CARGO, 1, 30, 400000);
+					st.dropItems(CARGO, 1, 30, 500000);
 				break;
 			
-			case 20357:
-			case 21100:
-			case 20356:
-			case 21101:
+			case 20010:
+				if (st.getInt("cond") == 1)
+					st.dropItems(CARGO, 1, 30, 520000);
+				break;
+			
+			case 20014:
+				if (st.getInt("cond") == 1)
+					st.dropItems(CARGO, 1, 30, 550000);
+				break;
+			
+			case 20024:
+			case 20027:
+			case 20030:
 				if (st.getInt("cond") == 3)
 				{
-					st.dropItems(HOLY, 1, 1, 150000);
-					st.dropItems(ROSARY, 1, 1, 150000);
+					if (st.dropItems(HOLY, 1, 1, 100000))
+						st.dropItems(ROSARY, 1, 1, 100000);
 				}
+				break;
+			
+			case 25146:
+				addSpawn(CHEST, npc, false, 30000, false);
 				break;
 		}
 		return null;

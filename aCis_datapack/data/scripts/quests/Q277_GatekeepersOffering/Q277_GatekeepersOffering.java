@@ -93,7 +93,7 @@ public class Q277_GatekeepersOffering extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(STARSTONE, 1, 20, 200000))
+		if (st.dropItems(STARSTONE, 1, 20, 500000))
 			st.set("cond", "2");
 		
 		return null;

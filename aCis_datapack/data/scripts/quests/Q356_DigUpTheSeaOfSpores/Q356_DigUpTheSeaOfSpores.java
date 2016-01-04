@@ -133,12 +133,12 @@ public class Q356_DigUpTheSeaOfSpores extends Quest
 			switch (npc.getNpcId())
 			{
 				case ROTTING_TREE:
-					if (st.dropItems(HERB_SPORE, 1, 50, 730000))
+					if (st.dropItems(HERB_SPORE, 1, 50, 630000))
 						st.set("cond", (cond == 2) ? "3" : "2");
 					break;
 				
 				case SPORE_ZOMBIE:
-					if (st.dropItems(CARN_SPORE, 1, 50, 940000))
+					if (st.dropItems(CARN_SPORE, 1, 50, 760000))
 						st.set("cond", (cond == 2) ? "3" : "2");
 					break;
 			}

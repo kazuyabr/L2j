@@ -26,19 +26,19 @@ public class Q381_LetsBecomeARoyalMember extends Quest
 	private static final int SANDRA = 30090;
 	
 	// Items
-	private static final int KAILS_COIN = 5899;
+	private static final int KAIL_COIN = 5899;
 	private static final int COIN_ALBUM = 5900;
 	private static final int GOLDEN_CLOVER_COIN = 7569;
-	private static final int COIN_COLLECTOR_MEMBERSHIP_1 = 3813;
+	private static final int COIN_COLLECTOR_MEMBERSHIP = 3813;
 	
 	// Reward
 	private static final int ROYAL_MEMBERSHIP = 5898;
 	
-	public Q381_LetsBecomeARoyalMember(int questId, String name, String descr)
+	public Q381_LetsBecomeARoyalMember()
 	{
-		super(questId, name, descr);
+		super(381, qn, "Lets Become a Royal Member!");
 		
-		setItemsIds(KAILS_COIN, GOLDEN_CLOVER_COIN);
+		setItemsIds(KAIL_COIN, GOLDEN_CLOVER_COIN);
 		
 		addStartNpc(SORINT);
 		addTalkId(SORINT, SANDRA);
@@ -58,8 +58,8 @@ public class Q381_LetsBecomeARoyalMember extends Quest
 			st.set("aCond", "1"); // Alternative cond used for Sandra.
 		else if (event.equalsIgnoreCase("30232-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -77,21 +77,21 @@ public class Q381_LetsBecomeARoyalMember extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = (player.getLevel() < 55 || !st.hasQuestItems(COIN_COLLECTOR_MEMBERSHIP_1)) ? "30232-02.htm" : "30232-01.htm";
+				htmltext = (player.getLevel() < 55 || !st.hasQuestItems(COIN_COLLECTOR_MEMBERSHIP)) ? "30232-02.htm" : "30232-01.htm";
 				break;
 			
 			case STATE_STARTED:
 				switch (npc.getNpcId())
 				{
 					case SORINT:
-						if (!st.hasQuestItems(KAILS_COIN))
+						if (!st.hasQuestItems(KAIL_COIN))
 							htmltext = "30232-04.htm";
 						else if (!st.hasQuestItems(COIN_ALBUM))
 							htmltext = "30232-05.htm";
 						else
 						{
 							htmltext = "30232-06.htm";
-							st.takeItems(KAILS_COIN, -1);
+							st.takeItems(KAIL_COIN, -1);
 							st.takeItems(COIN_ALBUM, -1);
 							st.giveItems(ROYAL_MEMBERSHIP, 1);
 							st.playSound(QuestState.SOUND_FINISH);
@@ -133,22 +133,16 @@ public class Q381_LetsBecomeARoyalMember extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
-		{
-			case 21018:
-				st.dropItems(KAILS_COIN, 1, 1, 50000);
-				break;
-			
-			case 27316:
-				st.dropItemsAlways(GOLDEN_CLOVER_COIN, 1, 1);
-				break;
-		}
+		if (npc.getNpcId() == 21018)
+			st.dropItems(KAIL_COIN, 1, 1, 50000);
+		else if (st.getInt("aCond") == 1)
+			st.dropItemsAlways(GOLDEN_CLOVER_COIN, 1, 1);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q381_LetsBecomeARoyalMember(381, qn, "Lets Become a Royal Member!");
+		new Q381_LetsBecomeARoyalMember();
 	}
 }

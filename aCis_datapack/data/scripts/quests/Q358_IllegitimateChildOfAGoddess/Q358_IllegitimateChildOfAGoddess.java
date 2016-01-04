@@ -106,7 +106,7 @@ public class Q358_IllegitimateChildOfAGoddess extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(SCALE, 1, 108, (npc.getNpcId() == 20672) ? 710000 : 740000))
+		if (st.dropItems(SCALE, 1, 108, (npc.getNpcId() == 20672) ? 680000 : 660000))
 			st.set("cond", "2");
 		
 		return null;

@@ -98,7 +98,7 @@ public class Q050_LanoscosSpecialBait extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(ESSENCE_OF_WIND, 1, 100, 300000))
+		if (st.dropItems(ESSENCE_OF_WIND, 1, 100, 500000))
 			st.set("cond", "2");
 		
 		return null;

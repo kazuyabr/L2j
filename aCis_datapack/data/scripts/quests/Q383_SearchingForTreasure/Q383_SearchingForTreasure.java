@@ -27,12 +27,12 @@ public class Q383_SearchingForTreasure extends Quest
 	private static final int PIRATE_CHEST = 31148;
 	
 	// Items
-	private static final int PIRATES_TREASURE_MAP = 5915;
+	private static final int PIRATE_TREASURE_MAP = 5915;
 	private static final int THIEF_KEY = 1661;
 	
-	public Q383_SearchingForTreasure(int questId, String name, String descr)
+	public Q383_SearchingForTreasure()
 	{
-		super(questId, name, descr);
+		super(383, qn, "Searching for Treasure");
 		
 		addStartNpc(ESPEN);
 		addTalkId(ESPEN, PIRATE_CHEST);
@@ -49,9 +49,9 @@ public class Q383_SearchingForTreasure extends Quest
 		if (event.equalsIgnoreCase("30890-04.htm"))
 		{
 			// Sell the map.
-			if (st.hasQuestItems(PIRATES_TREASURE_MAP))
+			if (st.hasQuestItems(PIRATE_TREASURE_MAP))
 			{
-				st.takeItems(PIRATES_TREASURE_MAP, 1);
+				st.takeItems(PIRATE_TREASURE_MAP, 1);
 				st.rewardItems(57, 1000);
 			}
 			else
@@ -60,10 +60,10 @@ public class Q383_SearchingForTreasure extends Quest
 		else if (event.equalsIgnoreCase("30890-07.htm"))
 		{
 			// Listen the story.
-			if (st.hasQuestItems(PIRATES_TREASURE_MAP))
+			if (st.hasQuestItems(PIRATE_TREASURE_MAP))
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 			else
@@ -72,11 +72,11 @@ public class Q383_SearchingForTreasure extends Quest
 		else if (event.equalsIgnoreCase("30890-11.htm"))
 		{
 			// Decipher the map.
-			if (st.hasQuestItems(PIRATES_TREASURE_MAP))
+			if (st.hasQuestItems(PIRATE_TREASURE_MAP))
 			{
 				st.set("cond", "2");
 				st.playSound(QuestState.SOUND_MIDDLE);
-				st.takeItems(PIRATES_TREASURE_MAP, 1);
+				st.takeItems(PIRATE_TREASURE_MAP, 1);
 			}
 			else
 				htmltext = "30890-06.htm";
@@ -183,21 +183,22 @@ public class Q383_SearchingForTreasure extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = (player.getLevel() < 42 || !st.hasQuestItems(PIRATES_TREASURE_MAP)) ? "30890-01.htm" : "30890-02.htm";
+				htmltext = (player.getLevel() < 42 || !st.hasQuestItems(PIRATE_TREASURE_MAP)) ? "30890-01.htm" : "30890-02.htm";
 				break;
 			
 			case STATE_STARTED:
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case ESPEN:
-						if (st.getInt("cond") == 1)
+						if (cond == 1)
 							htmltext = "30890-07a.htm";
 						else
 							htmltext = "30890-12.htm";
 						break;
 					
 					case PIRATE_CHEST:
-						if (st.getInt("cond") == 2)
+						if (cond == 2)
 							htmltext = "31148-01.htm";
 						break;
 				}
@@ -209,6 +210,6 @@ public class Q383_SearchingForTreasure extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q383_SearchingForTreasure(383, qn, "Searching for Treasure");
+		new Q383_SearchingForTreasure();
 	}
 }

@@ -12,7 +12,8 @@
  */
 package quests.Q385_YokeOfThePast;
 
-import gnu.trove.map.hash.TIntIntHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -63,64 +64,63 @@ public class Q385_YokeOfThePast extends Quest
 	// Reward
 	private static final int BLANK_SCROLL = 5965;
 	
-	private static final TIntIntHashMap Chance = new TIntIntHashMap();
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		Chance.put(21208, 70000);
-		Chance.put(21209, 80000);
-		Chance.put(21210, 110000);
-		Chance.put(21211, 110000);
-		Chance.put(21213, 140000);
-		Chance.put(21214, 190000);
-		Chance.put(21215, 190000);
-		Chance.put(21217, 240000);
-		Chance.put(21218, 300000);
-		Chance.put(21219, 300000);
-		Chance.put(21221, 370000);
-		Chance.put(21222, 460000);
-		Chance.put(21223, 450000);
-		Chance.put(21224, 500000);
-		Chance.put(21225, 540000);
-		Chance.put(21226, 660000);
-		Chance.put(21227, 640000);
-		Chance.put(21228, 700000);
-		Chance.put(21229, 750000);
-		Chance.put(21230, 910000);
-		Chance.put(21231, 860000);
-		Chance.put(21236, 120000);
-		Chance.put(21237, 140000);
-		Chance.put(21238, 190000);
-		Chance.put(21239, 190000);
-		Chance.put(21240, 220000);
-		Chance.put(21241, 240000);
-		Chance.put(21242, 300000);
-		Chance.put(21243, 300000);
-		Chance.put(21244, 340000);
-		Chance.put(21245, 370000);
-		Chance.put(21246, 460000);
-		Chance.put(21247, 450000);
-		Chance.put(21248, 500000);
-		Chance.put(21249, 540000);
-		Chance.put(21250, 990000);
-		Chance.put(21251, 640000);
-		Chance.put(21252, 700000);
-		Chance.put(21253, 750000);
-		Chance.put(21254, 910000);
-		Chance.put(21255, 860000);
+		CHANCES.put(21208, 70000);
+		CHANCES.put(21209, 80000);
+		CHANCES.put(21210, 110000);
+		CHANCES.put(21211, 110000);
+		CHANCES.put(21213, 140000);
+		CHANCES.put(21214, 190000);
+		CHANCES.put(21215, 190000);
+		CHANCES.put(21217, 240000);
+		CHANCES.put(21218, 300000);
+		CHANCES.put(21219, 300000);
+		CHANCES.put(21221, 370000);
+		CHANCES.put(21222, 460000);
+		CHANCES.put(21223, 450000);
+		CHANCES.put(21224, 500000);
+		CHANCES.put(21225, 540000);
+		CHANCES.put(21226, 660000);
+		CHANCES.put(21227, 640000);
+		CHANCES.put(21228, 700000);
+		CHANCES.put(21229, 750000);
+		CHANCES.put(21230, 910000);
+		CHANCES.put(21231, 860000);
+		CHANCES.put(21236, 120000);
+		CHANCES.put(21237, 140000);
+		CHANCES.put(21238, 190000);
+		CHANCES.put(21239, 190000);
+		CHANCES.put(21240, 220000);
+		CHANCES.put(21241, 240000);
+		CHANCES.put(21242, 300000);
+		CHANCES.put(21243, 300000);
+		CHANCES.put(21244, 340000);
+		CHANCES.put(21245, 370000);
+		CHANCES.put(21246, 460000);
+		CHANCES.put(21247, 450000);
+		CHANCES.put(21248, 500000);
+		CHANCES.put(21249, 540000);
+		CHANCES.put(21250, 660000);
+		CHANCES.put(21251, 640000);
+		CHANCES.put(21252, 700000);
+		CHANCES.put(21253, 750000);
+		CHANCES.put(21254, 910000);
+		CHANCES.put(21255, 860000);
 	}
 	
-	public Q385_YokeOfThePast(int questId, String name, String descr)
+	public Q385_YokeOfThePast()
 	{
-		super(questId, name, descr);
+		super(385, qn, "Yoke of the Past");
 		
 		setItemsIds(ANCIENT_SCROLL);
 		
-		for (int ziggurat : GATEKEEPER_ZIGGURAT)
-		{
-			addStartNpc(ziggurat);
-			addTalkId(ziggurat);
-		}
+		addStartNpc(GATEKEEPER_ZIGGURAT);
+		addTalkId(GATEKEEPER_ZIGGURAT);
 		
-		addKillId(21208, 21209, 21210, 21211, 21213, 21214, 21215, 21217, 21218, 21219, 21221, 21223, 21224, 21225, 21226, 21227, 21228, 21229, 21230, 21231, 21236, 21237, 21238, 21239, 21240, 21241, 21242, 21243, 21244, 21245, 21246, 21247, 21248, 21249, 21250, 21251, 21252, 21253, 21254, 21255);
+		for (int npcId : CHANCES.keySet())
+			addKillId(npcId);
 	}
 	
 	@Override
@@ -133,8 +133,8 @@ public class Q385_YokeOfThePast extends Quest
 		
 		if (event.equalsIgnoreCase("05.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("10.htm"))
@@ -157,17 +157,11 @@ public class Q385_YokeOfThePast extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 20)
-					htmltext = "01.htm";
-				else
-				{
-					htmltext = "02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 20) ? "02.htm" : "01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(ANCIENT_SCROLL) == 0)
+				if (!st.hasQuestItems(ANCIENT_SCROLL))
 					htmltext = "08.htm";
 				else
 				{
@@ -189,15 +183,13 @@ public class Q385_YokeOfThePast extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItems(ANCIENT_SCROLL, 1, -1, Chance.get(npc.getNpcId()));
+		partyMember.getQuestState(qn).dropItems(ANCIENT_SCROLL, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q385_YokeOfThePast(385, qn, "Yoke of the Past");
+		new Q385_YokeOfThePast();
 	}
 }

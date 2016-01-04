@@ -31,9 +31,9 @@ public class Q362_BardsMandolin extends Quest
 	private static final int GALION = 30958;
 	private static final int WOODROW = 30837;
 	
-	public Q362_BardsMandolin(int questId, String name, String descr)
+	public Q362_BardsMandolin()
 	{
-		super(questId, name, descr);
+		super(362, qn, "Bard's Mandolin");
 		
 		setItemsIds(SWAN_FLUTE, SWAN_LETTER);
 		
@@ -51,8 +51,8 @@ public class Q362_BardsMandolin extends Quest
 		
 		if (event.equalsIgnoreCase("30957-3.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30957-7.htm") || event.equalsIgnoreCase("30957-8.htm"))
@@ -77,13 +77,7 @@ public class Q362_BardsMandolin extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 15)
-					htmltext = "30957-1.htm";
-				else
-				{
-					htmltext = "30957-2.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 15) ? "30957-2.htm" : "30957-1.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -97,8 +91,8 @@ public class Q362_BardsMandolin extends Quest
 						{
 							htmltext = "30957-5.htm";
 							st.set("cond", "4");
-							st.giveItems(SWAN_LETTER, 1);
 							st.playSound(QuestState.SOUND_MIDDLE);
+							st.giveItems(SWAN_LETTER, 1);
 						}
 						else if (cond == 4)
 							htmltext = "30957-5a.htm";
@@ -124,10 +118,10 @@ public class Q362_BardsMandolin extends Quest
 						{
 							htmltext = "30958-1.htm";
 							st.set("cond", "3");
-							st.giveItems(SWAN_FLUTE, 1);
 							st.playSound(QuestState.SOUND_ITEMGET);
+							st.giveItems(SWAN_FLUTE, 1);
 						}
-						else if (cond >= 3)
+						else if (cond > 2)
 							htmltext = "30958-2.htm";
 						break;
 					
@@ -136,9 +130,9 @@ public class Q362_BardsMandolin extends Quest
 						{
 							htmltext = "30956-1.htm";
 							st.set("cond", "5");
+							st.playSound(QuestState.SOUND_MIDDLE);
 							st.takeItems(SWAN_FLUTE, 1);
 							st.takeItems(SWAN_LETTER, 1);
-							st.playSound(QuestState.SOUND_MIDDLE);
 						}
 						else if (cond == 5)
 							htmltext = "30956-2.htm";
@@ -152,6 +146,6 @@ public class Q362_BardsMandolin extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q362_BardsMandolin(362, qn, "Bard's Mandolin");
+		new Q362_BardsMandolin();
 	}
 }

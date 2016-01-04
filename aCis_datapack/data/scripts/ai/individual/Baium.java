@@ -51,7 +51,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class Baium extends AbstractNpcAI
 {
-	private static final L2BossZone _baiumLair = GrandBossManager.getZoneById(110002);
+	private static final L2BossZone _baiumLair = GrandBossManager.getInstance().getZoneById(110002);
 	
 	private static final int STONE_BAIUM = 29025;
 	private static final int LIVE_BAIUM = 29020;
@@ -105,20 +105,15 @@ public class Baium extends AbstractNpcAI
 	{
 		super(name, descr);
 		
-		int[] mob =
-		{
-			LIVE_BAIUM
-		};
-		
 		// Quest NPC starter initialization
 		addStartNpc(STONE_BAIUM);
 		addTalkId(STONE_BAIUM);
 		
 		// Baium onAttack, onKill, onSpawn
-		registerMobs(mob, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
+		registerMob(LIVE_BAIUM, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
 		
-		final StatsSet info = GrandBossManager.getStatsSet(LIVE_BAIUM);
-		final int status = GrandBossManager.getBossStatus(LIVE_BAIUM);
+		final StatsSet info = GrandBossManager.getInstance().getStatsSet(LIVE_BAIUM);
+		final int status = GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM);
 		
 		if (status == DEAD)
 		{
@@ -133,7 +128,7 @@ public class Baium extends AbstractNpcAI
 			{
 				// The time has expired while the server was offline. Spawn the stone-baium as ASLEEP.
 				addSpawn(STONE_BAIUM, 116033, 17447, 10104, 40188, false, 0, false);
-				GrandBossManager.setBossStatus(LIVE_BAIUM, ASLEEP);
+				GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, ASLEEP);
 			}
 		}
 		else if (status == AWAKE)
@@ -146,7 +141,7 @@ public class Baium extends AbstractNpcAI
 			final int mp = info.getInteger("currentMP");
 			
 			final L2Npc baium = addSpawn(LIVE_BAIUM, loc_x, loc_y, loc_z, heading, false, 0, false);
-			GrandBossManager.addBoss((L2GrandBossInstance) baium);
+			GrandBossManager.getInstance().addBoss((L2GrandBossInstance) baium);
 			
 			baium.setCurrentHpMp(hp, mp);
 			baium.setRunning();
@@ -247,7 +242,7 @@ public class Baium extends AbstractNpcAI
 					_Minions.clear();
 					
 					addSpawn(STONE_BAIUM, 116033, 17447, 10104, 40188, false, 0, false); // spawn stone-baium
-					GrandBossManager.setBossStatus(LIVE_BAIUM, ASLEEP); // Baium isn't awaken anymore
+					GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, ASLEEP); // Baium isn't awaken anymore
 					_baiumLair.oustAllPlayers();
 					cancelQuestTimer("baium_despawn", npc, null);
 				}
@@ -262,7 +257,7 @@ public class Baium extends AbstractNpcAI
 		}
 		else if (event.equalsIgnoreCase("baium_unlock"))
 		{
-			GrandBossManager.setBossStatus(LIVE_BAIUM, ASLEEP);
+			GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, ASLEEP);
 			addSpawn(STONE_BAIUM, 116033, 17447, 10104, 40188, false, 0, false);
 		}
 		else if (event.equalsIgnoreCase("angels_aggro_reconsider"))
@@ -313,16 +308,16 @@ public class Baium extends AbstractNpcAI
 	{
 		String htmltext = "";
 		
-		if (GrandBossManager.getBossStatus(LIVE_BAIUM) == ASLEEP)
+		if (GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM) == ASLEEP)
 		{
 			if (_baiumLair.isPlayerAllowed(player))
 			{
-				GrandBossManager.setBossStatus(LIVE_BAIUM, AWAKE);
+				GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, AWAKE);
 				
 				final L2Npc baium = addSpawn(LIVE_BAIUM, npc, false, 0, false);
 				baium.setIsInvul(true);
 				
-				GrandBossManager.addBoss((L2GrandBossInstance) baium);
+				GrandBossManager.getInstance().addBoss((L2GrandBossInstance) baium);
 				
 				// First animation
 				baium.broadcastPacket(new SocialAction(baium, 2));
@@ -391,12 +386,12 @@ public class Baium extends AbstractNpcAI
 		long respawnTime = (long) Config.SPAWN_INTERVAL_BAIUM + Rnd.get(-Config.RANDOM_SPAWN_TIME_BAIUM, Config.RANDOM_SPAWN_TIME_BAIUM);
 		respawnTime *= 3600000;
 		
-		GrandBossManager.setBossStatus(LIVE_BAIUM, DEAD);
+		GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, DEAD);
 		startQuestTimer("baium_unlock", respawnTime, null, null, false);
 		
-		StatsSet info = GrandBossManager.getStatsSet(LIVE_BAIUM);
+		StatsSet info = GrandBossManager.getInstance().getStatsSet(LIVE_BAIUM);
 		info.set("respawn_time", System.currentTimeMillis() + respawnTime);
-		GrandBossManager.setStatsSet(LIVE_BAIUM, info);
+		GrandBossManager.getInstance().setStatsSet(LIVE_BAIUM, info);
 		
 		// Unspawn angels.
 		for (L2Npc minion : _Minions)

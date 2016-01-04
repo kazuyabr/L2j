@@ -7,13 +7,7 @@
 	<property name="build.sql" location="${build}/sql" />
 	<property name="build.tools" location="${build}/tools" />
 
-	<target name="init" description="Create the output directories. Do nothing if dirs were already created">
-		<mkdir dir="${build}" />
-		<mkdir dir="${build.game}" />
-		<mkdir dir="${build.login}" />
-	</target>
-
-	<target name="export" depends="version" description="Synchronizes build space contents with project.">
+	<target name="build" depends="init" description="Synchronizes build space contents with project.">
 		<sync todir="${build.game}/data">
 			<fileset dir="${basedir}/data">
 				<exclude name=".project" />
@@ -48,20 +42,10 @@
 		</sync>
 	</target>
 
-	<target name="build" depends="export" />
-
-	<target name="version" depends="init" description="version">
-		<tstamp>
-			<format property="date" pattern="yyyy-MM-dd HH:mm:ss" />
-		</tstamp>
-		<exec dir="." executable="./subversion/svnversion" outputproperty="revision" failifexecutionfails="false">
-			<arg line="-n ." />
-		</exec>
-		<echo message="aCis datapack revision: ${revision}" />
-	</target>
-
-	<target name="clean" description="Deletes the whole build space and existing packages.">
-		<delete dir="${build}" />
+	<target name="init" description="Create the output directories. Do nothing if dirs were already created">
+		<mkdir dir="${build}" />
+		<mkdir dir="${build.game}" />
+		<mkdir dir="${build.login}" />
 	</target>
 
 </project>

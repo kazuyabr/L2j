@@ -34,9 +34,9 @@ public class Q382_KailsMagicCoin extends Quest
 	private final static int GOLD_GOLEM = 5962;
 	private final static int BLOOD_DRAGON = 5963;
 	
-	public Q382_KailsMagicCoin(int questId, String name, String descr)
+	public Q382_KailsMagicCoin()
 	{
-		super(questId, name, descr);
+		super(382, qn, "Kail's Magic Coin");
 		
 		setItemsIds(SILVER_BASILISK, GOLD_GOLEM, BLOOD_DRAGON);
 		
@@ -56,8 +56,8 @@ public class Q382_KailsMagicCoin extends Quest
 		
 		if (event.equalsIgnoreCase("30687-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -96,19 +96,19 @@ public class Q382_KailsMagicCoin extends Quest
 		switch (npc.getNpcId())
 		{
 			case FALLEN_ORC:
-				st.dropItems(SILVER_BASILISK, 1, -1, 100000);
+				st.dropItems(SILVER_BASILISK, 1, 0, 100000);
 				break;
 			
 			case FALLEN_ORC_ARCHER:
-				st.dropItems(GOLD_GOLEM, 1, -1, 100000);
+				st.dropItems(GOLD_GOLEM, 1, 0, 100000);
 				break;
 			
 			case FALLEN_ORC_SHAMAN:
-				st.dropItems(BLOOD_DRAGON, 1, -1, 100000);
+				st.dropItems(BLOOD_DRAGON, 1, 0, 100000);
 				break;
 			
 			case FALLEN_ORC_CAPTAIN:
-				st.dropItems(5961 + Rnd.get(3), 1, -1, 100000); // 5961 to 5963, equal chance.
+				st.dropItems(5961 + Rnd.get(3), 1, 0, 100000);
 				break;
 		}
 		
@@ -117,6 +117,6 @@ public class Q382_KailsMagicCoin extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q382_KailsMagicCoin(382, qn, "Kail's Magic Coin");
+		new Q382_KailsMagicCoin();
 	}
 }

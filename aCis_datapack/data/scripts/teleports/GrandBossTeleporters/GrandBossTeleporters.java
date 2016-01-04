@@ -106,7 +106,7 @@ public class GrandBossTeleporters extends Quest
 				st.takeItems(4295, 1);
 				
 				// allow entry for the player for the next 30 secs.
-				GrandBossManager.getZoneById(110002).allowPlayerEntry(player, 30);
+				GrandBossManager.getInstance().getZoneById(110002).allowPlayerEntry(player, 30);
 				player.teleToLocation(baiumTeleIn, 0);
 			}
 		}
@@ -143,7 +143,7 @@ public class GrandBossTeleporters extends Quest
 				break;
 			
 			case 31862:
-				final int status = GrandBossManager.getBossStatus(29020);
+				final int status = GrandBossManager.getInstance().getBossStatus(29020);
 				if (status == Baium.AWAKE)
 					htmltext = "31862-01.htm";
 				else if (status == Baium.DEAD)
@@ -168,7 +168,7 @@ public class GrandBossTeleporters extends Quest
 		switch (npc.getNpcId())
 		{
 			case 13001:
-				status = GrandBossManager.getBossStatus(Antharas.ANTHARAS);
+				status = GrandBossManager.getInstance().getBossStatus(Antharas.ANTHARAS);
 				if (status == Antharas.FIGHTING)
 					htmltext = "13001-02.htm";
 				else if (status == Antharas.DEAD)
@@ -178,13 +178,13 @@ public class GrandBossTeleporters extends Quest
 					if (st.hasQuestItems(3865))
 					{
 						st.takeItems(3865, 1);
-						GrandBossManager.getZoneById(110001).allowPlayerEntry(player, 30);
+						GrandBossManager.getInstance().getZoneById(110001).allowPlayerEntry(player, 30);
 						
 						player.teleToLocation(175300 + Rnd.get(-350, 350), 115180 + Rnd.get(-1000, 1000), -7709, 0);
 						
 						if (status == Antharas.DORMANT)
 						{
-							GrandBossManager.setBossStatus(Antharas.ANTHARAS, Antharas.WAITING);
+							GrandBossManager.getInstance().setBossStatus(Antharas.ANTHARAS, Antharas.WAITING);
 							QuestManager.getInstance().getQuest("Antharas").startQuestTimer("beginning", Config.WAIT_TIME_ANTHARAS, null, null, false);
 						}
 					}
@@ -198,7 +198,7 @@ public class GrandBossTeleporters extends Quest
 				break;
 			
 			case 31385:
-				status = GrandBossManager.getBossStatus(Valakas.VALAKAS);
+				status = GrandBossManager.getInstance().getBossStatus(Valakas.VALAKAS);
 				if (status == 0 || status == 1)
 				{
 					if (_valakasPlayersCount >= 200)
@@ -206,7 +206,7 @@ public class GrandBossTeleporters extends Quest
 					else if (st.getInt("allowEnter") == 1)
 					{
 						st.unset("allowEnter");
-						GrandBossManager.getZoneById(110010).allowPlayerEntry(player, 30);
+						GrandBossManager.getInstance().getZoneById(110010).allowPlayerEntry(player, 30);
 						
 						player.teleToLocation(204328, -111874, 70, 300);
 						
@@ -214,8 +214,8 @@ public class GrandBossTeleporters extends Quest
 						
 						if (status == 0)
 						{
-							L2GrandBossInstance valakas = GrandBossManager.getBoss(Valakas.VALAKAS);
-							GrandBossManager.setBossStatus(Valakas.VALAKAS, 1);
+							L2GrandBossInstance valakas = GrandBossManager.getInstance().getBoss(Valakas.VALAKAS);
+							GrandBossManager.getInstance().setBossStatus(Valakas.VALAKAS, 1);
 							QuestManager.getInstance().getQuest("Valakas").startQuestTimer("beginning", Config.WAIT_TIME_VALAKAS, valakas, null, false);
 						}
 					}
@@ -270,7 +270,7 @@ public class GrandBossTeleporters extends Quest
 				{
 					if (st.hasQuestItems(8784))
 					{
-						status = GrandBossManager.getBossStatus(Sailren.SAILREN);
+						status = GrandBossManager.getInstance().getBossStatus(Sailren.SAILREN);
 						if (status == Sailren.DORMANT)
 						{
 							final List<L2PcInstance> party = player.getParty().getPartyMembers();
@@ -288,7 +288,7 @@ public class GrandBossTeleporters extends Quest
 							// Take item from party leader.
 							st.takeItems(8784, 1);
 							
-							final L2BossZone nest = GrandBossManager.getZoneById(110015);
+							final L2BossZone nest = GrandBossManager.getInstance().getZoneById(110015);
 							
 							// Teleport players.
 							for (L2PcInstance member : party)
@@ -299,7 +299,7 @@ public class GrandBossTeleporters extends Quest
 									member.teleToLocation(sailrenTeleIn, 100);
 								}
 							}
-							GrandBossManager.setBossStatus(Sailren.SAILREN, Sailren.FIGHTING);
+							GrandBossManager.getInstance().setBossStatus(Sailren.SAILREN, Sailren.FIGHTING);
 							QuestManager.getInstance().getQuest("Sailren").startQuestTimer("beginning", 60000, null, null, false);
 						}
 						else if (status == Sailren.DEAD)

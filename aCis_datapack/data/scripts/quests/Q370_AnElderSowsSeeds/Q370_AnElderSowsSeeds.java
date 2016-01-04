@@ -12,6 +12,9 @@
  */
 package quests.Q370_AnElderSowsSeeds;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -31,9 +34,19 @@ public class Q370_AnElderSowsSeeds extends Quest
 	private static final int CHAPTER_OF_WIND = 5919;
 	private static final int CHAPTER_OF_EARTH = 5920;
 	
-	public Q370_AnElderSowsSeeds(int questId, String name, String descr)
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		super(questId, name, descr);
+		CHANCES.put(20082, 86000);
+		CHANCES.put(20084, 94000);
+		CHANCES.put(20086, 90000);
+		CHANCES.put(20089, 100000);
+		CHANCES.put(20090, 202000);
+	}
+	
+	public Q370_AnElderSowsSeeds()
+	{
+		super(370, qn, "An Elder Sows Seeds");
 		
 		setItemsIds(SPELLBOOK_PAGE, CHAPTER_OF_FIRE, CHAPTER_OF_WATER, CHAPTER_OF_WIND, CHAPTER_OF_EARTH);
 		
@@ -53,13 +66,13 @@ public class Q370_AnElderSowsSeeds extends Quest
 		
 		if (event.equalsIgnoreCase("30612-3.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30612-6.htm"))
 		{
-			if (st.getQuestItemsCount(CHAPTER_OF_FIRE) > 0 && st.getQuestItemsCount(CHAPTER_OF_WATER) > 0 && st.getQuestItemsCount(CHAPTER_OF_WIND) > 0 && st.getQuestItemsCount(CHAPTER_OF_EARTH) > 0)
+			if (st.hasQuestItems(CHAPTER_OF_FIRE, CHAPTER_OF_WATER, CHAPTER_OF_WIND, CHAPTER_OF_EARTH))
 			{
 				htmltext = "30612-8.htm";
 				st.takeItems(CHAPTER_OF_FIRE, 1);
@@ -89,13 +102,7 @@ public class Q370_AnElderSowsSeeds extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 28)
-					htmltext = "30612-0.htm";
-				else
-				{
-					htmltext = "30612-0a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 28) ? "30612-0a.htm" : "30612-0.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -113,15 +120,13 @@ public class Q370_AnElderSowsSeeds extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItemsAlways(SPELLBOOK_PAGE, 1, -1);
+		partyMember.getQuestState(qn).dropItems(SPELLBOOK_PAGE, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q370_AnElderSowsSeeds(370, qn, "An Elder Sows Seeds");
+		new Q370_AnElderSowsSeeds();
 	}
 }

@@ -43,7 +43,7 @@ public class Q296_TarantulasSpiderSilk extends Quest
 		addStartNpc(MION);
 		addTalkId(MION, DEFENDER_NATHAN);
 		
-		addKillId(20403, 20508); // Hunter Tarantula, Plunder arantula
+		addKillId(20394, 20403, 20508); // Crimson Tarantula, Hunter Tarantula, Plunder arantula
 	}
 	
 	@Override
@@ -131,7 +131,11 @@ public class Q296_TarantulasSpiderSilk extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(((Rnd.get(100) < 10) ? TARANTULA_SPINNERETTE : TARANTULA_SPIDER_SILK), 1, 0, 500000);
+		final int rnd = Rnd.get(100);
+		if (rnd > 95)
+			st.dropItemsAlways(TARANTULA_SPINNERETTE, 1, 0);
+		else if (rnd > 45)
+			st.dropItemsAlways(TARANTULA_SPIDER_SILK, 1, 0);
 		
 		return null;
 	}

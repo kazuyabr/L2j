@@ -111,15 +111,15 @@ public class Q331_ArrowOfVengeance extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20145:
-				st.dropItems(HARPY_FEATHER, 1, 0, 590000);
+				st.dropItems(HARPY_FEATHER, 1, 0, 500000);
 				break;
 			
 			case 20158:
-				st.dropItems(MEDUSA_VENOM, 1, 0, 610000);
+				st.dropItems(MEDUSA_VENOM, 1, 0, 500000);
 				break;
 			
 			case 20176:
-				st.dropItems(WYRM_TOOTH, 1, 0, 600000);
+				st.dropItems(WYRM_TOOTH, 1, 0, 500000);
 				break;
 		}
 		

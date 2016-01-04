@@ -127,7 +127,7 @@ public class Q265_ChainsOfSlavery extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(SHACKLE, 1, 0, 330000);
+		st.dropItems(SHACKLE, 1, 0, (npc.getNpcId() == 20004) ? 500000 : 600000);
 		
 		return null;
 	}

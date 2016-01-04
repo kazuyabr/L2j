@@ -33,32 +33,34 @@ public class Q384_WarehouseKeepersPastime extends Quest
 	// Items
 	private static final int MEDAL = 5964;
 	
-	private static final Map<Integer, Integer> _droplist = new HashMap<>();
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		_droplist.put(20948, 180000); // Bartal
-		_droplist.put(20945, 120000); // Cadeine
-		_droplist.put(20946, 150000); // Sanhidro
-		_droplist.put(20635, 150000); // Carinkain
-		_droplist.put(20773, 610000); // Conjurer Bat Lord
-		_droplist.put(20774, 600000); // Conjurer Bat
-		_droplist.put(20760, 240000); // Dragon Bearer Archer
-		_droplist.put(20758, 240000); // Dragon Bearer Chief
-		_droplist.put(20759, 230000); // Dragon Bearer Warrior
-		_droplist.put(20242, 220000); // Dustwind Gargoyle
-		_droplist.put(20281, 220000); // Dustwind Gargoyle (2)
-		_droplist.put(20556, 140000); // Giant Monstereye
-		_droplist.put(20668, 210000); // Grave Guard
-		_droplist.put(20241, 220000); // Hunter Gargoyle
-		_droplist.put(20286, 220000); // Hunter Gargoyle (2)
-		_droplist.put(20949, 190000); // Luminun
-		_droplist.put(20942, 90000); // Nightmare Guide
-		_droplist.put(20943, 120000); // Nightmare Keeper
-		_droplist.put(20944, 110000); // Nightmare Lord
-		_droplist.put(20559, 140000); // Rotting Golem
-		_droplist.put(20243, 210000); // Thunder Wyrm
-		_droplist.put(20282, 210000); // Thunder Wyrm (2)
-		_droplist.put(20677, 340000); // Tulben
-		_droplist.put(20605, 150000); // Weird Drake
+		CHANCES.put(20947, 160000); // Connabi
+		CHANCES.put(20948, 180000); // Bartal
+		CHANCES.put(20945, 120000); // Cadeine
+		CHANCES.put(20946, 150000); // Sanhidro
+		CHANCES.put(20635, 150000); // Carinkain
+		CHANCES.put(20773, 610000); // Conjurer Bat Lord
+		CHANCES.put(20774, 600000); // Conjurer Bat
+		CHANCES.put(20760, 240000); // Dragon Bearer Archer
+		CHANCES.put(20758, 240000); // Dragon Bearer Chief
+		CHANCES.put(20759, 230000); // Dragon Bearer Warrior
+		CHANCES.put(20242, 220000); // Dustwind Gargoyle
+		CHANCES.put(20281, 220000); // Dustwind Gargoyle (2)
+		CHANCES.put(20556, 140000); // Giant Monstereye
+		CHANCES.put(20668, 210000); // Grave Guard
+		CHANCES.put(20241, 220000); // Hunter Gargoyle
+		CHANCES.put(20286, 220000); // Hunter Gargoyle (2)
+		CHANCES.put(20949, 190000); // Luminun
+		CHANCES.put(20950, 200000); // Innersen
+		CHANCES.put(20942, 90000); // Nightmare Guide
+		CHANCES.put(20943, 120000); // Nightmare Keeper
+		CHANCES.put(20944, 110000); // Nightmare Lord
+		CHANCES.put(20559, 140000); // Rotting Golem
+		CHANCES.put(20243, 210000); // Thunder Wyrm
+		CHANCES.put(20282, 210000); // Thunder Wyrm (2)
+		CHANCES.put(20677, 340000); // Tulben
+		CHANCES.put(20605, 150000); // Weird Drake
 	}
 	
 	private static final int[][] INDEX_MAP =
@@ -201,16 +203,16 @@ public class Q384_WarehouseKeepersPastime extends Quest
 	// Samurai Longsword
 	};
 	
-	public Q384_WarehouseKeepersPastime(int questId, String name, String descr)
+	public Q384_WarehouseKeepersPastime()
 	{
-		super(questId, name, descr);
+		super(384, qn, "Warehouse Keeper's Pastime");
 		
 		setItemsIds(MEDAL);
 		
 		addStartNpc(CLIFF);
 		addTalkId(CLIFF, BAXT);
 		
-		for (int npcId : _droplist.keySet())
+		for (int npcId : CHANCES.keySet())
 			addKillId(npcId);
 	}
 	
@@ -225,8 +227,8 @@ public class Q384_WarehouseKeepersPastime extends Quest
 		final int npcId = npc.getNpcId();
 		if (event.equalsIgnoreCase("30182-05.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase(npcId + "-08.htm"))
@@ -240,9 +242,9 @@ public class Q384_WarehouseKeepersPastime extends Quest
 				htmltext = npcId + "-12.htm";
 			else
 			{
-				st.takeItems(MEDAL, 10);
 				st.set("bet", "10");
 				st.set("board", Util.scrambleString("123456789"));
+				st.takeItems(MEDAL, 10);
 			}
 		}
 		else if (event.equalsIgnoreCase(npcId + "-13.htm"))
@@ -251,9 +253,9 @@ public class Q384_WarehouseKeepersPastime extends Quest
 				htmltext = npcId + "-12.htm";
 			else
 			{
-				st.takeItems(MEDAL, 100);
 				st.set("bet", "100");
 				st.set("board", Util.scrambleString("123456789"));
+				st.takeItems(MEDAL, 100);
 			}
 		}
 		else if (event.startsWith("select_1-")) // first pick
@@ -400,7 +402,7 @@ public class Q384_WarehouseKeepersPastime extends Quest
 		if (partyMember == null)
 			return null;
 		
-		partyMember.getQuestState(qn).dropItems(MEDAL, 1, -1, _droplist.get(npc.getNpcId()));
+		partyMember.getQuestState(qn).dropItems(MEDAL, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}
@@ -418,6 +420,6 @@ public class Q384_WarehouseKeepersPastime extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q384_WarehouseKeepersPastime(384, qn, "Warehouse Keeper's Pastime");
+		new Q384_WarehouseKeepersPastime();
 	}
 }

@@ -23,9 +23,9 @@ import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.gameserver.templates.chars.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
 
 /**
@@ -165,7 +165,7 @@ public class RaidbossInfo extends Quest
 		}
 		
 		// Add all Raid Bosses to RAIDS list
-		for (L2NpcTemplate raid : NpcTable.getInstance().getAllNpcOfClassType("L2RaidBoss"))
+		for (NpcTemplate raid : NpcTable.getInstance().getAllNpcOfClassType("L2RaidBoss"))
 		{
 			for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
 			{

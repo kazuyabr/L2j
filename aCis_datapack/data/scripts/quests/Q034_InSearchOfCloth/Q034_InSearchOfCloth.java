@@ -89,7 +89,7 @@ public class Q034_InSearchOfCloth extends Quest
 		}
 		else if (event.equalsIgnoreCase("30088-5.htm"))
 		{
-			if (st.getQuestItemsCount(SUEDE) >= 3000 && st.getQuestItemsCount(THREAD) >= 5000 && st.getQuestItemsCount(SPIDERSILK) == 1)
+			if (st.getQuestItemsCount(SUEDE) >= 3000 && st.getQuestItemsCount(THREAD) >= 5000 && st.hasQuestItems(SPIDERSILK))
 			{
 				st.takeItems(SPIDERSILK, 1);
 				st.takeItems(SUEDE, 3000);
@@ -141,7 +141,7 @@ public class Q034_InSearchOfCloth extends Quest
 							htmltext = "30088-3a.htm";
 						else if (cond == 6)
 						{
-							if (st.getQuestItemsCount(SUEDE) < 3000 || st.getQuestItemsCount(THREAD) < 5000 || st.getQuestItemsCount(SPIDERSILK) < 1)
+							if (st.getQuestItemsCount(SUEDE) < 3000 || st.getQuestItemsCount(THREAD) < 5000 || !st.hasQuestItems(SPIDERSILK))
 								htmltext = "30088-4a.htm";
 							else
 								htmltext = "30088-4.htm";
@@ -183,7 +183,7 @@ public class Q034_InSearchOfCloth extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(SPINNERET, 1, 10))
+		if (st.dropItems(SPINNERET, 1, 10, 500000))
 			st.set("cond", "5");
 		
 		return null;

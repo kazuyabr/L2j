@@ -61,8 +61,8 @@ public class DrChaos extends AbstractNpcAI
 		addKillId(CHAOS_GOLEM); // Message + despawn.
 		addAttackActId(CHAOS_GOLEM); // Random messages when he attacks.
 		
-		StatsSet info = GrandBossManager.getStatsSet(CHAOS_GOLEM);
-		int status = GrandBossManager.getBossStatus(CHAOS_GOLEM);
+		StatsSet info = GrandBossManager.getInstance().getStatsSet(CHAOS_GOLEM);
+		int status = GrandBossManager.getInstance().getBossStatus(CHAOS_GOLEM);
 		
 		// Load the reset date and time for Dr. Chaos from DB.
 		if (status == DEAD)
@@ -75,7 +75,7 @@ public class DrChaos extends AbstractNpcAI
 				// The time has already expired while the server was offline. Delete the saved time and
 				// immediately spawn Dr. Chaos. Also the state need to be changed for NORMAL
 				addSpawn(DOCTOR_CHAOS, 96320, -110912, -3328, 8191, false, 0, false);
-				GrandBossManager.setBossStatus(CHAOS_GOLEM, NORMAL);
+				GrandBossManager.getInstance().setBossStatus(CHAOS_GOLEM, NORMAL);
 			}
 		}
 		// Spawn the war golem.
@@ -89,7 +89,7 @@ public class DrChaos extends AbstractNpcAI
 			final int mp = info.getInteger("currentMP");
 			
 			L2GrandBossInstance golem = (L2GrandBossInstance) addSpawn(CHAOS_GOLEM, loc_x, loc_y, loc_z, heading, false, 0, false);
-			GrandBossManager.addBoss(golem);
+			GrandBossManager.getInstance().addBoss(golem);
 			
 			final L2Npc _golem = golem;
 			
@@ -110,7 +110,7 @@ public class DrChaos extends AbstractNpcAI
 	{
 		if (event.equalsIgnoreCase("reset_drchaos"))
 		{
-			GrandBossManager.setBossStatus(CHAOS_GOLEM, NORMAL);
+			GrandBossManager.getInstance().setBossStatus(CHAOS_GOLEM, NORMAL);
 			addSpawn(DOCTOR_CHAOS, 96320, -110912, -3328, 8191, false, 0, false);
 		}
 		// despawn the live Dr. Chaos after 30 minutes of inactivity
@@ -124,7 +124,7 @@ public class DrChaos extends AbstractNpcAI
 					npc.deleteMe();
 					
 					addSpawn(DOCTOR_CHAOS, 96320, -110912, -3328, 8191, false, 0, false); // spawn Dr. Chaos
-					GrandBossManager.setBossStatus(CHAOS_GOLEM, NORMAL); // mark Dr. Chaos is not crazy any more
+					GrandBossManager.getInstance().setBossStatus(CHAOS_GOLEM, NORMAL); // mark Dr. Chaos is not crazy any more
 					cancelQuestTimer("golem_despawn", npc, null);
 				}
 			}
@@ -148,7 +148,7 @@ public class DrChaos extends AbstractNpcAI
 			// Delete Dr. Chaos && spawn the war golem.
 			npc.deleteMe();
 			L2GrandBossInstance golem = (L2GrandBossInstance) addSpawn(CHAOS_GOLEM, 96080, -110822, -3343, 0, false, 0, false);
-			GrandBossManager.addBoss(golem);
+			GrandBossManager.getInstance().addBoss(golem);
 			
 			// The "npc" variable attribution is now for the golem.
 			npc = golem;
@@ -163,7 +163,7 @@ public class DrChaos extends AbstractNpcAI
 		// Check every sec if someone is in range, if found, launch one task to decrease the timer.
 		else if (event.equalsIgnoreCase("paranoia_activity"))
 		{
-			if (GrandBossManager.getBossStatus(CHAOS_GOLEM) == NORMAL)
+			if (GrandBossManager.getInstance().getBossStatus(CHAOS_GOLEM) == NORMAL)
 			{
 				for (L2PcInstance obj : npc.getKnownList().getKnownTypeInRadius(L2PcInstance.class, 500))
 				{
@@ -191,7 +191,7 @@ public class DrChaos extends AbstractNpcAI
 	{
 		String htmltext = "";
 		
-		if (GrandBossManager.getBossStatus(CHAOS_GOLEM) == NORMAL)
+		if (GrandBossManager.getInstance().getBossStatus(CHAOS_GOLEM) == NORMAL)
 		{
 			_pissedOffTimer -= 1 + Rnd.get(5); // remove 1-5 secs.
 			
@@ -229,13 +229,13 @@ public class DrChaos extends AbstractNpcAI
 		// "lock" Dr. Chaos for regular RB time (36H fixed +- 24H random)
 		long respawnTime = (36 + Rnd.get(-24, 24)) * 3600000;
 		
-		GrandBossManager.setBossStatus(CHAOS_GOLEM, DEAD);
+		GrandBossManager.getInstance().setBossStatus(CHAOS_GOLEM, DEAD);
 		startQuestTimer("reset_drchaos", respawnTime, null, null, false);
 		
 		// also save the respawn time so that the info is maintained past reboots
-		StatsSet info = GrandBossManager.getStatsSet(CHAOS_GOLEM);
+		StatsSet info = GrandBossManager.getInstance().getStatsSet(CHAOS_GOLEM);
 		info.set("respawn_time", System.currentTimeMillis() + respawnTime);
-		GrandBossManager.setStatsSet(CHAOS_GOLEM, info);
+		GrandBossManager.getInstance().setStatsSet(CHAOS_GOLEM, info);
 		
 		return null;
 	}
@@ -275,10 +275,10 @@ public class DrChaos extends AbstractNpcAI
 	 */
 	private void crazyMidgetBecomesAngry(L2Npc npc)
 	{
-		if (GrandBossManager.getBossStatus(CHAOS_GOLEM) == NORMAL)
+		if (GrandBossManager.getInstance().getBossStatus(CHAOS_GOLEM) == NORMAL)
 		{
 			// Set the status to "crazy".
-			GrandBossManager.setBossStatus(CHAOS_GOLEM, CRAZY);
+			GrandBossManager.getInstance().setBossStatus(CHAOS_GOLEM, CRAZY);
 			
 			// Cancels the paranoia timer.
 			cancelQuestTimer("paranoia_activity", npc, null);

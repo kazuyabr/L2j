@@ -98,7 +98,7 @@ public class Q053_LinnaeusSpecialBait extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(CRIMSON_DRAKE_HEART, 1, 100, 300000))
+		if (st.dropItems(CRIMSON_DRAKE_HEART, 1, 100, 500000))
 			st.set("cond", "2");
 		
 		return null;

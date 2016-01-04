@@ -89,6 +89,9 @@ public class BoatInnadrilTour implements Runnable
 	
 	private final PlaySound INNADRIL_SOUND;
 	
+	private final PlaySound INNADRIL_SOUND_LEAVE_5MIN;
+	private final PlaySound INNADRIL_SOUND_LEAVE_1MIN;
+	
 	public BoatInnadrilTour(L2BoatInstance boat)
 	{
 		_boat = boat;
@@ -106,6 +109,9 @@ public class BoatInnadrilTour implements Runnable
 		ARRIVAL1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_ARRIVE_1_MINUTE);
 		
 		INNADRIL_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), DOCK.x, DOCK.y, DOCK.z);
+		
+		INNADRIL_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), DOCK.x, DOCK.y, DOCK.z);
+		INNADRIL_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), DOCK.x, DOCK.y, DOCK.z);
 	}
 	
 	@Override
@@ -117,14 +123,17 @@ public class BoatInnadrilTour implements Runnable
 			{
 				case 0:
 					BoatManager.getInstance().broadcastPacket(DOCK, DOCK, LEAVE_INNADRIL5);
+					_boat.broadcastPacket(INNADRIL_SOUND_LEAVE_5MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 240000);
 					break;
 				case 1:
 					BoatManager.getInstance().broadcastPacket(DOCK, DOCK, LEAVE_INNADRIL1);
+					_boat.broadcastPacket(INNADRIL_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 40000);
 					break;
 				case 2:
 					BoatManager.getInstance().broadcastPacket(DOCK, DOCK, LEAVE_INNADRIL0);
+					_boat.broadcastPacket(INNADRIL_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 20000);
 					break;
 				case 3:

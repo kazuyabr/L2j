@@ -15,7 +15,9 @@
 package ai.group;
 
 import ai.AbstractNpcAI;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.L2Attackable;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
@@ -30,7 +32,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class PolymorphingOnAttack extends AbstractNpcAI
 {
-	private static final TIntObjectHashMap<Integer[]> MOBSPAWNS = new TIntObjectHashMap<>();
+	private static final Map<Integer, Integer[]> MOBSPAWNS = new HashMap<>();
 	{
 		MOBSPAWNS.put(21258, new Integer[]
 		{
@@ -150,7 +152,7 @@ public class PolymorphingOnAttack extends AbstractNpcAI
 	public PolymorphingOnAttack(String name, String descr)
 	{
 		super(name, descr);
-		registerMobs(MOBSPAWNS.keys(), QuestEventType.ON_ATTACK);
+		registerMobs(MOBSPAWNS.keySet(), QuestEventType.ON_ATTACK);
 	}
 	
 	@Override

@@ -17,10 +17,10 @@ package quests.Q415_PathToAMonk;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
-import net.sf.l2j.gameserver.templates.item.L2WeaponType;
 
 public class Q415_PathToAMonk extends Quest
 {
@@ -316,8 +316,8 @@ public class Q415_PathToAMonk extends Quest
 		if (st == null)
 			return null;
 		
-		final L2WeaponType weapon = player.getActiveWeaponItem().getItemType();
-		if (!weapon.equals(L2WeaponType.DUALFIST) && !weapon.equals(L2WeaponType.FIST))
+		final WeaponType weapon = player.getActiveWeaponItem().getItemType();
+		if (!weapon.equals(WeaponType.DUALFIST) && !weapon.equals(WeaponType.FIST))
 		{
 			st.playSound(QuestState.SOUND_GIVEUP);
 			st.exitQuest(true);

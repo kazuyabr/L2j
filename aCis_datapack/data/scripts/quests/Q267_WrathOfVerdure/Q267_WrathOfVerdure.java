@@ -17,7 +17,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q267_WrathOfVerdure extends Quest
 {
@@ -106,11 +105,7 @@ public class Q267_WrathOfVerdure extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 50)
-		{
-			st.giveItems(GOBLIN_CLUB, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(GOBLIN_CLUB, 1, 0, 500000);
 		
 		return null;
 	}

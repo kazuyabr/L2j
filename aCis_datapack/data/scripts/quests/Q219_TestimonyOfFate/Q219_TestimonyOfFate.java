@@ -12,6 +12,9 @@
  */
 package quests.Q219_TestimonyOfFate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
@@ -87,6 +90,20 @@ public class Q219_TestimonyOfFate extends Quest
 	private static final int LETO_LIZARDMAN_OVERLORD = 20582;
 	private static final int KARUL_BUGBEAR = 20600;
 	private static final int BLACK_WILLOW_LURKER = 27079;
+	
+	// Cond 6 drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(DEAD_SEEKER, 500000);
+		CHANCES.put(TYRANT, 500000);
+		CHANCES.put(TYRANT_KINGPIN, 600000);
+		CHANCES.put(MEDUSA, 500000);
+		CHANCES.put(MARSH_STAKATO, 400000);
+		CHANCES.put(MARSH_STAKATO_WORKER, 300000);
+		CHANCES.put(MARSH_STAKATO_SOLDIER, 500000);
+		CHANCES.put(MARSH_STAKATO_DRONE, 600000);
+		CHANCES.put(MARSH_SPIDER, 500000);
+	}
 	
 	public Q219_TestimonyOfFate()
 	{
@@ -435,7 +452,9 @@ public class Q219_TestimonyOfFate extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
+		final int npcId = npc.getNpcId();
+		
+		switch (npcId)
 		{
 			case HANGMAN_TREE:
 				if (st.getInt("cond") == 2)
@@ -448,78 +467,57 @@ public class Q219_TestimonyOfFate extends Quest
 				break;
 			
 			case DEAD_SEEKER:
-				if (st.getInt("cond") == 6 && st.dropItems(DEAD_SEEKER_DUNG, 1, 10, 800000))
-				{
+				if (st.getInt("cond") == 6 && st.dropItems(DEAD_SEEKER_DUNG, 1, 10, CHANCES.get(npcId)))
 					if (st.getQuestItemsCount(TYRANT_BLOOD) >= 10 && st.getQuestItemsCount(MEDUSA_ICHOR) >= 10 && st.getQuestItemsCount(NIGHTSHADE_ROOT) >= 10 && st.getQuestItemsCount(MARSH_SPIDER_FLUIDS) >= 10)
 						st.set("cond", "7");
-				}
 				break;
 			
 			case TYRANT:
 			case TYRANT_KINGPIN:
-				if (st.getInt("cond") == 6 && st.dropItems(TYRANT_BLOOD, 1, 10, (npc.getNpcId() == 20192) ? 500000 : 800000))
-				{
+				if (st.getInt("cond") == 6 && st.dropItems(TYRANT_BLOOD, 1, 10, CHANCES.get(npcId)))
 					if (st.getQuestItemsCount(DEAD_SEEKER_DUNG) >= 10 && st.getQuestItemsCount(MEDUSA_ICHOR) >= 10 && st.getQuestItemsCount(NIGHTSHADE_ROOT) >= 10 && st.getQuestItemsCount(MARSH_SPIDER_FLUIDS) >= 10)
 						st.set("cond", "7");
-				}
 				break;
 			
 			case MEDUSA:
-				if (st.getInt("cond") == 6 && st.dropItems(MEDUSA_ICHOR, 1, 10, 800000))
-				{
+				if (st.getInt("cond") == 6 && st.dropItems(MEDUSA_ICHOR, 1, 10, CHANCES.get(npcId)))
 					if (st.getQuestItemsCount(DEAD_SEEKER_DUNG) >= 10 && st.getQuestItemsCount(TYRANT_BLOOD) >= 10 && st.getQuestItemsCount(NIGHTSHADE_ROOT) >= 10 && st.getQuestItemsCount(MARSH_SPIDER_FLUIDS) >= 10)
 						st.set("cond", "7");
-				}
 				break;
 			
 			case MARSH_STAKATO:
 			case MARSH_STAKATO_WORKER:
 			case MARSH_STAKATO_SOLDIER:
 			case MARSH_STAKATO_DRONE:
-				if (st.getInt("cond") == 6)
-				{
-					int chance = 400000;
-					if (npc.getNpcId() == 20230)
-						chance = 600000;
-					else if (npc.getNpcId() == 20232)
-						chance = 800000;
-					else if (npc.getNpcId() == 20234)
-						chance = 1000000;
-					
-					if (st.dropItems(NIGHTSHADE_ROOT, 1, 10, chance))
-					{
-						if (st.getQuestItemsCount(DEAD_SEEKER_DUNG) >= 10 && st.getQuestItemsCount(TYRANT_BLOOD) >= 10 && st.getQuestItemsCount(MEDUSA_ICHOR) >= 10 && st.getQuestItemsCount(MARSH_SPIDER_FLUIDS) >= 10)
-							st.set("cond", "7");
-					}
-				}
+				if (st.getInt("cond") == 6 && st.dropItems(NIGHTSHADE_ROOT, 1, 10, CHANCES.get(npcId)))
+					if (st.getQuestItemsCount(DEAD_SEEKER_DUNG) >= 10 && st.getQuestItemsCount(TYRANT_BLOOD) >= 10 && st.getQuestItemsCount(MEDUSA_ICHOR) >= 10 && st.getQuestItemsCount(MARSH_SPIDER_FLUIDS) >= 10)
+						st.set("cond", "7");
 				break;
 			
 			case MARSH_SPIDER:
-				if (st.getInt("cond") == 6 && st.dropItems(MARSH_SPIDER_FLUIDS, 1, 10, 800000))
-				{
+				if (st.getInt("cond") == 6 && st.dropItems(MARSH_SPIDER_FLUIDS, 1, 10, CHANCES.get(npcId)))
 					if (st.getQuestItemsCount(DEAD_SEEKER_DUNG) >= 10 && st.getQuestItemsCount(TYRANT_BLOOD) >= 10 && st.getQuestItemsCount(MEDUSA_ICHOR) >= 10 && st.getQuestItemsCount(NIGHTSHADE_ROOT) >= 10)
 						st.set("cond", "7");
-				}
 				break;
 			
 			case GRANDIS:
 				if (st.hasQuestItems(PIXY_GARNET))
-					st.dropItems(GRANDIS_SKULL, 1, 10, 800000);
+					st.dropItemsAlways(GRANDIS_SKULL, 1, 10);
 				break;
 			
 			case LETO_LIZARDMAN_OVERLORD:
 				if (st.hasQuestItems(PIXY_GARNET))
-					st.dropItems(LETO_OVERLORD_SKULL, 1, 10, 800000);
+					st.dropItemsAlways(LETO_OVERLORD_SKULL, 1, 10);
 				break;
 			
 			case BREKA_ORC_OVERLORD:
 				if (st.hasQuestItems(PIXY_GARNET))
-					st.dropItems(BREKA_OVERLORD_SKULL, 1, 10, 800000);
+					st.dropItemsAlways(BREKA_OVERLORD_SKULL, 1, 10);
 				break;
 			
 			case KARUL_BUGBEAR:
 				if (st.hasQuestItems(PIXY_GARNET))
-					st.dropItems(KARUL_BUGBEAR_SKULL, 1, 10, 800000);
+					st.dropItemsAlways(KARUL_BUGBEAR_SKULL, 1, 10);
 				break;
 			
 			case BLACK_WILLOW_LURKER:

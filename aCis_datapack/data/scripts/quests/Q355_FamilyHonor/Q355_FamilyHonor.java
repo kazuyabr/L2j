@@ -12,6 +12,9 @@
  */
 package quests.Q355_FamilyHonor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -39,6 +42,31 @@ public class Q355_FamilyHonor extends Quest
 	private static final int STATUE_ORIGINAL = 4352;
 	private static final int STATUE_REPLICA = 4353;
 	private static final int STATUE_FORGERY = 4354;
+	
+	// Drop chances
+	private static final Map<Integer, int[]> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(TIMAK_ORC_TROOP_LEADER, new int[]
+		{
+			44,
+			54
+		});
+		CHANCES.put(TIMAK_ORC_TROOP_SHAMAN, new int[]
+		{
+			36,
+			45
+		});
+		CHANCES.put(TIMAK_ORC_TROOP_WARRIOR, new int[]
+		{
+			35,
+			43
+		});
+		CHANCES.put(TIMAK_ORC_TROOP_ARCHER, new int[]
+		{
+			32,
+			42
+		});
+	}
 	
 	public Q355_FamilyHonor()
 	{
@@ -164,29 +192,12 @@ public class Q355_FamilyHonor extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		switch (npc.getNpcId())
-		{
-			case TIMAK_ORC_TROOP_LEADER:
-				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 560000))
-					st.dropItems(WORK_OF_BERONA, 1, 0, 124000);
-				break;
-			
-			case TIMAK_ORC_TROOP_SHAMAN:
-				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 530000))
-					st.dropItems(WORK_OF_BERONA, 1, 0, 120000);
-				break;
-			
-			case TIMAK_ORC_TROOP_WARRIOR:
-				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 420000))
-					st.dropItems(WORK_OF_BERONA, 1, 0, 96000);
-				break;
-			
-			case TIMAK_ORC_TROOP_ARCHER:
-				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 440000))
-					st.dropItems(WORK_OF_BERONA, 1, 0, 120000);
-				break;
-		}
+		final int[] chances = CHANCES.get(npc.getNpcId());
+		final int random = Rnd.get(100);
 		
+		if (random < chances[1])
+			st.dropItemsAlways((random < chances[0]) ? GALIBREDO_BUST : WORK_OF_BERONA, 1, 0);
+				
 		return null;
 	}
 	

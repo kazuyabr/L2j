@@ -40,6 +40,32 @@ public abstract class AbstractNpcAI extends Quest
 	}
 	
 	/**
+	 * Register a monster on all event types.
+	 * @param mob A mob.
+	 */
+	public void registerMob(int mob)
+	{
+		addEventId(mob, QuestEventType.ON_ATTACK);
+		addEventId(mob, QuestEventType.ON_KILL);
+		addEventId(mob, QuestEventType.ON_SPAWN);
+		addEventId(mob, QuestEventType.ON_SPELL_FINISHED);
+		addEventId(mob, QuestEventType.ON_SKILL_SEE);
+		addEventId(mob, QuestEventType.ON_FACTION_CALL);
+		addEventId(mob, QuestEventType.ON_AGGRO_RANGE_ENTER);
+	}
+	
+	/**
+	 * Register a monster on particular event types.
+	 * @param mobs A mob.
+	 * @param types Types of event to register mob on.
+	 */
+	public void registerMob(int mob, QuestEventType... types)
+	{
+		for (QuestEventType type : types)
+			addEventId(mob, type);
+	}
+	
+	/**
 	 * Register monsters on all event types.
 	 * @param mobs An array of mobs.
 	 */
@@ -63,6 +89,20 @@ public abstract class AbstractNpcAI extends Quest
 	 * @param types Types of event to register mobs on.
 	 */
 	public void registerMobs(int[] mobs, QuestEventType... types)
+	{
+		for (int id : mobs)
+		{
+			for (QuestEventType type : types)
+				addEventId(id, type);
+		}
+	}
+	
+	/**
+	 * Register monsters on particular event types.
+	 * @param mobs An array of mobs.
+	 * @param types Types of event to register mobs on.
+	 */
+	public void registerMobs(Iterable<Integer> mobs, QuestEventType... types)
 	{
 		for (int id : mobs)
 		{

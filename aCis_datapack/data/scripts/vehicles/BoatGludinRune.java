@@ -132,6 +132,12 @@ public class BoatGludinRune implements Runnable
 	private final PlaySound GLUDIN_SOUND;
 	private final PlaySound RUNE_SOUND;
 	
+	private final PlaySound GLUDIN_SOUND_LEAVE_5MIN;
+	private final PlaySound GLUDIN_SOUND_LEAVE_1MIN;
+	
+	private final PlaySound RUNE_SOUND_LEAVE_5MIN;
+	private final PlaySound RUNE_SOUND_LEAVE_1MIN;
+	
 	public BoatGludinRune(L2BoatInstance boat)
 	{
 		_boat = boat;
@@ -162,6 +168,12 @@ public class BoatGludinRune implements Runnable
 		
 		GLUDIN_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
 		RUNE_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), RUNE_DOCK[0].x, RUNE_DOCK[0].y, RUNE_DOCK[0].z);
+		
+		GLUDIN_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
+		GLUDIN_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
+		
+		RUNE_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), RUNE_DOCK[0].x, RUNE_DOCK[0].y, RUNE_DOCK[0].z);
+		RUNE_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), RUNE_DOCK[0].x, RUNE_DOCK[0].y, RUNE_DOCK[0].z);
 	}
 	
 	@Override
@@ -173,10 +185,12 @@ public class BoatGludinRune implements Runnable
 			{
 				case 0:
 					BoatManager.getInstance().broadcastPacket(GLUDIN_DOCK[0], RUNE_DOCK[0], LEAVE_GLUDIN5);
+					_boat.broadcastPacket(GLUDIN_SOUND_LEAVE_5MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 240000);
 					break;
 				case 1:
 					BoatManager.getInstance().broadcastPacket(GLUDIN_DOCK[0], RUNE_DOCK[0], LEAVE_GLUDIN1);
+					_boat.broadcastPacket(GLUDIN_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 60000);
 					break;
 				case 2:
@@ -225,14 +239,17 @@ public class BoatGludinRune implements Runnable
 					break;
 				case 9:
 					BoatManager.getInstance().broadcastPacket(RUNE_DOCK[0], GLUDIN_DOCK[0], LEAVE_RUNE5);
+					_boat.broadcastPacket(RUNE_SOUND_LEAVE_5MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 240000);
 					break;
 				case 10:
 					BoatManager.getInstance().broadcastPacket(RUNE_DOCK[0], GLUDIN_DOCK[0], LEAVE_RUNE1);
+					_boat.broadcastPacket(RUNE_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 40000);
 					break;
 				case 11:
 					BoatManager.getInstance().broadcastPacket(RUNE_DOCK[0], GLUDIN_DOCK[0], LEAVE_RUNE0);
+					_boat.broadcastPacket(RUNE_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 20000);
 					break;
 				case 12:

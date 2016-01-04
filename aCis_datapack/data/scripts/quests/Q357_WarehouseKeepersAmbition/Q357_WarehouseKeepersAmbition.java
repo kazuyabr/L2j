@@ -12,11 +12,13 @@
  */
 package quests.Q357_WarehouseKeepersAmbition;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q357_WarehouseKeepersAmbition extends Quest
 {
@@ -30,6 +32,15 @@ public class Q357_WarehouseKeepersAmbition extends Quest
 	private static final int FLINE_ELDER = 20595;
 	private static final int LIELE_ELDER = 20596;
 	private static final int VALLEY_TREANT_ELDER = 20597;
+	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(FOREST_RUNNER, 400000);
+		CHANCES.put(FLINE_ELDER, 410000);
+		CHANCES.put(LIELE_ELDER, 440000);
+		CHANCES.put(VALLEY_TREANT_ELDER, 650000);
+	}
 	
 	public Q357_WarehouseKeepersAmbition()
 	{
@@ -110,24 +121,7 @@ public class Q357_WarehouseKeepersAmbition extends Quest
 		if (partyMember == null)
 			return null;
 		
-		switch (npc.getNpcId())
-		{
-			case FOREST_RUNNER:
-				partyMember.getQuestState(qn).dropItems(JADE_CRYSTAL, 1, -1, 577000);
-				break;
-			
-			case FLINE_ELDER:
-				partyMember.getQuestState(qn).dropItems(JADE_CRYSTAL, 1, -1, 600000);
-				break;
-			
-			case LIELE_ELDER:
-				partyMember.getQuestState(qn).dropItems(JADE_CRYSTAL, 1, -1, 638000);
-				break;
-			
-			case VALLEY_TREANT_ELDER:
-				partyMember.getQuestState(qn).dropItemsAlways(JADE_CRYSTAL, (Rnd.get(1000) < 62) ? 2 : 1, -1);
-				break;
-		}
+		partyMember.getQuestState(qn).dropItems(JADE_CRYSTAL, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}

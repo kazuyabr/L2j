@@ -326,11 +326,8 @@ public class Gordon extends AbstractNpcAI
 	public Gordon(String name, String descr)
 	{
 		super(name, descr);
-		int[] mobs =
-		{
-			GORDON
-		};
-		registerMobs(mobs, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
+		registerMob(GORDON, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
+		
 		// wait 2 minutes after Start AI
 		startQuestTimer("check_ai", 120000, null, null, true);
 		

@@ -695,7 +695,7 @@
 		<set name="reuseDelay" val="3000" />
 		<set name="skillType" val="HEAL" />
 		<set name="target" val="TARGET_ONE" />
-		<set name="weaponsAllowed" val="Bow" /> <!-- Bow -->
+		<set name="weaponsAllowed" val="BOW" /> <!-- Bow -->
 	</skill>
 	<skill id="3261" levels="1" name="Forgiveness">
 		<set name="castRange" val="500" />
@@ -710,7 +710,7 @@
 		<set name="equipDelay" val="30000" />
 		<set name="skillType" val="MANARECHARGE" />
 		<set name="target" val="TARGET_ONE" />
-		<set name="weaponsAllowed" val="Bow" /> <!-- Bow -->
+		<set name="weaponsAllowed" val="BOW" /> <!-- Bow -->
 	</skill>
 	<skill id="3262" levels="1" name="Pardon">
 		<set name="castRange" val="500" />
@@ -725,7 +725,7 @@
 		<set name="equipDelay" val="30000" />
 		<set name="skillType" val="HEAL" />
 		<set name="target" val="TARGET_ONE" />
-		<set name="weaponsAllowed" val="Bow" /> <!-- Bow -->
+		<set name="weaponsAllowed" val="BOW" /> <!-- Bow -->
 	</skill>
 	<skill id="3263" levels="1" name="Blessed Resurrection">
 		<!-- Allows the use of Blessed Resurrection. -->

@@ -16,6 +16,7 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q241_PossessorOfAPreciousSoul extends Quest
 {
@@ -36,8 +37,10 @@ public class Q241_PossessorOfAPreciousSoul extends Quest
 	
 	// Monsters
 	private static final int BARAHAM = 27113;
-	private static final int MALRUK_SUCCUBUS = 20244;
-	private static final int MALRUK_SUCCUBUS_TUREN = 20245;
+	private static final int MALRUK_SUCCUBUS_1 = 20244;
+	private static final int MALRUK_SUCCUBUS_TUREN_1 = 20245;
+	private static final int MALRUK_SUCCUBUS_2 = 20283;
+	private static final int MALRUK_SUCCUBUS_TUREN_2 = 20284;
 	private static final int SPLINTER_STAKATO = 21508;
 	private static final int SPLINTER_STAKATO_WALKER = 21509;
 	private static final int SPLINTER_STAKATO_SOLDIER = 21510;
@@ -64,7 +67,7 @@ public class Q241_PossessorOfAPreciousSoul extends Quest
 		addStartNpc(TALIEN);
 		addTalkId(TALIEN, GABRIELLE, GILMORE, KANTABILON, STEDMIEL, VIRGIL, OGMAR, RAHORAKTI, KASSANDRA, CARADINE, NOEL);
 		
-		addKillId(BARAHAM, MALRUK_SUCCUBUS, MALRUK_SUCCUBUS_TUREN, SPLINTER_STAKATO, SPLINTER_STAKATO_WALKER, SPLINTER_STAKATO_SOLDIER, SPLINTER_STAKATO_DRONE_1, SPLINTER_STAKATO_DRONE_2);
+		addKillId(BARAHAM, MALRUK_SUCCUBUS_1, MALRUK_SUCCUBUS_2, MALRUK_SUCCUBUS_TUREN_1, MALRUK_SUCCUBUS_TUREN_2, SPLINTER_STAKATO, SPLINTER_STAKATO_WALKER, SPLINTER_STAKATO_SOLDIER, SPLINTER_STAKATO_DRONE_1, SPLINTER_STAKATO_DRONE_2);
 	}
 	
 	@Override
@@ -179,6 +182,7 @@ public class Q241_PossessorOfAPreciousSoul extends Quest
 		{
 			st.giveItems(VIRGIL_LETTER, 1);
 			st.rewardExpAndSp(263043, 0);
+			player.broadcastPacket(new SocialAction(player, 3));
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(false);
 		}
@@ -361,9 +365,15 @@ public class Q241_PossessorOfAPreciousSoul extends Quest
 				}
 				break;
 			
-			case MALRUK_SUCCUBUS:
-			case MALRUK_SUCCUBUS_TUREN:
-				if (st.getInt("cond") == 6 && st.dropItems(MALRUK_SUCCUBUS_CLAW, 1, 10, 200000))
+			case MALRUK_SUCCUBUS_1:
+			case MALRUK_SUCCUBUS_2:
+				if (st.getInt("cond") == 6 && st.dropItems(MALRUK_SUCCUBUS_CLAW, 1, 10, 100000))
+					st.set("cond", "7");
+				break;
+			
+			case MALRUK_SUCCUBUS_TUREN_1:
+			case MALRUK_SUCCUBUS_TUREN_2:
+				if (st.getInt("cond") == 6 && st.dropItems(MALRUK_SUCCUBUS_CLAW, 1, 10, 120000))
 					st.set("cond", "7");
 				break;
 			
@@ -372,7 +382,7 @@ public class Q241_PossessorOfAPreciousSoul extends Quest
 			case SPLINTER_STAKATO_SOLDIER:
 			case SPLINTER_STAKATO_DRONE_1:
 			case SPLINTER_STAKATO_DRONE_2:
-				if (st.getInt("cond") == 14 && st.dropItems(CRIMSON_MOSS, 1, 5, 25000))
+				if (st.getInt("cond") == 14 && st.dropItems(CRIMSON_MOSS, 1, 5, 100000))
 					st.set("cond", "15");
 				break;
 		}

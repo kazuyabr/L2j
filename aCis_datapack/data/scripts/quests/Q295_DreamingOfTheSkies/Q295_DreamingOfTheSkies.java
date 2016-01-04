@@ -107,7 +107,7 @@ public class Q295_DreamingOfTheSkies extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(FLOATING_STONE, Rnd.get(1, 2), 50, 250000))
+		if (st.dropItemsAlways(FLOATING_STONE, (Rnd.get(100) > 25) ? 1 : 2, 50))
 			st.set("cond", "2");
 		
 		return null;

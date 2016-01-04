@@ -21,8 +21,6 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 {
 	private static final String qn = "Q374_WhisperOfDreams_Part1";
 	
-	private static final String condition = "condStone";
-	
 	// NPCs
 	private static final int MANAKIA = 30515;
 	private static final int TORAI = 30557;
@@ -68,9 +66,9 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 	// Tallum Stockings, 6, 15550 adena
 	};
 	
-	public Q374_WhisperOfDreams_Part1(int questId, String name, String descr)
+	public Q374_WhisperOfDreams_Part1()
 	{
-		super(questId, name, descr);
+		super(374, qn, "Whisper of Dreams, Part 1");
 		
 		setItemsIds(DEATH_WAVE_LIGHT, CAVE_BEAST_TOOTH, SEALED_MYSTERIOUS_STONE, MYSTERIOUS_STONE);
 		
@@ -91,9 +89,9 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 		// Manakia
 		if (event.equalsIgnoreCase("30515-03.htm"))
 		{
-			st.set("cond", "1");
-			st.set(condition, "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.set("condStone", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.startsWith("30515-06-"))
@@ -101,6 +99,8 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 			if (st.getQuestItemsCount(CAVE_BEAST_TOOTH) >= 65 && st.getQuestItemsCount(DEATH_WAVE_LIGHT) >= 65)
 			{
 				htmltext = "30515-06.htm";
+				st.playSound(QuestState.SOUND_MIDDLE);
+				
 				int[] reward = REWARDS[Integer.parseInt(event.substring(9, 10))];
 				
 				st.takeItems(CAVE_BEAST_TOOTH, -1);
@@ -108,8 +108,6 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 				
 				st.rewardItems(57, reward[2]);
 				st.giveItems(reward[0], reward[1]);
-				
-				st.playSound(QuestState.SOUND_MIDDLE);
 			}
 			else
 				htmltext = "30515-07.htm";
@@ -146,17 +144,11 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 56)
-				{
-					st.exitQuest(true);
-					htmltext = "30515-01.htm";
-				}
-				else
-					htmltext = "30515-02.htm";
+				htmltext = (player.getLevel() < 56) ? "30515-01.htm" : "30515-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case MANAKIA:
@@ -171,9 +163,9 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 						{
 							if (cond == 1)
 							{
+								htmltext = "30515-09.htm";
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
-								htmltext = "30515-09.htm";
 							}
 							else
 								htmltext = "30515-10.htm";
@@ -201,32 +193,23 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		switch (npc.getNpcId())
-		{
-			case CAVE_BEAST:
-				st.dropItems(CAVE_BEAST_TOOTH, 1, 65, 500000);
-				break;
-			
-			case DEATH_WAVE:
-				st.dropItems(DEATH_WAVE_LIGHT, 1, 65, 500000);
-				break;
-		}
+		st.dropItems((npc.getNpcId() == CAVE_BEAST) ? CAVE_BEAST_TOOTH : DEATH_WAVE, 1, 65, 500000);
 		
 		// Drop sealed mysterious stone to party member who still need it.
-		partyMember = getRandomPartyMember(player, npc, condition, "1");
+		partyMember = getRandomPartyMember(player, npc, "condStone", "1");
 		if (partyMember == null)
 			return null;
 		
 		st = partyMember.getQuestState(qn);
 		
 		if (st.dropItems(SEALED_MYSTERIOUS_STONE, 1, 1, 1000))
-			st.unset(condition);
+			st.unset("condStone");
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q374_WhisperOfDreams_Part1(374, qn, "Whisper of Dreams, Part 1");
+		new Q374_WhisperOfDreams_Part1();
 	}
 }

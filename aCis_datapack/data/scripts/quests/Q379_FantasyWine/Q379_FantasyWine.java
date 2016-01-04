@@ -33,9 +33,9 @@ public class Q379_FantasyWine extends Quest
 	private static final int LEAF = 5893;
 	private static final int STONE = 5894;
 	
-	public Q379_FantasyWine(int questId, String name, String descr)
+	public Q379_FantasyWine()
 	{
-		super(questId, name, descr);
+		super(379, qn, "Fantasy Wine");
 		
 		setItemsIds(LEAF, STONE);
 		
@@ -55,42 +55,34 @@ public class Q379_FantasyWine extends Quest
 		
 		if (event.equalsIgnoreCase("30074-3.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30074-6.htm"))
 		{
-			final int leaf = st.getQuestItemsCount(LEAF);
-			final int stone = st.getQuestItemsCount(STONE);
+			st.takeItems(LEAF, 80);
+			st.takeItems(STONE, 100);
 			
-			if (leaf == 80 && stone == 100)
+			final int rand = Rnd.get(10);
+			if (rand < 3)
 			{
-				st.takeItems(LEAF, 80);
-				st.takeItems(STONE, 100);
-				int rand = Rnd.get(100);
-				
-				if (rand < 25)
-				{
-					st.giveItems(5956, 1);
-					htmltext = "30074-6.htm";
-				}
-				else if (rand < 50)
-				{
-					st.giveItems(5957, 1);
-					htmltext = "30074-7.htm";
-				}
-				else
-				{
-					st.giveItems(5958, 1);
-					htmltext = "30074-8.htm";
-				}
-				
-				st.playSound(QuestState.SOUND_FINISH);
-				st.exitQuest(true);
+				htmltext = "30074-6.htm";
+				st.giveItems(5956, 1);
+			}
+			else if (rand < 9)
+			{
+				htmltext = "30074-7.htm";
+				st.giveItems(5957, 1);
 			}
 			else
-				htmltext = "30074-4.htm";
+			{
+				htmltext = "30074-8.htm";
+				st.giveItems(5958, 1);
+			}
+			
+			st.playSound(QuestState.SOUND_FINISH);
+			st.exitQuest(true);
 		}
 		else if (event.equalsIgnoreCase("30074-2a.htm"))
 			st.exitQuest(true);
@@ -109,31 +101,21 @@ public class Q379_FantasyWine extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 20)
-					htmltext = "30074-0.htm";
-				else
-				{
-					htmltext = "30074-0a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 20) ? "30074-0a.htm" : "30074-0.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				int leaf = st.getQuestItemsCount(LEAF);
-				int stone = st.getQuestItemsCount(STONE);
+				final int leaf = st.getQuestItemsCount(LEAF);
+				final int stone = st.getQuestItemsCount(STONE);
 				
-				if (cond == 1)
-				{
-					if (leaf < 80 && stone < 100)
-						htmltext = "30074-4.htm";
-					else if (leaf == 80 && stone < 100)
-						htmltext = "30074-4a.htm";
-					else if (leaf < 80 & stone == 100)
-						htmltext = "30074-4b.htm";
-				}
-				else if (cond == 2 && leaf == 80 && stone == 100)
+				if (leaf == 80 && stone == 100)
 					htmltext = "30074-5.htm";
+				else if (leaf == 80)
+					htmltext = "30074-4a.htm";
+				else if (stone == 100)
+					htmltext = "30074-4b.htm";
+				else
+					htmltext = "30074-4.htm";
 				break;
 		}
 		
@@ -147,35 +129,19 @@ public class Q379_FantasyWine extends Quest
 		if (st == null)
 			return null;
 		
-		int npcId = npc.getNpcId();
-		if (npcId == ENKU_CHAMPION && st.getQuestItemsCount(LEAF) < 80)
+		if (npc.getNpcId() == ENKU_CHAMPION)
 		{
-			st.giveItems(LEAF, 1);
-			if (st.getQuestItemsCount(LEAF) >= 80 && st.getQuestItemsCount(STONE) >= 100)
-			{
+			if (st.dropItemsAlways(LEAF, 1, 80) && st.getQuestItemsCount(STONE) >= 100)
 				st.set("cond", "2");
-				st.playSound(QuestState.SOUND_MIDDLE);
-			}
-			else
-				st.playSound(QuestState.SOUND_ITEMGET);
 		}
-		else if (npcId == ENKU_SHAMAN && st.getQuestItemsCount(STONE) < 100)
-		{
-			st.giveItems(STONE, 1);
-			if (st.getQuestItemsCount(LEAF) >= 80 && st.getQuestItemsCount(STONE) >= 100)
-			{
-				st.set("cond", "2");
-				st.playSound(QuestState.SOUND_MIDDLE);
-			}
-			else
-				st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		else if (st.dropItemsAlways(STONE, 1, 100) && st.getQuestItemsCount(LEAF) >= 80)
+			st.set("cond", "2");
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q379_FantasyWine(379, qn, "Fantasy Wine");
+		new Q379_FantasyWine();
 	}
 }

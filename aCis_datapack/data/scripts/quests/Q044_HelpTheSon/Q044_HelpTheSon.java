@@ -32,8 +32,9 @@ public class Q044_HelpTheSon extends Quest
 	private static final int PET_TICKET = 7585;
 	
 	// Monsters
-	private static final int MAILLE_GUARD = 20921;
+	private static final int MAILLE = 20919;
 	private static final int MAILLE_SCOUT = 20920;
+	private static final int MAILLE_GUARD = 20921;
 	
 	public Q044_HelpTheSon()
 	{
@@ -44,7 +45,7 @@ public class Q044_HelpTheSon extends Quest
 		addStartNpc(LUNDY);
 		addTalkId(LUNDY, DRIKUS);
 		
-		addKillId(MAILLE_GUARD, MAILLE_SCOUT);
+		addKillId(MAILLE, MAILLE_SCOUT, MAILLE_GUARD);
 	}
 	
 	@Override

@@ -17,7 +17,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q263_OrcSubjugation extends Quest
 {
@@ -107,11 +106,7 @@ public class Q263_OrcSubjugation extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 50)
-		{
-			st.giveItems((npc.getNpcId() == 20385) ? ORC_AMULET : ORC_NECKLACE, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems((npc.getNpcId() == 20385) ? ORC_AMULET : ORC_NECKLACE, 1, 0, 500000);
 		
 		return null;
 	}

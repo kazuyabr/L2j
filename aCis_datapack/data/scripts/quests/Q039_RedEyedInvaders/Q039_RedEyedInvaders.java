@@ -29,9 +29,9 @@ public class Q039_RedEyedInvaders extends Quest
 	private static final int BATHIS = 30332;
 	
 	// Mobs
-	private static final int M_LIZARDMAN = 20919;
-	private static final int M_LIZARDMAN_SCOUT = 20920;
-	private static final int M_LIZARDMAN_GUARD = 20921;
+	private static final int MAILLE_LIZARDMAN = 20919;
+	private static final int MAILLE_LIZARDMAN_SCOUT = 20920;
+	private static final int MAILLE_LIZARDMAN_GUARD = 20921;
 	private static final int ARANEID = 20925;
 	
 	// Items
@@ -43,29 +43,20 @@ public class Q039_RedEyedInvaders extends Quest
 	// First droplist
 	private static final Map<Integer, int[]> FIRST_DP = new HashMap<>();
 	{
-		FIRST_DP.put(M_LIZARDMAN_GUARD, new int[]
+		FIRST_DP.put(MAILLE_LIZARDMAN_GUARD, new int[]
 		{
 			RED_BONE_NECKLACE,
-			100,
-			BLACK_BONE_NECKLACE,
-			3,
-			330000
+			BLACK_BONE_NECKLACE
 		});
-		FIRST_DP.put(M_LIZARDMAN, new int[]
+		FIRST_DP.put(MAILLE_LIZARDMAN, new int[]
 		{
 			BLACK_BONE_NECKLACE,
-			100,
-			RED_BONE_NECKLACE,
-			3,
-			500000
+			RED_BONE_NECKLACE
 		});
-		FIRST_DP.put(M_LIZARDMAN_SCOUT, new int[]
+		FIRST_DP.put(MAILLE_LIZARDMAN_SCOUT, new int[]
 		{
 			BLACK_BONE_NECKLACE,
-			100,
-			RED_BONE_NECKLACE,
-			3,
-			500000
+			RED_BONE_NECKLACE
 		});
 	}
 	
@@ -75,25 +66,19 @@ public class Q039_RedEyedInvaders extends Quest
 		SECOND_DP.put(ARANEID, new int[]
 		{
 			GEM_OF_MAILLE,
-			30,
 			INCENSE_POUCH,
-			5,
-			250000
+			500000
 		});
-		SECOND_DP.put(M_LIZARDMAN_GUARD, new int[]
+		SECOND_DP.put(MAILLE_LIZARDMAN_GUARD, new int[]
 		{
 			INCENSE_POUCH,
-			30,
 			GEM_OF_MAILLE,
-			5,
-			250000
+			300000
 		});
-		SECOND_DP.put(M_LIZARDMAN_SCOUT, new int[]
+		SECOND_DP.put(MAILLE_LIZARDMAN_SCOUT, new int[]
 		{
 			INCENSE_POUCH,
-			30,
 			GEM_OF_MAILLE,
-			5,
 			250000
 		});
 	}
@@ -112,7 +97,7 @@ public class Q039_RedEyedInvaders extends Quest
 		addStartNpc(BABENCO);
 		addTalkId(BABENCO, BATHIS);
 		
-		addKillId(M_LIZARDMAN, M_LIZARDMAN_SCOUT, M_LIZARDMAN_GUARD, ARANEID);
+		addKillId(MAILLE_LIZARDMAN, MAILLE_LIZARDMAN_SCOUT, MAILLE_LIZARDMAN_GUARD, ARANEID);
 	}
 	
 	@Override
@@ -211,19 +196,19 @@ public class Q039_RedEyedInvaders extends Quest
 			final QuestState st = partyMember.getQuestState(qn);
 			final int[] list = FIRST_DP.get(npcId);
 			
-			if (st.dropItems(list[0], 1, list[1], list[4]) && st.getQuestItemsCount(list[2]) == list[1])
-				st.set("cond", String.valueOf(list[3]));
+			if (st.dropItems(list[0], 1, 100, 500000) && st.getQuestItemsCount(list[1]) == 100)
+				st.set("cond", "3");
 		}
 		else
 		{
 			partyMember = getRandomPartyMember(player, npc, "4");
-			if (partyMember != null && npcId != M_LIZARDMAN)
+			if (partyMember != null && npcId != MAILLE_LIZARDMAN)
 			{
 				final QuestState st = partyMember.getQuestState(qn);
 				final int[] list = SECOND_DP.get(npcId);
 				
-				if (st.dropItems(list[0], 1, list[1], list[4]) && st.getQuestItemsCount(list[2]) == list[1])
-					st.set("cond", String.valueOf(list[3]));
+				if (st.dropItems(list[0], 1, 30, list[2]) && st.getQuestItemsCount(list[1]) == 30)
+					st.set("cond", "5");
 			}
 		}
 		

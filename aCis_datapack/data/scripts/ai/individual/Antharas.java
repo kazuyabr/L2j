@@ -47,7 +47,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class Antharas extends AbstractNpcAI
 {
-	private static final L2BossZone _antharasLair = GrandBossManager.getZoneById(110001);
+	private static final L2BossZone _antharasLair = GrandBossManager.getInstance().getZoneById(110001);
 	
 	private static final int[] antharasIds =
 	{
@@ -93,16 +93,16 @@ public class Antharas extends AbstractNpcAI
 		registerMobs(antharasIds, QuestEventType.ON_ATTACK, QuestEventType.ON_SPAWN);
 		registerMobs(allIds, QuestEventType.ON_KILL);
 		
-		final StatsSet info = GrandBossManager.getStatsSet(ANTHARAS);
+		final StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS);
 		
-		switch (GrandBossManager.getBossStatus(ANTHARAS))
+		switch (GrandBossManager.getInstance().getBossStatus(ANTHARAS))
 		{
 			case DEAD: // Launch the timer to set DORMANT, or set DORMANT directly if timer expired while offline.
 				long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
 				if (temp > 0)
 					startQuestTimer("antharas_unlock", temp, null, null, false);
 				else
-					GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
+					GrandBossManager.getInstance().setBossStatus(ANTHARAS, DORMANT);
 				break;
 			
 			case WAITING: // Launch beginning timer.
@@ -121,7 +121,7 @@ public class Antharas extends AbstractNpcAI
 				updateAntharas();
 				
 				final L2Npc antharas = addSpawn(_antharasId, loc_x, loc_y, loc_z, heading, false, 0, false);
-				GrandBossManager.addBoss(ANTHARAS, (L2GrandBossInstance) antharas);
+				GrandBossManager.getInstance().addBoss(ANTHARAS, (L2GrandBossInstance) antharas);
 				
 				antharas.setCurrentHpMp(hp, mp);
 				antharas.setRunning();
@@ -146,7 +146,7 @@ public class Antharas extends AbstractNpcAI
 			if (_timeTracker + 1800000 < System.currentTimeMillis())
 			{
 				// Set it dormant.
-				GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
+				GrandBossManager.getInstance().setBossStatus(ANTHARAS, DORMANT);
 				
 				// Drop all players from the zone.
 				_antharasLair.oustAllPlayers();
@@ -182,7 +182,7 @@ public class Antharas extends AbstractNpcAI
 			// stores current time for inactivity task.
 			_timeTracker = System.currentTimeMillis();
 			
-			GrandBossManager.setBossStatus(ANTHARAS, FIGHTING);
+			GrandBossManager.getInstance().setBossStatus(ANTHARAS, FIGHTING);
 			npc.setIsInvul(false);
 			npc.setRunning();
 			
@@ -241,7 +241,7 @@ public class Antharas extends AbstractNpcAI
 			updateAntharas();
 			
 			final L2Npc antharas = addSpawn(_antharasId, 181323, 114850, -7623, 32542, false, 0, false);
-			GrandBossManager.addBoss(ANTHARAS, (L2GrandBossInstance) antharas);
+			GrandBossManager.getInstance().addBoss(ANTHARAS, (L2GrandBossInstance) antharas);
 			antharas.setIsInvul(true);
 			
 			// Launch the cinematic, and tasks (regen + skill).
@@ -259,7 +259,7 @@ public class Antharas extends AbstractNpcAI
 			startQuestTimer("remove_players", 900000, null, null, false);
 		}
 		else if (event.equalsIgnoreCase("antharas_unlock"))
-			GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
+			GrandBossManager.getInstance().setBossStatus(ANTHARAS, DORMANT);
 		else if (event.equalsIgnoreCase("remove_players"))
 			_antharasLair.oustAllPlayers();
 		
@@ -313,16 +313,16 @@ public class Antharas extends AbstractNpcAI
 			_antharasLair.broadcastPacket(new PlaySound(1, "BS01_D", 0, 0, 0, 0, 0));
 			startQuestTimer("die_1", 8000, null, null, false);
 			
-			GrandBossManager.setBossStatus(ANTHARAS, DEAD);
+			GrandBossManager.getInstance().setBossStatus(ANTHARAS, DEAD);
 			
 			long respawnTime = (long) Config.SPAWN_INTERVAL_ANTHARAS + Rnd.get(-Config.RANDOM_SPAWN_TIME_ANTHARAS, Config.RANDOM_SPAWN_TIME_ANTHARAS);
 			respawnTime *= 3600000;
 			
 			startQuestTimer("antharas_unlock", respawnTime, null, null, false);
 			
-			StatsSet info = GrandBossManager.getStatsSet(ANTHARAS);
+			StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS);
 			info.set("respawn_time", System.currentTimeMillis() + respawnTime);
-			GrandBossManager.setStatsSet(ANTHARAS, info);
+			GrandBossManager.getInstance().setStatsSet(ANTHARAS, info);
 		}
 		else
 		{

@@ -124,7 +124,12 @@ public class Q264_KeenClaws extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(WOLF_CLAW, Rnd.get(1, 8), 50, 800000))
+		if (npc.getNpcId() == 20003)
+		{
+			if (st.dropItems(WOLF_CLAW, Rnd.nextBoolean() ? 2 : 4, 50, 500000))
+				st.set("cond", "2");
+		}
+		else if (st.dropItemsAlways(WOLF_CLAW, (Rnd.get(5) < 4) ? 1 : 2, 50))
 			st.set("cond", "2");
 		
 		return null;

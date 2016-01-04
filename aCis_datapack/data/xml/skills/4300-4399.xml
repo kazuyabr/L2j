@@ -96,7 +96,7 @@
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
 			<add order="0x40" stat="pDef" val="20">
-				<using kind="Heavy"/>
+				<using kind="HEAVY"/>
 			</add>
 		</for>
 	</skill>
@@ -106,7 +106,7 @@
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
 			<add order="0x40" stat="pDef" val="20">
-				<using kind="Light"/>
+				<using kind="LIGHT"/>
 			</add>
 		</for>
 	</skill>

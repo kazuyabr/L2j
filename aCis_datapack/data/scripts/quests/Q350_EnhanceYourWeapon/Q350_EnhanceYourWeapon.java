@@ -13,12 +13,12 @@
 package quests.Q350_EnhanceYourWeapon;
 
 import net.sf.l2j.gameserver.datatables.SoulCrystalsTable;
-import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.L2Attackable;
 import net.sf.l2j.gameserver.model.actor.L2Attackable.AbsorbInfo;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.model.soulcrystal.LevelingInfo;
@@ -103,7 +103,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 			
 			case STATE_STARTED:
 				// Check inventory for soul crystals.
-				for (L2ItemInstance item : player.getInventory().getItems())
+				for (ItemInstance item : player.getInventory().getItems())
 				{
 					// Crystal found, show "how to" html.
 					if (SoulCrystalsTable.getSoulCrystalInfos().get(item.getItemId()) != null)
@@ -118,7 +118,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 	}
 	
 	@Override
-	public String onItemUse(L2ItemInstance item, L2PcInstance user, L2Object target)
+	public String onItemUse(ItemInstance item, L2PcInstance user, L2Object target)
 	{
 		// Caster is dead.
 		if (user.isDead())
@@ -185,10 +185,10 @@ public class Q350_EnhanceYourWeapon extends Quest
 	private void tryToStageCrystal(L2PcInstance player, L2Attackable mob, LevelingInfo npcInfo, int chance)
 	{
 		SoulCrystalData crystalData = null;
-		L2ItemInstance crystalItem = null;
+		ItemInstance crystalItem = null;
 		
 		// Iterate through player's inventory to find crystal(s).
-		for (L2ItemInstance item : player.getInventory().getItems())
+		for (ItemInstance item : player.getInventory().getItems())
 		{
 			SoulCrystalData data = SoulCrystalsTable.getSoulCrystalInfos().get(item.getItemId());
 			if (data == null)

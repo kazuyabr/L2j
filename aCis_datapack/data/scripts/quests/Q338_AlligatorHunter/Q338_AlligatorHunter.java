@@ -99,7 +99,7 @@ public class Q338_AlligatorHunter extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(ALLIGATOR_PELT, 1, 0, 190000);
+		st.dropItemsAlways(ALLIGATOR_PELT, 1, 0);
 		
 		return null;
 	}

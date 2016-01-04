@@ -12,6 +12,9 @@
  */
 package quests.Q171_ActsOfEvil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -43,6 +46,15 @@ public class Q171_ActsOfEvil extends Quest
 	private static final int NETI = 30425;
 	private static final int BURAI = 30617;
 	
+	// Turek Orcs drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(20496, 530000);
+		CHANCES.put(20497, 550000);
+		CHANCES.put(20498, 510000);
+		CHANCES.put(20499, 500000);
+	}
+	
 	public Q171_ActsOfEvil()
 	{
 		super(171, qn, "Acts of Evil");
@@ -52,7 +64,7 @@ public class Q171_ActsOfEvil extends Quest
 		addStartNpc(ALVAH);
 		addTalkId(ALVAH, ARODIN, TYRA, ROLENTO, NETI, BURAI);
 		
-		addKillId(20496, 20497, 20498, 20499, 20062, 20066, 20438);
+		addKillId(20496, 20497, 20498, 20499, 20062, 20064, 20066, 20438);
 	}
 	
 	@Override
@@ -254,21 +266,24 @@ public class Q171_ActsOfEvil extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
+		final int npcId = npc.getNpcId();
+		
+		switch (npcId)
 		{
 			case 20496:
 			case 20497:
 			case 20498:
 			case 20499:
-				if (st.getInt("cond") == 2)
+				if (st.getInt("cond") == 2 && !st.dropItems(BLADE_MOLD, 1, 20, CHANCES.get(npcId)))
 				{
-					if (!st.dropItems(BLADE_MOLD, 1, 20, 500000))
-						if (Rnd.get(100) < 10)
-							addSpawn(27190, player, false, 0, true);
+					final int count = st.getQuestItemsCount(BLADE_MOLD);
+					if (count == 5 || (count >= 10 && Rnd.get(100) < 25))
+						addSpawn(27190, player, false, 0, true);
 				}
 				break;
 			
 			case 20062:
+			case 20064:
 				if (st.getInt("cond") == 5)
 				{
 					if (!st.hasQuestItems(RANGER_REPORT_1))
@@ -296,24 +311,17 @@ public class Q171_ActsOfEvil extends Quest
 					}
 				}
 				break;
-			
-			case 20066:
-				if (st.getInt("cond") == 6 && Rnd.get(100) < 10)
+
+			case 20438:
+				if (st.getInt("cond") == 6 && Rnd.get(100) < 10 && !st.hasQuestItems(WEAPON_TRADE_CONTRACT, ATTACK_DIRECTIVES))
 				{
-					if (!st.hasQuestItems(WEAPON_TRADE_CONTRACT))
-					{
-						st.giveItems(WEAPON_TRADE_CONTRACT, 1);
-						st.playSound(QuestState.SOUND_ITEMGET);
-					}
-					else if (!st.hasQuestItems(ATTACK_DIRECTIVES))
-					{
-						st.giveItems(ATTACK_DIRECTIVES, 1);
-						st.playSound(QuestState.SOUND_ITEMGET);
-					}
+					st.playSound(QuestState.SOUND_ITEMGET);
+					st.giveItems(WEAPON_TRADE_CONTRACT, 1);
+					st.giveItems(ATTACK_DIRECTIVES, 1);
 				}
 				break;
-			
-			case 20438:
+
+			case 20066:
 				if (st.getInt("cond") == 10)
 					st.dropItems(OL_MAHUM_HEAD, 1, 30, 500000);
 				break;

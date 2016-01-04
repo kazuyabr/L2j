@@ -40,7 +40,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class Orfen extends AbstractNpcAI
 {
-	private static final L2BossZone _orfenLair = GrandBossManager.getZoneById(110013);
+	private static final L2BossZone _orfenLair = GrandBossManager.getInstance().getZoneById(110013);
 	
 	private static final int[][] Pos =
 	{
@@ -96,8 +96,8 @@ public class Orfen extends AbstractNpcAI
 		
 		_IsTeleported = false;
 		
-		final StatsSet info = GrandBossManager.getStatsSet(ORFEN);
-		final int status = GrandBossManager.getBossStatus(ORFEN);
+		final StatsSet info = GrandBossManager.getInstance().getStatsSet(ORFEN);
+		final int status = GrandBossManager.getInstance().getBossStatus(ORFEN);
 		
 		if (status == DEAD)
 		{
@@ -114,7 +114,7 @@ public class Orfen extends AbstractNpcAI
 				_currentIndex = Rnd.get(1, 3);
 				
 				final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, Pos[_currentIndex][0], Pos[_currentIndex][1], Pos[_currentIndex][2], 0, false, 0, false);
-				GrandBossManager.setBossStatus(ORFEN, ALIVE);
+				GrandBossManager.getInstance().setBossStatus(ORFEN, ALIVE);
 				spawnBoss(orfen);
 			}
 		}
@@ -141,7 +141,7 @@ public class Orfen extends AbstractNpcAI
 			_currentIndex = Rnd.get(1, 3);
 			
 			final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, Pos[_currentIndex][0], Pos[_currentIndex][1], Pos[_currentIndex][2], 0, false, 0, false);
-			GrandBossManager.setBossStatus(ORFEN, ALIVE);
+			GrandBossManager.getInstance().setBossStatus(ORFEN, ALIVE);
 			spawnBoss(orfen);
 		}
 		else if (event.equalsIgnoreCase("check_orfen_pos"))
@@ -252,7 +252,7 @@ public class Orfen extends AbstractNpcAI
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-		GrandBossManager.setBossStatus(ORFEN, DEAD);
+		GrandBossManager.getInstance().setBossStatus(ORFEN, DEAD);
 		
 		long respawnTime = (long) Config.SPAWN_INTERVAL_ORFEN + Rnd.get(-Config.RANDOM_SPAWN_TIME_ORFEN, Config.RANDOM_SPAWN_TIME_ORFEN);
 		respawnTime *= 3600000;
@@ -260,9 +260,9 @@ public class Orfen extends AbstractNpcAI
 		startQuestTimer("orfen_unlock", respawnTime, null, null, false);
 		
 		// also save the respawn time so that the info is maintained past reboots
-		StatsSet info = GrandBossManager.getStatsSet(ORFEN);
+		StatsSet info = GrandBossManager.getInstance().getStatsSet(ORFEN);
 		info.set("respawn_time", System.currentTimeMillis() + respawnTime);
-		GrandBossManager.setStatsSet(ORFEN, info);
+		GrandBossManager.getInstance().setStatsSet(ORFEN, info);
 		
 		cancelQuestTimer("check_orfen_pos", npc, null);
 		return super.onKill(npc, killer, isPet);
@@ -293,7 +293,7 @@ public class Orfen extends AbstractNpcAI
 	
 	private void spawnBoss(L2GrandBossInstance npc)
 	{
-		GrandBossManager.addBoss(npc);
+		GrandBossManager.getInstance().addBoss(npc);
 		npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 		startQuestTimer("check_orfen_pos", 60000, npc, null, true);
 		

@@ -144,8 +144,7 @@ public class Q259_RanchersPlea extends Quest
 		if (st == null)
 			return null;
 		
-		st.giveItems(GIANT_SPIDER_SKIN, 1);
-		st.playSound(QuestState.SOUND_ITEMGET);
+		st.dropItemsAlways(GIANT_SPIDER_SKIN, 1, 0);
 		
 		return null;
 	}

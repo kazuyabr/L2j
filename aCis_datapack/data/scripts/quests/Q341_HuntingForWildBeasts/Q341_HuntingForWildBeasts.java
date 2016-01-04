@@ -12,6 +12,9 @@
  */
 package quests.Q341_HuntingForWildBeasts;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -24,6 +27,15 @@ public class Q341_HuntingForWildBeasts extends Quest
 	// Item
 	private static final int BEAR_SKIN = 4259;
 	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(20021, 500000); // Red Bear
+		CHANCES.put(20203, 900000); // Dion Grizzly
+		CHANCES.put(20310, 500000); // Brown Bear
+		CHANCES.put(20335, 700000); // Grizzly Bear
+	}
+	
 	public Q341_HuntingForWildBeasts()
 	{
 		super(341, qn, "Hunting for Wild Beasts");
@@ -33,8 +45,7 @@ public class Q341_HuntingForWildBeasts extends Quest
 		addStartNpc(30078); // Pano
 		addTalkId(30078);
 		
-		// Red bear, brown bear, grizzly, Dion grizzly.
-		addKillId(20203, 20021, 20310, 20143);
+		addKillId(20021, 20203, 20310, 20335);
 	}
 	
 	@Override
@@ -93,7 +104,7 @@ public class Q341_HuntingForWildBeasts extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(BEAR_SKIN, 1, 20, 400000);
+		st.dropItems(BEAR_SKIN, 1, 20, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}

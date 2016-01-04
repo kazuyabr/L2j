@@ -45,7 +45,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class QueenAnt extends AbstractNpcAI
 {
-	private static L2BossZone _antQueenLair = GrandBossManager.getZoneById(110012);
+	private static L2BossZone _antQueenLair = GrandBossManager.getInstance().getZoneById(110012);
 	
 	private static final int QUEEN = 29001;
 	private static final int LARVA = 29002;
@@ -85,8 +85,8 @@ public class QueenAnt extends AbstractNpcAI
 		registerMobs(MOBS, QuestEventType.ON_SPAWN, QuestEventType.ON_KILL, QuestEventType.ON_AGGRO_RANGE_ENTER);
 		addFactionCallId(NURSE);
 		
-		StatsSet info = GrandBossManager.getStatsSet(QUEEN);
-		if (GrandBossManager.getBossStatus(QUEEN) == DEAD)
+		StatsSet info = GrandBossManager.getInstance().getStatsSet(QUEEN);
+		if (GrandBossManager.getInstance().getBossStatus(QUEEN) == DEAD)
 		{
 			// load the unlock date and time for queen ant from DB
 			long temp = info.getLong("respawn_time") - System.currentTimeMillis();
@@ -98,7 +98,7 @@ public class QueenAnt extends AbstractNpcAI
 			else
 			{
 				L2GrandBossInstance queen = (L2GrandBossInstance) addSpawn(QUEEN, QUEEN_X, QUEEN_Y, QUEEN_Z, 0, false, 0, false);
-				GrandBossManager.setBossStatus(QUEEN, ALIVE);
+				GrandBossManager.getInstance().setBossStatus(QUEEN, ALIVE);
 				spawnBoss(queen);
 			}
 		}
@@ -132,7 +132,7 @@ public class QueenAnt extends AbstractNpcAI
 		else
 			_antQueenLair.movePlayersTo(-23808, 182368, -5600);
 		
-		GrandBossManager.addBoss(npc);
+		GrandBossManager.getInstance().addBoss(npc);
 		startQuestTimer("action", 10000, npc, null, true);
 		startQuestTimer("heal", 1000, null, null, true);
 		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
@@ -196,7 +196,7 @@ public class QueenAnt extends AbstractNpcAI
 		else if (event.equalsIgnoreCase("queen_unlock"))
 		{
 			L2GrandBossInstance queen = (L2GrandBossInstance) addSpawn(QUEEN, QUEEN_X, QUEEN_Y, QUEEN_Z, 0, false, 0, false);
-			GrandBossManager.setBossStatus(QUEEN, ALIVE);
+			GrandBossManager.getInstance().setBossStatus(QUEEN, ALIVE);
 			spawnBoss(queen);
 		}
 		return super.onAdvEvent(event, npc, player);
@@ -295,13 +295,13 @@ public class QueenAnt extends AbstractNpcAI
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		// Acts only once.
-		if (GrandBossManager.getBossStatus(QUEEN) == ALIVE)
+		if (GrandBossManager.getInstance().getBossStatus(QUEEN) == ALIVE)
 		{
 			int npcId = npc.getNpcId();
 			if (npcId == QUEEN)
 			{
 				npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-				GrandBossManager.setBossStatus(QUEEN, DEAD);
+				GrandBossManager.getInstance().setBossStatus(QUEEN, DEAD);
 				
 				long respawnTime = (long) Config.SPAWN_INTERVAL_AQ + Rnd.get(-Config.RANDOM_SPAWN_TIME_AQ, Config.RANDOM_SPAWN_TIME_AQ);
 				respawnTime *= 3600000;
@@ -311,9 +311,9 @@ public class QueenAnt extends AbstractNpcAI
 				cancelQuestTimer("heal", null, null);
 				
 				// also save the respawn time so that the info is maintained past reboots
-				StatsSet info = GrandBossManager.getStatsSet(QUEEN);
+				StatsSet info = GrandBossManager.getInstance().getStatsSet(QUEEN);
 				info.set("respawn_time", System.currentTimeMillis() + respawnTime);
-				GrandBossManager.setStatsSet(QUEEN, info);
+				GrandBossManager.getInstance().setStatsSet(QUEEN, info);
 				
 				_nurses.clear();
 				_larva.deleteMe();

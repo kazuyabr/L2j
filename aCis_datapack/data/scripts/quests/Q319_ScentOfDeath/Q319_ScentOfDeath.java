@@ -92,7 +92,7 @@ public class Q319_ScentOfDeath extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(ZOMBIE_SKIN, 1, 5, 300000))
+		if (st.dropItems(ZOMBIE_SKIN, 1, 5, 200000))
 			st.set("cond", "2");
 		
 		return null;

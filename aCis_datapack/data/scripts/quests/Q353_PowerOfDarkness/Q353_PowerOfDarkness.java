@@ -96,7 +96,7 @@ public class Q353_PowerOfDarkness extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(STONE, 1, 0, (npc.getNpcId() == 20244 || npc.getNpcId() == 20283) ? 700000 : 720000);
+		st.dropItems(STONE, 1, 0, (npc.getNpcId() == 20244 || npc.getNpcId() == 20283) ? 480000 : 500000);
 		
 		return null;
 	}

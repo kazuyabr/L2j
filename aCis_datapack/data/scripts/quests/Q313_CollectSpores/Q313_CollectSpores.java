@@ -92,7 +92,7 @@ public class Q313_CollectSpores extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(SPORE_SAC, 1, 10, 700000))
+		if (st.dropItems(SPORE_SAC, 1, 10, 400000))
 			st.set("cond", "2");
 		
 		return null;

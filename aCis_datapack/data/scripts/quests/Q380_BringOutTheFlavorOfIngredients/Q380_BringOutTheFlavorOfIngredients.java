@@ -28,7 +28,7 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 	private static final int GIANT_MIST_LEECH = 20225;
 	
 	// Items
-	private static final int RITRONS_FRUIT = 5895;
+	private static final int RITRON_FRUIT = 5895;
 	private static final int MOON_FACE_FLOWER = 5896;
 	private static final int LEECH_FLUIDS = 5897;
 	private static final int ANTIDOTE = 1831;
@@ -37,14 +37,11 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 	private static final int RITRON_JELLY = 5960;
 	private static final int JELLY_RECIPE = 5959;
 	
-	// Chance
-	private static final int REC_CHANCE = 55;
-	
-	public Q380_BringOutTheFlavorOfIngredients(int questId, String name, String descr)
+	public Q380_BringOutTheFlavorOfIngredients()
 	{
-		super(questId, name, descr);
+		super(380, qn, "Bring Out the Flavor of Ingredients!");
 		
-		setItemsIds(RITRONS_FRUIT, MOON_FACE_FLOWER, LEECH_FLUIDS);
+		setItemsIds(RITRON_FRUIT, MOON_FACE_FLOWER, LEECH_FLUIDS);
 		
 		addStartNpc(30069); // Rollant
 		addTalkId(30069);
@@ -62,8 +59,8 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 		
 		if (event.equalsIgnoreCase("30069-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30069-12.htm"))
@@ -87,56 +84,50 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 24)
-					htmltext = "30069-01.htm";
-				else
-				{
-					htmltext = "30069-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 24) ? "30069-00.htm" : "30069-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "30069-06.htm";
 				else if (cond == 2)
 				{
 					if (st.getQuestItemsCount(ANTIDOTE) >= 2)
 					{
-						st.takeItems(RITRONS_FRUIT, -1);
+						htmltext = "30069-07.htm";
+						st.set("cond", "3");
+						st.playSound(QuestState.SOUND_MIDDLE);
+						st.takeItems(RITRON_FRUIT, -1);
 						st.takeItems(MOON_FACE_FLOWER, -1);
 						st.takeItems(LEECH_FLUIDS, -1);
 						st.takeItems(ANTIDOTE, 2);
-						st.set("cond", "3");
-						st.playSound(QuestState.SOUND_MIDDLE);
-						htmltext = "30069-07.htm";
 					}
 					else
 						htmltext = "30069-06.htm";
 				}
 				else if (cond == 3)
 				{
+					htmltext = "30069-08.htm";
 					st.set("cond", "4");
 					st.playSound(QuestState.SOUND_MIDDLE);
-					htmltext = "30069-08.htm";
 				}
 				else if (cond == 4)
 				{
+					htmltext = "30069-09.htm";
 					st.set("cond", "5");
 					st.playSound(QuestState.SOUND_MIDDLE);
-					htmltext = "30069-09.htm";
 				}
 				else if (cond == 5)
 				{
+					htmltext = "30069-10.htm";
 					st.set("cond", "6");
 					st.playSound(QuestState.SOUND_MIDDLE);
-					htmltext = "30069-10.htm";
 				}
 				else if (cond == 6)
 				{
 					st.giveItems(RITRON_JELLY, 1);
-					if (Rnd.get(100) < REC_CHANCE)
+					if (Rnd.get(100) < 55)
 						htmltext = "30069-11.htm";
 					else
 					{
@@ -161,20 +152,20 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 		switch (npc.getNpcId())
 		{
 			case DIRE_WOLF:
-				if (st.dropItems(RITRONS_FRUIT, 1, 4, 100000))
+				if (st.dropItems(RITRON_FRUIT, 1, 4, 100000))
 					if (st.getQuestItemsCount(MOON_FACE_FLOWER) == 20 && st.getQuestItemsCount(LEECH_FLUIDS) == 10)
 						st.set("cond", "2");
 				break;
 			
 			case KADIF_WEREWOLF:
-				if (st.dropItems(MOON_FACE_FLOWER, 1, 20, 250000))
-					if (st.getQuestItemsCount(RITRONS_FRUIT) == 4 && st.getQuestItemsCount(LEECH_FLUIDS) == 10)
+				if (st.dropItems(MOON_FACE_FLOWER, 1, 20, 500000))
+					if (st.getQuestItemsCount(RITRON_FRUIT) == 4 && st.getQuestItemsCount(LEECH_FLUIDS) == 10)
 						st.set("cond", "2");
 				break;
 			
 			case GIANT_MIST_LEECH:
-				if (st.dropItems(LEECH_FLUIDS, 1, 10, 250000))
-					if (st.getQuestItemsCount(RITRONS_FRUIT) == 4 && st.getQuestItemsCount(MOON_FACE_FLOWER) == 20)
+				if (st.dropItems(LEECH_FLUIDS, 1, 10, 500000))
+					if (st.getQuestItemsCount(RITRON_FRUIT) == 4 && st.getQuestItemsCount(MOON_FACE_FLOWER) == 20)
 						st.set("cond", "2");
 				break;
 		}
@@ -184,6 +175,6 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q380_BringOutTheFlavorOfIngredients(380, qn, "Bring Out the Flavor of Ingredients!");
+		new Q380_BringOutTheFlavorOfIngredients();
 	}
 }

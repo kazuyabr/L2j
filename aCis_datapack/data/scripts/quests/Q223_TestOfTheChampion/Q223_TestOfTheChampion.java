@@ -329,41 +329,38 @@ public class Q223_TestOfTheChampion extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
+		final int npcId = npc.getNpcId();
+		
+		switch (npcId)
 		{
 			case BLOODY_AXE_ELITE:
-				if (st.getInt("cond") == 2)
-					if (st.dropItemsAlways(BLOODY_AXE_HEAD, 1, 100))
-						st.set("cond", "3");
+				if (st.getInt("cond") == 2 && st.dropItemsAlways(BLOODY_AXE_HEAD, 1, 100))
+					st.set("cond", "3");
 				break;
 			
 			case HARPY:
 			case HARPY_MATRIARCH:
-				if (st.getInt("cond") == 6)
-					if (st.dropItems(HARPY_EGG, Rnd.get(2, 3), 30, 500000))
-						if (st.getQuestItemsCount(MEDUSA_VENOM) == 30 && st.getQuestItemsCount(WINDSUS_BILE) == 30)
-							st.set("cond", "7");
+				if (st.getInt("cond") == 6 && st.dropItems(HARPY_EGG, 1, 30, 500000))
+					if (st.getQuestItemsCount(MEDUSA_VENOM) == 30 && st.getQuestItemsCount(WINDSUS_BILE) == 30)
+						st.set("cond", "7");
 				break;
 			
 			case MEDUSA:
-				if (st.getInt("cond") == 6)
-					if (st.dropItems(MEDUSA_VENOM, Rnd.get(2, 3), 30, 500000))
-						if (st.getQuestItemsCount(HARPY_EGG) == 30 && st.getQuestItemsCount(WINDSUS_BILE) == 30)
-							st.set("cond", "7");
+				if (st.getInt("cond") == 6 && st.dropItems(MEDUSA_VENOM, 1, 30, 500000))
+					if (st.getQuestItemsCount(HARPY_EGG) == 30 && st.getQuestItemsCount(WINDSUS_BILE) == 30)
+						st.set("cond", "7");
 				break;
 			
 			case WINDSUS:
-				if (st.getInt("cond") == 6)
-					if (st.dropItems(WINDSUS_BILE, Rnd.get(2, 3), 30, 500000))
-						if (st.getQuestItemsCount(HARPY_EGG) == 30 && st.getQuestItemsCount(MEDUSA_VENOM) == 30)
-							st.set("cond", "7");
+				if (st.getInt("cond") == 6 && st.dropItems(WINDSUS_BILE, 1, 30, 500000))
+					if (st.getQuestItemsCount(HARPY_EGG) == 30 && st.getQuestItemsCount(MEDUSA_VENOM) == 30)
+						st.set("cond", "7");
 				break;
 			
 			case ROAD_COLLECTOR:
 			case ROAD_SCAVENGER:
-				if (st.getInt("cond") == 10)
-					if (st.dropItemsAlways(ROAD_RATMAN_HEAD, 1, 100))
-						st.set("cond", "11");
+				if (st.getInt("cond") == 10 && st.dropItemsAlways(ROAD_RATMAN_HEAD, 1, 100))
+					st.set("cond", "11");
 				break;
 			
 			case LETO_LIZARDMAN:
@@ -372,9 +369,8 @@ public class Q223_TestOfTheChampion extends Quest
 			case LETO_LIZARDMAN_WARRIOR:
 			case LETO_LIZARDMAN_SHAMAN:
 			case LETO_LIZARDMAN_OVERLORD:
-				if (st.getInt("cond") == 12)
-					if (st.dropItems(LETO_LIZARDMAN_FANG, 1, 100, 500000 + (50000 * (npc.getNpcId() - 20577))))
-						st.set("cond", "13");
+				if (st.getInt("cond") == 12 && st.dropItems(LETO_LIZARDMAN_FANG, 1, 100, 500000 + (100000 * (npcId - 20577))))
+					st.set("cond", "13");
 				break;
 		}
 		

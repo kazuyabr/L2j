@@ -102,12 +102,9 @@ public class Q164_BloodFiend extends Quest
 		if (st == null)
 			return null;
 		
-		if (!st.hasQuestItems(KIRUNAK_SKULL))
-		{
-			st.set("cond", "2");
-			st.playSound(QuestState.SOUND_MIDDLE);
-			st.giveItems(KIRUNAK_SKULL, 1);
-		}
+		st.set("cond", "2");
+		st.playSound(QuestState.SOUND_MIDDLE);
+		st.giveItems(KIRUNAK_SKULL, 1);
 		
 		return null;
 	}

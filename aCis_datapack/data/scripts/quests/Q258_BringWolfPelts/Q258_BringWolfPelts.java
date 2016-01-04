@@ -118,7 +118,7 @@ public class Q258_BringWolfPelts extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(WOLF_PELT, 1, 40, 400000))
+		if (st.dropItemsAlways(WOLF_PELT, 1, 40))
 			st.set("cond", "2");
 		
 		return null;

@@ -98,7 +98,7 @@ public class Q051_OFullesSpecialBait extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(LOST_BAIT, 1, 100, 300000))
+		if (st.dropItemsAlways(LOST_BAIT, 1, 100))
 			st.set("cond", "2");
 		
 		return null;

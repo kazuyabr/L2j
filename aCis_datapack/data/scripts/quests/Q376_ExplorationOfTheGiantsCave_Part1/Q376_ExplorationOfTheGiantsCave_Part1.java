@@ -26,9 +26,6 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 	private static final int SOBLING = 31147;
 	private static final int CLIFF = 30182;
 	
-	private static final int PARCHMENT_RATE = 20000; // 2%
-	private static final int MYSTERIOUS_BOOK_RATE = 1000; // 0.1%
-	
 	// Items
 	private static final int PARCHMENT = 5944;
 	private static final int DICTIONARY_BASIC = 5891;
@@ -95,9 +92,9 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 		}
 	};
 	
-	public Q376_ExplorationOfTheGiantsCave_Part1(int questId, String name, String descr)
+	public Q376_ExplorationOfTheGiantsCave_Part1()
 	{
-		super(questId, name, descr);
+		super(376, qn, "Exploration of the Giants' Cave, Part 1");
 		
 		setItemsIds(DICTIONARY_BASIC, MYSTERIOUS_BOOK);
 		
@@ -141,6 +138,7 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 			st.takeItems(MYSTERIOUS_BOOK, -1);
 			st.giveItems(DICTIONARY_INTERMEDIATE, 1);
 		}
+		
 		return htmltext;
 	}
 	
@@ -155,17 +153,11 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 51)
-				{
-					htmltext = "31147-01.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "31147-02.htm";
+				htmltext = (player.getLevel() < 51) ? "31147-01.htm" : "31147-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case SOBLING:
@@ -173,7 +165,7 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 						break;
 					
 					case CLIFF:
-						if (cond == 2 && st.getQuestItemsCount(MYSTERIOUS_BOOK) > 0)
+						if (cond == 2 && st.hasQuestItems(MYSTERIOUS_BOOK))
 							htmltext = "30182-01.htm";
 						else if (cond == 3)
 							htmltext = "30182-03.htm";
@@ -195,7 +187,7 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		st.dropItems(PARCHMENT, 1, 0, PARCHMENT_RATE);
+		st.dropItems(PARCHMENT, 1, 0, 20000);
 		
 		// Drop mysterious book to person who still need it
 		partyMember = getRandomPartyMember(player, npc, "condBook", "1");
@@ -204,7 +196,7 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 		
 		st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(MYSTERIOUS_BOOK, 1, 1, MYSTERIOUS_BOOK_RATE))
+		if (st.dropItems(MYSTERIOUS_BOOK, 1, 1, 1000))
 			st.unset("condBook");
 		
 		return null;
@@ -247,6 +239,6 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q376_ExplorationOfTheGiantsCave_Part1(376, qn, "Exploration of the Giants' Cave, Part 1");
+		new Q376_ExplorationOfTheGiantsCave_Part1();
 	}
 }

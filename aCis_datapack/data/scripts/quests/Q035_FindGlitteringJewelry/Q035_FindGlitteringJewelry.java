@@ -149,7 +149,7 @@ public class Q035_FindGlitteringJewelry extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(ROUGH_JEWEL, 1, 10))
+		if (st.dropItems(ROUGH_JEWEL, 1, 10, 500000))
 			st.set("cond", "3");
 		
 		return null;

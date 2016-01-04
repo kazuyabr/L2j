@@ -34,7 +34,7 @@ public class Q320_BonesTellTheFuture extends Quest
 		addStartNpc(30359); // Kaitar
 		addTalkId(30359);
 		
-		addKillId(20517, 20518, 20022, 20455);
+		addKillId(20517, 20518);
 	}
 	
 	@Override
@@ -98,7 +98,7 @@ public class Q320_BonesTellTheFuture extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(BONE_FRAGMENT, 1, 10, 200000))
+		if (st.dropItems(BONE_FRAGMENT, 1, 10, (npc.getNpcId() == 20517) ? 180000 : 200000))
 			st.set("cond", "2");
 		
 		return null;

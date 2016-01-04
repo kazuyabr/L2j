@@ -148,7 +148,7 @@ public class Q232_TestOfTheLord extends Quest
 		{
 			st.set("cond", "7");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			startQuestTimer("f_orc_despawn", 30000, null, player, false);
+			startQuestTimer("f_orc_despawn", 10000, null, player, false);
 		}
 		else if (event.equalsIgnoreCase("30649-04.htm"))
 		{
@@ -160,7 +160,7 @@ public class Q232_TestOfTheLord extends Quest
 		else if (event.equalsIgnoreCase("30649-07.htm"))
 		{
 			if (_firstOrc == null)
-				_firstOrc = addSpawn(FIRST_ORC, 21036, -107690, -3038, 60000, false, 0, true);
+				_firstOrc = addSpawn(FIRST_ORC, 21036, -107690, -3038, 200000, false, 0, true);
 		}
 		else if (event.equalsIgnoreCase("f_orc_despawn"))
 		{
@@ -482,11 +482,19 @@ public class Q232_TestOfTheLord extends Quest
 			case 20583:
 			case 20584:
 			case 20585:
+				if (st.hasQuestItems(HATOS_CHARM))
+					st.dropItems(TIMAK_ORC_SKULL, 1, 10, 710000);
+				break;
+			
 			case 20586:
+				if (st.hasQuestItems(HATOS_CHARM))
+					st.dropItems(TIMAK_ORC_SKULL, 1, 10, 810000);
+				break;
+			
 			case 20587:
 			case 20588:
 				if (st.hasQuestItems(HATOS_CHARM))
-					st.dropItems(TIMAK_ORC_SKULL, 1, 10, 500000 + ((npc.getNpcId() - 20583) * 50000));
+					st.dropItemsAlways(TIMAK_ORC_SKULL, 1, 10);
 				break;
 			
 			case 20233:
@@ -495,19 +503,29 @@ public class Q232_TestOfTheLord extends Quest
 				break;
 			
 			case 20269:
+				if (st.hasQuestItems(MANAKIAS_ORDERS))
+					st.dropItems(BREKA_ORC_FANG, 1, 20, 410000);
+				break;
+			
 			case 20270:
 				if (st.hasQuestItems(MANAKIAS_ORDERS))
-					st.dropItems(BREKA_ORC_FANG, 1, 20, (npc.getNpcId() == 20269) ? 400000 : 500000);
+					st.dropItems(BREKA_ORC_FANG, 1, 20, 510000);
 				break;
 			
 			case 20778:
 			case 20779:
 				if (st.hasQuestItems(MARTANKUS_CHARM))
 				{
-					if (st.dropItemsAlways((st.hasQuestItems(RAGNA_CHIEF_NOTICE)) ? RAGNA_ORC_HEAD : RAGNA_CHIEF_NOTICE, 1, 1))
+					if (!st.hasQuestItems(RAGNA_CHIEF_NOTICE))
 					{
-						if (st.hasQuestItems(RAGNA_CHIEF_NOTICE))
-							st.set("cond", "5");
+						st.playSound(QuestState.SOUND_MIDDLE);
+						st.giveItems(RAGNA_CHIEF_NOTICE, 1);
+					}
+					else if (!st.hasQuestItems(RAGNA_ORC_HEAD))
+					{
+						st.set("cond", "5");
+						st.playSound(QuestState.SOUND_MIDDLE);
+						st.giveItems(RAGNA_ORC_HEAD, 1);
 					}
 				}
 				break;

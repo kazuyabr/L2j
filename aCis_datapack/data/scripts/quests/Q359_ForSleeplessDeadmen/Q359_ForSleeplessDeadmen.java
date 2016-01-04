@@ -12,6 +12,9 @@
  */
 package quests.Q359_ForSleeplessDeadmen;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -25,7 +28,7 @@ public class Q359_ForSleeplessDeadmen extends Quest
 	// Item
 	private static final int REMAINS = 5869;
 	
-	// NPCs
+	// Monsters
 	private static final int DOOM_SERVANT = 21006;
 	private static final int DOOM_GUARD = 21007;
 	private static final int DOOM_ARCHER = 21008;
@@ -42,6 +45,14 @@ public class Q359_ForSleeplessDeadmen extends Quest
 		5494,
 		5495
 	};
+	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(DOOM_SERVANT, 320000);
+		CHANCES.put(DOOM_GUARD, 340000);
+		CHANCES.put(DOOM_ARCHER, 420000);
+	}
 	
 	public Q359_ForSleeplessDeadmen()
 	{
@@ -119,23 +130,8 @@ public class Q359_ForSleeplessDeadmen extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
-		{
-			case DOOM_SERVANT:
-				if (st.dropItems(REMAINS, 1, 60, 365000))
-					st.set("cond", "2");
-				break;
-			
-			case DOOM_GUARD:
-				if (st.dropItems(REMAINS, 1, 60, 392000))
-					st.set("cond", "2");
-				break;
-			
-			case DOOM_ARCHER:
-				if (st.dropItems(REMAINS, 1, 60, 503000))
-					st.set("cond", "2");
-				break;
-		}
+		if (st.dropItems(REMAINS, 1, 60, CHANCES.get(npc.getNpcId())))
+			st.set("cond", "2");
 		
 		return null;
 	}

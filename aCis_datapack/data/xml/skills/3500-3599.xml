@@ -401,7 +401,7 @@
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
 			<mul order="0x30" stat="pAtk" val="1.08"> <!-- Archery P. Atk. +8% -->
-				<using kind='Bow'/>
+				<using kind="BOW"/>
 			</mul>
 			<add order="0x40" stat="maxMp" val="240"/> <!-- MP +240 -->
 			<add order="0x40" stat="maxLoad" val="5759"/> <!-- Weight increased plus the point at which a weight penalty is applied +5759 -->

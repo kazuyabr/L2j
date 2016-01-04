@@ -98,7 +98,7 @@ public class Q052_WilliesSpecialBait extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(TARLK_EYE, 1, 100, 300000))
+		if (st.dropItems(TARLK_EYE, 1, 100, 500000))
 			st.set("cond", "2");
 		
 		return null;

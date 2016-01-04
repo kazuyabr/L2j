@@ -118,8 +118,28 @@ public class Q266_PleasOfPixies extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(PREDATOR_FANG, Rnd.get(1, 3), 100))
-			st.set("cond", "2");
+		switch (npc.getNpcId())
+		{
+			case 20525:
+				if (st.dropItemsAlways(PREDATOR_FANG, Rnd.get(2, 3), 100))
+					st.set("cond", "2");
+				break;
+			
+			case 20530:
+				if (st.dropItems(PREDATOR_FANG, 1, 100, 800000))
+					st.set("cond", "2");
+				break;
+			
+			case 20534:
+				if (st.dropItems(PREDATOR_FANG, (Rnd.get(3) == 0) ? 1 : 2, 100, 600000))
+					st.set("cond", "2");
+				break;
+			
+			case 20537:
+				if (st.dropItemsAlways(PREDATOR_FANG, 2, 100))
+					st.set("cond", "2");
+				break;
+		}
 		
 		return null;
 	}

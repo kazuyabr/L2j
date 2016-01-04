@@ -103,7 +103,18 @@ public class Q294_CovertBusiness extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(BAT_FANG, Rnd.get(1, 4), 100))
+		int count = 1;
+		final int chance = Rnd.get(10);
+		final boolean isBarded = (npc.getNpcId() == 20370);
+		
+		if (chance < 3)
+			count++;
+		else if (chance < ((isBarded) ? 5 : 6))
+			count += 2;
+		else if (isBarded && chance < 7)
+			count += 3;
+		
+		if (st.dropItemsAlways(BAT_FANG, count, 100))
 			st.set("cond", "2");
 		
 		return null;

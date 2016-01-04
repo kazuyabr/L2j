@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q257_TheGuardIsBusy extends Quest
 {
@@ -134,36 +133,31 @@ public class Q257_TheGuardIsBusy extends Quest
 		if (st == null)
 			return null;
 		
-		int chance = 50;
-		int item = WEREWOLF_FANG;
-		
 		switch (npc.getNpcId())
 		{
 			case 20006:
 			case 20130:
 			case 20131:
-				item = ORC_AMULET;
+				st.dropItems(ORC_AMULET, 1, 0, 500000);
 				break;
 			
 			case 20093:
 			case 20096:
 			case 20098:
-				item = ORC_NECKLACE;
+				st.dropItems(ORC_NECKLACE, 1, 0, 500000);
 				break;
 			
 			case 20342:
-				chance = 20;
+				st.dropItems(WEREWOLF_FANG, 1, 0, 200000);
 				break;
 			
 			case 20343:
-				chance = 40;
+				st.dropItems(WEREWOLF_FANG, 1, 0, 400000);
 				break;
-		}
-		
-		if (Rnd.get(100) < chance)
-		{
-			st.giveItems(item, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
+			
+			case 20132:
+				st.dropItems(WEREWOLF_FANG, 1, 0, 500000);
+				break;
 		}
 		
 		return null;

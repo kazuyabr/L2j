@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.util.Rnd;
 
 public class Q105_SkirmishWithTheOrcs extends Quest
@@ -157,6 +158,7 @@ public class Q105_SkirmishWithTheOrcs extends Quest
 					st.giveItems(ECHO_SOLITUDE, 10);
 					st.giveItems(ECHO_FEAST, 10);
 					st.giveItems(ECHO_CELEBRATION, 10);
+					player.broadcastPacket(new SocialAction(player, 3));
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(false);
 				}

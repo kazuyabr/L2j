@@ -17,7 +17,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q260_HuntTheOrcs extends Quest
 {
@@ -118,23 +117,19 @@ public class Q260_HuntTheOrcs extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 40)
+		switch (npc.getNpcId())
 		{
-			switch (npc.getNpcId())
-			{
-				case KABOO_ORC:
-				case KABOO_ORC_GRUNT:
-				case KABOO_ORC_ARCHER:
-					st.giveItems(ORC_AMULET, 1);
-					break;
-				
-				case KABOO_ORC_FIGHTER:
-				case KABOO_ORC_FIGHTER_LEADER:
-				case KABOO_ORC_FIGHTER_LIEUTENANT:
-					st.giveItems(ORC_NECKLACE, 1);
-					break;
-			}
-			st.playSound(QuestState.SOUND_ITEMGET);
+			case KABOO_ORC:
+			case KABOO_ORC_GRUNT:
+			case KABOO_ORC_ARCHER:
+				st.dropItems(ORC_AMULET, 1, 0, 500000);
+				break;
+			
+			case KABOO_ORC_FIGHTER:
+			case KABOO_ORC_FIGHTER_LEADER:
+			case KABOO_ORC_FIGHTER_LIEUTENANT:
+				st.dropItems(ORC_NECKLACE, 1, 0, 500000);
+				break;
 		}
 		
 		return null;

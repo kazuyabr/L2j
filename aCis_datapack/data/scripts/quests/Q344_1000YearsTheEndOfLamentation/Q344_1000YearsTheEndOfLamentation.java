@@ -12,6 +12,9 @@
  */
 package quests.Q344_1000YearsTheEndOfLamentation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -36,6 +39,21 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 	private static final int OLD_TOTEM = 4272;
 	private static final int CRUCIFIX = 4273;
 	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(20236, 380000);
+		CHANCES.put(20237, 490000);
+		CHANCES.put(20238, 460000);
+		CHANCES.put(20239, 490000);
+		CHANCES.put(20240, 530000);
+		CHANCES.put(20272, 380000);
+		CHANCES.put(20273, 490000);
+		CHANCES.put(20274, 460000);
+		CHANCES.put(20275, 490000);
+		CHANCES.put(20276, 530000);
+	}
+	
 	public Q344_1000YearsTheEndOfLamentation()
 	{
 		super(344, qn, "1000 Years, the End of Lamentation");
@@ -45,7 +63,7 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 		addStartNpc(GILMORE);
 		addTalkId(GILMORE, RODEMAI, ORVEN, GARVARENTZ, KAIEN);
 		
-		addKillId(20236, 20237, 20238, 20239, 20240);
+		addKillId(20236, 20237, 20238, 20239, 20240, 20272, 20273, 20274, 20275, 20276);
 	}
 	
 	@Override
@@ -242,7 +260,7 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(ARTICLE_DEAD_HERO, 1, -1, (36 + ((npc.getNpcId() - 20234) * 2)) * 10000);
+		st.dropItems(ARTICLE_DEAD_HERO, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}

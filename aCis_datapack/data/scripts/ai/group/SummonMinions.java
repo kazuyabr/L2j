@@ -15,7 +15,9 @@
 package ai.group;
 
 import ai.AbstractNpcAI;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.L2Attackable;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
@@ -33,7 +35,7 @@ public class SummonMinions extends AbstractNpcAI
 		"Forces of darkness! Follow me!"
 	};
 	
-	private static final TIntObjectHashMap<int[]> MINIONS = new TIntObjectHashMap<>();
+	private static final Map<Integer, int[]> MINIONS = new HashMap<>();
 	{
 		MINIONS.put(20767, new int[]
 		{
@@ -58,7 +60,7 @@ public class SummonMinions extends AbstractNpcAI
 	public SummonMinions(String name, String descr)
 	{
 		super(name, descr);
-		registerMobs(MINIONS.keys(), QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
+		registerMobs(MINIONS.keySet(), QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
 	}
 	
 	@Override

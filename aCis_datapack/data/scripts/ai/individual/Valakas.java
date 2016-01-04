@@ -37,7 +37,7 @@ import net.sf.l2j.util.Rnd;
 
 public class Valakas extends AbstractNpcAI
 {
-	private static final L2BossZone _valakasLair = GrandBossManager.getZoneById(110010);
+	private static final L2BossZone _valakasLair = GrandBossManager.getInstance().getZoneById(110010);
 	
 	private static final byte DORMANT = 0; // Valakas is spawned and no one has entered yet. Entry is unlocked.
 	private static final byte WAITING = 1; // Valakas is spawned and someone has entered, triggering a 30 minute window for additional people to enter. Entry is unlocked.
@@ -157,8 +157,8 @@ public class Valakas extends AbstractNpcAI
 		};
 		registerMobs(mob);
 		
-		final StatsSet info = GrandBossManager.getStatsSet(VALAKAS);
-		final int status = GrandBossManager.getBossStatus(VALAKAS);
+		final StatsSet info = GrandBossManager.getInstance().getStatsSet(VALAKAS);
+		final int status = GrandBossManager.getInstance().getBossStatus(VALAKAS);
 		
 		if (status == DEAD)
 		{
@@ -173,8 +173,8 @@ public class Valakas extends AbstractNpcAI
 			{
 				// The time has expired while the server was offline. Spawn valakas in his cave as DORMANT.
 				final L2Npc valakas = addSpawn(VALAKAS, -105200, -253104, -15264, 0, false, 0, false);
-				GrandBossManager.setBossStatus(VALAKAS, DORMANT);
-				GrandBossManager.addBoss((L2GrandBossInstance) valakas);
+				GrandBossManager.getInstance().setBossStatus(VALAKAS, DORMANT);
+				GrandBossManager.getInstance().addBoss((L2GrandBossInstance) valakas);
 				
 				valakas.setIsInvul(true);
 				valakas.setRunning();
@@ -192,7 +192,7 @@ public class Valakas extends AbstractNpcAI
 			final int mp = info.getInteger("currentMP");
 			
 			final L2Npc valakas = addSpawn(VALAKAS, loc_x, loc_y, loc_z, heading, false, 0, false);
-			GrandBossManager.addBoss((L2GrandBossInstance) valakas);
+			GrandBossManager.getInstance().addBoss((L2GrandBossInstance) valakas);
 			
 			valakas.setCurrentHpMp(hp, mp);
 			valakas.setRunning();
@@ -254,14 +254,14 @@ public class Valakas extends AbstractNpcAI
 			else if (event.equalsIgnoreCase("regen_task"))
 			{
 				// Inactivity task - 15min
-				if (GrandBossManager.getBossStatus(VALAKAS) == FIGHTING)
+				if (GrandBossManager.getInstance().getBossStatus(VALAKAS) == FIGHTING)
 				{
 					if (_timeTracker + 900000 < System.currentTimeMillis())
 					{
 						npc.getAI().setIntention(CtrlIntention.IDLE);
 						npc.teleToLocation(-105200, -253104, -15264, 0);
 						
-						GrandBossManager.setBossStatus(VALAKAS, DORMANT);
+						GrandBossManager.getInstance().setBossStatus(VALAKAS, DORMANT);
 						npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
 						
 						// Drop all players from the zone.
@@ -316,7 +316,7 @@ public class Valakas extends AbstractNpcAI
 				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 750, 170, -10, 3400, 4000, 10, -15, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_10"))
 			{
-				GrandBossManager.setBossStatus(VALAKAS, FIGHTING);
+				GrandBossManager.getInstance().setBossStatus(VALAKAS, FIGHTING);
 				npc.setIsInvul(false);
 				
 				startQuestTimer("regen_task", 60000, npc, null, true);
@@ -354,8 +354,8 @@ public class Valakas extends AbstractNpcAI
 			if (event.equalsIgnoreCase("valakas_unlock"))
 			{
 				final L2Npc valakas = addSpawn(VALAKAS, -105200, -253104, -15264, 32768, false, 0, false);
-				GrandBossManager.addBoss((L2GrandBossInstance) valakas);
-				GrandBossManager.setBossStatus(VALAKAS, DORMANT);
+				GrandBossManager.getInstance().addBoss((L2GrandBossInstance) valakas);
+				GrandBossManager.getInstance().setBossStatus(VALAKAS, DORMANT);
 			}
 			else if (event.equalsIgnoreCase("remove_players"))
 				_valakasLair.oustAllPlayers();
@@ -382,7 +382,7 @@ public class Valakas extends AbstractNpcAI
 		if (npc.isInvul())
 			return null;
 		
-		if (GrandBossManager.getBossStatus(VALAKAS) != FIGHTING)
+		if (GrandBossManager.getInstance().getBossStatus(VALAKAS) != FIGHTING)
 		{
 			attacker.teleToLocation(150037, -57255, -2976, 0);
 			return null;
@@ -422,7 +422,7 @@ public class Valakas extends AbstractNpcAI
 		startQuestTimer("die_7", 14000, npc, null, false); // 700
 		startQuestTimer("die_8", 16500, npc, null, false); // 2500
 		
-		GrandBossManager.setBossStatus(VALAKAS, DEAD);
+		GrandBossManager.getInstance().setBossStatus(VALAKAS, DEAD);
 		
 		long respawnTime = (long) Config.SPAWN_INTERVAL_VALAKAS + Rnd.get(-Config.RANDOM_SPAWN_TIME_VALAKAS, Config.RANDOM_SPAWN_TIME_VALAKAS);
 		respawnTime *= 3600000;
@@ -430,9 +430,9 @@ public class Valakas extends AbstractNpcAI
 		startQuestTimer("valakas_unlock", respawnTime, null, null, false);
 		
 		// also save the respawn time so that the info is maintained past reboots
-		StatsSet info = GrandBossManager.getStatsSet(VALAKAS);
+		StatsSet info = GrandBossManager.getInstance().getStatsSet(VALAKAS);
 		info.set("respawn_time", System.currentTimeMillis() + respawnTime);
-		GrandBossManager.setStatsSet(VALAKAS, info);
+		GrandBossManager.getInstance().setStatsSet(VALAKAS, info);
 		
 		return super.onKill(npc, killer, isPet);
 	}

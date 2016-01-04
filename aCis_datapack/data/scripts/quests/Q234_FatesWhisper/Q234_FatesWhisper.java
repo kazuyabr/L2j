@@ -20,6 +20,7 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q234_FatesWhisper extends Quest
 {
@@ -143,6 +144,7 @@ public class Q234_FatesWhisper extends Quest
 					st.takeItems(itemId, 1);
 					st.giveItems(aGradeItemId, 1);
 					st.giveItems(STAR_OF_DESTINY, 1);
+					player.broadcastPacket(new SocialAction(player, 3));
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(false);
 				}
@@ -359,7 +361,7 @@ public class Q234_FatesWhisper extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		addSpawn(CHEST_SPAWN.get(npc.getNpcId()), npc, true, 60000, false);
+		addSpawn(CHEST_SPAWN.get(npc.getNpcId()), npc, true, 120000, false);
 		
 		return null;
 	}

@@ -12,7 +12,8 @@
  */
 package quests.Q605_AllianceWithKetraOrcs;
 
-import gnu.trove.map.hash.TIntIntHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -28,7 +29,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 	private static final String qn = "Q605_AllianceWithKetraOrcs";
 	private static final String qn2 = "Q606_WarWithVarkaSilenos";
 	
-	private static final TIntIntHashMap Chance = new TIntIntHashMap();
+	private static final Map<Integer, Integer> Chance = new HashMap<>();
 	{
 		Chance.put(21350, 500000);
 		Chance.put(21351, 500000);
@@ -53,7 +54,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 		Chance.put(21375, 626000);
 	}
 	
-	private static final TIntIntHashMap ChanceMane = new TIntIntHashMap();
+	private static final Map<Integer, Integer> ChanceMane = new HashMap<>();
 	{
 		ChanceMane.put(21350, 500000);
 		ChanceMane.put(21353, 510000);
@@ -97,7 +98,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 		addStartNpc(31371); // Wahkan
 		addTalkId(31371);
 		
-		for (int mobs : Chance.keys())
+		for (int mobs : Chance.keySet())
 			addKillId(mobs);
 	}
 	
@@ -338,7 +339,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 		
 		// Support for Q606.
 		QuestState st = partyMember.getQuestState(qn2);
-		if (st != null && Rnd.get(1) == 0)
+		if (st != null && Rnd.nextBoolean() && ChanceMane.containsKey(npcId))
 		{
 			int chance = ChanceMane.get(npcId);
 			if (chance != 0)

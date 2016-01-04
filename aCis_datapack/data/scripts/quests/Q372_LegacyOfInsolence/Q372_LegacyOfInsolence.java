@@ -50,14 +50,14 @@ public class Q372_LegacyOfInsolence extends Quest
 			5968,
 			5969
 		},
-		// rate (%)
+		// rate
 		{
-			30,
-			40,
-			46,
-			40,
-			25,
-			25
+			300000,
+			400000,
+			460000,
+			400000,
+			250000,
+			250000
 		}
 	};
 	
@@ -280,9 +280,9 @@ public class Q372_LegacyOfInsolence extends Quest
 		}
 	};
 	
-	public Q372_LegacyOfInsolence(int questId, String name, String descr)
+	public Q372_LegacyOfInsolence()
 	{
-		super(questId, name, descr);
+		super(372, qn, "Legacy of Insolence");
 		
 		addStartNpc(WALDERAL);
 		addTalkId(WALDERAL, PATRIN, HOLLY, CLAUDIA, DESMOND);
@@ -300,8 +300,8 @@ public class Q372_LegacyOfInsolence extends Quest
 		
 		if (event.equalsIgnoreCase("30844-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30844-05b.htm"))
@@ -347,13 +347,7 @@ public class Q372_LegacyOfInsolence extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 59)
-				{
-					htmltext = "30844-01.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "30844-02.htm";
+				htmltext = (player.getLevel() < 59) ? "30844-01.htm" : "30844-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -393,17 +387,12 @@ public class Q372_LegacyOfInsolence extends Quest
 			return null;
 		
 		final int npcId = npc.getNpcId();
-		for (int index = 0; index < MONSTERS_DROPS[0].length; index++)
+		
+		for (int i = 0; i < MONSTERS_DROPS[0].length; i++)
 		{
-			if (MONSTERS_DROPS[0][index] == npcId)
+			if (MONSTERS_DROPS[0][i] == npcId)
 			{
-				if (Rnd.get(100) < MONSTERS_DROPS[2][index])
-				{
-					QuestState st = partyMember.getQuestState(qn);
-					
-					st.rewardItems(MONSTERS_DROPS[1][index], 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
+				partyMember.getQuestState(qn).dropItems(MONSTERS_DROPS[1][i], 1, 0, MONSTERS_DROPS[2][i]);
 				break;
 			}
 		}
@@ -442,6 +431,6 @@ public class Q372_LegacyOfInsolence extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q372_LegacyOfInsolence(372, qn, "Legacy of Insolence");
+		new Q372_LegacyOfInsolence();
 	}
 }

@@ -357,7 +357,7 @@ public class Q218_TestimonyOfLife extends Quest
 							htmltext = "30655-03.htm";
 						else if (cond == 16)
 						{
-							if (gotAllSpearPieces(st))
+							if (st.hasQuestItems(TALINS_PIECES))
 							{
 								htmltext = "30655-04.htm";
 								st.set("cond", "17");
@@ -400,17 +400,15 @@ public class Q218_TestimonyOfLife extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20550:
-				if (st.getInt("cond") == 4)
-					if (st.dropItems(PURE_MITHRIL_ORE, 1, 10, 500000))
-						if (st.getQuestItemsCount(WYRM_TALON) >= 20 && st.getQuestItemsCount(ANT_SOLDIER_ACID) >= 20)
-							st.set("cond", "5");
+				if (st.getInt("cond") == 4 && st.dropItems(PURE_MITHRIL_ORE, 1, 10, 500000))
+					if (st.getQuestItemsCount(WYRM_TALON) >= 20 && st.getQuestItemsCount(ANT_SOLDIER_ACID) >= 20)
+						st.set("cond", "5");
 				break;
 			
 			case 20176:
-				if (st.getInt("cond") == 4)
-					if (st.dropItems(WYRM_TALON, 1, 20, 500000))
-						if (st.getQuestItemsCount(PURE_MITHRIL_ORE) >= 10 && st.getQuestItemsCount(ANT_SOLDIER_ACID) >= 20)
-							st.set("cond", "5");
+				if (st.getInt("cond") == 4 && st.dropItems(WYRM_TALON, 1, 20, 500000))
+					if (st.getQuestItemsCount(PURE_MITHRIL_ORE) >= 10 && st.getQuestItemsCount(ANT_SOLDIER_ACID) >= 20)
+						st.set("cond", "5");
 				break;
 			
 			case 20082:
@@ -418,24 +416,19 @@ public class Q218_TestimonyOfLife extends Quest
 			case 20086:
 			case 20087:
 			case 20088:
-				if (st.getInt("cond") == 4)
-					if (st.dropItems(ANT_SOLDIER_ACID, 1, 20, 800000))
-						if (st.getQuestItemsCount(PURE_MITHRIL_ORE) >= 10 && st.getQuestItemsCount(WYRM_TALON) >= 20)
-							st.set("cond", "5");
+				if (st.getInt("cond") == 4 && st.dropItems(ANT_SOLDIER_ACID, 1, 20, 800000))
+					if (st.getQuestItemsCount(PURE_MITHRIL_ORE) >= 10 && st.getQuestItemsCount(WYRM_TALON) >= 20)
+						st.set("cond", "5");
 				break;
 			
 			case 20233:
-				if (st.getInt("cond") == 9)
-					if (st.dropItems(SPIDER_ICHOR, 1, 20, 500000))
-						if (st.getQuestItemsCount(HARPY_DOWN) >= 20)
-							st.set("cond", "10");
+				if (st.getInt("cond") == 9 && st.dropItems(SPIDER_ICHOR, 1, 20, 500000) && st.getQuestItemsCount(HARPY_DOWN) >= 20)
+					st.set("cond", "10");
 				break;
 			
 			case 20145:
-				if (st.getInt("cond") == 9)
-					if (st.dropItems(HARPY_DOWN, 1, 20, 500000))
-						if (st.getQuestItemsCount(SPIDER_ICHOR) >= 20)
-							st.set("cond", "10");
+				if (st.getInt("cond") == 9 && st.dropItems(HARPY_DOWN, 1, 20, 500000) && st.getQuestItemsCount(SPIDER_ICHOR) >= 20)
+					st.set("cond", "10");
 				break;
 			
 			case 27077:
@@ -451,35 +444,24 @@ public class Q218_TestimonyOfLife extends Quest
 			
 			case 20581:
 			case 20582:
-				if (st.getInt("cond") == 15 && Rnd.get(100) < 50)
+				if (st.getInt("cond") == 15 && Rnd.nextBoolean())
 				{
-					final int randomItemId = Rnd.get(3166, 3171);
-					if (!st.hasQuestItems(randomItemId))
+					for (int itemId : TALINS_PIECES)
 					{
-						st.giveItems(randomItemId, 1);
-						if (gotAllSpearPieces(st))
+						if (!st.hasQuestItems(itemId))
 						{
-							st.set("cond", "16");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
 							st.playSound(QuestState.SOUND_ITEMGET);
+							st.giveItems(itemId, 1);
+							return null;
+						}
 					}
+					st.set("cond", "16");
+					st.playSound(QuestState.SOUND_MIDDLE);
 				}
 				break;
 		}
 		
 		return null;
-	}
-	
-	private static boolean gotAllSpearPieces(QuestState st)
-	{
-		for (int itemId : TALINS_PIECES)
-		{
-			if (!st.hasQuestItems(itemId))
-				return false;
-		}
-		return true;
 	}
 	
 	public static void main(String[] args)

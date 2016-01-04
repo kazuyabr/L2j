@@ -18,6 +18,7 @@ import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q104_SpiritOfMirrors extends Quest
 {
@@ -143,8 +144,9 @@ public class Q104_SpiritOfMirrors extends Quest
 							st.giveItems(ECHO_SOLITUDE, 10);
 							st.giveItems(ECHO_FEAST, 10);
 							st.giveItems(ECHO_CELEBRATION, 10);
-							st.exitQuest(false);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
+							st.exitQuest(false);
 						}
 						break;
 					

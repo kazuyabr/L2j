@@ -19,7 +19,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q369_CollectorOfJewels extends Quest
 {
@@ -35,34 +34,51 @@ public class Q369_CollectorOfJewels extends Quest
 	// Reward
 	private static final int ADENA = 57;
 	
-	// Droplists
-	private static final Map<Integer, Integer> DROPLIST_FREEZE = new HashMap<>();
+	// Droplist
+	private static final Map<Integer, int[]> DROPLIST = new HashMap<>();
 	{
-		DROPLIST_FREEZE.put(20747, 85);
-		DROPLIST_FREEZE.put(20619, 73);
-		DROPLIST_FREEZE.put(20616, 60);
+		DROPLIST.put(20609, new int[]
+		{
+			FLARE_SHARD,
+			630000
+		});
+		DROPLIST.put(20612, new int[]
+		{
+			FLARE_SHARD,
+			770000
+		});
+		DROPLIST.put(20749, new int[]
+		{
+			FLARE_SHARD,
+			850000
+		});
+		DROPLIST.put(20616, new int[]
+		{
+			FREEZING_SHARD,
+			600000
+		});
+		DROPLIST.put(20619, new int[]
+		{
+			FREEZING_SHARD,
+			730000
+		});
+		DROPLIST.put(20747, new int[]
+		{
+			FREEZING_SHARD,
+			850000
+		});
 	}
 	
-	private static final Map<Integer, Integer> DROPLIST_FLARE = new HashMap<>();
+	public Q369_CollectorOfJewels()
 	{
-		DROPLIST_FLARE.put(20612, 77);
-		DROPLIST_FLARE.put(20609, 77);
-		DROPLIST_FLARE.put(20749, 85);
-	}
-	
-	public Q369_CollectorOfJewels(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
+		super(369, qn, "Collector of Jewels");
 		
 		setItemsIds(FLARE_SHARD, FREEZING_SHARD);
 		
 		addStartNpc(NELL);
 		addTalkId(NELL);
 		
-		for (int mob : DROPLIST_FREEZE.keySet())
-			addKillId(mob);
-		
-		for (int mob : DROPLIST_FLARE.keySet())
+		for (int mob : DROPLIST.keySet())
 			addKillId(mob);
 	}
 	
@@ -76,11 +92,9 @@ public class Q369_CollectorOfJewels extends Quest
 		
 		if (event.equalsIgnoreCase("30376-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
-			st.set("awaitsFreezing", "1");
-			st.set("awaitsFlare", "1");
 		}
 		else if (event.equalsIgnoreCase("30376-07.htm"))
 			st.playSound(QuestState.SOUND_ITEMGET);
@@ -104,19 +118,13 @@ public class Q369_CollectorOfJewels extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 25)
-					htmltext = "30376-02.htm";
-				else
-				{
-					htmltext = "30376-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 25) ? "30376-01.htm" : "30376-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				int flare = st.getQuestItemsCount(FLARE_SHARD);
-				int freezing = st.getQuestItemsCount(FREEZING_SHARD);
+				final int cond = st.getInt("cond");
+				final int flare = st.getQuestItemsCount(FLARE_SHARD);
+				final int freezing = st.getQuestItemsCount(FREEZING_SHARD);
 				
 				if (cond == 1)
 					htmltext = "30376-04.htm";
@@ -124,22 +132,20 @@ public class Q369_CollectorOfJewels extends Quest
 				{
 					htmltext = "30376-05.htm";
 					st.set("cond", "3");
-					st.rewardItems(ADENA, 12500);
+					st.playSound(QuestState.SOUND_MIDDLE);
 					st.takeItems(FLARE_SHARD, -1);
 					st.takeItems(FREEZING_SHARD, -1);
-					st.set("awaitsFreezing", "1");
-					st.set("awaitsFlare", "1");
-					st.playSound(QuestState.SOUND_MIDDLE);
+					st.rewardItems(ADENA, 12500);
 				}
 				else if (cond == 3)
 					htmltext = "30376-09.htm";
 				else if (cond == 4 && flare >= 200 && freezing >= 200)
 				{
 					htmltext = "30376-10.htm";
-					st.playSound(QuestState.SOUND_FINISH);
-					st.rewardItems(ADENA, 63500);
 					st.takeItems(FLARE_SHARD, -1);
 					st.takeItems(FREEZING_SHARD, -1);
+					st.rewardItems(ADENA, 63500);
+					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
 				break;
@@ -151,63 +157,28 @@ public class Q369_CollectorOfJewels extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
-		L2PcInstance partymember = null;
-		int item = 0, chance = 0;
-		
-		if (DROPLIST_FREEZE.containsKey(npcId))
-		{
-			partymember = getRandomPartyMember(player, npc, "awaitsFreezing", "1");
-			
-			item = FREEZING_SHARD;
-			chance = DROPLIST_FREEZE.get(npcId);
-		}
-		else if (DROPLIST_FLARE.containsKey(npcId))
-		{
-			partymember = getRandomPartyMember(player, npc, "awaitsFlare", "1");
-			
-			item = FLARE_SHARD;
-			chance = DROPLIST_FLARE.get(npcId);
-		}
-		
-		if (partymember == null)
+		L2PcInstance partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (partyMember == null)
 			return null;
 		
-		QuestState st = partymember.getQuestState(qn);
-		int cond = st.getInt("cond");
+		QuestState st = partyMember.getQuestState(qn);
 		
-		if (cond >= 1 && cond <= 3)
+		final int cond = st.getInt("cond");
+		final int[] drop = DROPLIST.get(npc.getNpcId());
+		
+		if (cond == 1)
 		{
-			int max = 0;
-			
-			if (cond == 1)
-				max = 50;
-			else if (cond == 3)
-				max = 200;
-			
-			if (Rnd.get(100) < chance && st.getQuestItemsCount(item) <= max)
-			{
-				st.giveItems(item, 1);
-				
-				if (st.getQuestItemsCount(FREEZING_SHARD) == max)
-					st.unset("awaitsFreezing");
-				else if (st.getQuestItemsCount(FLARE_SHARD) == max)
-					st.unset("awaitsFlare");
-				
-				if (st.getQuestItemsCount(FLARE_SHARD) == max && st.getQuestItemsCount(FREEZING_SHARD) == max)
-				{
-					st.set("cond", String.valueOf(cond + 1));
-					st.playSound(QuestState.SOUND_MIDDLE);
-				}
-				else
-					st.playSound(QuestState.SOUND_ITEMGET);
-			}
+			if (st.dropItems(drop[0], 1, 50, drop[1]) && st.getQuestItemsCount((drop[0] == FLARE_SHARD) ? FREEZING_SHARD : FLARE_SHARD) >= 50)
+				st.set("cond", "2");
 		}
+		else if (cond == 3 && st.dropItems(drop[0], 1, 200, drop[1]) && st.getQuestItemsCount((drop[0] == FLARE_SHARD) ? FREEZING_SHARD : FLARE_SHARD) >= 200)
+			st.set("cond", "4");
+		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q369_CollectorOfJewels(369, qn, "Collector of Jewels");
+		new Q369_CollectorOfJewels();
 	}
 }

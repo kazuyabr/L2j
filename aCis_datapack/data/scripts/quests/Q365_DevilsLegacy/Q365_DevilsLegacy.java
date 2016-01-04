@@ -31,9 +31,9 @@ public class Q365_DevilsLegacy extends Quest
 	// Item
 	private static final int PIRATE_TREASURE_CHEST = 5873;
 	
-	public Q365_DevilsLegacy(int questId, String name, String descr)
+	public Q365_DevilsLegacy()
 	{
-		super(questId, name, descr);
+		super(365, qn, "Devil's Legacy");
 		
 		setItemsIds(PIRATE_TREASURE_CHEST);
 		
@@ -53,8 +53,8 @@ public class Q365_DevilsLegacy extends Quest
 		
 		if (event.equalsIgnoreCase("30095-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30095-06.htm"))
@@ -170,19 +170,13 @@ public class Q365_DevilsLegacy extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		if (Rnd.get(100) < ((npc.getNpcId() == 20836) ? 40 : 47))
-		{
-			st.giveItems(PIRATE_TREASURE_CHEST, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		partyMember.getQuestState(qn).dropItems(PIRATE_TREASURE_CHEST, 1, 0, (npc.getNpcId() == 20836) ? 360000 : 520000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q365_DevilsLegacy(365, qn, "Devil's Legacy");
+		new Q365_DevilsLegacy();
 	}
 }

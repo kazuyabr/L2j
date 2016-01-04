@@ -33,7 +33,7 @@ public class Q360_PlunderTheirSupplies extends Quest
 				SUSPICIOUS_DOCUMENT,
 				1,
 				0,
-				100000
+				50000
 			},
 			{
 				SUPPLY_ITEM,
@@ -47,13 +47,13 @@ public class Q360_PlunderTheirSupplies extends Quest
 				SUSPICIOUS_DOCUMENT,
 				1,
 				0,
-				100000
+				50000
 			},
 			{
 				SUPPLY_ITEM,
 				1,
 				0,
-				750000
+				660000
 			}
 		}
 	};

@@ -17,7 +17,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q163_LegacyOfThePoet extends Quest
 {
@@ -33,6 +32,35 @@ public class Q163_LegacyOfThePoet extends Quest
 		1039,
 		1040,
 		1041
+	};
+	
+	// Droplist
+	private static final int[][] DROPLIST =
+	{
+		{
+			RUMIELS_POEMS[0],
+			1,
+			1,
+			100000
+		},
+		{
+			RUMIELS_POEMS[1],
+			1,
+			1,
+			200000
+		},
+		{
+			RUMIELS_POEMS[2],
+			1,
+			1,
+			200000
+		},
+		{
+			RUMIELS_POEMS[3],
+			1,
+			1,
+			400000
+		}
 	};
 	
 	public Q163_LegacyOfThePoet()
@@ -115,33 +143,10 @@ public class Q163_LegacyOfThePoet extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 33)
-		{
-			final int randomItemId = Rnd.get(1038, 1041);
-			if (!st.hasQuestItems(randomItemId))
-			{
-				st.giveItems(randomItemId, 1);
-				if (gotAllPoems(st))
-				{
-					st.set("cond", "2");
-					st.playSound(QuestState.SOUND_MIDDLE);
-				}
-				else
-					st.playSound(QuestState.SOUND_ITEMGET);
-			}
-		}
+		if (st.dropMultipleItems(DROPLIST))
+			st.set("cond", "2");
 		
 		return null;
-	}
-	
-	private static boolean gotAllPoems(QuestState st)
-	{
-		for (int itemId : RUMIELS_POEMS)
-		{
-			if (!st.hasQuestItems(itemId))
-				return false;
-		}
-		return true;
 	}
 	
 	public static void main(String[] args)

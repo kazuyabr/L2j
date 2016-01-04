@@ -2,14 +2,14 @@
 <list>
 	<item id="6600" type="Weapon" name="Saint Spear - Guidance">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1800" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -27,14 +27,14 @@
 	</item>
 	<item id="6601" type="Weapon" name="Saint Spear - Haste">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1800" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -52,14 +52,14 @@
 	</item>
 	<item id="6602" type="Weapon" name="Demon Splinter - Focus">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1350" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -77,14 +77,14 @@
 	</item>
 	<item id="6603" type="Weapon" name="Demon Splinter - Health">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1350" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -102,14 +102,14 @@
 	</item>
 	<item id="6604" type="Weapon" name="Demon Splinter - Crt. Stun">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1350" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -129,14 +129,14 @@
 	</item>
 	<item id="6605" type="Weapon" name="Heavens Divider - Haste">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1380" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -153,14 +153,14 @@
 	</item>
 	<item id="6606" type="Weapon" name="Heavens Divider - Health">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1380" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -177,14 +177,14 @@
 	</item>
 	<item id="6607" type="Weapon" name="Heavens Divider - Focus">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1380" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -202,14 +202,14 @@
 	<item id="6608" type="Weapon" name="Arcana Mace - Acumen">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -228,14 +228,14 @@
 	<item id="6609" type="Weapon" name="Arcana Mace - MP Regeneration">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -254,14 +254,14 @@
 	<item id="6610" type="Weapon" name="Arcana Mace - Mana Up">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2440" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="48800000" />
 		<set name="soulshots" val="1" />
@@ -279,14 +279,14 @@
 	</item>
 	<item id="6611" type="Weapon" name="Infinity Blade">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -311,14 +311,14 @@
 	</item>
 	<item id="6612" type="Weapon" name="Infinity Cleaver">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigsword" />
+		<set name="weapon_type" val="BIGSWORD" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -342,14 +342,14 @@
 	</item>
 	<item id="6613" type="Weapon" name="Infinity Axe">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -376,14 +376,14 @@
 	<item id="6614" type="Weapon" name="Infinity Rod">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -410,14 +410,14 @@
 	</item>
 	<item id="6615" type="Weapon" name="Infinity Crusher">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -444,14 +444,14 @@
 	<item id="6616" type="Weapon" name="Infinity Scepter">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -478,14 +478,14 @@
 	</item>
 	<item id="6617" type="Weapon" name="Infinity Stinger">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dagger" />
+		<set name="weapon_type" val="DAGGER" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -511,14 +511,14 @@
 	</item>
 	<item id="6618" type="Weapon" name="Infinity Fang">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dualfist" />
+		<set name="weapon_type" val="DUALFIST" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;32;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -544,14 +544,14 @@
 	</item>
 	<item id="6619" type="Weapon" name="Infinity Bow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bow" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="500" />
 		<set name="damage_range" val="0;0;10;0" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -584,14 +584,14 @@
 	</item>
 	<item id="6620" type="Weapon" name="Infinity Wing">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="dual" />
+		<set name="weapon_type" val="DUAL" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;44;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -616,14 +616,14 @@
 	</item>
 	<item id="6621" type="Weapon" name="Infinity Spear">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="2850" />
-		<set name="crystal_type" val="s" />
-		<set name="material" val="adamantaite" />
+		<set name="crystal_type" val="S" />
+		<set name="material" val="ADAMANTAITE" />
 		<set name="weight" val="1300" />
 		<set name="price" val="57000000" />
 		<set name="soulshots" val="1" />
@@ -648,12 +648,12 @@
 		</for>
 	</item>
 	<item id="6622" type="EtcItem" name="Secret Book of Giants">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="10" />
 		<set name="price" val="500000" />
 	</item>
 	<item id="6623" type="EtcItem" name="Dummy - Quest Item 1">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -662,7 +662,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6624" type="EtcItem" name="Dummy - Quest Item 2">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -671,7 +671,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6625" type="EtcItem" name="Dummy - Quest Item 3">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -680,7 +680,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6626" type="EtcItem" name="Dummy - Quest Item 4">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -689,7 +689,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6627" type="EtcItem" name="Dummy - Quest Item 5">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -698,7 +698,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6628" type="EtcItem" name="Dummy - Quest Item 6">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -707,7 +707,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6629" type="EtcItem" name="Dummy - Quest Item 7">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -716,7 +716,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6630" type="EtcItem" name="Dummy - Quest Item 8">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -725,7 +725,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6631" type="EtcItem" name="Dummy - Quest Item 9">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -734,7 +734,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6632" type="EtcItem" name="Dummy - Quest Item 10">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -743,48 +743,48 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="6633" type="EtcItem" name="Dummy - General Item 1">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6634" type="EtcItem" name="Dummy - General Item 2">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6635" type="EtcItem" name="Dummy - General Item 3">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6636" type="EtcItem" name="Dummy - General Item 4">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6637" type="EtcItem" name="Dummy - General Item 5">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6638" type="EtcItem" name="Dummy - General Item 6">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6639" type="EtcItem" name="Dummy - General Item 7">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6640" type="EtcItem" name="Dummy - General Item 8">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6641" type="EtcItem" name="Dummy - General Item 9">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6642" type="EtcItem" name="Dummy - General Item 10">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6643" type="EtcItem" name="Golden Spice">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="40" />
 		<set name="price" val="50" />
 		<set name="is_stackable" val="true" />
@@ -794,7 +794,7 @@
 	</item>
 	<item id="6644" type="EtcItem" name="Crystal Spice">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="40" />
 		<set name="price" val="50" />
 		<set name="is_stackable" val="true" />
@@ -804,7 +804,7 @@
 	</item>
 	<item id="6645" type="EtcItem" name="Beast Soulshot">
 		<set name="default_action" val="summon_soulshot" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="1" />
 		<set name="price" val="20" />
 		<set name="is_stackable" val="true" />
@@ -813,7 +813,7 @@
 	</item>
 	<item id="6646" type="EtcItem" name="Beast Spiritshot">
 		<set name="default_action" val="summon_spiritshot" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="2" />
 		<set name="price" val="40" />
 		<set name="is_stackable" val="true" />
@@ -822,7 +822,7 @@
 	</item>
 	<item id="6647" type="EtcItem" name="Blessed Beast Spiritshot">
 		<set name="default_action" val="summon_spiritshot" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="2" />
 		<set name="price" val="100" />
 		<set name="is_stackable" val="true" />
@@ -833,7 +833,7 @@
 	<item id="6648" type="EtcItem" name="Baby Buffalo Panpipe">
 		<set name="default_action" val="skill_maintain" />
 		<set name="etcitem_type" val="pet_collar" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
 		<set name="handler" val="SummonItems" />
@@ -843,7 +843,7 @@
 	<item id="6649" type="EtcItem" name="Baby Cougar Chime">
 		<set name="default_action" val="skill_maintain" />
 		<set name="etcitem_type" val="pet_collar" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
 		<set name="handler" val="SummonItems" />
@@ -853,7 +853,7 @@
 	<item id="6650" type="EtcItem" name="Baby Kookaburra Ocarina">
 		<set name="default_action" val="skill_maintain" />
 		<set name="etcitem_type" val="pet_collar" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
 		<set name="handler" val="SummonItems" />
@@ -861,7 +861,7 @@
 		<set name="use_condition" val="{{uc_transmode_exclude;{tt_flying;tt_pure_stat}}}" />
 	</item>
 	<item id="6651" type="EtcItem" name="Noblesse Gate Pass">
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -872,7 +872,7 @@
 	<item id="6652" type="EtcItem" name="Scroll: Protection of Valakas">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="10" />
 		<set name="price" val="100000" />
 		<set name="is_stackable" val="true" />
@@ -881,14 +881,14 @@
 	</item>
 	<item id="6653" type="EtcItem" name="Scroll: Flames of Valakas">
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6654" type="EtcItem" name="Scroll: Flames of Valakas">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="10" />
 		<set name="price" val="40000" />
 		<set name="is_stackable" val="true" />
@@ -898,7 +898,7 @@
 	<item id="6655" type="EtcItem" name="Scroll: Slay Valakas">
 		<set name="default_action" val="skill_reduce" />
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -907,9 +907,9 @@
 	<item id="6656" type="Armor" name="Earring of Antharas">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="rear;lear" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="185" />
-		<set name="material" val="gold" />
+		<set name="material" val="GOLD" />
 		<set name="weight" val="150" />
 		<set name="price" val="3700000" />
 		<set name="item_skill" val="3558-1" />
@@ -922,9 +922,9 @@
 	<item id="6657" type="Armor" name="Necklace of Valakas">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="neck" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="247" />
-		<set name="material" val="gold" />
+		<set name="material" val="GOLD" />
 		<set name="weight" val="150" />
 		<set name="price" val="4940000" />
 		<set name="item_skill" val="3557-1" />
@@ -937,9 +937,9 @@
 	<item id="6658" type="Armor" name="Ring of Baium">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="rfinger;lfinger" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="86" />
-		<set name="material" val="gold" />
+		<set name="material" val="GOLD" />
 		<set name="weight" val="150" />
 		<set name="price" val="1730000" />
 		<set name="item_skill" val="3561-1" />
@@ -952,9 +952,9 @@
 	<item id="6659" type="Armor" name="Zaken's Earring">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="rear;lear" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="129" />
-		<set name="material" val="gold" />
+		<set name="material" val="GOLD" />
 		<set name="weight" val="150" />
 		<set name="price" val="2590000" />
 		<set name="item_skill" val="3559-1" />
@@ -967,9 +967,9 @@
 	<item id="6660" type="Armor" name="Ring of Queen Ant">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="rfinger;lfinger" />
-		<set name="crystal_type" val="b" />
+		<set name="crystal_type" val="B" />
 		<set name="crystal_count" val="82" />
-		<set name="material" val="gold" />
+		<set name="material" val="GOLD" />
 		<set name="weight" val="150" />
 		<set name="price" val="616000" />
 		<set name="item_skill" val="3562-1" />
@@ -982,9 +982,9 @@
 	<item id="6661" type="Armor" name="Earring of Orfen">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="rear;lear" />
-		<set name="crystal_type" val="a" />
+		<set name="crystal_type" val="A" />
 		<set name="crystal_count" val="104" />
-		<set name="material" val="gold" />
+		<set name="material" val="GOLD" />
 		<set name="weight" val="150" />
 		<set name="price" val="1300000" />
 		<set name="item_skill" val="3560-1" />
@@ -997,9 +997,9 @@
 	<item id="6662" type="Armor" name="Ring of Core">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="rfinger;lfinger" />
-		<set name="crystal_type" val="a" />
+		<set name="crystal_type" val="A" />
 		<set name="crystal_count" val="69" />
-		<set name="material" val="gold" />
+		<set name="material" val="GOLD" />
 		<set name="weight" val="150" />
 		<set name="price" val="870000" />
 		<set name="item_skill" val="3563-1" />
@@ -1011,7 +1011,7 @@
 	</item>
 	<item id="6663" type="EtcItem" name="Scroll of Escape: Orc Village">
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="400" />
 		<set name="is_stackable" val="true" />
@@ -1022,7 +1022,7 @@
 	</item>
 	<item id="6664" type="EtcItem" name="Scroll of Escape: Silenos Village">
 		<set name="etcitem_type" val="scroll" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="120" />
 		<set name="price" val="400" />
 		<set name="is_stackable" val="true" />
@@ -1033,7 +1033,7 @@
 	</item>
 	<item id="6665" type="EtcItem" name="Deluxe Chest Key - Grade 1">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="Keys" />
@@ -1041,7 +1041,7 @@
 	</item>
 	<item id="6666" type="EtcItem" name="Deluxe Chest Key - Grade 2">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="price" val="200" />
 		<set name="is_stackable" val="true" />
@@ -1050,7 +1050,7 @@
 	</item>
 	<item id="6667" type="EtcItem" name="Deluxe Chest Key - Grade 3">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="price" val="320" />
 		<set name="is_stackable" val="true" />
@@ -1059,7 +1059,7 @@
 	</item>
 	<item id="6668" type="EtcItem" name="Deluxe Chest Key - Grade 4">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="price" val="560" />
 		<set name="is_stackable" val="true" />
@@ -1068,7 +1068,7 @@
 	</item>
 	<item id="6669" type="EtcItem" name="Deluxe Chest Key - Grade 5">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="price" val="860" />
 		<set name="is_stackable" val="true" />
@@ -1077,7 +1077,7 @@
 	</item>
 	<item id="6670" type="EtcItem" name="Deluxe Chest Key - Grade 6">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="price" val="1200" />
 		<set name="is_stackable" val="true" />
@@ -1086,7 +1086,7 @@
 	</item>
 	<item id="6671" type="EtcItem" name="Deluxe Chest Key - Grade 7">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="price" val="1800" />
 		<set name="is_stackable" val="true" />
@@ -1095,7 +1095,7 @@
 	</item>
 	<item id="6672" type="EtcItem" name="Deluxe Chest Key - Grade 8">
 		<set name="default_action" val="skill_reduce" />
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="weight" val="10" />
 		<set name="price" val="2400" />
 		<set name="is_stackable" val="true" />
@@ -1103,7 +1103,7 @@
 		<set name="item_skill" val="2229-8" />
 	</item>
 	<item id="6673" type="EtcItem" name="Festival Adena">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -1112,11 +1112,11 @@
 	</item>
 	<item id="6674" type="Armor" name="Sealed Imperial Crusader Breastplate">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="chest" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="715" />
-		<set name="material" val="scale_of_dragon" />
+		<set name="material" val="SCALE_OF_DRAGON" />
 		<set name="weight" val="7620" />
 		<set name="price" val="14300000" />
 		<for>
@@ -1126,11 +1126,11 @@
 	</item>
 	<item id="6675" type="Armor" name="Sealed Imperial Crusader Gaiters">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="heavy" />
+		<set name="armor_type" val="HEAVY" />
 		<set name="bodypart" val="legs" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="448" />
-		<set name="material" val="scale_of_dragon" />
+		<set name="material" val="SCALE_OF_DRAGON" />
 		<set name="weight" val="3260" />
 		<set name="price" val="8960000" />
 		<for>
@@ -1141,9 +1141,9 @@
 	<item id="6676" type="Armor" name="Sealed Imperial Crusader Gauntlet">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="gloves" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="179" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="540" />
 		<set name="price" val="3580000" />
 		<for>
@@ -1154,9 +1154,9 @@
 	<item id="6677" type="Armor" name="Sealed Imperial Crusader Boots">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="feet" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="179" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="1110" />
 		<set name="price" val="3580000" />
 		<for>
@@ -1167,9 +1167,9 @@
 	<item id="6678" type="Armor" name="Sealed Imperial Crusader Shield">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="lhand" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="188" />
-		<set name="material" val="bone" />
+		<set name="material" val="BONE" />
 		<set name="weight" val="1170" />
 		<set name="price" val="3760000" />
 		<for>
@@ -1182,9 +1182,9 @@
 	<item id="6679" type="Armor" name="Sealed Imperial Crusader Helmet">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="head" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="268" />
-		<set name="material" val="bone" />
+		<set name="material" val="BONE" />
 		<set name="weight" val="550" />
 		<set name="price" val="5370000" />
 		<for>
@@ -1194,11 +1194,11 @@
 	</item>
 	<item id="6680" type="Armor" name="Sealed Draconic Leather Armor">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="light" />
+		<set name="armor_type" val="LIGHT" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="870" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="4950" />
 		<set name="price" val="17400000" />
 		<for>
@@ -1209,9 +1209,9 @@
 	<item id="6681" type="Armor" name="Sealed Draconic Leather Glove">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="gloves" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="179" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="540" />
 		<set name="price" val="3580000" />
 		<for>
@@ -1222,9 +1222,9 @@
 	<item id="6682" type="Armor" name="Sealed Draconic Leather Boots">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="feet" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="179" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="1110" />
 		<set name="price" val="3580000" />
 		<for>
@@ -1235,9 +1235,9 @@
 	<item id="6683" type="Armor" name="Sealed Draconic Leather Helmet">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="head" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="268" />
-		<set name="material" val="bone" />
+		<set name="material" val="BONE" />
 		<set name="weight" val="550" />
 		<set name="price" val="5370000" />
 		<for>
@@ -1247,11 +1247,11 @@
 	</item>
 	<item id="6684" type="Armor" name="Sealed Major Arcana Robe">
 		<set name="default_action" val="equip" />
-		<set name="armor_type" val="magic" />
+		<set name="armor_type" val="MAGIC" />
 		<set name="bodypart" val="fullarmor" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="870" />
-		<set name="material" val="cloth" />
+		<set name="material" val="CLOTH" />
 		<set name="weight" val="2300" />
 		<set name="price" val="17400000" />
 		<for>
@@ -1263,9 +1263,9 @@
 	<item id="6685" type="Armor" name="Sealed Major Arcana Glove">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="gloves" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="179" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="540" />
 		<set name="price" val="3580000" />
 		<for>
@@ -1276,9 +1276,9 @@
 	<item id="6686" type="Armor" name="Sealed Major Arcana Boots">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="feet" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="179" />
-		<set name="material" val="leather" />
+		<set name="material" val="LEATHER" />
 		<set name="weight" val="1110" />
 		<set name="price" val="3580000" />
 		<for>
@@ -1289,9 +1289,9 @@
 	<item id="6687" type="Armor" name="Sealed Major Arcana Circlet">
 		<set name="default_action" val="equip" />
 		<set name="bodypart" val="head" />
-		<set name="crystal_type" val="s" />
+		<set name="crystal_type" val="S" />
 		<set name="crystal_count" val="268" />
-		<set name="material" val="bone" />
+		<set name="material" val="BONE" />
 		<set name="weight" val="550" />
 		<set name="price" val="5370000" />
 		<for>
@@ -1301,84 +1301,84 @@
 	</item>
 	<item id="6688" type="EtcItem" name="Forgotten Blade Edge">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="92529" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6689" type="EtcItem" name="Basalt Battlehammer Head">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="94306" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6690" type="EtcItem" name="Imperial Staff Head">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="92353" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6691" type="EtcItem" name="Angel Slayer Blade">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="92529" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6692" type="EtcItem" name="Shining Bow Shaft">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="90882" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6693" type="EtcItem" name="Dragon Hunter Axe Blade">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="90882" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6694" type="EtcItem" name="Saint Spear Blade">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="90882" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6695" type="EtcItem" name="Demon Splinter Blade">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="94306" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6696" type="EtcItem" name="Heavens Divider Edge">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="91082" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6697" type="EtcItem" name="Arcana Mace Head">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="94306" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6698" type="EtcItem" name="Sealed Tateossian Earring Part">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="10182" />
 		<set name="is_stackable" val="true" />
 	</item>
 	<item id="6699" type="EtcItem" name="Sealed Tateossian Ring Gem">
 		<set name="etcitem_type" val="material" />
-		<set name="material" val="liquid" />
+		<set name="material" val="LIQUID" />
 		<set name="weight" val="60" />
 		<set name="price" val="9176" />
 		<set name="is_stackable" val="true" />

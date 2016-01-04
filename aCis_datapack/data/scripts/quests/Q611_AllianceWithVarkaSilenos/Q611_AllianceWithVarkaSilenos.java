@@ -12,7 +12,8 @@
  */
 package quests.Q611_AllianceWithVarkaSilenos;
 
-import gnu.trove.map.hash.TIntIntHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -28,7 +29,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 	private static final String qn = "Q611_AllianceWithVarkaSilenos";
 	private static final String qn2 = "Q612_WarWithKetraOrcs";
 	
-	private static final TIntIntHashMap Chance = new TIntIntHashMap();
+	private static final Map<Integer, Integer> Chance = new HashMap<>();
 	{
 		Chance.put(21324, 508000);
 		Chance.put(21325, 500000);
@@ -53,7 +54,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 		Chance.put(21349, 627000);
 	}
 	
-	private static final TIntIntHashMap ChanceMolar = new TIntIntHashMap();
+	private static final Map<Integer, Integer> ChanceMolar = new HashMap<>();
 	{
 		ChanceMolar.put(21324, 500000);
 		ChanceMolar.put(21327, 510000);
@@ -97,7 +98,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 		addStartNpc(31378); // Naran Ashanuk
 		addTalkId(31378);
 		
-		for (int mobs : Chance.keys())
+		for (int mobs : Chance.keySet())
 			addKillId(mobs);
 	}
 	
@@ -338,7 +339,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 		
 		// Support for Q612.
 		QuestState st = partyMember.getQuestState(qn2);
-		if (st != null && Rnd.get(1) == 0)
+		if (st != null && Rnd.nextBoolean() && ChanceMolar.containsKey(npcId))
 		{
 			int chance = ChanceMolar.get(npcId);
 			if (chance != 0)

@@ -123,18 +123,19 @@ public class Q273_InvadersOfTheHolyLand extends Quest
 		if (st == null)
 			return null;
 		
+		final int npcId = npc.getNpcId();
+		
 		int probability = 77;
-		if (npc.getNpcId() == 20311)
+		if (npcId == 20311)
 			probability = 90;
-		else if (npc.getNpcId() == 20312)
+		else if (npcId == 20312)
 			probability = 87;
 		
 		if (Rnd.get(100) <= probability)
-			st.giveItems(BLACK_SOULSTONE, 1);
+			st.dropItemsAlways(BLACK_SOULSTONE, 1, 0);
 		else
-			st.giveItems(RED_SOULSTONE, 1);
+			st.dropItemsAlways(RED_SOULSTONE, 1, 0);
 		
-		st.playSound(QuestState.SOUND_ITEMGET);
 		return null;
 	}
 	

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list>
 	<item id="3600" type="EtcItem" name="Confirmation Document 12">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -10,7 +10,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3601" type="EtcItem" name="Confirmation Document 13">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -19,7 +19,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3602" type="EtcItem" name="Confirmation Document 14">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -28,7 +28,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3603" type="EtcItem" name="Confirmation Document 15">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -37,7 +37,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3604" type="EtcItem" name="Confirmation Document 16">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -46,7 +46,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3605" type="EtcItem" name="Confirmation Document 17">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -55,7 +55,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3606" type="EtcItem" name="Confirmation Document 18">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -64,7 +64,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3607" type="EtcItem" name="Confirmation Document 19">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -73,7 +73,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3608" type="EtcItem" name="Confirmation Document 20">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -82,7 +82,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3609" type="EtcItem" name="Confirmation Document 21">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -91,7 +91,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3610" type="EtcItem" name="Confirmation Document 22">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -100,7 +100,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3611" type="EtcItem" name="Confirmation Document 23">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -109,7 +109,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3612" type="EtcItem" name="Confirmation Document 24">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -118,7 +118,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3613" type="EtcItem" name="Confirmation Document 25">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -127,7 +127,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3614" type="EtcItem" name="Confirmation Document 26">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -136,7 +136,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3615" type="EtcItem" name="Confirmation Document 27">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -145,7 +145,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3616" type="EtcItem" name="Confirmation Document 28">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -154,7 +154,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3617" type="EtcItem" name="Confirmation Document 29">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -163,7 +163,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3618" type="EtcItem" name="Confirmation Document 30">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -172,7 +172,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3619" type="EtcItem" name="Confirmation Document 31">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -181,7 +181,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3620" type="EtcItem" name="Confirmation Document 32">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -190,7 +190,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3621" type="EtcItem" name="Confirmation Document 33">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -199,7 +199,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3622" type="EtcItem" name="Confirmation Document 34">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -208,7 +208,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3623" type="EtcItem" name="Confirmation Document 35">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -217,7 +217,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3624" type="EtcItem" name="Confirmation Document 36">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -226,7 +226,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3625" type="EtcItem" name="Confirmation Document 37">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -235,7 +235,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3626" type="EtcItem" name="Confirmation Document 38">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -244,7 +244,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3627" type="EtcItem" name="Confirmation Document 39">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -253,7 +253,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3628" type="EtcItem" name="Confirmation Document 40">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -262,7 +262,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3629" type="EtcItem" name="Confirmation Document 41">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -271,7 +271,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3630" type="EtcItem" name="Confirmation Document 42">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -280,7 +280,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3631" type="EtcItem" name="Confirmation Document 43">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -289,7 +289,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3632" type="EtcItem" name="Confirmation Document 44">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -298,7 +298,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3633" type="EtcItem" name="Confirmation Document 45">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -307,7 +307,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3634" type="EtcItem" name="Confirmation Document 46">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -316,7 +316,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3635" type="EtcItem" name="Confirmation Document 47">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -325,7 +325,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3636" type="EtcItem" name="Confirmation Document 48">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -334,7 +334,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3637" type="EtcItem" name="Confirmation Document 49">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -343,7 +343,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3638" type="EtcItem" name="Confirmation Document 50">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -352,7 +352,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3639" type="EtcItem" name="Confirmation Document 51">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -361,7 +361,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3640" type="EtcItem" name="Confirmation Document 52">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -370,7 +370,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3641" type="EtcItem" name="Confirmation Document 53">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -379,7 +379,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3642" type="EtcItem" name="Confirmation Document 54">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -388,7 +388,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3643" type="EtcItem" name="Confirmation Document 55">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -397,7 +397,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3644" type="EtcItem" name="Confirmation Document 56">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -406,7 +406,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3645" type="EtcItem" name="Confirmation Document 57">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -415,7 +415,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3646" type="EtcItem" name="Confirmation Document 58">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -424,7 +424,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3647" type="EtcItem" name="Confirmation Document 59">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -433,7 +433,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3648" type="EtcItem" name="Confirmation Document 60">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -442,7 +442,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3649" type="EtcItem" name="Confirmation Document 61">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -451,7 +451,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3650" type="EtcItem" name="Confirmation Document 62">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -460,7 +460,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3651" type="EtcItem" name="Confirmation Document 63">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -469,7 +469,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3652" type="EtcItem" name="Confirmation Document 64">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -478,7 +478,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3653" type="EtcItem" name="Confirmation Document 65">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -487,7 +487,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3654" type="EtcItem" name="Confirmation Document 66">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -496,7 +496,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3655" type="EtcItem" name="Confirmation Document 67">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -505,7 +505,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3656" type="EtcItem" name="Eye of Seer">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -514,7 +514,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3657" type="EtcItem" name="Pincher Claw">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -523,7 +523,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3658" type="EtcItem" name="Ol Mahum Uniform">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -532,7 +532,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3659" type="EtcItem" name="Enku Orc Champion's Head">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -541,7 +541,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3660" type="EtcItem" name="Bloody Bee Stinger">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -550,7 +550,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3661" type="EtcItem" name="Ignition of Ghost Fire">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -559,7 +559,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3662" type="EtcItem" name="Ethereal Blood">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -568,7 +568,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3663" type="EtcItem" name="Returned Delivery Goods 10">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -577,7 +577,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3664" type="EtcItem" name="Returned Delivery Goods 15">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -586,7 +586,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3665" type="EtcItem" name="Returned Delivery Goods 30">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -595,7 +595,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3666" type="EtcItem" name="Returned Delivery Goods 33">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -604,7 +604,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3667" type="EtcItem" name="Returned Delivery Goods 37">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -613,7 +613,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3668" type="EtcItem" name="Returned Delivery Goods 45">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -622,7 +622,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3669" type="EtcItem" name="Returned Delivery Goods 55">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -631,7 +631,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3670" type="EtcItem" name="Returned Delivery Goods 60">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -640,7 +640,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3671" type="EtcItem" name="Sophya's 1st Order">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -649,7 +649,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3672" type="EtcItem" name="Sophya's 2nd Order">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -658,7 +658,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3673" type="EtcItem" name="Sophya's 3rd Order">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -667,7 +667,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3674" type="EtcItem" name="Sophya's 4th Order">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -676,7 +676,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3675" type="EtcItem" name="Lion's Claw">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -685,7 +685,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3676" type="EtcItem" name="Lion's Eye">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -694,7 +694,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3677" type="EtcItem" name="Guild Coin">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -703,7 +703,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3678" type="EtcItem" name="Alchemy Text">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -712,7 +712,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3679" type="EtcItem" name="Secret Book of Potion">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -721,7 +721,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3680" type="EtcItem" name="1st Potion Recipe">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -730,7 +730,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3681" type="EtcItem" name="2nd Potion Recipe">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -739,7 +739,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3682" type="EtcItem" name="Matild's Orb">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -748,7 +748,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3683" type="EtcItem" name="Forbidden Love Scroll">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -757,7 +757,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3684" type="EtcItem" name="Amber Scale">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -766,7 +766,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3685" type="EtcItem" name="Wind Soulstone">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -775,7 +775,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3686" type="EtcItem" name="Glass Eye">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -784,7 +784,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3687" type="EtcItem" name="Horror Ectoplasm">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -793,7 +793,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3688" type="EtcItem" name="Silenos Horn">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -802,7 +802,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3689" type="EtcItem" name="Ant Soldier Aphid">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -811,7 +811,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3690" type="EtcItem" name="Tyrant's Chitin">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -820,7 +820,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3691" type="EtcItem" name="Bugbear Blood">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -829,7 +829,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3692" type="EtcItem" name="1st Circle Hunter License">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -838,7 +838,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3693" type="EtcItem" name="2nd Circle Hunter License">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -847,7 +847,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3694" type="EtcItem" name="Laurel Leaf Pin">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -856,7 +856,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3695" type="EtcItem" name="1st Test Instructions">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -865,7 +865,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3696" type="EtcItem" name="2nd Test Instructions">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -874,7 +874,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3697" type="EtcItem" name="Cybellin's Request">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -883,7 +883,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3698" type="EtcItem" name="Blood Crystal: Purity 1">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />
@@ -892,7 +892,7 @@
 		<set name="etcitem_type" val="quest" />
 	</item>
 	<item id="3699" type="EtcItem" name="Blood Crystal: Purity 2">
-		<set name="material" val="steel" />
+		<set name="material" val="STEEL" />
 		<set name="is_tradable" val="false" />
 		<set name="is_dropable" val="false" />
 		<set name="is_sellable" val="false" />

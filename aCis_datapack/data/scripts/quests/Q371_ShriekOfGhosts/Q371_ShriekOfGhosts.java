@@ -12,6 +12,9 @@
  */
 package quests.Q371_ShriekOfGhosts;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -30,21 +33,36 @@ public class Q371_ShriekOfGhosts extends Quest
 	private static final int URN = 5903;
 	private static final int PORCELAIN = 6002;
 	
-	// Mobs
-	private static final int HALLATE_WARRIOR = 20818;
-	private static final int HALLATE_KNIGHT = 20820;
-	private static final int HALLATE_COMMANDER = 20824;
-	
-	public Q371_ShriekOfGhosts(int questId, String name, String descr)
+	// Drop chances
+	private static final Map<Integer, int[]> CHANCES = new HashMap<>();
 	{
-		super(questId, name, descr);
+		CHANCES.put(20818, new int[]
+		{
+			38,
+			43
+		});
+		CHANCES.put(20820, new int[]
+		{
+			48,
+			56
+		});
+		CHANCES.put(20824, new int[]
+		{
+			50,
+			58
+		});
+	}
+	
+	public Q371_ShriekOfGhosts()
+	{
+		super(371, qn, "Shriek of Ghosts");
 		
 		setItemsIds(URN, PORCELAIN);
 		
 		addStartNpc(REVA);
 		addTalkId(REVA, PATRIN);
 		
-		addKillId(HALLATE_WARRIOR, HALLATE_KNIGHT, HALLATE_COMMANDER);
+		addKillId(20818, 20820, 20824);
 	}
 	
 	@Override
@@ -57,8 +75,8 @@ public class Q371_ShriekOfGhosts extends Quest
 		
 		if (event.equalsIgnoreCase("30867-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30867-07.htm"))
@@ -131,13 +149,7 @@ public class Q371_ShriekOfGhosts extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 59)
-					htmltext = "30867-02.htm";
-				else
-				{
-					htmltext = "30867-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 59) ? "30867-01.htm" : "30867-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -169,39 +181,17 @@ public class Q371_ShriekOfGhosts extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		int chance = Rnd.get(100);
-		switch (npc.getNpcId())
-		{
-			case HALLATE_WARRIOR:
-				if (chance < 43)
-				{
-					st.giveItems((chance < 38) ? URN : PORCELAIN, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
-				break;
-			
-			case HALLATE_KNIGHT:
-				if (chance < 56)
-				{
-					st.giveItems((chance < 48) ? URN : PORCELAIN, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
-				break;
-			
-			case HALLATE_COMMANDER:
-				if (chance < 58)
-				{
-					st.giveItems((chance < 50) ? URN : PORCELAIN, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
-				break;
-		}
+		final int[] chances = CHANCES.get(npc.getNpcId());
+		final int random = Rnd.get(100);
+		
+		if (random < chances[1])
+			st.dropItemsAlways((random < chances[0]) ? URN : PORCELAIN, 1, 0);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q371_ShriekOfGhosts(371, qn, "Shriek of Ghosts");
+		new Q371_ShriekOfGhosts();
 	}
 }

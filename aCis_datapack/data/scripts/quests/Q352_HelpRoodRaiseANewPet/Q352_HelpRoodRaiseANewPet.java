@@ -123,7 +123,14 @@ public class Q352_HelpRoodRaiseANewPet extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItemsAlways((Rnd.get(100) < 3) ? LIENRIK_EGG_2 : LIENRIK_EGG_1, 1, 0);
+		final int npcId = npc.getNpcId();
+		final int random = Rnd.get(100);
+		final int chance = (npcId == 20786 || npcId == 21644) ? 44 : 58;
+		
+		if (random < chance)
+			st.dropItemsAlways(LIENRIK_EGG_1, 1, 0);
+		else if (random < (chance + 4))
+			st.dropItemsAlways(LIENRIK_EGG_2, 1, 0);
 		
 		return null;
 	}

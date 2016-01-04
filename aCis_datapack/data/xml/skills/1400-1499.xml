@@ -256,10 +256,10 @@
 		<for>
 			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="multi_buff">
 				<add order="0x40" stat="regMp" val="1.5">
-					<using kind="Heavy,Light" />
+					<using kind="HEAVY,LIGHT" />
 				</add>
 				<add order="0x40" stat="regMp" val="4">
-					<using kind="Magic" />
+					<using kind="MAGIC" />
 				</add>
 				<mul order="0x30" stat="mAtkSpd" val="1.2"/>
 				<mul order="0x30" stat="mDef" val="1.3"/>

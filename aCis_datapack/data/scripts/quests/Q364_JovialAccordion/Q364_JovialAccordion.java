@@ -25,9 +25,9 @@ public class Q364_JovialAccordion extends Quest
 	private static final int STOLEN_CLOTHES = 4322;
 	private static final int ECHO = 4421;
 	
-	public Q364_JovialAccordion(int questId, String name, String descr)
+	public Q364_JovialAccordion()
 	{
-		super(questId, name, descr);
+		super(364, qn, "Jovial Accordion");
 		
 		setItemsIds(KEY_1, KEY_2, STOLEN_BEER, STOLEN_CLOTHES);
 		
@@ -45,24 +45,24 @@ public class Q364_JovialAccordion extends Quest
 		
 		if (event.equalsIgnoreCase("30959-02.htm"))
 		{
+			st.setState(STATE_STARTED);
 			st.set("cond", "1");
 			st.set("items", "0");
-			st.setState(STATE_STARTED);
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30957-02.htm"))
 		{
 			st.set("cond", "2");
+			st.playSound(QuestState.SOUND_MIDDLE);
 			st.giveItems(KEY_1, 1);
 			st.giveItems(KEY_2, 1);
-			st.playSound(QuestState.SOUND_MIDDLE);
 		}
 		else if (event.equalsIgnoreCase("30960-04.htm"))
 		{
-			if (st.getQuestItemsCount(KEY_2) == 1)
+			if (st.hasQuestItems(KEY_2))
 			{
 				st.takeItems(KEY_2, 1);
-				if (Rnd.get(10) < 5)
+				if (Rnd.nextBoolean())
 				{
 					htmltext = "30960-02.htm";
 					st.giveItems(STOLEN_BEER, 1);
@@ -72,10 +72,10 @@ public class Q364_JovialAccordion extends Quest
 		}
 		else if (event.equalsIgnoreCase("30961-04.htm"))
 		{
-			if (st.getQuestItemsCount(KEY_1) == 1)
+			if (st.hasQuestItems(KEY_1))
 			{
 				st.takeItems(KEY_1, 1);
-				if (Rnd.get(10) < 5)
+				if (Rnd.nextBoolean())
 				{
 					htmltext = "30961-02.htm";
 					st.giveItems(STOLEN_CLOTHES, 1);
@@ -98,18 +98,12 @@ public class Q364_JovialAccordion extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 15)
-					htmltext = "30959-01.htm";
-				else
-				{
-					htmltext = "30959-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 15) ? "30959-00.htm" : "30959-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				int stolenItems = st.getInt("items");
+				final int cond = st.getInt("cond");
+				final int stolenItems = st.getInt("items");
 				
 				switch (npc.getNpcId())
 				{
@@ -145,7 +139,7 @@ public class Q364_JovialAccordion extends Quest
 							}
 							else
 							{
-								if (st.getQuestItemsCount(KEY_1) == 0 && st.getQuestItemsCount(KEY_2) == 0)
+								if (!st.hasQuestItems(KEY_1) && !st.hasQuestItems(KEY_2))
 								{
 									htmltext = "30957-06.htm";
 									st.playSound(QuestState.SOUND_FINISH);
@@ -161,35 +155,35 @@ public class Q364_JovialAccordion extends Quest
 					
 					case BEER_CHEST:
 						htmltext = "30960-03.htm";
-						if (cond == 2 && st.getQuestItemsCount(KEY_2) == 1)
+						if (cond == 2 && st.hasQuestItems(KEY_2))
 							htmltext = "30960-01.htm";
 						break;
 					
 					case CLOTH_CHEST:
 						htmltext = "30961-03.htm";
-						if (cond == 2 && st.getQuestItemsCount(KEY_1) == 1)
+						if (cond == 2 && st.hasQuestItems(KEY_1))
 							htmltext = "30961-01.htm";
 						break;
 					
 					case SABRIN:
-						if (st.getQuestItemsCount(STOLEN_BEER) == 1)
+						if (st.hasQuestItems(STOLEN_BEER))
 						{
 							htmltext = "30060-01.htm";
-							st.takeItems(STOLEN_BEER, 1);
-							st.playSound(QuestState.SOUND_ITEMGET);
 							st.set("items", String.valueOf(stolenItems + 1));
+							st.playSound(QuestState.SOUND_ITEMGET);
+							st.takeItems(STOLEN_BEER, 1);
 						}
 						else
 							htmltext = "30060-02.htm";
 						break;
 					
 					case XABER:
-						if (st.getQuestItemsCount(STOLEN_CLOTHES) == 1)
+						if (st.hasQuestItems(STOLEN_CLOTHES))
 						{
 							htmltext = "30075-01.htm";
-							st.takeItems(STOLEN_CLOTHES, 1);
-							st.playSound(QuestState.SOUND_ITEMGET);
 							st.set("items", String.valueOf(stolenItems + 1));
+							st.playSound(QuestState.SOUND_ITEMGET);
+							st.takeItems(STOLEN_CLOTHES, 1);
 						}
 						else
 							htmltext = "30075-02.htm";
@@ -203,6 +197,6 @@ public class Q364_JovialAccordion extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q364_JovialAccordion(364, qn, "Jovial Accordion");
+		new Q364_JovialAccordion();
 	}
 }

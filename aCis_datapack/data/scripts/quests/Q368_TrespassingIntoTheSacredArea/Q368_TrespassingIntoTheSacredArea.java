@@ -12,6 +12,9 @@
  */
 package quests.Q368_TrespassingIntoTheSacredArea;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -27,14 +30,24 @@ public class Q368_TrespassingIntoTheSacredArea extends Quest
 	// Item
 	private static final int FANG = 5881;
 	
-	public Q368_TrespassingIntoTheSacredArea(int questId, String name, String descr)
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		super(questId, name, descr);
+		CHANCES.put(20794, 500000);
+		CHANCES.put(20795, 770000);
+		CHANCES.put(20796, 500000);
+		CHANCES.put(20797, 480000);
+	}
+	
+	public Q368_TrespassingIntoTheSacredArea()
+	{
+		super(368, qn, "Trespassing into the Sacred Area");
 		
 		setItemsIds(FANG);
 		
 		addStartNpc(RESTINA);
 		addTalkId(RESTINA);
+		
 		addKillId(20794, 20795, 20796, 20797);
 	}
 	
@@ -48,8 +61,8 @@ public class Q368_TrespassingIntoTheSacredArea extends Quest
 		
 		if (event.equalsIgnoreCase("30926-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30926-05.htm"))
@@ -72,22 +85,17 @@ public class Q368_TrespassingIntoTheSacredArea extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 36)
-					htmltext = "30926-01.htm";
-				else
-				{
-					htmltext = "30926-01a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 36) ? "30926-01a.htm" : "30926-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int fangs = st.getQuestItemsCount(FANG);
+				final int fangs = st.getQuestItemsCount(FANG);
 				if (fangs == 0)
 					htmltext = "30926-03.htm";
 				else
 				{
-					int reward = 250 * fangs + (fangs > 10 ? 5730 : 2000);
+					final int reward = 250 * fangs + (fangs > 10 ? 5730 : 2000);
+					
 					htmltext = "30926-04.htm";
 					st.takeItems(5881, -1);
 					st.rewardItems(57, reward);
@@ -105,15 +113,13 @@ public class Q368_TrespassingIntoTheSacredArea extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItems(FANG, 1, -1, 330000);
+		partyMember.getQuestState(qn).dropItems(FANG, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q368_TrespassingIntoTheSacredArea(368, qn, "Trespassing into the Sacred Area");
+		new Q368_TrespassingIntoTheSacredArea();
 	}
 }

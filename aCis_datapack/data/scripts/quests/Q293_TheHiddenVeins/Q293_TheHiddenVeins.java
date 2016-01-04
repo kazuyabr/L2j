@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.util.Rnd;
 
 public class Q293_TheHiddenVeins extends Quest
 {
@@ -38,22 +39,6 @@ public class Q293_TheHiddenVeins extends Quest
 	private static final int UTUKU_ORC = 20446;
 	private static final int UTUKU_ARCHER = 20447;
 	private static final int UTUKU_GRUNT = 20448;
-	
-	private static final int[][] DROPLIST =
-	{
-		{
-			CHRYSOLITE_ORE,
-			1,
-			0,
-			500000
-		},
-		{
-			TORN_MAP_FRAGMENT,
-			1,
-			0,
-			100000
-		}
-	};
 	
 	public Q293_TheHiddenVeins()
 	{
@@ -172,7 +157,12 @@ public class Q293_TheHiddenVeins extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropMultipleItems(DROPLIST);
+		final int chance = Rnd.get(100);
+		
+		if (chance > 50)
+			st.dropItemsAlways(CHRYSOLITE_ORE, 1, 0);
+		else if (chance < 5)
+			st.dropItemsAlways(TORN_MAP_FRAGMENT, 1, 0);
 		
 		return null;
 	}

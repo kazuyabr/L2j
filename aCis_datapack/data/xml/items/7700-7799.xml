@@ -3,7 +3,7 @@
 	<item id="7700" type="EtcItem" name="Recipe: Daisy Hairpin (100%)">
 		<set name="default_action" val="recipe" />
 		<set name="etcitem_type" val="recipe" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="30" />
 		<set name="price" val="100000" />
 		<set name="is_stackable" val="true" />
@@ -12,14 +12,14 @@
 	<item id="7701" type="Weapon" name="Stick of Faith - Mana Up">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="916" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1160" />
 		<set name="price" val="2290000" />
 		<set name="soulshots" val="2" />
@@ -38,14 +38,14 @@
 	<item id="7702" type="Weapon" name="Stick of Faith - Magic Hold">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="916" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1160" />
 		<set name="price" val="2290000" />
 		<set name="soulshots" val="2" />
@@ -65,14 +65,14 @@
 	<item id="7703" type="Weapon" name="Stick of Faith - Magic Shield">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="916" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1160" />
 		<set name="price" val="2290000" />
 		<set name="soulshots" val="2" />
@@ -92,14 +92,14 @@
 	<item id="7704" type="Weapon" name="Stick of Eternity - Empower">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1130" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -118,14 +118,14 @@
 	<item id="7705" type="Weapon" name="Stick of Eternity - Rsk., Evasion">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1130" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -144,14 +144,14 @@
 	<item id="7706" type="Weapon" name="Stick of Eternity - Blessed Body">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1130" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -171,14 +171,14 @@
 	<item id="7707" type="Weapon" name="Nirvana Axe - Magic Power">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1150" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -197,14 +197,14 @@
 	<item id="7708" type="Weapon" name="Nirvana Axe - Magic Poison">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1150" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -224,14 +224,14 @@
 	<item id="7709" type="Weapon" name="Nirvana Axe - Magic Weakness">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1150" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -251,14 +251,14 @@
 	<item id="7710" type="Weapon" name="Club of Nature - Acumen">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1100" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -277,14 +277,14 @@
 	<item id="7711" type="Weapon" name="Club of Nature - Magic Mental Shield">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1100" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -304,14 +304,14 @@
 	<item id="7712" type="Weapon" name="Club of Nature - Magic Hold">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1100" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -331,14 +331,14 @@
 	<item id="7713" type="Weapon" name="Mace of The Underworld - Mana Up">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1090" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -357,14 +357,14 @@
 	<item id="7714" type="Weapon" name="Mace of The Underworld - Magic Silence">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1090" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -384,14 +384,14 @@
 	<item id="7715" type="Weapon" name="Mace of The Underworld - Conversion">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="blunt" />
+		<set name="weapon_type" val="BLUNT" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="fine_steel" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="FINE_STEEL" />
 		<set name="weight" val="1090" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -410,14 +410,14 @@
 	<item id="7716" type="Weapon" name="Inferno Staff - Acumen">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1000" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -436,14 +436,14 @@
 	<item id="7717" type="Weapon" name="Inferno Staff - Magic Silence">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1000" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -463,14 +463,14 @@
 	<item id="7718" type="Weapon" name="Inferno Staff - Magic Paralyze">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="bigblunt" />
+		<set name="weapon_type" val="BIGBLUNT" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="20" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;46;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="wood" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="WOOD" />
 		<set name="weight" val="1000" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -489,14 +489,14 @@
 	</item>
 	<item id="7719" type="Weapon" name="Poleaxe - Critical Stun">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="bronze" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="BRONZE" />
 		<set name="weight" val="2010" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -516,14 +516,14 @@
 	</item>
 	<item id="7720" type="Weapon" name="Poleaxe - Towering Blow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;80;120" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="bronze" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="BRONZE" />
 		<set name="weight" val="2010" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -542,14 +542,14 @@
 	</item>
 	<item id="7721" type="Weapon" name="Poleaxe - Wide Blow">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="pole" />
+		<set name="weapon_type" val="POLE" />
 		<set name="bodypart" val="lrhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="80" />
 		<set name="damage_range" val="0;0;66;180" />
 		<set name="crystal_count" val="1720" />
-		<set name="crystal_type" val="c" />
-		<set name="material" val="bronze" />
+		<set name="crystal_type" val="C" />
+		<set name="material" val="BRONZE" />
 		<set name="weight" val="2010" />
 		<set name="price" val="4300000" />
 		<set name="soulshots" val="3" />
@@ -569,14 +569,14 @@
 	<item id="7722" type="Weapon" name="Sword of Valhalla - Acumen">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1157" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="900" />
 		<set name="price" val="8680000" />
 		<set name="soulshots" val="1" />
@@ -594,14 +594,14 @@
 	<item id="7723" type="Weapon" name="Sword of Valhalla - Magic Weakness">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1157" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="900" />
 		<set name="price" val="8680000" />
 		<set name="soulshots" val="1" />
@@ -620,14 +620,14 @@
 	<item id="7724" type="Weapon" name="Sword of Valhalla - Magic Regeneration">
 		<set name="is_magical" val="true" />
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="sword" />
+		<set name="weapon_type" val="SWORD" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="10" />
 		<set name="attack_range" val="40" />
 		<set name="damage_range" val="0;0;40;120" />
 		<set name="crystal_count" val="1157" />
-		<set name="crystal_type" val="b" />
-		<set name="material" val="oriharukon" />
+		<set name="crystal_type" val="B" />
+		<set name="material" val="ORIHARUKON" />
 		<set name="weight" val="900" />
 		<set name="price" val="8680000" />
 		<set name="soulshots" val="1" />
@@ -645,7 +645,7 @@
 	</item>
 	<item id="7725" type="EtcItem" name="Loot - Gray Pouch">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="1" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -653,7 +653,7 @@
 	</item>
 	<item id="7726" type="EtcItem" name="Small Nimble Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="69" />
 		<set name="is_stackable" val="true" />
@@ -662,7 +662,7 @@
 	</item>
 	<item id="7727" type="EtcItem" name="Small Ugly Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="71" />
 		<set name="is_stackable" val="true" />
@@ -671,7 +671,7 @@
 	</item>
 	<item id="7728" type="EtcItem" name="Small Pudgy Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="77" />
 		<set name="is_stackable" val="true" />
@@ -680,7 +680,7 @@
 	</item>
 	<item id="7729" type="EtcItem" name="Nimble Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="84" />
 		<set name="is_stackable" val="true" />
@@ -689,7 +689,7 @@
 	</item>
 	<item id="7730" type="EtcItem" name="Ugly Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="94" />
 		<set name="is_stackable" val="true" />
@@ -698,7 +698,7 @@
 	</item>
 	<item id="7731" type="EtcItem" name="Pudgy Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="104" />
 		<set name="is_stackable" val="true" />
@@ -707,7 +707,7 @@
 	</item>
 	<item id="7732" type="EtcItem" name="Large Nimble Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="113" />
 		<set name="is_stackable" val="true" />
@@ -716,7 +716,7 @@
 	</item>
 	<item id="7733" type="EtcItem" name="Large Ugly Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="124" />
 		<set name="is_stackable" val="true" />
@@ -725,7 +725,7 @@
 	</item>
 	<item id="7734" type="EtcItem" name="Large Pudgy Green Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="133" />
 		<set name="is_stackable" val="true" />
@@ -734,7 +734,7 @@
 	</item>
 	<item id="7735" type="EtcItem" name="Small Jade Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="143" />
 		<set name="is_stackable" val="true" />
@@ -743,7 +743,7 @@
 	</item>
 	<item id="7736" type="EtcItem" name="Small Jade Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -751,7 +751,7 @@
 	</item>
 	<item id="7737" type="EtcItem" name="Small Jade Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="167" />
 		<set name="is_stackable" val="true" />
@@ -760,7 +760,7 @@
 	</item>
 	<item id="7738" type="EtcItem" name="Jade Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="166" />
 		<set name="is_stackable" val="true" />
@@ -769,7 +769,7 @@
 	</item>
 	<item id="7739" type="EtcItem" name="Jade Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="165" />
 		<set name="is_stackable" val="true" />
@@ -778,7 +778,7 @@
 	</item>
 	<item id="7740" type="EtcItem" name="Jade Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="165" />
 		<set name="is_stackable" val="true" />
@@ -787,7 +787,7 @@
 	</item>
 	<item id="7741" type="EtcItem" name="Large Jade Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="164" />
 		<set name="is_stackable" val="true" />
@@ -796,7 +796,7 @@
 	</item>
 	<item id="7742" type="EtcItem" name="Large Jade Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="164" />
 		<set name="is_stackable" val="true" />
@@ -805,7 +805,7 @@
 	</item>
 	<item id="7743" type="EtcItem" name="Large Jade Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -813,7 +813,7 @@
 	</item>
 	<item id="7744" type="EtcItem" name="Small Blue Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="163" />
 		<set name="is_stackable" val="true" />
@@ -822,7 +822,7 @@
 	</item>
 	<item id="7745" type="EtcItem" name="Small Blue Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -830,7 +830,7 @@
 	</item>
 	<item id="7746" type="EtcItem" name="Small Blue Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -838,7 +838,7 @@
 	</item>
 	<item id="7747" type="EtcItem" name="Blue Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -846,7 +846,7 @@
 	</item>
 	<item id="7748" type="EtcItem" name="Blue Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -854,7 +854,7 @@
 	</item>
 	<item id="7749" type="EtcItem" name="Blue Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -862,7 +862,7 @@
 	</item>
 	<item id="7750" type="EtcItem" name="Large Blue Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -870,7 +870,7 @@
 	</item>
 	<item id="7751" type="EtcItem" name="Large Blue Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -878,7 +878,7 @@
 	</item>
 	<item id="7752" type="EtcItem" name="Large Blue Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -886,7 +886,7 @@
 	</item>
 	<item id="7753" type="EtcItem" name="Small Yellow Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -894,7 +894,7 @@
 	</item>
 	<item id="7754" type="EtcItem" name="Small Yellow Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -902,7 +902,7 @@
 	</item>
 	<item id="7755" type="EtcItem" name="Small Yellow Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -910,7 +910,7 @@
 	</item>
 	<item id="7756" type="EtcItem" name="Yellow Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -918,7 +918,7 @@
 	</item>
 	<item id="7757" type="EtcItem" name="Yellow Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="277" />
 		<set name="is_stackable" val="true" />
@@ -927,7 +927,7 @@
 	</item>
 	<item id="7758" type="EtcItem" name="Yellow Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -935,7 +935,7 @@
 	</item>
 	<item id="7759" type="EtcItem" name="Large Yellow Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -943,7 +943,7 @@
 	</item>
 	<item id="7760" type="EtcItem" name="Large Yellow Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -951,7 +951,7 @@
 	</item>
 	<item id="7761" type="EtcItem" name="Large Yellow Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -959,7 +959,7 @@
 	</item>
 	<item id="7762" type="EtcItem" name="Small Orange Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -967,7 +967,7 @@
 	</item>
 	<item id="7763" type="EtcItem" name="Small Orange Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -975,7 +975,7 @@
 	</item>
 	<item id="7764" type="EtcItem" name="Small Orange Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -983,7 +983,7 @@
 	</item>
 	<item id="7765" type="EtcItem" name="Orange Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -991,7 +991,7 @@
 	</item>
 	<item id="7766" type="EtcItem" name="Orange Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -999,7 +999,7 @@
 	</item>
 	<item id="7767" type="EtcItem" name="Orange Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1007,7 +1007,7 @@
 	</item>
 	<item id="7768" type="EtcItem" name="Large Orange Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1015,7 +1015,7 @@
 	</item>
 	<item id="7769" type="EtcItem" name="Large Orange Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1023,7 +1023,7 @@
 	</item>
 	<item id="7770" type="EtcItem" name="Large Orange Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1031,7 +1031,7 @@
 	</item>
 	<item id="7771" type="EtcItem" name="Small Purple Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1039,7 +1039,7 @@
 	</item>
 	<item id="7772" type="EtcItem" name="Small Purple Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1047,7 +1047,7 @@
 	</item>
 	<item id="7773" type="EtcItem" name="Small Purple Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="price" val="455" />
 		<set name="is_stackable" val="true" />
@@ -1056,7 +1056,7 @@
 	</item>
 	<item id="7774" type="EtcItem" name="Purple Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1064,7 +1064,7 @@
 	</item>
 	<item id="7775" type="EtcItem" name="Purple Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1072,7 +1072,7 @@
 	</item>
 	<item id="7776" type="EtcItem" name="Purple Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1080,7 +1080,7 @@
 	</item>
 	<item id="7777" type="EtcItem" name="Large Purple Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1088,7 +1088,7 @@
 	</item>
 	<item id="7778" type="EtcItem" name="Large Purple Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1096,7 +1096,7 @@
 	</item>
 	<item id="7779" type="EtcItem" name="Large Purple Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1104,7 +1104,7 @@
 	</item>
 	<item id="7780" type="EtcItem" name="Small Red Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1112,7 +1112,7 @@
 	</item>
 	<item id="7781" type="EtcItem" name="Small Red Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1120,7 +1120,7 @@
 	</item>
 	<item id="7782" type="EtcItem" name="Small Red Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1128,7 +1128,7 @@
 	</item>
 	<item id="7783" type="EtcItem" name="Red Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1136,7 +1136,7 @@
 	</item>
 	<item id="7784" type="EtcItem" name="Red Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1144,7 +1144,7 @@
 	</item>
 	<item id="7785" type="EtcItem" name="Red Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1152,7 +1152,7 @@
 	</item>
 	<item id="7786" type="EtcItem" name="Large Red Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1160,7 +1160,7 @@
 	</item>
 	<item id="7787" type="EtcItem" name="Large Red Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1168,7 +1168,7 @@
 	</item>
 	<item id="7788" type="EtcItem" name="Large Red Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1176,7 +1176,7 @@
 	</item>
 	<item id="7789" type="EtcItem" name="Small White Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1184,7 +1184,7 @@
 	</item>
 	<item id="7790" type="EtcItem" name="Small White Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1192,7 +1192,7 @@
 	</item>
 	<item id="7791" type="EtcItem" name="Small White Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1200,7 +1200,7 @@
 	</item>
 	<item id="7792" type="EtcItem" name="White Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1208,7 +1208,7 @@
 	</item>
 	<item id="7793" type="EtcItem" name="White Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1216,7 +1216,7 @@
 	</item>
 	<item id="7794" type="EtcItem" name="White Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1224,7 +1224,7 @@
 	</item>
 	<item id="7795" type="EtcItem" name="Large White Nimble Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1232,7 +1232,7 @@
 	</item>
 	<item id="7796" type="EtcItem" name="Large White Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1240,7 +1240,7 @@
 	</item>
 	<item id="7797" type="EtcItem" name="Large White Fat Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1248,7 +1248,7 @@
 	</item>
 	<item id="7798" type="EtcItem" name="Small Black Nimble Fish: For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />
@@ -1256,7 +1256,7 @@
 	</item>
 	<item id="7799" type="EtcItem" name="Small Black Ugly Fish - For Beginners">
 		<set name="default_action" val="capsule" />
-		<set name="material" val="paper" />
+		<set name="material" val="PAPER" />
 		<set name="weight" val="100" />
 		<set name="is_stackable" val="true" />
 		<set name="handler" val="ItemSkills" />

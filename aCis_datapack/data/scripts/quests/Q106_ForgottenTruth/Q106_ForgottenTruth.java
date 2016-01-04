@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q106_ForgottenTruth extends Quest
 {
@@ -138,6 +139,7 @@ public class Q106_ForgottenTruth extends Quest
 							st.giveItems(ECHO_SOLITUDE, 10);
 							st.giveItems(ECHO_FEAST, 10);
 							st.giveItems(ECHO_CELEBRATION, 10);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(false);
 						}
@@ -184,7 +186,9 @@ public class Q106_ForgottenTruth extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(ANCIENT_SCROLL, 1, 1, 200000) && st.dropItems(ANCIENT_CLAY_TABLET, 1, 1, 200000))
+		if (!st.hasQuestItems(ANCIENT_SCROLL))
+			st.dropItems(ANCIENT_SCROLL, 1, 1, 200000);
+		else if (st.dropItems(ANCIENT_CLAY_TABLET, 1, 1, 200000))
 			st.set("cond", "3");
 		
 		return null;

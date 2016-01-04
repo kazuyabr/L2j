@@ -26,9 +26,9 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RiftInvaderInstance;
+import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestEventType;
-import net.sf.l2j.gameserver.templates.chars.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
 
 /**
@@ -161,7 +161,7 @@ public final class L2AttackableAIScript extends Quest
 		L2AttackableAIScript ai = new L2AttackableAIScript(-1, "L2AttackableAIScript", "ai/group");
 		
 		// register all mobs here...
-		for (L2NpcTemplate template : NpcTable.getInstance().getAllNpcs())
+		for (NpcTemplate template : NpcTable.getInstance().getAllNpcs())
 		{
 			try
 			{

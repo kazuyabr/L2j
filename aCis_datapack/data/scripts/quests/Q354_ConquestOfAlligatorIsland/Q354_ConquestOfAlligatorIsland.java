@@ -37,7 +37,7 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 				ALLIGATOR_TOOTH,
 				1,
 				0,
-				840000
+				490000
 			},
 			{
 				TORN_MAP_FRAGMENT,
@@ -52,7 +52,7 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 				ALLIGATOR_TOOTH,
 				1,
 				0,
-				910000
+				560000
 			},
 			{
 				TORN_MAP_FRAGMENT,
@@ -67,7 +67,7 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 				ALLIGATOR_TOOTH,
 				1,
 				0,
-				880000
+				500000
 			},
 			{
 				TORN_MAP_FRAGMENT,
@@ -82,7 +82,7 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 				ALLIGATOR_TOOTH,
 				1,
 				0,
-				920000
+				600000
 			},
 			{
 				TORN_MAP_FRAGMENT,
@@ -97,7 +97,7 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 				ALLIGATOR_TOOTH,
 				1,
 				0,
-				1000000
+				690000
 			},
 			{
 				TORN_MAP_FRAGMENT,
@@ -112,7 +112,7 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 				ALLIGATOR_TOOTH,
 				1,
 				0,
-				1000000
+				600000
 			},
 			{
 				TORN_MAP_FRAGMENT,

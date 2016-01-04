@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q117_TheOceanOfDistantStars extends Quest
 {
@@ -201,12 +200,8 @@ public class Q117_TheOceanOfDistantStars extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 20)
-		{
+		if (st.dropItems(GREY_STAR, 1, 1, 200000))
 			st.set("cond", "8");
-			st.playSound(QuestState.SOUND_MIDDLE);
-			st.giveItems(GREY_STAR, 1);
-		}
 		
 		return null;
 	}

@@ -145,7 +145,7 @@
 	<aCar name="admin_special_menu" accessLevel="1" />
 	<aCar name="admin_abnormal" accessLevel="1" />
 	<aCar name="admin_abnormal_menu" accessLevel="1" />
-	<aCar name="admin_play_sounds" accessLevel="1" />
+	<aCar name="admin_jukebox" accessLevel="1" />
 	<aCar name="admin_play_sound" accessLevel="1" />
 	<aCar name="admin_atmosphere" accessLevel="1" />
 	<aCar name="admin_atmosphere_menu" accessLevel="1" />
@@ -188,7 +188,6 @@
 
 	<!-- GM CHAT -->
 	<aCar name="admin_gmchat" accessLevel="1" />
-	<aCar name="admin_snoop" accessLevel="1" />
 	<aCar name="admin_gmchat_menu" accessLevel="1" />
 
 	<!-- HEAL -->

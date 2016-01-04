@@ -12,6 +12,9 @@
  */
 package quests.Q328_SenseForBusiness;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -27,39 +30,16 @@ public class Q328_SenseForBusiness extends Quest
 	private static final int MONSTER_EYE_CARCASS = 1347;
 	private static final int BASILISK_GIZZARD = 1348;
 	
-	private static final int[][] DROPLIST =
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		{
-			20055,
-			61,
-			62
-		},
-		{
-			20059,
-			61,
-			62
-		},
-		{
-			20067,
-			72,
-			74
-		},
-		{
-			20068,
-			78,
-			79
-		},
-		{
-			20070,
-			60,
-			0
-		},
-		{
-			20072,
-			63,
-			0
-		},
-	};
+		CHANCES.put(20055, 48);
+		CHANCES.put(20059, 52);
+		CHANCES.put(20067, 68);
+		CHANCES.put(20068, 76);
+		CHANCES.put(20070, 500000);
+		CHANCES.put(20072, 510000);
+	}
 	
 	public Q328_SenseForBusiness()
 	{
@@ -140,30 +120,17 @@ public class Q328_SenseForBusiness extends Quest
 		if (st == null)
 			return null;
 		
-		final int chance = Rnd.get(100);
+		final int npcId = npc.getNpcId();
+		final int chance = CHANCES.get(npcId);
 		
-		for (int[] dropInfos : DROPLIST)
+		if (npcId < 20069)
 		{
-			if (dropInfos[0] == npc.getNpcId())
-			{
-				final int chanceToReach = dropInfos[1];
-				final int secondChanceToReach = dropInfos[2];
-				
-				if (secondChanceToReach == 0)
-				{
-					if (chance < chanceToReach)
-						st.dropItemsAlways(BASILISK_GIZZARD, 1, 0);
-				}
-				else
-				{
-					if (chance < chanceToReach)
-						st.dropItemsAlways(MONSTER_EYE_LENS, 1, 0);
-					else if (chance < secondChanceToReach)
-						st.dropItemsAlways(MONSTER_EYE_CARCASS, 1, 0);
-				}
-				break;
-			}
+			final int rnd = Rnd.get(100);
+			if (rnd < (chance + 1))
+				st.dropItemsAlways((rnd < chance) ? MONSTER_EYE_CARCASS : MONSTER_EYE_LENS, 1, 0);
 		}
+		else
+			st.dropItems(BASILISK_GIZZARD, 1, 0, chance);
 		
 		return null;
 	}

@@ -106,7 +106,7 @@ public class Q271_ProofOfValor extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(KASHA_WOLF_FANG, (Rnd.get(100) < 25) ? 2 : 1, 50))
+		if (st.dropItemsAlways(KASHA_WOLF_FANG, (Rnd.get(4) == 0) ? 2 : 1, 50))
 			st.set("cond", "2");
 		
 		return null;

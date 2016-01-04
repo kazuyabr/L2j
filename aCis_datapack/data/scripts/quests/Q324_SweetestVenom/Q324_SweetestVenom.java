@@ -12,6 +12,9 @@
  */
 package quests.Q324_SweetestVenom;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -23,6 +26,14 @@ public class Q324_SweetestVenom extends Quest
 	
 	// Item
 	private static final int VENOM_SAC = 1077;
+	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(20034, 220000);
+		CHANCES.put(20038, 230000);
+		CHANCES.put(20043, 250000);
+	}
 	
 	public Q324_SweetestVenom()
 	{
@@ -92,7 +103,7 @@ public class Q324_SweetestVenom extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(VENOM_SAC, 1, 10, 330000))
+		if (st.dropItems(VENOM_SAC, 1, 10, CHANCES.get(npc.getNpcId())))
 			st.set("cond", "2");
 		
 		return null;

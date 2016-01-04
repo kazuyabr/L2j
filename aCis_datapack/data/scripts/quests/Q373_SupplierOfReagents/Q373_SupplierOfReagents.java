@@ -12,6 +12,9 @@
  */
 package quests.Q373_SupplierOfReagents;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -32,8 +35,8 @@ public class Q373_SupplierOfReagents extends Quest
 	
 	// Monsters
 	private static final int CRENDION = 20813;
-	private static final int HALLATES_MAID = 20822;
-	private static final int HALLATES_GUARDIAN = 21061;
+	private static final int HALLATE_MAID = 20822;
+	private static final int HALLATE_GUARDIAN = 21061;
 	private static final int PLATINUM_TRIBE_SHAMAN = 20828;
 	private static final int PLATINUM_GUARDIAN_SHAMAN = 21066;
 	private static final int LAVA_WYRM = 21111;
@@ -90,68 +93,55 @@ public class Q373_SupplierOfReagents extends Quest
 	 * <li>LAVA_WYRM : 75% chance to drop - wyrm's blood (50,5%) and lava stone (24,5%)</li>
 	 * </ul>
 	 */
-	private static final int[][] DROPLISTS =
+	private static final Map<Integer, int[]> DROPLIST = new HashMap<>();
 	{
+		DROPLIST.put(PLATINUM_GUARDIAN_SHAMAN, new int[]
 		{
-			HAMES_ORC_SHAMAN,
-			REAGENT_POUCH_3,
-			470
-		},
-		{
-			HALLATES_MAID,
-			REAGENT_POUCH_1,
-			664
-		},
-		{
-			HALLATES_MAID,
-			VOLCANIC_ASH,
-			180
-		},
-		{
-			HALLATES_GUARDIAN,
-			DEMONS_BLOOD,
-			729
-		},
-		{
-			HALLATES_GUARDIAN,
-			MOONSTONE_SHARD,
-			104
-		},
-		{
-			PLATINUM_GUARDIAN_SHAMAN,
 			REAGENT_BOX,
-			442
-		},
+			442000,
+			0
+		});
+		DROPLIST.put(HAMES_ORC_SHAMAN, new int[]
 		{
-			PLATINUM_TRIBE_SHAMAN,
+			REAGENT_POUCH_3,
+			470000,
+			0
+		});
+		DROPLIST.put(PLATINUM_TRIBE_SHAMAN, new int[]
+		{
 			REAGENT_POUCH_2,
-			680
-		},
-		{
-			PLATINUM_TRIBE_SHAMAN,
 			QUICKSILVER,
-			320
-		},
+			680,
+			1000
+		});
+		DROPLIST.put(HALLATE_MAID, new int[]
 		{
-			CRENDION,
-			QUICKSILVER,
-			618
-		},
+			REAGENT_POUCH_1,
+			VOLCANIC_ASH,
+			664,
+			844
+		});
+		DROPLIST.put(HALLATE_GUARDIAN, new int[]
 		{
-			CRENDION,
+			DEMONS_BLOOD,
+			MOONSTONE_SHARD,
+			729,
+			833
+		});
+		DROPLIST.put(CRENDION, new int[]
+		{
 			ROTTEN_BONE,
-			382
-		},
+			QUICKSILVER,
+			618,
+			1000
+		});
+		DROPLIST.put(LAVA_WYRM, new int[]
 		{
-			LAVA_WYRM,
 			WYRMS_BLOOD,
-			505
-		},
-		{
-			LAVA_WYRM,
 			LAVA_STONE,
-			245
-		},
+			505,
+			750
+		});
 	};
 	
 	private static final int[][] FORMULAS =
@@ -267,16 +257,16 @@ public class Q373_SupplierOfReagents extends Quest
 		}
 	};
 	
-	public Q373_SupplierOfReagents(int questId, String name, String descr)
+	public Q373_SupplierOfReagents()
 	{
-		super(questId, name, descr);
+		super(373, qn, "Supplier of Reagents");
 		
 		setItemsIds(MIXING_STONE, MIXING_MANUAL);
 		
 		addStartNpc(WESLEY);
 		addTalkId(WESLEY, URN);
 		
-		addKillId(CRENDION, HALLATES_MAID, HALLATES_GUARDIAN, PLATINUM_TRIBE_SHAMAN, PLATINUM_GUARDIAN_SHAMAN, LAVA_WYRM, HAMES_ORC_SHAMAN);
+		addKillId(CRENDION, HALLATE_MAID, HALLATE_GUARDIAN, PLATINUM_TRIBE_SHAMAN, PLATINUM_GUARDIAN_SHAMAN, LAVA_WYRM, HAMES_ORC_SHAMAN);
 	}
 	
 	@Override
@@ -290,8 +280,8 @@ public class Q373_SupplierOfReagents extends Quest
 		// Wesley
 		if (event.equalsIgnoreCase("30166-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 			
 			st.giveItems(MIXING_STONE, 1);
@@ -387,13 +377,7 @@ public class Q373_SupplierOfReagents extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 57)
-				{
-					htmltext = "30166-01.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "30166-02.htm";
+				htmltext = (player.getLevel() < 57) ? "30166-01.htm" : "30166-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -415,28 +399,22 @@ public class Q373_SupplierOfReagents extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		int npcId = npc.getNpcId();
-		int chance = Rnd.get(1000);
-		for (int droplist[] : DROPLISTS)
+		final int[] drop = DROPLIST.get(npc.getNpcId());
+		
+		if (drop[2] == 0)
+			st.dropItems(drop[0], 1, 0, drop[1]);
+		else
 		{
-			// check mob, go to next mob
-			if (npcId != droplist[0])
-				continue;
-			
-			// check chance, go to next item if exists
-			chance -= droplist[2];
-			if (chance >= 0)
-				continue;
-			
-			st.giveItems(droplist[1], 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-			break;
+			final int random = Rnd.get(1000);
+			if (random < drop[3])
+				st.dropItemsAlways((random < drop[2]) ? drop[0] : drop[1], 1, 0);
 		}
+		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q373_SupplierOfReagents(373, qn, "Supplier of Reagents");
+		new Q373_SupplierOfReagents();
 	}
 }

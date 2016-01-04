@@ -35,7 +35,7 @@ import net.sf.l2j.util.Rnd;
 
 public class Sailren extends AbstractNpcAI
 {
-	private static final L2BossZone _nest = GrandBossManager.getZoneById(110015);
+	private static final L2BossZone _nest = GrandBossManager.getInstance().getZoneById(110015);
 	
 	public static final int SAILREN = 29065;
 	
@@ -64,16 +64,16 @@ public class Sailren extends AbstractNpcAI
 		addAttackId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
 		addKillId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
 		
-		final StatsSet info = GrandBossManager.getStatsSet(SAILREN);
+		final StatsSet info = GrandBossManager.getInstance().getStatsSet(SAILREN);
 		
-		switch (GrandBossManager.getBossStatus(SAILREN))
+		switch (GrandBossManager.getInstance().getBossStatus(SAILREN))
 		{
 			case DEAD: // Launch the timer to set DORMANT, or set DORMANT directly if timer expired while offline.
 				final long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
 				if (temp > 0)
 					startQuestTimer("unlock", temp, null, null, false);
 				else
-					GrandBossManager.setBossStatus(SAILREN, DORMANT);
+					GrandBossManager.getInstance().setBossStatus(SAILREN, DORMANT);
 				break;
 			
 			case FIGHTING:
@@ -85,7 +85,7 @@ public class Sailren extends AbstractNpcAI
 				final int mp = info.getInteger("currentMP");
 				
 				final L2Npc sailren = addSpawn(SAILREN, loc_x, loc_y, loc_z, heading, false, 0, false);
-				GrandBossManager.addBoss((L2GrandBossInstance) sailren);
+				GrandBossManager.getInstance().addBoss((L2GrandBossInstance) sailren);
 				_mobs.add(sailren);
 				
 				sailren.setCurrentHpMp(hp, mp);
@@ -147,7 +147,7 @@ public class Sailren extends AbstractNpcAI
 			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 160, 560, 0, 3000, 3000, 0, 10, 1, 0));
 			
 			final L2Npc temp = addSpawn(SAILREN, SAILREN_LOC, false, 0, false);
-			GrandBossManager.addBoss((L2GrandBossInstance) temp);
+			GrandBossManager.getInstance().addBoss((L2GrandBossInstance) temp);
 			_mobs.add(temp);
 			
 			// Stop skill task.
@@ -159,14 +159,14 @@ public class Sailren extends AbstractNpcAI
 		else if (event.equalsIgnoreCase("camera_5"))
 			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 70, 560, 0, 500, 7000, -15, 10, 1, 0));
 		else if (event.equalsIgnoreCase("unlock"))
-			GrandBossManager.setBossStatus(SAILREN, DORMANT);
+			GrandBossManager.getInstance().setBossStatus(SAILREN, DORMANT);
 		else if (event.equalsIgnoreCase("inactivity"))
 		{
 			// 10 minutes without any attack activity leads to a reset.
 			if ((System.currentTimeMillis() - _timeTracker) >= INTERVAL_CHECK)
 			{
 				// Set it dormant.
-				GrandBossManager.setBossStatus(SAILREN, DORMANT);
+				GrandBossManager.getInstance().setBossStatus(SAILREN, DORMANT);
 				
 				// Delete all monsters and clean the list.
 				if (!_mobs.isEmpty())
@@ -234,7 +234,7 @@ public class Sailren extends AbstractNpcAI
 				if (_mobs.remove(npc))
 				{
 					// Set Sailren as dead.
-					GrandBossManager.setBossStatus(SAILREN, DEAD);
+					GrandBossManager.getInstance().setBossStatus(SAILREN, DEAD);
 					
 					// Spawn the Teleport Cube for 10min.
 					addSpawn(CUBE, npc, false, INTERVAL_CHECK, false);
@@ -249,9 +249,9 @@ public class Sailren extends AbstractNpcAI
 					startQuestTimer("unlock", respawnTime, null, null, false);
 					
 					// Save the respawn time so that the info is maintained past reboots.
-					final StatsSet info = GrandBossManager.getStatsSet(SAILREN);
+					final StatsSet info = GrandBossManager.getInstance().getStatsSet(SAILREN);
 					info.set("respawn_time", System.currentTimeMillis() + respawnTime);
-					GrandBossManager.setStatsSet(SAILREN, info);
+					GrandBossManager.getInstance().setStatsSet(SAILREN, info);
 				}
 				break;
 		}

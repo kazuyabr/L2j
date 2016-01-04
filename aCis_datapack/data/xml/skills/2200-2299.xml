@@ -554,7 +554,7 @@
 		<set name="reuseDelay" val="30000" />
 		<set name="staticHitTime" val="true" />
 		<cond msgId="113" addName="1">
-			<using kind="Bow" />
+			<using kind="BOW" />
 		</cond>
 		<for>
 			<effect name="Stun" time="9" val="0" effectPower="50" effectType="STUN" stackOrder="1" stackType="stun" />

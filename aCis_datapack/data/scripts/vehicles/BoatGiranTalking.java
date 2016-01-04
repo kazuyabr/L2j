@@ -118,6 +118,12 @@ public class BoatGiranTalking implements Runnable
 	private final PlaySound GIRAN_SOUND;
 	private final PlaySound TALKING_SOUND;
 	
+	private final PlaySound GIRAN_SOUND_LEAVE_5MIN;
+	private final PlaySound GIRAN_SOUND_LEAVE_1MIN;
+	
+	private final PlaySound TALKING_SOUND_LEAVE_5MIN;
+	private final PlaySound TALKING_SOUND_LEAVE_1MIN;
+	
 	public BoatGiranTalking(L2BoatInstance boat)
 	{
 		_boat = boat;
@@ -148,6 +154,12 @@ public class BoatGiranTalking implements Runnable
 		
 		GIRAN_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), GIRAN_DOCK.x, GIRAN_DOCK.y, GIRAN_DOCK.z);
 		TALKING_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), TALKING_DOCK[0].x, TALKING_DOCK[0].y, TALKING_DOCK[0].z);
+		
+		GIRAN_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), GIRAN_DOCK.x, GIRAN_DOCK.y, GIRAN_DOCK.z);
+		GIRAN_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), GIRAN_DOCK.x, GIRAN_DOCK.y, GIRAN_DOCK.z);
+		
+		TALKING_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), TALKING_DOCK[0].x, TALKING_DOCK[0].y, TALKING_DOCK[0].z);
+		TALKING_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), TALKING_DOCK[0].x, TALKING_DOCK[0].y, TALKING_DOCK[0].z);
 	}
 	
 	@Override
@@ -159,14 +171,17 @@ public class BoatGiranTalking implements Runnable
 			{
 				case 0:
 					BoatManager.getInstance().broadcastPacket(GIRAN_DOCK, TALKING_DOCK[0], LEAVE_GIRAN5);
+					_boat.broadcastPacket(GIRAN_SOUND_LEAVE_5MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 240000);
 					break;
 				case 1:
 					BoatManager.getInstance().broadcastPacket(GIRAN_DOCK, TALKING_DOCK[0], LEAVE_GIRAN1);
+					_boat.broadcastPacket(GIRAN_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 40000);
 					break;
 				case 2:
 					BoatManager.getInstance().broadcastPacket(GIRAN_DOCK, TALKING_DOCK[0], LEAVE_GIRAN0);
+					_boat.broadcastPacket(GIRAN_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 20000);
 					break;
 				case 3:
@@ -210,14 +225,17 @@ public class BoatGiranTalking implements Runnable
 					break;
 				case 9:
 					BoatManager.getInstance().broadcastPacket(TALKING_DOCK[0], GIRAN_DOCK, LEAVE_TALKING5);
+					_boat.broadcastPacket(TALKING_SOUND_LEAVE_5MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 240000);
 					break;
 				case 10:
 					BoatManager.getInstance().broadcastPacket(TALKING_DOCK[0], GIRAN_DOCK, LEAVE_TALKING1);
+					_boat.broadcastPacket(TALKING_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 40000);
 					break;
 				case 11:
 					BoatManager.getInstance().broadcastPacket(TALKING_DOCK[0], GIRAN_DOCK, LEAVE_TALKING0);
+					_boat.broadcastPacket(TALKING_SOUND_LEAVE_1MIN);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 20000);
 					break;
 				case 12:

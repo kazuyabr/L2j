@@ -12,6 +12,9 @@
  */
 package quests.Q165_ShilensHunt;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
@@ -22,9 +25,24 @@ public class Q165_ShilensHunt extends Quest
 {
 	private static final String qn = "Q165_ShilensHunt";
 	
+	// Monsters
+	private static final int ASHEN_WOLF = 20456;
+	private static final int YOUNG_BROWN_KELTIR = 20529;
+	private static final int BROWN_KELTIR = 20532;
+	private static final int ELDER_BROWN_KELTIR = 20536;
+	
 	// Items
 	private static final int DARK_BEZOAR = 1160;
 	private static final int LESSER_HEALING_POTION = 1060;
+	
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
+	{
+		CHANCES.put(ASHEN_WOLF, 1000000);
+		CHANCES.put(YOUNG_BROWN_KELTIR, 333333);
+		CHANCES.put(BROWN_KELTIR, 333333);
+		CHANCES.put(ELDER_BROWN_KELTIR, 666667);
+	}
 	
 	public Q165_ShilensHunt()
 	{
@@ -35,7 +53,7 @@ public class Q165_ShilensHunt extends Quest
 		addStartNpc(30348); // Nelsya
 		addTalkId(30348);
 		
-		addKillId(20456, 20529, 20532, 20536);
+		addKillId(ASHEN_WOLF, YOUNG_BROWN_KELTIR, BROWN_KELTIR, ELDER_BROWN_KELTIR);
 	}
 	
 	@Override
@@ -104,7 +122,7 @@ public class Q165_ShilensHunt extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(DARK_BEZOAR, 1, 13, 200000))
+		if (st.dropItems(DARK_BEZOAR, 1, 13, CHANCES.get(npc.getNpcId())))
 			st.set("cond", "2");
 		
 		return null;

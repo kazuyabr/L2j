@@ -125,15 +125,23 @@ public class Q298_LizardmensConspiracy extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20922:
+				if (st.dropItems(WHITE_GEM, 1, 50, 400000) && st.getQuestItemsCount(RED_GEM) >= 50)
+					st.set("cond", "3");
+				break;
+			
 			case 20923:
+				if (st.dropItems(WHITE_GEM, 1, 50, 450000) && st.getQuestItemsCount(RED_GEM) >= 50)
+					st.set("cond", "3");
+				break;
+			
 			case 20924:
-				if (st.dropItems(WHITE_GEM, 1, 50, 620000) && st.getQuestItemsCount(RED_GEM) >= 50)
+				if (st.dropItems(WHITE_GEM, 1, 50, 350000) && st.getQuestItemsCount(RED_GEM) >= 50)
 					st.set("cond", "3");
 				break;
 			
 			case 20926:
 			case 20927:
-				if (st.dropItems(RED_GEM, 1, 50, 620000) && st.getQuestItemsCount(WHITE_GEM) >= 50)
+				if (st.dropItems(RED_GEM, 1, 50, 400000) && st.getQuestItemsCount(WHITE_GEM) >= 50)
 					st.set("cond", "3");
 				break;
 		}

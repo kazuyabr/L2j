@@ -393,7 +393,7 @@
 		<set name="magicLvl" val="#magicLvl" />
 		<for>
 			<mul order="0x30" stat="blowRate" val="#blowRate" />
-			<using kind="Dagger"/>
+			<using kind="DAGGER"/>
 		</for>
 	</skill>
 	<skill id="3036" levels="6" name="Special Ability: Haste">
