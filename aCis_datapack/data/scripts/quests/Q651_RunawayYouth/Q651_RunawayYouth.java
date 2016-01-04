@@ -12,6 +12,7 @@
  */
 package quests.Q651_RunawayYouth;
 
+import net.sf.l2j.gameserver.model.SpawnLocation;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -28,34 +29,22 @@ public class Q651_RunawayYouth extends Quest
 	private static final int BATIDAE = 31989;
 	
 	// Item
-	private static final int SOE = 736;
+	private static final int SCROLL_OF_ESCAPE = 736;
 	
 	// Table of possible spawns
-	private static final int[][] spawns =
+	private static final SpawnLocation[] SPAWNS =
 	{
-		{
-			118600,
-			-161235,
-			-1119
-		},
-		{
-			108380,
-			-150268,
-			-2376
-		},
-		{
-			123254,
-			-148126,
-			-3425
-		}
+		new SpawnLocation(118600, -161235, -1119, 0),
+		new SpawnLocation(108380, -150268, -2376, 0),
+		new SpawnLocation(123254, -148126, -3425, 0)
 	};
 	
 	// Current position
 	private int _currentPosition = 0;
 	
-	public Q651_RunawayYouth(int questId, String name, String descr)
+	public Q651_RunawayYouth()
 	{
-		super(questId, name, descr);
+		super(651, qn, "Runaway Youth");
 		
 		addStartNpc(IVAN);
 		addTalkId(IVAN, BATIDAE);
@@ -73,14 +62,14 @@ public class Q651_RunawayYouth extends Quest
 		
 		if (event.equalsIgnoreCase("32014-04.htm"))
 		{
-			if (st.hasQuestItems(SOE))
+			if (st.hasQuestItems(SCROLL_OF_ESCAPE))
 			{
-				st.set("cond", "1");
-				st.setState(STATE_STARTED);
-				st.takeItems(SOE, 1);
-				st.playSound(QuestState.SOUND_ACCEPT);
-				
 				htmltext = "32014-03.htm";
+				st.setState(STATE_STARTED);
+				st.set("cond", "1");
+				st.playSound(QuestState.SOUND_ACCEPT);
+				st.takeItems(SCROLL_OF_ESCAPE, 1);
+				
 				npc.broadcastPacket(new MagicSkillUse(npc, npc, 2013, 1, 3500, 0));
 				startQuestTimer("apparition_npc", 4000, npc, player, false);
 			}
@@ -99,7 +88,7 @@ public class Q651_RunawayYouth extends Quest
 			_currentPosition = chance;
 			
 			npc.deleteMe();
-			addSpawn(IVAN, spawns[chance][0], spawns[chance][1], spawns[chance][2], 0, false, 0, false);
+			addSpawn(IVAN, SPAWNS[chance], false, 0, false);
 			return null;
 		}
 		
@@ -117,13 +106,7 @@ public class Q651_RunawayYouth extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 26)
-					htmltext = "32014-02.htm";
-				else
-				{
-					htmltext = "32014-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 26) ? "32014-01.htm" : "32014-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -148,6 +131,6 @@ public class Q651_RunawayYouth extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q651_RunawayYouth(651, qn, "Runaway Youth");
+		new Q651_RunawayYouth();
 	}
 }

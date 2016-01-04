@@ -174,11 +174,11 @@ public class Q292_BrigandsSweep extends Quest
 				case GOBLIN_BRIGAND_LIEUTENANT:
 					st.dropItemsAlways(GOBLIN_NECKLACE, 1, 0);
 					break;
-			
+				
 				case GOBLIN_BRIGAND_LEADER:
 					st.dropItemsAlways(GOBLIN_PENDANT, 1, 0);
 					break;
-			
+				
 				case GOBLIN_LORD:
 					st.dropItemsAlways(GOBLIN_LORD_PENDANT, 1, 0);
 					break;

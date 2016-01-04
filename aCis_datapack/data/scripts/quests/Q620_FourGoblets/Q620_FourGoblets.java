@@ -32,21 +32,21 @@ public class Q620_FourGoblets extends Quest
 	private static final int GHOST_CHAMBERLAIN_1 = 31919;
 	private static final int GHOST_CHAMBERLAIN_2 = 31920;
 	
-	private static final int CONQ_SM = 31921;
-	private static final int EMPER_SM = 31922;
-	private static final int SAGES_SM = 31923;
-	private static final int JUDGE_SM = 31924;
+	private static final int CONQUERORS_SEPULCHER_MANAGER = 31921;
+	private static final int EMPERORS_SEPULCHER_MANAGER = 31922;
+	private static final int GREAT_SAGES_SEPULCHER_MANAGER = 31923;
+	private static final int JUDGES_SEPULCHER_MANAGER = 31924;
 	
 	// Items
 	private static final int RELIC = 7254;
 	private static final int SEALED_BOX = 7255;
 	
-	private static final int GOBLET_1 = 7256;
-	private static final int GOBLET_2 = 7257;
-	private static final int GOBLET_3 = 7258;
-	private static final int GOBLET_4 = 7259;
+	private static final int GOBLET_OF_ALECTIA = 7256;
+	private static final int GOBLET_OF_TISHAS = 7257;
+	private static final int GOBLET_OF_MEKARA = 7258;
+	private static final int GOBLET_OF_MORIGUL = 7259;
 	
-	private static final int USED_PASS = 7261;
+	private static final int USED_GRAVE_PASS = 7261;
 	
 	// Rewards
 	private static final int ANTIQUE_BROOCH = 7262;
@@ -64,14 +64,14 @@ public class Q620_FourGoblets extends Quest
 		7580
 	};
 	
-	public Q620_FourGoblets(int questId, String name, String descr)
+	public Q620_FourGoblets()
 	{
-		super(questId, name, descr);
+		super(620, qn, "Four Goblets");
 		
-		setItemsIds(SEALED_BOX, USED_PASS, GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4);
+		setItemsIds(SEALED_BOX, USED_GRAVE_PASS, GOBLET_OF_ALECTIA, GOBLET_OF_TISHAS, GOBLET_OF_MEKARA, GOBLET_OF_MORIGUL);
 		
-		addStartNpc(NAMELESS_SPIRIT, CONQ_SM, EMPER_SM, SAGES_SM, JUDGE_SM, GHOST_CHAMBERLAIN_1, GHOST_CHAMBERLAIN_2);
-		addTalkId(NAMELESS_SPIRIT, CONQ_SM, EMPER_SM, SAGES_SM, JUDGE_SM, GHOST_CHAMBERLAIN_1, GHOST_CHAMBERLAIN_2, GHOST_OF_WIGOTH_1, GHOST_OF_WIGOTH_2);
+		addStartNpc(NAMELESS_SPIRIT, CONQUERORS_SEPULCHER_MANAGER, EMPERORS_SEPULCHER_MANAGER, GREAT_SAGES_SEPULCHER_MANAGER, JUDGES_SEPULCHER_MANAGER, GHOST_CHAMBERLAIN_1, GHOST_CHAMBERLAIN_2);
+		addTalkId(NAMELESS_SPIRIT, CONQUERORS_SEPULCHER_MANAGER, EMPERORS_SEPULCHER_MANAGER, GREAT_SAGES_SEPULCHER_MANAGER, JUDGES_SEPULCHER_MANAGER, GHOST_CHAMBERLAIN_1, GHOST_CHAMBERLAIN_2, GHOST_OF_WIGOTH_1, GHOST_OF_WIGOTH_2);
 		
 		for (int id = 18120; id <= 18256; id++)
 			addKillId(id);
@@ -96,21 +96,21 @@ public class Q620_FourGoblets extends Quest
 		}
 		else if (event.equalsIgnoreCase("31453-13.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31453-16.htm"))
 		{
-			if (st.hasQuestItems(GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4))
+			if (st.hasQuestItems(GOBLET_OF_ALECTIA, GOBLET_OF_TISHAS, GOBLET_OF_MEKARA, GOBLET_OF_MORIGUL))
 			{
-				st.takeItems(GOBLET_1, -1);
-				st.takeItems(GOBLET_2, -1);
-				st.takeItems(GOBLET_3, -1);
-				st.takeItems(GOBLET_4, -1);
-				st.giveItems(ANTIQUE_BROOCH, 1);
 				st.set("cond", "2");
 				st.playSound(QuestState.SOUND_MIDDLE);
+				st.takeItems(GOBLET_OF_ALECTIA, -1);
+				st.takeItems(GOBLET_OF_TISHAS, -1);
+				st.takeItems(GOBLET_OF_MEKARA, -1);
+				st.takeItems(GOBLET_OF_MORIGUL, -1);
+				st.giveItems(ANTIQUE_BROOCH, 1);
 			}
 			else
 				htmltext = "31453-14.htm";
@@ -146,9 +146,9 @@ public class Q620_FourGoblets extends Quest
 				return null;
 			}
 			
-			if (st.hasQuestItems(USED_PASS))
+			if (st.hasQuestItems(USED_GRAVE_PASS))
 			{
-				st.takeItems(USED_PASS, 1);
+				st.takeItems(USED_GRAVE_PASS, 1);
 				player.teleToLocation(178298, -84574, -7216, 0);
 				return null;
 			}
@@ -163,9 +163,9 @@ public class Q620_FourGoblets extends Quest
 				return null;
 			}
 			
-			if (st.hasQuestItems(USED_PASS))
+			if (st.hasQuestItems(USED_GRAVE_PASS))
 			{
-				st.takeItems(USED_PASS, 1);
+				st.takeItems(USED_GRAVE_PASS, 1);
 				player.teleToLocation(186942, -75602, -2834, 0);
 				return null;
 			}
@@ -229,7 +229,7 @@ public class Q620_FourGoblets extends Quest
 			if (cond == 0)
 				htmltext = (player.getLevel() >= 74) ? "31453-01.htm" : "31453-12.htm";
 			else if (cond == 1)
-				htmltext = (st.hasQuestItems(GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4)) ? "31453-15.htm" : "31453-14.htm";
+				htmltext = (st.hasQuestItems(GOBLET_OF_ALECTIA, GOBLET_OF_TISHAS, GOBLET_OF_MEKARA, GOBLET_OF_MORIGUL)) ? "31453-15.htm" : "31453-14.htm";
 			else if (cond == 2)
 				htmltext = "31453-17.htm";
 		}
@@ -238,7 +238,7 @@ public class Q620_FourGoblets extends Quest
 			// Possibilities : 0 = nothing, 1 = seal boxes only, 2 = relics only, 3 = both, 4/5/6/7 = "4 goblets" versions of 0/1/2/3.
 			int index = 0;
 			
-			if (st.hasQuestItems(GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4))
+			if (st.hasQuestItems(GOBLET_OF_ALECTIA, GOBLET_OF_TISHAS, GOBLET_OF_MEKARA, GOBLET_OF_MORIGUL))
 				index = 4;
 			
 			final boolean gotSealBoxes = st.hasQuestItems(SEALED_BOX);
@@ -266,7 +266,7 @@ public class Q620_FourGoblets extends Quest
 		if (partyMember == null)
 			return null;
 		
-		partyMember.getQuestState(qn).dropItems(SEALED_BOX, 1, -1, 300000);
+		partyMember.getQuestState(qn).dropItems(SEALED_BOX, 1, 0, 300000);
 		return null;
 	}
 	
@@ -489,6 +489,6 @@ public class Q620_FourGoblets extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q620_FourGoblets(620, qn, "Four Goblets");
+		new Q620_FourGoblets();
 	}
 }

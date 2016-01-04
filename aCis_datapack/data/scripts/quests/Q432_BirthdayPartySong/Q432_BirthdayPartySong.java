@@ -27,9 +27,9 @@ public class Q432_BirthdayPartySong extends Quest
 	// Item
 	private static final int RED_CRYSTAL = 7541;
 	
-	public Q432_BirthdayPartySong(int questId, String name, String descr)
+	public Q432_BirthdayPartySong()
 	{
-		super(questId, name, descr);
+		super(432, qn, "Birthday Party Song");
 		
 		setItemsIds(RED_CRYSTAL);
 		
@@ -49,8 +49,8 @@ public class Q432_BirthdayPartySong extends Quest
 		
 		if (event.equalsIgnoreCase("31043-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31043-06.htm"))
@@ -79,20 +79,11 @@ public class Q432_BirthdayPartySong extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 31)
-					htmltext = "31043-01.htm";
-				else
-				{
-					htmltext = "31043-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 31) ? "31043-00.htm" : "31043-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(RED_CRYSTAL) < 50)
-					htmltext = "31043-03.htm";
-				else
-					htmltext = "31043-04.htm";
+				htmltext = (st.getQuestItemsCount(RED_CRYSTAL) < 50) ? "31043-03.htm" : "31043-04.htm";
 				break;
 		}
 		
@@ -108,7 +99,7 @@ public class Q432_BirthdayPartySong extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(RED_CRYSTAL, 1, 50, 330000))
+		if (st.dropItems(RED_CRYSTAL, 1, 50, 500000))
 			st.set("cond", "2");
 		
 		return null;
@@ -116,6 +107,6 @@ public class Q432_BirthdayPartySong extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q432_BirthdayPartySong(432, qn, "Birthday Party Song");
+		new Q432_BirthdayPartySong();
 	}
 }

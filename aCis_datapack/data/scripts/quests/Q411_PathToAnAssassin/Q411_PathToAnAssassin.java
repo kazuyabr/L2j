@@ -26,27 +26,27 @@ public class Q411_PathToAnAssassin extends Quest
 	private static final String qn = "Q411_PathToAnAssassin";
 	
 	// Items
-	private static final int ShilensCall = 1245;
-	private static final int ArkeniasLetter = 1246;
-	private static final int LeikansNote = 1247;
-	private static final int Molars = 1248;
-	private static final int ShilenTears = 1250;
-	private static final int ArkeniasReccomend = 1251;
-	private static final int IronHeart = 1252;
+	private static final int SHILEN_CALL = 1245;
+	private static final int ARKENIA_LETTER = 1246;
+	private static final int LEIKAN_NOTE = 1247;
+	private static final int MOONSTONE_BEAST_MOLAR = 1248;
+	private static final int SHILEN_TEARS = 1250;
+	private static final int ARKENIA_RECOMMENDATION = 1251;
+	private static final int IRON_HEART = 1252;
 	
 	// NPCs
-	private static final int Triskel = 30416;
-	private static final int Arkenia = 30419;
-	private static final int Leikan = 30382;
+	private static final int TRISKEL = 30416;
+	private static final int ARKENIA = 30419;
+	private static final int LEIKAN = 30382;
 	
-	public Q411_PathToAnAssassin(int questId, String name, String descr)
+	public Q411_PathToAnAssassin()
 	{
-		super(questId, name, descr);
+		super(411, qn, "Path to an Assassin");
 		
-		setItemsIds(ShilensCall, ArkeniasLetter, LeikansNote, Molars, ShilenTears, ArkeniasReccomend);
+		setItemsIds(SHILEN_CALL, ARKENIA_LETTER, LEIKAN_NOTE, MOONSTONE_BEAST_MOLAR, SHILEN_TEARS, ARKENIA_RECOMMENDATION);
 		
-		addStartNpc(Triskel);
-		addTalkId(Triskel, Arkenia, Leikan);
+		addStartNpc(TRISKEL);
+		addTalkId(TRISKEL, ARKENIA, LEIKAN);
 		
 		addKillId(27036, 20369);
 	}
@@ -62,45 +62,32 @@ public class Q411_PathToAnAssassin extends Quest
 		if (event.equalsIgnoreCase("30416-05.htm"))
 		{
 			if (player.getClassId() != ClassId.darkFighter)
-			{
-				if (player.getClassId() == ClassId.assassin)
-					htmltext = "30416-02a.htm";
-				else
-					htmltext = "30416-02.htm";
-				
-				st.exitQuest(true);
-			}
+				htmltext = (player.getClassId() == ClassId.assassin) ? "30416-02a.htm" : "30416-02.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30416-03.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(IronHeart))
-			{
+			else if (st.hasQuestItems(IRON_HEART))
 				htmltext = "30416-04.htm";
-				st.exitQuest(true);
-			}
 			else
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
-				st.giveItems(ShilensCall, 1);
+				st.giveItems(SHILEN_CALL, 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("30419-05.htm"))
 		{
 			st.set("cond", "2");
-			st.takeItems(ShilensCall, 1);
-			st.giveItems(ArkeniasLetter, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(SHILEN_CALL, 1);
+			st.giveItems(ARKENIA_LETTER, 1);
 		}
 		else if (event.equalsIgnoreCase("30382-03.htm"))
 		{
 			st.set("cond", "3");
-			st.takeItems(ArkeniasLetter, 1);
-			st.giveItems(LeikansNote, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(ARKENIA_LETTER, 1);
+			st.giveItems(LEIKAN_NOTE, 1);
 		}
 		
 		return htmltext;
@@ -121,10 +108,10 @@ public class Q411_PathToAnAssassin extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Triskel:
+					case TRISKEL:
 						if (cond == 1)
 							htmltext = "30416-11.htm";
 						else if (cond == 2)
@@ -138,8 +125,8 @@ public class Q411_PathToAnAssassin extends Quest
 						else if (cond == 7)
 						{
 							htmltext = "30416-06.htm";
-							st.takeItems(ArkeniasReccomend, 1);
-							st.giveItems(IronHeart, 1);
+							st.takeItems(ARKENIA_RECOMMENDATION, 1);
+							st.giveItems(IRON_HEART, 1);
 							st.rewardExpAndSp(3200, 3930);
 							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
@@ -147,7 +134,7 @@ public class Q411_PathToAnAssassin extends Quest
 						}
 						break;
 					
-					case Arkenia:
+					case ARKENIA:
 						if (cond == 1)
 							htmltext = "30419-01.htm";
 						else if (cond == 2)
@@ -161,34 +148,29 @@ public class Q411_PathToAnAssassin extends Quest
 							htmltext = "30419-08.htm";
 							st.set("cond", "7");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(ShilenTears, -1);
-							st.giveItems(ArkeniasReccomend, 1);
+							st.takeItems(SHILEN_TEARS, -1);
+							st.giveItems(ARKENIA_RECOMMENDATION, 1);
 						}
 						else if (cond == 7)
 							htmltext = "30419-09.htm";
 						break;
 					
-					case Leikan:
+					case LEIKAN:
 						if (cond == 2)
 							htmltext = "30382-01.htm";
 						else if (cond == 3)
-						{
-							if (!st.hasQuestItems(Molars))
-								htmltext = "30382-05.htm";
-							else
-								htmltext = "30382-06.htm";
-						}
+							htmltext = (!st.hasQuestItems(MOONSTONE_BEAST_MOLAR)) ? "30382-05.htm" : "30382-06.htm";
 						else if (cond == 4)
 						{
 							htmltext = "30382-07.htm";
 							st.set("cond", "5");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(Molars, -1);
-							st.takeItems(LeikansNote, -1);
+							st.takeItems(MOONSTONE_BEAST_MOLAR, -1);
+							st.takeItems(LEIKAN_NOTE, -1);
 						}
 						else if (cond == 5)
 							htmltext = "30382-09.htm";
-						else if (cond >= 6)
+						else if (cond > 5)
 							htmltext = "30382-08.htm";
 						break;
 				}
@@ -207,13 +189,14 @@ public class Q411_PathToAnAssassin extends Quest
 		
 		if (npc.getNpcId() == 20369)
 		{
-			if (st.getInt("cond") == 3 && st.dropItemsAlways(Molars, 1, 10))
+			if (st.getInt("cond") == 3 && st.dropItemsAlways(MOONSTONE_BEAST_MOLAR, 1, 10))
 				st.set("cond", "4");
 		}
-		else
+		else if (st.getInt("cond") == 5)
 		{
-			if (st.getInt("cond") == 5 && st.dropItemsAlways(ShilenTears, 1, 1))
-				st.set("cond", "6");
+			st.set("cond", "6");
+			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(SHILEN_TEARS, 1);
 		}
 		
 		return null;
@@ -221,6 +204,6 @@ public class Q411_PathToAnAssassin extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q411_PathToAnAssassin(411, qn, "Path to an Assassin");
+		new Q411_PathToAnAssassin();
 	}
 }

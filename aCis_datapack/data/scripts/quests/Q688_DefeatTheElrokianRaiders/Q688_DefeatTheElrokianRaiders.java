@@ -32,9 +32,9 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 	// Monster
 	private static final int ELROKI = 22214;
 	
-	public Q688_DefeatTheElrokianRaiders(int questId, String name, String descr)
+	public Q688_DefeatTheElrokianRaiders()
 	{
-		super(questId, name, descr);
+		super(688, qn, "Defeat the Elrokian Raiders!");
 		
 		setItemsIds(DINOSAUR_FANG_NECKLACE);
 		
@@ -52,18 +52,15 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 		if (st == null)
 			return htmltext;
 		
-		int count = st.getQuestItemsCount(DINOSAUR_FANG_NECKLACE);
-		if (event.equalsIgnoreCase("None"))
-			return null;
-		
 		if (event.equalsIgnoreCase("32105-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32105-08.htm"))
 		{
+			final int count = st.getQuestItemsCount(DINOSAUR_FANG_NECKLACE);
 			if (count > 0)
 			{
 				st.takeItems(DINOSAUR_FANG_NECKLACE, -1);
@@ -74,11 +71,14 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 		}
 		else if (event.equalsIgnoreCase("32105-06.htm"))
 		{
+			final int count = st.getQuestItemsCount(DINOSAUR_FANG_NECKLACE);
+			
 			st.takeItems(DINOSAUR_FANG_NECKLACE, -1);
 			st.rewardItems(57, count * 3000);
 		}
 		else if (event.equalsIgnoreCase("32105-07.htm"))
 		{
+			final int count = st.getQuestItemsCount(DINOSAUR_FANG_NECKLACE);
 			if (count >= 100)
 			{
 				st.takeItems(DINOSAUR_FANG_NECKLACE, 100);
@@ -102,20 +102,11 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 75)
-					htmltext = "32105-01.htm";
-				else
-				{
-					htmltext = "32105-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 75) ? "32105-00.htm" : "32105-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (!st.hasQuestItems(DINOSAUR_FANG_NECKLACE))
-					htmltext = "32105-04.htm";
-				else
-					htmltext = "32105-05.htm";
+				htmltext = (!st.hasQuestItems(DINOSAUR_FANG_NECKLACE)) ? "32105-04.htm" : "32105-05.htm";
 				break;
 		}
 		
@@ -131,13 +122,13 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		st.dropItems(DINOSAUR_FANG_NECKLACE, 1, -1, 500000);
+		st.dropItems(DINOSAUR_FANG_NECKLACE, 1, 0, 500000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q688_DefeatTheElrokianRaiders(688, qn, "Defeat the Elrokian Raiders!");
+		new Q688_DefeatTheElrokianRaiders();
 	}
 }

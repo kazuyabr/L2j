@@ -16,6 +16,7 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q235_MimirsElixir extends Quest
@@ -73,6 +74,10 @@ public class Q235_MimirsElixir extends Quest
 		}
 		else if (event.equalsIgnoreCase("30721-16.htm") && st.hasQuestItems(MIMIR_ELIXIR))
 		{
+			player.broadcastPacket(new MagicSkillUse(player, player, 4339, 1, 1, 1));
+			
+			st.takeItems(MAGISTER_MIXING_STONE, -1);
+			st.takeItems(MIMIR_ELIXIR, -1);
 			st.takeItems(STAR_OF_DESTINY, -1);
 			st.giveItems(SCROLL_ENCHANT_WEAPON_A, 1);
 			player.broadcastPacket(new SocialAction(player, 3));
@@ -91,25 +96,22 @@ public class Q235_MimirsElixir extends Quest
 		}
 		else if (event.equalsIgnoreCase("31149-03.htm"))
 		{
-			if (!st.hasQuestItems(MAGISTER_MIXING_STONE) || !st.hasQuestItems(PURE_SILVER))
+			if (!st.hasQuestItems(MAGISTER_MIXING_STONE, PURE_SILVER))
 				htmltext = "31149-havent.htm";
 		}
 		else if (event.equalsIgnoreCase("31149-05.htm"))
 		{
-			if (!st.hasQuestItems(MAGISTER_MIXING_STONE) || !st.hasQuestItems(PURE_SILVER) || !st.hasQuestItems(TRUE_GOLD))
+			if (!st.hasQuestItems(MAGISTER_MIXING_STONE, PURE_SILVER, TRUE_GOLD))
 				htmltext = "31149-havent.htm";
 		}
 		else if (event.equalsIgnoreCase("31149-07.htm"))
 		{
-			if (!st.hasQuestItems(MAGISTER_MIXING_STONE) || !st.hasQuestItems(PURE_SILVER) || !st.hasQuestItems(TRUE_GOLD) || !st.hasQuestItems(BLOOD_FIRE))
+			if (!st.hasQuestItems(MAGISTER_MIXING_STONE, PURE_SILVER, TRUE_GOLD, BLOOD_FIRE))
 				htmltext = "31149-havent.htm";
 		}
 		else if (event.equalsIgnoreCase("31149-success.htm"))
 		{
-			if (!st.hasQuestItems(MAGISTER_MIXING_STONE) || !st.hasQuestItems(PURE_SILVER) || !st.hasQuestItems(TRUE_GOLD) || !st.hasQuestItems(BLOOD_FIRE))
-				htmltext = "31149-havent.htm";
-			// If all quest items are still in inventory, destroy them and reward player with elixir.
-			else
+			if (st.hasQuestItems(MAGISTER_MIXING_STONE, PURE_SILVER, TRUE_GOLD, BLOOD_FIRE))
 			{
 				st.set("cond", "8");
 				st.playSound(QuestState.SOUND_MIDDLE);
@@ -118,6 +120,8 @@ public class Q235_MimirsElixir extends Quest
 				st.takeItems(BLOOD_FIRE, -1);
 				st.giveItems(MIMIR_ELIXIR, 1);
 			}
+			else
+				htmltext = "31149-havent.htm";
 		}
 		
 		return htmltext;
@@ -181,7 +185,7 @@ public class Q235_MimirsElixir extends Quest
 							st.takeItems(SAGE_STONE, -1);
 							st.giveItems(TRUE_GOLD, 1);
 						}
-						else if (cond >= 5)
+						else if (cond > 4)
 							htmltext = "30718-06.htm";
 						break;
 					

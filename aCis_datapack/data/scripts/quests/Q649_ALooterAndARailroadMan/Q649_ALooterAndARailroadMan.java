@@ -27,9 +27,9 @@ public class Q649_ALooterAndARailroadMan extends Quest
 	// NPC
 	private static final int OBI = 32052;
 	
-	public Q649_ALooterAndARailroadMan(int questId, String name, String descr)
+	public Q649_ALooterAndARailroadMan()
 	{
-		super(questId, name, descr);
+		super(649, qn, "A Looter and a Railroad Man");
 		
 		setItemsIds(THIEF_GUILD_MARK);
 		
@@ -49,8 +49,8 @@ public class Q649_ALooterAndARailroadMan extends Quest
 		
 		if (event.equalsIgnoreCase("32052-1.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32052-3.htm"))
@@ -80,20 +80,15 @@ public class Q649_ALooterAndARailroadMan extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 30)
-					htmltext = "32052-0.htm";
-				else
-				{
-					htmltext = "32052-0a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 30) ? "32052-0a.htm" : "32052-0.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(THIEF_GUILD_MARK) == 200)
-					htmltext = "32052-2.htm";
-				else
+				final int cond = st.getInt("cond");
+				if (cond == 1)
 					htmltext = "32052-2a.htm";
+				else if (cond == 2)
+					htmltext = "32052-2.htm";
 				break;
 		}
 		return htmltext;
@@ -114,6 +109,6 @@ public class Q649_ALooterAndARailroadMan extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q649_ALooterAndARailroadMan(649, qn, "A Looter and a Railroad Man");
+		new Q649_ALooterAndARailroadMan();
 	}
 }

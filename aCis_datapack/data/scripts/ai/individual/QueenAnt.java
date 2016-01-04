@@ -45,7 +45,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class QueenAnt extends AbstractNpcAI
 {
-	private static L2BossZone _antQueenLair = GrandBossManager.getInstance().getZoneById(110012);
+	private static final L2BossZone AQ_LAIR = GrandBossManager.getInstance().getZoneById(110012);
 	
 	private static final int QUEEN = 29001;
 	private static final int LARVA = 29002;
@@ -110,7 +110,7 @@ public class QueenAnt extends AbstractNpcAI
 			int heading = info.getInteger("heading");
 			int hp = info.getInteger("currentHP");
 			int mp = info.getInteger("currentMP");
-			if (!_antQueenLair.isInsideZone(loc_x, loc_y, loc_z))
+			if (!AQ_LAIR.isInsideZone(loc_x, loc_y, loc_z))
 			{
 				loc_x = QUEEN_X;
 				loc_y = QUEEN_Y;
@@ -126,11 +126,11 @@ public class QueenAnt extends AbstractNpcAI
 	private void spawnBoss(L2GrandBossInstance npc)
 	{
 		if (Rnd.get(100) < 33)
-			_antQueenLair.movePlayersTo(-19480, 187344, -5600);
+			AQ_LAIR.movePlayersTo(-19480, 187344, -5600);
 		else if (Rnd.get(100) < 50)
-			_antQueenLair.movePlayersTo(-17928, 180912, -5520);
+			AQ_LAIR.movePlayersTo(-17928, 180912, -5520);
 		else
-			_antQueenLair.movePlayersTo(-23808, 182368, -5600);
+			AQ_LAIR.movePlayersTo(-23808, 182368, -5600);
 		
 		GrandBossManager.getInstance().addBoss(npc);
 		startQuestTimer("action", 10000, npc, null, true);

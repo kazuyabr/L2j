@@ -26,10 +26,10 @@ public class Q645_GhostsOfBatur extends Quest
 	private static final int KARUDA = 32017;
 	
 	// Item
-	private static final int GRAVE_GOODS = 8089;
+	private static final int CURSED_GRAVE_GOODS = 8089;
 	
 	// Rewards
-	private static final int[][] rewards =
+	private static final int[][] REWARDS =
 	{
 		{
 			1878,
@@ -57,9 +57,9 @@ public class Q645_GhostsOfBatur extends Quest
 		}
 	};
 	
-	public Q645_GhostsOfBatur(int questId, String name, String descr)
+	public Q645_GhostsOfBatur()
 	{
-		super(questId, name, descr);
+		super(645, qn, "Ghosts Of Batur");
 		
 		addStartNpc(KARUDA);
 		addTalkId(KARUDA);
@@ -77,33 +77,20 @@ public class Q645_GhostsOfBatur extends Quest
 		
 		if (event.equalsIgnoreCase("32017-03.htm"))
 		{
-			if (player.getLevel() >= 23)
-			{
-				st.set("cond", "1");
-				st.setState(STATE_STARTED);
-				st.playSound(QuestState.SOUND_ACCEPT);
-			}
-			else
-			{
-				htmltext = "32017-02.htm";
-				st.exitQuest(true);
-			}
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (Util.isDigit(event))
 		{
-			if (st.getQuestItemsCount(GRAVE_GOODS) == 180)
-			{
-				htmltext = "32017-07.htm";
-				st.takeItems(GRAVE_GOODS, -1);
-				
-				int reward[] = rewards[Integer.parseInt(event)];
-				st.giveItems(reward[0], reward[1]);
-				
-				st.playSound(QuestState.SOUND_FINISH);
-				st.exitQuest(true);
-			}
-			else
-				htmltext = "32017-04.htm";
+			htmltext = "32017-07.htm";
+			st.takeItems(CURSED_GRAVE_GOODS, -1);
+			
+			final int reward[] = REWARDS[Integer.parseInt(event)];
+			st.giveItems(reward[0], reward[1]);
+			
+			st.playSound(QuestState.SOUND_FINISH);
+			st.exitQuest(true);
 		}
 		
 		return htmltext;
@@ -120,20 +107,15 @@ public class Q645_GhostsOfBatur extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = "32017-01.htm";
+				htmltext = (player.getLevel() < 23) ? "32017-02.htm" : "32017-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "32017-04.htm";
 				else if (cond == 2)
-				{
-					if (st.getQuestItemsCount(GRAVE_GOODS) == 180)
-						htmltext = "32017-05.htm";
-					else
-						htmltext = "32017-01.htm";
-				}
+					htmltext = "32017-05.htm";
 				break;
 		}
 		
@@ -149,7 +131,7 @@ public class Q645_GhostsOfBatur extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(GRAVE_GOODS, 1, 180, 750000))
+		if (st.dropItems(CURSED_GRAVE_GOODS, 1, 180, 750000))
 			st.set("cond", "2");
 		
 		return null;
@@ -157,6 +139,6 @@ public class Q645_GhostsOfBatur extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q645_GhostsOfBatur(645, qn, "Ghosts Of Batur");
+		new Q645_GhostsOfBatur();
 	}
 }

@@ -33,9 +33,9 @@ public final class Q641_AttackSailren extends Quest
 	private static final int GAZKH_FRAGMENT = 8782;
 	private static final int GAZKH = 8784;
 	
-	public Q641_AttackSailren(int questId, String name, String descr)
+	public Q641_AttackSailren()
 	{
-		super(questId, name, descr);
+		super(641, qn, "Attack Sailren!");
 		
 		setItemsIds(GAZKH_FRAGMENT);
 		
@@ -71,8 +71,8 @@ public final class Q641_AttackSailren extends Quest
 			}
 			else
 			{
-				st.set("cond", "1");
 				htmltext = "32109-6.htm";
+				st.set("cond", "1");
 			}
 		}
 		
@@ -91,31 +91,23 @@ public final class Q641_AttackSailren extends Quest
 		{
 			case STATE_CREATED:
 				if (player.getLevel() < 77)
-				{
 					htmltext = "32109-3.htm";
-					st.exitQuest(true);
-				}
 				else
 				{
 					QuestState st2 = player.getQuestState(Q126_TheNameOfEvil_2.qn);
-					if (st2 != null && st2.isCompleted())
-						htmltext = "32109-1.htm";
-					else
-					{
-						htmltext = "32109-2.htm";
-						st.exitQuest(true);
-					}
+					htmltext = (st2 != null && st2.isCompleted()) ? "32109-1.htm" : "32109-2.htm";
 				}
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "32109-5.htm";
 				else if (cond == 2)
 					htmltext = "32109-7.htm";
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -135,6 +127,6 @@ public final class Q641_AttackSailren extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q641_AttackSailren(641, qn, "Attack Sailren!");
+		new Q641_AttackSailren();
 	}
 }

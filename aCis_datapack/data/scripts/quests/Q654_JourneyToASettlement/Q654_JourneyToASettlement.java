@@ -15,9 +15,9 @@ public class Q654_JourneyToASettlement extends Quest
 	// Reward
 	private static final int FORCE_FIELD_REMOVAL_SCROLL = 8073;
 	
-	public Q654_JourneyToASettlement(int questId, String name, String descr)
+	public Q654_JourneyToASettlement()
 	{
-		super(questId, name, descr);
+		super(654, qn, "Journey to a Settlement");
 		
 		setItemsIds(ANTELOPE_SKIN);
 		
@@ -37,8 +37,8 @@ public class Q654_JourneyToASettlement extends Quest
 		
 		if (event.equalsIgnoreCase("31453-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31453-03.htm"))
@@ -53,6 +53,7 @@ public class Q654_JourneyToASettlement extends Quest
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
+		
 		return htmltext;
 	}
 	
@@ -68,17 +69,11 @@ public class Q654_JourneyToASettlement extends Quest
 		{
 			case STATE_CREATED:
 				QuestState prevSt = player.getQuestState("Q119_LastImperialPrince");
-				if (prevSt == null || !prevSt.isCompleted() || player.getLevel() < 74)
-				{
-					htmltext = "31453-00.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "31453-01.htm";
+				htmltext = (prevSt == null || !prevSt.isCompleted() || player.getLevel() < 74) ? "31453-00.htm" : "31453-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "31453-02.htm";
 				else if (cond == 2)
@@ -106,6 +101,6 @@ public class Q654_JourneyToASettlement extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q654_JourneyToASettlement(654, qn, "Journey to a Settlement");
+		new Q654_JourneyToASettlement();
 	}
 }

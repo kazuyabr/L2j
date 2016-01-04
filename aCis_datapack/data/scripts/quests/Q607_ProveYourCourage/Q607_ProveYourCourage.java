@@ -24,15 +24,15 @@ public class Q607_ProveYourCourage extends Quest
 	private static final String qn = "Q607_ProveYourCourage";
 	
 	// Items
-	private static final int Shadith_Head = 7235;
-	private static final int Valor_Totem = 7219;
-	private static final int Ketra_Alliance_Three = 7213;
+	private static final int HEAD_OF_SHADITH = 7235;
+	private static final int TOTEM_OF_VALOR = 7219;
+	private static final int KETRA_ALLIANCE_3 = 7213;
 	
-	public Q607_ProveYourCourage(int questId, String name, String descr)
+	public Q607_ProveYourCourage()
 	{
-		super(questId, name, descr);
+		super(607, qn, "Prove your courage!");
 		
-		setItemsIds(Shadith_Head);
+		setItemsIds(HEAD_OF_SHADITH);
 		
 		addStartNpc(31370); // Kadun Zu Ketra
 		addTalkId(31370);
@@ -50,32 +50,16 @@ public class Q607_ProveYourCourage extends Quest
 		
 		if (event.equalsIgnoreCase("31370-04.htm"))
 		{
-			if (player.getAllianceWithVarkaKetra() >= 3 && st.getQuestItemsCount(Ketra_Alliance_Three) > 0 && st.getQuestItemsCount(Valor_Totem) == 0)
-			{
-				if (player.getLevel() >= 75)
-				{
-					st.set("cond", "1");
-					st.setState(STATE_STARTED);
-					st.playSound(QuestState.SOUND_ACCEPT);
-				}
-				else
-				{
-					htmltext = "31370-03.htm";
-					st.exitQuest(true);
-				}
-			}
-			else
-			{
-				htmltext = "31370-02.htm";
-				st.exitQuest(true);
-			}
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31370-07.htm"))
 		{
-			if (st.getQuestItemsCount(Shadith_Head) == 1)
+			if (st.hasQuestItems(HEAD_OF_SHADITH))
 			{
-				st.takeItems(Shadith_Head, -1);
-				st.giveItems(Valor_Totem, 1);
+				st.takeItems(HEAD_OF_SHADITH, -1);
+				st.giveItems(TOTEM_OF_VALOR, 1);
 				st.rewardExpAndSp(10000, 0);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
@@ -102,14 +86,16 @@ public class Q607_ProveYourCourage extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = "31370-01.htm";
+				if (player.getLevel() < 75)
+					htmltext = "31370-03.htm";
+				else if (player.getAllianceWithVarkaKetra() >= 3 && st.hasQuestItems(KETRA_ALLIANCE_3) && !st.hasQuestItems(TOTEM_OF_VALOR))
+					htmltext = "31370-01.htm";
+				else
+					htmltext = "31370-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(Shadith_Head) == 1)
-					htmltext = "31370-05.htm";
-				else
-					htmltext = "31370-06.htm";
+				htmltext = (st.hasQuestItems(HEAD_OF_SHADITH)) ? "31370-05.htm" : "31370-06.htm";
 				break;
 		}
 		
@@ -124,11 +110,11 @@ public class Q607_ProveYourCourage extends Quest
 			if (partyMember.getAllianceWithVarkaKetra() >= 3)
 			{
 				QuestState st = partyMember.getQuestState(qn);
-				if (st.hasQuestItems(Ketra_Alliance_Three))
+				if (st.hasQuestItems(KETRA_ALLIANCE_3))
 				{
 					st.set("cond", "2");
-					st.giveItems(Shadith_Head, 1);
 					st.playSound(QuestState.SOUND_MIDDLE);
+					st.giveItems(HEAD_OF_SHADITH, 1);
 				}
 			}
 		}
@@ -138,6 +124,6 @@ public class Q607_ProveYourCourage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q607_ProveYourCourage(607, qn, "Prove your courage!");
+		new Q607_ProveYourCourage();
 	}
 }

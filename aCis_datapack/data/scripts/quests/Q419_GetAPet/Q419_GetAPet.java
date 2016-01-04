@@ -16,7 +16,9 @@ package quests.Q419_GetAPet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -29,37 +31,113 @@ public class Q419_GetAPet extends Quest
 	private static final String qn = "Q419_GetAPet";
 	
 	// Items
-	private static final int AnimalLoversList = 3417;
-	private static final int AnimalSlayers1stList = 3418;
-	private static final int AnimalSlayers2ndList = 3419;
-	private static final int AnimalSlayers3rdList = 3420;
-	private static final int AnimalSlayers4thList = 3421;
-	private static final int AnimalSlayers5thList = 3422;
-	private static final int BloodyFang = 3423;
-	private static final int BloodyClaw = 3424;
-	private static final int BloodyNail = 3425;
-	private static final int BloodyKashaFang = 3426;
-	private static final int BloodyTarantulaNail = 3427;
+	private static final int ANIMAL_LOVER_LIST = 3417;
+	private static final int ANIMAL_SLAYER_LIST_1 = 3418;
+	private static final int ANIMAL_SLAYER_LIST_2 = 3419;
+	private static final int ANIMAL_SLAYER_LIST_3 = 3420;
+	private static final int ANIMAL_SLAYER_LIST_4 = 3421;
+	private static final int ANIMAL_SLAYER_LIST_5 = 3422;
+	private static final int BLOODY_FANG = 3423;
+	private static final int BLOODY_CLAW = 3424;
+	private static final int BLOODY_NAIL = 3425;
+	private static final int BLOODY_KASHA_FANG = 3426;
+	private static final int BLOODY_TARANTULA_NAIL = 3427;
 	
 	// Reward
-	private static final int WolfCollar = 2375;
+	private static final int WOLF_COLLAR = 2375;
 	
 	// NPCs
-	private static final int Martin = 30731;
-	private static final int Bella = 30256;
-	private static final int Metty = 30072;
-	private static final int Ellie = 30091;
+	private static final int MARTIN = 30731;
+	private static final int BELLA = 30256;
+	private static final int METTY = 30072;
+	private static final int ELLIE = 30091;
 	
-	public Q419_GetAPet(int questId, String name, String descr)
+	// Droplist
+	private static final Map<Integer, int[]> DROPLIST = new HashMap<>();
 	{
-		super(questId, name, descr);
+		DROPLIST.put(20103, new int[]
+		{
+			BLOODY_FANG,
+			600000
+		});
+		DROPLIST.put(20106, new int[]
+		{
+			BLOODY_FANG,
+			750000
+		});
+		DROPLIST.put(20108, new int[]
+		{
+			BLOODY_FANG,
+			1000000
+		});
+		DROPLIST.put(20460, new int[]
+		{
+			BLOODY_CLAW,
+			600000
+		});
+		DROPLIST.put(20308, new int[]
+		{
+			BLOODY_CLAW,
+			750000
+		});
+		DROPLIST.put(20466, new int[]
+		{
+			BLOODY_CLAW,
+			1000000
+		});
+		DROPLIST.put(20025, new int[]
+		{
+			BLOODY_NAIL,
+			600000
+		});
+		DROPLIST.put(20105, new int[]
+		{
+			BLOODY_NAIL,
+			750000
+		});
+		DROPLIST.put(20034, new int[]
+		{
+			BLOODY_NAIL,
+			1000000
+		});
+		DROPLIST.put(20474, new int[]
+		{
+			BLOODY_KASHA_FANG,
+			600000
+		});
+		DROPLIST.put(20476, new int[]
+		{
+			BLOODY_KASHA_FANG,
+			750000
+		});
+		DROPLIST.put(20478, new int[]
+		{
+			BLOODY_KASHA_FANG,
+			1000000
+		});
+		DROPLIST.put(20403, new int[]
+		{
+			BLOODY_TARANTULA_NAIL,
+			750000
+		});
+		DROPLIST.put(20508, new int[]
+		{
+			BLOODY_TARANTULA_NAIL,
+			1000000
+		});
+	}
+	
+	public Q419_GetAPet()
+	{
+		super(419, qn, "Get a Pet");
 		
-		setItemsIds(AnimalLoversList, AnimalSlayers1stList, AnimalSlayers2ndList, AnimalSlayers3rdList, AnimalSlayers4thList, AnimalSlayers5thList, BloodyFang, BloodyClaw, BloodyNail, BloodyKashaFang, BloodyTarantulaNail);
+		setItemsIds(ANIMAL_LOVER_LIST, ANIMAL_SLAYER_LIST_1, ANIMAL_SLAYER_LIST_2, ANIMAL_SLAYER_LIST_3, ANIMAL_SLAYER_LIST_4, ANIMAL_SLAYER_LIST_5, BLOODY_FANG, BLOODY_CLAW, BLOODY_NAIL, BLOODY_KASHA_FANG, BLOODY_TARANTULA_NAIL);
 		
-		addStartNpc(Martin);
-		addTalkId(Martin, Bella, Ellie, Metty);
+		addStartNpc(MARTIN);
+		addTalkId(MARTIN, BELLA, ELLIE, METTY);
 		
-		addKillId(20103, 20106, 20108, 20460, 20308, 20466, 20025, 20105, 20034, 20474, 20476, 20478, 20403, 20508);
+		for (int npcId : DROPLIST.keySet())
+			addKillId(npcId);
 	}
 	
 	@Override
@@ -72,52 +150,28 @@ public class Q419_GetAPet extends Quest
 		
 		if (event.equalsIgnoreCase("task"))
 		{
-			st.setState(STATE_STARTED);
-			st.playSound(QuestState.SOUND_ACCEPT);
-			st.set("cond", "1");
+			final int race = player.getRace().ordinal();
 			
-			switch (player.getRace().ordinal())
-			{
-				case 0:
-					st.giveItems(AnimalSlayers1stList, 1);
-					htmltext = "30731-04.htm";
-					break;
-				
-				case 1:
-					st.giveItems(AnimalSlayers2ndList, 1);
-					htmltext = "30731-05.htm";
-					break;
-				
-				case 2:
-					st.giveItems(AnimalSlayers3rdList, 1);
-					htmltext = "30731-06.htm";
-					break;
-				
-				case 3:
-					st.giveItems(AnimalSlayers4thList, 1);
-					htmltext = "30731-07.htm";
-					break;
-				
-				case 4:
-					st.giveItems(AnimalSlayers5thList, 1);
-					htmltext = "30731-08.htm";
-					break;
-			}
+			htmltext = "30731-0" + (race + 4) + ".htm";
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.playSound(QuestState.SOUND_ACCEPT);
+			st.giveItems(ANIMAL_SLAYER_LIST_1 + race, 1);
 		}
 		else if (event.equalsIgnoreCase("30731-12.htm"))
 		{
-			st.takeItems(AnimalSlayers1stList, 1);
-			st.takeItems(AnimalSlayers2ndList, 1);
-			st.takeItems(AnimalSlayers3rdList, 1);
-			st.takeItems(AnimalSlayers4thList, 1);
-			st.takeItems(AnimalSlayers5thList, 1);
-			st.takeItems(BloodyFang, -1);
-			st.takeItems(BloodyClaw, -1);
-			st.takeItems(BloodyNail, -1);
-			st.takeItems(BloodyKashaFang, -1);
-			st.takeItems(BloodyTarantulaNail, -1);
-			st.giveItems(AnimalLoversList, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(ANIMAL_SLAYER_LIST_1, 1);
+			st.takeItems(ANIMAL_SLAYER_LIST_2, 1);
+			st.takeItems(ANIMAL_SLAYER_LIST_3, 1);
+			st.takeItems(ANIMAL_SLAYER_LIST_4, 1);
+			st.takeItems(ANIMAL_SLAYER_LIST_5, 1);
+			st.takeItems(BLOODY_FANG, -1);
+			st.takeItems(BLOODY_CLAW, -1);
+			st.takeItems(BLOODY_NAIL, -1);
+			st.takeItems(BLOODY_KASHA_FANG, -1);
+			st.takeItems(BLOODY_TARANTULA_NAIL, -1);
+			st.giveItems(ANIMAL_LOVER_LIST, 1);
 		}
 		else if (event.equalsIgnoreCase("30256-03.htm"))
 		{
@@ -168,23 +222,16 @@ public class Q419_GetAPet extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 15)
-					htmltext = "30731-02.htm";
-				else
-				{
-					htmltext = "30731-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 15) ? "30731-01.htm" : "30731-02.htm";
 				break;
 			
 			case STATE_STARTED:
 				switch (npc.getNpcId())
 				{
-					case Martin:
-						int lists = st.getQuestItemsCount(AnimalSlayers1stList) + st.getQuestItemsCount(AnimalSlayers2ndList) + st.getQuestItemsCount(AnimalSlayers3rdList) + st.getQuestItemsCount(AnimalSlayers4thList) + st.getQuestItemsCount(AnimalSlayers5thList);
-						int proofs = st.getQuestItemsCount(BloodyFang) + st.getQuestItemsCount(BloodyClaw) + st.getQuestItemsCount(BloodyNail) + st.getQuestItemsCount(BloodyKashaFang) + st.getQuestItemsCount(BloodyTarantulaNail);
-						if (lists == 1)
+					case MARTIN:
+						if (st.hasAtLeastOneQuestItem(ANIMAL_SLAYER_LIST_1, ANIMAL_SLAYER_LIST_2, ANIMAL_SLAYER_LIST_3, ANIMAL_SLAYER_LIST_4, ANIMAL_SLAYER_LIST_5))
 						{
+							final int proofs = st.getQuestItemsCount(BLOODY_FANG) + st.getQuestItemsCount(BLOODY_CLAW) + st.getQuestItemsCount(BLOODY_NAIL) + st.getQuestItemsCount(BLOODY_KASHA_FANG) + st.getQuestItemsCount(BLOODY_TARANTULA_NAIL);
 							if (proofs == 0)
 								htmltext = "30731-09.htm";
 							else if (proofs < 50)
@@ -192,29 +239,27 @@ public class Q419_GetAPet extends Quest
 							else
 								htmltext = "30731-11.htm";
 						}
+						else if (st.getInt("progress") == 7)
+							htmltext = "30731-13.htm";
 						else
-						{
-							if (st.getInt("progress") == 7)
-								htmltext = "30731-13.htm";
-							else
-								htmltext = "30731-16.htm";
-						}
+							htmltext = "30731-16.htm";
 						break;
 					
-					case Bella:
+					case BELLA:
 						htmltext = "30256-01.htm";
 						break;
 					
-					case Metty:
+					case METTY:
 						htmltext = "30072-01.htm";
 						break;
 					
-					case Ellie:
+					case ELLIE:
 						htmltext = "30091-01.htm";
 						break;
 				}
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -225,42 +270,11 @@ public class Q419_GetAPet extends Quest
 		if (st == null)
 			return null;
 		
-		switch (npc.getNpcId())
-		{
-			case 20103:
-			case 20106:
-			case 20108:
-				if (st.hasQuestItems(AnimalSlayers1stList))
-					st.dropItemsAlways(BloodyFang, 1, 50);
-				break;
-			
-			case 20460:
-			case 20308:
-			case 20466:
-				if (st.hasQuestItems(AnimalSlayers2ndList))
-					st.dropItemsAlways(BloodyClaw, 1, 50);
-				break;
-			
-			case 20025:
-			case 20105:
-			case 20034:
-				if (st.hasQuestItems(AnimalSlayers3rdList))
-					st.dropItemsAlways(BloodyNail, 1, 50);
-				break;
-			
-			case 20474:
-			case 20476:
-			case 20478:
-				if (st.hasQuestItems(AnimalSlayers4thList))
-					st.dropItemsAlways(BloodyKashaFang, 1, 50);
-				break;
-			
-			case 20403:
-			case 20508:
-				if (st.hasQuestItems(AnimalSlayers5thList))
-					st.dropItemsAlways(BloodyTarantulaNail, 1, 50);
-				break;
-		}
+		final int[] drop = DROPLIST.get(npc.getNpcId());
+		
+		if (st.hasQuestItems(drop[0] - 5))
+			st.dropItems(drop[0], 1, 50, drop[1]);
+		
 		return null;
 	}
 	
@@ -307,8 +321,8 @@ public class Q419_GetAPet extends Quest
 			return "30731-14.htm";
 		}
 		
-		st.takeItems(AnimalLoversList, 1);
-		st.giveItems(WolfCollar, 1);
+		st.takeItems(ANIMAL_LOVER_LIST, 1);
+		st.giveItems(WOLF_COLLAR, 1);
 		st.playSound(QuestState.SOUND_FINISH);
 		st.exitQuest(true);
 		
@@ -317,6 +331,6 @@ public class Q419_GetAPet extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q419_GetAPet(419, qn, "Get a Pet");
+		new Q419_GetAPet();
 	}
 }

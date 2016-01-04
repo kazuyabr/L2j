@@ -32,7 +32,7 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	
 	// NPCs
 	private static final int JEREMY = 31521;
-	private static final int YETIS_TABLE = 31542;
+	private static final int YETI_TABLE = 31542;
 	
 	// Items
 	private static final int SOY_SAUCE_JAR = 7205;
@@ -54,14 +54,14 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q625_TheFinestIngredients_Part2(int questId, String name, String descr)
+	public Q625_TheFinestIngredients_Part2()
 	{
-		super(questId, name, descr);
+		super(625, qn, "The Finest Ingredients - Part 2");
 		
 		setItemsIds(FOOD_FOR_BUMBALUMP, SPECIAL_YETI_MEAT);
 		
 		addStartNpc(JEREMY);
-		addTalkId(JEREMY, YETIS_TABLE);
+		addTalkId(JEREMY, YETI_TABLE);
 		
 		addAttackId(ICICLE_EMPEROR_BUMBALUMP);
 		addKillId(ICICLE_EMPEROR_BUMBALUMP);
@@ -108,11 +108,11 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 		{
 			if (st.hasQuestItems(SOY_SAUCE_JAR))
 			{
+				st.setState(STATE_STARTED);
 				st.set("cond", "1");
+				st.playSound(QuestState.SOUND_ACCEPT);
 				st.takeItems(SOY_SAUCE_JAR, 1);
 				st.giveItems(FOOD_FOR_BUMBALUMP, 1);
-				st.setState(STATE_STARTED);
-				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 			else
 				htmltext = "31521-04.htm";
@@ -138,9 +138,9 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 				{
 					if (spawnRaid())
 					{
-						st.takeItems(FOOD_FOR_BUMBALUMP, 1);
 						st.set("cond", "2");
 						st.playSound(QuestState.SOUND_MIDDLE);
+						st.takeItems(FOOD_FOR_BUMBALUMP, 1);
 					}
 				}
 				else
@@ -164,17 +164,11 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 73)
-				{
-					htmltext = "31521-02.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "31521-01.htm";
+				htmltext = (player.getLevel() < 73) ? "31521-02.htm" : "31521-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case JEREMY:
@@ -186,7 +180,7 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 							htmltext = "31521-07.htm";
 						break;
 					
-					case YETIS_TABLE:
+					case YETI_TABLE:
 						if (cond == 1)
 							htmltext = "31542-01.htm";
 						else if (cond == 2)
@@ -212,9 +206,10 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 		for (L2PcInstance partyMember : getPartyMembers(player, npc, "cond", "2"))
 		{
 			QuestState st = partyMember.getQuestState(qn);
-			st.giveItems(SPECIAL_YETI_MEAT, 1);
+			
 			st.set("cond", "3");
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(SPECIAL_YETI_MEAT, 1);
 		}
 		
 		// despawn raid (reset info)
@@ -234,7 +229,7 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	{
 		// spawn npc, if not spawned
 		if (_npc == null)
-			_npc = addSpawn(YETIS_TABLE, 157136, -121456, -2363, 40000, false, 0, false);
+			_npc = addSpawn(YETI_TABLE, 157136, -121456, -2363, 40000, false, 0, false);
 	}
 	
 	private static boolean spawnRaid()
@@ -277,6 +272,6 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q625_TheFinestIngredients_Part2(625, qn, "The Finest Ingredients - Part 2");
+		new Q625_TheFinestIngredients_Part2();
 	}
 }

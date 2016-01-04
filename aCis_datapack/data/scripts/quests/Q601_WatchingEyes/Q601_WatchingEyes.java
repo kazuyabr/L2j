@@ -23,7 +23,7 @@ public class Q601_WatchingEyes extends Quest
 	private static final String qn = "Q601_WatchingEyes";
 	
 	// Items
-	private static final int ProofOfAvenger = 7188;
+	private static final int PROOF_OF_AVENGER = 7188;
 	
 	// Rewards
 	private static final int[][] REWARDS =
@@ -31,30 +31,30 @@ public class Q601_WatchingEyes extends Quest
 		{
 			6699,
 			90000,
-			19
+			20
 		},
 		{
 			6698,
 			80000,
-			39
+			40
 		},
 		{
 			6700,
 			40000,
-			49
+			50
 		},
 		{
 			0,
 			230000,
-			99
+			100
 		}
 	};
 	
-	public Q601_WatchingEyes(int questId, String name, String descr)
+	public Q601_WatchingEyes()
 	{
-		super(questId, name, descr);
+		super(601, qn, "Watching Eyes");
 		
-		setItemsIds(ProofOfAvenger);
+		setItemsIds(PROOF_OF_AVENGER);
 		
 		addStartNpc(31683); // Eye of Argos
 		addTalkId(31683);
@@ -73,32 +73,28 @@ public class Q601_WatchingEyes extends Quest
 		if (event.equalsIgnoreCase("31683-03.htm"))
 		{
 			if (player.getLevel() < 71)
-			{
 				htmltext = "31683-02.htm";
-				st.exitQuest(true);
-			}
 			else
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 		}
 		else if (event.equalsIgnoreCase("31683-07.htm"))
 		{
-			st.takeItems(ProofOfAvenger, -1);
+			st.takeItems(PROOF_OF_AVENGER, -1);
 			
 			final int random = Rnd.get(100);
 			for (int[] element : REWARDS)
 			{
-				if (random <= element[2])
+				if (random < element[2])
 				{
 					st.rewardItems(57, element[1]);
 					
-					int itemId = element[0];
-					if (itemId != 0)
+					if (element[0] != 0)
 					{
-						st.giveItems(itemId, 5);
+						st.giveItems(element[0], 5);
 						st.rewardExpAndSp(120000, 10000);
 					}
 					break;
@@ -126,18 +122,14 @@ public class Q601_WatchingEyes extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
-				{
-					if (st.hasQuestItems(ProofOfAvenger))
-						htmltext = "31683-05.htm";
-					else
-						htmltext = "31683-04.htm";
-				}
+					htmltext = (st.hasQuestItems(PROOF_OF_AVENGER)) ? "31683-05.htm" : "31683-04.htm";
 				else if (cond == 2)
 					htmltext = "31683-06.htm";
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -150,7 +142,7 @@ public class Q601_WatchingEyes extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(ProofOfAvenger, 1, 100, 500000))
+		if (st.dropItems(PROOF_OF_AVENGER, 1, 100, 500000))
 			st.set("cond", "2");
 		
 		return null;
@@ -158,6 +150,6 @@ public class Q601_WatchingEyes extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q601_WatchingEyes(601, qn, "Watching Eyes");
+		new Q601_WatchingEyes();
 	}
 }

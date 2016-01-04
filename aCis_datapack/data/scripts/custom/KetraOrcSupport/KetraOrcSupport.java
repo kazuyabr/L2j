@@ -82,42 +82,34 @@ public class KetraOrcSupport extends Quest
 	{
 		{
 			4359,
-			1,
 			2
 		}, // Focus: Requires 2 Buffalo Horns
 		{
 			4360,
-			1,
 			2
 		}, // Death Whisper: Requires 2 Buffalo Horns
 		{
 			4345,
-			1,
 			3
 		}, // Might: Requires 3 Buffalo Horns
 		{
 			4355,
-			1,
 			3
 		}, // Acumen: Requires 3 Buffalo Horns
 		{
 			4352,
-			1,
 			3
 		}, // Berserker: Requires 3 Buffalo Horns
 		{
 			4354,
-			1,
 			3
 		}, // Vampiric Rage: Requires 3 Buffalo Horns
 		{
 			4356,
-			1,
 			6
 		}, // Empower: Requires 6 Buffalo Horns
 		{
 			4357,
-			1,
 			6
 		}
 	// Haste: Requires 6 Buffalo Horns
@@ -161,17 +153,14 @@ public class KetraOrcSupport extends Quest
 		
 		if (Util.isDigit(event))
 		{
-			final int eventId = Integer.parseInt(event);
-			if (eventId >= 0 && eventId <= 7)
+			final int[] buffInfo = BUFF[Integer.parseInt(event)];
+			if (st.getQuestItemsCount(HORN) >= buffInfo[1])
 			{
-				if (st.getQuestItemsCount(HORN) >= BUFF[eventId - 1][2])
-				{
-					st.takeItems(HORN, BUFF[eventId - 1][2]);
-					npc.setTarget(player);
-					npc.doCast(SkillTable.getInstance().getInfo(BUFF[eventId - 1][0], BUFF[eventId - 1][1]));
-					npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
-					htmltext = "31372-4.htm";
-				}
+				htmltext = "31372-4.htm";
+				st.takeItems(HORN, buffInfo[1]);
+				npc.setTarget(player);
+				npc.doCast(SkillTable.getInstance().getInfo(buffInfo[0], 1));
+				npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
 			}
 		}
 		else if (event.equals("Withdraw"))

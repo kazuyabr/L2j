@@ -7,8 +7,7 @@
 	<aCar name="admin_admin2" accessLevel="1" />
 	<aCar name="admin_admin3" accessLevel="1" />
 	<aCar name="admin_admin4" accessLevel="1" />
-	<aCar name="admin_gmliston" accessLevel="1" />
-	<aCar name="admin_gmlistoff" accessLevel="1" />
+	<aCar name="admin_gmlist" accessLevel="1" />
 	<aCar name="admin_kill" accessLevel="1" />
 	<aCar name="admin_silence" accessLevel="1" />
 	<aCar name="admin_tradeoff" accessLevel="1" />
@@ -16,13 +15,9 @@
 	<aCar name="admin_script_load" accessLevel="1" />
 
 	<!-- ANNOUNCEMENTS -->
-	<aCar name="admin_list_announcements" accessLevel="1" />
-	<aCar name="admin_reload_announcements" accessLevel="1" />
-	<aCar name="admin_announce_announcements" accessLevel="1" />
-	<aCar name="admin_add_announcement" accessLevel="1" />
-	<aCar name="admin_del_announcement" accessLevel="1" />
 	<aCar name="admin_announce" accessLevel="1" />
-	<aCar name="admin_announce_menu" accessLevel="1" />
+	<aCar name="admin_ann" accessLevel="1" />
+	<aCar name="admin_say" accessLevel="1" />
 
 	<!-- BAN -->
 	<aCar name="admin_ban" accessLevel="1" />
@@ -51,7 +46,6 @@
 	<!-- CACHE -->
 	<aCar name="admin_reload_cache_path" accessLevel="1" />
 	<aCar name="admin_reload_cache_file" accessLevel="1" />
-	<aCar name="admin_fix_cache_crest" accessLevel="1" />
 
 	<!-- CAMERA -->
 	<aCar name="admin_camera" accessLevel="1" />
@@ -174,14 +168,10 @@
 	<aCar name="admin_remove_exp_sp" accessLevel="1" />
 
 	<!-- GEODATA -->
-	<aCar name="admin_geo_z" accessLevel="1" />
-	<aCar name="admin_geo_type" accessLevel="1" />
-	<aCar name="admin_geo_nswe" accessLevel="1" />
-	<aCar name="admin_geo_los" accessLevel="1" />
-	<aCar name="admin_geo_position" accessLevel="1" />
 	<aCar name="admin_geo_bug" accessLevel="1" />
-	<aCar name="admin_geo_load" accessLevel="1" />
-	<aCar name="admin_geo_unload" accessLevel="1" />
+	<aCar name="admin_geo_pos" accessLevel="1" />
+	<aCar name="admin_geo_can_see" accessLevel="1" />
+	<aCar name="admin_geo_can_move_beeline" accessLevel="1" />
 
 	<!-- GM -->
 	<aCar name="admin_gm" accessLevel="1" />
@@ -257,16 +247,11 @@
 	
 	<!-- OLYMPIADS -->
 	<aCar name="admin_endoly" accessLevel="1" />
-	<aCar name="admin_manualhero" accessLevel="1" />
-	<aCar name="admin_saveoly" accessLevel="1" />
 	<aCar name="admin_sethero" accessLevel="1" />
 	<aCar name="admin_setnoble" accessLevel="1" />
 	
 	<!-- PATHNODE -->
 	<aCar name="admin_pn_info" accessLevel="1" />
-	<aCar name="admin_show_path" accessLevel="1" />
-	<aCar name="admin_path_debug" accessLevel="1" />
-	<aCar name="admin_show_pn" accessLevel="1" />
 	<aCar name="admin_find_path" accessLevel="1" />
 
 	<!-- PETITION -->
@@ -371,9 +356,6 @@
 	<aCar name="admin_recall_clan" accessLevel="1" />
 	<aCar name="admin_move_to" accessLevel="1" />
 	<aCar name="admin_sendhome" accessLevel="1" />
-
-	<!-- UNBLOCK IP -->
-	<aCar name="admin_unblockip" accessLevel="1" />
 
 	<!-- ZONE -->
 	<aCar name="admin_zone_check" accessLevel="1" />

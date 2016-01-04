@@ -317,9 +317,9 @@ public class Q426_QuestForFishingShot extends Quest
 		});
 	}
 	
-	public Q426_QuestForFishingShot(int questId, String name, String descr)
+	public Q426_QuestForFishingShot()
 	{
-		super(questId, name, descr);
+		super(426, qn, "Quest for Fishing Shot");
 		
 		setItemsIds(SWEET_FLUID);
 		
@@ -350,8 +350,8 @@ public class Q426_QuestForFishingShot extends Quest
 		
 		if (event.equalsIgnoreCase("03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("08.htm"))
@@ -378,10 +378,7 @@ public class Q426_QuestForFishingShot extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.hasQuestItems(SWEET_FLUID))
-					htmltext = "05.htm";
-				else
-					htmltext = "04.htm";
+				htmltext = (st.hasQuestItems(SWEET_FLUID)) ? "05.htm" : "04.htm";
 				break;
 		}
 		
@@ -433,14 +430,14 @@ public class Q426_QuestForFishingShot extends Quest
 		
 		if (drop != 0)
 		{
-			st.rewardItems(SWEET_FLUID, drop);
 			st.playSound(QuestState.SOUND_ITEMGET);
+			st.rewardItems(SWEET_FLUID, drop);
 		}
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q426_QuestForFishingShot(426, qn, "Quest for Fishing Shot");
+		new Q426_QuestForFishingShot();
 	}
 }

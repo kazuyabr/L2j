@@ -25,17 +25,17 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 	private static final int FLAURON = 32010;
 	
 	// Items
-	private static final int FADEDMARK = 8065;
-	private static final int NECRO_HEART = 8066;
+	private static final int FADED_VISITOR_MARK = 8065;
+	private static final int NECROMANCER_HEART = 8066;
 	
 	// Reward
-	private static final int MARK = 8067;
+	private static final int PAGAN_MARK = 8067;
 	
-	public Q637_ThroughTheGateOnceMore(int questId, String name, String descr)
+	public Q637_ThroughTheGateOnceMore()
 	{
-		super(questId, name, descr);
+		super(637, qn, "Through the Gate Once More");
 		
-		setItemsIds(NECRO_HEART);
+		setItemsIds(NECROMANCER_HEART);
 		
 		addStartNpc(FLAURON);
 		addTalkId(FLAURON);
@@ -53,8 +53,8 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 		
 		if (event.equalsIgnoreCase("32010-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32010-10.htm"))
@@ -74,38 +74,23 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				
-				if (player.getLevel() >= 73)
-				{
-					if (st.hasQuestItems(MARK))
-					{
-						htmltext = "32010-00.htm";
-						st.exitQuest(true);
-					}
-					else if (st.hasQuestItems(FADEDMARK))
-						htmltext = "32010-01.htm";
-					else
-					{
-						htmltext = "32010-01a.htm";
-						st.exitQuest(true);
-					}
-				}
-				else
-				{
+				if (player.getLevel() < 73 || !st.hasQuestItems(FADED_VISITOR_MARK))
 					htmltext = "32010-01a.htm";
-					st.exitQuest(true);
-				}
+				else if (st.hasQuestItems(PAGAN_MARK))
+					htmltext = "32010-00.htm";
+				else
+					htmltext = "32010-01.htm";
 				break;
 			
 			case STATE_STARTED:
 				if (st.getInt("cond") == 2)
 				{
-					if (st.getQuestItemsCount(NECRO_HEART) == 10)
+					if (st.getQuestItemsCount(NECROMANCER_HEART) == 10)
 					{
 						htmltext = "32010-06.htm";
-						st.takeItems(FADEDMARK, 1);
-						st.takeItems(NECRO_HEART, -1);
-						st.giveItems(MARK, 1);
+						st.takeItems(FADED_VISITOR_MARK, 1);
+						st.takeItems(NECROMANCER_HEART, -1);
+						st.giveItems(PAGAN_MARK, 1);
 						st.giveItems(8273, 10);
 						st.playSound(QuestState.SOUND_FINISH);
 						st.exitQuest(true);
@@ -130,7 +115,7 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(NECRO_HEART, 1, 10, 400000))
+		if (st.dropItems(NECROMANCER_HEART, 1, 10, 400000))
 			st.set("cond", "2");
 		
 		return null;
@@ -138,6 +123,6 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q637_ThroughTheGateOnceMore(637, qn, "Through the Gate Once More");
+		new Q637_ThroughTheGateOnceMore();
 	}
 }

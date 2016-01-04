@@ -60,9 +60,9 @@ public class Q632_NecromancersRequest extends Quest
 	private static final int VAMPIRE_HEART = 7542;
 	private static final int ZOMBIE_BRAIN = 7543;
 	
-	public Q632_NecromancersRequest(int questId, String name, String descr)
+	public Q632_NecromancersRequest()
 	{
-		super(questId, name, descr);
+		super(632, qn, "Necromancer's Request");
 		
 		setItemsIds(VAMPIRE_HEART, ZOMBIE_BRAIN);
 		
@@ -83,19 +83,18 @@ public class Q632_NecromancersRequest extends Quest
 		
 		if (event.equalsIgnoreCase("31522-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31522-06.htm"))
 		{
-			if (st.getQuestItemsCount(VAMPIRE_HEART) > 199)
+			if (st.getQuestItemsCount(VAMPIRE_HEART) >= 200)
 			{
-				st.takeItems(VAMPIRE_HEART, -1);
-				st.rewardItems(57, 120000);
-				
 				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_MIDDLE);
+				st.takeItems(VAMPIRE_HEART, -1);
+				st.rewardItems(57, 120000);
 			}
 			else
 				htmltext = "31522-09.htm";
@@ -105,6 +104,7 @@ public class Q632_NecromancersRequest extends Quest
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
+		
 		return htmltext;
 	}
 	
@@ -119,19 +119,14 @@ public class Q632_NecromancersRequest extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 63)
-				{
-					st.exitQuest(true);
-					htmltext = "31522-01.htm";
-				}
-				else
-					htmltext = "31522-02.htm";
+				htmltext = (player.getLevel() < 63) ? "31522-01.htm" : "31522-02.htm";
 				break;
 			
 			case STATE_STARTED:
 				htmltext = (st.getQuestItemsCount(VAMPIRE_HEART) >= 200) ? "31522-05.htm" : "31522-04.htm";
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -144,25 +139,23 @@ public class Q632_NecromancersRequest extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		int npcId = npc.getNpcId();
 		for (int undead : UNDEADS)
 		{
-			if (undead != npcId)
-				continue;
-			
-			st.dropItems(ZOMBIE_BRAIN, 1, -1, 330000);
-			return null;
+			if (undead == npc.getNpcId())
+			{
+				st.dropItems(ZOMBIE_BRAIN, 1, 0, 330000);
+				return null;
+			}
 		}
 		
-		if (st.getInt("cond") == 1)
-			if (st.dropItems(VAMPIRE_HEART, 1, 200, 500000))
-				st.set("cond", "2");
+		if (st.getInt("cond") == 1 && st.dropItems(VAMPIRE_HEART, 1, 200, 500000))
+			st.set("cond", "2");
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q632_NecromancersRequest(632, qn, "Necromancer's Request");
+		new Q632_NecromancersRequest();
 	}
 }

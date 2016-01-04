@@ -29,9 +29,9 @@ public class Q643_RiseAndFallOfTheElrokiTribe extends Quest
 	// Items
 	private static final int BONES = 8776;
 	
-	public Q643_RiseAndFallOfTheElrokiTribe(int questId, String name, String descr)
+	public Q643_RiseAndFallOfTheElrokiTribe()
 	{
-		super(questId, name, descr);
+		super(643, qn, "Rise and Fall of the Elroki Tribe");
 		
 		setItemsIds(BONES);
 		
@@ -51,8 +51,8 @@ public class Q643_RiseAndFallOfTheElrokiTribe extends Quest
 		
 		if (event.equalsIgnoreCase("32106-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32106-07.htm"))
@@ -93,13 +93,7 @@ public class Q643_RiseAndFallOfTheElrokiTribe extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 75)
-				{
-					htmltext = "31147-00.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "32106-01.htm";
+				htmltext = (player.getLevel() < 75) ? "31147-00.htm" : "32106-01.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -126,13 +120,13 @@ public class Q643_RiseAndFallOfTheElrokiTribe extends Quest
 		if (partyMember == null)
 			return null;
 		
-		partyMember.getQuestState(qn).dropItems(BONES, 1, -1, 750000);
+		partyMember.getQuestState(qn).dropItems(BONES, 1, 0, 750000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q643_RiseAndFallOfTheElrokiTribe(643, qn, "Rise and Fall of the Elroki Tribe");
+		new Q643_RiseAndFallOfTheElrokiTribe();
 	}
 }

@@ -28,14 +28,14 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 	private static final int EYE = 31685;
 	
 	// Items
-	private static final int KEY = 1661;
+	private static final int THIEF_KEY = 1661;
 	private static final int STOLEN_GREEN_TOTEM = 7237;
 	private static final int GREEN_TOTEM = 7238;
 	private static final int DIVINE_STONE = 7081;
 	
-	public Q609_MagicalPowerOfWater_Part1(int questId, String name, String descr)
+	public Q609_MagicalPowerOfWater_Part1()
 	{
-		super(questId, name, descr);
+		super(609, qn, "Magical Power of Water - Part 1");
 		
 		setItemsIds(STOLEN_GREEN_TOTEM);
 		
@@ -56,9 +56,9 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 		
 		if (event.equalsIgnoreCase("31371-03.htm"))
 		{
+			st.setState(STATE_STARTED);
 			st.set("cond", "1");
 			st.set("spawned", "0");
-			st.setState(STATE_STARTED);
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31561-03.htm"))
@@ -67,14 +67,14 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 			if (st.getInt("spawned") == 1)
 				htmltext = "31561-04.htm";
 			// No Thief's Key in inventory.
-			else if (st.getQuestItemsCount(KEY) == 0)
+			else if (!st.hasQuestItems(THIEF_KEY))
 				htmltext = "31561-02.htm";
 			else
 			{
 				st.set("cond", "3");
-				st.takeItems(KEY, 1);
-				st.giveItems(STOLEN_GREEN_TOTEM, 1);
 				st.playSound(QuestState.SOUND_ITEMGET);
+				st.takeItems(THIEF_KEY, 1);
+				st.giveItems(STOLEN_GREEN_TOTEM, 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("AsefaEyeDespawn"))
@@ -97,17 +97,11 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 74 && player.getAllianceWithVarkaKetra() >= 2)
-					htmltext = "31371-01.htm";
-				else
-				{
-					htmltext = "31371-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() >= 74 && player.getAllianceWithVarkaKetra() >= 2) ? "31371-01.htm" : "31371-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case WAHKAN:
@@ -132,7 +126,7 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 								st.playSound(QuestState.SOUND_MIDDLE);
 							}
 						}
-						else if (cond == 3 && st.getQuestItemsCount(STOLEN_GREEN_TOTEM) >= 1)
+						else if (cond == 3 && st.hasQuestItems(STOLEN_GREEN_TOTEM))
 						{
 							htmltext = "31372-04.htm";
 							
@@ -186,6 +180,6 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q609_MagicalPowerOfWater_Part1(609, qn, "Magical Power of Water - Part 1");
+		new Q609_MagicalPowerOfWater_Part1();
 	}
 }

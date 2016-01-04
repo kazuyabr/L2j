@@ -26,35 +26,35 @@ public class Q408_PathToAnElvenWizard extends Quest
 	private static final String qn = "Q408_PathToAnElvenWizard";
 	
 	// Items
-	private static final int RosellasLetter = 1218;
-	private static final int RedDown = 1219;
-	private static final int MagicalPowersRuby = 1220;
-	private static final int PureAquamarine = 1221;
-	private static final int AppetizingApple = 1222;
-	private static final int GoldenLeaves = 1223;
-	private static final int ImmortalLove = 1224;
-	private static final int Amethyst = 1225;
-	private static final int NobilityAmethyst = 1226;
-	private static final int FertilityPeridot = 1229;
-	private static final int EternityDiamond = 1230;
-	private static final int CharmOfGrain = 1272;
-	private static final int SapOfTheMotherTree = 1273;
-	private static final int LuckyPotpourri = 1274;
+	private static final int ROSELLA_LETTER = 1218;
+	private static final int RED_DOWN = 1219;
+	private static final int MAGICAL_POWERS_RUBY = 1220;
+	private static final int PURE_AQUAMARINE = 1221;
+	private static final int APPETIZING_APPLE = 1222;
+	private static final int GOLD_LEAVES = 1223;
+	private static final int IMMORTAL_LOVE = 1224;
+	private static final int AMETHYST = 1225;
+	private static final int NOBILITY_AMETHYST = 1226;
+	private static final int FERTILITY_PERIDOT = 1229;
+	private static final int ETERNITY_DIAMOND = 1230;
+	private static final int CHARM_OF_GRAIN = 1272;
+	private static final int SAP_OF_THE_MOTHER_TREE = 1273;
+	private static final int LUCKY_POTPOURRI = 1274;
 	
 	// NPCs
-	private static final int Rosella = 30414;
-	private static final int Greenis = 30157;
-	private static final int Thalia = 30371;
-	private static final int Northwind = 30423;
+	private static final int ROSELLA = 30414;
+	private static final int GREENIS = 30157;
+	private static final int THALIA = 30371;
+	private static final int NORTHWIND = 30423;
 	
-	public Q408_PathToAnElvenWizard(int questId, String name, String descr)
+	public Q408_PathToAnElvenWizard()
 	{
-		super(questId, name, descr);
+		super(408, qn, "Path to an Elven Wizard");
 		
-		setItemsIds(RosellasLetter, RedDown, MagicalPowersRuby, PureAquamarine, AppetizingApple, GoldenLeaves, ImmortalLove, Amethyst, NobilityAmethyst, FertilityPeridot, CharmOfGrain, SapOfTheMotherTree, LuckyPotpourri);
+		setItemsIds(ROSELLA_LETTER, RED_DOWN, MAGICAL_POWERS_RUBY, PURE_AQUAMARINE, APPETIZING_APPLE, GOLD_LEAVES, IMMORTAL_LOVE, AMETHYST, NOBILITY_AMETHYST, FERTILITY_PERIDOT, CHARM_OF_GRAIN, SAP_OF_THE_MOTHER_TREE, LUCKY_POTPOURRI);
 		
-		addStartNpc(Rosella);
-		addTalkId(Rosella, Greenis, Thalia, Northwind);
+		addStartNpc(ROSELLA);
+		addTalkId(ROSELLA, GREENIS, THALIA, NORTHWIND);
 		
 		addKillId(20047, 20019, 20466);
 	}
@@ -70,73 +70,60 @@ public class Q408_PathToAnElvenWizard extends Quest
 		if (event.equalsIgnoreCase("30414-06.htm"))
 		{
 			if (player.getClassId() != ClassId.elvenMage)
-			{
-				if (player.getClassId() == ClassId.elvenWizard)
-					htmltext = "30414-02a.htm";
-				else
-					htmltext = "30414-03.htm";
-				
-				st.exitQuest(true);
-			}
+				htmltext = (player.getClassId() == ClassId.elvenWizard) ? "30414-02a.htm" : "30414-03.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30414-04.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(EternityDiamond))
-			{
+			else if (st.hasQuestItems(ETERNITY_DIAMOND))
 				htmltext = "30414-05.htm";
-				st.exitQuest(true);
-			}
 			else
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
-				st.giveItems(FertilityPeridot, 1);
+				st.giveItems(FERTILITY_PERIDOT, 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("30414-07.htm"))
 		{
-			if (!st.hasQuestItems(MagicalPowersRuby))
+			if (!st.hasQuestItems(MAGICAL_POWERS_RUBY))
 			{
-				st.giveItems(RosellasLetter, 1);
 				st.playSound(QuestState.SOUND_MIDDLE);
+				st.giveItems(ROSELLA_LETTER, 1);
 			}
 			else
 				htmltext = "30414-10.htm";
 		}
 		else if (event.equalsIgnoreCase("30414-14.htm"))
 		{
-			if (!st.hasQuestItems(PureAquamarine))
+			if (!st.hasQuestItems(PURE_AQUAMARINE))
 			{
-				st.giveItems(AppetizingApple, 1);
 				st.playSound(QuestState.SOUND_MIDDLE);
+				st.giveItems(APPETIZING_APPLE, 1);
 			}
 			else
 				htmltext = "30414-13.htm";
 		}
 		else if (event.equalsIgnoreCase("30414-18.htm"))
 		{
-			if (!st.hasQuestItems(NobilityAmethyst))
+			if (!st.hasQuestItems(NOBILITY_AMETHYST))
 			{
-				st.giveItems(ImmortalLove, 1);
 				st.playSound(QuestState.SOUND_MIDDLE);
+				st.giveItems(IMMORTAL_LOVE, 1);
 			}
 			else
 				htmltext = "30414-17.htm";
 		}
 		else if (event.equalsIgnoreCase("30157-02.htm"))
 		{
-			st.takeItems(RosellasLetter, 1);
-			st.giveItems(CharmOfGrain, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(ROSELLA_LETTER, 1);
+			st.giveItems(CHARM_OF_GRAIN, 1);
 		}
 		else if (event.equalsIgnoreCase("30371-02.htm"))
 		{
-			st.takeItems(AppetizingApple, 1);
-			st.giveItems(SapOfTheMotherTree, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(APPETIZING_APPLE, 1);
+			st.giveItems(SAP_OF_THE_MOTHER_TREE, 1);
 		}
 		
 		return htmltext;
@@ -159,43 +146,43 @@ public class Q408_PathToAnElvenWizard extends Quest
 			case STATE_STARTED:
 				switch (npc.getNpcId())
 				{
-					case Rosella:
-						if (st.hasQuestItems(MagicalPowersRuby, PureAquamarine, NobilityAmethyst))
+					case ROSELLA:
+						if (st.hasQuestItems(MAGICAL_POWERS_RUBY, NOBILITY_AMETHYST, PURE_AQUAMARINE))
 						{
 							htmltext = "30414-24.htm";
-							st.takeItems(MagicalPowersRuby, 1);
-							st.takeItems(PureAquamarine, 1);
-							st.takeItems(NobilityAmethyst, 1);
-							st.takeItems(FertilityPeridot, 1);
-							st.giveItems(EternityDiamond, 1);
+							st.takeItems(FERTILITY_PERIDOT, 1);
+							st.takeItems(MAGICAL_POWERS_RUBY, 1);
+							st.takeItems(NOBILITY_AMETHYST, 1);
+							st.takeItems(PURE_AQUAMARINE, 1);
+							st.giveItems(ETERNITY_DIAMOND, 1);
 							st.rewardExpAndSp(3200, 1890);
 							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(true);
 						}
-						else if (st.hasQuestItems(RosellasLetter))
+						else if (st.hasQuestItems(ROSELLA_LETTER))
 							htmltext = "30414-08.htm";
-						else if (st.hasQuestItems(CharmOfGrain))
+						else if (st.hasQuestItems(CHARM_OF_GRAIN))
 						{
-							if (st.getQuestItemsCount(RedDown) == 5)
+							if (st.getQuestItemsCount(RED_DOWN) == 5)
 								htmltext = "30414-25.htm";
 							else
 								htmltext = "30414-09.htm";
 						}
-						else if (st.hasQuestItems(AppetizingApple))
+						else if (st.hasQuestItems(APPETIZING_APPLE))
 							htmltext = "30414-15.htm";
-						else if (st.hasQuestItems(SapOfTheMotherTree))
+						else if (st.hasQuestItems(SAP_OF_THE_MOTHER_TREE))
 						{
-							if (st.getQuestItemsCount(GoldenLeaves) == 5)
+							if (st.getQuestItemsCount(GOLD_LEAVES) == 5)
 								htmltext = "30414-26.htm";
 							else
 								htmltext = "30414-16.htm";
 						}
-						else if (st.hasQuestItems(ImmortalLove))
+						else if (st.hasQuestItems(IMMORTAL_LOVE))
 							htmltext = "30414-19.htm";
-						else if (st.hasQuestItems(LuckyPotpourri))
+						else if (st.hasQuestItems(LUCKY_POTPOURRI))
 						{
-							if (st.getQuestItemsCount(Amethyst) == 2)
+							if (st.getQuestItemsCount(AMETHYST) == 2)
 								htmltext = "30414-27.htm";
 							else
 								htmltext = "30414-20.htm";
@@ -204,53 +191,53 @@ public class Q408_PathToAnElvenWizard extends Quest
 							htmltext = "30414-11.htm";
 						break;
 					
-					case Greenis:
-						if (st.hasQuestItems(RosellasLetter))
+					case GREENIS:
+						if (st.hasQuestItems(ROSELLA_LETTER))
 							htmltext = "30157-01.htm";
-						else if (st.getQuestItemsCount(RedDown) == 5)
+						else if (st.getQuestItemsCount(RED_DOWN) == 5)
 						{
 							htmltext = "30157-04.htm";
-							st.takeItems(RedDown, -1);
-							st.takeItems(CharmOfGrain, 1);
-							st.giveItems(MagicalPowersRuby, 1);
 							st.playSound(QuestState.SOUND_MIDDLE);
+							st.takeItems(CHARM_OF_GRAIN, 1);
+							st.takeItems(RED_DOWN, -1);
+							st.giveItems(MAGICAL_POWERS_RUBY, 1);
 						}
-						else if (st.hasQuestItems(CharmOfGrain))
+						else if (st.hasQuestItems(CHARM_OF_GRAIN))
 							htmltext = "30157-03.htm";
 						break;
 					
-					case Thalia:
-						if (st.hasQuestItems(AppetizingApple))
+					case THALIA:
+						if (st.hasQuestItems(APPETIZING_APPLE))
 							htmltext = "30371-01.htm";
-						else if (st.getQuestItemsCount(GoldenLeaves) == 5)
+						else if (st.getQuestItemsCount(GOLD_LEAVES) == 5)
 						{
 							htmltext = "30371-04.htm";
-							st.takeItems(GoldenLeaves, -1);
-							st.takeItems(SapOfTheMotherTree, 1);
-							st.giveItems(PureAquamarine, 1);
 							st.playSound(QuestState.SOUND_MIDDLE);
+							st.takeItems(GOLD_LEAVES, -1);
+							st.takeItems(SAP_OF_THE_MOTHER_TREE, 1);
+							st.giveItems(PURE_AQUAMARINE, 1);
 						}
-						else if (st.hasQuestItems(SapOfTheMotherTree))
+						else if (st.hasQuestItems(SAP_OF_THE_MOTHER_TREE))
 							htmltext = "30371-03.htm";
 						break;
 					
-					case Northwind:
-						if (st.hasQuestItems(ImmortalLove))
+					case NORTHWIND:
+						if (st.hasQuestItems(IMMORTAL_LOVE))
 						{
 							htmltext = "30423-01.htm";
-							st.takeItems(ImmortalLove, 1);
-							st.giveItems(LuckyPotpourri, 1);
 							st.playSound(QuestState.SOUND_MIDDLE);
+							st.takeItems(IMMORTAL_LOVE, 1);
+							st.giveItems(LUCKY_POTPOURRI, 1);
 						}
-						else if (st.getQuestItemsCount(Amethyst) == 2)
+						else if (st.getQuestItemsCount(AMETHYST) == 2)
 						{
 							htmltext = "30423-03.htm";
-							st.takeItems(LuckyPotpourri, 1);
-							st.takeItems(Amethyst, -1);
-							st.giveItems(NobilityAmethyst, 1);
 							st.playSound(QuestState.SOUND_MIDDLE);
+							st.takeItems(AMETHYST, -1);
+							st.takeItems(LUCKY_POTPOURRI, 1);
+							st.giveItems(NOBILITY_AMETHYST, 1);
 						}
-						else if (st.hasQuestItems(LuckyPotpourri))
+						else if (st.hasQuestItems(LUCKY_POTPOURRI))
 							htmltext = "30423-02.htm";
 						break;
 				}
@@ -270,18 +257,18 @@ public class Q408_PathToAnElvenWizard extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20019:
-				if (st.hasQuestItems(SapOfTheMotherTree))
-					st.dropItems(GoldenLeaves, 1, 5, 400000);
+				if (st.hasQuestItems(SAP_OF_THE_MOTHER_TREE))
+					st.dropItems(GOLD_LEAVES, 1, 5, 400000);
 				break;
 			
 			case 20047:
-				if (st.hasQuestItems(LuckyPotpourri))
-					st.dropItems(Amethyst, 1, 2, 400000);
+				if (st.hasQuestItems(LUCKY_POTPOURRI))
+					st.dropItems(AMETHYST, 1, 2, 400000);
 				break;
 			
 			case 20466:
-				if (st.hasQuestItems(CharmOfGrain))
-					st.dropItems(RedDown, 1, 5, 700000);
+				if (st.hasQuestItems(CHARM_OF_GRAIN))
+					st.dropItems(RED_DOWN, 1, 5, 700000);
 				break;
 		}
 		
@@ -290,6 +277,6 @@ public class Q408_PathToAnElvenWizard extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q408_PathToAnElvenWizard(408, qn, "Path to an Elven Wizard");
+		new Q408_PathToAnElvenWizard();
 	}
 }

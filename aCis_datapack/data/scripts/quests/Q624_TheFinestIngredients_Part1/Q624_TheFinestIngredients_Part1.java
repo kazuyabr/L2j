@@ -28,19 +28,19 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 	private static final int BANDERSNATCH = 21314;
 	
 	// Items
-	private static final int TRUNK = 7202;
-	private static final int FOOT = 7203;
-	private static final int SPICE = 7204;
+	private static final int TRUNK_OF_NEPENTHES = 7202;
+	private static final int FOOT_OF_BANDERSNATCHLING = 7203;
+	private static final int SECRET_SPICE = 7204;
 	
 	// Rewards
-	private static final int CRYSTAL = 7080;
-	private static final int SAUCE = 7205;
+	private static final int ICE_CRYSTAL = 7080;
+	private static final int SOY_SAUCE_JAR = 7205;
 	
-	public Q624_TheFinestIngredients_Part1(int questId, String name, String descr)
+	public Q624_TheFinestIngredients_Part1()
 	{
-		super(questId, name, descr);
+		super(624, qn, "The Finest Ingredients - Part 1");
 		
-		setItemsIds(TRUNK, FOOT, SPICE);
+		setItemsIds(TRUNK_OF_NEPENTHES, FOOT_OF_BANDERSNATCHLING, SECRET_SPICE);
 		
 		addStartNpc(31521); // Jeremy
 		addTalkId(31521);
@@ -58,19 +58,19 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 		
 		if (event.equalsIgnoreCase("31521-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31521-05.htm"))
 		{
-			if (st.getQuestItemsCount(TRUNK) >= 50 && st.getQuestItemsCount(FOOT) >= 50 && st.getQuestItemsCount(SPICE) >= 50)
+			if (st.getQuestItemsCount(TRUNK_OF_NEPENTHES) >= 50 && st.getQuestItemsCount(FOOT_OF_BANDERSNATCHLING) >= 50 && st.getQuestItemsCount(SECRET_SPICE) >= 50)
 			{
-				st.takeItems(TRUNK, -1);
-				st.takeItems(FOOT, -1);
-				st.takeItems(SPICE, -1);
-				st.giveItems(CRYSTAL, 1);
-				st.giveItems(SAUCE, 1);
+				st.takeItems(TRUNK_OF_NEPENTHES, -1);
+				st.takeItems(FOOT_OF_BANDERSNATCHLING, -1);
+				st.takeItems(SECRET_SPICE, -1);
+				st.giveItems(ICE_CRYSTAL, 1);
+				st.giveItems(SOY_SAUCE_JAR, 1);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
 			}
@@ -95,22 +95,16 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 73)
-					htmltext = "31521-01.htm";
-				else
-				{
-					htmltext = "31521-03.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 73) ? "31521-03.htm" : "31521-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "31521-06.htm";
 				else if (cond == 2)
 				{
-					if (st.getQuestItemsCount(TRUNK) >= 50 && st.getQuestItemsCount(FOOT) >= 50 && st.getQuestItemsCount(SPICE) >= 50)
+					if (st.getQuestItemsCount(TRUNK_OF_NEPENTHES) >= 50 && st.getQuestItemsCount(FOOT_OF_BANDERSNATCHLING) >= 50 && st.getQuestItemsCount(SECRET_SPICE) >= 50)
 						htmltext = "31521-04.htm";
 					else
 						htmltext = "31521-07.htm";
@@ -133,22 +127,19 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 		switch (npc.getNpcId())
 		{
 			case NEPENTHES:
-				if (st.dropItemsAlways(TRUNK, 1, 50))
-					if (st.getQuestItemsCount(FOOT) >= 50 && st.getQuestItemsCount(SPICE) >= 50)
-						st.set("cond", "2");
+				if (st.dropItemsAlways(TRUNK_OF_NEPENTHES, 1, 50) && st.getQuestItemsCount(FOOT_OF_BANDERSNATCHLING) >= 50 && st.getQuestItemsCount(SECRET_SPICE) >= 50)
+					st.set("cond", "2");
 				break;
 			
 			case ATROX:
 			case ATROXSPAWN:
-				if (st.dropItemsAlways(SPICE, 1, 50))
-					if (st.getQuestItemsCount(TRUNK) >= 50 && st.getQuestItemsCount(FOOT) >= 50)
-						st.set("cond", "2");
+				if (st.dropItemsAlways(SECRET_SPICE, 1, 50) && st.getQuestItemsCount(TRUNK_OF_NEPENTHES) >= 50 && st.getQuestItemsCount(FOOT_OF_BANDERSNATCHLING) >= 50)
+					st.set("cond", "2");
 				break;
 			
 			case BANDERSNATCH:
-				if (st.dropItemsAlways(FOOT, 1, 50))
-					if (st.getQuestItemsCount(TRUNK) >= 50 && st.getQuestItemsCount(SPICE) >= 50)
-						st.set("cond", "2");
+				if (st.dropItemsAlways(FOOT_OF_BANDERSNATCHLING, 1, 50) && st.getQuestItemsCount(TRUNK_OF_NEPENTHES) >= 50 && st.getQuestItemsCount(SECRET_SPICE) >= 50)
+					st.set("cond", "2");
 				break;
 		}
 		
@@ -157,6 +148,6 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q624_TheFinestIngredients_Part1(624, qn, "The Finest Ingredients - Part 1");
+		new Q624_TheFinestIngredients_Part1();
 	}
 }

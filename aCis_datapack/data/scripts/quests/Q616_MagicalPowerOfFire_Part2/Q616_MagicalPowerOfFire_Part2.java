@@ -43,9 +43,9 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q616_MagicalPowerOfFire_Part2(int questId, String name, String descr)
+	public Q616_MagicalPowerOfFire_Part2()
 	{
-		super(questId, name, descr);
+		super(616, qn, "Magical Power of Fire - Part 2");
 		
 		setItemsIds(FIRE_HEART_OF_NASTRON);
 		
@@ -97,8 +97,8 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 		{
 			if (st.hasQuestItems(RED_TOTEM))
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 			else
@@ -125,9 +125,9 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 				{
 					if (spawnRaid())
 					{
-						st.takeItems(RED_TOTEM, 1);
 						st.set("cond", "2");
 						st.playSound(QuestState.SOUND_MIDDLE);
+						st.takeItems(RED_TOTEM, 1);
 					}
 				}
 				else
@@ -152,21 +152,15 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 		{
 			case STATE_CREATED:
 				if (!st.hasQuestItems(RED_TOTEM))
-				{
 					htmltext = "31379-02.htm";
-					st.exitQuest(true);
-				}
 				else if (player.getLevel() < 75 && player.getAllianceWithVarkaKetra() > -2)
-				{
 					htmltext = "31379-03.htm";
-					st.exitQuest(true);
-				}
 				else
 					htmltext = "31379-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case UDAN_MARDUI:
@@ -204,9 +198,9 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 		for (L2PcInstance partyMember : getPartyMembers(player, npc, "cond", "2"))
 		{
 			QuestState st = partyMember.getQuestState(qn);
-			st.giveItems(FIRE_HEART_OF_NASTRON, 1);
 			st.set("cond", "3");
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(FIRE_HEART_OF_NASTRON, 1);
 		}
 		
 		// despawn raid (reset info)
@@ -268,6 +262,6 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q616_MagicalPowerOfFire_Part2(616, qn, "Magical Power of Fire - Part 2");
+		new Q616_MagicalPowerOfFire_Part2();
 	}
 }

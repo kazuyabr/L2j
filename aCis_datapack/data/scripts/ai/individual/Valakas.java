@@ -17,12 +17,13 @@ package ai.individual;
 import ai.AbstractNpcAI;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.geoengine.PathFinding;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.SpawnLocation;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.L2Playable;
 import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
@@ -37,7 +38,7 @@ import net.sf.l2j.util.Rnd;
 
 public class Valakas extends AbstractNpcAI
 {
-	private static final L2BossZone _valakasLair = GrandBossManager.getInstance().getZoneById(110010);
+	private static final L2BossZone VALAKAS_LAIR = GrandBossManager.getInstance().getZoneById(110010);
 	
 	private static final byte DORMANT = 0; // Valakas is spawned and no one has entered yet. Entry is unlocked.
 	private static final byte WAITING = 1; // Valakas is spawned and someone has entered, triggering a 30 minute window for additional people to enter. Entry is unlocked.
@@ -63,83 +64,23 @@ public class Valakas extends AbstractNpcAI
 	private static final int LAVA_SKIN = 4680;
 	private static final int METEOR_SWARM = 4690;
 	
-	private static final int _teleportCubeLocation[][] =
+	private static final SpawnLocation[] CUBE_LOC =
 	{
-		{
-			214880,
-			-116144,
-			-1644
-		},
-		{
-			213696,
-			-116592,
-			-1644
-		},
-		{
-			212112,
-			-116688,
-			-1644
-		},
-		{
-			211184,
-			-115472,
-			-1664
-		},
-		{
-			210336,
-			-114592,
-			-1644
-		},
-		{
-			211360,
-			-113904,
-			-1644
-		},
-		{
-			213152,
-			-112352,
-			-1644
-		},
-		{
-			214032,
-			-113232,
-			-1644
-		},
-		{
-			214752,
-			-114592,
-			-1644
-		},
-		{
-			209824,
-			-115568,
-			-1421
-		},
-		{
-			210528,
-			-112192,
-			-1403
-		},
-		{
-			213120,
-			-111136,
-			-1408
-		},
-		{
-			215184,
-			-111504,
-			-1392
-		},
-		{
-			215456,
-			-117328,
-			-1392
-		},
-		{
-			213200,
-			-118160,
-			-1424
-		}
+		new SpawnLocation(214880, -116144, -1644, 0),
+		new SpawnLocation(213696, -116592, -1644, 0),
+		new SpawnLocation(212112, -116688, -1644, 0),
+		new SpawnLocation(211184, -115472, -1664, 0),
+		new SpawnLocation(210336, -114592, -1644, 0),
+		new SpawnLocation(211360, -113904, -1644, 0),
+		new SpawnLocation(213152, -112352, -1644, 0),
+		new SpawnLocation(214032, -113232, -1644, 0),
+		new SpawnLocation(214752, -114592, -1644, 0),
+		new SpawnLocation(209824, -115568, -1421, 0),
+		new SpawnLocation(210528, -112192, -1403, 0),
+		new SpawnLocation(213120, -111136, -1408, 0),
+		new SpawnLocation(215184, -111504, -1392, 0),
+		new SpawnLocation(215456, -117328, -1392, 0),
+		new SpawnLocation(213200, -118160, -1424, 0)
 	};
 	
 	public static final int VALAKAS = 29028;
@@ -232,7 +173,7 @@ public class Valakas extends AbstractNpcAI
 				npc.teleToLocation(212852, -114842, -1632, 0);
 				
 				// Sound + socialAction.
-				for (L2PcInstance plyr : _valakasLair.getKnownTypeInside(L2PcInstance.class))
+				for (L2PcInstance plyr : VALAKAS_LAIR.getKnownTypeInside(L2PcInstance.class))
 				{
 					plyr.sendPacket(new PlaySound(1, "B03_A", 0, 0, 0, 0, 0));
 					plyr.sendPacket(new SocialAction(npc, 3));
@@ -265,7 +206,7 @@ public class Valakas extends AbstractNpcAI
 						npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
 						
 						// Drop all players from the zone.
-						_valakasLair.oustAllPlayers();
+						VALAKAS_LAIR.oustAllPlayers();
 						
 						// Cancel skill_task and regen_task.
 						cancelQuestTimer("regen_task", npc, null);
@@ -297,23 +238,23 @@ public class Valakas extends AbstractNpcAI
 			}
 			// Spawn cinematic, regen_task and choose of skill.
 			else if (event.equalsIgnoreCase("spawn_1"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1800, 180, -1, 1500, 10000, 0, 0, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1800, 180, -1, 1500, 10000, 0, 0, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_2"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1300, 180, -5, 3000, 10000, 0, -5, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1300, 180, -5, 3000, 10000, 0, -5, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_3"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 500, 180, -8, 600, 10000, 0, 60, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 500, 180, -8, 600, 10000, 0, 60, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_4"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 800, 180, -8, 2700, 10000, 0, 30, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 800, 180, -8, 2700, 10000, 0, 30, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_5"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 200, 250, 70, 0, 10000, 30, 80, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 200, 250, 70, 0, 10000, 30, 80, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_6"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 250, 70, 2500, 10000, 30, 80, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 250, 70, 2500, 10000, 30, 80, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_7"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 150, 30, 0, 10000, -10, 60, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 150, 30, 0, 10000, -10, 60, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_8"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1200, 150, 20, 2900, 10000, -10, 30, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1200, 150, 20, 2900, 10000, -10, 30, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_9"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 750, 170, -10, 3400, 4000, 10, -15, 1, 0));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 750, 170, -10, 3400, 4000, 10, -15, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_10"))
 			{
 				GrandBossManager.getInstance().setBossStatus(VALAKAS, FIGHTING);
@@ -324,25 +265,25 @@ public class Valakas extends AbstractNpcAI
 			}
 			// Death cinematic, spawn of Teleport Cubes.
 			else if (event.equalsIgnoreCase("die_1"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 2000, 130, -1, 0, 10000, 0, 0, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 2000, 130, -1, 0, 10000, 0, 0, 1, 1));
 			else if (event.equalsIgnoreCase("die_2"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 210, -5, 3000, 10000, -13, 0, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 210, -5, 3000, 10000, -13, 0, 1, 1));
 			else if (event.equalsIgnoreCase("die_3"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1300, 200, -8, 3000, 10000, 0, 15, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1300, 200, -8, 3000, 10000, 0, 15, 1, 1));
 			else if (event.equalsIgnoreCase("die_4"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1000, 190, 0, 500, 10000, 0, 10, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1000, 190, 0, 500, 10000, 0, 10, 1, 1));
 			else if (event.equalsIgnoreCase("die_5"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 120, 0, 2500, 10000, 12, 40, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 120, 0, 2500, 10000, 12, 40, 1, 1));
 			else if (event.equalsIgnoreCase("die_6"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 20, 0, 700, 10000, 10, 10, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 20, 0, 700, 10000, 10, 10, 1, 1));
 			else if (event.equalsIgnoreCase("die_7"))
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 10, 0, 1000, 10000, 20, 70, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 10, 0, 1000, 10000, 20, 70, 1, 1));
 			else if (event.equalsIgnoreCase("die_8"))
 			{
-				_valakasLair.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 10, 0, 300, 250, 20, -20, 1, 1));
+				VALAKAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1700, 10, 0, 300, 250, 20, -20, 1, 1));
 				
-				for (int[] element : _teleportCubeLocation)
-					addSpawn(31759, element[0], element[1], element[2], 0, false, 900000, false);
+				for (SpawnLocation loc : CUBE_LOC)
+					addSpawn(31759, loc, false, 900000, false);
 				
 				startQuestTimer("remove_players", 900000, null, null, false);
 			}
@@ -358,7 +299,7 @@ public class Valakas extends AbstractNpcAI
 				GrandBossManager.getInstance().setBossStatus(VALAKAS, DORMANT);
 			}
 			else if (event.equalsIgnoreCase("remove_players"))
-				_valakasLair.oustAllPlayers();
+				VALAKAS_LAIR.oustAllPlayers();
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
@@ -373,7 +314,7 @@ public class Valakas extends AbstractNpcAI
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (!_valakasLair.isInsideZone(attacker))
+		if (!VALAKAS_LAIR.isInsideZone(attacker))
 		{
 			attacker.doDie(attacker);
 			return null;
@@ -411,7 +352,7 @@ public class Valakas extends AbstractNpcAI
 		cancelQuestTimer("skill_task", npc, null);
 		
 		// Launch death animation.
-		_valakasLair.broadcastPacket(new PlaySound(1, "B03_D", 0, 0, 0, 0, 0));
+		VALAKAS_LAIR.broadcastPacket(new PlaySound(1, "B03_D", 0, 0, 0, 0, 0));
 		
 		startQuestTimer("die_1", 300, npc, null, false); // 300
 		startQuestTimer("die_2", 600, npc, null, false); // 300
@@ -464,7 +405,7 @@ public class Valakas extends AbstractNpcAI
 				int posX = x + Rnd.get(-1400, 1400);
 				int posY = y + Rnd.get(-1400, 1400);
 				
-				if (GeoData.getInstance().canMoveFromToTarget(x, y, z, posX, posY, z))
+				if (PathFinding.getInstance().canMoveToTarget(x, y, z, posX, posY, z))
 					npc.getAI().setIntention(CtrlIntention.MOVE_TO, new L2CharPosition(posX, posY, z, 0));
 			}
 			return;

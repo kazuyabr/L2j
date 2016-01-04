@@ -66,9 +66,9 @@ public class Q633_InTheForgottenVillage extends Quest
 		UNDEADS.put(21601, 411000); // Requiem Behemoth
 	}
 	
-	public Q633_InTheForgottenVillage(int questId, String name, String descr)
+	public Q633_InTheForgottenVillage()
 	{
-		super(questId, name, descr);
+		super(633, qn, "In the Forgotten Village");
 		
 		setItemsIds(RIB_BONE, ZOMBIE_LIVER);
 		
@@ -92,8 +92,8 @@ public class Q633_InTheForgottenVillage extends Quest
 		
 		if (event.equalsIgnoreCase("31388-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31388-10.htm"))
@@ -129,17 +129,11 @@ public class Q633_InTheForgottenVillage extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 65)
-					htmltext = "31388-01.htm";
-				else
-				{
-					htmltext = "31388-03.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 65) ? "31388-03.htm" : "31388-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "31388-06.htm";
 				else if (cond == 2)
@@ -180,6 +174,6 @@ public class Q633_InTheForgottenVillage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q633_InTheForgottenVillage(633, qn, "In the Forgotten Village");
+		new Q633_InTheForgottenVillage();
 	}
 }

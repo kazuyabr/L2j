@@ -26,13 +26,13 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 	private static final int INNOCENTIN = 31328;
 	
 	// Item
-	private static final int TOTEM = 8068;
+	private static final int PAGAN_TOTEM = 8068;
 	
-	public Q638_SeekersOfTheHolyGrail(int questId, String name, String descr)
+	public Q638_SeekersOfTheHolyGrail()
 	{
-		super(questId, name, descr);
+		super(638, qn, "Seekers of the Holy Grail");
 		
-		setItemsIds(TOTEM);
+		setItemsIds(PAGAN_TOTEM);
 		
 		addStartNpc(INNOCENTIN);
 		addTalkId(INNOCENTIN);
@@ -51,8 +51,8 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 		
 		if (event.equalsIgnoreCase("31328-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31328-06.htm"))
@@ -75,20 +75,15 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 73)
-					htmltext = "31328-01.htm";
-				else
-				{
-					htmltext = "31328-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 73) ? "31328-00.htm" : "31328-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(TOTEM) >= 2000)
+				if (st.getQuestItemsCount(PAGAN_TOTEM) >= 2000)
 				{
 					htmltext = "31328-03.htm";
-					st.takeItems(TOTEM, 2000);
+					st.playSound(QuestState.SOUND_MIDDLE);
+					st.takeItems(PAGAN_TOTEM, 2000);
 					
 					int chance = Rnd.get(3);
 					if (chance == 0)
@@ -97,8 +92,6 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 						st.rewardItems(960, 1);
 					else
 						st.rewardItems(57, 3576000);
-					
-					st.playSound(QuestState.SOUND_MIDDLE);
 				}
 				else
 					htmltext = "31328-04.htm";
@@ -115,15 +108,13 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItemsAlways(TOTEM, 1, -1);
+		partyMember.getQuestState(qn).dropItemsAlways(PAGAN_TOTEM, 1, 0);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q638_SeekersOfTheHolyGrail(638, qn, "Seekers of the Holy Grail");
+		new Q638_SeekersOfTheHolyGrail();
 	}
 }

@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q650_ABrokenDream extends Quest
 {
@@ -32,9 +31,9 @@ public class Q650_ABrokenDream extends Quest
 	private static final int CREWMAN = 22027;
 	private static final int VAGABOND = 22028;
 	
-	public Q650_ABrokenDream(int questId, String name, String descr)
+	public Q650_ABrokenDream()
 	{
-		super(questId, name, descr);
+		super(650, qn, "A Broken Dream");
 		
 		setItemsIds(DREAM_FRAGMENT);
 		
@@ -53,8 +52,8 @@ public class Q650_ABrokenDream extends Quest
 		
 		if (event.equalsIgnoreCase("32054-01a.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32054-03.htm"))
@@ -64,8 +63,8 @@ public class Q650_ABrokenDream extends Quest
 		}
 		else if (event.equalsIgnoreCase("32054-05.htm"))
 		{
-			st.exitQuest(true);
 			st.playSound(QuestState.SOUND_GIVEUP);
+			st.exitQuest(true);
 		}
 		
 		return htmltext;
@@ -107,17 +106,13 @@ public class Q650_ABrokenDream extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 25)
-		{
-			st.giveItems(DREAM_FRAGMENT, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(DREAM_FRAGMENT, 1, 0, 250000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q650_ABrokenDream(650, qn, "A Broken Dream");
+		new Q650_ABrokenDream();
 	}
 }

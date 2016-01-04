@@ -26,34 +26,34 @@ public class Q418_PathToAnArtisan extends Quest
 	private static final String qn = "Q418_PathToAnArtisan";
 	
 	// Items
-	private static final int SilverasRing = 1632;
-	private static final int FirstPassCertificate = 1633;
-	private static final int SecondPassCertificate = 1634;
-	private static final int FinalPassCertificate = 1635;
-	private static final int BoogleRatmanTooth = 1636;
-	private static final int BoogleRatmanLeadersTooth = 1637;
-	private static final int KlutosLetter = 1638;
-	private static final int FootprintOfThief = 1639;
-	private static final int StolenSecretBox = 1640;
-	private static final int SecretBox = 1641;
+	private static final int SILVERA_RING = 1632;
+	private static final int FIRST_PASS_CERTIFICATE = 1633;
+	private static final int SECOND_PASS_CERTIFICATE = 1634;
+	private static final int FINAL_PASS_CERTIFICATE = 1635;
+	private static final int BOOGLE_RATMAN_TOOTH = 1636;
+	private static final int BOOGLE_RATMAN_LEADER_TOOTH = 1637;
+	private static final int KLUTO_LETTER = 1638;
+	private static final int FOOTPRINT_OF_THIEF = 1639;
+	private static final int STOLEN_SECRET_BOX = 1640;
+	private static final int SECRET_BOX = 1641;
 	
 	// NPCs
-	private static final int Silvera = 30527;
-	private static final int Kluto = 30317;
-	private static final int Pinter = 30298;
-	private static final int Obi = 32052;
-	private static final int Hitchi = 31963;
-	private static final int Lockirin = 30531;
-	private static final int Rydel = 31956;
+	private static final int SILVERA = 30527;
+	private static final int KLUTO = 30317;
+	private static final int PINTER = 30298;
+	private static final int OBI = 32052;
+	private static final int HITCHI = 31963;
+	private static final int LOCKIRIN = 30531;
+	private static final int RYDEL = 31956;
 	
-	public Q418_PathToAnArtisan(int questId, String name, String descr)
+	public Q418_PathToAnArtisan()
 	{
-		super(questId, name, descr);
+		super(418, qn, "Path to an Artisan");
 		
-		setItemsIds(SilverasRing, FirstPassCertificate, SecondPassCertificate, BoogleRatmanTooth, BoogleRatmanLeadersTooth, KlutosLetter, FootprintOfThief, StolenSecretBox, SecretBox);
+		setItemsIds(SILVERA_RING, FIRST_PASS_CERTIFICATE, SECOND_PASS_CERTIFICATE, BOOGLE_RATMAN_TOOTH, BOOGLE_RATMAN_LEADER_TOOTH, KLUTO_LETTER, FOOTPRINT_OF_THIEF, STOLEN_SECRET_BOX, SECRET_BOX);
 		
-		addStartNpc(Silvera);
-		addTalkId(Silvera, Kluto, Pinter, Obi, Hitchi, Lockirin, Rydel);
+		addStartNpc(SILVERA);
+		addTalkId(SILVERA, KLUTO, PINTER, OBI, HITCHI, LOCKIRIN, RYDEL);
 		
 		addKillId(20389, 20390, 20017);
 	}
@@ -69,61 +69,48 @@ public class Q418_PathToAnArtisan extends Quest
 		if (event.equalsIgnoreCase("30527-05.htm"))
 		{
 			if (player.getClassId() != ClassId.dwarvenFighter)
-			{
-				if (player.getClassId() == ClassId.artisan)
-					htmltext = "30527-02a.htm";
-				else
-					htmltext = "30527-02.htm";
-				
-				st.exitQuest(true);
-			}
+				htmltext = (player.getClassId() == ClassId.artisan) ? "30527-02a.htm" : "30527-02.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30527-03.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(FinalPassCertificate))
-			{
+			else if (st.hasQuestItems(FINAL_PASS_CERTIFICATE))
 				htmltext = "30527-04.htm";
-				st.exitQuest(true);
-			}
 		}
 		else if (event.equalsIgnoreCase("30527-06.htm"))
 		{
-			st.set("cond", "1");
-			st.giveItems(SilverasRing, 1);
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
+			st.giveItems(SILVERA_RING, 1);
 		}
 		else if (event.equalsIgnoreCase("30527-08a.htm"))
 		{
 			st.set("cond", "3");
-			st.takeItems(BoogleRatmanLeadersTooth, -1);
-			st.takeItems(BoogleRatmanTooth, -1);
-			st.takeItems(SilverasRing, 1);
-			st.giveItems(FirstPassCertificate, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(BOOGLE_RATMAN_LEADER_TOOTH, -1);
+			st.takeItems(BOOGLE_RATMAN_TOOTH, -1);
+			st.takeItems(SILVERA_RING, 1);
+			st.giveItems(FIRST_PASS_CERTIFICATE, 1);
 		}
 		else if (event.equalsIgnoreCase("30527-08b.htm"))
 		{
 			st.set("cond", "8");
-			st.takeItems(BoogleRatmanLeadersTooth, -1);
-			st.takeItems(BoogleRatmanTooth, -1);
-			st.takeItems(SilverasRing, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(BOOGLE_RATMAN_LEADER_TOOTH, -1);
+			st.takeItems(BOOGLE_RATMAN_TOOTH, -1);
+			st.takeItems(SILVERA_RING, 1);
 		}
 		else if (event.equalsIgnoreCase("30317-04.htm") || event.equalsIgnoreCase("30317-07.htm"))
 		{
 			st.set("cond", "4");
-			st.giveItems(KlutosLetter, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(KLUTO_LETTER, 1);
 		}
 		else if (event.equalsIgnoreCase("30317-10.htm"))
 		{
-			st.takeItems(FirstPassCertificate, 1);
-			st.takeItems(SecondPassCertificate, 1);
-			st.takeItems(SecretBox, 1);
-			st.giveItems(FinalPassCertificate, 1);
+			st.takeItems(FIRST_PASS_CERTIFICATE, 1);
+			st.takeItems(SECOND_PASS_CERTIFICATE, 1);
+			st.takeItems(SECRET_BOX, 1);
+			st.giveItems(FINAL_PASS_CERTIFICATE, 1);
 			st.rewardExpAndSp(3200, 6980);
 			player.broadcastPacket(new SocialAction(player, 3));
 			st.playSound(QuestState.SOUND_FINISH);
@@ -131,10 +118,10 @@ public class Q418_PathToAnArtisan extends Quest
 		}
 		else if (event.equalsIgnoreCase("30317-12.htm") || event.equalsIgnoreCase("30531-05.htm") || event.equalsIgnoreCase("32052-11.htm") || event.equalsIgnoreCase("31963-10.htm") || event.equalsIgnoreCase("31956-04.htm"))
 		{
-			st.takeItems(FirstPassCertificate, 1);
-			st.takeItems(SecondPassCertificate, 1);
-			st.takeItems(SecretBox, 1);
-			st.giveItems(FinalPassCertificate, 1);
+			st.takeItems(FIRST_PASS_CERTIFICATE, 1);
+			st.takeItems(SECOND_PASS_CERTIFICATE, 1);
+			st.takeItems(SECRET_BOX, 1);
+			st.giveItems(FINAL_PASS_CERTIFICATE, 1);
 			st.rewardExpAndSp(3200, 3490);
 			player.broadcastPacket(new SocialAction(player, 3));
 			st.playSound(QuestState.SOUND_FINISH);
@@ -143,18 +130,18 @@ public class Q418_PathToAnArtisan extends Quest
 		else if (event.equalsIgnoreCase("30298-03.htm"))
 		{
 			st.set("cond", "5");
-			st.takeItems(KlutosLetter, -1);
-			st.giveItems(FootprintOfThief, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(KLUTO_LETTER, -1);
+			st.giveItems(FOOTPRINT_OF_THIEF, 1);
 		}
 		else if (event.equalsIgnoreCase("30298-06.htm"))
 		{
 			st.set("cond", "7");
-			st.takeItems(StolenSecretBox, -1);
-			st.takeItems(FootprintOfThief, -1);
-			st.giveItems(SecretBox, 1);
-			st.giveItems(SecondPassCertificate, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(FOOTPRINT_OF_THIEF, -1);
+			st.takeItems(STOLEN_SECRET_BOX, -1);
+			st.giveItems(SECOND_PASS_CERTIFICATE, 1);
+			st.giveItems(SECRET_BOX, 1);
 		}
 		else if (event.equalsIgnoreCase("32052-06.htm"))
 		{
@@ -195,10 +182,10 @@ public class Q418_PathToAnArtisan extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Silvera:
+					case SILVERA:
 						if (cond == 1)
 							htmltext = "30527-07.htm";
 						else if (cond == 2)
@@ -209,7 +196,7 @@ public class Q418_PathToAnArtisan extends Quest
 							htmltext = "30527-09a.htm";
 						break;
 					
-					case Kluto:
+					case KLUTO:
 						if (cond == 3)
 							htmltext = "30317-01.htm";
 						else if (cond == 4)
@@ -218,7 +205,7 @@ public class Q418_PathToAnArtisan extends Quest
 							htmltext = "30317-09.htm";
 						break;
 					
-					case Pinter:
+					case PINTER:
 						if (cond == 4)
 							htmltext = "30298-01.htm";
 						else if (cond == 5)
@@ -229,7 +216,7 @@ public class Q418_PathToAnArtisan extends Quest
 							htmltext = "30298-07.htm";
 						break;
 					
-					case Obi:
+					case OBI:
 						if (cond == 8)
 							htmltext = "32052-01.htm";
 						else if (cond == 9)
@@ -238,7 +225,7 @@ public class Q418_PathToAnArtisan extends Quest
 							htmltext = "32052-07.htm";
 						break;
 					
-					case Hitchi:
+					case HITCHI:
 						if (cond == 9)
 							htmltext = "31963-01.htm";
 						else if (cond == 10)
@@ -249,12 +236,12 @@ public class Q418_PathToAnArtisan extends Quest
 							htmltext = "31963-08.htm";
 						break;
 					
-					case Lockirin:
+					case LOCKIRIN:
 						if (cond == 10)
 							htmltext = "30531-01.htm";
 						break;
 					
-					case Rydel:
+					case RYDEL:
 						if (cond == 12)
 							htmltext = "31956-01.htm";
 						break;
@@ -275,19 +262,17 @@ public class Q418_PathToAnArtisan extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20389:
-				if (st.getInt("cond") == 1 && st.dropItems(BoogleRatmanTooth, 1, 10, 700000))
-					if (st.getQuestItemsCount(BoogleRatmanLeadersTooth) == 2)
-						st.set("cond", "2");
+				if (st.getInt("cond") == 1 && st.dropItems(BOOGLE_RATMAN_TOOTH, 1, 10, 700000) && st.getQuestItemsCount(BOOGLE_RATMAN_LEADER_TOOTH) == 2)
+					st.set("cond", "2");
 				break;
 			
 			case 20390:
-				if (st.getInt("cond") == 1 && st.dropItems(BoogleRatmanLeadersTooth, 1, 2, 500000))
-					if (st.getQuestItemsCount(BoogleRatmanTooth) == 10)
-						st.set("cond", "2");
+				if (st.getInt("cond") == 1 && st.dropItems(BOOGLE_RATMAN_LEADER_TOOTH, 1, 2, 500000) && st.getQuestItemsCount(BOOGLE_RATMAN_TOOTH) == 10)
+					st.set("cond", "2");
 				break;
 			
 			case 20017:
-				if (st.getInt("cond") == 5 && st.dropItems(StolenSecretBox, 1, 1, 200000))
+				if (st.getInt("cond") == 5 && st.dropItems(STOLEN_SECRET_BOX, 1, 1, 200000))
 					st.set("cond", "6");
 				break;
 		}
@@ -297,6 +282,6 @@ public class Q418_PathToAnArtisan extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q418_PathToAnArtisan(418, qn, "Path to an Artisan");
+		new Q418_PathToAnArtisan();
 	}
 }

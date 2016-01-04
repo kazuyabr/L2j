@@ -12,6 +12,7 @@
  */
 package quests.Q653_WildMaiden;
 
+import net.sf.l2j.gameserver.model.SpawnLocation;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -28,43 +29,23 @@ public class Q653_WildMaiden extends Quest
 	private static final int GALIBREDO = 30181;
 	
 	// Item
-	private static final int SOE = 736;
+	private static final int SCROLL_OF_ESCAPE = 736;
 	
 	// Table of possible spawns
-	private static final int[][] spawns =
+	private static final SpawnLocation[] SPAWNS =
 	{
-		{
-			66578,
-			72351,
-			-3731,
-			0
-		},
-		{
-			77189,
-			73610,
-			-3708,
-			2555
-		},
-		{
-			71809,
-			67377,
-			-3675,
-			29130
-		},
-		{
-			69166,
-			88825,
-			-3447,
-			43886
-		}
+		new SpawnLocation(66578, 72351, -3731, 0),
+		new SpawnLocation(77189, 73610, -3708, 2555),
+		new SpawnLocation(71809, 67377, -3675, 29130),
+		new SpawnLocation(69166, 88825, -3447, 43886)
 	};
 	
 	// Current position
 	private int _currentPosition = 0;
 	
-	public Q653_WildMaiden(int questId, String name, String descr)
+	public Q653_WildMaiden()
 	{
-		super(questId, name, descr);
+		super(653, qn, "Wild Maiden");
 		
 		addStartNpc(SUKI);
 		addTalkId(SUKI, GALIBREDO);
@@ -82,12 +63,12 @@ public class Q653_WildMaiden extends Quest
 		
 		if (event.equalsIgnoreCase("32013-03.htm"))
 		{
-			if (st.hasQuestItems(SOE))
+			if (st.hasQuestItems(SCROLL_OF_ESCAPE))
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
-				st.takeItems(SOE, 1);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
+				st.takeItems(SCROLL_OF_ESCAPE, 1);
 				
 				npc.broadcastPacket(new MagicSkillUse(npc, npc, 2013, 1, 3500, 0));
 				startQuestTimer("apparition_npc", 4000, npc, player, false);
@@ -110,7 +91,7 @@ public class Q653_WildMaiden extends Quest
 			_currentPosition = chance;
 			
 			npc.deleteMe();
-			addSpawn(SUKI, spawns[chance][0], spawns[chance][1], spawns[chance][2], spawns[chance][3], false, 0, false);
+			addSpawn(SUKI, SPAWNS[chance], false, 0, false);
 			return null;
 		}
 		
@@ -128,13 +109,7 @@ public class Q653_WildMaiden extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 36)
-					htmltext = "32013-02.htm";
-				else
-				{
-					htmltext = "32013-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 36) ? "32013-01.htm" : "32013-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -153,11 +128,12 @@ public class Q653_WildMaiden extends Quest
 				}
 				break;
 		}
+		
 		return htmltext;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q653_WildMaiden(653, qn, "Wild Maiden");
+		new Q653_WildMaiden();
 	}
 }

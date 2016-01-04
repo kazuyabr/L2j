@@ -26,22 +26,19 @@ public class Q510_AClansReputation extends Quest
 	private static final String qn = "Q510_AClansReputation";
 	
 	// NPC
-	private static final int Valdis = 31331;
+	private static final int VALDIS = 31331;
 	
 	// Quest Item
-	private static final int Claw = 8767;
+	private static final int TYRANNOSAURUS_CLAW = 8767;
 	
-	// Reward
-	private static final int CLAN_POINTS_REWARD = 50; // Quantity of points
-	
-	public Q510_AClansReputation(int questId, String name, String descr)
+	public Q510_AClansReputation()
 	{
-		super(questId, name, descr);
+		super(510, qn, "A Clan's Reputation");
 		
-		setItemsIds(Claw);
+		setItemsIds(TYRANNOSAURUS_CLAW);
 		
-		addStartNpc(Valdis);
-		addTalkId(Valdis);
+		addStartNpc(VALDIS);
+		addTalkId(VALDIS);
 		
 		addKillId(22215, 22216, 22217);
 	}
@@ -56,8 +53,8 @@ public class Q510_AClansReputation extends Quest
 		
 		if (event.equalsIgnoreCase("31331-3.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31331-6.htm"))
@@ -80,38 +77,24 @@ public class Q510_AClansReputation extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (!player.isClanLeader())
-				{
-					st.exitQuest(true);
-					htmltext = "31331-0.htm";
-				}
-				else if (player.getClan().getLevel() < 5)
-				{
-					st.exitQuest(true);
-					htmltext = "31331-0.htm";
-				}
-				else
-					htmltext = "31331-1.htm";
+				htmltext = (!player.isClanLeader() || player.getClan().getLevel() < 5) ? "31331-0.htm" : "31331-1.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getInt("cond") == 1)
+				final int count = 50 * st.getQuestItemsCount(TYRANNOSAURUS_CLAW);
+				if (count > 0)
 				{
-					int count = st.getQuestItemsCount(Claw);
-					if (count > 0)
-					{
-						int reward = (CLAN_POINTS_REWARD * count);
-						st.takeItems(Claw, -1);
-						L2Clan clan = player.getClan();
-						clan.addReputationScore(reward);
-						player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CLAN_QUEST_COMPLETED_AND_S1_POINTS_GAINED).addNumber(reward));
-						clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
-						
-						htmltext = "31331-7.htm";
-					}
-					else
-						htmltext = "31331-4.htm";
+					final L2Clan clan = player.getClan();
+					
+					htmltext = "31331-7.htm";
+					st.takeItems(TYRANNOSAURUS_CLAW, -1);
+					
+					clan.addReputationScore(count);
+					player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CLAN_QUEST_COMPLETED_AND_S1_POINTS_GAINED).addNumber(count));
+					clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
 				}
+				else
+					htmltext = "31331-4.htm";
 				break;
 		}
 		
@@ -126,14 +109,13 @@ public class Q510_AClansReputation extends Quest
 		if (st == null || !st.isStarted())
 			return null;
 		
-		st.giveItems(Claw, 1);
-		st.playSound(QuestState.SOUND_MIDDLE);
+		st.dropItemsAlways(TYRANNOSAURUS_CLAW, 1, 0);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q510_AClansReputation(510, qn, "A Clan's Reputation");
+		new Q510_AClansReputation();
 	}
 }

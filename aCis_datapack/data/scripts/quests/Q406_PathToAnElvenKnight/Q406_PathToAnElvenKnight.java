@@ -26,26 +26,25 @@ public class Q406_PathToAnElvenKnight extends Quest
 	private static final String qn = "Q406_PathToAnElvenKnight";
 	
 	// Items
-	private static final int SoriusLetter = 1202;
-	private static final int KlutoBox = 1203;
-	private static final int ElvenKnightBrooch = 1204;
-	private static final int TopazPiece = 1205;
-	private static final int EmeraldPiece = 1206;
-	private static final int KlutosMemo = 1276;
+	private static final int SORIUS_LETTER = 1202;
+	private static final int KLUTO_BOX = 1203;
+	private static final int ELVEN_KNIGHT_BROOCH = 1204;
+	private static final int TOPAZ_PIECE = 1205;
+	private static final int EMERALD_PIECE = 1206;
+	private static final int KLUTO_MEMO = 1276;
 	
 	// NPCs
-	private static final int Sorius = 30327;
-	private static final int Kluto = 30317;
+	private static final int SORIUS = 30327;
+	private static final int KLUTO = 30317;
 	
-	public Q406_PathToAnElvenKnight(int questId, String name, String descr)
+	public Q406_PathToAnElvenKnight()
 	{
-		super(questId, name, descr);
+		super(406, qn, "Path to an Elven Knight");
 		
-		setItemsIds(SoriusLetter, KlutoBox, TopazPiece, EmeraldPiece, KlutosMemo);
+		setItemsIds(SORIUS_LETTER, KLUTO_BOX, TOPAZ_PIECE, EMERALD_PIECE, KLUTO_MEMO);
 		
-		addStartNpc(Sorius);
-		addTalkId(Sorius);
-		addTalkId(Kluto);
+		addStartNpc(SORIUS);
+		addTalkId(SORIUS, KLUTO);
 		
 		addKillId(20035, 20042, 20045, 20051, 20054, 20060, 20782);
 	}
@@ -61,37 +60,24 @@ public class Q406_PathToAnElvenKnight extends Quest
 		if (event.equalsIgnoreCase("30327-05.htm"))
 		{
 			if (player.getClassId() != ClassId.elvenFighter)
-			{
-				if (player.getClassId() == ClassId.elvenKnight)
-					htmltext = "30327-02a.htm";
-				else
-					htmltext = "30327-02.htm";
-				
-				st.exitQuest(true);
-			}
+				htmltext = (player.getClassId() == ClassId.elvenKnight) ? "30327-02a.htm" : "30327-02.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30327-03.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(ElvenKnightBrooch))
-			{
+			else if (st.hasQuestItems(ELVEN_KNIGHT_BROOCH))
 				htmltext = "30327-04.htm";
-				st.exitQuest(true);
-			}
 		}
 		else if (event.equalsIgnoreCase("30327-06.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30317-02.htm"))
 		{
 			st.set("cond", "4");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(SoriusLetter, 1);
-			st.giveItems(KlutosMemo, 1);
+			st.takeItems(SORIUS_LETTER, 1);
+			st.giveItems(KLUTO_MEMO, 1);
 		}
 		
 		return htmltext;
@@ -112,32 +98,27 @@ public class Q406_PathToAnElvenKnight extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Sorius:
+					case SORIUS:
 						if (cond == 1)
-						{
-							if (st.getQuestItemsCount(TopazPiece) > 1 && st.getQuestItemsCount(TopazPiece) < 20)
-								htmltext = "30327-08.htm";
-							else
-								htmltext = "30327-07.htm";
-						}
+							htmltext = (!st.hasQuestItems(TOPAZ_PIECE)) ? "30327-07.htm" : "30327-08.htm";
 						else if (cond == 2)
 						{
-							st.set("cond", "3");
-							st.giveItems(SoriusLetter, 1);
-							st.playSound(QuestState.SOUND_MIDDLE);
 							htmltext = "30327-09.htm";
+							st.set("cond", "3");
+							st.playSound(QuestState.SOUND_MIDDLE);
+							st.giveItems(SORIUS_LETTER, 1);
 						}
-						else if (cond >= 3 && cond <= 5)
+						else if (cond > 2 && cond < 6)
 							htmltext = "30327-11.htm";
 						else if (cond == 6)
 						{
 							htmltext = "30327-10.htm";
-							st.takeItems(KlutoBox, 1);
-							st.takeItems(KlutosMemo, 1);
-							st.giveItems(ElvenKnightBrooch, 1);
+							st.takeItems(KLUTO_BOX, 1);
+							st.takeItems(KLUTO_MEMO, 1);
+							st.giveItems(ELVEN_KNIGHT_BROOCH, 1);
 							st.rewardExpAndSp(3200, 2280);
 							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
@@ -145,24 +126,19 @@ public class Q406_PathToAnElvenKnight extends Quest
 						}
 						break;
 					
-					case Kluto:
+					case KLUTO:
 						if (cond == 3)
 							htmltext = "30317-01.htm";
 						else if (cond == 4)
-						{
-							if (st.getQuestItemsCount(EmeraldPiece) > 1 && st.getQuestItemsCount(EmeraldPiece) < 20)
-								htmltext = "30317-04.htm";
-							else
-								htmltext = "30317-03.htm";
-						}
+							htmltext = (!st.hasQuestItems(EMERALD_PIECE)) ? "30317-03.htm" : "30317-04.htm";
 						else if (cond == 5)
 						{
-							st.set("cond", "6");
-							st.takeItems(TopazPiece, -1);
-							st.takeItems(EmeraldPiece, -1);
-							st.giveItems(KlutoBox, 1);
-							st.playSound(QuestState.SOUND_MIDDLE);
 							htmltext = "30317-05.htm";
+							st.set("cond", "6");
+							st.playSound(QuestState.SOUND_MIDDLE);
+							st.takeItems(EMERALD_PIECE, -1);
+							st.takeItems(TOPAZ_PIECE, -1);
+							st.giveItems(KLUTO_BOX, 1);
 						}
 						else if (cond == 6)
 							htmltext = "30317-06.htm";
@@ -189,15 +165,13 @@ public class Q406_PathToAnElvenKnight extends Quest
 			case 20051:
 			case 20054:
 			case 20060:
-				if (st.getInt("cond") == 1)
-					if (st.dropItems(TopazPiece, 1, 20, 700000))
-						st.set("cond", "2");
+				if (st.getInt("cond") == 1 && st.dropItems(TOPAZ_PIECE, 1, 20, 700000))
+					st.set("cond", "2");
 				break;
 			
 			case 20782:
-				if (st.getInt("cond") == 4)
-					if (st.dropItems(EmeraldPiece, 1, 20, 500000))
-						st.set("cond", "5");
+				if (st.getInt("cond") == 4 && st.dropItems(EMERALD_PIECE, 1, 20, 500000))
+					st.set("cond", "5");
 				break;
 		}
 		
@@ -206,6 +180,6 @@ public class Q406_PathToAnElvenKnight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q406_PathToAnElvenKnight(406, qn, "Path to an Elven Knight");
+		new Q406_PathToAnElvenKnight();
 	}
 }

@@ -32,7 +32,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	
 	// NPCs
 	private static final int EYE_OF_ARGOS = 31683;
-	private static final int DAIMONS_ALTAR = 31541;
+	private static final int DAIMON_ALTAR = 31541;
 	
 	// Items
 	private static final int UNFINISHED_SUMMON_CRYSTAL = 7192;
@@ -54,14 +54,14 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q604_DaimonTheWhiteEyed_Part2(int questId, String name, String descr)
+	public Q604_DaimonTheWhiteEyed_Part2()
 	{
-		super(questId, name, descr);
+		super(604, qn, "Daimon The White-Eyed - Part 2");
 		
 		setItemsIds(SUMMON_CRYSTAL, ESSENCE_OF_DAIMON);
 		
 		addStartNpc(EYE_OF_ARGOS);
-		addTalkId(EYE_OF_ARGOS, DAIMONS_ALTAR);
+		addTalkId(EYE_OF_ARGOS, DAIMON_ALTAR);
 		
 		addAttackId(DAIMON_THE_WHITE_EYED);
 		addKillId(DAIMON_THE_WHITE_EYED);
@@ -108,8 +108,8 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 		{
 			if (st.hasQuestItems(UNFINISHED_SUMMON_CRYSTAL))
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 				st.takeItems(UNFINISHED_SUMMON_CRYSTAL, 1);
 				st.giveItems(SUMMON_CRYSTAL, 1);
@@ -138,9 +138,9 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 				{
 					if (spawnRaid())
 					{
-						st.takeItems(SUMMON_CRYSTAL, 1);
 						st.set("cond", "2");
 						st.playSound(QuestState.SOUND_MIDDLE);
+						st.takeItems(SUMMON_CRYSTAL, 1);
 					}
 				}
 				else
@@ -186,7 +186,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 							htmltext = "31683-07.htm";
 						break;
 					
-					case DAIMONS_ALTAR:
+					case DAIMON_ALTAR:
 						if (cond == 1)
 							htmltext = "31541-01.htm";
 						else if (cond == 2)
@@ -212,9 +212,9 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 		for (L2PcInstance partyMember : getPartyMembers(player, npc, "cond", "2"))
 		{
 			QuestState st = partyMember.getQuestState(qn);
-			st.giveItems(ESSENCE_OF_DAIMON, 1);
 			st.set("cond", "3");
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(ESSENCE_OF_DAIMON, 1);
 		}
 		
 		// despawn raid (reset info)
@@ -234,7 +234,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	{
 		// spawn npc, if not spawned
 		if (_npc == null)
-			_npc = addSpawn(DAIMONS_ALTAR, 186304, -43744, -3193, 57000, false, 0, false);
+			_npc = addSpawn(DAIMON_ALTAR, 186304, -43744, -3193, 57000, false, 0, false);
 	}
 	
 	private static boolean spawnRaid()
@@ -277,6 +277,6 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q604_DaimonTheWhiteEyed_Part2(604, qn, "Daimon The White-Eyed - Part 2");
+		new Q604_DaimonTheWhiteEyed_Part2();
 	}
 }

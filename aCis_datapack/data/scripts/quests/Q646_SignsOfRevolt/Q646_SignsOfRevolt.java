@@ -29,7 +29,7 @@ public class Q646_SignsOfRevolt extends Quest
 	private static final int CURSED_DOLL = 8087;
 	
 	// Rewards
-	private static final int[][] rewards =
+	private static final int[][] REWARDS =
 	{
 		{
 			1880,
@@ -49,9 +49,9 @@ public class Q646_SignsOfRevolt extends Quest
 		}
 	};
 	
-	public Q646_SignsOfRevolt(int questId, String name, String descr)
+	public Q646_SignsOfRevolt()
 	{
-		super(questId, name, descr);
+		super(646, qn, "Signs Of Revolt");
 		
 		setItemsIds(CURSED_DOLL);
 		
@@ -71,8 +71,8 @@ public class Q646_SignsOfRevolt extends Quest
 		
 		if (event.equalsIgnoreCase("32016-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (Util.isDigit(event))
@@ -80,7 +80,7 @@ public class Q646_SignsOfRevolt extends Quest
 			htmltext = "32016-07.htm";
 			st.takeItems(CURSED_DOLL, -1);
 			
-			int reward[] = rewards[Integer.parseInt(event)];
+			final int reward[] = REWARDS[Integer.parseInt(event)];
 			st.giveItems(reward[0], reward[1]);
 			
 			st.playSound(QuestState.SOUND_FINISH);
@@ -101,26 +101,15 @@ public class Q646_SignsOfRevolt extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 40)
-					htmltext = "32016-01.htm";
-				else
-				{
-					htmltext = "32016-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 40) ? "32016-02.htm" : "32016-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "32016-04.htm";
 				else if (cond == 2)
-				{
-					if (st.getQuestItemsCount(CURSED_DOLL) == 180)
-						htmltext = "32016-05.htm";
-					else
-						htmltext = "32016-04.htm";
-				}
+					htmltext = "32016-05.htm";
 				break;
 		}
 		
@@ -144,6 +133,6 @@ public class Q646_SignsOfRevolt extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q646_SignsOfRevolt(646, qn, "Signs Of Revolt");
+		new Q646_SignsOfRevolt();
 	}
 }

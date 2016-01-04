@@ -197,7 +197,7 @@ public class Q355_FamilyHonor extends Quest
 		
 		if (random < chances[1])
 			st.dropItemsAlways((random < chances[0]) ? GALIBREDO_BUST : WORK_OF_BERONA, 1, 0);
-				
+		
 		return null;
 	}
 	

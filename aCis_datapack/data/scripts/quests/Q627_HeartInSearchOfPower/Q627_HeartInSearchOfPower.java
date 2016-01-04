@@ -33,34 +33,53 @@ public class Q627_HeartInSearchOfPower extends Quest
 	private static final int BEAD_OF_OBEDIENCE = 7171;
 	private static final int GEM_OF_SAINTS = 7172;
 	
-	// Rewards
-	private static final Map<String, int[]> Rewards = new HashMap<>();
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		Rewards.put("adena", new int[]
+		CHANCES.put(21520, 550000);
+		CHANCES.put(21523, 584000);
+		CHANCES.put(21524, 621000);
+		CHANCES.put(21525, 621000);
+		CHANCES.put(21526, 606000);
+		CHANCES.put(21529, 625000);
+		CHANCES.put(21530, 578000);
+		CHANCES.put(21531, 690000);
+		CHANCES.put(21532, 671000);
+		CHANCES.put(21535, 693000);
+		CHANCES.put(21536, 615000);
+		CHANCES.put(21539, 762000);
+		CHANCES.put(21540, 762000);
+		CHANCES.put(21658, 690000);
+	}
+	
+	// Rewards
+	private static final Map<String, int[]> REWARDS = new HashMap<>();
+	{
+		REWARDS.put("adena", new int[]
 		{
 			0,
 			0,
 			100000
 		});
-		Rewards.put("asofe", new int[]
+		REWARDS.put("asofe", new int[]
 		{
 			4043,
 			13,
 			6400
 		});
-		Rewards.put("thon", new int[]
+		REWARDS.put("thon", new int[]
 		{
 			4044,
 			13,
 			6400
 		});
-		Rewards.put("enria", new int[]
+		REWARDS.put("enria", new int[]
 		{
 			4042,
 			6,
 			13600
 		});
-		Rewards.put("mold", new int[]
+		REWARDS.put("mold", new int[]
 		{
 			4041,
 			3,
@@ -68,16 +87,17 @@ public class Q627_HeartInSearchOfPower extends Quest
 		});
 	}
 	
-	public Q627_HeartInSearchOfPower(int questId, String name, String descr)
+	public Q627_HeartInSearchOfPower()
 	{
-		super(questId, name, descr);
+		super(627, qn, "Heart in Search of Power");
 		
 		setItemsIds(BEAD_OF_OBEDIENCE);
 		
 		addStartNpc(NECROMANCER);
 		addTalkId(NECROMANCER, ENFEUX);
 		
-		addKillId(21520, 21521, 21522, 21523, 21524, 21525, 21526, 21527, 21528, 21529, 21530, 21531, 21532, 21533, 21534, 21535, 21536, 21537, 21538, 21539, 21540);
+		for (int npcId : CHANCES.keySet())
+			addKillId(npcId);
 	}
 	
 	@Override
@@ -90,8 +110,8 @@ public class Q627_HeartInSearchOfPower extends Quest
 		
 		if (event.equalsIgnoreCase("31518-01.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31518-03.htm"))
@@ -99,14 +119,14 @@ public class Q627_HeartInSearchOfPower extends Quest
 			if (st.getQuestItemsCount(BEAD_OF_OBEDIENCE) == 300)
 			{
 				st.set("cond", "3");
+				st.playSound(QuestState.SOUND_MIDDLE);
 				st.takeItems(BEAD_OF_OBEDIENCE, -1);
 				st.giveItems(SEAL_OF_LIGHT, 1);
-				st.playSound(QuestState.SOUND_MIDDLE);
 			}
 			else
 			{
-				st.set("cond", "1");
 				htmltext = "31518-03a.htm";
+				st.set("cond", "1");
 				st.takeItems(BEAD_OF_OBEDIENCE, -1);
 			}
 		}
@@ -115,23 +135,23 @@ public class Q627_HeartInSearchOfPower extends Quest
 			if (st.getQuestItemsCount(SEAL_OF_LIGHT) == 1)
 			{
 				st.set("cond", "4");
+				st.playSound(QuestState.SOUND_MIDDLE);
 				st.takeItems(SEAL_OF_LIGHT, 1);
 				st.giveItems(GEM_OF_SAINTS, 1);
-				st.playSound(QuestState.SOUND_MIDDLE);
 			}
 		}
-		else if (Rewards.containsKey(event))
+		else if (REWARDS.containsKey(event))
 		{
 			if (st.getQuestItemsCount(GEM_OF_SAINTS) == 1)
 			{
 				htmltext = "31518-07.htm";
 				st.takeItems(GEM_OF_SAINTS, 1);
+				
+				if (REWARDS.get(event)[0] > 0)
+					st.giveItems(REWARDS.get(event)[0], REWARDS.get(event)[1]);
+				st.rewardItems(57, REWARDS.get(event)[2]);
+				
 				st.playSound(QuestState.SOUND_FINISH);
-				
-				if (Rewards.get(event)[0] > 0)
-					st.giveItems(Rewards.get(event)[0], Rewards.get(event)[1]);
-				st.rewardItems(57, Rewards.get(event)[2]);
-				
 				st.exitQuest(true);
 			}
 			else
@@ -152,17 +172,11 @@ public class Q627_HeartInSearchOfPower extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 60)
-					htmltext = "31518-00.htm";
-				else
-				{
-					htmltext = "31518-00a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 60) ? "31518-00a.htm" : "31518-00.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case NECROMANCER:
@@ -197,7 +211,7 @@ public class Q627_HeartInSearchOfPower extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(BEAD_OF_OBEDIENCE, 1, 300, 900000))
+		if (st.dropItems(BEAD_OF_OBEDIENCE, 1, 300, CHANCES.get(npc.getNpcId())))
 			st.set("cond", "2");
 		
 		return null;
@@ -205,6 +219,6 @@ public class Q627_HeartInSearchOfPower extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q627_HeartInSearchOfPower(627, qn, "Heart in Search of Power");
+		new Q627_HeartInSearchOfPower();
 	}
 }

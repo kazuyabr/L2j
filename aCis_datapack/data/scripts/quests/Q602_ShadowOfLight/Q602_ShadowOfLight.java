@@ -31,34 +31,34 @@ public class Q602_ShadowOfLight extends Quest
 			40000,
 			120000,
 			20000,
-			19
+			20
 		},
 		{
 			6698,
 			60000,
 			110000,
 			15000,
-			39
+			40
 		},
 		{
 			6700,
 			40000,
 			150000,
 			10000,
-			49
+			50
 		},
 		{
 			0,
 			100000,
 			140000,
 			11250,
-			99
+			100
 		}
 	};
 	
-	public Q602_ShadowOfLight(int questId, String name, String descr)
+	public Q602_ShadowOfLight()
 	{
-		super(questId, name, descr);
+		super(602, qn, "Shadow of Light");
 		
 		setItemsIds(EYE_OF_DARKNESS);
 		
@@ -79,44 +79,34 @@ public class Q602_ShadowOfLight extends Quest
 		if (event.equalsIgnoreCase("31683-02.htm"))
 		{
 			if (player.getLevel() < 68)
-			{
 				htmltext = "31683-02a.htm";
-				st.exitQuest(true);
-			}
 			else
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 		}
 		else if (event.equalsIgnoreCase("31683-05.htm"))
 		{
-			if (st.getQuestItemsCount(EYE_OF_DARKNESS) < 100)
+			st.takeItems(EYE_OF_DARKNESS, -1);
+			
+			final int random = Rnd.get(100);
+			for (int[] element : REWARDS)
 			{
-				htmltext = "31683-06.htm";
-				st.set("cond", "1");
-			}
-			else
-			{
-				st.takeItems(EYE_OF_DARKNESS, -1);
-				
-				final int random = Rnd.get(100);
-				for (int[] element : REWARDS)
+				if (random < element[4])
 				{
-					if (random <= element[4])
-					{
-						st.rewardExpAndSp(element[2], element[3]);
-						st.giveItems(57, element[1]);
-						if (element[0] != 0)
-							st.giveItems(element[0], 3);
-						
-						break;
-					}
+					st.rewardItems(57, element[1]);
+					
+					if (element[0] != 0)
+						st.giveItems(element[0], 3);
+					
+					st.rewardExpAndSp(element[2], element[3]);
+					break;
 				}
-				st.playSound(QuestState.SOUND_FINISH);
-				st.exitQuest(true);
 			}
+			st.playSound(QuestState.SOUND_FINISH);
+			st.exitQuest(true);
 		}
 		
 		return htmltext;
@@ -157,7 +147,7 @@ public class Q602_ShadowOfLight extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(EYE_OF_DARKNESS, 1, 100, 300000))
+		if (st.dropItems(EYE_OF_DARKNESS, 1, 100, (npc.getNpcId() == 21299) ? 450000 : 500000))
 			st.set("cond", "2");
 		
 		return null;
@@ -165,6 +155,6 @@ public class Q602_ShadowOfLight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q602_ShadowOfLight(602, qn, "Shadow of Light");
+		new Q602_ShadowOfLight();
 	}
 }

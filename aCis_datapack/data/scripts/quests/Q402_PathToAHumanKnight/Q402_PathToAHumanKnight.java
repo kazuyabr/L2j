@@ -26,46 +26,46 @@ public class Q402_PathToAHumanKnight extends Quest
 	private static final String qn = "Q402_PathToAHumanKnight";
 	
 	// Items
-	private static final int SwordOfRitual = 1161;
-	private static final int CoinOfLords1 = 1162;
-	private static final int CoinOfLords2 = 1163;
-	private static final int CoinOfLords3 = 1164;
-	private static final int CoinOfLords4 = 1165;
-	private static final int CoinOfLords5 = 1166;
-	private static final int CoinOfLords6 = 1167;
-	private static final int GludioGuardsMark1 = 1168;
-	private static final int BugbearNecklace = 1169;
-	private static final int EinhasadChurchMark1 = 1170;
-	private static final int EinhasadCrucifix = 1171;
-	private static final int GludioGuardsMark2 = 1172;
-	private static final int SpiderLeg = 1173;
-	private static final int EinhasadChurchMark2 = 1174;
-	private static final int LizardmanTotem = 1175;
-	private static final int GludioGuardsMark3 = 1176;
-	private static final int GiantSpiderHusk = 1177;
-	private static final int EinhasadChurchMark3 = 1178;
-	private static final int HorribleSkull = 1179;
-	private static final int MarkOfEsquire = 1271;
+	private static final int SWORD_OF_RITUAL = 1161;
+	private static final int COIN_OF_LORDS_1 = 1162;
+	private static final int COIN_OF_LORDS_2 = 1163;
+	private static final int COIN_OF_LORDS_3 = 1164;
+	private static final int COIN_OF_LORDS_4 = 1165;
+	private static final int COIN_OF_LORDS_5 = 1166;
+	private static final int COIN_OF_LORDS_6 = 1167;
+	private static final int GLUDIO_GUARD_MARK_1 = 1168;
+	private static final int BUGBEAR_NECKLACE = 1169;
+	private static final int EINHASAD_CHURCH_MARK_1 = 1170;
+	private static final int EINHASAD_CRUCIFIX = 1171;
+	private static final int GLUDIO_GUARD_MARK_2 = 1172;
+	private static final int SPIDER_LEG = 1173;
+	private static final int EINHASAD_CHURCH_MARK_2 = 1174;
+	private static final int LIZARDMAN_TOTEM = 1175;
+	private static final int GLUDIO_GUARD_MARK_3 = 1176;
+	private static final int GIANT_SPIDER_HUSK = 1177;
+	private static final int EINHASAD_CHURCH_MARK_3 = 1178;
+	private static final int HORRIBLE_SKULL = 1179;
+	private static final int MARK_OF_ESQUIRE = 1271;
 	
 	// NPCs
-	private static final int SirKlausVasper = 30417;
-	private static final int Bathis = 30332;
-	private static final int Raymond = 30289;
-	private static final int Bezique = 30379;
-	private static final int Levian = 30037;
-	private static final int Gilbert = 30039;
-	private static final int Biotin = 30031;
-	private static final int SirAaronTanford = 30653;
-	private static final int SirCollinWindawood = 30311;
+	private static final int SIR_KLAUS_VASPER = 30417;
+	private static final int BATHIS = 30332;
+	private static final int RAYMOND = 30289;
+	private static final int BEZIQUE = 30379;
+	private static final int LEVIAN = 30037;
+	private static final int GILBERT = 30039;
+	private static final int BIOTIN = 30031;
+	private static final int SIR_AARON_TANFORD = 30653;
+	private static final int SIR_COLLIN_WINDAWOOD = 30311;
 	
-	public Q402_PathToAHumanKnight(int questId, String name, String descr)
+	public Q402_PathToAHumanKnight()
 	{
-		super(questId, name, descr);
+		super(402, qn, "Path to a Human Knight");
 		
-		setItemsIds(MarkOfEsquire, CoinOfLords1, CoinOfLords2, CoinOfLords3, CoinOfLords4, CoinOfLords5, CoinOfLords6, GludioGuardsMark1, BugbearNecklace, EinhasadChurchMark1, EinhasadCrucifix, GludioGuardsMark2, SpiderLeg, EinhasadChurchMark2, LizardmanTotem, GludioGuardsMark3, GiantSpiderHusk, EinhasadChurchMark3, LizardmanTotem, GludioGuardsMark3, GiantSpiderHusk, EinhasadChurchMark3, HorribleSkull);
+		setItemsIds(MARK_OF_ESQUIRE, COIN_OF_LORDS_1, COIN_OF_LORDS_2, COIN_OF_LORDS_3, COIN_OF_LORDS_4, COIN_OF_LORDS_5, COIN_OF_LORDS_6, GLUDIO_GUARD_MARK_1, BUGBEAR_NECKLACE, EINHASAD_CHURCH_MARK_1, EINHASAD_CRUCIFIX, GLUDIO_GUARD_MARK_2, SPIDER_LEG, EINHASAD_CHURCH_MARK_2, LIZARDMAN_TOTEM, GLUDIO_GUARD_MARK_3, GIANT_SPIDER_HUSK, EINHASAD_CHURCH_MARK_3, LIZARDMAN_TOTEM, GLUDIO_GUARD_MARK_3, GIANT_SPIDER_HUSK, EINHASAD_CHURCH_MARK_3, HORRIBLE_SKULL);
 		
-		addStartNpc(SirKlausVasper);
-		addTalkId(SirKlausVasper, Bathis, Raymond, Bezique, Levian, Gilbert, Biotin, SirAaronTanford, SirCollinWindawood);
+		addStartNpc(SIR_KLAUS_VASPER);
+		addTalkId(SIR_KLAUS_VASPER, BATHIS, RAYMOND, BEZIQUE, LEVIAN, GILBERT, BIOTIN, SIR_AARON_TANFORD, SIR_COLLIN_WINDAWOOD);
 		
 		addKillId(20775, 27024, 20038, 20043, 20050, 20030, 20027, 20024, 20103, 20106, 20108, 20404);
 	}
@@ -81,74 +81,61 @@ public class Q402_PathToAHumanKnight extends Quest
 		if (event.equalsIgnoreCase("30417-05.htm"))
 		{
 			if (player.getClassId() != ClassId.fighter)
-			{
-				if (player.getClassId() == ClassId.knight)
-					htmltext = "30417-02a.htm";
-				else
-					htmltext = "30417-03.htm";
-				
-				st.exitQuest(true);
-			}
+				htmltext = (player.getClassId() == ClassId.knight) ? "30417-02a.htm" : "30417-03.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30417-02.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(SwordOfRitual))
-			{
+			else if (st.hasQuestItems(SWORD_OF_RITUAL))
 				htmltext = "30417-04.htm";
-				st.exitQuest(true);
-			}
 		}
 		else if (event.equalsIgnoreCase("30417-08.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
-			st.giveItems(MarkOfEsquire, 1);
+			st.giveItems(MARK_OF_ESQUIRE, 1);
 		}
 		else if (event.equalsIgnoreCase("30332-02.htm"))
 		{
-			st.giveItems(GludioGuardsMark1, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(GLUDIO_GUARD_MARK_1, 1);
 		}
 		else if (event.equalsIgnoreCase("30289-03.htm"))
 		{
-			st.giveItems(EinhasadChurchMark1, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(EINHASAD_CHURCH_MARK_1, 1);
 		}
 		else if (event.equalsIgnoreCase("30379-02.htm"))
 		{
-			st.giveItems(GludioGuardsMark2, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(GLUDIO_GUARD_MARK_2, 1);
 		}
 		else if (event.equalsIgnoreCase("30037-02.htm"))
 		{
-			st.giveItems(EinhasadChurchMark2, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(EINHASAD_CHURCH_MARK_2, 1);
 		}
 		else if (event.equalsIgnoreCase("30039-02.htm"))
 		{
-			st.giveItems(GludioGuardsMark3, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(GLUDIO_GUARD_MARK_3, 1);
 		}
 		else if (event.equalsIgnoreCase("30031-02.htm"))
 		{
-			st.giveItems(EinhasadChurchMark3, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(EINHASAD_CHURCH_MARK_3, 1);
 		}
 		else if (event.equalsIgnoreCase("30417-13.htm") || event.equalsIgnoreCase("30417-14.htm"))
 		{
-			int coinCount = st.getQuestItemsCount(CoinOfLords1) + st.getQuestItemsCount(CoinOfLords2) + st.getQuestItemsCount(CoinOfLords3) + st.getQuestItemsCount(CoinOfLords4) + st.getQuestItemsCount(CoinOfLords5) + st.getQuestItemsCount(CoinOfLords6);
+			final int coinCount = st.getQuestItemsCount(COIN_OF_LORDS_1) + st.getQuestItemsCount(COIN_OF_LORDS_2) + st.getQuestItemsCount(COIN_OF_LORDS_3) + st.getQuestItemsCount(COIN_OF_LORDS_4) + st.getQuestItemsCount(COIN_OF_LORDS_5) + st.getQuestItemsCount(COIN_OF_LORDS_6);
 			
-			st.takeItems(CoinOfLords1, -1);
-			st.takeItems(CoinOfLords2, -1);
-			st.takeItems(CoinOfLords3, -1);
-			st.takeItems(CoinOfLords4, -1);
-			st.takeItems(CoinOfLords5, -1);
-			st.takeItems(CoinOfLords6, -1);
-			st.takeItems(MarkOfEsquire, 1);
-			st.giveItems(SwordOfRitual, 1);
+			st.takeItems(COIN_OF_LORDS_1, -1);
+			st.takeItems(COIN_OF_LORDS_2, -1);
+			st.takeItems(COIN_OF_LORDS_3, -1);
+			st.takeItems(COIN_OF_LORDS_4, -1);
+			st.takeItems(COIN_OF_LORDS_5, -1);
+			st.takeItems(COIN_OF_LORDS_6, -1);
+			st.takeItems(MARK_OF_ESQUIRE, 1);
+			st.giveItems(SWORD_OF_RITUAL, 1);
 			st.rewardExpAndSp(3200, 1500 + (1920 * (coinCount - 3)));
 			player.broadcastPacket(new SocialAction(player, 3));
 			st.playSound(QuestState.SOUND_FINISH);
@@ -175,25 +162,25 @@ public class Q402_PathToAHumanKnight extends Quest
 			case STATE_STARTED:
 				switch (npc.getNpcId())
 				{
-					case SirKlausVasper:
-						int coins = st.getQuestItemsCount(CoinOfLords1) + st.getQuestItemsCount(CoinOfLords2) + st.getQuestItemsCount(CoinOfLords3) + st.getQuestItemsCount(CoinOfLords4) + st.getQuestItemsCount(CoinOfLords5) + st.getQuestItemsCount(CoinOfLords6);
+					case SIR_KLAUS_VASPER:
+						final int coins = st.getQuestItemsCount(COIN_OF_LORDS_1) + st.getQuestItemsCount(COIN_OF_LORDS_2) + st.getQuestItemsCount(COIN_OF_LORDS_3) + st.getQuestItemsCount(COIN_OF_LORDS_4) + st.getQuestItemsCount(COIN_OF_LORDS_5) + st.getQuestItemsCount(COIN_OF_LORDS_6);
 						if (coins < 3)
 							htmltext = "30417-09.htm";
 						else if (coins == 3)
 							htmltext = "30417-10.htm";
-						else if (coins >= 4 && coins <= 5)
+						else if (coins > 3 && coins < 6)
 							htmltext = "30417-11.htm";
 						else if (coins == 6)
 						{
 							htmltext = "30417-12.htm";
-							st.takeItems(CoinOfLords1, -1);
-							st.takeItems(CoinOfLords2, -1);
-							st.takeItems(CoinOfLords3, -1);
-							st.takeItems(CoinOfLords4, -1);
-							st.takeItems(CoinOfLords5, -1);
-							st.takeItems(CoinOfLords6, -1);
-							st.takeItems(MarkOfEsquire, 1);
-							st.giveItems(SwordOfRitual, 1);
+							st.takeItems(COIN_OF_LORDS_1, -1);
+							st.takeItems(COIN_OF_LORDS_2, -1);
+							st.takeItems(COIN_OF_LORDS_3, -1);
+							st.takeItems(COIN_OF_LORDS_4, -1);
+							st.takeItems(COIN_OF_LORDS_5, -1);
+							st.takeItems(COIN_OF_LORDS_6, -1);
+							st.takeItems(MARK_OF_ESQUIRE, 1);
+							st.giveItems(SWORD_OF_RITUAL, 1);
 							st.rewardExpAndSp(3200, 7260);
 							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
@@ -201,127 +188,127 @@ public class Q402_PathToAHumanKnight extends Quest
 						}
 						break;
 					
-					case Bathis:
-						if (!st.hasQuestItems(GludioGuardsMark1) && !st.hasQuestItems(CoinOfLords1))
-							htmltext = "30332-01.htm";
-						else if (st.hasQuestItems(GludioGuardsMark1))
+					case BATHIS:
+						if (st.hasQuestItems(COIN_OF_LORDS_1))
+							htmltext = "30332-05.htm";
+						else if (st.hasQuestItems(GLUDIO_GUARD_MARK_1))
 						{
-							if (st.getQuestItemsCount(BugbearNecklace) < 10)
+							if (st.getQuestItemsCount(BUGBEAR_NECKLACE) < 10)
 								htmltext = "30332-03.htm";
 							else
 							{
 								htmltext = "30332-04.htm";
-								st.takeItems(BugbearNecklace, -1);
-								st.takeItems(GludioGuardsMark1, 1);
-								st.giveItems(CoinOfLords1, 1);
 								st.playSound(QuestState.SOUND_MIDDLE);
+								st.takeItems(BUGBEAR_NECKLACE, -1);
+								st.takeItems(GLUDIO_GUARD_MARK_1, 1);
+								st.giveItems(COIN_OF_LORDS_1, 1);
 							}
 						}
-						else if (st.hasQuestItems(CoinOfLords1))
-							htmltext = "30332-05.htm";
+						else
+							htmltext = "30332-01.htm";
 						break;
 					
-					case Raymond:
-						if (!st.hasQuestItems(EinhasadChurchMark1) && !st.hasQuestItems(CoinOfLords2))
-							htmltext = "30289-01.htm";
-						else if (st.hasQuestItems(EinhasadChurchMark1))
+					case RAYMOND:
+						if (st.hasQuestItems(COIN_OF_LORDS_2))
+							htmltext = "30289-06.htm";
+						else if (st.hasQuestItems(EINHASAD_CHURCH_MARK_1))
 						{
-							if (st.getQuestItemsCount(EinhasadCrucifix) < 12)
+							if (st.getQuestItemsCount(EINHASAD_CRUCIFIX) < 12)
 								htmltext = "30289-04.htm";
 							else
 							{
 								htmltext = "30289-05.htm";
-								st.takeItems(EinhasadCrucifix, -1);
-								st.takeItems(EinhasadChurchMark1, 1);
-								st.giveItems(CoinOfLords2, 1);
 								st.playSound(QuestState.SOUND_MIDDLE);
+								st.takeItems(EINHASAD_CRUCIFIX, -1);
+								st.takeItems(EINHASAD_CHURCH_MARK_1, 1);
+								st.giveItems(COIN_OF_LORDS_2, 1);
 							}
 						}
-						else if (st.hasQuestItems(CoinOfLords2))
-							htmltext = "30289-06.htm";
+						else
+							htmltext = "30289-01.htm";
 						break;
 					
-					case Bezique:
-						if (!st.hasQuestItems(GludioGuardsMark2) && !st.hasQuestItems(CoinOfLords3))
-							htmltext = "30379-01.htm";
-						else if (st.hasQuestItems(GludioGuardsMark2))
+					case BEZIQUE:
+						if (st.hasQuestItems(COIN_OF_LORDS_3))
+							htmltext = "30379-05.htm";
+						else if (st.hasQuestItems(GLUDIO_GUARD_MARK_2))
 						{
-							if (st.getQuestItemsCount(SpiderLeg) < 20)
+							if (st.getQuestItemsCount(SPIDER_LEG) < 20)
 								htmltext = "30379-03.htm";
 							else
 							{
 								htmltext = "30379-04.htm";
-								st.takeItems(SpiderLeg, -1);
-								st.takeItems(GludioGuardsMark2, 1);
-								st.giveItems(CoinOfLords3, 1);
 								st.playSound(QuestState.SOUND_MIDDLE);
+								st.takeItems(SPIDER_LEG, -1);
+								st.takeItems(GLUDIO_GUARD_MARK_2, 1);
+								st.giveItems(COIN_OF_LORDS_3, 1);
 							}
 						}
-						else if (st.hasQuestItems(CoinOfLords3))
-							htmltext = "30379-05.htm";
+						else
+							htmltext = "30379-01.htm";
 						break;
 					
-					case Levian:
-						if (!st.hasQuestItems(EinhasadChurchMark2) && !st.hasQuestItems(CoinOfLords4))
-							htmltext = "30037-01.htm";
-						else if (st.hasQuestItems(EinhasadChurchMark2))
+					case LEVIAN:
+						if (st.hasQuestItems(COIN_OF_LORDS_4))
+							htmltext = "30037-05.htm";
+						else if (st.hasQuestItems(EINHASAD_CHURCH_MARK_2))
 						{
-							if (st.getQuestItemsCount(LizardmanTotem) < 20)
+							if (st.getQuestItemsCount(LIZARDMAN_TOTEM) < 20)
 								htmltext = "30037-03.htm";
 							else
 							{
 								htmltext = "30037-04.htm";
-								st.takeItems(LizardmanTotem, -1);
-								st.takeItems(EinhasadChurchMark2, 1);
-								st.giveItems(CoinOfLords4, 1);
 								st.playSound(QuestState.SOUND_MIDDLE);
+								st.takeItems(LIZARDMAN_TOTEM, -1);
+								st.takeItems(EINHASAD_CHURCH_MARK_2, 1);
+								st.giveItems(COIN_OF_LORDS_4, 1);
 							}
 						}
-						else if (st.hasQuestItems(CoinOfLords4))
-							htmltext = "30037-05.htm";
+						else
+							htmltext = "30037-01.htm";
 						break;
 					
-					case Gilbert:
-						if (!st.hasQuestItems(GludioGuardsMark3) && !st.hasQuestItems(CoinOfLords5))
-							htmltext = "30039-01.htm";
-						else if (st.hasQuestItems(GludioGuardsMark3))
+					case GILBERT:
+						if (st.hasQuestItems(COIN_OF_LORDS_5))
+							htmltext = "30039-05.htm";
+						else if (st.hasQuestItems(GLUDIO_GUARD_MARK_3))
 						{
-							if (st.getQuestItemsCount(GiantSpiderHusk) < 20)
+							if (st.getQuestItemsCount(GIANT_SPIDER_HUSK) < 20)
 								htmltext = "30039-03.htm";
 							else
 							{
 								htmltext = "30039-04.htm";
-								st.takeItems(GiantSpiderHusk, -1);
-								st.takeItems(GludioGuardsMark3, 1);
-								st.giveItems(CoinOfLords5, 1);
 								st.playSound(QuestState.SOUND_MIDDLE);
+								st.takeItems(GIANT_SPIDER_HUSK, -1);
+								st.takeItems(GLUDIO_GUARD_MARK_3, 1);
+								st.giveItems(COIN_OF_LORDS_5, 1);
 							}
 						}
-						else if (st.hasQuestItems(CoinOfLords5))
-							htmltext = "30039-05.htm";
+						else
+							htmltext = "30039-01.htm";
 						break;
 					
-					case Biotin:
-						if (!st.hasQuestItems(EinhasadChurchMark3) && !st.hasQuestItems(CoinOfLords6))
-							htmltext = "30031-01.htm";
-						else if (st.hasQuestItems(EinhasadChurchMark3))
+					case BIOTIN:
+						if (st.hasQuestItems(COIN_OF_LORDS_6))
+							htmltext = "30031-05.htm";
+						else if (st.hasQuestItems(EINHASAD_CHURCH_MARK_3))
 						{
-							if (st.getQuestItemsCount(HorribleSkull) < 10)
+							if (st.getQuestItemsCount(HORRIBLE_SKULL) < 10)
 								htmltext = "30031-03.htm";
 							else
 							{
 								htmltext = "30031-04.htm";
-								st.takeItems(HorribleSkull, -1);
-								st.takeItems(EinhasadChurchMark3, 1);
-								st.giveItems(CoinOfLords6, 1);
 								st.playSound(QuestState.SOUND_MIDDLE);
+								st.takeItems(HORRIBLE_SKULL, -1);
+								st.takeItems(EINHASAD_CHURCH_MARK_3, 1);
+								st.giveItems(COIN_OF_LORDS_6, 1);
 							}
 						}
-						else if (st.hasQuestItems(CoinOfLords6))
-							htmltext = "30031-05.htm";
+						else
+							htmltext = "30031-01.htm";
 						break;
 					
-					case SirAaronTanford:
+					case SIR_AARON_TANFORD:
 						htmltext = "30653-01.htm";
 						break;
 				}
@@ -341,39 +328,39 @@ public class Q402_PathToAHumanKnight extends Quest
 		switch (npc.getNpcId())
 		{
 			case 20775: // Bugbear Raider
-				if (st.hasQuestItems(GludioGuardsMark1))
-					st.dropItemsAlways(BugbearNecklace, 1, 10);
+				if (st.hasQuestItems(GLUDIO_GUARD_MARK_1))
+					st.dropItemsAlways(BUGBEAR_NECKLACE, 1, 10);
 				break;
 			
 			case 27024: // Undead Priest
-				if (st.hasQuestItems(EinhasadChurchMark1))
-					st.dropItems(EinhasadCrucifix, 1, 12, 400000);
+				if (st.hasQuestItems(EINHASAD_CHURCH_MARK_1))
+					st.dropItems(EINHASAD_CRUCIFIX, 1, 12, 500000);
 				break;
 			
 			case 20038: // Poison Spider
 			case 20043: // Arachnid Tracker
 			case 20050: // Arachnid Predator
-				if (st.hasQuestItems(GludioGuardsMark2))
-					st.dropItems(SpiderLeg, 1, 20, 400000);
+				if (st.hasQuestItems(GLUDIO_GUARD_MARK_2))
+					st.dropItemsAlways(SPIDER_LEG, 1, 20);
 				break;
 			
 			case 20030: // Langk Lizardman
 			case 20027: // Langk Lizardman Scout
 			case 20024: // Langk Lizardman Warrior
-				if (st.hasQuestItems(EinhasadChurchMark2))
-					st.dropItems(LizardmanTotem, 1, 20, 400000);
+				if (st.hasQuestItems(EINHASAD_CHURCH_MARK_2))
+					st.dropItems(LIZARDMAN_TOTEM, 1, 20, 500000);
 				break;
 			
 			case 20103: // Giant Spider
 			case 20106: // Talon Spider
 			case 20108: // Blade Spider
-				if (st.hasQuestItems(GludioGuardsMark3))
-					st.dropItems(GiantSpiderHusk, 1, 20, 400000);
+				if (st.hasQuestItems(GLUDIO_GUARD_MARK_3))
+					st.dropItems(GIANT_SPIDER_HUSK, 1, 20, 400000);
 				break;
 			
 			case 20404: // Silent Horror
-				if (st.hasQuestItems(EinhasadChurchMark3))
-					st.dropItems(HorribleSkull, 1, 10, 400000);
+				if (st.hasQuestItems(EINHASAD_CHURCH_MARK_3))
+					st.dropItems(HORRIBLE_SKULL, 1, 10, 400000);
 				break;
 		}
 		
@@ -382,6 +369,6 @@ public class Q402_PathToAHumanKnight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q402_PathToAHumanKnight(402, qn, "Path to a Human Knight");
+		new Q402_PathToAHumanKnight();
 	}
 }

@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q661_MakingTheHarvestGroundsSafe extends Quest
 {
@@ -26,28 +25,28 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 	private static final int NORMAN = 30210;
 	
 	// Items
-	private static final int STING_OF_GIANT_PB = 8283;
+	private static final int STING_OF_GIANT_POISON_BEE = 8283;
 	private static final int CLOUDY_GEM = 8284;
-	private static final int TALON_OF_YA = 8285;
+	private static final int TALON_OF_YOUNG_ARANEID = 8285;
 	
 	// Reward
 	private static final int ADENA = 57;
 	
 	// Monsters
-	private static final int GIANT_PB = 21095;
+	private static final int GIANT_POISON_BEE = 21095;
 	private static final int CLOUDY_BEAST = 21096;
 	private static final int YOUNG_ARANEID = 21097;
 	
-	public Q661_MakingTheHarvestGroundsSafe(int questId, String name, String descr)
+	public Q661_MakingTheHarvestGroundsSafe()
 	{
-		super(questId, name, descr);
+		super(661, qn, "Making the Harvest Grounds Safe");
 		
-		setItemsIds(STING_OF_GIANT_PB, CLOUDY_GEM, TALON_OF_YA);
+		setItemsIds(STING_OF_GIANT_POISON_BEE, CLOUDY_GEM, TALON_OF_YOUNG_ARANEID);
 		
 		addStartNpc(NORMAN);
 		addTalkId(NORMAN);
 		
-		addKillId(GIANT_PB, CLOUDY_BEAST, YOUNG_ARANEID);
+		addKillId(GIANT_POISON_BEE, CLOUDY_BEAST, YOUNG_ARANEID);
 	}
 	
 	@Override
@@ -60,15 +59,15 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 		
 		if (event.equalsIgnoreCase("30210-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30210-04.htm"))
 		{
-			int item1 = st.getQuestItemsCount(STING_OF_GIANT_PB);
+			int item1 = st.getQuestItemsCount(STING_OF_GIANT_POISON_BEE);
 			int item2 = st.getQuestItemsCount(CLOUDY_GEM);
-			int item3 = st.getQuestItemsCount(TALON_OF_YA);
+			int item3 = st.getQuestItemsCount(TALON_OF_YOUNG_ARANEID);
 			int sum = 0;
 			
 			sum = (item1 * 57) + (item2 * 56) + (item3 * 60);
@@ -76,9 +75,9 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 			if (item1 + item2 + item3 >= 10)
 				sum += 2871;
 			
-			st.takeItems(STING_OF_GIANT_PB, item1);
+			st.takeItems(STING_OF_GIANT_POISON_BEE, item1);
 			st.takeItems(CLOUDY_GEM, item2);
-			st.takeItems(TALON_OF_YA, item3);
+			st.takeItems(TALON_OF_YOUNG_ARANEID, item3);
 			st.rewardItems(ADENA, sum);
 		}
 		else if (event.equalsIgnoreCase("30210-06.htm"))
@@ -98,20 +97,11 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 21)
-					htmltext = "30210-01.htm";
-				else
-				{
-					htmltext = "30210-01a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 21) ? "30210-01a.htm" : "30210-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.hasAtLeastOneQuestItem(STING_OF_GIANT_PB, CLOUDY_GEM, TALON_OF_YA))
-					htmltext = "30210-03.htm";
-				else
-					htmltext = "30210-05.htm";
+				htmltext = (st.hasAtLeastOneQuestItem(STING_OF_GIANT_POISON_BEE, CLOUDY_GEM, TALON_OF_YOUNG_ARANEID)) ? "30210-03.htm" : "30210-05.htm";
 				break;
 		}
 		
@@ -125,28 +115,13 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 50)
-		{
-			switch (npc.getNpcId())
-			{
-				case GIANT_PB:
-					st.giveItems(STING_OF_GIANT_PB, 1);
-					break;
-				case CLOUDY_BEAST:
-					st.giveItems(CLOUDY_GEM, 1);
-					break;
-				case YOUNG_ARANEID:
-					st.giveItems(TALON_OF_YA, 1);
-					break;
-			}
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(npc.getNpcId() - 12812, 1, 0, 500000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q661_MakingTheHarvestGroundsSafe(661, qn, "Making the Harvest Grounds Safe");
+		new Q661_MakingTheHarvestGroundsSafe();
 	}
 }

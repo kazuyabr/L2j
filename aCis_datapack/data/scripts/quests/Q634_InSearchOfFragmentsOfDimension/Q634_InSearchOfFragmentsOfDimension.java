@@ -24,9 +24,9 @@ public class Q634_InSearchOfFragmentsOfDimension extends Quest
 	// Items
 	private static final int DIMENSION_FRAGMENT = 7079;
 	
-	public Q634_InSearchOfFragmentsOfDimension(int questId, String name, String descr)
+	public Q634_InSearchOfFragmentsOfDimension()
 	{
-		super(questId, name, descr);
+		super(634, qn, "In Search of Fragments of Dimension");
 		
 		// Dimensional Gate Keepers.
 		for (int i = 31494; i < 31508; i++)
@@ -50,8 +50,8 @@ public class Q634_InSearchOfFragmentsOfDimension extends Quest
 		
 		if (event.equalsIgnoreCase("02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("05.htm"))
@@ -59,6 +59,7 @@ public class Q634_InSearchOfFragmentsOfDimension extends Quest
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
+		
 		return htmltext;
 	}
 	
@@ -73,13 +74,7 @@ public class Q634_InSearchOfFragmentsOfDimension extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 20)
-					htmltext = "01.htm";
-				else
-				{
-					htmltext = "01a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 20) ? "01a.htm" : "01.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -97,15 +92,13 @@ public class Q634_InSearchOfFragmentsOfDimension extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItems(DIMENSION_FRAGMENT, (int) (npc.getLevel() * 0.15 + 2.6), -1, 80000);
+		partyMember.getQuestState(qn).dropItems(DIMENSION_FRAGMENT, (int) (npc.getLevel() * 0.15 + 2.6), -1, 80000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q634_InSearchOfFragmentsOfDimension(634, qn, "In Search of Fragments of Dimension");
+		new Q634_InSearchOfFragmentsOfDimension();
 	}
 }

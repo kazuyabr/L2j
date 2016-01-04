@@ -311,7 +311,7 @@ public class Q171_ActsOfEvil extends Quest
 					}
 				}
 				break;
-
+			
 			case 20438:
 				if (st.getInt("cond") == 6 && Rnd.get(100) < 10 && !st.hasQuestItems(WEAPON_TRADE_CONTRACT, ATTACK_DIRECTIVES))
 				{
@@ -320,7 +320,7 @@ public class Q171_ActsOfEvil extends Quest
 					st.giveItems(ATTACK_DIRECTIVES, 1);
 				}
 				break;
-
+			
 			case 20066:
 				if (st.getInt("cond") == 10)
 					st.dropItems(OL_MAHUM_HEAD, 1, 30, 500000);

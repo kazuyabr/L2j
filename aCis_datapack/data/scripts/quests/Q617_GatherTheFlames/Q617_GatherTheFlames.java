@@ -34,39 +34,39 @@ public class Q617_GatherTheFlames extends Quest
 	// Items
 	private static final int TORCH = 7264;
 	
-	// Droplist
-	private static final Map<Integer, Integer> droplist = new HashMap<>();
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		droplist.put(21381, 510000);
-		droplist.put(21653, 510000);
-		droplist.put(21387, 530000);
-		droplist.put(21655, 530000);
-		droplist.put(21390, 560000);
-		droplist.put(21656, 690000);
-		droplist.put(21389, 550000);
-		droplist.put(21388, 530000);
-		droplist.put(21383, 510000);
-		droplist.put(21392, 560000);
-		droplist.put(21382, 600000);
-		droplist.put(21654, 520000);
-		droplist.put(21384, 640000);
-		droplist.put(21394, 510000);
-		droplist.put(21395, 560000);
-		droplist.put(21385, 520000);
-		droplist.put(21391, 550000);
-		droplist.put(21393, 580000);
-		droplist.put(21657, 570000);
-		droplist.put(21386, 520000);
-		droplist.put(21652, 490000);
-		droplist.put(21378, 490000);
-		droplist.put(21376, 480000);
-		droplist.put(21377, 480000);
-		droplist.put(21379, 590000);
-		droplist.put(21380, 490000);
+		CHANCES.put(21381, 510000);
+		CHANCES.put(21653, 510000);
+		CHANCES.put(21387, 530000);
+		CHANCES.put(21655, 530000);
+		CHANCES.put(21390, 560000);
+		CHANCES.put(21656, 690000);
+		CHANCES.put(21389, 550000);
+		CHANCES.put(21388, 530000);
+		CHANCES.put(21383, 510000);
+		CHANCES.put(21392, 560000);
+		CHANCES.put(21382, 600000);
+		CHANCES.put(21654, 520000);
+		CHANCES.put(21384, 640000);
+		CHANCES.put(21394, 510000);
+		CHANCES.put(21395, 560000);
+		CHANCES.put(21385, 520000);
+		CHANCES.put(21391, 550000);
+		CHANCES.put(21393, 580000);
+		CHANCES.put(21657, 570000);
+		CHANCES.put(21386, 520000);
+		CHANCES.put(21652, 490000);
+		CHANCES.put(21378, 490000);
+		CHANCES.put(21376, 480000);
+		CHANCES.put(21377, 480000);
+		CHANCES.put(21379, 590000);
+		CHANCES.put(21380, 490000);
 	}
 	
 	// Rewards
-	private static final int reward[] =
+	private static final int REWARD[] =
 	{
 		6881,
 		6883,
@@ -80,16 +80,16 @@ public class Q617_GatherTheFlames extends Quest
 		7580
 	};
 	
-	public Q617_GatherTheFlames(int questId, String name, String descr)
+	public Q617_GatherTheFlames()
 	{
-		super(questId, name, descr);
+		super(617, qn, "Gather the Flames");
 		
 		setItemsIds(TORCH);
 		
 		addStartNpc(VULCAN, HILDA);
 		addTalkId(VULCAN, HILDA, ROONEY);
 		
-		for (int mobs : droplist.keySet())
+		for (int mobs : CHANCES.keySet())
 			addKillId(mobs);
 	}
 	
@@ -101,16 +101,10 @@ public class Q617_GatherTheFlames extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (event.equalsIgnoreCase("31539-03.htm"))
+		if (event.equalsIgnoreCase("31539-03.htm") || event.equalsIgnoreCase("31271-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
-			st.playSound(QuestState.SOUND_ACCEPT);
-		}
-		else if (event.equalsIgnoreCase("31271-03.htm"))
-		{
 			st.set("cond", "1");
-			st.setState(STATE_STARTED);
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31539-05.htm"))
@@ -119,7 +113,7 @@ public class Q617_GatherTheFlames extends Quest
 			{
 				htmltext = "31539-07.htm";
 				st.takeItems(TORCH, 1000);
-				st.giveItems(reward[Rnd.get(reward.length)], 1);
+				st.giveItems(REWARD[Rnd.get(REWARD.length)], 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("31539-08.htm"))
@@ -153,38 +147,14 @@ public class Q617_GatherTheFlames extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				switch (npc.getNpcId())
-				{
-					case VULCAN:
-						if (player.getLevel() >= 74)
-							htmltext = "31539-01.htm";
-						else
-						{
-							htmltext = "31539-02.htm";
-							st.exitQuest(true);
-						}
-						break;
-					
-					case HILDA:
-						if (player.getLevel() >= 74)
-							htmltext = "31271-02.htm";
-						else
-						{
-							htmltext = "31271-01.htm";
-							st.exitQuest(true);
-						}
-						break;
-				}
+				htmltext = npc.getNpcId() + ((player.getLevel() >= 74) ? "-01.htm" : "-02.htm");
 				break;
 			
 			case STATE_STARTED:
 				switch (npc.getNpcId())
 				{
 					case VULCAN:
-						if (st.getQuestItemsCount(TORCH) >= 1000)
-							htmltext = "31539-04.htm";
-						else
-							htmltext = "31539-05.htm";
+						htmltext = (st.getQuestItemsCount(TORCH) >= 1000) ? "31539-04.htm" : "31539-05.htm";
 						break;
 					
 					case HILDA:
@@ -192,10 +162,7 @@ public class Q617_GatherTheFlames extends Quest
 						break;
 					
 					case ROONEY:
-						if (st.getQuestItemsCount(TORCH) >= 1200)
-							htmltext = "32049-01.htm";
-						else
-							htmltext = "32049-02.htm";
+						htmltext = (st.getQuestItemsCount(TORCH) >= 1200) ? "32049-01.htm" : "32049-02.htm";
 						break;
 				}
 				break;
@@ -211,15 +178,13 @@ public class Q617_GatherTheFlames extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItems(TORCH, 1, -1, droplist.get(npc.getNpcId()));
+		partyMember.getQuestState(qn).dropItems(TORCH, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q617_GatherTheFlames(617, qn, "Gather the Flames");
+		new Q617_GatherTheFlames();
 	}
 }

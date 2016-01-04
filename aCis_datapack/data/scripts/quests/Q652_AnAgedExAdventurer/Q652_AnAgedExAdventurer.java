@@ -14,6 +14,7 @@ package quests.Q652_AnAgedExAdventurer;
 
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
+import net.sf.l2j.gameserver.model.SpawnLocation;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -29,47 +30,27 @@ public class Q652_AnAgedExAdventurer extends Quest
 	private static final int SARA = 30180;
 	
 	// Item
-	private static final int CSS = 1464;
+	private static final int SOULSHOT_C = 1464;
 	
 	// Reward
-	private static final int EAD = 956;
+	private static final int ENCHANT_ARMOR_D = 956;
 	
 	// Table of possible spawns
-	private static final int[][] spawns =
+	private static final SpawnLocation[] SPAWNS =
 	{
-		{
-			78355,
-			-1325,
-			-3659
-		},
-		{
-			79890,
-			-6132,
-			-2922
-		},
-		{
-			90012,
-			-7217,
-			-3085
-		},
-		{
-			94500,
-			-10129,
-			-3290
-		},
-		{
-			96534,
-			-1237,
-			-3677
-		}
+		new SpawnLocation(78355, -1325, -3659, 0),
+		new SpawnLocation(79890, -6132, -2922, 0),
+		new SpawnLocation(90012, -7217, -3085, 0),
+		new SpawnLocation(94500, -10129, -3290, 0),
+		new SpawnLocation(96534, -1237, -3677, 0)
 	};
 	
 	// Current position
 	private int _currentPosition = 0;
 	
-	public Q652_AnAgedExAdventurer(int questId, String name, String descr)
+	public Q652_AnAgedExAdventurer()
 	{
-		super(questId, name, descr);
+		super(652, qn, "An Aged Ex-Adventurer");
 		
 		addStartNpc(TANTAN);
 		addTalkId(TANTAN, SARA);
@@ -87,12 +68,12 @@ public class Q652_AnAgedExAdventurer extends Quest
 		
 		if (event.equalsIgnoreCase("32012-02.htm"))
 		{
-			if (st.getQuestItemsCount(CSS) >= 100)
+			if (st.getQuestItemsCount(SOULSHOT_C) >= 100)
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
-				st.takeItems(CSS, 100);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
+				st.takeItems(SOULSHOT_C, 100);
 				
 				npc.getAI().setIntention(CtrlIntention.MOVE_TO, new L2CharPosition(85326, 7869, -3620, 0));
 				startQuestTimer("apparition_npc", 6000, npc, player, false);
@@ -115,9 +96,10 @@ public class Q652_AnAgedExAdventurer extends Quest
 			_currentPosition = chance;
 			
 			npc.deleteMe();
-			addSpawn(TANTAN, spawns[chance][0], spawns[chance][1], spawns[chance][2], 0, false, 0, false);
+			addSpawn(TANTAN, SPAWNS[chance], false, 0, false);
 			return null;
 		}
+		
 		return htmltext;
 	}
 	
@@ -132,13 +114,7 @@ public class Q652_AnAgedExAdventurer extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 46)
-					htmltext = "32012-01.htm";
-				else
-				{
-					htmltext = "32012-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 46) ? "32012-00.htm" : "32012-01.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -149,7 +125,7 @@ public class Q652_AnAgedExAdventurer extends Quest
 						{
 							htmltext = "30180-01.htm";
 							st.rewardItems(57, 5026);
-							st.giveItems(EAD, 1);
+							st.giveItems(ENCHANT_ARMOR_D, 1);
 						}
 						else
 						{
@@ -166,11 +142,12 @@ public class Q652_AnAgedExAdventurer extends Quest
 				}
 				break;
 		}
+		
 		return htmltext;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q652_AnAgedExAdventurer(652, qn, "An Aged Ex-Adventurer");
+		new Q652_AnAgedExAdventurer();
 	}
 }

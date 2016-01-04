@@ -23,10 +23,10 @@ public class Q644_GraveRobberAnnihilation extends Quest
 	private static final String qn = "Q644_GraveRobberAnnihilation";
 	
 	// Item
-	private static final int GOODS = 8088;
+	private static final int ORC_GRAVE_GOODS = 8088;
 	
 	// Rewards
-	private static final int[][] rewards =
+	private static final int[][] REWARDS =
 	{
 		{
 			1865,
@@ -57,11 +57,11 @@ public class Q644_GraveRobberAnnihilation extends Quest
 	// NPC
 	private static final int KARUDA = 32017;
 	
-	public Q644_GraveRobberAnnihilation(int questId, String name, String descr)
+	public Q644_GraveRobberAnnihilation()
 	{
-		super(questId, name, descr);
+		super(644, qn, "Grave Robber Annihilation");
 		
-		setItemsIds(GOODS);
+		setItemsIds(ORC_GRAVE_GOODS);
 		
 		addStartNpc(KARUDA);
 		addTalkId(KARUDA);
@@ -85,19 +85,14 @@ public class Q644_GraveRobberAnnihilation extends Quest
 		}
 		else if (Util.isDigit(event))
 		{
-			if (st.getQuestItemsCount(GOODS) == 120)
-			{
-				htmltext = "32017-04.htm";
-				st.takeItems(GOODS, -1);
-				
-				int reward[] = rewards[Integer.parseInt(event)];
-				st.rewardItems(reward[0], reward[1]);
-				
-				st.playSound(QuestState.SOUND_FINISH);
-				st.exitQuest(true);
-			}
-			else
-				htmltext = "32017-07.htm";
+			htmltext = "32017-04.htm";
+			st.takeItems(ORC_GRAVE_GOODS, -1);
+			
+			final int reward[] = REWARDS[Integer.parseInt(event)];
+			st.rewardItems(reward[0], reward[1]);
+			
+			st.playSound(QuestState.SOUND_FINISH);
+			st.exitQuest(true);
 		}
 		
 		return htmltext;
@@ -114,23 +109,15 @@ public class Q644_GraveRobberAnnihilation extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 20)
-					htmltext = "32017-01.htm";
-				else
-					htmltext = "32017-06.htm";
+				htmltext = (player.getLevel() < 20) ? "32017-06.htm" : "32017-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "32017-05.htm";
 				else if (cond == 2)
-				{
-					if (st.getQuestItemsCount(GOODS) == 120)
-						htmltext = "32017-03.htm";
-					else
-						htmltext = "32017-07.htm";
-				}
+					htmltext = "32017-07.htm";
 				break;
 		}
 		
@@ -146,7 +133,7 @@ public class Q644_GraveRobberAnnihilation extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItems(GOODS, 1, 120, 500000))
+		if (st.dropItems(ORC_GRAVE_GOODS, 1, 120, 500000))
 			st.set("cond", "2");
 		
 		return null;
@@ -154,6 +141,6 @@ public class Q644_GraveRobberAnnihilation extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q644_GraveRobberAnnihilation(644, qn, "Grave Robber Annihilation");
+		new Q644_GraveRobberAnnihilation();
 	}
 }

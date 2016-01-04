@@ -30,9 +30,9 @@ public class Q431_WeddingMarch extends Quest
 	// Reward
 	private static final int WEDDING_ECHO_CRYSTAL = 7062;
 	
-	public Q431_WeddingMarch(int questId, String name, String descr)
+	public Q431_WeddingMarch()
 	{
-		super(questId, name, descr);
+		super(431, qn, "Wedding March");
 		
 		setItemsIds(SILVER_CRYSTAL);
 		
@@ -52,8 +52,8 @@ public class Q431_WeddingMarch extends Quest
 		
 		if (event.equalsIgnoreCase("31042-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31042-05.htm"))
@@ -83,26 +83,15 @@ public class Q431_WeddingMarch extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 38)
-					htmltext = "31042-01.htm";
-				else
-				{
-					htmltext = "31042-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 38) ? "31042-00.htm" : "31042-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "31042-02.htm";
 				else if (cond == 2)
-				{
-					if (st.getQuestItemsCount(SILVER_CRYSTAL) < 50)
-						htmltext = "31042-03.htm";
-					else
-						htmltext = "31042-04.htm";
-				}
+					htmltext = (st.getQuestItemsCount(SILVER_CRYSTAL) < 50) ? "31042-03.htm" : "31042-04.htm";
 				break;
 		}
 		
@@ -118,7 +107,7 @@ public class Q431_WeddingMarch extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (st.dropItemsAlways(SILVER_CRYSTAL, 1, 50))
+		if (st.dropItems(SILVER_CRYSTAL, 1, 50, 500000))
 			st.set("cond", "2");
 		
 		return null;
@@ -126,6 +115,6 @@ public class Q431_WeddingMarch extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q431_WeddingMarch(431, qn, "Wedding March");
+		new Q431_WeddingMarch();
 	}
 }

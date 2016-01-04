@@ -42,12 +42,12 @@ public class Q660_AidingTheFloranVillage extends Quest
 	
 	// Rewards
 	private static final int ADENA = 57;
-	private static final int SCROLL_WEAPON = 955;
-	private static final int SCROLL_ARMOR = 956;
+	private static final int ENCHANT_WEAPON_D = 955;
+	private static final int ENCHANT_ARMOR_D = 956;
 	
-	public Q660_AidingTheFloranVillage(int questId, String name, String descr)
+	public Q660_AidingTheFloranVillage()
 	{
-		super(questId, name, descr);
+		super(660, qn, "Aiding the Floran Village");
 		
 		setItemsIds(WATCHING_EYES, LIZARDMEN_SCALE, GOLEM_SHARD);
 		
@@ -67,21 +67,18 @@ public class Q660_AidingTheFloranVillage extends Quest
 		
 		if (event.equalsIgnoreCase("30608-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30291-02.htm"))
 		{
 			if (player.getLevel() < 30)
-			{
 				htmltext = "30291-02a.htm";
-				st.exitQuest(true);
-			}
 			else
 			{
-				st.set("cond", "2");
 				st.setState(STATE_STARTED);
+				st.set("cond", "2");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 		}
@@ -92,10 +89,10 @@ public class Q660_AidingTheFloranVillage extends Quest
 				htmltext = "30291-05a.htm";
 			else
 			{
-				st.takeItems(WATCHING_EYES, -1);
-				st.takeItems(LIZARDMEN_SCALE, -1);
 				st.takeItems(GOLEM_SHARD, -1);
-				st.giveItems(ADENA, count * 100 + ((count >= 45) ? 9000 : 0));
+				st.takeItems(LIZARDMEN_SCALE, -1);
+				st.takeItems(WATCHING_EYES, -1);
+				st.rewardItems(ADENA, count * 100 + ((count >= 45) ? 9000 : 0));
 			}
 		}
 		else if (event.equalsIgnoreCase("30291-06.htm"))
@@ -110,11 +107,11 @@ public class Q660_AidingTheFloranVillage extends Quest
 			else
 			{
 				if (Rnd.get(10) < 8)
-					st.giveItems(ADENA, 1000);
+					st.rewardItems(ADENA, 1000);
 				else
 				{
-					st.giveItems(ADENA, 13000);
-					st.giveItems(SCROLL_ARMOR, 1);
+					st.rewardItems(ADENA, 13000);
+					st.rewardItems(ENCHANT_ARMOR_D, 1);
 				}
 			}
 		}
@@ -126,14 +123,14 @@ public class Q660_AidingTheFloranVillage extends Quest
 			{
 				final int luck = Rnd.get(15);
 				if (luck < 8)
-					st.giveItems(ADENA, 2000);
+					st.rewardItems(ADENA, 2000);
 				else if (luck < 12)
 				{
-					st.giveItems(ADENA, 20000);
-					st.giveItems(SCROLL_ARMOR, 1);
+					st.rewardItems(ADENA, 20000);
+					st.rewardItems(ENCHANT_ARMOR_D, 1);
 				}
 				else
-					st.giveItems(SCROLL_WEAPON, 1);
+					st.rewardItems(ENCHANT_WEAPON_D, 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("30291-13.htm"))
@@ -143,11 +140,11 @@ public class Q660_AidingTheFloranVillage extends Quest
 			else
 			{
 				if (Rnd.get(10) < 8)
-					st.giveItems(ADENA, 5000);
+					st.rewardItems(ADENA, 5000);
 				else
 				{
-					st.giveItems(ADENA, 45000);
-					st.giveItems(SCROLL_WEAPON, 1);
+					st.rewardItems(ADENA, 45000);
+					st.rewardItems(ENCHANT_WEAPON_D, 1);
 				}
 			}
 		}
@@ -160,7 +157,7 @@ public class Q660_AidingTheFloranVillage extends Quest
 				st.takeItems(WATCHING_EYES, -1);
 				st.takeItems(LIZARDMEN_SCALE, -1);
 				st.takeItems(GOLEM_SHARD, -1);
-				st.giveItems(ADENA, count * 100 + ((count >= 45) ? 9000 : 0));
+				st.rewardItems(ADENA, count * 100 + ((count >= 45) ? 9000 : 0));
 			}
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
@@ -183,13 +180,7 @@ public class Q660_AidingTheFloranVillage extends Quest
 				switch (npc.getNpcId())
 				{
 					case MARIA:
-						if (player.getLevel() < 30)
-						{
-							htmltext = "30608-01.htm";
-							st.exitQuest(true);
-						}
-						else
-							htmltext = "30608-02.htm";
+						htmltext = (player.getLevel() < 30) ? "30608-01.htm" : "30608-02.htm";
 						break;
 					
 					case ALEX:
@@ -206,7 +197,7 @@ public class Q660_AidingTheFloranVillage extends Quest
 						break;
 					
 					case ALEX:
-						int cond = st.getInt("cond");
+						final int cond = st.getInt("cond");
 						if (cond == 1)
 						{
 							htmltext = "30291-03.htm";
@@ -236,18 +227,18 @@ public class Q660_AidingTheFloranVillage extends Quest
 		{
 			case PLAIN_WATCHMAN:
 			case CURSED_SEER:
-				st.dropItems(WATCHING_EYES, 1, -1, 790000);
+				st.dropItems(WATCHING_EYES, 1, 0, 790000);
 				break;
 			
 			case ROCK_GOLEM:
-				st.dropItems(GOLEM_SHARD, 1, -1, 750000);
+				st.dropItems(GOLEM_SHARD, 1, 0, 750000);
 				break;
 			
 			case LIZARDMEN_SHAMAN:
 			case LIZARDMEN_SUPPLIER:
 			case LIZARDMEN_AGENT:
 			case LIZARDMEN_COMMANDER:
-				st.dropItems(LIZARDMEN_SCALE, 1, -1, 670000);
+				st.dropItems(LIZARDMEN_SCALE, 1, 0, 670000);
 				break;
 		}
 		
@@ -290,6 +281,6 @@ public class Q660_AidingTheFloranVillage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q660_AidingTheFloranVillage(660, qn, "Aiding the Floran Village");
+		new Q660_AidingTheFloranVillage();
 	}
 }

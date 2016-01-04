@@ -43,9 +43,9 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q610_MagicalPowerOfWater_Part2(int questId, String name, String descr)
+	public Q610_MagicalPowerOfWater_Part2()
 	{
-		super(questId, name, descr);
+		super(610, qn, "Magical Power of Water - Part 2");
 		
 		setItemsIds(ICE_HEART_OF_ASHUTAR);
 		
@@ -97,8 +97,8 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 		{
 			if (st.hasQuestItems(GREEN_TOTEM))
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 			else
@@ -125,9 +125,9 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 				{
 					if (spawnRaid())
 					{
-						st.takeItems(GREEN_TOTEM, 1);
 						st.set("cond", "2");
 						st.playSound(QuestState.SOUND_MIDDLE);
+						st.takeItems(GREEN_TOTEM, 1);
 					}
 				}
 				else
@@ -152,28 +152,19 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 		{
 			case STATE_CREATED:
 				if (!st.hasQuestItems(GREEN_TOTEM))
-				{
 					htmltext = "31372-02.htm";
-					st.exitQuest(true);
-				}
 				else if (player.getLevel() < 75 && player.getAllianceWithVarkaKetra() < 2)
-				{
 					htmltext = "31372-03.htm";
-					st.exitQuest(true);
-				}
 				else
 					htmltext = "31372-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case ASEFA:
-						if (cond == 1 || cond == 2)
-							htmltext = "31372-05.htm";
-						else
-							htmltext = "31372-06.htm";
+						htmltext = (cond < 3) ? "31372-05.htm" : "31372-06.htm";
 						break;
 					
 					case VARKAS_HOLY_ALTAR:
@@ -202,9 +193,9 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 		for (L2PcInstance partyMember : getPartyMembers(player, npc, "cond", "2"))
 		{
 			QuestState st = partyMember.getQuestState(qn);
-			st.giveItems(ICE_HEART_OF_ASHUTAR, 1);
 			st.set("cond", "3");
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(ICE_HEART_OF_ASHUTAR, 1);
 		}
 		
 		// despawn raid (reset info)
@@ -267,6 +258,6 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q610_MagicalPowerOfWater_Part2(610, qn, "Magical Power of Water - Part 2");
+		new Q610_MagicalPowerOfWater_Part2();
 	}
 }

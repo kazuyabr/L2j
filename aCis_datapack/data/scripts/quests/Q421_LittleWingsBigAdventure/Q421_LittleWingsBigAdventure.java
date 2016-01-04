@@ -46,9 +46,9 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	// Item
 	private static final int FAIRY_LEAF = 4325;
 	
-	public Q421_LittleWingsBigAdventure(int questId, String name, String descr)
+	public Q421_LittleWingsBigAdventure()
 	{
-		super(questId, name, descr);
+		super(421, qn, "Little Wing's Big Adventure");
 		
 		setItemsIds(FAIRY_LEAF);
 		
@@ -105,8 +105,8 @@ public class Q421_LittleWingsBigAdventure extends Quest
 			{
 				st.set("cond", "2");
 				st.set("iCond", "3");
-				st.giveItems(FAIRY_LEAF, 4);
 				st.playSound(QuestState.SOUND_MIDDLE);
+				st.giveItems(FAIRY_LEAF, 4);
 			}
 		}
 		
@@ -126,29 +126,23 @@ public class Q421_LittleWingsBigAdventure extends Quest
 			case STATE_CREATED:
 				// Wrong level.
 				if (player.getLevel() < 45)
-				{
-					st.exitQuest(true);
-					return "30610-01.htm";
-				}
-				
+					htmltext = "30610-01.htm";
 				// Got more than one flute, or none.
-				if (st.getQuestItemsCount(3500) + st.getQuestItemsCount(3501) + st.getQuestItemsCount(3502) != 1)
+				else if (st.getQuestItemsCount(3500) + st.getQuestItemsCount(3501) + st.getQuestItemsCount(3502) != 1)
+					htmltext = "30610-02.htm";
+				else
 				{
-					st.exitQuest(true);
-					return "30610-02.htm";
+					// Find the level of the hatchling.
+					for (int i = 3500; i < 3503; i++)
+					{
+						final ItemInstance item = player.getInventory().getItemByItemId(i);
+						if (item != null && item.getEnchantLevel() >= 55)
+							return "30610-04.htm";
+					}
+					
+					// Invalid level.
+					htmltext = "30610-03.htm";
 				}
-				
-				// Find the level of the hatchling.
-				for (int i = 3500; i < 3503; i++)
-				{
-					final ItemInstance item = player.getInventory().getItemByItemId(i);
-					if (item != null && item.getEnchantLevel() >= 55)
-						return "30610-04.htm";
-				}
-				
-				// Invalid level.
-				htmltext = "30610-03.htm";
-				st.exitQuest(true);
 				break;
 			
 			case STATE_STARTED:
@@ -162,8 +156,8 @@ public class Q421_LittleWingsBigAdventure extends Quest
 						final int id = st.getInt("iCond");
 						if (id == 1)
 						{
-							st.set("iCond", "2");
 							htmltext = "30747-01.htm";
+							st.set("iCond", "2");
 						}
 						else if (id == 2)
 						{
@@ -183,8 +177,8 @@ public class Q421_LittleWingsBigAdventure extends Quest
 							if (summon.getControlItemId() != st.getInt("summonOid"))
 								return "30747-14.htm";
 							
-							st.set("iCond", "100");
 							htmltext = "30747-13.htm";
+							st.set("iCond", "100");
 						}
 						else if (id == 100) // Spoke with the Fairy.
 						{
@@ -279,7 +273,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 		final L2Character originalKiller = isPet ? killer.getPet() : killer;
 		
 		// Tree curses the killer.
-		if (Rnd.nextBoolean())
+		if (Rnd.get(100) < 30)
 		{
 			if (originalKiller != null)
 			{
@@ -292,7 +286,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 		// Spawn 20 ghosts, attacking the killer.
 		for (int i = 0; i < 20; i++)
 		{
-			final L2Attackable newNpc = (L2Attackable) addSpawn(27189, npc, true, 60000, false);
+			final L2Attackable newNpc = (L2Attackable) addSpawn(27189, npc, true, 300000, false);
 			
 			newNpc.setRunning();
 			newNpc.addDamageHate(originalKiller, 0, 999);
@@ -304,6 +298,6 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q421_LittleWingsBigAdventure(421, qn, "Little Wing's Big Adventure");
+		new Q421_LittleWingsBigAdventure();
 	}
 }

@@ -23,8 +23,8 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 	private static final String qn = "Q622_SpecialtyLiquorDelivery";
 	
 	// Items
-	private static final int DRINK = 7197;
-	private static final int FEE = 7198;
+	private static final int SPECIAL_DRINK = 7197;
+	private static final int FEE_OF_SPECIAL_DRINK = 7198;
 	
 	// NPCs
 	private static final int JEREMY = 31521;
@@ -37,7 +37,7 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 	
 	// Rewards
 	private static final int ADENA = 57;
-	private static final int HASTE_POT = 1062;
+	private static final int HASTE_POTION = 1062;
 	private static final int[] RECIPES =
 	{
 		6847,
@@ -45,11 +45,11 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 		6851
 	};
 	
-	public Q622_SpecialtyLiquorDelivery(int questId, String name, String descr)
+	public Q622_SpecialtyLiquorDelivery()
 	{
-		super(questId, name, descr);
+		super(622, qn, "Specialty Liquor Delivery");
 		
-		setItemsIds(DRINK, FEE);
+		setItemsIds(SPECIAL_DRINK, FEE_OF_SPECIAL_DRINK);
 		
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY, PULIN, NAFF, CROCUS, KUBER, BEOLIN, LIETTA);
@@ -65,51 +65,51 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 		
 		if (event.equalsIgnoreCase("31521-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
-			st.giveItems(DRINK, 5);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
+			st.giveItems(SPECIAL_DRINK, 5);
 		}
 		else if (event.equalsIgnoreCase("31547-02.htm"))
 		{
 			st.set("cond", "2");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(DRINK, 1);
-			st.giveItems(FEE, 1);
+			st.takeItems(SPECIAL_DRINK, 1);
+			st.giveItems(FEE_OF_SPECIAL_DRINK, 1);
 		}
 		else if (event.equalsIgnoreCase("31546-02.htm"))
 		{
 			st.set("cond", "3");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(DRINK, 1);
-			st.giveItems(FEE, 1);
+			st.takeItems(SPECIAL_DRINK, 1);
+			st.giveItems(FEE_OF_SPECIAL_DRINK, 1);
 		}
 		else if (event.equalsIgnoreCase("31545-02.htm"))
 		{
 			st.set("cond", "4");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(DRINK, 1);
-			st.giveItems(FEE, 1);
+			st.takeItems(SPECIAL_DRINK, 1);
+			st.giveItems(FEE_OF_SPECIAL_DRINK, 1);
 		}
 		else if (event.equalsIgnoreCase("31544-02.htm"))
 		{
 			st.set("cond", "5");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(DRINK, 1);
-			st.giveItems(FEE, 1);
+			st.takeItems(SPECIAL_DRINK, 1);
+			st.giveItems(FEE_OF_SPECIAL_DRINK, 1);
 		}
 		else if (event.equalsIgnoreCase("31543-02.htm"))
 		{
 			st.set("cond", "6");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(DRINK, 1);
-			st.giveItems(FEE, 1);
+			st.takeItems(SPECIAL_DRINK, 1);
+			st.giveItems(FEE_OF_SPECIAL_DRINK, 1);
 		}
 		else if (event.equalsIgnoreCase("31521-06.htm"))
 		{
 			st.set("cond", "7");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(FEE, 5);
+			st.takeItems(FEE_OF_SPECIAL_DRINK, 5);
 		}
 		else if (event.equalsIgnoreCase("31267-02.htm"))
 		{
@@ -118,7 +118,7 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 			else
 			{
 				st.rewardItems(ADENA, 18800);
-				st.rewardItems(HASTE_POT, 1);
+				st.rewardItems(HASTE_POTION, 1);
 			}
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
@@ -138,21 +138,15 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 68)
-					htmltext = "31521-01.htm";
-				else
-				{
-					htmltext = "31521-03.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 68) ? "31521-03.htm" : "31521-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case JEREMY:
-						if (cond >= 1 && cond <= 5)
+						if (cond < 6)
 							htmltext = "31521-04.htm";
 						else if (cond == 6)
 							htmltext = "31521-05.htm";
@@ -161,37 +155,37 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 						break;
 					
 					case BEOLIN:
-						if (cond == 1 && st.getQuestItemsCount(DRINK) == 5)
+						if (cond == 1 && st.getQuestItemsCount(SPECIAL_DRINK) == 5)
 							htmltext = "31547-01.htm";
-						else if (cond >= 2)
+						else if (cond > 1)
 							htmltext = "31547-03.htm";
 						break;
 					
 					case KUBER:
-						if (cond == 2 && st.getQuestItemsCount(DRINK) == 4)
+						if (cond == 2 && st.getQuestItemsCount(SPECIAL_DRINK) == 4)
 							htmltext = "31546-01.htm";
-						else if (cond >= 3)
+						else if (cond > 2)
 							htmltext = "31546-03.htm";
 						break;
 					
 					case CROCUS:
-						if (cond == 3 && st.getQuestItemsCount(DRINK) == 3)
+						if (cond == 3 && st.getQuestItemsCount(SPECIAL_DRINK) == 3)
 							htmltext = "31545-01.htm";
-						else if (cond >= 4)
+						else if (cond > 3)
 							htmltext = "31545-03.htm";
 						break;
 					
 					case NAFF:
-						if (cond == 4 && st.getQuestItemsCount(DRINK) == 2)
+						if (cond == 4 && st.getQuestItemsCount(SPECIAL_DRINK) == 2)
 							htmltext = "31544-01.htm";
-						else if (cond >= 5)
+						else if (cond > 4)
 							htmltext = "31544-03.htm";
 						break;
 					
 					case PULIN:
-						if (cond == 5 && st.getQuestItemsCount(DRINK) == 1)
+						if (cond == 5 && st.getQuestItemsCount(SPECIAL_DRINK) == 1)
 							htmltext = "31543-01.htm";
-						else if (cond >= 6)
+						else if (cond > 5)
 							htmltext = "31543-03.htm";
 						break;
 					
@@ -207,6 +201,6 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q622_SpecialtyLiquorDelivery(622, qn, "Specialty Liquor Delivery");
+		new Q622_SpecialtyLiquorDelivery();
 	}
 }

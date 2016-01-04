@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 {
@@ -33,14 +32,15 @@ public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 	private static final int BABBLING_WIND = 21024;
 	private static final int GIGGLING_WIND = 21025;
 	
-	public Q659_IdRatherBeCollectingFairyBreath(int questId, String name, String descr)
+	public Q659_IdRatherBeCollectingFairyBreath()
 	{
-		super(questId, name, descr);
+		super(659, qn, "I'd Rather Be Collecting Fairy Breath");
 		
 		setItemsIds(FAIRY_BREATH);
 		
 		addStartNpc(GALATEA);
 		addTalkId(GALATEA);
+		
 		addKillId(GIGGLING_WIND, BABBLING_WIND, SOBBING_WIND);
 	}
 	
@@ -54,13 +54,13 @@ public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 		
 		if (event.equalsIgnoreCase("30634-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30634-06.htm"))
 		{
-			int count = st.getQuestItemsCount(FAIRY_BREATH);
+			final int count = st.getQuestItemsCount(FAIRY_BREATH);
 			if (count > 0)
 			{
 				st.takeItems(FAIRY_BREATH, count);
@@ -87,22 +87,14 @@ public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 26)
-					htmltext = "30634-02.htm";
-				else
-				{
-					htmltext = "30634-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 26) ? "30634-01.htm" : "30634-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (!st.hasQuestItems(FAIRY_BREATH))
-					htmltext = "30634-04.htm";
-				else
-					htmltext = "30634-05.htm";
+				htmltext = (!st.hasQuestItems(FAIRY_BREATH)) ? "30634-04.htm" : "30634-05.htm";
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -113,17 +105,13 @@ public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 90)
-		{
-			st.giveItems(FAIRY_BREATH, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(FAIRY_BREATH, 1, 0, 900000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q659_IdRatherBeCollectingFairyBreath(659, qn, "I'd Rather Be Collecting Fairy Breath");
+		new Q659_IdRatherBeCollectingFairyBreath();
 	}
 }

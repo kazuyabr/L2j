@@ -23,9 +23,9 @@ public class Q623_TheFinestFood extends Quest
 	private static final String qn = "Q623_TheFinestFood";
 	
 	// Items
-	private static final int LEAF = 7199;
-	private static final int MEAT = 7200;
-	private static final int HORN = 7201;
+	private static final int LEAF_OF_FLAVA = 7199;
+	private static final int BUFFALO_MEAT = 7200;
+	private static final int ANTELOPE_HORN = 7201;
 	
 	// NPC
 	private static final int JEREMY = 31521;
@@ -35,11 +35,11 @@ public class Q623_TheFinestFood extends Quest
 	private static final int BUFFALO = 21315;
 	private static final int ANTELOPE = 21318;
 	
-	public Q623_TheFinestFood(int questId, String name, String descr)
+	public Q623_TheFinestFood()
 	{
-		super(questId, name, descr);
+		super(623, qn, "The Finest Food");
 		
-		setItemsIds(LEAF, MEAT, HORN);
+		setItemsIds(LEAF_OF_FLAVA, BUFFALO_MEAT, ANTELOPE_HORN);
 		
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY);
@@ -59,8 +59,8 @@ public class Q623_TheFinestFood extends Quest
 		{
 			if (player.getLevel() >= 71)
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 			else
@@ -68,9 +68,9 @@ public class Q623_TheFinestFood extends Quest
 		}
 		else if (event.equalsIgnoreCase("31521-05.htm"))
 		{
-			st.takeItems(LEAF, -1);
-			st.takeItems(MEAT, -1);
-			st.takeItems(HORN, -1);
+			st.takeItems(LEAF_OF_FLAVA, -1);
+			st.takeItems(BUFFALO_MEAT, -1);
+			st.takeItems(ANTELOPE_HORN, -1);
 			
 			int luck = Rnd.get(100);
 			if (luck < 11)
@@ -116,18 +116,19 @@ public class Q623_TheFinestFood extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "31521-06.htm";
 				else if (cond == 2)
 				{
-					if (st.getQuestItemsCount(LEAF) >= 100 && st.getQuestItemsCount(MEAT) >= 100 && st.getQuestItemsCount(HORN) >= 100)
+					if (st.getQuestItemsCount(LEAF_OF_FLAVA) >= 100 && st.getQuestItemsCount(BUFFALO_MEAT) >= 100 && st.getQuestItemsCount(ANTELOPE_HORN) >= 100)
 						htmltext = "31521-04.htm";
 					else
 						htmltext = "31521-07.htm";
 				}
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -140,52 +141,22 @@ public class Q623_TheFinestFood extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (Rnd.get(100) < 66)
+		switch (npc.getNpcId())
 		{
-			switch (npc.getNpcId())
-			{
-				case FLAVA:
-					if (st.getQuestItemsCount(LEAF) < 100)
-					{
-						st.giveItems(LEAF, 1);
-						if (st.getQuestItemsCount(LEAF) >= 100 && st.getQuestItemsCount(MEAT) >= 100 && st.getQuestItemsCount(HORN) >= 100)
-						{
-							st.set("cond", "2");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
-							st.playSound(QuestState.SOUND_ITEMGET);
-					}
-					break;
-				
-				case BUFFALO:
-					if (st.getQuestItemsCount(MEAT) < 100)
-					{
-						st.giveItems(MEAT, 1);
-						if (st.getQuestItemsCount(LEAF) >= 100 && st.getQuestItemsCount(MEAT) >= 100 && st.getQuestItemsCount(HORN) >= 100)
-						{
-							st.set("cond", "2");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
-							st.playSound(QuestState.SOUND_ITEMGET);
-					}
-					break;
-				
-				case ANTELOPE:
-					if (st.getQuestItemsCount(HORN) < 100)
-					{
-						st.giveItems(HORN, 1);
-						if (st.getQuestItemsCount(LEAF) >= 100 && st.getQuestItemsCount(MEAT) >= 100 && st.getQuestItemsCount(HORN) >= 100)
-						{
-							st.set("cond", "2");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
-							st.playSound(QuestState.SOUND_ITEMGET);
-					}
-					break;
-			}
+			case FLAVA:
+				if (st.dropItemsAlways(LEAF_OF_FLAVA, 1, 100) && st.getQuestItemsCount(BUFFALO_MEAT) >= 100 && st.getQuestItemsCount(ANTELOPE_HORN) >= 100)
+					st.set("cond", "2");
+				break;
+			
+			case BUFFALO:
+				if (st.dropItemsAlways(BUFFALO_MEAT, 1, 100) && st.getQuestItemsCount(LEAF_OF_FLAVA) >= 100 && st.getQuestItemsCount(ANTELOPE_HORN) >= 100)
+					st.set("cond", "2");
+				break;
+			
+			case ANTELOPE:
+				if (st.dropItemsAlways(ANTELOPE_HORN, 1, 100) && st.getQuestItemsCount(LEAF_OF_FLAVA) >= 100 && st.getQuestItemsCount(BUFFALO_MEAT) >= 100)
+					st.set("cond", "2");
+				break;
 		}
 		
 		return null;
@@ -193,6 +164,6 @@ public class Q623_TheFinestFood extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q623_TheFinestFood(623, qn, "The Finest Food");
+		new Q623_TheFinestFood();
 	}
 }

@@ -22,15 +22,15 @@ public class Q608_SlayTheEnemyCommander extends Quest
 	private static final String qn = "Q608_SlayTheEnemyCommander";
 	
 	// Quest Items
-	private static final int Mos_Head = 7236;
-	private static final int Wisdom_Totem = 7220;
-	private static final int Ketra_Alliance_Four = 7214;
+	private static final int HEAD_OF_MOS = 7236;
+	private static final int TOTEM_OF_WISDOM = 7220;
+	private static final int KETRA_ALLIANCE_4 = 7214;
 	
-	public Q608_SlayTheEnemyCommander(int questId, String name, String descr)
+	public Q608_SlayTheEnemyCommander()
 	{
-		super(questId, name, descr);
+		super(608, qn, "Slay the enemy commander!");
 		
-		setItemsIds(Mos_Head);
+		setItemsIds(HEAD_OF_MOS);
 		
 		addStartNpc(31370); // Kadun Zu Ketra
 		addTalkId(31370);
@@ -48,32 +48,16 @@ public class Q608_SlayTheEnemyCommander extends Quest
 		
 		if (event.equalsIgnoreCase("31370-04.htm"))
 		{
-			if (player.getAllianceWithVarkaKetra() >= 4 && st.getQuestItemsCount(Ketra_Alliance_Four) > 0 && st.getQuestItemsCount(Wisdom_Totem) == 0)
-			{
-				if (player.getLevel() >= 75)
-				{
-					st.set("cond", "1");
-					st.setState(STATE_STARTED);
-					st.playSound(QuestState.SOUND_ACCEPT);
-				}
-				else
-				{
-					htmltext = "31370-03.htm";
-					st.exitQuest(true);
-				}
-			}
-			else
-			{
-				htmltext = "31370-02.htm";
-				st.exitQuest(true);
-			}
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31370-07.htm"))
 		{
-			if (st.getQuestItemsCount(Mos_Head) == 1)
+			if (st.hasQuestItems(HEAD_OF_MOS))
 			{
-				st.takeItems(Mos_Head, -1);
-				st.giveItems(Wisdom_Totem, 1);
+				st.takeItems(HEAD_OF_MOS, -1);
+				st.giveItems(TOTEM_OF_WISDOM, 1);
 				st.rewardExpAndSp(10000, 0);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
@@ -100,14 +84,19 @@ public class Q608_SlayTheEnemyCommander extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = "31370-01.htm";
+				if (player.getLevel() >= 75)
+				{
+					if (player.getAllianceWithVarkaKetra() >= 4 && st.hasQuestItems(KETRA_ALLIANCE_4) && !st.hasQuestItems(TOTEM_OF_WISDOM))
+						htmltext = "31370-01.htm";
+					else
+						htmltext = "31370-02.htm";
+				}
+				else
+					htmltext = "31370-03.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(Mos_Head) > 0)
-					htmltext = "31370-05.htm";
-				else
-					htmltext = "31370-06.htm";
+				htmltext = (st.hasQuestItems(HEAD_OF_MOS)) ? "31370-05.htm" : "31370-06.htm";
 				break;
 		}
 		
@@ -122,11 +111,11 @@ public class Q608_SlayTheEnemyCommander extends Quest
 			if (partyMember.getAllianceWithVarkaKetra() >= 4)
 			{
 				QuestState st = partyMember.getQuestState(qn);
-				if (st.hasQuestItems(Ketra_Alliance_Four))
+				if (st.hasQuestItems(KETRA_ALLIANCE_4))
 				{
 					st.set("cond", "2");
-					st.giveItems(Mos_Head, 1);
 					st.playSound(QuestState.SOUND_MIDDLE);
+					st.giveItems(HEAD_OF_MOS, 1);
 				}
 			}
 		}
@@ -136,6 +125,6 @@ public class Q608_SlayTheEnemyCommander extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q608_SlayTheEnemyCommander(608, qn, "Slay the enemy commander!");
+		new Q608_SlayTheEnemyCommander();
 	}
 }

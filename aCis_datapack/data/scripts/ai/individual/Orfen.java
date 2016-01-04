@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.model.SpawnLocation;
 import net.sf.l2j.gameserver.model.actor.L2Attackable;
 import net.sf.l2j.gameserver.model.actor.L2Character;
 import net.sf.l2j.gameserver.model.actor.L2Npc;
@@ -40,33 +41,17 @@ import net.sf.l2j.util.Rnd;
  */
 public class Orfen extends AbstractNpcAI
 {
-	private static final L2BossZone _orfenLair = GrandBossManager.getInstance().getZoneById(110013);
+	private static final L2BossZone ORFEN_LAIR = GrandBossManager.getInstance().getZoneById(110013);
 	
-	private static final int[][] Pos =
+	private static final SpawnLocation[] ORFEN_LOCATION =
 	{
-		{
-			43728,
-			17220,
-			-4342
-		},
-		{
-			55024,
-			17368,
-			-5412
-		},
-		{
-			53504,
-			21248,
-			-5486
-		},
-		{
-			53248,
-			24576,
-			-5262
-		}
+		new SpawnLocation(43728, 17220, -4342, 0),
+		new SpawnLocation(55024, 17368, -5412, 0),
+		new SpawnLocation(53504, 21248, -5486, 0),
+		new SpawnLocation(53248, 24576, -5262, 0)
 	};
 	
-	private static final String[] Text =
+	private static final String[] ORFEN_CHAT =
 	{
 		"$s1. Stop kidding yourself about your own powerlessness!",
 		"$s1. I'll make you feel what true fear is!",
@@ -81,8 +66,8 @@ public class Orfen extends AbstractNpcAI
 	private static final byte ALIVE = 0;
 	private static final byte DEAD = 1;
 	
-	private static long _LastAttackVsOrfenTime = 0;
-	private static boolean _IsTeleported;
+	private static long _lastAttackTime = 0;
+	private static boolean _isTeleported;
 	private static int _currentIndex;
 	
 	public Orfen(String name, String descr)
@@ -94,7 +79,7 @@ public class Orfen extends AbstractNpcAI
 		addFactionCallId(RAIKEL_LEOS, RIBA_IREN);
 		addSkillSeeId(ORFEN);
 		
-		_IsTeleported = false;
+		_isTeleported = false;
 		
 		final StatsSet info = GrandBossManager.getInstance().getStatsSet(ORFEN);
 		final int status = GrandBossManager.getInstance().getBossStatus(ORFEN);
@@ -113,7 +98,7 @@ public class Orfen extends AbstractNpcAI
 				// The time has already expired while the server was offline. Spawn Orfen in a random place.
 				_currentIndex = Rnd.get(1, 3);
 				
-				final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, Pos[_currentIndex][0], Pos[_currentIndex][1], Pos[_currentIndex][2], 0, false, 0, false);
+				final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, ORFEN_LOCATION[_currentIndex], false, 0, false);
 				GrandBossManager.getInstance().setBossStatus(ORFEN, ALIVE);
 				spawnBoss(orfen);
 			}
@@ -140,14 +125,14 @@ public class Orfen extends AbstractNpcAI
 		{
 			_currentIndex = Rnd.get(1, 3);
 			
-			final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, Pos[_currentIndex][0], Pos[_currentIndex][1], Pos[_currentIndex][2], 0, false, 0, false);
+			final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, ORFEN_LOCATION[_currentIndex], false, 0, false);
 			GrandBossManager.getInstance().setBossStatus(ORFEN, ALIVE);
 			spawnBoss(orfen);
 		}
 		else if (event.equalsIgnoreCase("check_orfen_pos"))
 		{
 			// 30 minutes are gone without any hit ; Orfen will move to another location.
-			if (_LastAttackVsOrfenTime + 1800000 < System.currentTimeMillis())
+			if (_lastAttackTime + 1800000 < System.currentTimeMillis())
 			{
 				// Generates a number until it is different of _currentIndex (avoid to spawn in same place 2 times).
 				int index = _currentIndex;
@@ -158,16 +143,16 @@ public class Orfen extends AbstractNpcAI
 				_currentIndex = index;
 				
 				// Set the teleport flag to false
-				_IsTeleported = false;
+				_isTeleported = false;
 				
 				// Reinitialize the timer.
-				_LastAttackVsOrfenTime = System.currentTimeMillis();
+				_lastAttackTime = System.currentTimeMillis();
 				
-				goTo(npc, _currentIndex);
+				goTo(npc, ORFEN_LOCATION[_currentIndex]);
 			}
 			// Orfen already ported once and is lured out of her lair ; teleport her back.
-			else if (_IsTeleported && !_orfenLair.isInsideZone(npc))
-				goTo(npc, 0);
+			else if (_isTeleported && !ORFEN_LAIR.isInsideZone(npc))
+				goTo(npc, ORFEN_LOCATION[0]);
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
@@ -178,7 +163,7 @@ public class Orfen extends AbstractNpcAI
 		L2Character originalCaster = isPet ? caster.getPet() : caster;
 		if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
 		{
-			npc.broadcastNpcSay(Text[Rnd.get(4)].replace("$s1", caster.getName()));
+			npc.broadcastNpcSay(ORFEN_CHAT[Rnd.get(4)].replace("$s1", caster.getName()));
 			originalCaster.teleToLocation(npc.getX(), npc.getY(), npc.getZ(), 0);
 			npc.setTarget(originalCaster);
 			npc.doCast(SkillTable.getInstance().getInfo(4064, 1));
@@ -221,16 +206,16 @@ public class Orfen extends AbstractNpcAI
 		if (npc.getNpcId() == ORFEN)
 		{
 			// update a variable with the last action against Orfen.
-			_LastAttackVsOrfenTime = System.currentTimeMillis();
+			_lastAttackTime = System.currentTimeMillis();
 			
-			if (!_IsTeleported && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2))
+			if (!_isTeleported && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2))
 			{
-				_IsTeleported = true;
-				goTo(npc, 0);
+				_isTeleported = true;
+				goTo(npc, ORFEN_LOCATION[0]);
 			}
 			else if (npc.isInsideRadius(attacker, 1000, false, false) && !npc.isInsideRadius(attacker, 300, false, false) && Rnd.get(10) == 0)
 			{
-				npc.broadcastNpcSay(Text[Rnd.get(3)].replace("$s1", attacker.getName()));
+				npc.broadcastNpcSay(ORFEN_CHAT[Rnd.get(3)].replace("$s1", attacker.getName()));
 				attacker.teleToLocation(npc.getX(), npc.getY(), npc.getZ(), 0);
 				npc.setTarget(attacker);
 				npc.doCast(SkillTable.getInstance().getInfo(4064, 1));
@@ -271,24 +256,24 @@ public class Orfen extends AbstractNpcAI
 	/**
 	 * This method is used by Orfen in order to move from one location to another.<br>
 	 * Index 0 means a direct teleport to her lair (case where her HPs <= 50%).
-	 * @param npc Orfen in any case.
-	 * @param index 0 for her lair (teleport) or 1-3 (walking through desert).
+	 * @param npc : Orfen in any case.
+	 * @param index : 0 for her lair (teleport) or 1-3 (walking through desert).
 	 */
-	private static void goTo(L2Npc npc, int index)
+	private static void goTo(L2Npc npc, SpawnLocation index)
 	{
 		((L2Attackable) npc).clearAggroList();
 		npc.getAI().setIntention(CtrlIntention.IDLE, null, null);
 		
 		// Edit the spawn location in case server crashes.
 		L2Spawn spawn = npc.getSpawn();
-		spawn.setLocx(Pos[index][0]);
-		spawn.setLocy(Pos[index][1]);
-		spawn.setLocz(Pos[index][2]);
+		spawn.setLocx(index.getX());
+		spawn.setLocy(index.getY());
+		spawn.setLocz(index.getZ());
 		
-		if (index == 0)
-			npc.teleToLocation(Pos[index][0], Pos[index][1], Pos[index][2], 0);
+		if (index.getX() == 43728) // Hack !
+			npc.teleToLocation(index.getX(), index.getY(), index.getZ(), 0);
 		else
-			npc.getAI().setIntention(CtrlIntention.MOVE_TO, new L2CharPosition(Pos[index][0], Pos[index][1], Pos[index][2], 0));
+			npc.getAI().setIntention(CtrlIntention.MOVE_TO, new L2CharPosition(index.getX(), index.getY(), index.getZ(), 0));
 	}
 	
 	private void spawnBoss(L2GrandBossInstance npc)
@@ -298,7 +283,7 @@ public class Orfen extends AbstractNpcAI
 		startQuestTimer("check_orfen_pos", 60000, npc, null, true);
 		
 		// start monitoring Orfen's inactivity
-		_LastAttackVsOrfenTime = System.currentTimeMillis();
+		_lastAttackTime = System.currentTimeMillis();
 	}
 	
 	public static void main(String[] args)

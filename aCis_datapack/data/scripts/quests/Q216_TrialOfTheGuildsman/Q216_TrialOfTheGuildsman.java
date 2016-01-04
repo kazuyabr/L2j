@@ -365,7 +365,7 @@ public class Q216_TrialOfTheGuildsman extends Quest
 				if (st.hasQuestItems(PINTER_INSTRUCTIONS))
 				{
 					// Different cases if player is a wannabe BH or WS.
-					if (st.dropItemsAlways(AMBER_BEAD, (player.getClassId() == ClassId.scavenger && npc.getIsSpoiledBy() == player.getObjectId()) ? 10 : 5, 70))
+					if (st.dropItemsAlways(AMBER_BEAD, (player.getClassId() == ClassId.scavenger && npc.getSpoilerId() == player.getObjectId()) ? 10 : 5, 70))
 						if (player.getClassId() == ClassId.artisan && Rnd.nextBoolean())
 							st.giveItems(AMBER_LUMP, 1);
 				}

@@ -32,9 +32,9 @@ public class Q618_IntoTheFlame extends Quest
 	// Reward
 	private static final int FLOATING_STONE = 7267;
 	
-	public Q618_IntoTheFlame(int questId, String name, String descr)
+	public Q618_IntoTheFlame()
 	{
-		super(questId, name, descr);
+		super(618, qn, "Into The Flame");
 		
 		setItemsIds(VACUALITE_ORE, VACUALITE);
 		
@@ -53,8 +53,7 @@ public class Q618_IntoTheFlame extends Quest
 		if (st == null)
 			return htmltext;
 		
-		int cond = st.getInt("cond");
-		if (cond == 0 && event.equalsIgnoreCase("31540-03.htm"))
+		if (event.equalsIgnoreCase("31540-03.htm"))
 		{
 			st.setState(STATE_STARTED);
 			st.set("cond", "1");
@@ -62,33 +61,24 @@ public class Q618_IntoTheFlame extends Quest
 		}
 		else if (event.equalsIgnoreCase("31540-05.htm"))
 		{
-			if (cond == 4 && st.getQuestItemsCount(VACUALITE) > 0)
-			{
-				st.takeItems(VACUALITE, 1);
-				st.giveItems(FLOATING_STONE, 1);
-				st.playSound(QuestState.SOUND_FINISH);
-				st.exitQuest(true);
-			}
-			else
-				htmltext = "31540-03.htm";
+			st.takeItems(VACUALITE, 1);
+			st.giveItems(FLOATING_STONE, 1);
+			st.playSound(QuestState.SOUND_FINISH);
+			st.exitQuest(true);
 		}
-		else if (cond == 1 && event.equalsIgnoreCase("31271-02.htm"))
+		else if (event.equalsIgnoreCase("31271-02.htm"))
 		{
 			st.set("cond", "2");
 			st.playSound(QuestState.SOUND_MIDDLE);
 		}
 		else if (event.equalsIgnoreCase("31271-05.htm"))
 		{
-			if (cond == 3 && st.getQuestItemsCount(VACUALITE_ORE) == 50)
-			{
-				st.takeItems(VACUALITE_ORE, -1);
-				st.giveItems(VACUALITE, 1);
-				st.set("cond", "4");
-				st.playSound(QuestState.SOUND_MIDDLE);
-			}
-			else
-				htmltext = "31271-03.htm";
+			st.set("cond", "4");
+			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(VACUALITE_ORE, -1);
+			st.giveItems(VACUALITE, 1);
 		}
+		
 		return htmltext;
 	}
 	
@@ -103,39 +93,31 @@ public class Q618_IntoTheFlame extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 60)
-				{
-					htmltext = "31540-01.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "31540-02.htm";
+				htmltext = (player.getLevel() < 60) ? "31540-01.htm" : "31540-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case KLEIN:
-						if (cond == 4 && st.getQuestItemsCount(VACUALITE) > 0)
-							htmltext = "31540-04.htm";
-						else
-							htmltext = "31540-03.htm";
+						htmltext = (cond == 4) ? "31540-04.htm" : "31540-03.htm";
 						break;
 					
 					case HILDA:
 						if (cond == 1)
 							htmltext = "31271-01.htm";
-						else if (cond == 3 && st.getQuestItemsCount(VACUALITE_ORE) == 50)
+						else if (cond == 2)
+							htmltext = "31271-03.htm";
+						else if (cond == 3)
 							htmltext = "31271-04.htm";
 						else if (cond == 4)
 							htmltext = "31271-06.htm";
-						else
-							htmltext = "31271-03.htm";
 						break;
 				}
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -156,6 +138,6 @@ public class Q618_IntoTheFlame extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q618_IntoTheFlame(618, qn, "Into The Flame");
+		new Q618_IntoTheFlame();
 	}
 }

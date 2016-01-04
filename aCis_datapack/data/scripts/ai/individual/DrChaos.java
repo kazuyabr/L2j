@@ -48,7 +48,7 @@ public class DrChaos extends AbstractNpcAI
 	private static final byte CRAZY = 1; // Dr. Chaos entered on golem form.
 	private static final byte DEAD = 2; // Dr. Chaos has been killed and has not yet spawned.
 	
-	private long _lastAttackVsGolem = 0;
+	private long _lastAttackTime = 0;
 	private int _pissedOffTimer;
 	
 	public DrChaos(String name, String descr)
@@ -97,7 +97,7 @@ public class DrChaos extends AbstractNpcAI
 			_golem.setRunning();
 			
 			// start monitoring Dr. Chaos's inactivity
-			_lastAttackVsGolem = System.currentTimeMillis();
+			_lastAttackTime = System.currentTimeMillis();
 			startQuestTimer("golem_despawn", 60000, _golem, null, true);
 		}
 		// Spawn the regular NPC.
@@ -118,7 +118,7 @@ public class DrChaos extends AbstractNpcAI
 		{
 			if (npc.getNpcId() == CHAOS_GOLEM)
 			{
-				if (_lastAttackVsGolem + 1800000 < System.currentTimeMillis())
+				if (_lastAttackTime + 1800000 < System.currentTimeMillis())
 				{
 					// Despawn the war golem.
 					npc.deleteMe();
@@ -157,7 +157,7 @@ public class DrChaos extends AbstractNpcAI
 			npc.broadcastPacket(new PlaySound(1, "Rm03_A", 0, 0, 0, 0, 0));
 			
 			// start monitoring Dr. Chaos's inactivity
-			_lastAttackVsGolem = System.currentTimeMillis();
+			_lastAttackTime = System.currentTimeMillis();
 			startQuestTimer("golem_despawn", 60000, npc, null, true);
 		}
 		// Check every sec if someone is in range, if found, launch one task to decrease the timer.

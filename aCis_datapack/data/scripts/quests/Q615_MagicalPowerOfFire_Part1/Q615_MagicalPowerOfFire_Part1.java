@@ -28,14 +28,14 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 	private static final int EYE = 31684;
 	
 	// Items
-	private static final int KEY = 1661;
+	private static final int THIEF_KEY = 1661;
 	private static final int STOLEN_RED_TOTEM = 7242;
 	private static final int RED_TOTEM = 7243;
 	private static final int DIVINE_STONE = 7081;
 	
-	public Q615_MagicalPowerOfFire_Part1(int questId, String name, String descr)
+	public Q615_MagicalPowerOfFire_Part1()
 	{
-		super(questId, name, descr);
+		super(615, qn, "Magical Power of Fire - Part 1");
 		
 		setItemsIds(STOLEN_RED_TOTEM);
 		
@@ -56,9 +56,9 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 		
 		if (event.equalsIgnoreCase("31378-03.htm"))
 		{
+			st.setState(STATE_STARTED);
 			st.set("cond", "1");
 			st.set("spawned", "0");
-			st.setState(STATE_STARTED);
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31559-03.htm"))
@@ -67,14 +67,14 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 			if (st.getInt("spawned") == 1)
 				htmltext = "31559-04.htm";
 			// No Thief's Key in inventory.
-			else if (st.getQuestItemsCount(KEY) == 0)
+			else if (!st.hasQuestItems(THIEF_KEY))
 				htmltext = "31559-02.htm";
 			else
 			{
 				st.set("cond", "3");
-				st.takeItems(KEY, 1);
-				st.giveItems(STOLEN_RED_TOTEM, 1);
 				st.playSound(QuestState.SOUND_ITEMGET);
+				st.takeItems(THIEF_KEY, 1);
+				st.giveItems(STOLEN_RED_TOTEM, 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("UdanEyeDespawn"))
@@ -97,17 +97,11 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 74 && player.getAllianceWithVarkaKetra() <= -2)
-					htmltext = "31378-01.htm";
-				else
-				{
-					htmltext = "31378-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() >= 74 && player.getAllianceWithVarkaKetra() <= -2) ? "31378-01.htm" : "31378-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case NARAN:
@@ -132,7 +126,7 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 								st.playSound(QuestState.SOUND_MIDDLE);
 							}
 						}
-						else if (cond == 3 && st.getQuestItemsCount(STOLEN_RED_TOTEM) >= 1)
+						else if (cond == 3 && st.hasQuestItems(STOLEN_RED_TOTEM))
 						{
 							htmltext = "31379-04.htm";
 							
@@ -186,6 +180,6 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q615_MagicalPowerOfFire_Part1(615, qn, "Magical Power of Fire - Part 1");
+		new Q615_MagicalPowerOfFire_Part1();
 	}
 }

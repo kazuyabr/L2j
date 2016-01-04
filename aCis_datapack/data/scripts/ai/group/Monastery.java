@@ -16,8 +16,8 @@ package ai.group;
 
 import ai.AbstractNpcAI;
 
-import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.geoengine.PathFinding;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.L2Attackable;
@@ -103,7 +103,7 @@ public class Monastery extends AbstractNpcAI
 	{
 		for (L2PcInstance target : npc.getKnownList().getKnownType(L2PcInstance.class))
 		{
-			if (!target.isDead() && GeoData.getInstance().canSeeTarget(npc, target) && Util.checkIfInRange(npc.getAggroRange(), npc, target, true))
+			if (!target.isDead() && PathFinding.getInstance().canSeeTarget(npc, target) && Util.checkIfInRange(npc.getAggroRange(), npc, target, true))
 			{
 				if (target.getActiveWeaponInstance() != null && !npc.isInCombat() && npc.getTarget() == null)
 				{

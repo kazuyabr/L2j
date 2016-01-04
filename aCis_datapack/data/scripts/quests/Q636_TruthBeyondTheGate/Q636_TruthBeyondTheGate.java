@@ -31,12 +31,13 @@ public class Q636_TruthBeyondTheGate extends Quest
 	private static final int VISITOR_MARK = 8064;
 	private static final int FADED_VISITOR_MARK = 8065;
 	
-	public Q636_TruthBeyondTheGate(int questId, String name, String descr)
+	public Q636_TruthBeyondTheGate()
 	{
-		super(questId, name, descr);
+		super(636, qn, "The Truth Beyond the Gate");
 		
 		addStartNpc(ELIYAH);
 		addTalkId(ELIYAH, FLAURON);
+		
 		addEnterZoneId(100000);
 	}
 	
@@ -50,8 +51,8 @@ public class Q636_TruthBeyondTheGate extends Quest
 		
 		if (event.equalsIgnoreCase("31329-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32010-02.htm"))
@@ -75,13 +76,7 @@ public class Q636_TruthBeyondTheGate extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() > 72)
-					htmltext = "31329-02.htm";
-				else
-				{
-					htmltext = "31329-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 73) ? "31329-01.htm" : "31329-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -92,10 +87,7 @@ public class Q636_TruthBeyondTheGate extends Quest
 						break;
 					
 					case FLAURON:
-						if (st.hasQuestItems(VISITOR_MARK))
-							htmltext = "32010-03.htm";
-						else
-							htmltext = "32010-01.htm";
+						htmltext = (st.hasQuestItems(VISITOR_MARK)) ? "32010-03.htm" : "32010-01.htm";
 						break;
 				}
 				break;
@@ -122,6 +114,6 @@ public class Q636_TruthBeyondTheGate extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q636_TruthBeyondTheGate(636, qn, "The Truth Beyond the Gate");
+		new Q636_TruthBeyondTheGate();
 	}
 }

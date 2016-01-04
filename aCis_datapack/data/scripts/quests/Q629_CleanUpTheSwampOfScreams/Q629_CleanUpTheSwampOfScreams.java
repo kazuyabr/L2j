@@ -12,6 +12,9 @@
  */
 package quests.Q629_CleanUpTheSwampOfScreams;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -22,68 +25,38 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 	private static final String qn = "Q629_CleanUpTheSwampOfScreams";
 	
 	// NPC
-	private static final int CAPTAIN = 31553;
+	private static final int PIERCE = 31553;
 	
 	// ITEMS
-	private static final int CLAWS = 7250;
-	private static final int COIN = 7251;
+	private static final int TALON_OF_STAKATO = 7250;
+	private static final int GOLDEN_RAM_COIN = 7251;
 	
-	// MOBS / CHANCES
-	private static final int[][] CHANCE =
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		{
-			21508,
-			500000
-		},
-		{
-			21509,
-			430000
-		},
-		{
-			21510,
-			520000
-		},
-		{
-			21511,
-			570000
-		},
-		{
-			21512,
-			740000
-		},
-		{
-			21513,
-			530000
-		},
-		{
-			21514,
-			530000
-		},
-		{
-			21515,
-			540000
-		},
-		{
-			21516,
-			550000
-		},
-		{
-			21517,
-			560000
-		}
-	};
+		CHANCES.put(21508, 500000);
+		CHANCES.put(21509, 431000);
+		CHANCES.put(21510, 521000);
+		CHANCES.put(21511, 576000);
+		CHANCES.put(21512, 746000);
+		CHANCES.put(21513, 530000);
+		CHANCES.put(21514, 538000);
+		CHANCES.put(21515, 545000);
+		CHANCES.put(21516, 553000);
+		CHANCES.put(21517, 560000);
+	}
 	
-	public Q629_CleanUpTheSwampOfScreams(int questId, String name, String descr)
+	public Q629_CleanUpTheSwampOfScreams()
 	{
-		super(questId, name, descr);
+		super(629, qn, "Clean up the Swamp of Screams");
 		
-		setItemsIds(CLAWS, COIN);
+		setItemsIds(TALON_OF_STAKATO, GOLDEN_RAM_COIN);
 		
-		addStartNpc(CAPTAIN);
-		addTalkId(CAPTAIN);
+		addStartNpc(PIERCE);
+		addTalkId(PIERCE);
 		
-		for (int[] i : CHANCE)
-			addKillId(i[0]);
+		for (int npcId : CHANCES.keySet())
+			addKillId(npcId);
 	}
 	
 	@Override
@@ -98,8 +71,8 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 		{
 			if (player.getLevel() >= 66)
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 			else
@@ -110,10 +83,10 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 		}
 		else if (event.equalsIgnoreCase("31553-3.htm"))
 		{
-			if (st.getQuestItemsCount(CLAWS) >= 100)
+			if (st.getQuestItemsCount(TALON_OF_STAKATO) >= 100)
 			{
-				st.takeItems(CLAWS, 100);
-				st.giveItems(COIN, 20);
+				st.takeItems(TALON_OF_STAKATO, 100);
+				st.giveItems(GOLDEN_RAM_COIN, 20);
 			}
 			else
 				htmltext = "31553-3a.htm";
@@ -135,32 +108,18 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (st.hasAtLeastOneQuestItem(7246, 7247))
+		if (!st.hasAtLeastOneQuestItem(7246, 7247))
+			return "31553-6.htm";
+		
+		switch (st.getState())
 		{
-			switch (st.getState())
-			{
-				case STATE_CREATED:
-					if (player.getLevel() >= 66)
-						htmltext = "31553-0.htm";
-					else
-					{
-						htmltext = "31553-0a.htm";
-						st.exitQuest(true);
-					}
-					break;
-				
-				case STATE_STARTED:
-					if (st.getQuestItemsCount(CLAWS) >= 100)
-						htmltext = "31553-2.htm";
-					else
-						htmltext = "31553-1a.htm";
-					break;
-			}
-		}
-		else
-		{
-			htmltext = "31553-6.htm";
-			st.exitQuest(true);
+			case STATE_CREATED:
+				htmltext = (player.getLevel() < 66) ? "31553-0a.htm" : "31553-0.htm";
+				break;
+			
+			case STATE_STARTED:
+				htmltext = (st.getQuestItemsCount(TALON_OF_STAKATO) >= 100) ? "31553-2.htm" : "31553-1a.htm";
+				break;
 		}
 		
 		return htmltext;
@@ -173,15 +132,13 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItems(CLAWS, 1, 100, CHANCE[npc.getNpcId() - 21508][1]);
+		partyMember.getQuestState(qn).dropItems(TALON_OF_STAKATO, 1, 100, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q629_CleanUpTheSwampOfScreams(629, qn, "Clean up the Swamp of Screams");
+		new Q629_CleanUpTheSwampOfScreams();
 	}
 }

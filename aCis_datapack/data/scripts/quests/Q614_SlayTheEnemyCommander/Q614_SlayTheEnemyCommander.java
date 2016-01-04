@@ -22,15 +22,15 @@ public class Q614_SlayTheEnemyCommander extends Quest
 	private static final String qn = "Q614_SlayTheEnemyCommander";
 	
 	// Quest Items
-	private static final int Tayr_Head = 7241;
-	private static final int Wisdom_Feather = 7230;
-	private static final int Varka_Alliance_Four = 7224;
+	private static final int HEAD_OF_TAYR = 7241;
+	private static final int FEATHER_OF_WISDOM = 7230;
+	private static final int VARKA_ALLIANCE_4 = 7224;
 	
-	public Q614_SlayTheEnemyCommander(int questId, String name, String descr)
+	public Q614_SlayTheEnemyCommander()
 	{
-		super(questId, name, descr);
+		super(614, qn, "Slay the enemy commander!");
 		
-		setItemsIds(Tayr_Head);
+		setItemsIds(HEAD_OF_TAYR);
 		
 		addStartNpc(31377); // Ashas Varka Durai
 		addTalkId(31377);
@@ -48,32 +48,16 @@ public class Q614_SlayTheEnemyCommander extends Quest
 		
 		if (event.equalsIgnoreCase("31377-04.htm"))
 		{
-			if (player.getAllianceWithVarkaKetra() <= -4 && st.getQuestItemsCount(Varka_Alliance_Four) > 0 && st.getQuestItemsCount(Wisdom_Feather) == 0)
-			{
-				if (player.getLevel() >= 75)
-				{
-					st.set("cond", "1");
-					st.setState(STATE_STARTED);
-					st.playSound(QuestState.SOUND_ACCEPT);
-				}
-				else
-				{
-					htmltext = "31377-03.htm";
-					st.exitQuest(true);
-				}
-			}
-			else
-			{
-				htmltext = "31377-02.htm";
-				st.exitQuest(true);
-			}
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31377-07.htm"))
 		{
-			if (st.getQuestItemsCount(Tayr_Head) == 1)
+			if (st.hasQuestItems(HEAD_OF_TAYR))
 			{
-				st.takeItems(Tayr_Head, -1);
-				st.giveItems(Wisdom_Feather, 1);
+				st.takeItems(HEAD_OF_TAYR, -1);
+				st.giveItems(FEATHER_OF_WISDOM, 1);
 				st.rewardExpAndSp(10000, 0);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
@@ -100,14 +84,19 @@ public class Q614_SlayTheEnemyCommander extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = "31377-01.htm";
+				if (player.getLevel() >= 75)
+				{
+					if (player.getAllianceWithVarkaKetra() <= -4 && st.hasQuestItems(VARKA_ALLIANCE_4) && !st.hasQuestItems(FEATHER_OF_WISDOM))
+						htmltext = "31377-01.htm";
+					else
+						htmltext = "31377-02.htm";
+				}
+				else
+					htmltext = "31377-03.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(Tayr_Head) > 0)
-					htmltext = "31377-05.htm";
-				else
-					htmltext = "31377-06.htm";
+				htmltext = (st.hasQuestItems(HEAD_OF_TAYR)) ? "31377-05.htm" : "31377-06.htm";
 				break;
 		}
 		
@@ -122,11 +111,11 @@ public class Q614_SlayTheEnemyCommander extends Quest
 			if (partyMember.getAllianceWithVarkaKetra() <= -4)
 			{
 				QuestState st = partyMember.getQuestState(qn);
-				if (st.hasQuestItems(Varka_Alliance_Four))
+				if (st.hasQuestItems(VARKA_ALLIANCE_4))
 				{
 					st.set("cond", "2");
-					st.giveItems(Tayr_Head, 1);
 					st.playSound(QuestState.SOUND_MIDDLE);
+					st.giveItems(HEAD_OF_TAYR, 1);
 				}
 			}
 		}
@@ -136,6 +125,6 @@ public class Q614_SlayTheEnemyCommander extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q614_SlayTheEnemyCommander(614, qn, "Slay the enemy commander!");
+		new Q614_SlayTheEnemyCommander();
 	}
 }

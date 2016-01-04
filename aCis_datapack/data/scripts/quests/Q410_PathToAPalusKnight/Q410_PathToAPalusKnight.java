@@ -24,34 +24,34 @@ public class Q410_PathToAPalusKnight extends Quest
 	private static final String qn = "Q410_PathToAPalusKnight";
 	
 	// Items
-	private static final int PalusTalisman = 1237;
-	private static final int LycanthropeSkull = 1238;
-	private static final int VirgilsLetter = 1239;
-	private static final int MorteTalisman = 1240;
-	private static final int PredatorCarapace = 1241;
-	private static final int TrimdenSilk = 1242;
-	private static final int CoffinOfEternalRest = 1243;
-	private static final int GazeOfAbyss = 1244;
+	private static final int PALUS_TALISMAN = 1237;
+	private static final int LYCANTHROPE_SKULL = 1238;
+	private static final int VIRGIL_LETTER = 1239;
+	private static final int MORTE_TALISMAN = 1240;
+	private static final int PREDATOR_CARAPACE = 1241;
+	private static final int ARACHNID_TRACKER_SILK = 1242;
+	private static final int COFFIN_OF_ETERNAL_REST = 1243;
+	private static final int GAZE_OF_ABYSS = 1244;
 	
 	// NPCs
-	private static final int Kalinta = 30422;
-	private static final int Virgil = 30329;
+	private static final int KALINTA = 30422;
+	private static final int VIRGIL = 30329;
 	
 	// Monsters
-	private static final int PoisonSpider = 20038;
-	private static final int ArachnidTracker = 20043;
-	private static final int Lycan = 20049;
+	private static final int POISON_SPIDER = 20038;
+	private static final int ARACHNID_TRACKER = 20043;
+	private static final int LYCANTHROPE = 20049;
 	
-	public Q410_PathToAPalusKnight(int questId, String name, String descr)
+	public Q410_PathToAPalusKnight()
 	{
-		super(questId, name, descr);
+		super(410, qn, "Path to a Palus Knight");
 		
-		setItemsIds(PalusTalisman, LycanthropeSkull, VirgilsLetter, MorteTalisman, PredatorCarapace, TrimdenSilk, CoffinOfEternalRest);
+		setItemsIds(PALUS_TALISMAN, LYCANTHROPE_SKULL, VIRGIL_LETTER, MORTE_TALISMAN, PREDATOR_CARAPACE, ARACHNID_TRACKER_SILK, COFFIN_OF_ETERNAL_REST);
 		
-		addStartNpc(Virgil);
-		addTalkId(Virgil, Kalinta);
+		addStartNpc(VIRGIL);
+		addTalkId(VIRGIL, KALINTA);
 		
-		addKillId(PoisonSpider, ArachnidTracker, Lycan);
+		addKillId(POISON_SPIDER, ARACHNID_TRACKER, LYCANTHROPE);
 	}
 	
 	@Override
@@ -65,53 +65,42 @@ public class Q410_PathToAPalusKnight extends Quest
 		if (event.equalsIgnoreCase("30329-05.htm"))
 		{
 			if (player.getClassId() != ClassId.darkFighter)
-			{
-				if (player.getClassId() == ClassId.palusKnight)
-					htmltext = "30329-02a.htm";
-				else
-					htmltext = "30329-03.htm";
-				
-				st.exitQuest(true);
-			}
+				htmltext = (player.getClassId() == ClassId.palusKnight) ? "30329-02a.htm" : "30329-03.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30329-02.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(GazeOfAbyss))
-			{
+			else if (st.hasQuestItems(GAZE_OF_ABYSS))
 				htmltext = "30329-04.htm";
-				st.exitQuest(true);
-			}
 		}
 		else if (event.equalsIgnoreCase("30329-06.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
-			st.giveItems(PalusTalisman, 1);
+			st.giveItems(PALUS_TALISMAN, 1);
 		}
 		else if (event.equalsIgnoreCase("30329-10.htm"))
 		{
 			st.set("cond", "3");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.giveItems(VirgilsLetter, 1);
+			st.takeItems(LYCANTHROPE_SKULL, -1);
+			st.takeItems(PALUS_TALISMAN, 1);
+			st.giveItems(VIRGIL_LETTER, 1);
 		}
 		else if (event.equalsIgnoreCase("30422-02.htm"))
 		{
 			st.set("cond", "4");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(VirgilsLetter, 1);
-			st.giveItems(MorteTalisman, 1);
+			st.takeItems(VIRGIL_LETTER, 1);
+			st.giveItems(MORTE_TALISMAN, 1);
 		}
 		else if (event.equalsIgnoreCase("30422-06.htm"))
 		{
 			st.set("cond", "6");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(MorteTalisman, 1);
-			st.takeItems(TrimdenSilk, -1);
-			st.takeItems(PredatorCarapace, -1);
-			st.giveItems(CoffinOfEternalRest, 1);
+			st.takeItems(ARACHNID_TRACKER_SILK, -1);
+			st.takeItems(MORTE_TALISMAN, 1);
+			st.takeItems(PREDATOR_CARAPACE, -1);
+			st.giveItems(COFFIN_OF_ETERNAL_REST, 1);
 		}
 		
 		return htmltext;
@@ -135,28 +124,18 @@ public class Q410_PathToAPalusKnight extends Quest
 				int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Virgil:
+					case VIRGIL:
 						if (cond == 1)
-						{
-							if (!st.hasQuestItems(LycanthropeSkull))
-								htmltext = "30329-07.htm";
-							else
-								htmltext = "30329-08.htm";
-						}
+							htmltext = (!st.hasQuestItems(LYCANTHROPE_SKULL)) ? "30329-07.htm" : "30329-08.htm";
 						else if (cond == 2)
-						{
 							htmltext = "30329-09.htm";
-							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(LycanthropeSkull, -1);
-							st.takeItems(PalusTalisman, 1);
-						}
-						else if (cond >= 3 && cond <= 5)
+						else if (cond > 2 && cond < 6)
 							htmltext = "30329-12.htm";
 						else if (cond == 6)
 						{
 							htmltext = "30329-11.htm";
-							st.takeItems(CoffinOfEternalRest, 1);
-							st.giveItems(GazeOfAbyss, 1);
+							st.takeItems(COFFIN_OF_ETERNAL_REST, 1);
+							st.giveItems(GAZE_OF_ABYSS, 1);
 							st.rewardExpAndSp(3200, 1500);
 							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
@@ -164,12 +143,12 @@ public class Q410_PathToAPalusKnight extends Quest
 						}
 						break;
 					
-					case Kalinta:
+					case KALINTA:
 						if (cond == 3)
 							htmltext = "30422-01.htm";
 						else if (cond == 4)
 						{
-							if (!st.hasQuestItems(TrimdenSilk) || !st.hasQuestItems(PredatorCarapace))
+							if (!st.hasQuestItems(ARACHNID_TRACKER_SILK) || !st.hasQuestItems(PREDATOR_CARAPACE))
 								htmltext = "30422-03.htm";
 							else
 								htmltext = "30422-04.htm";
@@ -195,18 +174,18 @@ public class Q410_PathToAPalusKnight extends Quest
 		
 		switch (npc.getNpcId())
 		{
-			case Lycan:
-				if (st.getInt("cond") == 1 && st.dropItemsAlways(LycanthropeSkull, 1, 13))
+			case LYCANTHROPE:
+				if (st.getInt("cond") == 1 && st.dropItemsAlways(LYCANTHROPE_SKULL, 1, 13))
 					st.set("cond", "2");
 				break;
 			
-			case ArachnidTracker:
-				if (st.getInt("cond") == 4 && st.dropItemsAlways(TrimdenSilk, 1, 5) && st.hasQuestItems(PredatorCarapace))
+			case ARACHNID_TRACKER:
+				if (st.getInt("cond") == 4 && st.dropItemsAlways(ARACHNID_TRACKER_SILK, 1, 5) && st.hasQuestItems(PREDATOR_CARAPACE))
 					st.set("cond", "5");
 				break;
 			
-			case PoisonSpider:
-				if (st.getInt("cond") == 4 && st.dropItems(PredatorCarapace, 1, 1, 500000) && st.getQuestItemsCount(TrimdenSilk) == 5)
+			case POISON_SPIDER:
+				if (st.getInt("cond") == 4 && st.dropItemsAlways(PREDATOR_CARAPACE, 1, 1) && st.getQuestItemsCount(ARACHNID_TRACKER_SILK) == 5)
 					st.set("cond", "5");
 				break;
 		}
@@ -216,6 +195,6 @@ public class Q410_PathToAPalusKnight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q410_PathToAPalusKnight(410, qn, "Path to a Palus Knight");
+		new Q410_PathToAPalusKnight();
 	}
 }

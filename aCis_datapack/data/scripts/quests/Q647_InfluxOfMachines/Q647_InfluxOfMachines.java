@@ -26,31 +26,16 @@ public class Q647_InfluxOfMachines extends Quest
 	private static final int DESTROYED_GOLEM_SHARD = 8100;
 	
 	// NPC
-	private static final int Gutenhagen = 32069;
+	private static final int GUTENHAGEN = 32069;
 	
-	// Low B-grade weapons recipes
-	private static final int recipes[] =
+	public Q647_InfluxOfMachines()
 	{
-		4963,
-		4964,
-		4965,
-		4966,
-		4967,
-		4968,
-		4969,
-		4970,
-		4971,
-		4972
-	};
-	
-	public Q647_InfluxOfMachines(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
+		super(647, qn, "Influx of Machines");
 		
 		setItemsIds(DESTROYED_GOLEM_SHARD);
 		
-		addStartNpc(Gutenhagen);
-		addTalkId(Gutenhagen);
+		addStartNpc(GUTENHAGEN);
+		addTalkId(GUTENHAGEN);
 		
 		for (int i = 22052; i < 22079; i++)
 			addKillId(i);
@@ -66,21 +51,16 @@ public class Q647_InfluxOfMachines extends Quest
 		
 		if (event.equalsIgnoreCase("32069-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32069-06.htm"))
 		{
-			if (st.getQuestItemsCount(DESTROYED_GOLEM_SHARD) >= 500)
-			{
-				st.takeItems(DESTROYED_GOLEM_SHARD, -1);
-				st.giveItems(recipes[Rnd.get(recipes.length)], 1);
-				st.playSound(QuestState.SOUND_FINISH);
-				st.exitQuest(true);
-			}
-			else
-				htmltext = "32069-04.htm";
+			st.takeItems(DESTROYED_GOLEM_SHARD, -1);
+			st.giveItems(Rnd.get(4963, 4972), 1);
+			st.playSound(QuestState.SOUND_FINISH);
+			st.exitQuest(true);
 		}
 		
 		return htmltext;
@@ -97,26 +77,15 @@ public class Q647_InfluxOfMachines extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 46)
-					htmltext = "32069-01.htm";
-				else
-				{
-					htmltext = "32069-03.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 46) ? "32069-03.htm" : "32069-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "32069-04.htm";
 				else if (cond == 2)
-				{
-					if (st.getQuestItemsCount(DESTROYED_GOLEM_SHARD) >= 500)
-						htmltext = "32069-05.htm";
-					else
-						st.set("cond", "1");
-				}
+					htmltext = "32069-05.htm";
 				break;
 		}
 		
@@ -140,6 +109,6 @@ public class Q647_InfluxOfMachines extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q647_InfluxOfMachines(647, qn, "Influx of Machines");
+		new Q647_InfluxOfMachines();
 	}
 }

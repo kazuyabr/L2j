@@ -193,7 +193,7 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		st.dropItems((npc.getNpcId() == CAVE_BEAST) ? CAVE_BEAST_TOOTH : DEATH_WAVE, 1, 65, 500000);
+		st.dropItems((npc.getNpcId() == CAVE_BEAST) ? CAVE_BEAST_TOOTH : DEATH_WAVE_LIGHT, 1, 65, 500000);
 		
 		// Drop sealed mysterious stone to party member who still need it.
 		partyMember = getRandomPartyMember(player, npc, "condStone", "1");

@@ -26,9 +26,9 @@ public class Q640_TheZeroHour extends Quest
 	private static final int KAHMAN = 31554;
 	
 	// Item
-	private static final int FANG = 8085;
+	private static final int FANG_OF_STAKATO = 8085;
 	
-	private static final int[][] rewards =
+	private static final int[][] REWARDS =
 	{
 		{
 			12,
@@ -77,11 +77,11 @@ public class Q640_TheZeroHour extends Quest
 		}
 	};
 	
-	public Q640_TheZeroHour(int questId, String name, String descr)
+	public Q640_TheZeroHour()
 	{
-		super(questId, name, descr);
+		super(640, qn, "The Zero Hour");
 		
-		setItemsIds(FANG);
+		setItemsIds(FANG_OF_STAKATO);
 		
 		addStartNpc(KAHMAN);
 		addTalkId(KAHMAN);
@@ -100,13 +100,13 @@ public class Q640_TheZeroHour extends Quest
 		
 		if (event.equalsIgnoreCase("31554-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31554-05.htm"))
 		{
-			if (!st.hasQuestItems(FANG))
+			if (!st.hasQuestItems(FANG_OF_STAKATO))
 				htmltext = "31554-06.htm";
 		}
 		else if (event.equalsIgnoreCase("31554-08.htm"))
@@ -116,13 +116,13 @@ public class Q640_TheZeroHour extends Quest
 		}
 		else if (Util.isDigit(event))
 		{
-			int reward[] = rewards[Integer.parseInt(event)];
+			int reward[] = REWARDS[Integer.parseInt(event)];
 			
-			if (st.getQuestItemsCount(FANG) >= reward[0])
+			if (st.getQuestItemsCount(FANG_OF_STAKATO) >= reward[0])
 			{
-				st.takeItems(FANG, reward[0]);
-				st.rewardItems(reward[1], reward[2]);
 				htmltext = "31554-09.htm";
+				st.takeItems(FANG_OF_STAKATO, reward[0]);
+				st.rewardItems(reward[1], reward[2]);
 			}
 			else
 				htmltext = "31554-06.htm";
@@ -142,26 +142,17 @@ public class Q640_TheZeroHour extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 66)
-				{
-					QuestState st2 = player.getQuestState("Q109_InSearchOfTheNest");
-					if (st2 != null && st2.isCompleted())
-						htmltext = "31554-01.htm";
-					else
-						htmltext = "31554-10.htm";
-				}
+				if (player.getLevel() < 66)
+					htmltext = "31554-00.htm";
 				else
 				{
-					htmltext = "31554-00.htm";
-					st.exitQuest(true);
+					QuestState st2 = player.getQuestState("Q109_InSearchOfTheNest");
+					htmltext = (st2 != null && st2.isCompleted()) ? "31554-01.htm" : "31554-10.htm";
 				}
 				break;
 			
 			case STATE_STARTED:
-				if (st.hasQuestItems(FANG))
-					htmltext = "31554-04.htm";
-				else
-					htmltext = "31554-03.htm";
+				htmltext = (st.hasQuestItems(FANG_OF_STAKATO)) ? "31554-04.htm" : "31554-03.htm";
 				break;
 		}
 		
@@ -175,15 +166,13 @@ public class Q640_TheZeroHour extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItemsAlways(FANG, 1, -1);
+		partyMember.getQuestState(qn).dropItemsAlways(FANG_OF_STAKATO, 1, 0);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q640_TheZeroHour(640, qn, "The Zero Hour");
+		new Q640_TheZeroHour();
 	}
 }

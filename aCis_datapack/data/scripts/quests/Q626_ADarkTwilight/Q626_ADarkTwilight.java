@@ -12,6 +12,9 @@
  */
 package quests.Q626_ADarkTwilight;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -27,16 +30,36 @@ public class Q626_ADarkTwilight extends Quest
 	// NPC
 	private static final int HIERARCH = 31517;
 	
-	public Q626_ADarkTwilight(int questId, String name, String descr)
+	// Drop chances
+	private static final Map<Integer, Integer> CHANCES = new HashMap<>();
 	{
-		super(questId, name, descr);
+		CHANCES.put(21520, 533000);
+		CHANCES.put(21523, 566000);
+		CHANCES.put(21524, 603000);
+		CHANCES.put(21525, 603000);
+		CHANCES.put(21526, 587000);
+		CHANCES.put(21529, 606000);
+		CHANCES.put(21530, 560000);
+		CHANCES.put(21531, 669000);
+		CHANCES.put(21532, 651000);
+		CHANCES.put(21535, 672000);
+		CHANCES.put(21536, 597000);
+		CHANCES.put(21539, 739000);
+		CHANCES.put(21540, 739000);
+		CHANCES.put(21658, 669000);
+	}
+	
+	public Q626_ADarkTwilight()
+	{
+		super(626, qn, "A Dark Twilight");
 		
 		setItemsIds(BLOOD_OF_SAINT);
 		
 		addStartNpc(HIERARCH);
 		addTalkId(HIERARCH);
 		
-		addKillId(21520, 21523, 21524, 21526, 21529, 21530, 21531, 21532, 21535, 21536, 21539, 21540);
+		for (int npcId : CHANCES.keySet())
+			addKillId(npcId);
 	}
 	
 	@Override
@@ -93,20 +116,14 @@ public class Q626_ADarkTwilight extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 60)
-					htmltext = "31517-01.htm";
-				else
-				{
-					htmltext = "31517-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 60) ? "31517-02.htm" : "31517-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				if (cond == 1 && st.getQuestItemsCount(BLOOD_OF_SAINT) < 300)
+				final int cond = st.getInt("cond");
+				if (cond == 1)
 					htmltext = "31517-05.htm";
-				else if (cond == 2)
+				else
 					htmltext = "31517-04.htm";
 				break;
 			
@@ -125,7 +142,7 @@ public class Q626_ADarkTwilight extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(BLOOD_OF_SAINT, 1, 300))
+		if (st.dropItems(BLOOD_OF_SAINT, 1, 300, CHANCES.get(npc.getNpcId())))
 			st.set("cond", "2");
 		
 		return null;
@@ -133,6 +150,6 @@ public class Q626_ADarkTwilight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q626_ADarkTwilight(626, qn, "A Dark Twilight");
+		new Q626_ADarkTwilight();
 	}
 }

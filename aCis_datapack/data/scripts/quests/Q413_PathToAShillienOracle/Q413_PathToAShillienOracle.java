@@ -26,29 +26,29 @@ public class Q413_PathToAShillienOracle extends Quest
 	private static final String qn = "Q413_PathToAShillienOracle";
 	
 	// Items
-	private static final int SidrasLetter = 1262;
-	private static final int BlankSheet = 1263;
-	private static final int BloodyRune = 1264;
-	private static final int GarmielBook = 1265;
-	private static final int PrayerofAdonius = 1266;
-	private static final int PenitentsMark = 1267;
-	private static final int AshenBones = 1268;
-	private static final int AndarielBook = 1269;
-	private static final int OrbofAbyss = 1270;
+	private static final int SIDRA_LETTER = 1262;
+	private static final int BLANK_SHEET = 1263;
+	private static final int BLOODY_RUNE = 1264;
+	private static final int GARMIEL_BOOK = 1265;
+	private static final int PRAYER_OF_ADONIUS = 1266;
+	private static final int PENITENT_MARK = 1267;
+	private static final int ASHEN_BONES = 1268;
+	private static final int ANDARIEL_BOOK = 1269;
+	private static final int ORB_OF_ABYSS = 1270;
 	
 	// NPCs
-	private static final int Sidra = 30330;
-	private static final int Adonius = 30375;
-	private static final int Talbot = 30377;
+	private static final int SIDRA = 30330;
+	private static final int ADONIUS = 30375;
+	private static final int TALBOT = 30377;
 	
-	public Q413_PathToAShillienOracle(int questId, String name, String descr)
+	public Q413_PathToAShillienOracle()
 	{
-		super(questId, name, descr);
+		super(413, qn, "Path to a Shillien Oracle");
 		
-		setItemsIds(SidrasLetter, BlankSheet, BloodyRune, GarmielBook, PrayerofAdonius, PenitentsMark, AshenBones, AndarielBook);
+		setItemsIds(SIDRA_LETTER, BLANK_SHEET, BLOODY_RUNE, GARMIEL_BOOK, PRAYER_OF_ADONIUS, PENITENT_MARK, ASHEN_BONES, ANDARIEL_BOOK);
 		
-		addStartNpc(Sidra);
-		addTalkId(Sidra, Adonius, Talbot);
+		addStartNpc(SIDRA);
+		addTalkId(SIDRA, ADONIUS, TALBOT);
 		
 		addKillId(20776, 20457, 20458, 20514, 20515);
 	}
@@ -64,45 +64,32 @@ public class Q413_PathToAShillienOracle extends Quest
 		if (event.equalsIgnoreCase("30330-05.htm"))
 		{
 			if (player.getClassId() != ClassId.darkMage)
-			{
-				if (player.getClassId() == ClassId.shillienOracle)
-					htmltext = "30330-02a.htm";
-				else
-					htmltext = "30330-03.htm";
-				
-				st.exitQuest(true);
-			}
+				htmltext = (player.getClassId() == ClassId.shillienOracle) ? "30330-02a.htm" : "30330-03.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30330-02.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(OrbofAbyss))
-			{
+			else if (st.hasQuestItems(ORB_OF_ABYSS))
 				htmltext = "30330-04.htm";
-				st.exitQuest(true);
-			}
 		}
 		else if (event.equalsIgnoreCase("30330-06.htm"))
 		{
-			st.set("cond", "1");
-			st.giveItems(SidrasLetter, 1);
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
+			st.giveItems(SIDRA_LETTER, 1);
 		}
 		else if (event.equalsIgnoreCase("30377-02.htm"))
 		{
 			st.set("cond", "2");
-			st.takeItems(SidrasLetter, 1);
-			st.giveItems(BlankSheet, 5);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(SIDRA_LETTER, 1);
+			st.giveItems(BLANK_SHEET, 5);
 		}
 		else if (event.equalsIgnoreCase("30375-04.htm"))
 		{
 			st.set("cond", "5");
-			st.takeItems(PrayerofAdonius, 1);
-			st.giveItems(PenitentsMark, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(PRAYER_OF_ADONIUS, 1);
+			st.giveItems(PENITENT_MARK, 1);
 		}
 		
 		return htmltext;
@@ -123,22 +110,22 @@ public class Q413_PathToAShillienOracle extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Sidra:
+					case SIDRA:
 						if (cond == 1)
 							htmltext = "30330-07.htm";
-						else if (cond >= 2 && cond <= 3)
+						else if (cond > 1 && cond < 4)
 							htmltext = "30330-08.htm";
-						else if (cond >= 4 && cond <= 6)
+						else if (cond > 3 && cond < 7)
 							htmltext = "30330-09.htm";
 						else if (cond == 7)
 						{
 							htmltext = "30330-10.htm";
-							st.takeItems(GarmielBook, 1);
-							st.takeItems(AndarielBook, 1);
-							st.giveItems(OrbofAbyss, 1);
+							st.takeItems(ANDARIEL_BOOK, 1);
+							st.takeItems(GARMIEL_BOOK, 1);
+							st.giveItems(ORB_OF_ABYSS, 1);
 							st.rewardExpAndSp(3200, 3120);
 							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
@@ -146,48 +133,39 @@ public class Q413_PathToAShillienOracle extends Quest
 						}
 						break;
 					
-					case Talbot:
+					case TALBOT:
 						if (cond == 1)
 							htmltext = "30377-01.htm";
 						else if (cond == 2)
-						{
-							if (st.hasQuestItems(BloodyRune))
-								htmltext = "30377-04.htm";
-							else
-								htmltext = "30377-03.htm";
-						}
+							htmltext = (st.hasQuestItems(BLOODY_RUNE)) ? "30377-04.htm" : "30377-03.htm";
 						else if (cond == 3)
 						{
 							htmltext = "30377-05.htm";
 							st.set("cond", "4");
-							st.takeItems(BloodyRune, -1);
-							st.giveItems(GarmielBook, 1);
-							st.giveItems(PrayerofAdonius, 1);
 							st.playSound(QuestState.SOUND_MIDDLE);
+							st.takeItems(BLOODY_RUNE, -1);
+							st.giveItems(GARMIEL_BOOK, 1);
+							st.giveItems(PRAYER_OF_ADONIUS, 1);
 						}
-						else if (cond >= 4 && cond <= 6)
+						else if (cond > 3 && cond < 7)
 							htmltext = "30377-06.htm";
 						else if (cond == 7)
 							htmltext = "30377-07.htm";
 						break;
-					case Adonius:
+					
+					case ADONIUS:
 						if (cond == 4)
 							htmltext = "30375-01.htm";
 						else if (cond == 5)
-						{
-							if (st.hasQuestItems(AshenBones))
-								htmltext = "30375-05.htm";
-							else
-								htmltext = "30375-06.htm";
-						}
+							htmltext = (st.hasQuestItems(ASHEN_BONES)) ? "30375-05.htm" : "30375-06.htm";
 						else if (cond == 6)
 						{
 							htmltext = "30375-07.htm";
 							st.set("cond", "7");
-							st.takeItems(AshenBones, -1);
-							st.takeItems(PenitentsMark, -1);
-							st.giveItems(AndarielBook, 1);
 							st.playSound(QuestState.SOUND_MIDDLE);
+							st.takeItems(ASHEN_BONES, -1);
+							st.takeItems(PENITENT_MARK, -1);
+							st.giveItems(ANDARIEL_BOOK, 1);
 						}
 						else if (cond == 7)
 							htmltext = "30375-08.htm";
@@ -210,23 +188,19 @@ public class Q413_PathToAShillienOracle extends Quest
 		{
 			if (st.getInt("cond") == 2)
 			{
-				st.takeItems(BlankSheet, 1);
-				if (st.dropItemsAlways(BloodyRune, 1, 5))
+				st.takeItems(BLANK_SHEET, 1);
+				if (st.dropItemsAlways(BLOODY_RUNE, 1, 5))
 					st.set("cond", "3");
 			}
 		}
-		else
-		{
-			if (st.getInt("cond") == 5)
-				if (st.dropItemsAlways(AshenBones, 1, 10))
-					st.set("cond", "6");
-		}
+		else if (st.getInt("cond") == 5 && st.dropItemsAlways(ASHEN_BONES, 1, 10))
+			st.set("cond", "6");
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q413_PathToAShillienOracle(413, qn, "Path to a Shillien Oracle");
+		new Q413_PathToAShillienOracle();
 	}
 }

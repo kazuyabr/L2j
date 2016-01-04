@@ -31,17 +31,17 @@ public class Q509_TheClansPrestige extends Quest
 	private static final int VALDIS = 31331;
 	
 	// Items
-	private static final int DAIMONS_EYES = 8489;
-	private static final int HESTIAS_FAIRY_STONE = 8490;
+	private static final int DAIMON_EYES = 8489;
+	private static final int HESTIA_FAIRY_STONE = 8490;
 	private static final int NUCLEUS_OF_LESSER_GOLEM = 8491;
 	private static final int FALSTON_FANG = 8492;
-	private static final int SHAIDS_TALON = 8493;
+	private static final int SHAID_TALON = 8493;
 	
 	// Raid Bosses
 	private static final int DAIMON_THE_WHITE_EYED = 25290;
 	private static final int HESTIA_GUARDIAN_DEITY = 25293;
 	private static final int PLAGUE_GOLEM = 25523;
-	private static final int DEMONS_AGENT_FALSTON = 25322;
+	private static final int DEMON_AGENT_FALSTON = 25322;
 	private static final int QUEEN_SHYEED = 25514;
 	
 	// Reward list (itemId, minClanPoints, maxClanPoints)
@@ -49,13 +49,13 @@ public class Q509_TheClansPrestige extends Quest
 	{
 		{
 			DAIMON_THE_WHITE_EYED,
-			DAIMONS_EYES,
+			DAIMON_EYES,
 			180,
 			215
 		},
 		{
 			HESTIA_GUARDIAN_DEITY,
-			HESTIAS_FAIRY_STONE,
+			HESTIA_FAIRY_STONE,
 			430,
 			465
 		},
@@ -66,14 +66,14 @@ public class Q509_TheClansPrestige extends Quest
 			415
 		},
 		{
-			DEMONS_AGENT_FALSTON,
+			DEMON_AGENT_FALSTON,
 			FALSTON_FANG,
 			220,
 			255
 		},
 		{
 			QUEEN_SHYEED,
-			SHAIDS_TALON,
+			SHAID_TALON,
 			130,
 			165
 		}
@@ -109,16 +109,16 @@ public class Q509_TheClansPrestige extends Quest
 		}
 	};
 	
-	public Q509_TheClansPrestige(int questId, String name, String descr)
+	public Q509_TheClansPrestige()
 	{
-		super(questId, name, descr);
+		super(509, qn, "The Clan's Prestige");
 		
-		setItemsIds(DAIMONS_EYES, HESTIAS_FAIRY_STONE, NUCLEUS_OF_LESSER_GOLEM, FALSTON_FANG, SHAIDS_TALON);
+		setItemsIds(DAIMON_EYES, HESTIA_FAIRY_STONE, NUCLEUS_OF_LESSER_GOLEM, FALSTON_FANG, SHAID_TALON);
 		
 		addStartNpc(VALDIS);
 		addTalkId(VALDIS);
 		
-		addKillId(DAIMON_THE_WHITE_EYED, HESTIA_GUARDIAN_DEITY, PLAGUE_GOLEM, DEMONS_AGENT_FALSTON, QUEEN_SHYEED);
+		addKillId(DAIMON_THE_WHITE_EYED, HESTIA_GUARDIAN_DEITY, PLAGUE_GOLEM, DEMON_AGENT_FALSTON, QUEEN_SHYEED);
 	}
 	
 	@Override
@@ -131,9 +131,13 @@ public class Q509_TheClansPrestige extends Quest
 		
 		if (Util.isDigit(event))
 		{
-			int evt = Integer.parseInt(event);
-			st.set("raid", event);
 			htmltext = "31331-" + event + ".htm";
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.set("raid", event);
+			st.playSound(QuestState.SOUND_ACCEPT);
+			
+			int evt = Integer.parseInt(event);
 			
 			int x = radar[evt - 1][0];
 			int y = radar[evt - 1][1];
@@ -141,10 +145,6 @@ public class Q509_TheClansPrestige extends Quest
 			
 			if (x + y + z > 0)
 				st.addRadar(x, y, z);
-			
-			st.set("cond", "1");
-			st.setState(STATE_STARTED);
-			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31331-6.htm"))
 		{
@@ -169,37 +169,28 @@ public class Q509_TheClansPrestige extends Quest
 		{
 			case STATE_CREATED:
 				if (!player.isClanLeader())
-				{
-					st.exitQuest(true);
 					htmltext = "31331-0a.htm";
-				}
 				else if (clan.getLevel() < 6)
-				{
-					st.exitQuest(true);
 					htmltext = "31331-0b.htm";
-				}
 				else
 					htmltext = "31331-0c.htm";
 				break;
 			
 			case STATE_STARTED:
-				int raid = st.getInt("raid");
-				if (st.getInt("cond") == 1)
+				final int raid = st.getInt("raid");
+				final int item = reward_list[raid - 1][1];
+				
+				if (!st.hasQuestItems(item))
+					htmltext = "31331-" + raid + "a.htm";
+				else
 				{
-					int item = reward_list[raid - 1][1];
-					int count = st.getQuestItemsCount(item);
-					int reward = Rnd.get(reward_list[raid - 1][2], reward_list[raid - 1][3]);
+					final int reward = Rnd.get(reward_list[raid - 1][2], reward_list[raid - 1][3]);
 					
-					if (count == 0)
-						htmltext = "31331-" + raid + "a.htm";
-					else if (count == 1)
-					{
-						htmltext = "31331-" + raid + "b.htm";
-						st.takeItems(item, 1);
-						clan.addReputationScore(reward);
-						player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CLAN_QUEST_COMPLETED_AND_S1_POINTS_GAINED).addNumber(reward));
-						clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
-					}
+					htmltext = "31331-" + raid + "b.htm";
+					st.takeItems(item, 1);
+					clan.addReputationScore(reward);
+					player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CLAN_QUEST_COMPLETED_AND_S1_POINTS_GAINED).addNumber(reward));
+					clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
 				}
 				break;
 		}
@@ -218,20 +209,13 @@ public class Q509_TheClansPrestige extends Quest
 		// Reward only if quest is setup on good index.
 		int raid = st.getInt("raid");
 		if (reward_list[raid - 1][0] == npc.getNpcId())
-		{
-			int item = reward_list[raid - 1][1];
-			if (!st.hasQuestItems(item))
-			{
-				st.giveItems(item, 1);
-				st.playSound(QuestState.SOUND_MIDDLE);
-			}
-		}
+			st.dropItemsAlways(reward_list[raid - 1][1], 1, 1);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q509_TheClansPrestige(509, qn, "The Clan's Prestige");
+		new Q509_TheClansPrestige();
 	}
 }

@@ -24,15 +24,15 @@ public class Q613_ProveYourCourage extends Quest
 	private static final String qn = "Q613_ProveYourCourage";
 	
 	// Items
-	private static final int Hekaton_Head = 7240;
-	private static final int Valor_Feather = 7229;
-	private static final int Varka_Alliance_Three = 7223;
+	private static final int HEAD_OF_HEKATON = 7240;
+	private static final int FEATHER_OF_VALOR = 7229;
+	private static final int VARKA_ALLIANCE_3 = 7223;
 	
-	public Q613_ProveYourCourage(int questId, String name, String descr)
+	public Q613_ProveYourCourage()
 	{
-		super(questId, name, descr);
+		super(613, qn, "Prove your courage!");
 		
-		setItemsIds(Hekaton_Head);
+		setItemsIds(HEAD_OF_HEKATON);
 		
 		addStartNpc(31377); // Ashas Varka Durai
 		addTalkId(31377);
@@ -50,32 +50,16 @@ public class Q613_ProveYourCourage extends Quest
 		
 		if (event.equalsIgnoreCase("31377-04.htm"))
 		{
-			if (player.getAllianceWithVarkaKetra() <= -3 && st.getQuestItemsCount(Varka_Alliance_Three) > 0 && st.getQuestItemsCount(Valor_Feather) == 0)
-			{
-				if (player.getLevel() >= 75)
-				{
-					st.set("cond", "1");
-					st.setState(STATE_STARTED);
-					st.playSound(QuestState.SOUND_ACCEPT);
-				}
-				else
-				{
-					htmltext = "31377-03.htm";
-					st.exitQuest(true);
-				}
-			}
-			else
-			{
-				htmltext = "31377-02.htm";
-				st.exitQuest(true);
-			}
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31377-07.htm"))
 		{
-			if (st.getQuestItemsCount(Hekaton_Head) == 1)
+			if (st.hasQuestItems(HEAD_OF_HEKATON))
 			{
-				st.takeItems(Hekaton_Head, -1);
-				st.giveItems(Valor_Feather, 1);
+				st.takeItems(HEAD_OF_HEKATON, -1);
+				st.giveItems(FEATHER_OF_VALOR, 1);
 				st.rewardExpAndSp(10000, 0);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
@@ -102,14 +86,16 @@ public class Q613_ProveYourCourage extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = "31377-01.htm";
+				if (player.getLevel() < 75)
+					htmltext = "31377-03.htm";
+				else if (player.getAllianceWithVarkaKetra() <= -3 && st.hasQuestItems(VARKA_ALLIANCE_3) && !st.hasQuestItems(FEATHER_OF_VALOR))
+					htmltext = "31377-01.htm";
+				else
+					htmltext = "31377-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(Hekaton_Head) == 1)
-					htmltext = "31377-05.htm";
-				else
-					htmltext = "31377-06.htm";
+				htmltext = (st.hasQuestItems(HEAD_OF_HEKATON)) ? "31377-05.htm" : "31377-06.htm";
 				break;
 		}
 		
@@ -124,11 +110,11 @@ public class Q613_ProveYourCourage extends Quest
 			if (partyMember.getAllianceWithVarkaKetra() <= -3)
 			{
 				QuestState st = partyMember.getQuestState(qn);
-				if (st.hasQuestItems(Varka_Alliance_Three))
+				if (st.hasQuestItems(VARKA_ALLIANCE_3))
 				{
 					st.set("cond", "2");
-					st.giveItems(Hekaton_Head, 1);
 					st.playSound(QuestState.SOUND_MIDDLE);
+					st.giveItems(HEAD_OF_HEKATON, 1);
 				}
 			}
 		}
@@ -138,6 +124,6 @@ public class Q613_ProveYourCourage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q613_ProveYourCourage(613, qn, "Prove your courage!");
+		new Q613_ProveYourCourage();
 	}
 }

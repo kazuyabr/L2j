@@ -5082,7 +5082,7 @@
 			<skill id="4416" level="18"/>
 		</skills>
 	</npc>
-	<npc id="30171" name="Gaius" title="Magister">
+	<npc id="30171" name="Galios" title="Magister">
 		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
@@ -25409,7 +25409,7 @@
 		<set name="height" val="22.2"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Trainer"/>
+		<set name="type" val="L2Npc"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2444.46819"/>
@@ -25445,7 +25445,7 @@
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Trainer"/>
+		<set name="type" val="L2Npc"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2444.46819"/>

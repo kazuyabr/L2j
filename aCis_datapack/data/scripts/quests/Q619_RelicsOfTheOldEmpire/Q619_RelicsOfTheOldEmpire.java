@@ -44,9 +44,9 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 		7580
 	};
 	
-	public Q619_RelicsOfTheOldEmpire(int questId, String name, String descr)
+	public Q619_RelicsOfTheOldEmpire()
 	{
-		super(questId, name, descr);
+		super(619, qn, "Relics of the Old Empire");
 		
 		setItemsIds(RELICS);
 		
@@ -75,8 +75,8 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 		
 		if (event.equalsIgnoreCase("31538-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31538-09.htm"))
@@ -109,19 +109,13 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 74)
-				{
-					htmltext = "31538-02.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "31538-01.htm";
+				htmltext = (player.getLevel() < 74) ? "31538-02.htm" : "31538-01.htm";
 				break;
 			
 			case STATE_STARTED:
 				if (st.getQuestItemsCount(RELICS) >= 1000)
 					htmltext = "31538-04.htm";
-				else if (st.getQuestItemsCount(ENTRANCE) >= 1)
+				else if (st.hasQuestItems(ENTRANCE))
 					htmltext = "31538-06.htm";
 				else
 					htmltext = "31538-07.htm";
@@ -140,14 +134,14 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		st.dropItemsAlways(RELICS, 1, -1);
-		st.dropItems(ENTRANCE, 1, -1, 50000);
+		st.dropItemsAlways(RELICS, 1, 0);
+		st.dropItems(ENTRANCE, 1, 0, 50000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q619_RelicsOfTheOldEmpire(619, qn, "Relics of the Old Empire");
+		new Q619_RelicsOfTheOldEmpire();
 	}
 }

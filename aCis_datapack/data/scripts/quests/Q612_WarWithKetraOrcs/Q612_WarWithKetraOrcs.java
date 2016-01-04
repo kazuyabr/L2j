@@ -25,14 +25,14 @@ public class Q612_WarWithKetraOrcs extends Quest
 	private static final String qn = "Q612_WarWithKetraOrcs";
 	
 	// Items
-	private static final int Seed = 7187;
-	private static final int Molar = 7234;
+	private static final int NEPENTHES_SEED = 7187;
+	private static final int MOLAR_OF_KETRA_ORC = 7234;
 	
-	public Q612_WarWithKetraOrcs(int questId, String name, String descr)
+	public Q612_WarWithKetraOrcs()
 	{
-		super(questId, name, descr);
+		super(612, qn, "War with Ketra Orcs");
 		
-		setItemsIds(Molar);
+		setItemsIds(MOLAR_OF_KETRA_ORC);
 		
 		addStartNpc(31377); // Ashas Varka Durai
 		addTalkId(31377);
@@ -48,32 +48,24 @@ public class Q612_WarWithKetraOrcs extends Quest
 		
 		if (event.equalsIgnoreCase("31377-03.htm"))
 		{
-			if (player.getLevel() >= 74 && player.getAllianceWithVarkaKetra() <= -1)
-			{
-				st.set("cond", "1");
-				st.setState(STATE_STARTED);
-				st.playSound(QuestState.SOUND_ACCEPT);
-			}
-			else
-			{
-				htmltext = "31377-02.htm";
-				st.exitQuest(true);
-			}
+			st.setState(STATE_STARTED);
+			st.set("cond", "1");
+			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31377-07.htm"))
 		{
-			if (st.getQuestItemsCount(Molar) >= 100)
+			if (st.getQuestItemsCount(MOLAR_OF_KETRA_ORC) >= 100)
 			{
-				st.takeItems(Molar, 100);
-				st.giveItems(Seed, 20);
 				st.playSound(QuestState.SOUND_ITEMGET);
+				st.takeItems(MOLAR_OF_KETRA_ORC, 100);
+				st.giveItems(NEPENTHES_SEED, 20);
 			}
 			else
 				htmltext = "31377-08.htm";
 		}
 		else if (event.equalsIgnoreCase("31377-09.htm"))
 		{
-			st.takeItems(Molar, -1);
+			st.takeItems(MOLAR_OF_KETRA_ORC, -1);
 			st.exitQuest(true);
 		}
 		
@@ -91,14 +83,11 @@ public class Q612_WarWithKetraOrcs extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = "31377-01.htm";
+				htmltext = (player.getLevel() >= 74 && player.isAlliedWithVarka()) ? "31377-01.htm" : "31377-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(Molar) > 0)
-					htmltext = "31377-04.htm";
-				else
-					htmltext = "31377-05.htm";
+				htmltext = (st.hasQuestItems(MOLAR_OF_KETRA_ORC)) ? "31377-04.htm" : "31377-05.htm";
 				break;
 		}
 		
@@ -107,6 +96,6 @@ public class Q612_WarWithKetraOrcs extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q612_WarWithKetraOrcs(612, qn, "War with Ketra Orcs");
+		new Q612_WarWithKetraOrcs();
 	}
 }

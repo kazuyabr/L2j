@@ -43,7 +43,7 @@ public class Core extends AbstractNpcAI
 	private static final byte ALIVE = 0; // Core is spawned.
 	private static final byte DEAD = 1; // Core has been killed.
 	
-	List<L2Attackable> _minions = new ArrayList<>();
+	private final List<L2Attackable> _minions = new ArrayList<>();
 	
 	public Core(String name, String descr)
 	{

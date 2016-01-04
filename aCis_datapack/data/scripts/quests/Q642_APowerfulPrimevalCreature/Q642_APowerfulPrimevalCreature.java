@@ -44,9 +44,9 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 		8710
 	};
 	
-	public Q642_APowerfulPrimevalCreature(int questId, String name, String descr)
+	public Q642_APowerfulPrimevalCreature()
 	{
-		super(questId, name, descr);
+		super(642, qn, "A Powerful Primeval Creature");
 		
 		setItemsIds(DINOSAUR_TISSUE, DINOSAUR_EGG);
 		
@@ -67,8 +67,8 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 		
 		if (event.equalsIgnoreCase("32105-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("32105-08.htm"))
@@ -78,7 +78,7 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 		}
 		else if (event.equalsIgnoreCase("32105-07.htm"))
 		{
-			int tissues = st.getQuestItemsCount(DINOSAUR_TISSUE);
+			final int tissues = st.getQuestItemsCount(DINOSAUR_TISSUE);
 			if (tissues > 0)
 			{
 				st.takeItems(DINOSAUR_TISSUE, -1);
@@ -116,13 +116,7 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 75)
-					htmltext = "32105-01.htm";
-				else
-				{
-					htmltext = "32105-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 75) ? "32105-00.htm" : "32105-01.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -146,23 +140,20 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 			{
 				st.giveItems(DINOSAUR_EGG, 1);
 				
-				if (st.getQuestItemsCount(DINOSAUR_TISSUE) >= 150 && st.hasQuestItems(DINOSAUR_EGG))
+				if (st.getQuestItemsCount(DINOSAUR_TISSUE) >= 150)
 					st.playSound(QuestState.SOUND_MIDDLE);
 				else
 					st.playSound(QuestState.SOUND_ITEMGET);
 			}
 		}
-		else
+		else if (Rnd.get(100) < 33)
 		{
-			if (Rnd.get(100) < 33)
-			{
-				st.giveItems(DINOSAUR_TISSUE, 1);
-				
-				if (st.getQuestItemsCount(DINOSAUR_TISSUE) >= 150 && st.hasQuestItems(DINOSAUR_EGG))
-					st.playSound(QuestState.SOUND_MIDDLE);
-				else
-					st.playSound(QuestState.SOUND_ITEMGET);
-			}
+			st.rewardItems(DINOSAUR_TISSUE, 1);
+			
+			if (st.getQuestItemsCount(DINOSAUR_TISSUE) >= 150 && st.hasQuestItems(DINOSAUR_EGG))
+				st.playSound(QuestState.SOUND_MIDDLE);
+			else
+				st.playSound(QuestState.SOUND_ITEMGET);
 		}
 		
 		return null;
@@ -170,6 +161,6 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q642_APowerfulPrimevalCreature(642, qn, "A Powerful Primeval Creature");
+		new Q642_APowerfulPrimevalCreature();
 	}
 }
