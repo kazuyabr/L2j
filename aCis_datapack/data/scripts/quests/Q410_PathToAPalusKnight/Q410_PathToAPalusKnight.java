@@ -46,16 +46,7 @@ public class Q410_PathToAPalusKnight extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			PalusTalisman,
-			LycanthropeSkull,
-			VirgilsLetter,
-			MorteTalisman,
-			PredatorCarapace,
-			TrimdenSilk,
-			CoffinOfEternalRest
-		};
+		setItemsIds(PalusTalisman, LycanthropeSkull, VirgilsLetter, MorteTalisman, PredatorCarapace, TrimdenSilk, CoffinOfEternalRest);
 		
 		addStartNpc(Virgil);
 		addTalkId(Virgil, Kalinta);

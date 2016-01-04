@@ -43,11 +43,7 @@ public class Q034_InSearchOfCloth extends Quest
 	{
 		super(34, qn, "In Search of Cloth");
 		
-		questItemIds = new int[]
-		{
-			SPINNERET,
-			SPIDERSILK
-		};
+		setItemsIds(SPINNERET, SPIDERSILK);
 		
 		addStartNpc(RADIA);
 		addTalkId(RADIA, RALFORD, VARAN);

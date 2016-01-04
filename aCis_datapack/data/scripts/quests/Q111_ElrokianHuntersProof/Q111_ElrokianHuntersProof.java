@@ -39,15 +39,7 @@ public class Q111_ElrokianHuntersProof extends Quest
 	{
 		super(111, qn, "Elrokian Hunter's Proof");
 		
-		questItemIds = new int[]
-		{
-			FRAGMENT,
-			EXPEDITION_LETTER,
-			CLAW,
-			BONE,
-			SKIN,
-			PRACTICE_TRAP
-		};
+		setItemsIds(FRAGMENT, EXPEDITION_LETTER, CLAW, BONE, SKIN, PRACTICE_TRAP);
 		
 		addStartNpc(MARQUEZ);
 		addTalkId(MARQUEZ, MUSHIKA, ASAMAH, KIRIKASHIN);

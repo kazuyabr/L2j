@@ -47,20 +47,7 @@ public class Q412_PathToADarkWizard extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SeedOfAnger,
-			SeedOfDespair,
-			SeedOfHorror,
-			SeedOfLunacy,
-			FamilyRemains,
-			VarikasLiquor,
-			KneeBone,
-			HeartOfLunacy,
-			LuckyKey,
-			Candle,
-			HubScent
-		};
+		setItemsIds(SeedOfAnger, SeedOfDespair, SeedOfHorror, SeedOfLunacy, FamilyRemains, VarikasLiquor, KneeBone, HeartOfLunacy, LuckyKey, Candle, HubScent);
 		
 		addStartNpc(Varika);
 		addTalkId(Varika, Charkeren, Annika, Arkenia);
@@ -158,7 +145,7 @@ public class Q412_PathToADarkWizard extends Quest
 				switch (npc.getNpcId())
 				{
 					case Varika:
-						if (st.hasQuestItems(SeedOfAnger) && st.hasQuestItems(SeedOfHorror) && st.hasQuestItems(SeedOfLunacy))
+						if (st.hasQuestItems(SeedOfAnger, SeedOfHorror, SeedOfLunacy))
 						{
 							htmltext = "30421-16.htm";
 							st.takeItems(SeedOfAnger, 1);

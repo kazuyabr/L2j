@@ -31,10 +31,7 @@ public class Q626_ADarkTwilight extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			BLOOD_OF_SAINT
-		};
+		setItemsIds(BLOOD_OF_SAINT);
 		
 		addStartNpc(HIERARCH);
 		addTalkId(HIERARCH);

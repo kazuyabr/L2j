@@ -36,10 +36,7 @@ public class Q016_TheComingDarkness extends Quest
 	{
 		super(16, qn, "The Coming Darkness");
 		
-		questItemIds = new int[]
-		{
-			CRYSTAL_OF_SEAL
-		};
+		setItemsIds(CRYSTAL_OF_SEAL);
 		
 		addStartNpc(HIERARCH);
 		addTalkId(HIERARCH, EVIL_ALTAR_1, EVIL_ALTAR_2, EVIL_ALTAR_3, EVIL_ALTAR_4, EVIL_ALTAR_5);

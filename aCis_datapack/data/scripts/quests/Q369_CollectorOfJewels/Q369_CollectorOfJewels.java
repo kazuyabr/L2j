@@ -54,11 +54,7 @@ public class Q369_CollectorOfJewels extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			FLARE_SHARD,
-			FREEZING_SHARD
-		};
+		setItemsIds(FLARE_SHARD, FREEZING_SHARD);
 		
 		addStartNpc(NELL);
 		addTalkId(NELL);

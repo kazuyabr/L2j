@@ -22,27 +22,53 @@ public class Q328_SenseForBusiness extends Quest
 {
 	private static final String qn = "Q328_SenseForBusiness";
 	
-	// NPC
-	private static final int SARIEN = 30436;
-	
 	// Items
 	private static final int MONSTER_EYE_LENS = 1366;
 	private static final int MONSTER_EYE_CARCASS = 1347;
 	private static final int BASILISK_GIZZARD = 1348;
 	
-	public Q328_SenseForBusiness(int questId, String name, String descr)
+	private static final int[][] DROPLIST =
 	{
-		super(questId, name, descr);
-		
-		questItemIds = new int[]
 		{
-			MONSTER_EYE_LENS,
-			MONSTER_EYE_CARCASS,
-			BASILISK_GIZZARD
-		};
+			20055,
+			61,
+			62
+		},
+		{
+			20059,
+			61,
+			62
+		},
+		{
+			20067,
+			72,
+			74
+		},
+		{
+			20068,
+			78,
+			79
+		},
+		{
+			20070,
+			60,
+			0
+		},
+		{
+			20072,
+			63,
+			0
+		},
+	};
+	
+	public Q328_SenseForBusiness()
+	{
+		super(328, qn, "Sense for Business");
 		
-		addStartNpc(SARIEN);
-		addTalkId(SARIEN);
+		setItemsIds(MONSTER_EYE_LENS, MONSTER_EYE_CARCASS, BASILISK_GIZZARD);
+		
+		addStartNpc(30436); // Sarien
+		addTalkId(30436);
 		
 		addKillId(20055, 20059, 20067, 20068, 20070, 20072);
 	}
@@ -57,8 +83,8 @@ public class Q328_SenseForBusiness extends Quest
 		
 		if (event.equalsIgnoreCase("30436-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30436-06.htm"))
@@ -81,31 +107,25 @@ public class Q328_SenseForBusiness extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 21)
-					htmltext = "30436-02.htm";
-				else
-				{
-					htmltext = "30436-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 21) ? "30436-01.htm" : "30436-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int carcasses = st.getQuestItemsCount(MONSTER_EYE_CARCASS);
-				int lenses = st.getQuestItemsCount(MONSTER_EYE_LENS);
-				int gizzards = st.getQuestItemsCount(BASILISK_GIZZARD);
-				int all = carcasses + lenses + gizzards;
+				final int carcasses = st.getQuestItemsCount(MONSTER_EYE_CARCASS);
+				final int lenses = st.getQuestItemsCount(MONSTER_EYE_LENS);
+				final int gizzards = st.getQuestItemsCount(BASILISK_GIZZARD);
+				
+				final int all = carcasses + lenses + gizzards;
 				
 				if (all == 0)
 					htmltext = "30436-04.htm";
 				else
 				{
 					htmltext = "30436-05.htm";
-					int reward = (25 * carcasses) + (1000 * lenses) + (60 * gizzards) + (all >= 10 ? 618 : 0);
 					st.takeItems(MONSTER_EYE_CARCASS, -1);
 					st.takeItems(MONSTER_EYE_LENS, -1);
 					st.takeItems(BASILISK_GIZZARD, -1);
-					st.rewardItems(57, reward);
+					st.rewardItems(57, (25 * carcasses) + (1000 * lenses) + (60 * gizzards) + ((all >= 10) ? 618 : 0));
 				}
 				break;
 		}
@@ -120,33 +140,29 @@ public class Q328_SenseForBusiness extends Quest
 		if (st == null)
 			return null;
 		
-		int chance = Rnd.get(100);
-		switch (npc.getNpcId())
+		final int chance = Rnd.get(100);
+		
+		for (int[] dropInfos : DROPLIST)
 		{
-			case 20055:
-			case 20059:
-			case 20067:
-			case 20068:
-				if (chance < 2)
+			if (dropInfos[0] == npc.getNpcId())
+			{
+				final int chanceToReach = dropInfos[1];
+				final int secondChanceToReach = dropInfos[2];
+				
+				if (secondChanceToReach == 0)
 				{
-					st.giveItems(MONSTER_EYE_LENS, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
+					if (chance < chanceToReach)
+						st.dropItemsAlways(BASILISK_GIZZARD, 1, 0);
 				}
-				else if (chance < 35)
+				else
 				{
-					st.giveItems(MONSTER_EYE_CARCASS, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
-				break;
-			
-			case 20070:
-			case 20072:
-				if (chance < 18)
-				{
-					st.giveItems(BASILISK_GIZZARD, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
+					if (chance < chanceToReach)
+						st.dropItemsAlways(MONSTER_EYE_LENS, 1, 0);
+					else if (chance < secondChanceToReach)
+						st.dropItemsAlways(MONSTER_EYE_CARCASS, 1, 0);
 				}
 				break;
+			}
 		}
 		
 		return null;
@@ -154,6 +170,6 @@ public class Q328_SenseForBusiness extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q328_SenseForBusiness(328, qn, "Sense for Business");
+		new Q328_SenseForBusiness();
 	}
 }

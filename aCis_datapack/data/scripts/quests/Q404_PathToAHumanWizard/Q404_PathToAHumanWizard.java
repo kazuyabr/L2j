@@ -52,21 +52,7 @@ public class Q404_PathToAHumanWizard extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			MapOfLuster,
-			KeyOfFlame,
-			FlameEaring,
-			Mirror,
-			WindFeather,
-			WindBangel,
-			RamasDiary,
-			SparklePebble,
-			WaterNecklace,
-			GoldCoin,
-			RedSoil,
-			EarthRing
-		};
+		setItemsIds(MapOfLuster, KeyOfFlame, FlameEaring, Mirror, WindFeather, WindBangel, RamasDiary, SparklePebble, WaterNecklace, GoldCoin, RedSoil, EarthRing);
 		
 		addStartNpc(Parina);
 		addTalkId(Parina, EarthSnake, Lizardman, FireSalamander, WindSylph, WaterUndine);

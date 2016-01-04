@@ -36,11 +36,7 @@ public class Q618_IntoTheFlame extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			VACUALITE_ORE,
-			VACUALITE
-		};
+		setItemsIds(VACUALITE_ORE, VACUALITE);
 		
 		addStartNpc(KLEIN);
 		addTalkId(KLEIN, HILDA);

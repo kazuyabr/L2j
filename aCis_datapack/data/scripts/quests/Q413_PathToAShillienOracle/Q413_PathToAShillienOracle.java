@@ -45,17 +45,7 @@ public class Q413_PathToAShillienOracle extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SidrasLetter,
-			BlankSheet,
-			BloodyRune,
-			GarmielBook,
-			PrayerofAdonius,
-			PenitentsMark,
-			AshenBones,
-			AndarielBook
-		};
+		setItemsIds(SidrasLetter, BlankSheet, BloodyRune, GarmielBook, PrayerofAdonius, PenitentsMark, AshenBones, AndarielBook);
 		
 		addStartNpc(Sidra);
 		addTalkId(Sidra, Adonius, Talbot);

@@ -29,10 +29,7 @@ public class Q170_DangerousSeduction extends Quest
 	{
 		super(170, qn, "Dangerous Seduction");
 		
-		questItemIds = new int[]
-		{
-			NIGHTMARE_CRYSTAL
-		};
+		setItemsIds(NIGHTMARE_CRYSTAL);
 		
 		addStartNpc(30305); // Vellior
 		addTalkId(30305);

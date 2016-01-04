@@ -35,10 +35,7 @@ public class Q109_InSearchOfTheNest extends Quest
 	{
 		super(109, qn, "In Search of the Nest");
 		
-		questItemIds = new int[]
-		{
-			SCOUT_MEMO
-		};
+		setItemsIds(SCOUT_MEMO);
 		
 		addStartNpc(PIERCE);
 		addTalkId(PIERCE, SCOUT_CORPSE, KAHMAN);
@@ -92,7 +89,7 @@ public class Q109_InSearchOfTheNest extends Quest
 		{
 			case STATE_CREATED:
 				// Must worn one or other Golden Ram Badge in order to be accepted.
-				if (player.getLevel() >= 66 && (st.hasQuestItems(RECRUIT_BADGE) || st.hasQuestItems(SOLDIER_BADGE)))
+				if (player.getLevel() >= 66 && st.hasAtLeastOneQuestItem(RECRUIT_BADGE, SOLDIER_BADGE))
 					htmltext = "31553-00.htm";
 				else
 					htmltext = "31553-00a.htm";

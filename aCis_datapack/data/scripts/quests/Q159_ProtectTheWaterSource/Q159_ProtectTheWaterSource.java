@@ -31,12 +31,7 @@ public class Q159_ProtectTheWaterSource extends Quest
 	{
 		super(159, qn, "Protect the Water Source");
 		
-		questItemIds = new int[]
-		{
-			PLAGUE_DUST,
-			HYACINTH_CHARM_1,
-			HYACINTH_CHARM_2
-		};
+		setItemsIds(PLAGUE_DUST, HYACINTH_CHARM_1, HYACINTH_CHARM_2);
 		
 		addStartNpc(30154); // Asterios
 		addTalkId(30154);

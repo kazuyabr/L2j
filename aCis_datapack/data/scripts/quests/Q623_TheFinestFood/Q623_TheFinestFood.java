@@ -39,12 +39,7 @@ public class Q623_TheFinestFood extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			LEAF,
-			MEAT,
-			HORN
-		};
+		setItemsIds(LEAF, MEAT, HORN);
 		
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY);

@@ -53,10 +53,7 @@ public class Q646_SignsOfRevolt extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			CURSED_DOLL
-		};
+		setItemsIds(CURSED_DOLL);
 		
 		addStartNpc(TORRANT);
 		addTalkId(TORRANT);

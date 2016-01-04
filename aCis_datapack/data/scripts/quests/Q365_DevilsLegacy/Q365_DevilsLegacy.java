@@ -35,10 +35,7 @@ public class Q365_DevilsLegacy extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			PIRATE_TREASURE_CHEST
-		};
+		setItemsIds(PIRATE_TREASURE_CHEST);
 		
 		addStartNpc(RANDOLF);
 		addTalkId(RANDOLF, COLLOB);

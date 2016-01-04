@@ -38,10 +38,7 @@ public class Q010_IntoTheWorld extends Quest
 	{
 		super(10, qn, "Into the World");
 		
-		questItemIds = new int[]
-		{
-			VERY_EXPENSIVE_NECKLACE
-		};
+		setItemsIds(VERY_EXPENSIVE_NECKLACE);
 		
 		addStartNpc(BALANKI);
 		addTalkId(BALANKI, REED, GERALD);

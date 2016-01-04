@@ -126,15 +126,7 @@ public class Q508_AClansReputation extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			THEMIS_SCALE,
-			NUCLEUS_OF_HEKATON_PRIME,
-			TIPHON_SHARD,
-			GLAKIS_NUCLEUS,
-			RAHHAS_FANG,
-			NUCLEUS_OF_FLAMESTONE_GIANT
-		};
+		setItemsIds(THEMIS_SCALE, NUCLEUS_OF_HEKATON_PRIME, TIPHON_SHARD, GLAKIS_NUCLEUS, RAHHAS_FANG, NUCLEUS_OF_FLAMESTONE_GIANT);
 		
 		addStartNpc(SIR_ERIC_RODEMAI);
 		addTalkId(SIR_ERIC_RODEMAI);

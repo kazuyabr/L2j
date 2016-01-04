@@ -30,10 +30,7 @@ public class Q165_ShilensHunt extends Quest
 	{
 		super(165, qn, "Shilen's Hunt");
 		
-		questItemIds = new int[]
-		{
-			DARK_BEZOAR
-		};
+		setItemsIds(DARK_BEZOAR);
 		
 		addStartNpc(30348); // Nelsya
 		addTalkId(30348);

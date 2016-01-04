@@ -35,10 +35,7 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			NECRO_HEART
-		};
+		setItemsIds(NECRO_HEART);
 		
 		addStartNpc(FLAURON);
 		addTalkId(FLAURON);

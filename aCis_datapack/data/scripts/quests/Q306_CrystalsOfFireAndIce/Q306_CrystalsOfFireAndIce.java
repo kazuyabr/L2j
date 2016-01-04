@@ -12,9 +12,6 @@
  */
 package quests.Q306_CrystalsOfFireAndIce;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -28,59 +25,51 @@ public class Q306_CrystalsOfFireAndIce extends Quest
 	private static final int FLAME_SHARD = 1020;
 	private static final int ICE_SHARD = 1021;
 	
-	// NPC
-	private static final int KATERINA = 30004;
-	
-	// Droplist
-	Map<Integer, int[]> DROPLIST = new HashMap<>();
+	// Droplist (npcId, itemId, chance)
+	private static final int[][] DROPLIST =
 	{
-		DROPLIST.put(20109, new int[]
 		{
-			300000,
-			FLAME_SHARD
-		});
-		DROPLIST.put(20110, new int[]
-		{
-			300000,
-			ICE_SHARD
-		});
-		DROPLIST.put(20112, new int[]
-		{
-			400000,
-			FLAME_SHARD
-		});
-		DROPLIST.put(20113, new int[]
-		{
-			400000,
-			ICE_SHARD
-		});
-		DROPLIST.put(20114, new int[]
-		{
-			500000,
-			FLAME_SHARD
-		});
-		DROPLIST.put(20115, new int[]
-		{
-			500000,
-			ICE_SHARD
-		});
-	}
-	
-	public Q306_CrystalsOfFireAndIce(int questId, String name, String descr)
-	{
-		super(questId, name, descr);
-		
-		questItemIds = new int[]
-		{
+			20109,
 			FLAME_SHARD,
-			ICE_SHARD
-		};
+			300000
+		},
+		{
+			20110,
+			ICE_SHARD,
+			300000
+		},
+		{
+			20112,
+			FLAME_SHARD,
+			400000
+		},
+		{
+			20113,
+			ICE_SHARD,
+			400000
+		},
+		{
+			20114,
+			FLAME_SHARD,
+			500000
+		},
+		{
+			20115,
+			ICE_SHARD,
+			500000
+		}
+	};
+	
+	public Q306_CrystalsOfFireAndIce()
+	{
+		super(306, qn, "Crystals of Fire and Ice");
 		
-		addStartNpc(KATERINA);
-		addTalkId(KATERINA);
+		setItemsIds(FLAME_SHARD, ICE_SHARD);
 		
-		for (int mob : DROPLIST.keySet())
-			addKillId(mob);
+		addStartNpc(30004); // Katerina
+		addTalkId(30004);
+		
+		addKillId(20109, 20110, 20112, 20113, 20114, 20115);
 	}
 	
 	@Override
@@ -91,13 +80,13 @@ public class Q306_CrystalsOfFireAndIce extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (event.equalsIgnoreCase("30004-04.htm"))
+		if (event.equalsIgnoreCase("30004-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
-		else if (event.equalsIgnoreCase("30004-08.htm"))
+		else if (event.equalsIgnoreCase("30004-06.htm"))
 		{
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
@@ -117,33 +106,19 @@ public class Q306_CrystalsOfFireAndIce extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 17)
-					htmltext = "30004-03.htm";
-				else
-				{
-					htmltext = "30004-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 17) ? "30004-01.htm" : "30004-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int flame = st.getQuestItemsCount(FLAME_SHARD);
-				int ice = st.getQuestItemsCount(ICE_SHARD);
-				
-				if (flame + ice == 0)
-					htmltext = "30004-05.htm";
+				final int totalItems = st.getQuestItemsCount(FLAME_SHARD) + st.getQuestItemsCount(ICE_SHARD);
+				if (totalItems == 0)
+					htmltext = "30004-04.htm";
 				else
 				{
-					htmltext = "30004-07.htm";
-					st.playSound(QuestState.SOUND_MIDDLE);
-					
-					if (flame + ice > 10)
-						st.rewardItems(57, 5000 + (30 * (flame + ice)));
-					else
-						st.rewardItems(57, 30 * (flame + ice));
-					
+					htmltext = "30004-05.htm";
 					st.takeItems(FLAME_SHARD, -1);
 					st.takeItems(ICE_SHARD, -1);
+					st.rewardItems(57, 30 * totalItems + ((totalItems > 10) ? 5000 : 0));
 				}
 				break;
 		}
@@ -158,15 +133,20 @@ public class Q306_CrystalsOfFireAndIce extends Quest
 		if (st == null)
 			return null;
 		
-		int npcId = npc.getNpcId();
-		if (DROPLIST.containsKey(npcId))
-			st.dropItems(DROPLIST.get(npcId)[1], 1, 0, DROPLIST.get(npcId)[0]);
+		for (int[] drop : DROPLIST)
+		{
+			if (npc.getNpcId() == drop[0])
+			{
+				st.dropItems(drop[1], 1, 0, drop[2]);
+				break;
+			}
+		}
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q306_CrystalsOfFireAndIce(306, qn, "Crystals of Fire and Ice");
+		new Q306_CrystalsOfFireAndIce();
 	}
 }

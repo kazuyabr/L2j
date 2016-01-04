@@ -24,7 +24,7 @@ public class Q266_PleasOfPixies extends Quest
 	private static final String qn = "Q266_PleasOfPixies";
 	
 	// Items
-	private static final int PREDATORS_FANG = 1334;
+	private static final int PREDATOR_FANG = 1334;
 	
 	// Rewards
 	private static final int GLASS_SHARD = 1336;
@@ -32,16 +32,13 @@ public class Q266_PleasOfPixies extends Quest
 	private static final int BLUE_ONYX = 1338;
 	private static final int ONYX = 1339;
 	
-	public Q266_PleasOfPixies(int questId, String name, String descr)
+	public Q266_PleasOfPixies()
 	{
-		super(questId, name, descr);
+		super(266, qn, "Pleas of Pixies");
 		
-		questItemIds = new int[]
-		{
-			PREDATORS_FANG
-		};
+		setItemsIds(PREDATOR_FANG);
 		
-		addStartNpc(31852);
+		addStartNpc(31852); // Murika
 		addTalkId(31852);
 		
 		addKillId(20525, 20530, 20534, 20537);
@@ -57,8 +54,8 @@ public class Q266_PleasOfPixies extends Quest
 		
 		if (event.equalsIgnoreCase("31852-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -85,18 +82,18 @@ public class Q266_PleasOfPixies extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(PREDATORS_FANG) < 100)
+				if (st.getQuestItemsCount(PREDATOR_FANG) < 100)
 					htmltext = "31852-04.htm";
 				else
 				{
 					htmltext = "31852-05.htm";
-					st.takeItems(PREDATORS_FANG, -1);
+					st.takeItems(PREDATOR_FANG, -1);
 					
-					int n = Rnd.get(100);
+					final int n = Rnd.get(100);
 					if (n < 10)
 					{
-						st.rewardItems(EMERALD, 1);
 						st.playSound(QuestState.SOUND_JACKPOT);
+						st.rewardItems(EMERALD, 1);
 					}
 					else if (n < 30)
 						st.rewardItems(BLUE_ONYX, 1);
@@ -121,7 +118,7 @@ public class Q266_PleasOfPixies extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(PREDATORS_FANG, Rnd.get(1, 3), 100))
+		if (st.dropItemsAlways(PREDATOR_FANG, Rnd.get(1, 3), 100))
 			st.set("cond", "2");
 		
 		return null;
@@ -129,6 +126,6 @@ public class Q266_PleasOfPixies extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q266_PleasOfPixies(266, qn, "Pleas of Pixies");
+		new Q266_PleasOfPixies();
 	}
 }

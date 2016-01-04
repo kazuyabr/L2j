@@ -30,24 +30,17 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 	private static final int GARVARENTZ = 30704;
 	
 	// Items
-	private static final int ARTICLES_DEAD_HEROES = 4269;
+	private static final int ARTICLE_DEAD_HERO = 4269;
 	private static final int OLD_KEY = 4270;
 	private static final int OLD_HILT = 4271;
 	private static final int OLD_TOTEM = 4272;
 	private static final int CRUCIFIX = 4273;
 	
-	public Q344_1000YearsTheEndOfLamentation(int questId, String name, String descr)
+	public Q344_1000YearsTheEndOfLamentation()
 	{
-		super(questId, name, descr);
+		super(344, qn, "1000 Years, the End of Lamentation");
 		
-		questItemIds = new int[]
-		{
-			ARTICLES_DEAD_HEROES,
-			OLD_KEY,
-			OLD_HILT,
-			OLD_TOTEM,
-			CRUCIFIX
-		};
+		setItemsIds(ARTICLE_DEAD_HERO, OLD_KEY, OLD_HILT, OLD_TOTEM, CRUCIFIX);
 		
 		addStartNpc(GILMORE);
 		addTalkId(GILMORE, RODEMAI, ORVEN, GARVARENTZ, KAIEN);
@@ -65,8 +58,8 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 		
 		if (event.equalsIgnoreCase("30754-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30754-07.htm"))
@@ -85,13 +78,13 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 		}
 		else if (event.equalsIgnoreCase("30754-06.htm"))
 		{
-			if (!st.hasQuestItems(ARTICLES_DEAD_HEROES))
+			if (!st.hasQuestItems(ARTICLE_DEAD_HERO))
 				htmltext = "30754-06a.htm";
 			else
 			{
-				final int amount = st.getQuestItemsCount(ARTICLES_DEAD_HEROES);
+				final int amount = st.getQuestItemsCount(ARTICLE_DEAD_HERO);
 				
-				st.takeItems(ARTICLES_DEAD_HEROES, -1);
+				st.takeItems(ARTICLE_DEAD_HERO, -1);
 				st.giveItems(57, amount * 60);
 				
 				// Special item, % based on actual number of qItems.
@@ -138,13 +131,7 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 48)
-				{
-					htmltext = "30754-01.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "30754-02.htm";
+				htmltext = (player.getLevel() < 48) ? "30754-01.htm" : "30754-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -153,12 +140,7 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 				{
 					case GILMORE:
 						if (cond == 1)
-						{
-							if (st.hasQuestItems(ARTICLES_DEAD_HEROES))
-								htmltext = "30754-05.htm";
-							else
-								htmltext = "30754-09.htm";
-						}
+							htmltext = (st.hasQuestItems(ARTICLE_DEAD_HERO)) ? "30754-05.htm" : "30754-09.htm";
 						else if (cond == 2)
 							htmltext = (st.get("success") != null) ? "30754-16.htm" : "30754-15.htm";
 						break;
@@ -260,12 +242,13 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(ARTICLES_DEAD_HEROES, 1, -1, (36 + ((npc.getNpcId() - 20234) * 2)) * 10000);
+		st.dropItems(ARTICLE_DEAD_HERO, 1, -1, (36 + ((npc.getNpcId() - 20234) * 2)) * 10000);
+		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q344_1000YearsTheEndOfLamentation(344, qn, "1000 Years, the End of Lamentation");
+		new Q344_1000YearsTheEndOfLamentation();
 	}
 }

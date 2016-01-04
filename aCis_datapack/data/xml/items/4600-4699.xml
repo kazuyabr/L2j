@@ -213,7 +213,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4630" type="EtcItem" name="Red Soul Crystal - Stage 1">
@@ -222,7 +222,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4631" type="EtcItem" name="Red Soul Crystal - Stage 2">
@@ -231,7 +231,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4632" type="EtcItem" name="Red Soul Crystal - Stage 3">
@@ -240,7 +240,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4633" type="EtcItem" name="Red Soul Crystal - Stage 4">
@@ -249,7 +249,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4634" type="EtcItem" name="Red Soul Crystal - Stage 5">
@@ -258,7 +258,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4635" type="EtcItem" name="Red Soul Crystal - Stage 6">
@@ -267,7 +267,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4636" type="EtcItem" name="Red Soul Crystal - Stage 7">
@@ -276,7 +276,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4637" type="EtcItem" name="Red Soul Crystal - Stage 8">
@@ -285,7 +285,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4638" type="EtcItem" name="Red Soul Crystal - Stage 9">
@@ -294,7 +294,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4639" type="EtcItem" name="Red Soul Crystal - Stage 10">
@@ -303,7 +303,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4640" type="EtcItem" name="Green Soul Crystal">
@@ -312,7 +312,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4641" type="EtcItem" name="Green Soul Crystal - Stage 1">
@@ -321,7 +321,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4642" type="EtcItem" name="Green Soul Crystal - Stage 2">
@@ -330,7 +330,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4643" type="EtcItem" name="Green Soul Crystal - Stage 3">
@@ -339,7 +339,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4644" type="EtcItem" name="Green Soul Crystal - Stage 4">
@@ -348,7 +348,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4645" type="EtcItem" name="Green Soul Crystal - Stage 5">
@@ -357,7 +357,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4646" type="EtcItem" name="Green Soul Crystal - Stage 6">
@@ -366,7 +366,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4647" type="EtcItem" name="Green Soul Crystal - Stage 7">
@@ -375,7 +375,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4648" type="EtcItem" name="Green Soul Crystal - Stage 8">
@@ -384,7 +384,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4649" type="EtcItem" name="Green Soul Crystal - Stage 9">
@@ -393,7 +393,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4650" type="EtcItem" name="Green Soul Crystal - Stage 10">
@@ -402,7 +402,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4651" type="EtcItem" name="Blue Soul Crystal">
@@ -411,7 +411,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4652" type="EtcItem" name="Blue Soul Crystal - Stage 1">
@@ -420,7 +420,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4653" type="EtcItem" name="Blue Soul Crystal - Stage 2">
@@ -429,7 +429,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4654" type="EtcItem" name="Blue Soul Crystal - Stage 3">
@@ -438,7 +438,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4655" type="EtcItem" name="Blue Soul Crystal - Stage 4">
@@ -447,7 +447,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4656" type="EtcItem" name="Blue Soul Crystal - Stage 5">
@@ -456,7 +456,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4657" type="EtcItem" name="Blue Soul Crystal - Stage 6">
@@ -465,7 +465,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4658" type="EtcItem" name="Blue Soul Crystal - Stage 7">
@@ -474,7 +474,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4659" type="EtcItem" name="Blue Soul Crystal - Stage 8">
@@ -483,7 +483,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4660" type="EtcItem" name="Blue Soul Crystal - Stage 9">
@@ -492,7 +492,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4661" type="EtcItem" name="Blue Soul Crystal - Stage 10">
@@ -501,7 +501,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="4662" type="EtcItem" name="Broken Red Soul Crystal">

@@ -24,14 +24,11 @@ public class Q324_SweetestVenom extends Quest
 	// Item
 	private static final int VENOM_SAC = 1077;
 	
-	public Q324_SweetestVenom(int questId, String name, String descr)
+	public Q324_SweetestVenom()
 	{
-		super(questId, name, descr);
+		super(324, qn, "Sweetest Venom");
 		
-		questItemIds = new int[]
-		{
-			VENOM_SAC
-		};
+		setItemsIds(VENOM_SAC);
 		
 		addStartNpc(30351); // Astaron
 		addTalkId(30351);
@@ -49,8 +46,8 @@ public class Q324_SweetestVenom extends Quest
 		
 		if (event.equalsIgnoreCase("30351-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -68,17 +65,13 @@ public class Q324_SweetestVenom extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 18)
-					htmltext = "30351-03.htm";
-				else
-				{
-					htmltext = "30351-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 18) ? "30351-02.htm" : "30351-03.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(VENOM_SAC) == 10)
+				if (st.getInt("cond") == 1)
+					htmltext = "30351-05.htm";
+				else
 				{
 					htmltext = "30351-06.htm";
 					st.takeItems(VENOM_SAC, -1);
@@ -86,8 +79,6 @@ public class Q324_SweetestVenom extends Quest
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
-				else
-					htmltext = "30351-05.htm";
 				break;
 		}
 		
@@ -109,6 +100,6 @@ public class Q324_SweetestVenom extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q324_SweetestVenom(324, qn, "Sweetest Venom");
+		new Q324_SweetestVenom();
 	}
 }

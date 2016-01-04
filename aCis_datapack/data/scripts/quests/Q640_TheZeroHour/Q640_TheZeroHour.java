@@ -80,10 +80,8 @@ public class Q640_TheZeroHour extends Quest
 	public Q640_TheZeroHour(int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		questItemIds = new int[]
-		{
-			FANG
-		};
+		
+		setItemsIds(FANG);
 		
 		addStartNpc(KAHMAN);
 		addTalkId(KAHMAN);

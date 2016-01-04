@@ -32,10 +32,7 @@ public class Q013_ParcelDelivery extends Quest
 	{
 		super(13, qn, "Parcel Delivery");
 		
-		questItemIds = new int[]
-		{
-			PACKAGE
-		};
+		setItemsIds(PACKAGE);
 		
 		addStartNpc(FUNDIN);
 		addTalkId(FUNDIN, VULCAN);

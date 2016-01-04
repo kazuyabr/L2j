@@ -69,7 +69,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5909" type="EtcItem" name="(Not used) Green Soul Crystal: Grade 11">
@@ -88,7 +88,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5912" type="EtcItem" name="(Not used) Blue Soul Crystal: Grade 11">
@@ -107,7 +107,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5915" type="EtcItem" name="Pirate's Treasure Map">

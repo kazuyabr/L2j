@@ -54,10 +54,7 @@ public class Q601_WatchingEyes extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			ProofOfAvenger
-		};
+		setItemsIds(ProofOfAvenger);
 		
 		addStartNpc(31683); // Eye of Argos
 		addTalkId(31683);

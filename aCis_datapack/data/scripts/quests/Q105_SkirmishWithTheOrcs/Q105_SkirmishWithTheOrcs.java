@@ -60,19 +60,7 @@ public class Q105_SkirmishWithTheOrcs extends Quest
 	{
 		super(105, qn, "Skirmish with the Orcs");
 		
-		questItemIds = new int[]
-		{
-			KENDELL_ORDER_1,
-			KENDELL_ORDER_2,
-			KENDELL_ORDER_3,
-			KENDELL_ORDER_4,
-			KENDELL_ORDER_5,
-			KENDELL_ORDER_6,
-			KENDELL_ORDER_7,
-			KENDELL_ORDER_8,
-			KABOO_CHIEF_TORC_1,
-			KABOO_CHIEF_TORC_2
-		};
+		setItemsIds(KENDELL_ORDER_1, KENDELL_ORDER_2, KENDELL_ORDER_3, KENDELL_ORDER_4, KENDELL_ORDER_5, KENDELL_ORDER_6, KENDELL_ORDER_7, KENDELL_ORDER_8, KABOO_CHIEF_TORC_1, KABOO_CHIEF_TORC_2);
 		
 		addStartNpc(30218); // Kendell
 		addTalkId(30218);

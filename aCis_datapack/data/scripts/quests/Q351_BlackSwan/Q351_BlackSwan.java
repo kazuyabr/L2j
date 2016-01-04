@@ -33,16 +33,11 @@ public class Q351_BlackSwan extends Quest
 	private static final int BARREL_OF_LEAGUE = 4298;
 	private static final int BILL_OF_IASON_HEINE = 4310;
 	
-	public Q351_BlackSwan(int questId, String name, String descr)
+	public Q351_BlackSwan()
 	{
-		super(questId, name, descr);
+		super(351, qn, "Black Swan");
 		
-		questItemIds = new int[]
-		{
-			ORDER_OF_GOSTA,
-			BARREL_OF_LEAGUE,
-			LIZARD_FANG
-		};
+		setItemsIds(ORDER_OF_GOSTA, BARREL_OF_LEAGUE, LIZARD_FANG);
 		
 		addStartNpc(GOSTA);
 		addTalkId(GOSTA, IASON_HEINE, ROMAN);
@@ -62,12 +57,12 @@ public class Q351_BlackSwan extends Quest
 		{
 			st.setState(STATE_STARTED);
 			st.set("cond", "1");
-			st.giveItems(ORDER_OF_GOSTA, 1);
 			st.playSound(QuestState.SOUND_ACCEPT);
+			st.giveItems(ORDER_OF_GOSTA, 1);
 		}
 		else if (event.equalsIgnoreCase("30969-02a.htm"))
 		{
-			int lizardFangs = st.getQuestItemsCount(LIZARD_FANG);
+			final int lizardFangs = st.getQuestItemsCount(LIZARD_FANG);
 			if (lizardFangs > 0)
 			{
 				htmltext = "30969-02.htm";
@@ -78,7 +73,7 @@ public class Q351_BlackSwan extends Quest
 		}
 		else if (event.equalsIgnoreCase("30969-03a.htm"))
 		{
-			int barrels = st.getQuestItemsCount(BARREL_OF_LEAGUE);
+			final int barrels = st.getQuestItemsCount(BARREL_OF_LEAGUE);
 			if (barrels > 0)
 			{
 				htmltext = "30969-03.htm";
@@ -97,12 +92,11 @@ public class Q351_BlackSwan extends Quest
 		else if (event.equalsIgnoreCase("30969-06.htm"))
 		{
 			// If no more quest items finish the quest for real, else send a "Return" type HTM.
-			if (st.getQuestItemsCount(BARREL_OF_LEAGUE) == 0 && st.getQuestItemsCount(LIZARD_FANG) == 0)
+			if (!st.hasQuestItems(BARREL_OF_LEAGUE, LIZARD_FANG))
 			{
 				htmltext = "30969-07.htm";
-				
-				st.exitQuest(true);
 				st.playSound(QuestState.SOUND_FINISH);
+				st.exitQuest(true);
 			}
 		}
 		
@@ -120,13 +114,7 @@ public class Q351_BlackSwan extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 32)
-					htmltext = "30916-01.htm";
-				else
-				{
-					htmltext = "30916-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 32) ? "30916-00.htm" : "30916-01.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -141,10 +129,7 @@ public class Q351_BlackSwan extends Quest
 						break;
 					
 					case ROMAN:
-						if (st.getQuestItemsCount(BILL_OF_IASON_HEINE) > 0)
-							htmltext = "30897-01.htm";
-						else
-							htmltext = "30897-02.htm";
+						htmltext = (st.hasQuestItems(BILL_OF_IASON_HEINE)) ? "30897-01.htm" : "30897-02.htm";
 						break;
 				}
 				break;
@@ -160,26 +145,19 @@ public class Q351_BlackSwan extends Quest
 		if (st == null)
 			return null;
 		
-		int random = Rnd.get(100);
-		if (random < 50)
+		final int random = Rnd.get(100);
+		if (random < 75)
 		{
-			if (random < 25)
-				st.giveItems(LIZARD_FANG, 1);
-			else
-				st.giveItems(LIZARD_FANG, 2);
+			st.giveItems(LIZARD_FANG, (random < 50) ? 1 : 2);
+			st.playSound(QuestState.SOUND_ITEMGET);
 			
-			if (random < 5)
-			{
+			if (Rnd.get(20) == 0)
 				st.giveItems(BARREL_OF_LEAGUE, 1);
-				st.playSound(QuestState.SOUND_MIDDLE);
-			}
-			else
-				st.playSound(QuestState.SOUND_ITEMGET);
 		}
-		else if (random < 55)
+		else if (random < 79)
 		{
 			st.giveItems(BARREL_OF_LEAGUE, 1);
-			st.playSound(QuestState.SOUND_MIDDLE);
+			st.playSound(QuestState.SOUND_ITEMGET);
 		}
 		
 		return null;
@@ -187,6 +165,6 @@ public class Q351_BlackSwan extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q351_BlackSwan(351, qn, "Black Swan");
+		new Q351_BlackSwan();
 	}
 }

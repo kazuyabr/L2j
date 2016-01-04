@@ -43,15 +43,7 @@ public class Q409_PathToAnElvenOracle extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			CrystalMedallion,
-			SwindlersMoney,
-			AllanasDiary,
-			LizardCaptainOrder,
-			HalfofDiary,
-			TamilsNecklace
-		};
+		setItemsIds(CrystalMedallion, SwindlersMoney, AllanasDiary, LizardCaptainOrder, HalfofDiary, TamilsNecklace);
 		
 		addStartNpc(Manuel);
 		addTalkId(Manuel, Allana, Perrin);

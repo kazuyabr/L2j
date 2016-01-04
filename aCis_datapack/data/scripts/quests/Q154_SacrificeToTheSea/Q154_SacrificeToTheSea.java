@@ -38,12 +38,7 @@ public class Q154_SacrificeToTheSea extends Quest
 	{
 		super(154, qn, "Sacrifice to the Sea");
 		
-		questItemIds = new int[]
-		{
-			FOX_FUR,
-			FOX_FUR_YARN,
-			MAIDEN_DOLL
-		};
+		setItemsIds(FOX_FUR, FOX_FUR_YARN, MAIDEN_DOLL);
 		
 		addStartNpc(ROCKSWELL);
 		addTalkId(ROCKSWELL, CRISTEL, ROLFE);

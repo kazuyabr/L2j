@@ -37,10 +37,7 @@ public final class Q641_AttackSailren extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			GAZKH_FRAGMENT
-		};
+		setItemsIds(GAZKH_FRAGMENT);
 		
 		addStartNpc(STATUE);
 		addTalkId(STATUE);

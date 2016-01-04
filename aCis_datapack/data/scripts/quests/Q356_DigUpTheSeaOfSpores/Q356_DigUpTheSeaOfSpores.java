@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q356_DigUpTheSeaOfSpores extends Quest
 {
@@ -26,25 +25,18 @@ public class Q356_DigUpTheSeaOfSpores extends Quest
 	private static final int HERB_SPORE = 5866;
 	private static final int CARN_SPORE = 5865;
 	
-	// NPC
-	private static final int GAUEN = 30717;
-	
 	// Monsters
 	private static final int ROTTING_TREE = 20558;
 	private static final int SPORE_ZOMBIE = 20562;
 	
-	public Q356_DigUpTheSeaOfSpores(int questId, String name, String descr)
+	public Q356_DigUpTheSeaOfSpores()
 	{
-		super(questId, name, descr);
+		super(356, qn, "Dig Up the Sea of Spores!");
 		
-		questItemIds = new int[]
-		{
-			HERB_SPORE,
-			CARN_SPORE
-		};
+		setItemsIds(HERB_SPORE, CARN_SPORE);
 		
-		addStartNpc(GAUEN);
-		addTalkId(GAUEN);
+		addStartNpc(30717); // Gauen
+		addTalkId(30717);
 		
 		addKillId(ROTTING_TREE, SPORE_ZOMBIE);
 	}
@@ -65,31 +57,29 @@ public class Q356_DigUpTheSeaOfSpores extends Quest
 		}
 		else if (event.equalsIgnoreCase("30717-17.htm"))
 		{
-			st.takeItems(HERB_SPORE, 50);
-			st.takeItems(CARN_SPORE, 50);
+			st.takeItems(HERB_SPORE, -1);
+			st.takeItems(CARN_SPORE, -1);
 			st.rewardItems(57, 20950);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
 		else if (event.equalsIgnoreCase("30717-14.htm"))
 		{
-			st.takeItems(HERB_SPORE, 50);
-			st.takeItems(CARN_SPORE, 50);
+			st.takeItems(HERB_SPORE, -1);
+			st.takeItems(CARN_SPORE, -1);
 			st.rewardExpAndSp(35000, 2600);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
 		else if (event.equalsIgnoreCase("30717-12.htm"))
 		{
-			st.takeItems(HERB_SPORE, 50);
+			st.takeItems(HERB_SPORE, -1);
 			st.rewardExpAndSp(24500, 0);
-			st.playSound(QuestState.SOUND_MIDDLE);
 		}
 		else if (event.equalsIgnoreCase("30717-13.htm"))
 		{
-			st.takeItems(CARN_SPORE, 50);
+			st.takeItems(CARN_SPORE, -1);
 			st.rewardExpAndSp(0, 1820);
-			st.playSound(QuestState.SOUND_MIDDLE);
 		}
 		
 		return htmltext;
@@ -106,13 +96,7 @@ public class Q356_DigUpTheSeaOfSpores extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 43)
-					htmltext = "30717-02.htm";
-				else
-				{
-					htmltext = "30717-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 43) ? "30717-01.htm" : "30717-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -143,49 +127,19 @@ public class Q356_DigUpTheSeaOfSpores extends Quest
 		if (st == null)
 			return null;
 		
-		int cond = st.getInt("cond");
-		if (cond < 3 && Rnd.get(100) < 50)
+		final int cond = st.getInt("cond");
+		if (cond < 3)
 		{
 			switch (npc.getNpcId())
 			{
 				case ROTTING_TREE:
-					if (st.getQuestItemsCount(HERB_SPORE) < 50)
-					{
-						st.giveItems(HERB_SPORE, 1);
-						
-						if (cond == 2 && (st.getQuestItemsCount(CARN_SPORE) >= 50 && st.getQuestItemsCount(HERB_SPORE) >= 50))
-						{
-							st.set("cond", "3");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else if (cond == 1 && (st.getQuestItemsCount(CARN_SPORE) >= 50 || st.getQuestItemsCount(HERB_SPORE) >= 50))
-						{
-							st.set("cond", "2");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
-							st.playSound(QuestState.SOUND_ITEMGET);
-					}
+					if (st.dropItems(HERB_SPORE, 1, 50, 730000))
+						st.set("cond", (cond == 2) ? "3" : "2");
 					break;
 				
 				case SPORE_ZOMBIE:
-					if (st.getQuestItemsCount(CARN_SPORE) < 50)
-					{
-						st.giveItems(CARN_SPORE, 1);
-						
-						if (cond == 2 && (st.getQuestItemsCount(CARN_SPORE) >= 50 && st.getQuestItemsCount(HERB_SPORE) >= 50))
-						{
-							st.set("cond", "3");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else if (cond == 1 && (st.getQuestItemsCount(CARN_SPORE) >= 50 || st.getQuestItemsCount(HERB_SPORE) >= 50))
-						{
-							st.set("cond", "2");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
-							st.playSound(QuestState.SOUND_ITEMGET);
-					}
+					if (st.dropItems(CARN_SPORE, 1, 50, 940000))
+						st.set("cond", (cond == 2) ? "3" : "2");
 					break;
 			}
 		}
@@ -195,6 +149,6 @@ public class Q356_DigUpTheSeaOfSpores extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q356_DigUpTheSeaOfSpores(356, qn, "Dig Up the Sea of Spores!");
+		new Q356_DigUpTheSeaOfSpores();
 	}
 }

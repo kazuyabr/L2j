@@ -32,10 +32,7 @@ public class Q019_GoToThePastureland extends Quest
 	{
 		super(19, qn, "Go to the Pastureland!");
 		
-		questItemIds = new int[]
-		{
-			YOUNG_WILD_BEAST_MEAT
-		};
+		setItemsIds(YOUNG_WILD_BEAST_MEAT);
 		
 		addStartNpc(VLADIMIR);
 		addTalkId(VLADIMIR, TUNATUN);

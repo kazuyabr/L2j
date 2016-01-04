@@ -72,13 +72,7 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DEATH_WAVE_LIGHT,
-			CAVE_BEAST_TOOTH,
-			SEALED_MYSTERIOUS_STONE,
-			MYSTERIOUS_STONE
-		};
+		setItemsIds(DEATH_WAVE_LIGHT, CAVE_BEAST_TOOTH, SEALED_MYSTERIOUS_STONE, MYSTERIOUS_STONE);
 		
 		addStartNpc(MANAKIA);
 		addTalkId(MANAKIA, TORAI);

@@ -92,12 +92,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Varka_Badge_Soldier,
-			Varka_Badge_Officer,
-			Varka_Badge_Captain
-		};
+		setItemsIds(Varka_Badge_Soldier, Varka_Badge_Officer, Varka_Badge_Captain);
 		
 		addStartNpc(31371); // Wahkan
 		addTalkId(31371);

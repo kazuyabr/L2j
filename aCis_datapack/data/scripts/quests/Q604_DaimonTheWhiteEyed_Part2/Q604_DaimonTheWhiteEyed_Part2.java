@@ -58,11 +58,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SUMMON_CRYSTAL,
-			ESSENCE_OF_DAIMON
-		};
+		setItemsIds(SUMMON_CRYSTAL, ESSENCE_OF_DAIMON);
 		
 		addStartNpc(EYE_OF_ARGOS);
 		addTalkId(EYE_OF_ARGOS, DAIMONS_ALTAR);

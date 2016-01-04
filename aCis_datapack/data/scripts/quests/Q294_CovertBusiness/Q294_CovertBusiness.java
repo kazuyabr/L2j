@@ -24,32 +24,21 @@ public class Q294_CovertBusiness extends Quest
 	private static final String qn = "Q294_CovertBusiness";
 	
 	// Item
-	private static final int BatFang = 1491;
+	private static final int BAT_FANG = 1491;
 	
 	// Reward
-	private static final int RingOfRaccoon = 1508;
+	private static final int RING_OF_RACCOON = 1508;
 	
-	// Mobs
-	private static final int Barded = 20370;
-	private static final int Blade = 20480;
-	
-	// NPCs
-	private static final int Keef = 30534;
-	
-	public Q294_CovertBusiness(int questId, String name, String descr)
+	public Q294_CovertBusiness()
 	{
-		super(questId, name, descr);
+		super(294, qn, "Covert Business");
 		
-		questItemIds = new int[]
-		{
-			BatFang
-		};
+		setItemsIds(BAT_FANG);
 		
-		addStartNpc(Keef);
-		addTalkId(Keef);
+		addStartNpc(30534); // Keef
+		addTalkId(30534);
 		
-		addKillId(Barded, Blade);
-		
+		addKillId(20370, 20480); // Barded Bat, Blade Bat
 	}
 	
 	@Override
@@ -90,14 +79,13 @@ public class Q294_CovertBusiness extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				if (cond == 1)
+				if (st.getInt("cond") == 1)
 					htmltext = "30534-04.htm";
-				else if (cond == 2)
+				else
 				{
 					htmltext = "30534-05.htm";
-					st.takeItems(BatFang, -1);
-					st.giveItems(RingOfRaccoon, 1);
+					st.takeItems(BAT_FANG, -1);
+					st.giveItems(RING_OF_RACCOON, 1);
 					st.rewardExpAndSp(0, 600);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
@@ -115,7 +103,7 @@ public class Q294_CovertBusiness extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(BatFang, Rnd.get(1, 4), 100))
+		if (st.dropItemsAlways(BAT_FANG, Rnd.get(1, 4), 100))
 			st.set("cond", "2");
 		
 		return null;
@@ -123,6 +111,6 @@ public class Q294_CovertBusiness extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q294_CovertBusiness(294, qn, "Covert Business");
+		new Q294_CovertBusiness();
 	}
 }

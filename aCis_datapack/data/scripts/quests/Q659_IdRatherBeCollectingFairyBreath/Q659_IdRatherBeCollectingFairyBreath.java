@@ -37,10 +37,7 @@ public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			FAIRY_BREATH
-		};
+		setItemsIds(FAIRY_BREATH);
 		
 		addStartNpc(GALATEA);
 		addTalkId(GALATEA);

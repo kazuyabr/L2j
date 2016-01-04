@@ -36,10 +36,7 @@ public class Q650_ABrokenDream extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DREAM_FRAGMENT
-		};
+		setItemsIds(DREAM_FRAGMENT);
 		
 		addStartNpc(GHOST);
 		addTalkId(GHOST);

@@ -61,10 +61,7 @@ public class Q631_DeliciousTopChoiceMeat extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			TOP_QUALITY_MEAT
-		};
+		setItemsIds(TOP_QUALITY_MEAT);
 		
 		addStartNpc(TUNATUN);
 		addTalkId(TUNATUN);

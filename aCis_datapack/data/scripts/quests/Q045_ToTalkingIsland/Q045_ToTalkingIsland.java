@@ -42,15 +42,7 @@ public class Q045_ToTalkingIsland extends Quest
 	{
 		super(45, qn, "To Talking Island");
 		
-		questItemIds = new int[]
-		{
-			ORDER_DOCUMENT_1,
-			ORDER_DOCUMENT_2,
-			ORDER_DOCUMENT_3,
-			MAGIC_SWORD_HILT,
-			GEMSTONE_POWDER,
-			PURIFIED_MAGIC_NECKLACE
-		};
+		setItemsIds(ORDER_DOCUMENT_1, ORDER_DOCUMENT_2, ORDER_DOCUMENT_3, MAGIC_SWORD_HILT, GEMSTONE_POWDER, PURIFIED_MAGIC_NECKLACE);
 		
 		addStartNpc(GALLADUCCI);
 		addTalkId(GALLADUCCI, GENTLER, SANDRA, DUSTIN);

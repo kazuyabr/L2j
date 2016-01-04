@@ -43,15 +43,7 @@ public class Q005_MinersFavor extends Quest
 	{
 		super(5, qn, "Miner's Favor");
 		
-		questItemIds = new int[]
-		{
-			BOLTERS_LIST,
-			MINING_BOOTS,
-			MINERS_PICK,
-			BOOMBOOM_POWDER,
-			REDSTONE_BEER,
-			BOLTERS_SMELLY_SOCKS
-		};
+		setItemsIds(BOLTERS_LIST, MINING_BOOTS, MINERS_PICK, BOOMBOOM_POWDER, REDSTONE_BEER, BOLTERS_SMELLY_SOCKS);
 		
 		addStartNpc(BOLTER);
 		addTalkId(BOLTER, SHARI, GARITA, REED, BRUNON);
@@ -78,7 +70,7 @@ public class Q005_MinersFavor extends Quest
 			st.takeItems(BOLTERS_SMELLY_SOCKS, 1);
 			st.giveItems(MINERS_PICK, 1);
 			
-			if (st.hasQuestItems(MINING_BOOTS) && st.hasQuestItems(BOOMBOOM_POWDER) && st.hasQuestItems(REDSTONE_BEER))
+			if (st.hasQuestItems(MINING_BOOTS, BOOMBOOM_POWDER, REDSTONE_BEER))
 			{
 				st.set("cond", "2");
 				st.playSound(QuestState.SOUND_MIDDLE);
@@ -131,7 +123,7 @@ public class Q005_MinersFavor extends Quest
 							htmltext = "30517-01.htm";
 							st.giveItems(BOOMBOOM_POWDER, 1);
 							
-							if (st.hasQuestItems(MINING_BOOTS) && st.hasQuestItems(MINERS_PICK) && st.hasQuestItems(REDSTONE_BEER))
+							if (st.hasQuestItems(MINING_BOOTS, MINERS_PICK, REDSTONE_BEER))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
@@ -149,7 +141,7 @@ public class Q005_MinersFavor extends Quest
 							htmltext = "30518-01.htm";
 							st.giveItems(MINING_BOOTS, 1);
 							
-							if (st.hasQuestItems(MINERS_PICK) && st.hasQuestItems(BOOMBOOM_POWDER) && st.hasQuestItems(REDSTONE_BEER))
+							if (st.hasQuestItems(MINERS_PICK, BOOMBOOM_POWDER, REDSTONE_BEER))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
@@ -167,7 +159,7 @@ public class Q005_MinersFavor extends Quest
 							htmltext = "30520-01.htm";
 							st.giveItems(REDSTONE_BEER, 1);
 							
-							if (st.hasQuestItems(MINING_BOOTS) && st.hasQuestItems(MINERS_PICK) && st.hasQuestItems(BOOMBOOM_POWDER))
+							if (st.hasQuestItems(MINING_BOOTS, MINERS_PICK, BOOMBOOM_POWDER))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);

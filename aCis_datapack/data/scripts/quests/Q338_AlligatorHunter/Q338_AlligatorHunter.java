@@ -16,34 +16,24 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q338_AlligatorHunter extends Quest
 {
 	private static final String qn = "Q338_AlligatorHunter";
 	
-	// Mob
-	private static final int ALLIGATOR = 20135;
-	
-	// Npc
-	private static final int ENVERUN = 30892;
-	
 	// Item
-	private static final int ALLIGATOR_PELTS = 4337;
+	private static final int ALLIGATOR_PELT = 4337;
 	
-	public Q338_AlligatorHunter(int questId, String name, String descr)
+	public Q338_AlligatorHunter()
 	{
-		super(questId, name, descr);
+		super(338, qn, "Alligator Hunter");
 		
-		questItemIds = new int[]
-		{
-			ALLIGATOR_PELTS
-		};
+		setItemsIds(ALLIGATOR_PELT);
 		
-		addStartNpc(ENVERUN);
-		addTalkId(ENVERUN);
+		addStartNpc(30892); // Enverun
+		addTalkId(30892);
 		
-		addKillId(ALLIGATOR);
+		addKillId(20135); // Alligator
 	}
 	
 	@Override
@@ -56,25 +46,20 @@ public class Q338_AlligatorHunter extends Quest
 		
 		if (event.equalsIgnoreCase("30892-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30892-05.htm"))
 		{
-			int count = st.getQuestItemsCount(ALLIGATOR_PELTS);
-			if (count > 0)
-			{
-				if (count > 10)
-					count = count * 60 + 3430;
-				else
-					count = count * 60;
-				
-				st.takeItems(ALLIGATOR_PELTS, -1);
-				st.rewardItems(57, count);
-			}
-			else
-				htmltext = "30892-04.htm";
+			final int pelts = st.getQuestItemsCount(ALLIGATOR_PELT);
+			
+			int reward = pelts * 60;
+			if (pelts > 10)
+				reward += 3430;
+			
+			st.takeItems(ALLIGATOR_PELT, -1);
+			st.rewardItems(57, reward);
 		}
 		else if (event.equalsIgnoreCase("30892-08.htm"))
 		{
@@ -96,20 +81,11 @@ public class Q338_AlligatorHunter extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 40)
-					htmltext = "30892-01.htm";
-				else
-				{
-					htmltext = "30892-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 40) ? "30892-00.htm" : "30892-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(ALLIGATOR_PELTS) > 0)
-					htmltext = "30892-03.htm";
-				else
-					htmltext = "30892-04.htm";
+				htmltext = (st.hasQuestItems(ALLIGATOR_PELT)) ? "30892-03.htm" : "30892-04.htm";
 				break;
 		}
 		
@@ -123,17 +99,13 @@ public class Q338_AlligatorHunter extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 50)
-		{
-			st.giveItems(ALLIGATOR_PELTS, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(ALLIGATOR_PELT, 1, 0, 190000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q338_AlligatorHunter(338, qn, "Alligator Hunter");
+		new Q338_AlligatorHunter();
 	}
 }

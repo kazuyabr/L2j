@@ -23,27 +23,22 @@ public class Q276_TotemOfTheHestui extends Quest
 {
 	private static final String qn = "Q276_TotemOfTheHestui";
 	
-	// NPC
-	private static final int TANAPI = 30571;
-	
 	// Items
 	private static final int KASHA_PARASITE = 1480;
 	private static final int KASHA_CRYSTAL = 1481;
-	private static final int HESTUIS_TOTEM = 1500;
+	
+	// Rewards
+	private static final int HESTUI_TOTEM = 1500;
 	private static final int LEATHER_PANTS = 29;
 	
-	public Q276_TotemOfTheHestui(int questId, String name, String descr)
+	public Q276_TotemOfTheHestui()
 	{
-		super(questId, name, descr);
+		super(276, qn, "Totem of the Hestui");
 		
-		questItemIds = new int[]
-		{
-			KASHA_PARASITE,
-			KASHA_CRYSTAL
-		};
+		setItemsIds(KASHA_PARASITE, KASHA_CRYSTAL);
 		
-		addStartNpc(TANAPI);
-		addTalkId(TANAPI);
+		addStartNpc(30571); // Tanapi
+		addTalkId(30571);
 		
 		addKillId(20479, 27044);
 	}
@@ -58,8 +53,8 @@ public class Q276_TotemOfTheHestui extends Quest
 		
 		if (event.equalsIgnoreCase("30571-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -86,14 +81,14 @@ public class Q276_TotemOfTheHestui extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (!st.hasQuestItems(KASHA_CRYSTAL))
+				if (st.getInt("cond") == 1)
 					htmltext = "30571-04.htm";
 				else
 				{
 					htmltext = "30571-05.htm";
 					st.takeItems(KASHA_CRYSTAL, -1);
 					st.takeItems(KASHA_PARASITE, -1);
-					st.giveItems(HESTUIS_TOTEM, 1);
+					st.giveItems(HESTUI_TOTEM, 1);
 					st.giveItems(LEATHER_PANTS, 1);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
@@ -116,10 +111,10 @@ public class Q276_TotemOfTheHestui extends Quest
 			switch (npc.getNpcId())
 			{
 				case 20479:
-					int count = st.getQuestItemsCount(KASHA_PARASITE);
-					int random = Rnd.get(100);
+					final int count = st.getQuestItemsCount(KASHA_PARASITE);
+					final int random = Rnd.get(100);
 					
-					if ((count >= 70 && random < 90) || (count >= 65 && random < 75) || (count >= 60 && random < 60) || (count >= 52 && random < 45) || (count >= 50 && random < 30))
+					if (count >= 79 || (count >= 69 && random <= 20) || (count >= 59 && random <= 15) || (count >= 49 && random <= 10) || (count >= 39 && random < 2))
 					{
 						addSpawn(27044, npc, true, 0, true);
 						st.takeItems(KASHA_PARASITE, count);
@@ -132,17 +127,18 @@ public class Q276_TotemOfTheHestui extends Quest
 					break;
 				
 				case 27044:
+					st.set("cond", "2");
 					st.playSound(QuestState.SOUND_MIDDLE);
 					st.giveItems(KASHA_CRYSTAL, 1);
-					st.set("cond", "2");
 					break;
 			}
 		}
+		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q276_TotemOfTheHestui(276, qn, "Totem of the Hestui");
+		new Q276_TotemOfTheHestui();
 	}
 }

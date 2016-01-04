@@ -21,23 +21,17 @@ public class Q262_TradeWithTheIvoryTower extends Quest
 {
 	private static final String qn = "Q262_TradeWithTheIvoryTower";
 	
-	// NPC
-	private static final int Vollodos = 30137;
-	
 	// Item
 	private static final int FUNGUS_SAC = 707;
 	
-	public Q262_TradeWithTheIvoryTower(int questId, String name, String descr)
+	public Q262_TradeWithTheIvoryTower()
 	{
-		super(questId, name, descr);
+		super(262, qn, "Trade with the Ivory Tower");
 		
-		questItemIds = new int[]
-		{
-			FUNGUS_SAC
-		};
+		setItemsIds(FUNGUS_SAC);
 		
-		addStartNpc(Vollodos);
-		addTalkId(Vollodos);
+		addStartNpc(30137); // Vollodos
+		addTalkId(30137);
 		
 		addKillId(20400, 20007);
 	}
@@ -52,8 +46,8 @@ public class Q262_TradeWithTheIvoryTower extends Quest
 		
 		if (event.equalsIgnoreCase("30137-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -106,6 +100,6 @@ public class Q262_TradeWithTheIvoryTower extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q262_TradeWithTheIvoryTower(262, qn, "Trade with the Ivory Tower");
+		new Q262_TradeWithTheIvoryTower();
 	}
 }

@@ -31,10 +31,7 @@ public class Q368_TrespassingIntoTheSacredArea extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			FANG
-		};
+		setItemsIds(FANG);
 		
 		addStartNpc(RESTINA);
 		addTalkId(RESTINA);

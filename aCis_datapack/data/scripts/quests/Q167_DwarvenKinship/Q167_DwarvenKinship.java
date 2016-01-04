@@ -34,11 +34,7 @@ public class Q167_DwarvenKinship extends Quest
 	{
 		super(167, qn, "Dwarven Kinship");
 		
-		questItemIds = new int[]
-		{
-			CARLON_LETTER,
-			NORMAN_LETTER
-		};
+		setItemsIds(CARLON_LETTER, NORMAN_LETTER);
 		
 		addStartNpc(CARLON);
 		addTalkId(CARLON, HAPROCK, NORMAN);

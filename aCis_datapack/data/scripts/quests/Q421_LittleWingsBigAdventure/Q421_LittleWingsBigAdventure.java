@@ -50,10 +50,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			FAIRY_LEAF
-		};
+		setItemsIds(FAIRY_LEAF);
 		
 		addStartNpc(CRONOS);
 		addTalkId(CRONOS, MIMYU);

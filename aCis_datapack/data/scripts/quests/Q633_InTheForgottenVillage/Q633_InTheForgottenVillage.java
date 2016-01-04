@@ -70,11 +70,7 @@ public class Q633_InTheForgottenVillage extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			RIB_BONE,
-			ZOMBIE_LIVER
-		};
+		setItemsIds(RIB_BONE, ZOMBIE_LIVER);
 		
 		addStartNpc(MINA);
 		addTalkId(MINA);

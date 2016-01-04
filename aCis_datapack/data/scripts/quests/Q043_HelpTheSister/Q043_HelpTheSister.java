@@ -39,11 +39,7 @@ public class Q043_HelpTheSister extends Quest
 	{
 		super(43, qn, "Help the Sister!");
 		
-		questItemIds = new int[]
-		{
-			MAP_PIECE,
-			MAP
-		};
+		setItemsIds(MAP_PIECE, MAP);
 		
 		addStartNpc(COOPER);
 		addTalkId(COOPER, GALLADUCCI);

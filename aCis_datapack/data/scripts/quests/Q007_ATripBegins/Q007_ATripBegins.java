@@ -38,10 +38,7 @@ public class Q007_ATripBegins extends Quest
 	{
 		super(7, qn, "A Trip Begins");
 		
-		questItemIds = new int[]
-		{
-			ARIEL_RECO
-		};
+		setItemsIds(ARIEL_RECO);
 		
 		addStartNpc(MIRABEL);
 		addTalkId(MIRABEL, ARIEL, ASTERIOS);

@@ -64,11 +64,7 @@ public class Q632_NecromancersRequest extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			VAMPIRE_HEART,
-			ZOMBIE_BRAIN
-		};
+		setItemsIds(VAMPIRE_HEART, ZOMBIE_BRAIN);
 		
 		addStartNpc(31522); // Mysterious Wizard
 		addTalkId(31522);

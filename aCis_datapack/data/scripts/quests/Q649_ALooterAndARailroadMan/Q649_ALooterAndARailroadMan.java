@@ -31,10 +31,7 @@ public class Q649_ALooterAndARailroadMan extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			THIEF_GUILD_MARK
-		};
+		setItemsIds(THIEF_GUILD_MARK);
 		
 		addStartNpc(OBI);
 		addTalkId(OBI);

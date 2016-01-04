@@ -15,6 +15,9 @@ CREATE TABLE IF NOT EXISTS `clan_data` (
   `ally_penalty_type` DECIMAL( 1 ) NOT NULL DEFAULT 0,
   `char_penalty_expiry_time` DECIMAL( 20,0 ) NOT NULL DEFAULT 0,
   `dissolving_expiry_time` DECIMAL( 20,0 ) NOT NULL DEFAULT 0,
+  `enabled` enum('true','false') NOT NULL DEFAULT 'false',
+  `notice` TEXT,
+  `introduction` TEXT,
   PRIMARY KEY (`clan_id`),
   KEY `leader_id` (`leader_id`),
   KEY `ally_id` (`ally_id`)

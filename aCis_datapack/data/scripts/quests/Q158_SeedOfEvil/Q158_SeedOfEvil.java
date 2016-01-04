@@ -31,10 +31,7 @@ public class Q158_SeedOfEvil extends Quest
 	{
 		super(158, qn, "Seed of Evil");
 		
-		questItemIds = new int[]
-		{
-			CLAY_TABLET
-		};
+		setItemsIds(CLAY_TABLET);
 		
 		addStartNpc(30031); // Biotin
 		addTalkId(30031);

@@ -271,11 +271,7 @@ public class Q373_SupplierOfReagents extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			MIXING_STONE,
-			MIXING_MANUAL
-		};
+		setItemsIds(MIXING_STONE, MIXING_MANUAL);
 		
 		addStartNpc(WESLEY);
 		addTalkId(WESLEY, URN);

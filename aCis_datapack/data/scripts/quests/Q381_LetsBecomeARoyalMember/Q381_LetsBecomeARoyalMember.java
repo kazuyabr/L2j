@@ -38,11 +38,7 @@ public class Q381_LetsBecomeARoyalMember extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			KAILS_COIN,
-			GOLDEN_CLOVER_COIN
-		};
+		setItemsIds(KAILS_COIN, GOLDEN_CLOVER_COIN);
 		
 		addStartNpc(SORINT);
 		addTalkId(SORINT, SANDRA);

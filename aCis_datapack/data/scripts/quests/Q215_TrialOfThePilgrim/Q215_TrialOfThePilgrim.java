@@ -19,6 +19,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.util.Rnd;
 
 public class Q215_TrialOfThePilgrim extends Quest
@@ -65,21 +66,7 @@ public class Q215_TrialOfThePilgrim extends Quest
 	{
 		super(215, qn, "Trial of the Pilgrim");
 		
-		questItemIds = new int[]
-		{
-			BOOK_OF_SAGE,
-			VOUCHER_OF_TRIAL,
-			SPIRIT_OF_FLAME,
-			ESSENCE_OF_FLAME,
-			BOOK_OF_GERALD,
-			GRAY_BADGE,
-			PICTURE_OF_NAHIR,
-			HAIR_OF_NAHIR,
-			STATUE_OF_EINHASAD,
-			BOOK_OF_DARKNESS,
-			DEBRIS_OF_WILLOW,
-			TAG_OF_RUMOR
-		};
+		setItemsIds(BOOK_OF_SAGE, VOUCHER_OF_TRIAL, SPIRIT_OF_FLAME, ESSENCE_OF_FLAME, BOOK_OF_GERALD, GRAY_BADGE, PICTURE_OF_NAHIR, HAIR_OF_NAHIR, STATUE_OF_EINHASAD, BOOK_OF_DARKNESS, DEBRIS_OF_WILLOW, TAG_OF_RUMOR);
 		
 		addStartNpc(SANTIAGO);
 		addTalkId(SANTIAGO, TANAPI, ANCESTOR_MARTANKUS, GAURI_TWINKLEROCK, DORF, GERALD, PRIMOS, PETRON, ANDELLIA, URUHA, CASIAN);
@@ -154,9 +141,7 @@ public class Q215_TrialOfThePilgrim extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (st.hasQuestItems(MARK_OF_PILGRIM))
-					htmltext = getAlreadyCompletedMsg();
-				else if (player.getClassId() != ClassId.cleric && player.getClassId() != ClassId.oracle && player.getClassId() != ClassId.shillienOracle && player.getClassId() != ClassId.orcShaman)
+				if (player.getClassId() != ClassId.cleric && player.getClassId() != ClassId.oracle && player.getClassId() != ClassId.shillienOracle && player.getClassId() != ClassId.orcShaman)
 					htmltext = "30648-02.htm";
 				else if (player.getLevel() < 35)
 					htmltext = "30648-01.htm";
@@ -177,8 +162,9 @@ public class Q215_TrialOfThePilgrim extends Quest
 							st.takeItems(BOOK_OF_SAGE, 1);
 							st.giveItems(MARK_OF_PILGRIM, 1);
 							st.rewardExpAndSp(77382, 16000);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
-							st.exitQuest(true);
+							st.exitQuest(false);
 						}
 						break;
 					
@@ -332,6 +318,10 @@ public class Q215_TrialOfThePilgrim extends Quest
 							htmltext = "30612-02.htm";
 						break;
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		

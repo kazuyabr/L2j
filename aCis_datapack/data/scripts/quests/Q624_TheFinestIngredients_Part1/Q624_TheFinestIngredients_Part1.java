@@ -40,12 +40,7 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			TRUNK,
-			FOOT,
-			SPICE
-		};
+		setItemsIds(TRUNK, FOOT, SPICE);
 		
 		addStartNpc(31521); // Jeremy
 		addTalkId(31521);

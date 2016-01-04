@@ -43,12 +43,7 @@ public class Q037_MakeFormalWear extends Quest
 	{
 		super(37, qn, "Make Formal Wear");
 		
-		questItemIds = new int[]
-		{
-			SIGNET_RING,
-			ICE_WINE,
-			BOX_OF_COOKIES
-		};
+		setItemsIds(SIGNET_RING, ICE_WINE, BOX_OF_COOKIES);
 		
 		addStartNpc(ALEXIS);
 		addTalkId(ALEXIS, LEIKAR, JEREMY, MIST);
@@ -148,7 +143,7 @@ public class Q037_MakeFormalWear extends Quest
 							htmltext = "31520-1a.htm";
 						else if (cond == 5 || cond == 6)
 						{
-							if (st.hasQuestItems(MYSTERIOUS_CLOTH) && st.hasQuestItems(JEWEL_BOX) && st.hasQuestItems(SEWING_KIT))
+							if (st.hasQuestItems(MYSTERIOUS_CLOTH, JEWEL_BOX, SEWING_KIT))
 								htmltext = "31520-4.htm";
 							else if (st.hasQuestItems(BOX_OF_COOKIES))
 								htmltext = "31520-2.htm";

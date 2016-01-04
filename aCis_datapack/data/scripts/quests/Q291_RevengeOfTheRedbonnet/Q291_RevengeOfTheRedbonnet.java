@@ -23,25 +23,22 @@ public class Q291_RevengeOfTheRedbonnet extends Quest
 	private static final String qn = "Q291_RevengeOfTheRedbonnet";
 	
 	// Quest items
-	private static final int BlackWolfPelt = 1482;
+	private static final int BLACK_WOLF_PELT = 1482;
 	
 	// Rewards
-	private static final int ScrollOfEscape = 736;
-	private static final int GrandmasPearl = 1502;
-	private static final int GrandmasMirror = 1503;
-	private static final int GrandmasNecklace = 1504;
-	private static final int GrandmasHairpin = 1505;
+	private static final int SCROLL_OF_ESCAPE = 736;
+	private static final int GRANDMA_PEARL = 1502;
+	private static final int GRANDMA_MIRROR = 1503;
+	private static final int GRANDMA_NECKLACE = 1504;
+	private static final int GRANDMA_HAIRPIN = 1505;
 	
-	public Q291_RevengeOfTheRedbonnet(int questId, String name, String descr)
+	public Q291_RevengeOfTheRedbonnet()
 	{
-		super(questId, name, descr);
+		super(291, qn, "Revenge of the Redbonnet");
 		
-		questItemIds = new int[]
-		{
-			BlackWolfPelt
-		};
+		setItemsIds(BLACK_WOLF_PELT);
 		
-		addStartNpc(30553);
+		addStartNpc(30553); // Maryse Redbonnet
 		addTalkId(30553);
 		
 		addKillId(20317);
@@ -57,8 +54,8 @@ public class Q291_RevengeOfTheRedbonnet extends Quest
 		
 		if (event.equalsIgnoreCase("30553-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -85,32 +82,24 @@ public class Q291_RevengeOfTheRedbonnet extends Quest
 					htmltext = "30553-04.htm";
 				else if (cond == 2)
 				{
-					if (st.getQuestItemsCount(BlackWolfPelt) >= 40)
-					{
-						st.takeItems(BlackWolfPelt, -1);
-						
-						int random = Rnd.get(100);
-						if (random < 3)
-							st.giveItems(GrandmasPearl, 1);
-						else if (random < 21)
-							st.giveItems(GrandmasMirror, 1);
-						else if (random < 46)
-							st.giveItems(GrandmasNecklace, 1);
-						else
-						{
-							st.giveItems(ScrollOfEscape, 1);
-							st.giveItems(GrandmasHairpin, 1);
-						}
-						
-						htmltext = "30553-05.htm";
-						st.playSound(QuestState.SOUND_FINISH);
-						st.exitQuest(true);
-					}
+					htmltext = "30553-05.htm";
+					st.takeItems(BLACK_WOLF_PELT, -1);
+					
+					int random = Rnd.get(100);
+					if (random < 3)
+						st.rewardItems(GRANDMA_PEARL, 1);
+					else if (random < 21)
+						st.rewardItems(GRANDMA_MIRROR, 1);
+					else if (random < 46)
+						st.rewardItems(GRANDMA_NECKLACE, 1);
 					else
 					{
-						st.set("cond", "1");
-						htmltext = "30553-04.htm";
+						st.rewardItems(SCROLL_OF_ESCAPE, 1);
+						st.rewardItems(GRANDMA_HAIRPIN, 1);
 					}
+					
+					st.playSound(QuestState.SOUND_FINISH);
+					st.exitQuest(true);
 				}
 				break;
 		}
@@ -125,7 +114,7 @@ public class Q291_RevengeOfTheRedbonnet extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItemsAlways(BlackWolfPelt, 1, 40))
+		if (st.dropItemsAlways(BLACK_WOLF_PELT, 1, 40))
 			st.set("cond", "2");
 		
 		return null;
@@ -133,6 +122,6 @@ public class Q291_RevengeOfTheRedbonnet extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q291_RevengeOfTheRedbonnet(291, qn, "Revenge of the Redbonnet");
+		new Q291_RevengeOfTheRedbonnet();
 	}
 }

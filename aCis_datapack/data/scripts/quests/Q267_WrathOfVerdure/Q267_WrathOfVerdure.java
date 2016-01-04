@@ -29,25 +29,16 @@ public class Q267_WrathOfVerdure extends Quest
 	// Reward
 	private static final int SILVERY_LEAF = 1340;
 	
-	// NPC
-	private static final int TREANT_BREMEC = 31853;
-	
-	// Mob
-	private static final int GOBLIN = 20325;
-	
-	public Q267_WrathOfVerdure(int questId, String name, String descr)
+	public Q267_WrathOfVerdure()
 	{
-		super(questId, name, descr);
+		super(267, qn, "Wrath of Verdure");
 		
-		questItemIds = new int[]
-		{
-			GOBLIN_CLUB
-		};
+		setItemsIds(GOBLIN_CLUB);
 		
-		addStartNpc(TREANT_BREMEC);
-		addTalkId(TREANT_BREMEC);
+		addStartNpc(31853); // Bremec
+		addTalkId(31853);
 		
-		addKillId(GOBLIN);
+		addKillId(20325); // Goblin
 	}
 	
 	@Override
@@ -60,8 +51,8 @@ public class Q267_WrathOfVerdure extends Quest
 		
 		if (event.equalsIgnoreCase("31853-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31853-06.htm"))
@@ -93,7 +84,7 @@ public class Q267_WrathOfVerdure extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int count = st.getQuestItemsCount(GOBLIN_CLUB);
+				final int count = st.getQuestItemsCount(GOBLIN_CLUB);
 				if (count > 0)
 				{
 					htmltext = "31853-05.htm";
@@ -111,7 +102,7 @@ public class Q267_WrathOfVerdure extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		QuestState st = checkPlayerCondition(player, npc, "cond", "1");
+		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
@@ -126,6 +117,6 @@ public class Q267_WrathOfVerdure extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q267_WrathOfVerdure(267, qn, "Wrath of Verdure");
+		new Q267_WrathOfVerdure();
 	}
 }

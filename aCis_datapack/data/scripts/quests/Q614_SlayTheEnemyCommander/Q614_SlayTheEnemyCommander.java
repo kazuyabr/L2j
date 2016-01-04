@@ -30,10 +30,7 @@ public class Q614_SlayTheEnemyCommander extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Tayr_Head
-		};
+		setItemsIds(Tayr_Head);
 		
 		addStartNpc(31377); // Ashas Varka Durai
 		addTalkId(31377);

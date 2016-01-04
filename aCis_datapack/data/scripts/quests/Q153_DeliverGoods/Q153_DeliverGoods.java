@@ -44,16 +44,7 @@ public class Q153_DeliverGoods extends Quest
 	{
 		super(153, qn, "Deliver Goods");
 		
-		questItemIds = new int[]
-		{
-			DELIVERY_LIST,
-			HEAVY_WOOD_BOX,
-			CLOTH_BUNDLE,
-			CLAY_POT,
-			JACKSON_RECEIPT,
-			SILVIA_RECEIPT,
-			RANT_RECEIPT
-		};
+		setItemsIds(DELIVERY_LIST, HEAVY_WOOD_BOX, CLOTH_BUNDLE, CLAY_POT, JACKSON_RECEIPT, SILVIA_RECEIPT, RANT_RECEIPT);
 		
 		addStartNpc(ARNOLD);
 		addTalkId(JACKSON, SILVIA, ARNOLD, RANT);
@@ -123,7 +114,7 @@ public class Q153_DeliverGoods extends Quest
 							st.takeItems(HEAVY_WOOD_BOX, 1);
 							st.giveItems(JACKSON_RECEIPT, 1);
 							
-							if (st.hasQuestItems(SILVIA_RECEIPT) && st.hasQuestItems(RANT_RECEIPT))
+							if (st.hasQuestItems(SILVIA_RECEIPT, RANT_RECEIPT))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
@@ -143,7 +134,7 @@ public class Q153_DeliverGoods extends Quest
 							st.giveItems(SILVIA_RECEIPT, 1);
 							st.giveItems(SOULSHOT_NO_GRADE, 3);
 							
-							if (st.hasQuestItems(JACKSON_RECEIPT) && st.hasQuestItems(RANT_RECEIPT))
+							if (st.hasQuestItems(JACKSON_RECEIPT, RANT_RECEIPT))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
@@ -162,7 +153,7 @@ public class Q153_DeliverGoods extends Quest
 							st.takeItems(CLAY_POT, 1);
 							st.giveItems(RANT_RECEIPT, 1);
 							
-							if (st.hasQuestItems(JACKSON_RECEIPT) && st.hasQuestItems(SILVIA_RECEIPT))
+							if (st.hasQuestItems(JACKSON_RECEIPT, SILVIA_RECEIPT))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);

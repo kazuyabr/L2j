@@ -17,35 +17,30 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q316_DestroyPlagueCarriers extends Quest
 {
 	private static final String qn = "Q316_DestroyPlagueCarriers";
 	
 	// Items
-	private static final int Wererat_Fang = 1042;
-	private static final int Varool_Foulclaws_Fang = 1043;
+	private static final int WERERAT_FANG = 1042;
+	private static final int VAROOL_FOULCLAW_FANG = 1043;
 	
 	// Monsters
-	private static final int Sukar_Wererat = 20040;
-	private static final int Sukar_Wererat_Leader = 20047;
-	private static final int Varool_Foulclaw = 27020;
+	private static final int SUKAR_WERERAT = 20040;
+	private static final int SUKAR_WERERAT_LEADER = 20047;
+	private static final int VAROOL_FOULCLAW = 27020;
 	
-	public Q316_DestroyPlagueCarriers(int questId, String name, String descr)
+	public Q316_DestroyPlagueCarriers()
 	{
-		super(questId, name, descr);
+		super(316, qn, "Destroy Plague Carriers");
 		
-		questItemIds = new int[]
-		{
-			Wererat_Fang,
-			Varool_Foulclaws_Fang
-		};
+		setItemsIds(WERERAT_FANG, VAROOL_FOULCLAW_FANG);
 		
 		addStartNpc(30155); // Ellenia
 		addTalkId(30155);
 		
-		addKillId(Sukar_Wererat, Sukar_Wererat_Leader, Varool_Foulclaw);
+		addKillId(SUKAR_WERERAT, SUKAR_WERERAT_LEADER, VAROOL_FOULCLAW);
 	}
 	
 	@Override
@@ -58,8 +53,8 @@ public class Q316_DestroyPlagueCarriers extends Quest
 		
 		if (event.equalsIgnoreCase("30155-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30155-08.htm"))
@@ -83,31 +78,25 @@ public class Q316_DestroyPlagueCarriers extends Quest
 		{
 			case STATE_CREATED:
 				if (player.getRace() != Race.Elf)
-				{
 					htmltext = "30155-00.htm";
-					st.exitQuest(true);
-				}
-				else if (player.getLevel() >= 18)
-					htmltext = "30155-03.htm";
-				else
-				{
+				else if (player.getLevel() < 18)
 					htmltext = "30155-02.htm";
-					st.exitQuest(true);
-				}
+				else
+					htmltext = "30155-03.htm";
 				break;
 			
 			case STATE_STARTED:
-				int rats = st.getQuestItemsCount(Wererat_Fang);
-				int varool = st.getQuestItemsCount(Varool_Foulclaws_Fang);
+				final int ratFangs = st.getQuestItemsCount(WERERAT_FANG);
+				final int varoolFangs = st.getQuestItemsCount(VAROOL_FOULCLAW_FANG);
 				
-				if (rats + varool == 0)
+				if (ratFangs + varoolFangs == 0)
 					htmltext = "30155-05.htm";
 				else
 				{
 					htmltext = "30155-07.htm";
-					st.takeItems(Wererat_Fang, -1);
-					st.takeItems(Varool_Foulclaws_Fang, -1);
-					st.rewardItems(57, rats * 30 + varool * 10000 + ((rats > 10) ? 5000 : 0));
+					st.takeItems(WERERAT_FANG, -1);
+					st.takeItems(VAROOL_FOULCLAW_FANG, -1);
+					st.rewardItems(57, ratFangs * 30 + varoolFangs * 10000 + ((ratFangs > 10) ? 5000 : 0));
 				}
 				break;
 		}
@@ -124,21 +113,13 @@ public class Q316_DestroyPlagueCarriers extends Quest
 		
 		switch (npc.getNpcId())
 		{
-			case Sukar_Wererat:
-			case Sukar_Wererat_Leader:
-				if (Rnd.get(100) < 60)
-				{
-					st.giveItems(Wererat_Fang, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
+			case SUKAR_WERERAT:
+			case SUKAR_WERERAT_LEADER:
+				st.dropItems(WERERAT_FANG, 1, 0, 600000);
 				break;
 			
-			case Varool_Foulclaw:
-				if (Rnd.get(100) < 10 && !st.hasQuestItems(Varool_Foulclaws_Fang))
-				{
-					st.giveItems(Varool_Foulclaws_Fang, 1);
-					st.playSound(QuestState.SOUND_MIDDLE);
-				}
+			case VAROOL_FOULCLAW:
+				st.dropItems(VAROOL_FOULCLAW_FANG, 1, 1, 100000);
 				break;
 		}
 		
@@ -147,6 +128,6 @@ public class Q316_DestroyPlagueCarriers extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q316_DestroyPlagueCarriers(316, qn, "Destroy Plague Carriers");
+		new Q316_DestroyPlagueCarriers();
 	}
 }

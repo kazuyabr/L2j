@@ -33,10 +33,7 @@ public class Q018_MeetingWithTheGoldenRam extends Quest
 	{
 		super(18, qn, "Meeting with the Golden Ram");
 		
-		questItemIds = new int[]
-		{
-			SUPPLY_BOX
-		};
+		setItemsIds(SUPPLY_BOX);
 		
 		addStartNpc(DONAL);
 		addTalkId(DONAL, DAISY, ABERCROMBIE);

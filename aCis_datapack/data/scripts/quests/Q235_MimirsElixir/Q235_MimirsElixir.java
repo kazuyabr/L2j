@@ -42,15 +42,7 @@ public class Q235_MimirsElixir extends Quest
 	{
 		super(235, qn, "Mimir's Elixir");
 		
-		questItemIds = new int[]
-		{
-			PURE_SILVER,
-			TRUE_GOLD,
-			SAGE_STONE,
-			BLOOD_FIRE,
-			MAGISTER_MIXING_STONE,
-			MIMIR_ELIXIR
-		};
+		setItemsIds(PURE_SILVER, TRUE_GOLD, SAGE_STONE, BLOOD_FIRE, MAGISTER_MIXING_STONE, MIMIR_ELIXIR);
 		
 		addStartNpc(LADD);
 		addTalkId(LADD, JOAN, MIXING_URN);

@@ -48,11 +48,7 @@ public class Q621_EggDelivery extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			EGG,
-			FEE
-		};
+		setItemsIds(EGG, FEE);
 		
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY, PULIN, NAFF, CROCUS, KUBER, BEOLIN, VALENTINE);

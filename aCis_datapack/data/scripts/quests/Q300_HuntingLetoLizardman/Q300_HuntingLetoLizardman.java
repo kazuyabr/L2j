@@ -22,23 +22,17 @@ public class Q300_HuntingLetoLizardman extends Quest
 {
 	private static final String qn = "Q300_HuntingLetoLizardman";
 	
-	// NPC
-	private static final int RATH = 30126;
-	
 	// Item
 	private static final int BRACELET = 7139;
 	
-	public Q300_HuntingLetoLizardman(int questId, String name, String descr)
+	public Q300_HuntingLetoLizardman()
 	{
-		super(questId, name, descr);
+		super(300, qn, "Hunting Leto Lizardman");
 		
-		questItemIds = new int[]
-		{
-			BRACELET
-		};
+		setItemsIds(BRACELET);
 		
-		addStartNpc(RATH);
-		addTalkId(RATH);
+		addStartNpc(30126); // Rath
+		addTalkId(30126);
 		
 		addKillId(20577, 20578, 20579, 20580, 20582);
 	}
@@ -53,8 +47,8 @@ public class Q300_HuntingLetoLizardman extends Quest
 		
 		if (event.equalsIgnoreCase("30126-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30126-05.htm"))
@@ -62,10 +56,9 @@ public class Q300_HuntingLetoLizardman extends Quest
 			if (st.getQuestItemsCount(BRACELET) >= 60)
 			{
 				htmltext = "30126-06.htm";
-				
-				int luck = Rnd.get(3);
-				
 				st.takeItems(BRACELET, -1);
+				
+				final int luck = Rnd.get(3);
 				if (luck == 0)
 					st.rewardItems(57, 30000);
 				else if (luck == 1)
@@ -96,10 +89,7 @@ public class Q300_HuntingLetoLizardman extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(BRACELET) >= 60)
-					htmltext = "30126-04.htm";
-				else
-					htmltext = "30126-04a.htm";
+				htmltext = (st.getInt("cond") == 1) ? "30126-04a.htm" : "30126-04.htm";
 				break;
 		}
 		
@@ -115,13 +105,14 @@ public class Q300_HuntingLetoLizardman extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		st.dropItems(BRACELET, 1, 60, 330000);
+		if (st.dropItems(BRACELET, 1, 60, 330000))
+			st.set("cond", "2");
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q300_HuntingLetoLizardman(300, qn, "Hunting Leto Lizardman");
+		new Q300_HuntingLetoLizardman();
 	}
 }

@@ -38,12 +38,7 @@ public class Q382_KailsMagicCoin extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SILVER_BASILISK,
-			GOLD_GOLEM,
-			BLOOD_DRAGON
-		};
+		setItemsIds(SILVER_BASILISK, GOLD_GOLEM, BLOOD_DRAGON);
 		
 		addStartNpc(30687); // Vergara
 		addTalkId(30687);

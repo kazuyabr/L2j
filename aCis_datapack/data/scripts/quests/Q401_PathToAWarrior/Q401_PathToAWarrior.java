@@ -44,16 +44,7 @@ public class Q401_PathToAWarrior extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			AuronsLetter,
-			WarriorGuildMark,
-			RustedBronzeSword1,
-			RustedBronzeSword2,
-			RustedBronzeSword3,
-			SimplonsLetter,
-			PoisonSpiderLeg
-		};
+		setItemsIds(AuronsLetter, WarriorGuildMark, RustedBronzeSword1, RustedBronzeSword2, RustedBronzeSword3, SimplonsLetter, PoisonSpiderLeg);
 		
 		addStartNpc(Auron);
 		addTalkId(Auron, Simplon);

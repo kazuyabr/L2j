@@ -39,11 +39,7 @@ public class Q371_ShriekOfGhosts extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			URN,
-			PORCELAIN
-		};
+		setItemsIds(URN, PORCELAIN);
 		
 		addStartNpc(REVA);
 		addTalkId(REVA, PATRIN);

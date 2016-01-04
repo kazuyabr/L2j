@@ -39,14 +39,7 @@ public class Q168_DeliverSupplies extends Quest
 	{
 		super(168, qn, "Deliver Supplies");
 		
-		questItemIds = new int[]
-		{
-			JENNA_LETTER,
-			SENTRY_BLADE_1,
-			SENTRY_BLADE_2,
-			SENTRY_BLADE_3,
-			OLD_BRONZE_SWORD
-		};
+		setItemsIds(JENNA_LETTER, SENTRY_BLADE_1, SENTRY_BLADE_2, SENTRY_BLADE_3, OLD_BRONZE_SWORD);
 		
 		addStartNpc(JENNA);
 		addTalkId(JENNA, ROSELYN, KRISTIN, HARANT);

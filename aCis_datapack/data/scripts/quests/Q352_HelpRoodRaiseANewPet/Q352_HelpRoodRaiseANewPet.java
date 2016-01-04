@@ -22,25 +22,18 @@ public class Q352_HelpRoodRaiseANewPet extends Quest
 {
 	private static final String qn = "Q352_HelpRoodRaiseANewPet";
 	
-	// NPCs
-	private static final int ROOD = 31067;
-	
 	// Items
 	private static final int LIENRIK_EGG_1 = 5860;
 	private static final int LIENRIK_EGG_2 = 5861;
 	
-	public Q352_HelpRoodRaiseANewPet(int questId, String name, String descr)
+	public Q352_HelpRoodRaiseANewPet()
 	{
-		super(questId, name, descr);
+		super(352, qn, "Help Rood Raise A New Pet!");
 		
-		questItemIds = new int[]
-		{
-			LIENRIK_EGG_1,
-			LIENRIK_EGG_2
-		};
+		setItemsIds(LIENRIK_EGG_1, LIENRIK_EGG_2);
 		
-		addStartNpc(ROOD);
-		addTalkId(ROOD);
+		addStartNpc(31067); // Rood
+		addTalkId(31067);
 		
 		addKillId(20786, 20787, 21644, 21645);
 	}
@@ -55,8 +48,8 @@ public class Q352_HelpRoodRaiseANewPet extends Quest
 		
 		if (event.equalsIgnoreCase("31067-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31067-09.htm"))
@@ -79,18 +72,12 @@ public class Q352_HelpRoodRaiseANewPet extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 39)
-					htmltext = "31067-01.htm";
-				else
-				{
-					htmltext = "31067-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 39) ? "31067-00.htm" : "31067-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int eggs1 = st.getQuestItemsCount(LIENRIK_EGG_1);
-				int eggs2 = st.getQuestItemsCount(LIENRIK_EGG_2);
+				final int eggs1 = st.getQuestItemsCount(LIENRIK_EGG_1);
+				final int eggs2 = st.getQuestItemsCount(LIENRIK_EGG_2);
 				
 				if (eggs1 + eggs2 == 0)
 					htmltext = "31067-05.htm";
@@ -136,14 +123,13 @@ public class Q352_HelpRoodRaiseANewPet extends Quest
 		if (st == null)
 			return null;
 		
-		st.giveItems(Rnd.get(100) < 3 ? LIENRIK_EGG_2 : LIENRIK_EGG_1, 1);
-		st.playSound(QuestState.SOUND_ITEMGET);
+		st.dropItemsAlways((Rnd.get(100) < 3) ? LIENRIK_EGG_2 : LIENRIK_EGG_1, 1, 0);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q352_HelpRoodRaiseANewPet(352, qn, "Help Rood Raise A New Pet!");
+		new Q352_HelpRoodRaiseANewPet();
 	}
 }

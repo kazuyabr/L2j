@@ -60,10 +60,7 @@ public class Q602_ShadowOfLight extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			EYE_OF_DARKNESS
-		};
+		setItemsIds(EYE_OF_DARKNESS);
 		
 		addStartNpc(31683); // Eye of Argos
 		addTalkId(31683);

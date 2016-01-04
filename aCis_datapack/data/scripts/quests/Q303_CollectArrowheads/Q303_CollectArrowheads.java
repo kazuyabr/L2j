@@ -21,23 +21,17 @@ public class Q303_CollectArrowheads extends Quest
 {
 	private static final String qn = "Q303_CollectArrowheads";
 	
-	// NPC
-	private static final int MINIA = 30029;
-	
 	// Item
 	private static final int ORCISH_ARROWHEAD = 963;
 	
-	public Q303_CollectArrowheads(int questId, String name, String descr)
+	public Q303_CollectArrowheads()
 	{
-		super(questId, name, descr);
+		super(303, qn, "Collect Arrowheads");
 		
-		questItemIds = new int[]
-		{
-			ORCISH_ARROWHEAD
-		};
+		setItemsIds(ORCISH_ARROWHEAD);
 		
-		addStartNpc(MINIA);
-		addTalkId(MINIA);
+		addStartNpc(30029); // Minia
+		addTalkId(30029);
 		
 		addKillId(20361);
 	}
@@ -52,10 +46,11 @@ public class Q303_CollectArrowheads extends Quest
 		
 		if (event.equalsIgnoreCase("30029-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
+		
 		return htmltext;
 	}
 	
@@ -70,17 +65,11 @@ public class Q303_CollectArrowheads extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 10)
-					htmltext = "30029-02.htm";
-				else
-				{
-					htmltext = "30029-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 10) ? "30029-01.htm" : "30029-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(ORCISH_ARROWHEAD) < 10)
+				if (st.getInt("cond") == 1)
 					htmltext = "30029-04.htm";
 				else
 				{
@@ -93,6 +82,7 @@ public class Q303_CollectArrowheads extends Quest
 				}
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -111,6 +101,6 @@ public class Q303_CollectArrowheads extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q303_CollectArrowheads(303, qn, "Collect Arrowheads");
+		new Q303_CollectArrowheads();
 	}
 }

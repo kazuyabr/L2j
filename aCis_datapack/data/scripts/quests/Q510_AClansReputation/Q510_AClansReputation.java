@@ -38,10 +38,7 @@ public class Q510_AClansReputation extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Claw
-		};
+		setItemsIds(Claw);
 		
 		addStartNpc(Valdis);
 		addTalkId(Valdis);

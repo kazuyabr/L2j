@@ -65,13 +65,7 @@ public final class Q125_TheNameOfEvil_1 extends Quest
 	{
 		super(125, qn, "The Name of Evil - 1");
 		
-		questItemIds = new int[]
-		{
-			ORNITHOMIMUS_CLAW,
-			DEINONYCHUS_BONE,
-			EPITAPH_OF_WISDOM,
-			GAZKH_FRAGMENT
-		};
+		setItemsIds(ORNITHOMIMUS_CLAW, DEINONYCHUS_BONE, EPITAPH_OF_WISDOM, GAZKH_FRAGMENT);
 		
 		addStartNpc(MUSHIKA);
 		addTalkId(MUSHIKA, KARAKAWEI, ULU_KAIMU, BALU_KAIMU, CHUTA_KAIMU);

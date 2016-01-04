@@ -77,11 +77,7 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			CLAWS,
-			COIN
-		};
+		setItemsIds(CLAWS, COIN);
 		
 		addStartNpc(CAPTAIN);
 		addTalkId(CAPTAIN);
@@ -139,7 +135,7 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 		if (st == null)
 			return htmltext;
 		
-		if (st.hasQuestItems(7246) || st.hasQuestItems(7247))
+		if (st.hasAtLeastOneQuestItem(7246, 7247))
 		{
 			switch (st.getState())
 			{

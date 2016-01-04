@@ -33,11 +33,7 @@ public class Q151_CureForFeverDisease extends Quest
 	{
 		super(151, qn, "Cure for Fever Disease");
 		
-		questItemIds = new int[]
-		{
-			FEVER_MEDICINE,
-			POISON_SAC
-		};
+		setItemsIds(FEVER_MEDICINE, POISON_SAC);
 		
 		addStartNpc(ELIAS);
 		addTalkId(ELIAS, YOHANES);

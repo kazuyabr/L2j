@@ -48,19 +48,7 @@ public class Q407_PathToAnElvenScout extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			ReisasLetter,
-			PriasLetter1,
-			PriasLetter2,
-			PriasLetter3,
-			PriasLetter4,
-			MorettisHerb,
-			MorettisLetter,
-			PriasLetter,
-			HonoraryGuard,
-			RustedKey
-		};
+		setItemsIds(ReisasLetter, PriasLetter1, PriasLetter2, PriasLetter3, PriasLetter4, MorettisHerb, MorettisLetter, PriasLetter, HonoraryGuard, RustedKey);
 		
 		addStartNpc(Reisa);
 		addTalkId(Reisa, Moretti, Babenco, Prias);

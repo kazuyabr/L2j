@@ -22,32 +22,19 @@ public class Q272_WrathOfAncestors extends Quest
 {
 	private static final String qn = "Q272_WrathOfAncestors";
 	
-	// NPCs
-	private static final int LIVINA = 30572;
-	
-	// Monsters
-	private static final int GOBLIN_GRAVE_ROBBER = 20319;
-	private static final int GOBLIN_TOMB_RAIDER_LEADER = 20320;
-	
 	// Item
 	private static final int GRAVE_ROBBERS_HEAD = 1474;
 	
-	// Reward
-	private static final int ADENA = 57;
-	
-	public Q272_WrathOfAncestors(int questId, String name, String descr)
+	public Q272_WrathOfAncestors()
 	{
-		super(questId, name, descr);
+		super(272, qn, "Wrath of Ancestors");
 		
-		questItemIds = new int[]
-		{
-			GRAVE_ROBBERS_HEAD
-		};
+		setItemsIds(GRAVE_ROBBERS_HEAD);
 		
-		addStartNpc(LIVINA);
-		addTalkId(LIVINA);
+		addStartNpc(30572); // Livina
+		addTalkId(30572);
 		
-		addKillId(GOBLIN_GRAVE_ROBBER, GOBLIN_TOMB_RAIDER_LEADER);
+		addKillId(20319, 20320); // Goblin Grave Robber, Goblin Tomb Raider Leader
 	}
 	
 	@Override
@@ -60,8 +47,8 @@ public class Q272_WrathOfAncestors extends Quest
 		
 		if (event.equalsIgnoreCase("30572-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -88,20 +75,16 @@ public class Q272_WrathOfAncestors extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(GRAVE_ROBBERS_HEAD) < 50)
+				if (st.getInt("cond") == 1)
 					htmltext = "30572-04.htm";
 				else
 				{
 					htmltext = "30572-05.htm";
 					st.takeItems(GRAVE_ROBBERS_HEAD, -1);
-					st.rewardItems(ADENA, 1500);
+					st.rewardItems(57, 1500);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
-				break;
-			
-			case STATE_COMPLETED:
-				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		
@@ -123,6 +106,6 @@ public class Q272_WrathOfAncestors extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q272_WrathOfAncestors(272, qn, "Wrath of Ancestors");
+		new Q272_WrathOfAncestors();
 	}
 }

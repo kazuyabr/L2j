@@ -32,10 +32,7 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			TOTEM
-		};
+		setItemsIds(TOTEM);
 		
 		addStartNpc(INNOCENTIN);
 		addTalkId(INNOCENTIN);

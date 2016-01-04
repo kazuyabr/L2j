@@ -44,12 +44,7 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			RITRONS_FRUIT,
-			MOON_FACE_FLOWER,
-			LEECH_FLUIDS
-		};
+		setItemsIds(RITRONS_FRUIT, MOON_FACE_FLOWER, LEECH_FLUIDS);
 		
 		addStartNpc(30069); // Rollant
 		addTalkId(30069);

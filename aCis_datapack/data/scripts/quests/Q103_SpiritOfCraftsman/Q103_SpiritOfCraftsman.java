@@ -54,17 +54,7 @@ public class Q103_SpiritOfCraftsman extends Quest
 	{
 		super(103, qn, "Spirit of Craftsman");
 		
-		questItemIds = new int[]
-		{
-			KARROD_LETTER,
-			CECKTINON_VOUCHER_1,
-			CECKTINON_VOUCHER_2,
-			BONE_FRAGMENT,
-			SOUL_CATCHER,
-			PRESERVING_OIL,
-			ZOMBIE_HEAD,
-			STEELBENDER_HEAD
-		};
+		setItemsIds(KARROD_LETTER, CECKTINON_VOUCHER_1, CECKTINON_VOUCHER_2, BONE_FRAGMENT, SOUL_CATCHER, PRESERVING_OIL, ZOMBIE_HEAD, STEELBENDER_HEAD);
 		
 		addStartNpc(KARROD);
 		addTalkId(KARROD, CECKTINON, HARNE);

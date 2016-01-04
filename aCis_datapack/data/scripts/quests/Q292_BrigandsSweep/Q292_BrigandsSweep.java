@@ -40,18 +40,11 @@ public class Q292_BrigandsSweep extends Quest
 	private static final int GOBLIN_SNOOPER = 20327;
 	private static final int GOBLIN_LORD = 20528;
 	
-	public Q292_BrigandsSweep(int questId, String name, String descr)
+	public Q292_BrigandsSweep()
 	{
-		super(questId, name, descr);
+		super(292, qn, "Brigands Sweep");
 		
-		questItemIds = new int[]
-		{
-			GOBLIN_NECKLACE,
-			GOBLIN_PENDANT,
-			GOBLIN_LORD_PENDANT,
-			SUSPICIOUS_MEMO,
-			SUSPICIOUS_CONTRACT
-		};
+		setItemsIds(GOBLIN_NECKLACE, GOBLIN_PENDANT, GOBLIN_LORD_PENDANT, SUSPICIOUS_MEMO, SUSPICIOUS_CONTRACT);
 		
 		addStartNpc(SPIRON);
 		addTalkId(SPIRON, BALANKI);
@@ -69,8 +62,8 @@ public class Q292_BrigandsSweep extends Quest
 		
 		if (event.equalsIgnoreCase("30532-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30532-06.htm"))
@@ -105,23 +98,24 @@ public class Q292_BrigandsSweep extends Quest
 				switch (npc.getNpcId())
 				{
 					case SPIRON:
-						int GNC = st.getQuestItemsCount(GOBLIN_NECKLACE);
-						int GPC = st.getQuestItemsCount(GOBLIN_PENDANT);
-						int GLPC = st.getQuestItemsCount(GOBLIN_LORD_PENDANT);
-						int SM = st.getQuestItemsCount(SUSPICIOUS_MEMO);
-						int SC = st.getQuestItemsCount(SUSPICIOUS_CONTRACT);
+						final int goblinNecklaces = st.getQuestItemsCount(GOBLIN_NECKLACE);
+						final int goblinPendants = st.getQuestItemsCount(GOBLIN_PENDANT);
+						final int goblinLordPendants = st.getQuestItemsCount(GOBLIN_LORD_PENDANT);
+						final int suspiciousMemos = st.getQuestItemsCount(SUSPICIOUS_MEMO);
 						
-						int COUNT_ALL = GNC + GPC + GLPC + SC;
+						final int countAll = goblinNecklaces + goblinPendants + goblinLordPendants;
 						
-						if (COUNT_ALL == 0)
+						final boolean hasContract = st.hasQuestItems(SUSPICIOUS_CONTRACT);
+						
+						if (countAll == 0)
 							htmltext = "30532-04.htm";
 						else
 						{
-							if (SC > 0)
+							if (hasContract)
 								htmltext = "30532-10.htm";
-							else if (SM > 0)
+							else if (suspiciousMemos > 0)
 							{
-								if (SM > 1)
+								if (suspiciousMemos > 1)
 									htmltext = "30532-09.htm";
 								else
 									htmltext = "30532-08.htm";
@@ -129,26 +123,30 @@ public class Q292_BrigandsSweep extends Quest
 							else
 								htmltext = "30532-05.htm";
 							
-							int reward = (12 * GNC) + (36 * GPC) + (33 * GLPC) + (COUNT_ALL >= 10 ? 1000 : 0) + (SC == 1 ? 1120 : 0);
-							
 							st.takeItems(GOBLIN_NECKLACE, -1);
 							st.takeItems(GOBLIN_PENDANT, -1);
 							st.takeItems(GOBLIN_LORD_PENDANT, -1);
-							st.takeItems(SUSPICIOUS_CONTRACT, -1);
-							st.rewardItems(57, reward);
+							
+							if (hasContract)
+							{
+								st.set("cond", "1");
+								st.takeItems(SUSPICIOUS_CONTRACT, -1);
+							}
+							
+							st.rewardItems(57, ((12 * goblinNecklaces) + (36 * goblinPendants) + (33 * goblinLordPendants) + (countAll >= 10 ? 1000 : 0) + ((hasContract) ? 1120 : 0)));
 						}
 						break;
 					
 					case BALANKI:
-						if (st.hasQuestItems(SUSPICIOUS_CONTRACT))
+						if (!st.hasQuestItems(SUSPICIOUS_CONTRACT))
+							htmltext = "30533-01.htm";
+						else
 						{
 							htmltext = "30533-02.htm";
 							st.set("cond", "1");
 							st.takeItems(SUSPICIOUS_CONTRACT, -1);
 							st.rewardItems(57, 1500);
 						}
-						else
-							htmltext = "30533-01.htm";
 						break;
 				}
 				break;
@@ -193,6 +191,6 @@ public class Q292_BrigandsSweep extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q292_BrigandsSweep(292, qn, "Brigands Sweep");
+		new Q292_BrigandsSweep();
 	}
 }

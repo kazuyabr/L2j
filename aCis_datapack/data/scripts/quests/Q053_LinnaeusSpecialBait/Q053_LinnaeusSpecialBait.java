@@ -31,10 +31,7 @@ public class Q053_LinnaeusSpecialBait extends Quest
 	{
 		super(53, qn, "Linnaues' Special Bait");
 		
-		questItemIds = new int[]
-		{
-			CRIMSON_DRAKE_HEART
-		};
+		setItemsIds(CRIMSON_DRAKE_HEART);
 		
 		addStartNpc(31577); // Linnaeus
 		addTalkId(31577);

@@ -44,13 +44,7 @@ public class Q246_PossessorOfAPreciousSoul extends Quest
 	{
 		super(246, qn, "Possessor of a Precious Soul - 3");
 		
-		questItemIds = new int[]
-		{
-			WATERBINDER,
-			EVERGREEN,
-			RAIN_SONG,
-			RELIC_BOX
-		};
+		setItemsIds(WATERBINDER, EVERGREEN, RAIN_SONG, RELIC_BOX);
 		
 		addStartNpc(CARADINE);
 		addTalkId(CARADINE, OSSIAN, LADD);
@@ -82,7 +76,7 @@ public class Q246_PossessorOfAPreciousSoul extends Quest
 		}
 		else if (event.equalsIgnoreCase("31741-05.htm"))
 		{
-			if (st.hasQuestItems(WATERBINDER) && st.hasQuestItems(EVERGREEN))
+			if (st.hasQuestItems(WATERBINDER, EVERGREEN))
 			{
 				st.set("cond", "4");
 				st.playSound(QuestState.SOUND_MIDDLE);
@@ -156,7 +150,7 @@ public class Q246_PossessorOfAPreciousSoul extends Quest
 							htmltext = "31741-03.htm";
 						else if (cond == 3)
 						{
-							if (st.hasQuestItems(WATERBINDER) && st.hasQuestItems(EVERGREEN))
+							if (st.hasQuestItems(WATERBINDER, EVERGREEN))
 								htmltext = "31741-04.htm";
 						}
 						else if (cond == 4)

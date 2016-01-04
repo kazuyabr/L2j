@@ -47,20 +47,7 @@ public class Q171_ActsOfEvil extends Quest
 	{
 		super(171, qn, "Acts of Evil");
 		
-		questItemIds = new int[]
-		{
-			BLADE_MOLD,
-			TYRA_BILL,
-			RANGER_REPORT_1,
-			RANGER_REPORT_2,
-			RANGER_REPORT_3,
-			RANGER_REPORT_4,
-			WEAPON_TRADE_CONTRACT,
-			ATTACK_DIRECTIVES,
-			CERTIFICATE,
-			CARGO_BOX,
-			OL_MAHUM_HEAD
-		};
+		setItemsIds(BLADE_MOLD, TYRA_BILL, RANGER_REPORT_1, RANGER_REPORT_2, RANGER_REPORT_3, RANGER_REPORT_4, WEAPON_TRADE_CONTRACT, ATTACK_DIRECTIVES, CERTIFICATE, CARGO_BOX, OL_MAHUM_HEAD);
 		
 		addStartNpc(ALVAH);
 		addTalkId(ALVAH, ARODIN, TYRA, ROLENTO, NETI, BURAI);
@@ -142,7 +129,7 @@ public class Q171_ActsOfEvil extends Quest
 							htmltext = "30381-03.htm";
 						else if (cond == 5)
 						{
-							if (st.hasQuestItems(RANGER_REPORT_1) && st.hasQuestItems(RANGER_REPORT_2) && st.hasQuestItems(RANGER_REPORT_3) && st.hasQuestItems(RANGER_REPORT_4))
+							if (st.hasQuestItems(RANGER_REPORT_1, RANGER_REPORT_2, RANGER_REPORT_3, RANGER_REPORT_4))
 							{
 								htmltext = "30381-05.htm";
 								st.set("cond", "6");
@@ -157,7 +144,7 @@ public class Q171_ActsOfEvil extends Quest
 						}
 						else if (cond == 6)
 						{
-							if (st.hasQuestItems(WEAPON_TRADE_CONTRACT) && st.hasQuestItems(ATTACK_DIRECTIVES))
+							if (st.hasQuestItems(WEAPON_TRADE_CONTRACT, ATTACK_DIRECTIVES))
 								htmltext = "30381-06.htm";
 							else
 								htmltext = "30381-05a.htm";
@@ -233,7 +220,7 @@ public class Q171_ActsOfEvil extends Quest
 						break;
 					
 					case BURAI:
-						if (cond == 9 && st.hasQuestItems(CERTIFICATE) && st.hasQuestItems(CARGO_BOX) && st.hasQuestItems(ATTACK_DIRECTIVES))
+						if (cond == 9 && st.hasQuestItems(CERTIFICATE, CARGO_BOX, ATTACK_DIRECTIVES))
 							htmltext = "30617-01.htm";
 						else if (cond == 10)
 						{

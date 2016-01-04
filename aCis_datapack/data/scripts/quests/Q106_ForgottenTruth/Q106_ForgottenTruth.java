@@ -50,14 +50,7 @@ public class Q106_ForgottenTruth extends Quest
 	{
 		super(106, qn, "Forgotten Truth");
 		
-		questItemIds = new int[]
-		{
-			ONYX_TALISMAN_1,
-			ONYX_TALISMAN_2,
-			ANCIENT_SCROLL,
-			ANCIENT_CLAY_TABLET,
-			KARTIA_TRANSLATION
-		};
+		setItemsIds(ONYX_TALISMAN_1, ONYX_TALISMAN_2, ANCIENT_SCROLL, ANCIENT_CLAY_TABLET, KARTIA_TRANSLATION);
 		
 		addStartNpc(THIFIELL);
 		addTalkId(THIFIELL, KARTIA);

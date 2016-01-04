@@ -92,12 +92,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Ketra_Badge_Soldier,
-			Ketra_Badge_Officer,
-			Ketra_Badge_Captain
-		};
+		setItemsIds(Ketra_Badge_Soldier, Ketra_Badge_Officer, Ketra_Badge_Captain);
 		
 		addStartNpc(31378); // Naran Ashanuk
 		addTalkId(31378);

@@ -22,36 +22,26 @@ public class Q258_BringWolfPelts extends Quest
 {
 	private static final String qn = "Q258_BringWolfPelts";
 	
-	// NPC
-	private static final int LECTOR = 30001;
-	
-	// Monsters
-	private static final int WOLF = 20120;
-	private static final int ELDER_WOLF = 20442;
-	
 	// Item
 	private static final int WOLF_PELT = 702;
 	
 	// Rewards
-	private static final int Cotton_Shirt = 390;
-	private static final int Leather_Pants = 29;
-	private static final int Leather_Shirt = 22;
-	private static final int Short_Leather_Gloves = 1119;
-	private static final int Tunic = 426;
+	private static final int COTTON_SHIRT = 390;
+	private static final int LEATHER_PANTS = 29;
+	private static final int LEATHER_SHIRT = 22;
+	private static final int SHORT_LEATHER_GLOVES = 1119;
+	private static final int TUNIC = 426;
 	
-	public Q258_BringWolfPelts(int questId, String name, String descr)
+	public Q258_BringWolfPelts()
 	{
-		super(questId, name, descr);
+		super(258, qn, "Bring Wolf Pelts");
 		
-		questItemIds = new int[]
-		{
-			WOLF_PELT
-		};
+		setItemsIds(WOLF_PELT);
 		
-		addStartNpc(LECTOR);
-		addTalkId(LECTOR);
+		addStartNpc(30001); // Lector
+		addTalkId(30001);
 		
-		addKillId(WOLF, ELDER_WOLF);
+		addKillId(20120, 20442); // Wolf, Elder Wolf
 	}
 	
 	@Override
@@ -64,8 +54,8 @@ public class Q258_BringWolfPelts extends Quest
 		
 		if (event.equalsIgnoreCase("30001-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -96,15 +86,15 @@ public class Q258_BringWolfPelts extends Quest
 					
 					// Reward is based on a random number (1D16).
 					if (randomNumber == 0)
-						st.giveItems(Cotton_Shirt, 1);
+						st.giveItems(COTTON_SHIRT, 1);
 					else if (randomNumber < 6)
-						st.giveItems(Leather_Pants, 1);
+						st.giveItems(LEATHER_PANTS, 1);
 					else if (randomNumber < 9)
-						st.giveItems(Leather_Shirt, 1);
+						st.giveItems(LEATHER_SHIRT, 1);
 					else if (randomNumber < 13)
-						st.giveItems(Short_Leather_Gloves, 1);
+						st.giveItems(SHORT_LEATHER_GLOVES, 1);
 					else
-						st.giveItems(Tunic, 1);
+						st.giveItems(TUNIC, 1);
 					
 					htmltext = "30001-06.htm";
 					
@@ -136,6 +126,6 @@ public class Q258_BringWolfPelts extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q258_BringWolfPelts(258, qn, "Bring Wolf Pelts");
+		new Q258_BringWolfPelts();
 	}
 }

@@ -99,11 +99,7 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DICTIONARY_BASIC,
-			MYSTERIOUS_BOOK
-		};
+		setItemsIds(DICTIONARY_BASIC, MYSTERIOUS_BOOK);
 		
 		addStartNpc(SOBLING);
 		addTalkId(SOBLING, CLIFF);

@@ -50,18 +50,7 @@ public class Q418_PathToAnArtisan extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SilverasRing,
-			FirstPassCertificate,
-			SecondPassCertificate,
-			BoogleRatmanTooth,
-			BoogleRatmanLeadersTooth,
-			KlutosLetter,
-			FootprintOfThief,
-			StolenSecretBox,
-			SecretBox
-		};
+		setItemsIds(SilverasRing, FirstPassCertificate, SecondPassCertificate, BoogleRatmanTooth, BoogleRatmanLeadersTooth, KlutosLetter, FootprintOfThief, StolenSecretBox, SecretBox);
 		
 		addStartNpc(Silvera);
 		addTalkId(Silvera, Kluto, Pinter, Obi, Hitchi, Lockirin, Rydel);

@@ -43,11 +43,7 @@ public class Q603_DaimonTheWhiteEyed_Part1 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			EVIL_SPIRIT_BEADS,
-			BROKEN_CRYSTAL
-		};
+		setItemsIds(EVIL_SPIRIT_BEADS, BROKEN_CRYSTAL);
 		
 		addStartNpc(EYE_OF_ARGOS);
 		addTalkId(EYE_OF_ARGOS, MYSTERIOUS_TABLET_1, MYSTERIOUS_TABLET_2, MYSTERIOUS_TABLET_3, MYSTERIOUS_TABLET_4, MYSTERIOUS_TABLET_5);

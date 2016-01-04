@@ -32,10 +32,7 @@ public class Q607_ProveYourCourage extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Shadith_Head
-		};
+		setItemsIds(Shadith_Head);
 		
 		addStartNpc(31370); // Kadun Zu Ketra
 		addTalkId(31370);

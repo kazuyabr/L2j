@@ -16,31 +16,24 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q353_PowerOfDarkness extends Quest
 {
 	private static final String qn = "Q353_PowerOfDarkness";
 	
-	// NPC
-	private static final int GALMAN = 31044;
-	
 	// Item
 	private static final int STONE = 5862;
 	
-	public Q353_PowerOfDarkness(int questId, String name, String descr)
+	public Q353_PowerOfDarkness()
 	{
-		super(questId, name, descr);
+		super(353, qn, "Power of Darkness");
 		
-		questItemIds = new int[]
-		{
-			STONE
-		};
+		setItemsIds(STONE);
 		
-		addStartNpc(GALMAN);
-		addTalkId(GALMAN);
+		addStartNpc(31044); // Galman
+		addTalkId(31044);
 		
-		addKillId(20284, 20245, 20244, 20283);
+		addKillId(20244, 20245, 20283, 20284);
 	}
 	
 	@Override
@@ -53,14 +46,14 @@ public class Q353_PowerOfDarkness extends Quest
 		
 		if (event.equalsIgnoreCase("31044-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("31044-08.htm"))
 		{
-			st.exitQuest(true);
 			st.playSound(QuestState.SOUND_FINISH);
+			st.exitQuest(true);
 		}
 		
 		return htmltext;
@@ -77,17 +70,11 @@ public class Q353_PowerOfDarkness extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 55)
-					htmltext = "31044-02.htm";
-				else
-				{
-					htmltext = "31044-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 55) ? "31044-01.htm" : "31044-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int stones = st.getQuestItemsCount(STONE);
+				final int stones = st.getQuestItemsCount(STONE);
 				if (stones == 0)
 					htmltext = "31044-05.htm";
 				else
@@ -109,17 +96,13 @@ public class Q353_PowerOfDarkness extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 25)
-		{
-			st.giveItems(STONE, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(STONE, 1, 0, (npc.getNpcId() == 20244 || npc.getNpcId() == 20283) ? 700000 : 720000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q353_PowerOfDarkness(353, qn, "Power of Darkness");
+		new Q353_PowerOfDarkness();
 	}
 }

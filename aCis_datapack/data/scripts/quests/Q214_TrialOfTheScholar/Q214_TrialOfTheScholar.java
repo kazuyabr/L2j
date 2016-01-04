@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q214_TrialOfTheScholar extends Quest
 {
@@ -104,54 +105,7 @@ public class Q214_TrialOfTheScholar extends Quest
 	{
 		super(214, qn, "Trial Of The Scholar");
 		
-		questItemIds = new int[]
-		{
-			MIRIEN_SIGIL_1,
-			MIRIEN_SIGIL_2,
-			MIRIEN_SIGIL_3,
-			MIRIEN_INSTRUCTION,
-			MARIA_LETTER_1,
-			MARIA_LETTER_2,
-			LUCAS_LETTER,
-			LUCILLA_HANDBAG,
-			CRETA_LETTER_1,
-			CRETA_PAINTING_1,
-			CRETA_PAINTING_2,
-			CRETA_PAINTING_3,
-			BROWN_SCROLL_SCRAP,
-			CRYSTAL_OF_PURITY_1,
-			HIGH_PRIEST_SIGIL,
-			GRAND_MAGISTER_SIGIL,
-			CRONOS_SIGIL,
-			SYLVAIN_LETTER,
-			SYMBOL_OF_SYLVAIN,
-			JUREK_LIST,
-			MONSTER_EYE_DESTROYER_SKIN,
-			SHAMAN_NECKLACE,
-			SHACKLE_SCALP,
-			SYMBOL_OF_JUREK,
-			CRONOS_LETTER,
-			DIETER_KEY,
-			CRETA_LETTER_2,
-			DIETER_LETTER,
-			DIETER_DIARY,
-			RAUT_LETTER_ENVELOPE,
-			TRIFF_RING,
-			SCRIPTURE_CHAPTER_1,
-			SCRIPTURE_CHAPTER_2,
-			SCRIPTURE_CHAPTER_3,
-			SCRIPTURE_CHAPTER_4,
-			VALKON_REQUEST,
-			POITAN_NOTES,
-			STRONG_LIQUOR,
-			CRYSTAL_OF_PURITY_2,
-			CASIAN_LIST,
-			GHOUL_SKIN,
-			MEDUSA_BLOOD,
-			FETTERED_SOUL_ICHOR,
-			ENCHANTED_GARGOYLE_NAIL,
-			SYMBOL_OF_CRONOS
-		};
+		setItemsIds(MIRIEN_SIGIL_1, MIRIEN_SIGIL_2, MIRIEN_SIGIL_3, MIRIEN_INSTRUCTION, MARIA_LETTER_1, MARIA_LETTER_2, LUCAS_LETTER, LUCILLA_HANDBAG, CRETA_LETTER_1, CRETA_PAINTING_1, CRETA_PAINTING_2, CRETA_PAINTING_3, BROWN_SCROLL_SCRAP, CRYSTAL_OF_PURITY_1, HIGH_PRIEST_SIGIL, GRAND_MAGISTER_SIGIL, CRONOS_SIGIL, SYLVAIN_LETTER, SYMBOL_OF_SYLVAIN, JUREK_LIST, MONSTER_EYE_DESTROYER_SKIN, SHAMAN_NECKLACE, SHACKLE_SCALP, SYMBOL_OF_JUREK, CRONOS_LETTER, DIETER_KEY, CRETA_LETTER_2, DIETER_LETTER, DIETER_DIARY, RAUT_LETTER_ENVELOPE, TRIFF_RING, SCRIPTURE_CHAPTER_1, SCRIPTURE_CHAPTER_2, SCRIPTURE_CHAPTER_3, SCRIPTURE_CHAPTER_4, VALKON_REQUEST, POITAN_NOTES, STRONG_LIQUOR, CRYSTAL_OF_PURITY_2, CASIAN_LIST, GHOUL_SKIN, MEDUSA_BLOOD, FETTERED_SOUL_ICHOR, ENCHANTED_GARGOYLE_NAIL, SYMBOL_OF_CRONOS);
 		
 		addStartNpc(MIRIEN);
 		addTalkId(MIRIEN, SYLVAIN, LUCAS, VALKON, DIETER, JUREK, EDROC, RAUT, POITAN, MARIA, CRETA, CRONOS, TRIFF, CASIAN);
@@ -358,9 +312,7 @@ public class Q214_TrialOfTheScholar extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (st.hasQuestItems(MARK_OF_SCHOLAR))
-					htmltext = getAlreadyCompletedMsg();
-				else if (player.getClassId() != ClassId.wizard && player.getClassId() != ClassId.elvenWizard && player.getClassId() != ClassId.darkWizard)
+				if (player.getClassId() != ClassId.wizard && player.getClassId() != ClassId.elvenWizard && player.getClassId() != ClassId.darkWizard)
 					htmltext = "30461-01.htm";
 				else if (player.getLevel() < 35)
 					htmltext = "30461-02.htm";
@@ -415,8 +367,9 @@ public class Q214_TrialOfTheScholar extends Quest
 							st.takeItems(SYMBOL_OF_CRONOS, 1);
 							st.giveItems(MARK_OF_SCHOLAR, 1);
 							st.rewardExpAndSp(80265, 30000);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
-							st.exitQuest(true);
+							st.exitQuest(false);
 						}
 						break;
 					
@@ -481,7 +434,7 @@ public class Q214_TrialOfTheScholar extends Quest
 							htmltext = "30608-13.htm";
 						else if (cond == 13)
 							htmltext = "30608-15.htm";
-						else if (st.hasQuestItems(SYMBOL_OF_SYLVAIN) || st.hasQuestItems(MIRIEN_SIGIL_2))
+						else if (st.hasAtLeastOneQuestItem(SYMBOL_OF_SYLVAIN, MIRIEN_SIGIL_2))
 							htmltext = "30608-16.htm";
 						else if (cond > 18)
 						{
@@ -580,12 +533,7 @@ public class Q214_TrialOfTheScholar extends Quest
 						else if (cond == 24)
 							htmltext = "30111-11.htm";
 						else if (cond > 24 && cond < 31)
-						{
-							if (st.hasQuestItems(SCRIPTURE_CHAPTER_1) && st.hasQuestItems(SCRIPTURE_CHAPTER_2) && st.hasQuestItems(SCRIPTURE_CHAPTER_3) && st.hasQuestItems(SCRIPTURE_CHAPTER_4))
-								htmltext = "30111-13.htm";
-							else
-								htmltext = "30111-12.htm";
-						}
+							htmltext = (!st.hasQuestItems(SCRIPTURE_CHAPTER_1, SCRIPTURE_CHAPTER_2, SCRIPTURE_CHAPTER_3, SCRIPTURE_CHAPTER_4)) ? "30111-12.htm" : "30111-13.htm";
 						else if (cond == 31)
 							htmltext = "30111-15.htm";
 						break;
@@ -659,7 +607,7 @@ public class Q214_TrialOfTheScholar extends Quest
 					case CASIAN:
 						if ((cond == 26 || cond == 27) && st.hasQuestItems(POITAN_NOTES))
 						{
-							if (st.hasQuestItems(SCRIPTURE_CHAPTER_1) && st.hasQuestItems(SCRIPTURE_CHAPTER_2) && st.hasQuestItems(SCRIPTURE_CHAPTER_3))
+							if (st.hasQuestItems(SCRIPTURE_CHAPTER_1, SCRIPTURE_CHAPTER_2, SCRIPTURE_CHAPTER_3))
 								htmltext = "30612-02.htm";
 							else
 							{
@@ -679,6 +627,10 @@ public class Q214_TrialOfTheScholar extends Quest
 							htmltext = "30612-08.htm";
 						break;
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		

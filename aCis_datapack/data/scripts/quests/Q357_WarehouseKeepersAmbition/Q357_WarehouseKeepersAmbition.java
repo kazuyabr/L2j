@@ -16,34 +16,31 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.util.Rnd;
 
 public class Q357_WarehouseKeepersAmbition extends Quest
 {
 	private static final String qn = "Q357_WarehouseKeepersAmbition";
 	
-	// NPC
-	private static final int SILVA = 30686;
-	
 	// Item
 	private static final int JADE_CRYSTAL = 5867;
 	
-	// Rewards
-	private static final int REWARD1 = 900;
-	private static final int REWARD2 = 10000;
+	// Monsters
+	private static final int FOREST_RUNNER = 20594;
+	private static final int FLINE_ELDER = 20595;
+	private static final int LIELE_ELDER = 20596;
+	private static final int VALLEY_TREANT_ELDER = 20597;
 	
-	public Q357_WarehouseKeepersAmbition(int questId, String name, String descr)
+	public Q357_WarehouseKeepersAmbition()
 	{
-		super(questId, name, descr);
+		super(357, qn, "Warehouse Keeper's Ambition");
 		
-		questItemIds = new int[]
-		{
-			JADE_CRYSTAL
-		};
+		setItemsIds(JADE_CRYSTAL);
 		
-		addStartNpc(SILVA);
-		addTalkId(SILVA);
+		addStartNpc(30686); // Silva
+		addTalkId(30686);
 		
-		addKillId(20594, 20595, 20596, 20597);
+		addKillId(FOREST_RUNNER, FLINE_ELDER, LIELE_ELDER, VALLEY_TREANT_ELDER);
 	}
 	
 	@Override
@@ -56,33 +53,31 @@ public class Q357_WarehouseKeepersAmbition extends Quest
 		
 		if (event.equalsIgnoreCase("30686-2.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
-		// If number of qItems are >= 100, give the extra reward, else, give the normal reward.
 		else if (event.equalsIgnoreCase("30686-7.htm"))
 		{
-			int count = st.getQuestItemsCount(JADE_CRYSTAL);
-			if (count >= 1)
+			final int count = st.getQuestItemsCount(JADE_CRYSTAL);
+			if (count == 0)
+				htmltext = "30686-4.htm";
+			else
 			{
-				int reward;
+				int reward = (count * 425) + 3500;
 				if (count >= 100)
-					reward = (st.getQuestItemsCount(JADE_CRYSTAL) * REWARD1) + REWARD2;
-				else
-					reward = st.getQuestItemsCount(JADE_CRYSTAL) * REWARD1;
+					reward += 7400;
 				
 				st.takeItems(JADE_CRYSTAL, -1);
 				st.rewardItems(57, reward);
 			}
-			else
-				htmltext = "30686-4.htm";
 		}
 		else if (event.equalsIgnoreCase("30686-8.htm"))
 		{
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
+		
 		return htmltext;
 	}
 	
@@ -97,22 +92,14 @@ public class Q357_WarehouseKeepersAmbition extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 47)
-					htmltext = "30686-0.htm";
-				else
-				{
-					htmltext = "30686-0a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 47) ? "30686-0a.htm" : "30686-0.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(JADE_CRYSTAL) == 0)
-					htmltext = "30686-4.htm";
-				else if (st.getQuestItemsCount(JADE_CRYSTAL) >= 1)
-					htmltext = "30686-6.htm";
+				htmltext = (!st.hasQuestItems(JADE_CRYSTAL)) ? "30686-4.htm" : "30686-6.htm";
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -123,15 +110,30 @@ public class Q357_WarehouseKeepersAmbition extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		st.dropItems(JADE_CRYSTAL, 1, -1, 500000);
+		switch (npc.getNpcId())
+		{
+			case FOREST_RUNNER:
+				partyMember.getQuestState(qn).dropItems(JADE_CRYSTAL, 1, -1, 577000);
+				break;
+			
+			case FLINE_ELDER:
+				partyMember.getQuestState(qn).dropItems(JADE_CRYSTAL, 1, -1, 600000);
+				break;
+			
+			case LIELE_ELDER:
+				partyMember.getQuestState(qn).dropItems(JADE_CRYSTAL, 1, -1, 638000);
+				break;
+			
+			case VALLEY_TREANT_ELDER:
+				partyMember.getQuestState(qn).dropItemsAlways(JADE_CRYSTAL, (Rnd.get(1000) < 62) ? 2 : 1, -1);
+				break;
+		}
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q357_WarehouseKeepersAmbition(357, qn, "Warehouse Keeper's Ambition");
+		new Q357_WarehouseKeepersAmbition();
 	}
 }

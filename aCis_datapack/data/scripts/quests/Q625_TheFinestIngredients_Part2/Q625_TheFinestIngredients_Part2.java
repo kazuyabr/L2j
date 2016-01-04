@@ -58,11 +58,7 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			FOOD_FOR_BUMBALUMP,
-			SPECIAL_YETI_MEAT
-		};
+		setItemsIds(FOOD_FOR_BUMBALUMP, SPECIAL_YETI_MEAT);
 		
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY, YETIS_TABLE);

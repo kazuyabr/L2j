@@ -39,7 +39,7 @@ public class Q163_LegacyOfThePoet extends Quest
 	{
 		super(163, qn, "Legacy of the Poet");
 		
-		questItemIds = RUMIELS_POEMS;
+		setItemsIds(RUMIELS_POEMS);
 		
 		addStartNpc(STARDEN);
 		addTalkId(STARDEN);

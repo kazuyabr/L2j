@@ -32,10 +32,7 @@ public class Q606_WarWithVarkaSilenos extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Mane
-		};
+		setItemsIds(Mane);
 		
 		addStartNpc(31370); // Kadun Zu Ketra
 		addTalkId(31370);

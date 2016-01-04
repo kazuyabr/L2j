@@ -26,6 +26,12 @@ public class Q355_FamilyHonor extends Quest
 	private static final int GALIBREDO = 30181;
 	private static final int PATRIN = 30929;
 	
+	// Monsters
+	private static final int TIMAK_ORC_TROOP_LEADER = 20767;
+	private static final int TIMAK_ORC_TROOP_SHAMAN = 20768;
+	private static final int TIMAK_ORC_TROOP_WARRIOR = 20769;
+	private static final int TIMAK_ORC_TROOP_ARCHER = 20770;
+	
 	// Items
 	private static final int GALIBREDO_BUST = 4252;
 	private static final int WORK_OF_BERONA = 4350;
@@ -34,19 +40,16 @@ public class Q355_FamilyHonor extends Quest
 	private static final int STATUE_REPLICA = 4353;
 	private static final int STATUE_FORGERY = 4354;
 	
-	public Q355_FamilyHonor(int questId, String name, String descr)
+	public Q355_FamilyHonor()
 	{
-		super(questId, name, descr);
+		super(355, qn, "Family Honor");
 		
-		questItemIds = new int[]
-		{
-			GALIBREDO_BUST
-		};
+		setItemsIds(GALIBREDO_BUST);
 		
 		addStartNpc(GALIBREDO);
 		addTalkId(GALIBREDO, PATRIN);
 		
-		addKillId(20767, 20768, 20769, 20770);
+		addKillId(TIMAK_ORC_TROOP_LEADER, TIMAK_ORC_TROOP_SHAMAN, TIMAK_ORC_TROOP_WARRIOR, TIMAK_ORC_TROOP_ARCHER);
 	}
 	
 	@Override
@@ -59,18 +62,18 @@ public class Q355_FamilyHonor extends Quest
 		
 		if (event.equalsIgnoreCase("30181-2.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30181-4b.htm"))
 		{
-			int count = st.getQuestItemsCount(GALIBREDO_BUST);
+			final int count = st.getQuestItemsCount(GALIBREDO_BUST);
 			if (count > 0)
 			{
 				htmltext = "30181-4.htm";
 				
-				int reward = 2800 + count * 120;
+				int reward = 2800 + (count * 120);
 				if (count >= 100)
 				{
 					htmltext = "30181-4a.htm";
@@ -83,36 +86,31 @@ public class Q355_FamilyHonor extends Quest
 		}
 		else if (event.equalsIgnoreCase("30929-7.htm"))
 		{
-			if (st.getQuestItemsCount(WORK_OF_BERONA) > 0)
+			if (st.hasQuestItems(WORK_OF_BERONA))
 			{
-				int appraising = Rnd.get(100);
+				st.takeItems(WORK_OF_BERONA, 1);
+				
+				final int appraising = Rnd.get(100);
 				if (appraising < 20)
-				{
 					htmltext = "30929-2.htm";
-					st.takeItems(WORK_OF_BERONA, 1);
-				}
-				else if (appraising < 40 && appraising >= 20)
+				else if (appraising < 40)
 				{
 					htmltext = "30929-3.htm";
-					st.takeItems(WORK_OF_BERONA, 1);
 					st.giveItems(STATUE_REPLICA, 1);
 				}
-				else if (appraising < 60 && appraising >= 40)
+				else if (appraising < 60)
 				{
 					htmltext = "30929-4.htm";
-					st.takeItems(WORK_OF_BERONA, 1);
 					st.giveItems(STATUE_ORIGINAL, 1);
 				}
-				else if (appraising < 80 && appraising >= 60)
+				else if (appraising < 80)
 				{
 					htmltext = "30929-5.htm";
-					st.takeItems(WORK_OF_BERONA, 1);
 					st.giveItems(STATUE_FORGERY, 1);
 				}
 				else
 				{
 					htmltext = "30929-6.htm";
-					st.takeItems(WORK_OF_BERONA, 1);
 					st.giveItems(STATUE_PROTOTYPE, 1);
 				}
 			}
@@ -137,23 +135,14 @@ public class Q355_FamilyHonor extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 36)
-					htmltext = "30181-0.htm";
-				else
-				{
-					htmltext = "30181-0a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 36) ? "30181-0a.htm" : "30181-0.htm";
 				break;
 			
 			case STATE_STARTED:
 				switch (npc.getNpcId())
 				{
 					case GALIBREDO:
-						if (st.hasQuestItems(GALIBREDO_BUST))
-							htmltext = "30181-3a.htm";
-						else
-							htmltext = "30181-3.htm";
+						htmltext = (st.hasQuestItems(GALIBREDO_BUST)) ? "30181-3a.htm" : "30181-3.htm";
 						break;
 					
 					case PATRIN:
@@ -175,12 +164,27 @@ public class Q355_FamilyHonor extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		int chance = Rnd.get(100);
-		if (chance < 40)
+		switch (npc.getNpcId())
 		{
-			st.dropItemsAlways(GALIBREDO_BUST, 1, -1);
-			if (chance < 20)
-				st.dropItemsAlways(WORK_OF_BERONA, 1, -1);
+			case TIMAK_ORC_TROOP_LEADER:
+				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 560000))
+					st.dropItems(WORK_OF_BERONA, 1, 0, 124000);
+				break;
+			
+			case TIMAK_ORC_TROOP_SHAMAN:
+				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 530000))
+					st.dropItems(WORK_OF_BERONA, 1, 0, 120000);
+				break;
+			
+			case TIMAK_ORC_TROOP_WARRIOR:
+				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 420000))
+					st.dropItems(WORK_OF_BERONA, 1, 0, 96000);
+				break;
+			
+			case TIMAK_ORC_TROOP_ARCHER:
+				if (!st.dropItems(GALIBREDO_BUST, 1, 0, 440000))
+					st.dropItems(WORK_OF_BERONA, 1, 0, 120000);
+				break;
 		}
 		
 		return null;
@@ -188,6 +192,6 @@ public class Q355_FamilyHonor extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q355_FamilyHonor(355, qn, "Family Honor");
+		new Q355_FamilyHonor();
 	}
 }

@@ -53,13 +53,7 @@ public class Q628_HuntOfTheGoldenRamMercenaryForce extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			CHITIN,
-			CHITIN2,
-			RECRUIT,
-			SOLDIER
-		};
+		setItemsIds(CHITIN, CHITIN2, RECRUIT, SOLDIER);
 		
 		addStartNpc(KAHMAN);
 		addTalkId(KAHMAN);

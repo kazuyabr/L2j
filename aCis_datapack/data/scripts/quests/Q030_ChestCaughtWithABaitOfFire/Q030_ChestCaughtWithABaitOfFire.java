@@ -34,10 +34,7 @@ public class Q030_ChestCaughtWithABaitOfFire extends Quest
 	{
 		super(30, qn, "Chest caught with a bait of fire");
 		
-		questItemIds = new int[]
-		{
-			MUSICAL_SCORE
-		};
+		setItemsIds(MUSICAL_SCORE);
 		
 		addStartNpc(LINNAEUS);
 		addTalkId(LINNAEUS, RUKAL);

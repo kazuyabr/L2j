@@ -42,11 +42,7 @@ public class Q032_AnObviousLie extends Quest
 	{
 		super(32, qn, "An Obvious Lie");
 		
-		questItemIds = new int[]
-		{
-			MAP,
-			MEDICINAL_HERB
-		};
+		setItemsIds(MAP, MEDICINAL_HERB);
 		
 		addStartNpc(MAXIMILIAN);
 		addTalkId(MAXIMILIAN, GENTLER, MIKI_THE_CAT);

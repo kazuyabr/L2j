@@ -62,32 +62,7 @@ public class Q402_PathToAHumanKnight extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			MarkOfEsquire,
-			CoinOfLords1,
-			CoinOfLords2,
-			CoinOfLords3,
-			CoinOfLords4,
-			CoinOfLords5,
-			CoinOfLords6,
-			GludioGuardsMark1,
-			BugbearNecklace,
-			EinhasadChurchMark1,
-			EinhasadCrucifix,
-			GludioGuardsMark2,
-			SpiderLeg,
-			EinhasadChurchMark2,
-			LizardmanTotem,
-			GludioGuardsMark3,
-			GiantSpiderHusk,
-			EinhasadChurchMark3,
-			LizardmanTotem,
-			GludioGuardsMark3,
-			GiantSpiderHusk,
-			EinhasadChurchMark3,
-			HorribleSkull
-		};
+		setItemsIds(MarkOfEsquire, CoinOfLords1, CoinOfLords2, CoinOfLords3, CoinOfLords4, CoinOfLords5, CoinOfLords6, GludioGuardsMark1, BugbearNecklace, EinhasadChurchMark1, EinhasadCrucifix, GludioGuardsMark2, SpiderLeg, EinhasadChurchMark2, LizardmanTotem, GludioGuardsMark3, GiantSpiderHusk, EinhasadChurchMark3, LizardmanTotem, GludioGuardsMark3, GiantSpiderHusk, EinhasadChurchMark3, HorribleSkull);
 		
 		addStartNpc(SirKlausVasper);
 		addTalkId(SirKlausVasper, Bathis, Raymond, Bezique, Levian, Gilbert, Biotin, SirAaronTanford, SirCollinWindawood);

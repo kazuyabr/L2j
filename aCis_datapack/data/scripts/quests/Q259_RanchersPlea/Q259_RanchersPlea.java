@@ -38,14 +38,11 @@ public class Q259_RanchersPlea extends Quest
 	private static final int HEALING_POTION = 1061;
 	private static final int WOODEN_ARROW = 17;
 	
-	public Q259_RanchersPlea(int questId, String name, String descr)
+	public Q259_RanchersPlea()
 	{
-		super(questId, name, descr);
+		super(259, qn, "Rancher's Plea");
 		
-		questItemIds = new int[]
-		{
-			GIANT_SPIDER_SKIN
-		};
+		setItemsIds(GIANT_SPIDER_SKIN);
 		
 		addStartNpc(EDMOND);
 		addTalkId(EDMOND, MARIUS);
@@ -63,8 +60,8 @@ public class Q259_RanchersPlea extends Quest
 		
 		if (event.equalsIgnoreCase("30497-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30497-06.htm"))
@@ -74,8 +71,7 @@ public class Q259_RanchersPlea extends Quest
 		}
 		else if (event.equalsIgnoreCase("30405-04.htm"))
 		{
-			final int count = st.getQuestItemsCount(GIANT_SPIDER_SKIN);
-			if (count >= 10)
+			if (st.getQuestItemsCount(GIANT_SPIDER_SKIN) >= 10)
 			{
 				st.takeItems(GIANT_SPIDER_SKIN, 10);
 				st.rewardItems(HEALING_POTION, 1);
@@ -85,8 +81,7 @@ public class Q259_RanchersPlea extends Quest
 		}
 		else if (event.equalsIgnoreCase("30405-05.htm"))
 		{
-			final int count = st.getQuestItemsCount(GIANT_SPIDER_SKIN);
-			if (count >= 10)
+			if (st.getQuestItemsCount(GIANT_SPIDER_SKIN) >= 10)
 			{
 				st.takeItems(GIANT_SPIDER_SKIN, 10);
 				st.rewardItems(WOODEN_ARROW, 50);
@@ -96,10 +91,10 @@ public class Q259_RanchersPlea extends Quest
 		}
 		else if (event.equalsIgnoreCase("30405-07.htm"))
 		{
-			final int count = st.getQuestItemsCount(GIANT_SPIDER_SKIN);
-			if (count >= 10)
+			if (st.getQuestItemsCount(GIANT_SPIDER_SKIN) >= 10)
 				htmltext = "30405-06.htm";
 		}
+		
 		return htmltext;
 	}
 	
@@ -118,7 +113,7 @@ public class Q259_RanchersPlea extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int count = st.getQuestItemsCount(GIANT_SPIDER_SKIN);
+				final int count = st.getQuestItemsCount(GIANT_SPIDER_SKIN);
 				switch (npc.getNpcId())
 				{
 					case EDMOND:
@@ -133,10 +128,7 @@ public class Q259_RanchersPlea extends Quest
 						break;
 					
 					case MARIUS:
-						if (count < 10)
-							htmltext = "30405-01.htm";
-						else
-							htmltext = "30405-02.htm";
+						htmltext = (count < 10) ? "30405-01.htm" : "30405-02.htm";
 						break;
 				}
 				break;
@@ -160,6 +152,6 @@ public class Q259_RanchersPlea extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q259_RanchersPlea(259, qn, "Rancher's Plea");
+		new Q259_RanchersPlea();
 	}
 }

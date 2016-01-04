@@ -25,16 +25,13 @@ public class Q320_BonesTellTheFuture extends Quest
 	// Quest item
 	private final int BONE_FRAGMENT = 809;
 	
-	public Q320_BonesTellTheFuture(int questId, String name, String descr)
+	public Q320_BonesTellTheFuture()
 	{
-		super(questId, name, descr);
+		super(320, qn, "Bones Tell the Future");
 		
-		questItemIds = new int[]
-		{
-			BONE_FRAGMENT
-		};
+		setItemsIds(BONE_FRAGMENT);
 		
-		addStartNpc(30359);
+		addStartNpc(30359); // Kaitar
 		addTalkId(30359);
 		
 		addKillId(20517, 20518, 20022, 20455);
@@ -50,8 +47,8 @@ public class Q320_BonesTellTheFuture extends Quest
 		
 		if (event.equalsIgnoreCase("30359-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -78,7 +75,7 @@ public class Q320_BonesTellTheFuture extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(BONE_FRAGMENT) < 10)
+				if (st.getInt("cond") == 1)
 					htmltext = "30359-05.htm";
 				else
 				{
@@ -109,6 +106,6 @@ public class Q320_BonesTellTheFuture extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q320_BonesTellTheFuture(320, qn, "Bones Tell the Future");
+		new Q320_BonesTellTheFuture();
 	}
 }

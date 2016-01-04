@@ -21,23 +21,17 @@ public class Q319_ScentOfDeath extends Quest
 {
 	private static final String qn = "Q319_ScentOfDeath";
 	
-	// NPC
-	private static final int MINALESS = 30138;
-	
 	// Item
 	private static final int ZOMBIE_SKIN = 1045;
 	
-	public Q319_ScentOfDeath(int questId, String name, String descr)
+	public Q319_ScentOfDeath()
 	{
-		super(questId, name, descr);
+		super(319, qn, "Scent of Death");
 		
-		questItemIds = new int[]
-		{
-			ZOMBIE_SKIN
-		};
+		setItemsIds(ZOMBIE_SKIN);
 		
-		addStartNpc(MINALESS);
-		addTalkId(MINALESS);
+		addStartNpc(30138); // Minaless
+		addTalkId(30138);
 		
 		addKillId(20015, 20020);
 	}
@@ -52,8 +46,8 @@ public class Q319_ScentOfDeath extends Quest
 		
 		if (event.equalsIgnoreCase("30138-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -71,27 +65,21 @@ public class Q319_ScentOfDeath extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 11)
-					htmltext = "30138-03.htm";
-				else
-				{
-					htmltext = "30138-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 11) ? "30138-02.htm" : "30138-03.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(ZOMBIE_SKIN) == 5)
+				if (st.getInt("cond") == 1)
+					htmltext = "30138-05.htm";
+				else
 				{
 					htmltext = "30138-06.htm";
-					st.takeItems(ZOMBIE_SKIN, 5);
+					st.takeItems(ZOMBIE_SKIN, -1);
 					st.rewardItems(57, 3350);
 					st.rewardItems(1060, 1);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
-				else
-					htmltext = "30138-05.htm";
 				break;
 		}
 		return htmltext;
@@ -112,6 +100,6 @@ public class Q319_ScentOfDeath extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q319_ScentOfDeath(319, qn, "Scent of Death");
+		new Q319_ScentOfDeath();
 	}
 }

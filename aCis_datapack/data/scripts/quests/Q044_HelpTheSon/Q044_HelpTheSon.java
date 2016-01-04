@@ -39,11 +39,7 @@ public class Q044_HelpTheSon extends Quest
 	{
 		super(44, qn, "Help the Son!");
 		
-		questItemIds = new int[]
-		{
-			GEMSTONE_FRAGMENT,
-			GEMSTONE
-		};
+		setItemsIds(GEMSTONE_FRAGMENT, GEMSTONE);
 		
 		addStartNpc(LUNDY);
 		addTalkId(LUNDY, DRIKUS);

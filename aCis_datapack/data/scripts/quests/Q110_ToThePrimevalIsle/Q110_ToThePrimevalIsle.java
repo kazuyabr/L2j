@@ -32,10 +32,7 @@ public class Q110_ToThePrimevalIsle extends Quest
 	{
 		super(110, qn, "To the Primeval Isle");
 		
-		questItemIds = new int[]
-		{
-			ANCIENT_BOOK
-		};
+		setItemsIds(ANCIENT_BOOK);
 		
 		addStartNpc(ANTON);
 		addTalkId(ANTON, MARQUEZ);

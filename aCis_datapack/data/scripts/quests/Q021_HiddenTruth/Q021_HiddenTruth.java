@@ -45,10 +45,7 @@ public class Q021_HiddenTruth extends Quest
 	{
 		super(21, qn, "Hidden Truth");
 		
-		questItemIds = new int[]
-		{
-			CROSS_OF_EINHASAD
-		};
+		setItemsIds(CROSS_OF_EINHASAD);
 		
 		addStartNpc(MYSTERIOUS_WIZARD);
 		addTalkId(MYSTERIOUS_WIZARD, TOMBSTONE, VON_HELLMAN, VON_HELLMAN_PAGE, BROKEN_BOOKSHELF, AGRIPEL, DOMINIC, BENEDICT, INNOCENTIN);

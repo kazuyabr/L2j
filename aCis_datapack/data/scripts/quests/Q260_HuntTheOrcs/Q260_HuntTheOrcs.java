@@ -28,7 +28,7 @@ public class Q260_HuntTheOrcs extends Quest
 	
 	// Items
 	private static final int ORC_AMULET = 1114;
-	private static final int ORCS_NECKLACE = 1115;
+	private static final int ORC_NECKLACE = 1115;
 	
 	// Monsters
 	private static final int KABOO_ORC = 20468;
@@ -38,15 +38,11 @@ public class Q260_HuntTheOrcs extends Quest
 	private static final int KABOO_ORC_FIGHTER_LEADER = 20472;
 	private static final int KABOO_ORC_FIGHTER_LIEUTENANT = 20473;
 	
-	public Q260_HuntTheOrcs(int questId, String name, String descr)
+	public Q260_HuntTheOrcs()
 	{
-		super(questId, name, descr);
+		super(260, qn, "Hunt the Orcs");
 		
-		questItemIds = new int[]
-		{
-			ORC_AMULET,
-			ORCS_NECKLACE
-		};
+		setItemsIds(ORC_AMULET, ORC_NECKLACE);
 		
 		addStartNpc(RAYEN);
 		addTalkId(RAYEN);
@@ -64,8 +60,8 @@ public class Q260_HuntTheOrcs extends Quest
 		
 		if (event.equalsIgnoreCase("30221-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30221-06.htm"))
@@ -98,7 +94,7 @@ public class Q260_HuntTheOrcs extends Quest
 			
 			case STATE_STARTED:
 				int amulet = st.getQuestItemsCount(ORC_AMULET);
-				int necklace = st.getQuestItemsCount(ORCS_NECKLACE);
+				int necklace = st.getQuestItemsCount(ORC_NECKLACE);
 				
 				if (amulet == 0 && necklace == 0)
 					htmltext = "30221-04.htm";
@@ -106,7 +102,7 @@ public class Q260_HuntTheOrcs extends Quest
 				{
 					htmltext = "30221-05.htm";
 					st.takeItems(ORC_AMULET, -1);
-					st.takeItems(ORCS_NECKLACE, -1);
+					st.takeItems(ORC_NECKLACE, -1);
 					st.rewardItems(57, amulet * 5 + necklace * 15);
 				}
 				break;
@@ -130,22 +126,22 @@ public class Q260_HuntTheOrcs extends Quest
 				case KABOO_ORC_GRUNT:
 				case KABOO_ORC_ARCHER:
 					st.giveItems(ORC_AMULET, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
 					break;
 				
 				case KABOO_ORC_FIGHTER:
 				case KABOO_ORC_FIGHTER_LEADER:
 				case KABOO_ORC_FIGHTER_LIEUTENANT:
-					st.giveItems(ORCS_NECKLACE, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
+					st.giveItems(ORC_NECKLACE, 1);
 					break;
 			}
+			st.playSound(QuestState.SOUND_ITEMGET);
 		}
+		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q260_HuntTheOrcs(260, qn, "Hunt the Orcs");
+		new Q260_HuntTheOrcs();
 	}
 }

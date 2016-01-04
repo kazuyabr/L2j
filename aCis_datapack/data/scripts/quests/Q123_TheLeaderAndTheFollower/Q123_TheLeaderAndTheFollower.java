@@ -49,11 +49,7 @@ public class Q123_TheLeaderAndTheFollower extends Quest
 	{
 		super(123, qn, "The Leader and the Follower");
 		
-		questItemIds = new int[]
-		{
-			BLOOD,
-			LEG
-		};
+		setItemsIds(BLOOD, LEG);
 		
 		addStartNpc(NEWYEAR);
 		addTalkId(NEWYEAR);

@@ -74,11 +74,7 @@ public class Q234_FatesWhisper extends Quest
 	{
 		super(234, qn, "Fate's Whispers");
 		
-		questItemIds = new int[]
-		{
-			PIPETTE_KNIFE,
-			RED_PIPETTE_KNIFE
-		};
+		setItemsIds(PIPETTE_KNIFE, RED_PIPETTE_KNIFE);
 		
 		addStartNpc(31002);
 		addTalkId(31002, 30182, 30847, 30178, 30833, 31028, 31029, 31030, 31027);

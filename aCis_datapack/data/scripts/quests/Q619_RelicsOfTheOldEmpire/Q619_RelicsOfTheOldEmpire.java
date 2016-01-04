@@ -48,10 +48,7 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			RELICS
-		};
+		setItemsIds(RELICS);
 		
 		addStartNpc(GHOST_OF_ADVENTURER);
 		addTalkId(GHOST_OF_ADVENTURER);

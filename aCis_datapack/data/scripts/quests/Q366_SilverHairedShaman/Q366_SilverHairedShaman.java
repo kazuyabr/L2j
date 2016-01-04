@@ -31,10 +31,7 @@ public class Q366_SilverHairedShaman extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			HAIR
-		};
+		setItemsIds(HAIR);
 		
 		addStartNpc(DIETER);
 		addTalkId(DIETER);

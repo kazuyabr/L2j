@@ -112,10 +112,7 @@ public class Q385_YokeOfThePast extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			ANCIENT_SCROLL
-		};
+		setItemsIds(ANCIENT_SCROLL);
 		
 		for (int ziggurat : GATEKEEPER_ZIGGURAT)
 		{

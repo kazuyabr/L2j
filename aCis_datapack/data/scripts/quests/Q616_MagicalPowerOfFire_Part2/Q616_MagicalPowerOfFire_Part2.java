@@ -47,10 +47,7 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			FIRE_HEART_OF_NASTRON
-		};
+		setItemsIds(FIRE_HEART_OF_NASTRON);
 		
 		addStartNpc(UDAN_MARDUI);
 		addTalkId(UDAN_MARDUI, KETRAS_HOLY_ALTAR);

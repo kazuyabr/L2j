@@ -49,12 +49,7 @@ public class Q242_PossessorOfAPreciousSoul extends Quest
 	{
 		super(242, qn, "Possessor of a Precious Soul - 2");
 		
-		questItemIds = new int[]
-		{
-			GOLDEN_HAIR,
-			SORCERY_INGREDIENT,
-			ORB_OF_BINDING
-		};
+		setItemsIds(GOLDEN_HAIR, SORCERY_INGREDIENT, ORB_OF_BINDING);
 		
 		addStartNpc(VIRGIL);
 		addTalkId(VIRGIL, KASSANDRA, OGMAR, MYSTERIOUS_KNIGHT, ANGEL_CORPSE, KALIS, MATILD, CORNERSTONE, FALLEN_UNICORN, PURE_UNICORN);

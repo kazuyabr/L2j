@@ -33,10 +33,7 @@ public class Q011_SecretMeetingWithKetraOrcs extends Quest
 	{
 		super(11, qn, "Secret Meeting With Ketra Orcs");
 		
-		questItemIds = new int[]
-		{
-			MUNITIONS_BOX
-		};
+		setItemsIds(MUNITIONS_BOX);
 		
 		addStartNpc(CADMON);
 		addTalkId(CADMON, LEON, WAHKAN);

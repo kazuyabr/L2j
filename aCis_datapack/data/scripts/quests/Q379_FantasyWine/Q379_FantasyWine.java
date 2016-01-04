@@ -37,11 +37,7 @@ public class Q379_FantasyWine extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			LEAF,
-			STONE
-		};
+		setItemsIds(LEAF, STONE);
 		
 		addStartNpc(HARLAN);
 		addTalkId(HARLAN);

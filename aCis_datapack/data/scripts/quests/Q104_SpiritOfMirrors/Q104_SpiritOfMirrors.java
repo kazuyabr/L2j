@@ -52,13 +52,7 @@ public class Q104_SpiritOfMirrors extends Quest
 	{
 		super(104, qn, "Spirit of Mirrors");
 		
-		questItemIds = new int[]
-		{
-			GALLINS_OAK_WAND,
-			WAND_SPIRITBOUND_1,
-			WAND_SPIRITBOUND_2,
-			WAND_SPIRITBOUND_3
-		};
+		setItemsIds(GALLINS_OAK_WAND, WAND_SPIRITBOUND_1, WAND_SPIRITBOUND_2, WAND_SPIRITBOUND_3);
 		
 		addStartNpc(GALLINT);
 		addTalkId(GALLINT, ARNOLD, JOHNSTONE, KENYOS);
@@ -192,7 +186,7 @@ public class Q104_SpiritOfMirrors extends Quest
 						st.takeItems(GALLINS_OAK_WAND, 1);
 						st.giveItems(WAND_SPIRITBOUND_1, 1);
 						
-						if (st.hasQuestItems(WAND_SPIRITBOUND_2) && st.hasQuestItems(WAND_SPIRITBOUND_3))
+						if (st.hasQuestItems(WAND_SPIRITBOUND_2, WAND_SPIRITBOUND_3))
 						{
 							st.set("cond", "3");
 							st.playSound(QuestState.SOUND_MIDDLE);
@@ -208,7 +202,7 @@ public class Q104_SpiritOfMirrors extends Quest
 						st.takeItems(GALLINS_OAK_WAND, 1);
 						st.giveItems(WAND_SPIRITBOUND_2, 1);
 						
-						if (st.hasQuestItems(WAND_SPIRITBOUND_1) && st.hasQuestItems(WAND_SPIRITBOUND_3))
+						if (st.hasQuestItems(WAND_SPIRITBOUND_1, WAND_SPIRITBOUND_3))
 						{
 							st.set("cond", "3");
 							st.playSound(QuestState.SOUND_MIDDLE);
@@ -224,7 +218,7 @@ public class Q104_SpiritOfMirrors extends Quest
 						st.takeItems(GALLINS_OAK_WAND, 1);
 						st.giveItems(WAND_SPIRITBOUND_3, 1);
 						
-						if (st.hasQuestItems(WAND_SPIRITBOUND_1) && st.hasQuestItems(WAND_SPIRITBOUND_2))
+						if (st.hasQuestItems(WAND_SPIRITBOUND_1, WAND_SPIRITBOUND_2))
 						{
 							st.set("cond", "3");
 							st.playSound(QuestState.SOUND_MIDDLE);

@@ -37,10 +37,7 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			STOLEN_GREEN_TOTEM
-		};
+		setItemsIds(STOLEN_GREEN_TOTEM);
 		
 		addStartNpc(WAHKAN);
 		addTalkId(WAHKAN, ASEFA, UDAN_BOX);

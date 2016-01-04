@@ -41,14 +41,7 @@ public class Q406_PathToAnElvenKnight extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SoriusLetter,
-			KlutoBox,
-			TopazPiece,
-			EmeraldPiece,
-			KlutosMemo
-		};
+		setItemsIds(SoriusLetter, KlutoBox, TopazPiece, EmeraldPiece, KlutosMemo);
 		
 		addStartNpc(Sorius);
 		addTalkId(Sorius);

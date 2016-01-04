@@ -21,26 +21,20 @@ public class Q277_GatekeepersOffering extends Quest
 {
 	private static final String qn = "Q277_GatekeepersOffering";
 	
-	// NPC
-	private static final int TAMIL = 30576;
-	
 	// Item
 	private static final int STARSTONE = 1572;
 	
 	// Reward
 	private static final int GATEKEEPER_CHARM = 1658;
 	
-	// Monster
-	private static final int GRAYSTONE_GOLEM = 20333;
-	
-	public Q277_GatekeepersOffering(int questId, String name, String descr)
+	public Q277_GatekeepersOffering()
 	{
-		super(questId, name, descr);
+		super(277, qn, "Gatekeeper's Offering");
 		
-		addStartNpc(TAMIL);
-		addTalkId(TAMIL);
+		addStartNpc(30576); // Tamil
+		addTalkId(30576);
 		
-		addKillId(GRAYSTONE_GOLEM);
+		addKillId(20333); // Graystone Golem
 	}
 	
 	@Override
@@ -53,8 +47,8 @@ public class Q277_GatekeepersOffering extends Quest
 		
 		if (event.equalsIgnoreCase("30576-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -76,7 +70,9 @@ public class Q277_GatekeepersOffering extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.getInt("cond") == 2)
+				if (st.getInt("cond") == 1)
+					htmltext = "30576-04.htm";
+				else
 				{
 					htmltext = "30576-05.htm";
 					st.takeItems(STARSTONE, -1);
@@ -84,8 +80,6 @@ public class Q277_GatekeepersOffering extends Quest
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
-				else
-					htmltext = "30576-04.htm";
 				break;
 		}
 		
@@ -107,6 +101,6 @@ public class Q277_GatekeepersOffering extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q277_GatekeepersOffering(277, qn, "Gatekeeper's Offering");
+		new Q277_GatekeepersOffering();
 	}
 }

@@ -12,8 +12,14 @@
  */
 package quests.Q325_GrimCollector;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.holder.ItemHolder;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.util.Rnd;
@@ -39,28 +45,31 @@ public class Q325_GrimCollector extends Quest
 	private static final int VARSAK = 30342;
 	private static final int SAMED = 30434;
 	
-	public Q325_GrimCollector(int questId, String name, String descr)
+	private static final Map<Integer, List<ItemHolder>> DROPLIST = new HashMap<>();
 	{
-		super(questId, name, descr);
+		DROPLIST.put(20026, Arrays.asList(new ItemHolder(ZOMBIE_HEAD, 30), new ItemHolder(ZOMBIE_HEART, 50), new ItemHolder(ZOMBIE_LIVER, 75)));
+		DROPLIST.put(20029, Arrays.asList(new ItemHolder(ZOMBIE_HEAD, 30), new ItemHolder(ZOMBIE_HEART, 52), new ItemHolder(ZOMBIE_LIVER, 75)));
+		DROPLIST.put(20035, Arrays.asList(new ItemHolder(SKULL, 5), new ItemHolder(RIB_BONE, 15), new ItemHolder(SPINE, 29), new ItemHolder(THIGH_BONE, 79)));
+		DROPLIST.put(20042, Arrays.asList(new ItemHolder(SKULL, 6), new ItemHolder(RIB_BONE, 19), new ItemHolder(ARM_BONE, 69), new ItemHolder(THIGH_BONE, 86)));
+		DROPLIST.put(20045, Arrays.asList(new ItemHolder(SKULL, 9), new ItemHolder(SPINE, 59), new ItemHolder(ARM_BONE, 77), new ItemHolder(THIGH_BONE, 97)));
+		DROPLIST.put(20051, Arrays.asList(new ItemHolder(SKULL, 9), new ItemHolder(RIB_BONE, 59), new ItemHolder(SPINE, 79), new ItemHolder(ARM_BONE, 100)));
+		DROPLIST.put(20457, Arrays.asList(new ItemHolder(ZOMBIE_HEAD, 40), new ItemHolder(ZOMBIE_HEART, 60), new ItemHolder(ZOMBIE_LIVER, 80)));
+		DROPLIST.put(20458, Arrays.asList(new ItemHolder(ZOMBIE_HEAD, 40), new ItemHolder(ZOMBIE_HEART, 70), new ItemHolder(ZOMBIE_LIVER, 100)));
+		DROPLIST.put(20514, Arrays.asList(new ItemHolder(SKULL, 6), new ItemHolder(RIB_BONE, 21), new ItemHolder(SPINE, 30), new ItemHolder(ARM_BONE, 31), new ItemHolder(THIGH_BONE, 64)));
+		DROPLIST.put(20515, Arrays.asList(new ItemHolder(SKULL, 5), new ItemHolder(RIB_BONE, 20), new ItemHolder(SPINE, 31), new ItemHolder(ARM_BONE, 33), new ItemHolder(THIGH_BONE, 69)));
+	}
+	
+	public Q325_GrimCollector()
+	{
+		super(325, qn, "Grim Collector");
 		
-		questItemIds = new int[]
-		{
-			ZOMBIE_HEAD,
-			ZOMBIE_HEART,
-			ZOMBIE_LIVER,
-			SKULL,
-			RIB_BONE,
-			SPINE,
-			ARM_BONE,
-			THIGH_BONE,
-			COMPLETE_SKELETON,
-			ANATOMY_DIAGRAM
-		};
+		setItemsIds(ZOMBIE_HEAD, ZOMBIE_HEART, ZOMBIE_LIVER, SKULL, RIB_BONE, SPINE, ARM_BONE, THIGH_BONE, COMPLETE_SKELETON, ANATOMY_DIAGRAM);
 		
 		addStartNpc(CURTIS);
 		addTalkId(CURTIS, VARSAK, SAMED);
 		
-		addKillId(20026, 20029, 20035, 20042, 20045, 20457, 20458, 20051, 20514, 20515);
+		for (int npcId : DROPLIST.keySet())
+			addKillId(npcId);
 	}
 	
 	private int getNumberOfPieces(QuestState st)
@@ -70,14 +79,14 @@ public class Q325_GrimCollector extends Quest
 	
 	private void payback(QuestState st)
 	{
-		int count = getNumberOfPieces(st);
+		final int count = getNumberOfPieces(st);
 		if (count > 0)
 		{
 			int reward = 30 * st.getQuestItemsCount(ZOMBIE_HEAD) + 20 * st.getQuestItemsCount(ZOMBIE_HEART) + 20 * st.getQuestItemsCount(ZOMBIE_LIVER) + 100 * st.getQuestItemsCount(SKULL) + 40 * st.getQuestItemsCount(RIB_BONE) + 14 * st.getQuestItemsCount(SPINE) + 14 * st.getQuestItemsCount(ARM_BONE) + 14 * st.getQuestItemsCount(THIGH_BONE) + 341 * st.getQuestItemsCount(COMPLETE_SKELETON);
 			if (count > 10)
 				reward += 1629;
 			
-			if (st.getQuestItemsCount(COMPLETE_SKELETON) > 0)
+			if (st.hasQuestItems(COMPLETE_SKELETON))
 				reward += 543;
 			
 			st.takeItems(ZOMBIE_HEAD, -1);
@@ -104,14 +113,14 @@ public class Q325_GrimCollector extends Quest
 		
 		if (event.equalsIgnoreCase("30336-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30434-03.htm"))
 		{
-			st.giveItems(ANATOMY_DIAGRAM, 1);
 			st.playSound(QuestState.SOUND_ITEMGET);
+			st.giveItems(ANATOMY_DIAGRAM, 1);
 		}
 		else if (event.equalsIgnoreCase("30434-06.htm"))
 		{
@@ -123,21 +132,22 @@ public class Q325_GrimCollector extends Quest
 		else if (event.equalsIgnoreCase("30434-07.htm"))
 		{
 			payback(st);
-			st.playSound(QuestState.SOUND_MIDDLE);
 		}
 		else if (event.equalsIgnoreCase("30434-09.htm"))
 		{
-			int skeletons = st.getQuestItemsCount(COMPLETE_SKELETON);
+			final int skeletons = st.getQuestItemsCount(COMPLETE_SKELETON);
 			if (skeletons > 0)
 			{
-				st.takeItems(COMPLETE_SKELETON, -1);
 				st.playSound(QuestState.SOUND_MIDDLE);
+				st.takeItems(COMPLETE_SKELETON, -1);
 				st.rewardItems(57, 543 + 341 * skeletons);
 			}
 		}
 		else if (event.equalsIgnoreCase("30342-03.htm"))
 		{
-			if (st.getQuestItemsCount(SPINE) > 0 && st.getQuestItemsCount(ARM_BONE) > 0 && st.getQuestItemsCount(SKULL) > 0 && st.getQuestItemsCount(RIB_BONE) > 0 && st.getQuestItemsCount(THIGH_BONE) > 0)
+			if (!st.hasQuestItems(SPINE, ARM_BONE, SKULL, RIB_BONE, THIGH_BONE))
+				htmltext = "30342-02.htm";
+			else
 			{
 				st.takeItems(SPINE, 1);
 				st.takeItems(SKULL, 1);
@@ -146,15 +156,10 @@ public class Q325_GrimCollector extends Quest
 				st.takeItems(THIGH_BONE, 1);
 				
 				if (Rnd.get(10) < 9)
-				{
 					st.giveItems(COMPLETE_SKELETON, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
 				else
 					htmltext = "30342-04.htm";
 			}
-			else
-				htmltext = "30342-02.htm";
 		}
 		
 		return htmltext;
@@ -171,31 +176,25 @@ public class Q325_GrimCollector extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 15)
-					htmltext = "30336-02.htm";
-				else
-				{
-					htmltext = "30336-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 15) ? "30336-01.htm" : "30336-02.htm";
 				break;
 			
 			case STATE_STARTED:
 				switch (npc.getNpcId())
 				{
 					case CURTIS:
-						htmltext = (st.getQuestItemsCount(ANATOMY_DIAGRAM) < 1) ? "30336-04.htm" : "30336-05.htm";
+						htmltext = (!st.hasQuestItems(ANATOMY_DIAGRAM)) ? "30336-04.htm" : "30336-05.htm";
 						break;
 					
 					case SAMED:
-						if (st.getQuestItemsCount(ANATOMY_DIAGRAM) == 0)
+						if (!st.hasQuestItems(ANATOMY_DIAGRAM))
 							htmltext = "30434-01.htm";
 						else
 						{
 							if (getNumberOfPieces(st) == 0)
 								htmltext = "30434-04.htm";
 							else
-								htmltext = (st.getQuestItemsCount(COMPLETE_SKELETON) == 0) ? "30434-05.htm" : "30434-08.htm";
+								htmltext = (!st.hasQuestItems(COMPLETE_SKELETON)) ? "30434-05.htm" : "30434-08.htm";
 						}
 						break;
 					
@@ -218,136 +217,14 @@ public class Q325_GrimCollector extends Quest
 		
 		if (st.hasQuestItems(ANATOMY_DIAGRAM))
 		{
-			int chance = Rnd.get(100);
-			switch (npc.getNpcId())
+			final int chance = Rnd.get(100);
+			for (ItemHolder drop : DROPLIST.get(npc.getNpcId()))
 			{
-				case 20026:
-					if (chance <= 90)
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						if (chance <= 40)
-							st.giveItems(ZOMBIE_HEAD, 1);
-						else if (chance <= 60)
-							st.giveItems(ZOMBIE_HEART, 1);
-						else
-							st.giveItems(ZOMBIE_LIVER, 1);
-					}
+				if (chance < drop.getCount())
+				{
+					st.dropItemsAlways(drop.getId(), 1, 0);
 					break;
-				
-				case 20029:
-					st.playSound(QuestState.SOUND_ITEMGET);
-					if (chance <= 44)
-						st.giveItems(ZOMBIE_HEAD, 1);
-					else if (chance <= 66)
-						st.giveItems(ZOMBIE_HEART, 1);
-					else
-						st.giveItems(ZOMBIE_LIVER, 1);
-					break;
-				
-				case 20035:
-					if (chance <= 79)
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						if (chance <= 5)
-							st.giveItems(SKULL, 1);
-						else if (chance <= 15)
-							st.giveItems(RIB_BONE, 1);
-						else if (chance <= 29)
-							st.giveItems(SPINE, 1);
-						else
-							st.giveItems(THIGH_BONE, 1);
-					}
-					break;
-				
-				case 20042:
-					if (chance <= 86)
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						if (chance <= 6)
-							st.giveItems(SKULL, 1);
-						else if (chance <= 19)
-							st.giveItems(RIB_BONE, 1);
-						else if (chance <= 69)
-							st.giveItems(ARM_BONE, 1);
-						else
-							st.giveItems(THIGH_BONE, 1);
-					}
-					break;
-				
-				case 20045:
-					if (chance <= 97)
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						if (chance <= 9)
-							st.giveItems(SKULL, 1);
-						else if (chance <= 59)
-							st.giveItems(SPINE, 1);
-						else if (chance <= 77)
-							st.giveItems(ARM_BONE, 1);
-						else
-							st.giveItems(THIGH_BONE, 1);
-					}
-					break;
-				
-				case 20051:
-					if (chance <= 99)
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						if (chance <= 9)
-							st.giveItems(SKULL, 1);
-						else if (chance <= 59)
-							st.giveItems(RIB_BONE, 1);
-						else if (chance <= 79)
-							st.giveItems(SPINE, 1);
-						else
-							st.giveItems(ARM_BONE, 1);
-					}
-					break;
-				
-				case 20514:
-					if (chance <= 51)
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						if (chance <= 2)
-							st.giveItems(SKULL, 1);
-						else if (chance <= 8)
-							st.giveItems(RIB_BONE, 1);
-						else if (chance <= 17)
-							st.giveItems(SPINE, 1);
-						else if (chance <= 18)
-							st.giveItems(ARM_BONE, 1);
-						else
-							st.giveItems(THIGH_BONE, 1);
-					}
-					break;
-				
-				case 20515:
-					if (chance <= 60)
-					{
-						st.playSound(QuestState.SOUND_ITEMGET);
-						if (chance <= 3)
-							st.giveItems(SKULL, 1);
-						else if (chance <= 11)
-							st.giveItems(RIB_BONE, 1);
-						else if (chance <= 22)
-							st.giveItems(SPINE, 1);
-						else if (chance <= 24)
-							st.giveItems(ARM_BONE, 1);
-						else
-							st.giveItems(THIGH_BONE, 1);
-					}
-					break;
-				
-				case 20457:
-				case 20458:
-					st.playSound(QuestState.SOUND_ITEMGET);
-					if (chance <= 42)
-						st.giveItems(ZOMBIE_HEAD, 1);
-					else if (chance <= 67)
-						st.giveItems(ZOMBIE_HEART, 1);
-					else
-						st.giveItems(ZOMBIE_LIVER, 1);
-					break;
+				}
 			}
 		}
 		
@@ -356,6 +233,6 @@ public class Q325_GrimCollector extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q325_GrimCollector(325, qn, "Grim Collector");
+		new Q325_GrimCollector();
 	}
 }

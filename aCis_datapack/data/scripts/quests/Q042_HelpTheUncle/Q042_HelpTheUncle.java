@@ -39,11 +39,7 @@ public class Q042_HelpTheUncle extends Quest
 	{
 		super(42, qn, "Help the Uncle!");
 		
-		questItemIds = new int[]
-		{
-			MAP_PIECE,
-			MAP
-		};
+		setItemsIds(MAP_PIECE, MAP);
 		
 		addStartNpc(WATERS);
 		addTalkId(WATERS, SOPHYA);

@@ -39,10 +39,7 @@ public class Q116_BeyondTheHillsOfWinter extends Quest
 	{
 		super(116, qn, "Beyond the Hills of Winter");
 		
-		questItemIds = new int[]
-		{
-			GOODS
-		};
+		setItemsIds(GOODS);
 		
 		addStartNpc(FILAUR);
 		addTalkId(FILAUR, OBI);

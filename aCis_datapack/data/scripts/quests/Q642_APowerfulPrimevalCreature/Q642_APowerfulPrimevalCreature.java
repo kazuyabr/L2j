@@ -48,11 +48,7 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DINOSAUR_TISSUE,
-			DINOSAUR_EGG
-		};
+		setItemsIds(DINOSAUR_TISSUE, DINOSAUR_EGG);
 		
 		addStartNpc(32105); // Dinn
 		addTalkId(32105);

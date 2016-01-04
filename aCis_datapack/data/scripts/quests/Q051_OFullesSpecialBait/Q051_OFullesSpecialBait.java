@@ -31,10 +31,7 @@ public class Q051_OFullesSpecialBait extends Quest
 	{
 		super(51, qn, "O'Fulle's Special Bait");
 		
-		questItemIds = new int[]
-		{
-			LOST_BAIT
-		};
+		setItemsIds(LOST_BAIT);
 		
 		addStartNpc(31572); // O'Fulle
 		addTalkId(31572);

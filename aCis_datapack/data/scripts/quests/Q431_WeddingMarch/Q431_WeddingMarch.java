@@ -34,10 +34,7 @@ public class Q431_WeddingMarch extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SILVER_CRYSTAL
-		};
+		setItemsIds(SILVER_CRYSTAL);
 		
 		addStartNpc(KANTABILON);
 		addTalkId(KANTABILON);

@@ -33,17 +33,11 @@ public class Q340_SubjugationOfLizardmen extends Quest
 	private static final int ROSARY = 4257;
 	private static final int TOTEM = 4258;
 	
-	public Q340_SubjugationOfLizardmen(int questId, String name, String descr)
+	public Q340_SubjugationOfLizardmen()
 	{
-		super(questId, name, descr);
+		super(340, qn, "Subjugation of Lizardmen");
 		
-		questItemIds = new int[]
-		{
-			CARGO,
-			HOLY,
-			ROSARY,
-			TOTEM
-		};
+		setItemsIds(CARGO, HOLY, ROSARY, TOTEM);
 		
 		addStartNpc(WEISZ);
 		addTalkId(WEISZ, ADONIUS, LEVIAN, CHEST);
@@ -61,8 +55,8 @@ public class Q340_SubjugationOfLizardmen extends Quest
 		
 		if (event.equalsIgnoreCase("30385-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30385-07.htm"))
@@ -95,8 +89,8 @@ public class Q340_SubjugationOfLizardmen extends Quest
 		else if (event.equalsIgnoreCase("30989-02.htm"))
 		{
 			st.set("cond", "6");
-			st.giveItems(TOTEM, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(TOTEM, 1);
 		}
 		
 		return htmltext;
@@ -113,13 +107,7 @@ public class Q340_SubjugationOfLizardmen extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() < 17)
-				{
-					htmltext = "30385-01.htm";
-					st.exitQuest(true);
-				}
-				else
-					htmltext = "30385-02.htm";
+				htmltext = (player.getLevel() < 17) ? "30385-01.htm" : "30385-02.htm";
 				break;
 			
 			case STATE_STARTED:
@@ -128,12 +116,7 @@ public class Q340_SubjugationOfLizardmen extends Quest
 				{
 					case WEISZ:
 						if (cond == 1)
-						{
-							if (st.getQuestItemsCount(CARGO) < 30)
-								htmltext = "30385-05.htm";
-							else
-								htmltext = "30385-06.htm";
-						}
+							htmltext = (st.getQuestItemsCount(CARGO) < 30) ? "30385-05.htm" : "30385-06.htm";
 						else if (cond == 2)
 							htmltext = "30385-11.htm";
 						else if (cond == 7)
@@ -150,7 +133,7 @@ public class Q340_SubjugationOfLizardmen extends Quest
 							htmltext = "30375-01.htm";
 						else if (cond == 3)
 						{
-							if (st.hasQuestItems(ROSARY) && st.hasQuestItems(HOLY))
+							if (st.hasQuestItems(ROSARY, HOLY))
 							{
 								htmltext = "30375-04.htm";
 								st.set("cond", "4");
@@ -237,6 +220,6 @@ public class Q340_SubjugationOfLizardmen extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q340_SubjugationOfLizardmen(340, qn, "Subjugation of Lizardmen");
+		new Q340_SubjugationOfLizardmen();
 	}
 }

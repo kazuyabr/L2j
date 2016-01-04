@@ -33,10 +33,7 @@ public class Q012_SecretMeetingWithVarkaSilenos extends Quest
 	{
 		super(12, qn, "Secret Meeting With Varka Silenos");
 		
-		questItemIds = new int[]
-		{
-			MUNITIONS_BOX
-		};
+		setItemsIds(MUNITIONS_BOX);
 		
 		addStartNpc(CADMON);
 		addTalkId(CADMON, HELMUT, NARAN_ASHANUK);

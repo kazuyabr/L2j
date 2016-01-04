@@ -31,10 +31,7 @@ public class Q052_WilliesSpecialBait extends Quest
 	{
 		super(52, qn, "Willie's Special Bait");
 		
-		questItemIds = new int[]
-		{
-			TARLK_EYE
-		};
+		setItemsIds(TARLK_EYE);
 		
 		addStartNpc(31574); // Willie
 		addTalkId(31574);

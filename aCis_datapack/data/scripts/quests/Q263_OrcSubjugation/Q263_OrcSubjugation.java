@@ -27,17 +27,13 @@ public class Q263_OrcSubjugation extends Quest
 	private static final int ORC_AMULET = 1116;
 	private static final int ORC_NECKLACE = 1117;
 	
-	public Q263_OrcSubjugation(int questId, String name, String descr)
+	public Q263_OrcSubjugation()
 	{
-		super(questId, name, descr);
+		super(263, qn, "Orc Subjugation");
 		
-		questItemIds = new int[]
-		{
-			ORC_AMULET,
-			ORC_NECKLACE
-		};
+		setItemsIds(ORC_AMULET, ORC_NECKLACE);
 		
-		addStartNpc(30346);
+		addStartNpc(30346); // Kayleen
 		addTalkId(30346);
 		
 		addKillId(20385, 20386, 20387, 20388);
@@ -53,8 +49,8 @@ public class Q263_OrcSubjugation extends Quest
 		
 		if (event.equalsIgnoreCase("30346-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30346-06.htm"))
@@ -122,6 +118,6 @@ public class Q263_OrcSubjugation extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q263_OrcSubjugation(263, qn, "Orc Subjugation");
+		new Q263_OrcSubjugation();
 	}
 }

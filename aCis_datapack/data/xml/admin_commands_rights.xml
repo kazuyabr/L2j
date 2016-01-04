@@ -205,7 +205,10 @@
 	<aCar name="admin_character_disconnect" accessLevel="1" />
 	<aCar name="admin_kick" accessLevel="1" />
 	<aCar name="admin_kick_non_gm" accessLevel="1" />
-
+	
+	<!-- KNOWNLIST -->
+	<aCar name="admin_knownlist" accessLevel="1" />
+	
 	<!-- LEVEL -->
 	<aCar name="admin_addlevel" accessLevel="1" />
 	<aCar name="admin_setlevel" accessLevel="1" />

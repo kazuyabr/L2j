@@ -38,14 +38,11 @@ public class Q358_IllegitimateChildOfAGoddess extends Quest
 		5366
 	};
 	
-	public Q358_IllegitimateChildOfAGoddess(int questId, String name, String descr)
+	public Q358_IllegitimateChildOfAGoddess()
 	{
-		super(questId, name, descr);
+		super(358, qn, "Illegitimate Child of a Goddess");
 		
-		questItemIds = new int[]
-		{
-			SCALE
-		};
+		setItemsIds(SCALE);
 		
 		addStartNpc(30862); // Oltlin
 		addTalkId(30862);
@@ -63,10 +60,11 @@ public class Q358_IllegitimateChildOfAGoddess extends Quest
 		
 		if (event.equalsIgnoreCase("30862-05.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
+		
 		return htmltext;
 	}
 	
@@ -81,17 +79,11 @@ public class Q358_IllegitimateChildOfAGoddess extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 63)
-					htmltext = "30862-02.htm";
-				else
-				{
-					htmltext = "30862-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 63) ? "30862-01.htm" : "30862-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(SCALE) < 108)
+				if (st.getInt("cond") == 1)
 					htmltext = "30862-06.htm";
 				else
 				{
@@ -114,7 +106,7 @@ public class Q358_IllegitimateChildOfAGoddess extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(SCALE, 1, 108, 700000))
+		if (st.dropItems(SCALE, 1, 108, (npc.getNpcId() == 20672) ? 710000 : 740000))
 			st.set("cond", "2");
 		
 		return null;
@@ -122,6 +114,6 @@ public class Q358_IllegitimateChildOfAGoddess extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q358_IllegitimateChildOfAGoddess(358, qn, "Illegitimate Child of a Goddess");
+		new Q358_IllegitimateChildOfAGoddess();
 	}
 }

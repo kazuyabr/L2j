@@ -33,11 +33,7 @@ public class Q156_MillenniumLove extends Quest
 	{
 		super(156, qn, "Millennium Love");
 		
-		questItemIds = new int[]
-		{
-			LILITH_LETTER,
-			THEON_DIARY
-		};
+		setItemsIds(LILITH_LETTER, THEON_DIARY);
 		
 		addStartNpc(LILITH);
 		addTalkId(LILITH, BAENEDES);

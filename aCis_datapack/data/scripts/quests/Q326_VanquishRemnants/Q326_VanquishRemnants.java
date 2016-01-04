@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q326_VanquishRemnants extends Quest
 {
@@ -30,16 +29,11 @@ public class Q326_VanquishRemnants extends Quest
 	// Reward
 	private static final int BLACK_LION_MARK = 1369;
 	
-	public Q326_VanquishRemnants(int questId, String name, String descr)
+	public Q326_VanquishRemnants()
 	{
-		super(questId, name, descr);
+		super(326, qn, "Vanquish Remnants");
 		
-		questItemIds = new int[]
-		{
-			RED_CROSS_BADGE,
-			BLUE_CROSS_BADGE,
-			BLACK_CROSS_BADGE
-		};
+		setItemsIds(RED_CROSS_BADGE, BLUE_CROSS_BADGE, BLACK_CROSS_BADGE);
 		
 		addStartNpc(30435); // Leopold
 		addTalkId(30435);
@@ -57,13 +51,13 @@ public class Q326_VanquishRemnants extends Quest
 		
 		if (event.equalsIgnoreCase("30435-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30435-07.htm"))
 		{
-			st.playSound(QuestState.SOUND_GIVEUP);
+			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
 		
@@ -81,21 +75,15 @@ public class Q326_VanquishRemnants extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 21)
-					htmltext = "30435-02.htm";
-				else
-				{
-					htmltext = "30435-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 21) ? "30435-01.htm" : "30435-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int redBadges = st.getQuestItemsCount(RED_CROSS_BADGE);
-				int blueBadges = st.getQuestItemsCount(BLUE_CROSS_BADGE);
-				int blackBadges = st.getQuestItemsCount(BLACK_CROSS_BADGE);
+				final int redBadges = st.getQuestItemsCount(RED_CROSS_BADGE);
+				final int blueBadges = st.getQuestItemsCount(BLUE_CROSS_BADGE);
+				final int blackBadges = st.getQuestItemsCount(BLACK_CROSS_BADGE);
 				
-				int badgesSum = redBadges + blueBadges + blackBadges;
+				final int badgesSum = redBadges + blueBadges + blackBadges;
 				
 				if (badgesSum > 0)
 				{
@@ -133,38 +121,24 @@ public class Q326_VanquishRemnants extends Quest
 		if (st == null)
 			return null;
 		
-		int chance = Rnd.get(100);
-		
 		switch (npc.getNpcId())
 		{
 			case 20053:
 			case 20437:
 			case 20058:
-				if (chance <= 33)
-				{
-					st.giveItems(RED_CROSS_BADGE, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
+				st.dropItems(RED_CROSS_BADGE, 1, 0, 330000);
 				break;
 			
 			case 20436:
 			case 20061:
 			case 20439:
 			case 20063:
-				if (chance <= 16)
-				{
-					st.giveItems(BLUE_CROSS_BADGE, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
+				st.dropItems(BLUE_CROSS_BADGE, 1, 0, 160000);
 				break;
 			
 			case 20066:
 			case 20438:
-				if (chance <= 12)
-				{
-					st.giveItems(BLACK_CROSS_BADGE, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
+				st.dropItems(BLACK_CROSS_BADGE, 1, 0, 120000);
 				break;
 		}
 		
@@ -173,6 +147,6 @@ public class Q326_VanquishRemnants extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q326_VanquishRemnants(326, qn, "Vanquish Remnants");
+		new Q326_VanquishRemnants();
 	}
 }

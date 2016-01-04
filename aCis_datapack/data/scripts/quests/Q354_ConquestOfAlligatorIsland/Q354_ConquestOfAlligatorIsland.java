@@ -12,11 +12,13 @@
  */
 package quests.Q354_ConquestOfAlligatorIsland;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q354_ConquestOfAlligatorIsland extends Quest
 {
@@ -25,23 +27,110 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 	// Items
 	private static final int ALLIGATOR_TOOTH = 5863;
 	private static final int TORN_MAP_FRAGMENT = 5864;
-	private static final int PIRATES_TREASURE_MAP = 5915;
+	private static final int PIRATE_TREASURE_MAP = 5915;
 	
-	// NPC
-	private static final int KLUCK = 30895;
-	
-	public Q354_ConquestOfAlligatorIsland(int questId, String name, String descr)
+	private static final Map<Integer, int[][]> DROPLIST = new HashMap<>();
 	{
-		super(questId, name, descr);
-		
-		questItemIds = new int[]
+		DROPLIST.put(20804, new int[][]
 		{
-			ALLIGATOR_TOOTH,
-			TORN_MAP_FRAGMENT
-		};
+			{
+				ALLIGATOR_TOOTH,
+				1,
+				0,
+				840000
+			},
+			{
+				TORN_MAP_FRAGMENT,
+				1,
+				0,
+				100000
+			}
+		}); // Crokian Lad
+		DROPLIST.put(20805, new int[][]
+		{
+			{
+				ALLIGATOR_TOOTH,
+				1,
+				0,
+				910000
+			},
+			{
+				TORN_MAP_FRAGMENT,
+				1,
+				0,
+				100000
+			}
+		}); // Dailaon Lad
+		DROPLIST.put(20806, new int[][]
+		{
+			{
+				ALLIGATOR_TOOTH,
+				1,
+				0,
+				880000
+			},
+			{
+				TORN_MAP_FRAGMENT,
+				1,
+				0,
+				100000
+			}
+		}); // Crokian Lad Warrior
+		DROPLIST.put(20807, new int[][]
+		{
+			{
+				ALLIGATOR_TOOTH,
+				1,
+				0,
+				920000
+			},
+			{
+				TORN_MAP_FRAGMENT,
+				1,
+				0,
+				100000
+			}
+		}); // Farhite Lad
+		DROPLIST.put(20808, new int[][]
+		{
+			{
+				ALLIGATOR_TOOTH,
+				1,
+				0,
+				1000000
+			},
+			{
+				TORN_MAP_FRAGMENT,
+				1,
+				0,
+				100000
+			}
+		}); // Nos Lad
+		DROPLIST.put(20991, new int[][]
+		{
+			{
+				ALLIGATOR_TOOTH,
+				1,
+				0,
+				1000000
+			},
+			{
+				TORN_MAP_FRAGMENT,
+				1,
+				0,
+				100000
+			}
+		}); // Swamp Tribe
+	}
+	
+	public Q354_ConquestOfAlligatorIsland()
+	{
+		super(354, qn, "Conquest of Alligator Island");
 		
-		addStartNpc(KLUCK);
-		addTalkId(KLUCK);
+		setItemsIds(ALLIGATOR_TOOTH, TORN_MAP_FRAGMENT);
+		
+		addStartNpc(30895); // Kluck
+		addTalkId(30895);
 		
 		addKillId(20804, 20805, 20806, 20807, 20808, 20991);
 	}
@@ -56,18 +145,18 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 		
 		if (event.equalsIgnoreCase("30895-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30895-03.htm"))
 		{
-			if (st.getQuestItemsCount(TORN_MAP_FRAGMENT) > 0)
+			if (st.hasQuestItems(TORN_MAP_FRAGMENT))
 				htmltext = "30895-03a.htm";
 		}
 		else if (event.equalsIgnoreCase("30895-05.htm"))
 		{
-			int amount = st.getQuestItemsCount(ALLIGATOR_TOOTH);
+			final int amount = st.getQuestItemsCount(ALLIGATOR_TOOTH);
 			if (amount > 0)
 			{
 				int reward = amount * 220 + 3100;
@@ -76,8 +165,9 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 					reward += 7600;
 					htmltext = "30895-05b.htm";
 				}
+				else
+					htmltext = "30895-05a.htm";
 				
-				htmltext = "30895-05a.htm";
 				st.takeItems(ALLIGATOR_TOOTH, -1);
 				st.rewardItems(57, reward);
 			}
@@ -88,7 +178,7 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 			{
 				htmltext = "30895-08.htm";
 				st.takeItems(TORN_MAP_FRAGMENT, 10);
-				st.giveItems(PIRATES_TREASURE_MAP, 1);
+				st.giveItems(PIRATE_TREASURE_MAP, 1);
 				st.playSound(QuestState.SOUND_ITEMGET);
 			}
 		}
@@ -112,20 +202,11 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 38)
-					htmltext = "30895-01.htm";
-				else
-				{
-					htmltext = "30895-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 38) ? "30895-00.htm" : "30895-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.hasQuestItems(TORN_MAP_FRAGMENT))
-					htmltext = "30895-03a.htm";
-				else
-					htmltext = "30895-03.htm";
+				htmltext = (st.hasQuestItems(TORN_MAP_FRAGMENT)) ? "30895-03a.htm" : "30895-03.htm";
 				break;
 		}
 		
@@ -139,26 +220,13 @@ public class Q354_ConquestOfAlligatorIsland extends Quest
 		if (partyMember == null)
 			return null;
 		
-		QuestState st = partyMember.getQuestState(qn);
-		
-		int random = Rnd.get(100);
-		if (random < 45)
-		{
-			st.giveItems(ALLIGATOR_TOOTH, 1);
-			if (random < 10)
-			{
-				st.giveItems(TORN_MAP_FRAGMENT, 1);
-				st.playSound(QuestState.SOUND_MIDDLE);
-			}
-			else
-				st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		partyMember.getQuestState(qn).dropMultipleItems(DROPLIST.get(npc.getNpcId()));
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q354_ConquestOfAlligatorIsland(354, qn, "Conquest of Alligator Island");
+		new Q354_ConquestOfAlligatorIsland();
 	}
 }

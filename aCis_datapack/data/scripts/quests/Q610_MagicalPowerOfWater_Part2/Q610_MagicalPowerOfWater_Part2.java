@@ -47,10 +47,7 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			ICE_HEART_OF_ASHUTAR
-		};
+		setItemsIds(ICE_HEART_OF_ASHUTAR);
 		
 		addStartNpc(ASEFA);
 		addTalkId(ASEFA, VARKAS_HOLY_ALTAR);

@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q219_TestimonyOfFate extends Quest
 {
@@ -91,39 +92,7 @@ public class Q219_TestimonyOfFate extends Quest
 	{
 		super(219, qn, "Testimony of Fate");
 		
-		questItemIds = new int[]
-		{
-			KAIRA_LETTER,
-			METHEUS_FUNERAL_JAR,
-			KASANDRA_REMAINS,
-			HERBALISM_TEXTBOOK,
-			IXIA_LIST,
-			MEDUSA_ICHOR,
-			MARSH_SPIDER_FLUIDS,
-			DEAD_SEEKER_DUNG,
-			TYRANT_BLOOD,
-			NIGHTSHADE_ROOT,
-			BELLADONNA,
-			ALDER_SKULL_1,
-			ALDER_SKULL_2,
-			ALDER_RECEIPT,
-			REVELATIONS_MANUSCRIPT,
-			KAIRA_RECOMMENDATION,
-			KAIRA_INSTRUCTIONS,
-			PALUS_CHARM,
-			THIFIELL_LETTER,
-			ARKENIA_NOTE,
-			PIXY_GARNET,
-			GRANDIS_SKULL,
-			KARUL_BUGBEAR_SKULL,
-			BREKA_OVERLORD_SKULL,
-			LETO_OVERLORD_SKULL,
-			RED_FAIRY_DUST,
-			BLIGHT_TREANT_SEED,
-			BLACK_WILLOW_LEAF,
-			BLIGHT_TREANT_SAP,
-			ARKENIA_LETTER
-		};
+		setItemsIds(KAIRA_LETTER, METHEUS_FUNERAL_JAR, KASANDRA_REMAINS, HERBALISM_TEXTBOOK, IXIA_LIST, MEDUSA_ICHOR, MARSH_SPIDER_FLUIDS, DEAD_SEEKER_DUNG, TYRANT_BLOOD, NIGHTSHADE_ROOT, BELLADONNA, ALDER_SKULL_1, ALDER_SKULL_2, ALDER_RECEIPT, REVELATIONS_MANUSCRIPT, KAIRA_RECOMMENDATION, KAIRA_INSTRUCTIONS, PALUS_CHARM, THIFIELL_LETTER, ARKENIA_NOTE, PIXY_GARNET, GRANDIS_SKULL, KARUL_BUGBEAR_SKULL, BREKA_OVERLORD_SKULL, LETO_OVERLORD_SKULL, RED_FAIRY_DUST, BLIGHT_TREANT_SEED, BLACK_WILLOW_LEAF, BLIGHT_TREANT_SAP, ARKENIA_LETTER);
 		
 		addStartNpc(KAIRA);
 		addTalkId(KAIRA, METHEUS, IXIA, ALDER_SPIRIT, ROA, NORMAN, THIFIELL, ARKENIA, BLOODY_PIXY, BLIGHT_TREANT);
@@ -212,9 +181,7 @@ public class Q219_TestimonyOfFate extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (st.hasQuestItems(MARK_OF_FATE))
-					htmltext = getAlreadyCompletedMsg();
-				else if (player.getRace() != Race.DarkElf)
+				if (player.getRace() != Race.DarkElf)
 					htmltext = "30476-02.htm";
 				else if (player.getLevel() < 37 || player.getClassId().level() != 1)
 					htmltext = "30476-01.htm";
@@ -383,8 +350,9 @@ public class Q219_TestimonyOfFate extends Quest
 							st.takeItems(ARKENIA_LETTER, 1);
 							st.giveItems(MARK_OF_FATE, 1);
 							st.rewardExpAndSp(68183, 1750);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
-							st.exitQuest(true);
+							st.exitQuest(false);
 						}
 						break;
 					
@@ -450,6 +418,10 @@ public class Q219_TestimonyOfFate extends Quest
 							htmltext = "31850-05.htm";
 						break;
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		

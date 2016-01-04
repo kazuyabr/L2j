@@ -34,10 +34,7 @@ public class Q029_ChestCaughtWithABaitOfEarth extends Quest
 	{
 		super(29, qn, "Chest caught with a bait of earth");
 		
-		questItemIds = new int[]
-		{
-			SMALL_GLASS_BOX
-		};
+		setItemsIds(SMALL_GLASS_BOX);
 		
 		addStartNpc(WILLIE);
 		addTalkId(WILLIE, ANABEL);

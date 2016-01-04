@@ -32,10 +32,7 @@ public class Q014_WhereaboutsOfTheArchaeologist extends Quest
 	{
 		super(14, qn, "Whereabouts of the Archaeologist");
 		
-		questItemIds = new int[]
-		{
-			LETTER
-		};
+		setItemsIds(LETTER);
 		
 		addStartNpc(LIESEL);
 		addTalkId(LIESEL, GHOST_OF_ADVENTURER);

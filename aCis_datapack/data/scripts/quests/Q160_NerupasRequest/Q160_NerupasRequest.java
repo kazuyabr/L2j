@@ -41,13 +41,7 @@ public class Q160_NerupasRequest extends Quest
 	{
 		super(160, qn, "Nerupa's Request");
 		
-		questItemIds = new int[]
-		{
-			SILVERY_SPIDERSILK,
-			UNOREN_RECEIPT,
-			CREAMEES_TICKET,
-			NIGHTSHADE_LEAF
-		};
+		setItemsIds(SILVERY_SPIDERSILK, UNOREN_RECEIPT, CREAMEES_TICKET, NIGHTSHADE_LEAF);
 		
 		addStartNpc(NERUPA);
 		addTalkId(NERUPA, UNOREN, CREAMEES, JULIA);

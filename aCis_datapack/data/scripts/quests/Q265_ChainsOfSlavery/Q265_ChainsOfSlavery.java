@@ -22,9 +22,6 @@ public class Q265_ChainsOfSlavery extends Quest
 {
 	private static final String qn = "Q265_ChainsOfSlavery";
 	
-	// NPC
-	private static final int KRISTIN = 30357;
-	
 	// Item
 	private static final int SHACKLE = 1368;
 	
@@ -32,17 +29,14 @@ public class Q265_ChainsOfSlavery extends Quest
 	private static final int SPIRITSHOT_FOR_BEGINNERS = 5790;
 	private static final int SOULSHOT_FOR_BEGINNERS = 5789;
 	
-	public Q265_ChainsOfSlavery(int questId, String name, String descr)
+	public Q265_ChainsOfSlavery()
 	{
-		super(questId, name, descr);
+		super(265, qn, "Chains of Slavery");
 		
-		questItemIds = new int[]
-		{
-			SHACKLE
-		};
+		setItemsIds(SHACKLE);
 		
-		addStartNpc(KRISTIN);
-		addTalkId(KRISTIN);
+		addStartNpc(30357); // Kristin
+		addTalkId(30357);
 		
 		addKillId(20004, 20005);
 	}
@@ -57,8 +51,8 @@ public class Q265_ChainsOfSlavery extends Quest
 		
 		if (event.equalsIgnoreCase("30357-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30357-06.htm"))
@@ -90,7 +84,7 @@ public class Q265_ChainsOfSlavery extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int shackles = st.getQuestItemsCount(SHACKLE);
+				final int shackles = st.getQuestItemsCount(SHACKLE);
 				if (shackles == 0)
 					htmltext = "30357-04.htm";
 				else
@@ -140,6 +134,6 @@ public class Q265_ChainsOfSlavery extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q265_ChainsOfSlavery(265, qn, "Chains of Slavery");
+		new Q265_ChainsOfSlavery();
 	}
 }

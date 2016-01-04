@@ -49,7 +49,7 @@ public class Q039_RedEyedInvaders extends Quest
 			100,
 			BLACK_BONE_NECKLACE,
 			3,
-			33
+			330000
 		});
 		FIRST_DP.put(M_LIZARDMAN, new int[]
 		{
@@ -57,7 +57,7 @@ public class Q039_RedEyedInvaders extends Quest
 			100,
 			RED_BONE_NECKLACE,
 			3,
-			50
+			500000
 		});
 		FIRST_DP.put(M_LIZARDMAN_SCOUT, new int[]
 		{
@@ -65,7 +65,7 @@ public class Q039_RedEyedInvaders extends Quest
 			100,
 			RED_BONE_NECKLACE,
 			3,
-			50
+			500000
 		});
 	}
 	
@@ -78,7 +78,7 @@ public class Q039_RedEyedInvaders extends Quest
 			30,
 			INCENSE_POUCH,
 			5,
-			25
+			250000
 		});
 		SECOND_DP.put(M_LIZARDMAN_GUARD, new int[]
 		{
@@ -86,7 +86,7 @@ public class Q039_RedEyedInvaders extends Quest
 			30,
 			GEM_OF_MAILLE,
 			5,
-			25
+			250000
 		});
 		SECOND_DP.put(M_LIZARDMAN_SCOUT, new int[]
 		{
@@ -94,7 +94,7 @@ public class Q039_RedEyedInvaders extends Quest
 			30,
 			GEM_OF_MAILLE,
 			5,
-			25
+			250000
 		});
 	}
 	
@@ -107,13 +107,7 @@ public class Q039_RedEyedInvaders extends Quest
 	{
 		super(39, qn, "Red-Eyed Invaders");
 		
-		questItemIds = new int[]
-		{
-			BLACK_BONE_NECKLACE,
-			RED_BONE_NECKLACE,
-			INCENSE_POUCH,
-			GEM_OF_MAILLE
-		};
+		setItemsIds(BLACK_BONE_NECKLACE, RED_BONE_NECKLACE, INCENSE_POUCH, GEM_OF_MAILLE);
 		
 		addStartNpc(BABENCO);
 		addTalkId(BABENCO, BATHIS);
@@ -209,36 +203,31 @@ public class Q039_RedEyedInvaders extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		int npcId = npc.getNpcId();
+		final int npcId = npc.getNpcId();
 		
 		L2PcInstance partyMember = getRandomPartyMember(player, npc, "2");
 		if (partyMember != null && npcId != ARANEID)
 		{
-			drop(partyMember, FIRST_DP.get(npcId));
-			return null;
-		}
-		
-		partyMember = getRandomPartyMember(player, npc, "4");
-		if (partyMember != null && npcId != M_LIZARDMAN)
-			drop(partyMember, SECOND_DP.get(npcId));
-		
-		return null;
-	}
-	
-	private void drop(L2PcInstance player, int[] list)
-	{
-		int item = list[0];
-		int max = list[1];
-		
-		QuestState st = player.getQuestState(qn);
-		st.dropItems(item, 1, max, list[4]);
-		if (st.getQuestItemsCount(item) == max && st.getQuestItemsCount(list[2]) == max)
-		{
-			st.set("cond", String.valueOf(list[3]));
-			st.playSound(QuestState.SOUND_MIDDLE);
+			final QuestState st = partyMember.getQuestState(qn);
+			final int[] list = FIRST_DP.get(npcId);
+			
+			if (st.dropItems(list[0], 1, list[1], list[4]) && st.getQuestItemsCount(list[2]) == list[1])
+				st.set("cond", String.valueOf(list[3]));
 		}
 		else
-			st.playSound(QuestState.SOUND_ITEMGET);
+		{
+			partyMember = getRandomPartyMember(player, npc, "4");
+			if (partyMember != null && npcId != M_LIZARDMAN)
+			{
+				final QuestState st = partyMember.getQuestState(qn);
+				final int[] list = SECOND_DP.get(npcId);
+				
+				if (st.dropItems(list[0], 1, list[1], list[4]) && st.getQuestItemsCount(list[2]) == list[1])
+					st.set("cond", String.valueOf(list[3]));
+			}
+		}
+		
+		return null;
 	}
 	
 	public static void main(String[] args)

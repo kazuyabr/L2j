@@ -31,10 +31,7 @@ public class Q157_RecoverSmuggledGoods extends Quest
 	{
 		super(157, qn, "Recover Smuggled Goods");
 		
-		questItemIds = new int[]
-		{
-			ADAMANTITE_ORE
-		};
+		setItemsIds(ADAMANTITE_ORE);
 		
 		addStartNpc(30005); // Wilford
 		addTalkId(30005);

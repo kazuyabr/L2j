@@ -47,19 +47,7 @@ public class Q403_PathToARogue extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Letter,
-			Bones,
-			Horseshoe,
-			Bill,
-			StolenJewelry,
-			StolenTomes,
-			StolenRing,
-			StolenNecklace,
-			NetisBow,
-			NetisDagger
-		};
+		setItemsIds(Letter, Bones, Horseshoe, Bill, StolenJewelry, StolenTomes, StolenRing, StolenNecklace, NetisBow, NetisDagger);
 		
 		addStartNpc(Bezique);
 		addTalkId(Bezique, Neti);

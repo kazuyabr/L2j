@@ -38,10 +38,7 @@ public class Q006_StepIntoTheFuture extends Quest
 	{
 		super(6, qn, "Step into the Future");
 		
-		questItemIds = new int[]
-		{
-			BAULRO_LETTER
-		};
+		setItemsIds(BAULRO_LETTER);
 		
 		addStartNpc(ROXXY);
 		addTalkId(ROXXY, BAULRO, SIR_COLLIN);

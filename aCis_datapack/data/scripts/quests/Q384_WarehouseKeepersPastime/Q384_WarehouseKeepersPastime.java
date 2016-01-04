@@ -205,10 +205,7 @@ public class Q384_WarehouseKeepersPastime extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			MEDAL
-		};
+		setItemsIds(MEDAL);
 		
 		addStartNpc(CLIFF);
 		addTalkId(CLIFF, BAXT);

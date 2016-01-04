@@ -529,7 +529,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5578" type="EtcItem" name="Green Soul Crystal - Stage 11">
@@ -538,7 +538,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5579" type="EtcItem" name="Blue Soul Crystal - Stage 11">
@@ -547,7 +547,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5580" type="EtcItem" name="Red Soul Crystal - Stage 12">
@@ -556,7 +556,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5581" type="EtcItem" name="Green Soul Crystal - Stage 12">
@@ -565,7 +565,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5582" type="EtcItem" name="Blue Soul Crystal - Stage 12">
@@ -574,7 +574,7 @@
 		<set name="material" val="crystal" />
 		<set name="weight" val="20" />
 		<set name="is_oly_restricted" val="true" />
-		<set name="handler" val="ItemSkills" />
+		<set name="handler" val="SoulCrystals" />
 		<set name="item_skill" val="2096-1" />
 	</item>
 	<item id="5583" type="EtcItem" name="Echo Crystal - 6th Carol">

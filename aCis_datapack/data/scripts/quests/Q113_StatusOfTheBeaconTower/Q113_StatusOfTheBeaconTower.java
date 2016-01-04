@@ -32,10 +32,7 @@ public class Q113_StatusOfTheBeaconTower extends Quest
 	{
 		super(113, qn, "Status of the Beacon Tower");
 		
-		questItemIds = new int[]
-		{
-			BOX
-		};
+		setItemsIds(BOX);
 		
 		addStartNpc(MOIRA);
 		addTalkId(MOIRA, TORRANT);

@@ -43,15 +43,7 @@ public class Q411_PathToAnAssassin extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			ShilensCall,
-			ArkeniasLetter,
-			LeikansNote,
-			Molars,
-			ShilenTears,
-			ArkeniasReccomend
-		};
+		setItemsIds(ShilensCall, ArkeniasLetter, LeikansNote, Molars, ShilenTears, ArkeniasReccomend);
 		
 		addStartNpc(Triskel);
 		addTalkId(Triskel, Arkenia, Leikan);

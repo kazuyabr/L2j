@@ -32,10 +32,7 @@ public class Q613_ProveYourCourage extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Hekaton_Head
-		};
+		setItemsIds(Hekaton_Head);
 		
 		addStartNpc(31377); // Ashas Varka Durai
 		addTalkId(31377);

@@ -58,15 +58,7 @@ public class Q367_ElectrifyingRecharge extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			LORAINS_LAMP,
-			T_L1,
-			T_L2,
-			T_L3,
-			T_L4,
-			T_L5
-		};
+		setItemsIds(LORAINS_LAMP, T_L1, T_L2, T_L3, T_L4, T_L5);
 		
 		addStartNpc(LORAIN);
 		addTalkId(LORAIN);

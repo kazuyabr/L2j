@@ -33,10 +33,7 @@ public class Q155_FindSirWindawood extends Quest
 	{
 		super(155, qn, "Find Sir Windawood");
 		
-		questItemIds = new int[]
-		{
-			OFFICIAL_LETTER
-		};
+		setItemsIds(OFFICIAL_LETTER);
 		
 		addStartNpc(ABELLOS);
 		addTalkId(WINDAWOOD, ABELLOS);

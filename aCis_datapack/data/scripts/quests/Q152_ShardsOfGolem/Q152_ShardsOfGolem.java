@@ -22,8 +22,8 @@ public class Q152_ShardsOfGolem extends Quest
 	private static final String qn = "Q152_ShardsOfGolem";
 	
 	// Items
-	private static final int HARRYS_RECEIPT_1 = 1008;
-	private static final int HARRYS_RECEIPT_2 = 1009;
+	private static final int HARRIS_RECEIPT_1 = 1008;
+	private static final int HARRIS_RECEIPT_2 = 1009;
 	private static final int GOLEM_SHARD = 1010;
 	private static final int TOOL_BOX = 1011;
 	
@@ -41,13 +41,7 @@ public class Q152_ShardsOfGolem extends Quest
 	{
 		super(152, qn, "Shards of Golem");
 		
-		questItemIds = new int[]
-		{
-			HARRYS_RECEIPT_1,
-			HARRYS_RECEIPT_2,
-			GOLEM_SHARD,
-			TOOL_BOX
-		};
+		setItemsIds(HARRIS_RECEIPT_1, HARRIS_RECEIPT_2, GOLEM_SHARD, TOOL_BOX);
 		
 		addStartNpc(HARRIS);
 		addTalkId(HARRIS, ALTRAN);
@@ -68,14 +62,14 @@ public class Q152_ShardsOfGolem extends Quest
 			st.setState(STATE_STARTED);
 			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
-			st.giveItems(HARRYS_RECEIPT_1, 1);
+			st.giveItems(HARRIS_RECEIPT_1, 1);
 		}
 		else if (event.equalsIgnoreCase("30283-02.htm"))
 		{
 			st.set("cond", "2");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(HARRYS_RECEIPT_1, 1);
-			st.giveItems(HARRYS_RECEIPT_2, 1);
+			st.takeItems(HARRIS_RECEIPT_1, 1);
+			st.giveItems(HARRIS_RECEIPT_2, 1);
 		}
 		
 		return htmltext;
@@ -105,7 +99,7 @@ public class Q152_ShardsOfGolem extends Quest
 						else if (cond == 4)
 						{
 							htmltext = "30035-04.htm";
-							st.takeItems(HARRYS_RECEIPT_2, 1);
+							st.takeItems(HARRIS_RECEIPT_2, 1);
 							st.takeItems(TOOL_BOX, 1);
 							st.giveItems(WOODEN_BREASTPLATE, 1);
 							st.rewardExpAndSp(5000, 0);

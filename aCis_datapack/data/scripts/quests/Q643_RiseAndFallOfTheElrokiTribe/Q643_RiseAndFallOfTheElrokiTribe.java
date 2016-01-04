@@ -33,10 +33,7 @@ public class Q643_RiseAndFallOfTheElrokiTribe extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			BONES
-		};
+		setItemsIds(BONES);
 		
 		addStartNpc(SINGSING);
 		addTalkId(SINGSING, KARAKAWEI);

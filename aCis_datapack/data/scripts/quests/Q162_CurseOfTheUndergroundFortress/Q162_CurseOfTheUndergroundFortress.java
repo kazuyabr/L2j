@@ -41,11 +41,7 @@ public class Q162_CurseOfTheUndergroundFortress extends Quest
 	{
 		super(162, qn, "Curse of the Underground Fortress");
 		
-		questItemIds = new int[]
-		{
-			BONE_FRAGMENT,
-			ELF_SKULL
-		};
+		setItemsIds(BONE_FRAGMENT, ELF_SKULL);
 		
 		addStartNpc(30147); // Unoren
 		addTalkId(30147);

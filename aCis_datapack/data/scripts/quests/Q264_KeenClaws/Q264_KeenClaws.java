@@ -25,34 +25,24 @@ public class Q264_KeenClaws extends Quest
 	// Item
 	private static final int WOLF_CLAW = 1367;
 	
-	// NPC
-	private static final int PAYNE = 30136;
-	
-	// Mobs
-	private static final int GOBLIN = 20003;
-	private static final int WOLF = 20456;
-	
 	// Rewards
-	private static final int LeatherSandals = 36;
-	private static final int WoodenHelmet = 43;
-	private static final int Stockings = 462;
-	private static final int HealingPotion = 1061;
-	private static final int ShortGloves = 48;
-	private static final int ClothShoes = 35;
+	private static final int LEATHER_SANDALS = 36;
+	private static final int WOODEN_HELMET = 43;
+	private static final int STOCKINGS = 462;
+	private static final int HEALING_POTION = 1061;
+	private static final int SHORT_GLOVES = 48;
+	private static final int CLOTH_SHOES = 35;
 	
-	public Q264_KeenClaws(int questId, String name, String descr)
+	public Q264_KeenClaws()
 	{
-		super(questId, name, descr);
+		super(264, qn, "Keen Claws");
 		
-		questItemIds = new int[]
-		{
-			WOLF_CLAW
-		};
+		setItemsIds(WOLF_CLAW);
 		
-		addStartNpc(PAYNE);
-		addTalkId(PAYNE);
+		addStartNpc(30136); // Payne
+		addTalkId(30136);
 		
-		addKillId(GOBLIN, WOLF);
+		addKillId(20003, 20456); // Goblin, Wolf
 	}
 	
 	@Override
@@ -65,8 +55,8 @@ public class Q264_KeenClaws extends Quest
 		
 		if (event.equalsIgnoreCase("30136-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -88,39 +78,38 @@ public class Q264_KeenClaws extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int count = st.getQuestItemsCount(WOLF_CLAW);
-				
+				final int count = st.getQuestItemsCount(WOLF_CLAW);
 				if (count < 50)
 					htmltext = "30136-04.htm";
 				else
 				{
+					htmltext = "30136-05.htm";
 					st.takeItems(WOLF_CLAW, -1);
 					
-					int n = Rnd.get(17);
+					final int n = Rnd.get(17);
 					if (n == 0)
 					{
-						st.giveItems(WoodenHelmet, 1);
+						st.giveItems(WOODEN_HELMET, 1);
 						st.playSound(QuestState.SOUND_JACKPOT);
 					}
 					else if (n < 2)
 						st.giveItems(57, 1000);
 					else if (n < 5)
-						st.giveItems(LeatherSandals, 1);
+						st.giveItems(LEATHER_SANDALS, 1);
 					else if (n < 8)
 					{
-						st.giveItems(Stockings, 1);
+						st.giveItems(STOCKINGS, 1);
 						st.giveItems(57, 50);
 					}
 					else if (n < 11)
-						st.giveItems(HealingPotion, 1);
+						st.giveItems(HEALING_POTION, 1);
 					else if (n < 14)
-						st.giveItems(ShortGloves, 1);
+						st.giveItems(SHORT_GLOVES, 1);
 					else
-						st.giveItems(ClothShoes, 1);
+						st.giveItems(CLOTH_SHOES, 1);
 					
-					htmltext = "30136-05.htm";
-					st.exitQuest(true);
 					st.playSound(QuestState.SOUND_FINISH);
+					st.exitQuest(true);
 				}
 				break;
 		}
@@ -143,6 +132,6 @@ public class Q264_KeenClaws extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q264_KeenClaws(264, qn, "Keen Claws");
+		new Q264_KeenClaws();
 	}
 }

@@ -21,26 +21,17 @@ public class Q261_CollectorsDream extends Quest
 {
 	private static final String qn = "Q261_CollectorsDream";
 	
-	// NPC
-	private static final int ALSHUPES = 30222;
-	
 	// Items
 	private static final int GIANT_SPIDER_LEG = 1087;
 	
-	// Reward
-	private static final int ADENA = 57;
-	
-	public Q261_CollectorsDream(int questId, String name, String descr)
+	public Q261_CollectorsDream()
 	{
-		super(questId, name, descr);
+		super(261, qn, "Collector's Dream");
 		
-		questItemIds = new int[]
-		{
-			GIANT_SPIDER_LEG
-		};
+		setItemsIds(GIANT_SPIDER_LEG);
 		
-		addStartNpc(ALSHUPES);
-		addTalkId(ALSHUPES);
+		addStartNpc(30222); // Alshupes
+		addTalkId(30222);
 		
 		addKillId(20308, 20460, 20466);
 	}
@@ -55,8 +46,8 @@ public class Q261_CollectorsDream extends Quest
 		
 		if (event.equalsIgnoreCase("30222-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -82,7 +73,7 @@ public class Q261_CollectorsDream extends Quest
 				{
 					htmltext = "30222-05.htm";
 					st.takeItems(GIANT_SPIDER_LEG, -1);
-					st.rewardItems(ADENA, 1000);
+					st.rewardItems(57, 1000);
 					st.rewardExpAndSp(2000, 0);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
@@ -114,6 +105,6 @@ public class Q261_CollectorsDream extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q261_CollectorsDream(261, qn, "Collector's Dream");
+		new Q261_CollectorsDream();
 	}
 }

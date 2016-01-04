@@ -49,12 +49,7 @@ public class Q660_AidingTheFloranVillage extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			WATCHING_EYES,
-			LIZARDMEN_SCALE,
-			GOLEM_SHARD
-		};
+		setItemsIds(WATCHING_EYES, LIZARDMEN_SCALE, GOLEM_SHARD);
 		
 		addStartNpc(MARIA, ALEX);
 		addTalkId(MARIA, ALEX);
@@ -219,7 +214,7 @@ public class Q660_AidingTheFloranVillage extends Quest
 							st.playSound(QuestState.SOUND_MIDDLE);
 						}
 						else if (cond == 2)
-							htmltext = (st.hasQuestItems(WATCHING_EYES) || st.hasQuestItems(LIZARDMEN_SCALE) || st.hasQuestItems(GOLEM_SHARD)) ? "30291-04.htm" : "30291-05a.htm";
+							htmltext = (st.hasAtLeastOneQuestItem(WATCHING_EYES, LIZARDMEN_SCALE, GOLEM_SHARD)) ? "30291-04.htm" : "30291-05a.htm";
 						break;
 				}
 				break;

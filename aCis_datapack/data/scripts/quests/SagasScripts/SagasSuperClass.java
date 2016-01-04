@@ -139,9 +139,10 @@ public class SagasSuperClass extends Quest
 		for (int mobid : Mob)
 			addKillId(mobid);
 		
-		questItemIds = Items.clone();
+		final int[] questItemIds = Items.clone();
 		questItemIds[0] = 0;
 		questItemIds[2] = 0; // remove Ice Crystal and Divine Stone of Wisdom
+		setItemsIds(questItemIds);
 		
 		for (int Archon_Minion = 21646; Archon_Minion < 21652; Archon_Minion++)
 			addKillId(Archon_Minion);

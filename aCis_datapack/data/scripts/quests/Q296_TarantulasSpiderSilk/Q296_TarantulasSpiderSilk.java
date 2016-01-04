@@ -24,7 +24,7 @@ public class Q296_TarantulasSpiderSilk extends Quest
 	
 	// NPCs
 	private static final int MION = 30519;
-	private static final int DEFENTER_NATHAN = 30548;
+	private static final int DEFENDER_NATHAN = 30548;
 	
 	// Quest Items
 	private static final int TARANTULA_SPIDER_SILK = 1493;
@@ -34,23 +34,16 @@ public class Q296_TarantulasSpiderSilk extends Quest
 	private static final int RING_OF_RACCOON = 1508;
 	private static final int RING_OF_FIREFLY = 1509;
 	
-	// Monsters
-	private static final int HUNTER_TARANTULA = 20403;
-	private static final int PLUNDER_TARANTULA = 20508;
-	
-	public Q296_TarantulasSpiderSilk(int questId, String name, String descr)
+	public Q296_TarantulasSpiderSilk()
 	{
-		super(questId, name, descr);
+		super(296, qn, "Tarantula's Spider Silk");
 		
-		questItemIds = new int[]
-		{
-			TARANTULA_SPIDER_SILK,
-			TARANTULA_SPINNERETTE
-		};
+		setItemsIds(TARANTULA_SPIDER_SILK, TARANTULA_SPINNERETTE);
 		
 		addStartNpc(MION);
-		addTalkId(MION, DEFENTER_NATHAN);
-		addKillId(HUNTER_TARANTULA, PLUNDER_TARANTULA);
+		addTalkId(MION, DEFENDER_NATHAN);
+		
+		addKillId(20403, 20508); // Hunter Tarantula, Plunder arantula
 	}
 	
 	@Override
@@ -63,10 +56,10 @@ public class Q296_TarantulasSpiderSilk extends Quest
 		
 		if (event.equalsIgnoreCase("30519-03.htm"))
 		{
-			if (st.hasQuestItems(RING_OF_RACCOON) || st.hasQuestItems(RING_OF_FIREFLY))
+			if (st.hasAtLeastOneQuestItem(RING_OF_RACCOON, RING_OF_FIREFLY))
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
 			}
 			else
@@ -81,7 +74,7 @@ public class Q296_TarantulasSpiderSilk extends Quest
 		}
 		else if (event.equalsIgnoreCase("30548-02.htm"))
 		{
-			int count = st.getQuestItemsCount(TARANTULA_SPINNERETTE);
+			final int count = st.getQuestItemsCount(TARANTULA_SPINNERETTE);
 			if (count > 0)
 			{
 				htmltext = "30548-03.htm";
@@ -111,7 +104,7 @@ public class Q296_TarantulasSpiderSilk extends Quest
 				switch (npc.getNpcId())
 				{
 					case MION:
-						int count = st.getQuestItemsCount(TARANTULA_SPIDER_SILK);
+						final int count = st.getQuestItemsCount(TARANTULA_SPIDER_SILK);
 						if (count == 0)
 							htmltext = "30519-04.htm";
 						else
@@ -122,7 +115,7 @@ public class Q296_TarantulasSpiderSilk extends Quest
 						}
 						break;
 					
-					case DEFENTER_NATHAN:
+					case DEFENDER_NATHAN:
 						htmltext = "30548-01.htm";
 						break;
 				}
@@ -138,18 +131,13 @@ public class Q296_TarantulasSpiderSilk extends Quest
 		if (st == null)
 			return null;
 		
-		int chance = Rnd.get(100);
-		if (chance < 50)
-		{
-			st.giveItems((chance < 5) ? TARANTULA_SPINNERETTE : TARANTULA_SPIDER_SILK, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(((Rnd.get(100) < 10) ? TARANTULA_SPINNERETTE : TARANTULA_SPIDER_SILK), 1, 0, 500000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q296_TarantulasSpiderSilk(296, qn, "Tarantula's Spider Silk");
+		new Q296_TarantulasSpiderSilk();
 	}
 }

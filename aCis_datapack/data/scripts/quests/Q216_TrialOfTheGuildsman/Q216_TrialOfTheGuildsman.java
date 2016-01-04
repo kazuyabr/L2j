@@ -19,6 +19,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.util.Rnd;
 
 public class Q216_TrialOfTheGuildsman extends Quest
@@ -79,31 +80,7 @@ public class Q216_TrialOfTheGuildsman extends Quest
 	{
 		super(216, qn, "Trial of the Guildsman");
 		
-		questItemIds = new int[]
-		{
-			RECIPE_JOURNEYMAN_RING,
-			RECIPE_AMBER_BEAD,
-			VALKON_RECOMMENDATION,
-			MANDRAGORA_BERRY,
-			ALTRAN_INSTRUCTIONS,
-			ALTRAN_RECOMMENDATION_1,
-			ALTRAN_RECOMMENDATION_2,
-			NORMAN_INSTRUCTIONS,
-			NORMAN_RECEIPT,
-			DUNING_INSTRUCTIONS,
-			DUNING_KEY,
-			NORMAN_LIST,
-			GRAY_BONE_POWDER,
-			GRANITE_WHETSTONE,
-			RED_PIGMENT,
-			BRAIDED_YARN,
-			JOURNEYMAN_GEM,
-			PINTER_INSTRUCTIONS,
-			AMBER_BEAD,
-			AMBER_LUMP,
-			JOURNEYMAN_DECO_BEADS,
-			JOURNEYMAN_RING
-		};
+		setItemsIds(RECIPE_JOURNEYMAN_RING, RECIPE_AMBER_BEAD, VALKON_RECOMMENDATION, MANDRAGORA_BERRY, ALTRAN_INSTRUCTIONS, ALTRAN_RECOMMENDATION_1, ALTRAN_RECOMMENDATION_2, NORMAN_INSTRUCTIONS, NORMAN_RECEIPT, DUNING_INSTRUCTIONS, DUNING_KEY, NORMAN_LIST, GRAY_BONE_POWDER, GRANITE_WHETSTONE, RED_PIGMENT, BRAIDED_YARN, JOURNEYMAN_GEM, PINTER_INSTRUCTIONS, AMBER_BEAD, AMBER_LUMP, JOURNEYMAN_DECO_BEADS, JOURNEYMAN_RING);
 		
 		addStartNpc(VALKON);
 		addTalkId(VALKON, NORMAN, ALTRAN, PINTER, DUNING);
@@ -148,8 +125,9 @@ public class Q216_TrialOfTheGuildsman extends Quest
 			st.takeItems(JOURNEYMAN_RING, -1);
 			st.giveItems(MARK_OF_GUILDSMAN, 1);
 			st.rewardExpAndSp(80993, 12250);
+			player.broadcastPacket(new SocialAction(player, 3));
 			st.playSound(QuestState.SOUND_FINISH);
-			st.exitQuest(true);
+			st.exitQuest(false);
 		}
 		else if (event.equalsIgnoreCase("30210-04.htm"))
 		{
@@ -202,9 +180,7 @@ public class Q216_TrialOfTheGuildsman extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (st.hasQuestItems(MARK_OF_GUILDSMAN))
-					htmltext = getAlreadyCompletedMsg();
-				else if (player.getClassId() != ClassId.scavenger && player.getClassId() != ClassId.artisan)
+				if (player.getClassId() != ClassId.scavenger && player.getClassId() != ClassId.artisan)
 					htmltext = "30103-01.htm";
 				else if (player.getLevel() < 35)
 					htmltext = "30103-02.htm";
@@ -330,6 +306,10 @@ public class Q216_TrialOfTheGuildsman extends Quest
 							htmltext = "30298-08.htm";
 						break;
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		

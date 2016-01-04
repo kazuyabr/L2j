@@ -18,6 +18,7 @@ import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.util.Rnd;
 
 public class Q218_TestimonyOfLife extends Quest
@@ -78,41 +79,7 @@ public class Q218_TestimonyOfLife extends Quest
 	{
 		super(218, qn, "Testimony of Life");
 		
-		questItemIds = new int[]
-		{
-			TALINS_SPEAR,
-			CARDIEN_LETTER,
-			CAMOMILE_CHARM,
-			HIERARCH_LETTER,
-			MOONFLOWER_CHARM,
-			GRAIL_DIAGRAM,
-			THALIA_LETTER_1,
-			THALIA_LETTER_2,
-			THALIA_INSTRUCTIONS,
-			PUSHKIN_LIST,
-			PURE_MITHRIL_CUP,
-			ARKENIA_CONTRACT,
-			ARKENIA_INSTRUCTIONS,
-			ADONIUS_LIST,
-			ANDARIEL_SCRIPTURE_COPY,
-			STARDUST,
-			ISAEL_INSTRUCTIONS,
-			ISAEL_LETTER,
-			GRAIL_OF_PURITY,
-			TEARS_OF_UNICORN,
-			WATER_OF_LIFE,
-			PURE_MITHRIL_ORE,
-			ANT_SOLDIER_ACID,
-			WYRM_TALON,
-			SPIDER_ICHOR,
-			HARPY_DOWN,
-			3166,
-			3167,
-			3168,
-			3169,
-			3170,
-			3171
-		};
+		setItemsIds(TALINS_SPEAR, CARDIEN_LETTER, CAMOMILE_CHARM, HIERARCH_LETTER, MOONFLOWER_CHARM, GRAIL_DIAGRAM, THALIA_LETTER_1, THALIA_LETTER_2, THALIA_INSTRUCTIONS, PUSHKIN_LIST, PURE_MITHRIL_CUP, ARKENIA_CONTRACT, ARKENIA_INSTRUCTIONS, ADONIUS_LIST, ANDARIEL_SCRIPTURE_COPY, STARDUST, ISAEL_INSTRUCTIONS, ISAEL_LETTER, GRAIL_OF_PURITY, TEARS_OF_UNICORN, WATER_OF_LIFE, PURE_MITHRIL_ORE, ANT_SOLDIER_ACID, WYRM_TALON, SPIDER_ICHOR, HARPY_DOWN, 3166, 3167, 3168, 3169, 3170, 3171);
 		
 		addStartNpc(CARDIEN);
 		addTalkId(ASTERIOS, PUSHKIN, THALIA, ADONIUS, ARKENIA, CARDIEN, ISAEL);
@@ -222,9 +189,7 @@ public class Q218_TestimonyOfLife extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (st.hasQuestItems(MARK_OF_LIFE))
-					htmltext = getAlreadyCompletedMsg();
-				else if (player.getRace() != Race.Elf)
+				if (player.getRace() != Race.Elf)
 					htmltext = "30460-01.htm";
 				else if (player.getLevel() < 37 || player.getClassId().level() != 1)
 					htmltext = "30460-02.htm";
@@ -379,8 +344,9 @@ public class Q218_TestimonyOfLife extends Quest
 							st.takeItems(CAMOMILE_CHARM, 1);
 							st.giveItems(MARK_OF_LIFE, 1);
 							st.rewardExpAndSp(104591, 11250);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
-							st.exitQuest(true);
+							st.exitQuest(false);
 						}
 						break;
 					
@@ -414,6 +380,10 @@ public class Q218_TestimonyOfLife extends Quest
 						break;
 				
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		

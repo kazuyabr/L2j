@@ -22,30 +22,22 @@ public class Q295_DreamingOfTheSkies extends Quest
 {
 	private static final String qn = "Q295_DreamingOfTheSkies";
 	
-	// NPC
-	private static final int ARIN = 30536;
-	
 	// Item
 	private static final int FLOATING_STONE = 1492;
 	
 	// Reward
 	private static final int RING_OF_FIREFLY = 1509;
 	
-	// Monster
-	private static final int MAGICAL_WEAVER = 20153;
-	
-	public Q295_DreamingOfTheSkies(int questId, String name, String descr)
+	public Q295_DreamingOfTheSkies()
 	{
-		super(questId, name, descr);
+		super(295, qn, "Dreaming of the Skies");
 		
-		questItemIds = new int[]
-		{
-			FLOATING_STONE
-		};
+		setItemsIds(FLOATING_STONE);
 		
-		addStartNpc(ARIN);
-		addTalkId(ARIN);
-		addKillId(MAGICAL_WEAVER);
+		addStartNpc(30536); // Arin
+		addTalkId(30536);
+		
+		addKillId(20153); // Magical Weaver
 	}
 	
 	@Override
@@ -58,8 +50,8 @@ public class Q295_DreamingOfTheSkies extends Quest
 		
 		if (event.equalsIgnoreCase("30536-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -81,22 +73,23 @@ public class Q295_DreamingOfTheSkies extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(FLOATING_STONE) < 50)
+				if (st.getInt("cond") == 1)
 					htmltext = "30536-04.htm";
-				else if (!st.hasQuestItems(RING_OF_FIREFLY))
-				{
-					htmltext = "30536-05.htm";
-					st.takeItems(FLOATING_STONE, -1);
-					st.giveItems(RING_OF_FIREFLY, 1);
-					st.rewardExpAndSp(0, 500);
-					st.playSound(QuestState.SOUND_FINISH);
-					st.exitQuest(true);
-				}
 				else
 				{
-					htmltext = "30536-06.htm";
 					st.takeItems(FLOATING_STONE, -1);
-					st.rewardItems(57, 2400);
+					
+					if (!st.hasQuestItems(RING_OF_FIREFLY))
+					{
+						htmltext = "30536-05.htm";
+						st.giveItems(RING_OF_FIREFLY, 1);
+					}
+					else
+					{
+						htmltext = "30536-06.htm";
+						st.rewardItems(57, 2400);
+					}
+					
 					st.rewardExpAndSp(0, 500);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
@@ -122,6 +115,6 @@ public class Q295_DreamingOfTheSkies extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q295_DreamingOfTheSkies(295, qn, "Dreaming of the Skies");
+		new Q295_DreamingOfTheSkies();
 	}
 }

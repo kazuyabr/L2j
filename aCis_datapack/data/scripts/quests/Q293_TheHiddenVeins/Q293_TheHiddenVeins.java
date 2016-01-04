@@ -39,16 +39,27 @@ public class Q293_TheHiddenVeins extends Quest
 	private static final int UTUKU_ARCHER = 20447;
 	private static final int UTUKU_GRUNT = 20448;
 	
-	public Q293_TheHiddenVeins(int questId, String name, String descr)
+	private static final int[][] DROPLIST =
 	{
-		super(questId, name, descr);
-		
-		questItemIds = new int[]
 		{
 			CHRYSOLITE_ORE,
+			1,
+			0,
+			500000
+		},
+		{
 			TORN_MAP_FRAGMENT,
-			HIDDEN_VEIN_MAP
-		};
+			1,
+			0,
+			100000
+		}
+	};
+	
+	public Q293_TheHiddenVeins()
+	{
+		super(293, qn, "The Hidden Veins");
+		
+		setItemsIds(CHRYSOLITE_ORE, TORN_MAP_FRAGMENT, HIDDEN_VEIN_MAP);
 		
 		addStartNpc(FILAUR);
 		addTalkId(FILAUR, CHINCHIRIN);
@@ -66,8 +77,8 @@ public class Q293_TheHiddenVeins extends Quest
 		
 		if (event.equalsIgnoreCase("30535-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30535-06.htm"))
@@ -80,9 +91,9 @@ public class Q293_TheHiddenVeins extends Quest
 			if (st.getQuestItemsCount(TORN_MAP_FRAGMENT) >= 4)
 			{
 				htmltext = "30539-03.htm";
+				st.playSound(QuestState.SOUND_ITEMGET);
 				st.takeItems(TORN_MAP_FRAGMENT, 4);
 				st.giveItems(HIDDEN_VEIN_MAP, 1);
-				st.playSound(QuestState.SOUND_ITEMGET);
 			}
 		}
 		
@@ -112,16 +123,16 @@ public class Q293_TheHiddenVeins extends Quest
 				switch (npc.getNpcId())
 				{
 					case FILAUR:
-						int CO = st.getQuestItemsCount(CHRYSOLITE_ORE);
-						int HVM = st.getQuestItemsCount(HIDDEN_VEIN_MAP);
+						final int chrysoliteOres = st.getQuestItemsCount(CHRYSOLITE_ORE);
+						final int hiddenVeinMaps = st.getQuestItemsCount(HIDDEN_VEIN_MAP);
 						
-						if (CO + HVM == 0)
+						if (chrysoliteOres + hiddenVeinMaps == 0)
 							htmltext = "30535-04.htm";
 						else
 						{
-							if (HVM > 0)
+							if (hiddenVeinMaps > 0)
 							{
-								if (CO > 0)
+								if (chrysoliteOres > 0)
 									htmltext = "30535-09.htm";
 								else
 									htmltext = "30535-08.htm";
@@ -129,7 +140,7 @@ public class Q293_TheHiddenVeins extends Quest
 							else
 								htmltext = "30535-05.htm";
 							
-							int reward = (CO * 5) + (HVM * 500) + ((CO >= 10) ? 2000 : 0);
+							int reward = (chrysoliteOres * 5) + (hiddenVeinMaps * 500) + ((chrysoliteOres >= 10) ? 2000 : 0);
 							
 							st.takeItems(CHRYSOLITE_ORE, -1);
 							st.takeItems(HIDDEN_VEIN_MAP, -1);
@@ -161,14 +172,13 @@ public class Q293_TheHiddenVeins extends Quest
 		if (st == null)
 			return null;
 		
-		st.dropItems(CHRYSOLITE_ORE, 1, 0, 500000);
-		st.dropItems(TORN_MAP_FRAGMENT, 1, 0, 100000);
+		st.dropMultipleItems(DROPLIST);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q293_TheHiddenVeins(293, qn, "The Hidden Veins");
+		new Q293_TheHiddenVeins();
 	}
 }

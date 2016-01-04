@@ -42,12 +42,7 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			STING_OF_GIANT_PB,
-			CLOUDY_GEM,
-			TALON_OF_YA
-		};
+		setItemsIds(STING_OF_GIANT_PB, CLOUDY_GEM, TALON_OF_YA);
 		
 		addStartNpc(NORMAN);
 		addTalkId(NORMAN);
@@ -113,7 +108,7 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.hasQuestItems(STING_OF_GIANT_PB) || st.hasQuestItems(CLOUDY_GEM) || st.hasQuestItems(TALON_OF_YA))
+				if (st.hasAtLeastOneQuestItem(STING_OF_GIANT_PB, CLOUDY_GEM, TALON_OF_YA))
 					htmltext = "30210-03.htm";
 				else
 					htmltext = "30210-05.htm";

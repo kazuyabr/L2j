@@ -22,19 +22,16 @@ public class Q329_CuriosityOfADwarf extends Quest
 {
 	private static final String qn = "Q329_CuriosityOfADwarf";
 	
-	// NPC
-	private static final int Rolento = 30437;
-	
 	// Items
-	private static final int Golem_Heartstone = 1346;
-	private static final int Broken_Heartstone = 1365;
+	private static final int GOLEM_HEARTSTONE = 1346;
+	private static final int BROKEN_HEARTSTONE = 1365;
 	
-	public Q329_CuriosityOfADwarf(int questId, String name, String descr)
+	public Q329_CuriosityOfADwarf()
 	{
-		super(questId, name, descr);
+		super(329, qn, "Curiosity of a Dwarf");
 		
-		addStartNpc(Rolento);
-		addTalkId(Rolento);
+		addStartNpc(30437); // Rolento
+		addTalkId(30437);
 		
 		addKillId(20083, 20085); // Granite golem, Puncher
 	}
@@ -49,8 +46,8 @@ public class Q329_CuriosityOfADwarf extends Quest
 		
 		if (event.equalsIgnoreCase("30437-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30437-06.htm"))
@@ -73,26 +70,20 @@ public class Q329_CuriosityOfADwarf extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 33)
-					htmltext = "30437-02.htm";
-				else
-				{
-					htmltext = "30437-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 33) ? "30437-01.htm" : "30437-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int golem = st.getQuestItemsCount(Golem_Heartstone);
-				int broken = st.getQuestItemsCount(Broken_Heartstone);
+				final int golem = st.getQuestItemsCount(GOLEM_HEARTSTONE);
+				final int broken = st.getQuestItemsCount(BROKEN_HEARTSTONE);
 				
 				if (golem + broken == 0)
 					htmltext = "30437-04.htm";
 				else
 				{
 					htmltext = "30437-05.htm";
-					st.takeItems(Golem_Heartstone, -1);
-					st.takeItems(Broken_Heartstone, -1);
+					st.takeItems(GOLEM_HEARTSTONE, -1);
+					st.takeItems(BROKEN_HEARTSTONE, -1);
 					st.rewardItems(57, broken * 50 + golem * 1000 + ((golem + broken > 10) ? 1183 : 0));
 				}
 				break;
@@ -108,23 +99,17 @@ public class Q329_CuriosityOfADwarf extends Quest
 		if (st == null)
 			return null;
 		
-		int chance = Rnd.get(100);
+		final int chance = Rnd.get(100);
 		if (chance < 15)
-		{
-			st.giveItems(Golem_Heartstone, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+			st.dropItemsAlways(GOLEM_HEARTSTONE, 1, 0);
 		else if (chance < 65)
-		{
-			st.giveItems(Broken_Heartstone, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+			st.dropItemsAlways(BROKEN_HEARTSTONE, 1, 0);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q329_CuriosityOfADwarf(329, qn, "Curiosity of a Dwarf");
+		new Q329_CuriosityOfADwarf();
 	}
 }

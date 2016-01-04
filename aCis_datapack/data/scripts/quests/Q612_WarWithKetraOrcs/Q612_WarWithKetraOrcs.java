@@ -32,10 +32,7 @@ public class Q612_WarWithKetraOrcs extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Molar
-		};
+		setItemsIds(Molar);
 		
 		addStartNpc(31377); // Ashas Varka Durai
 		addTalkId(31377);

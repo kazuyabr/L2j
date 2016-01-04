@@ -29,10 +29,7 @@ public class Q164_BloodFiend extends Quest
 	{
 		super(164, qn, "Blood Fiend");
 		
-		questItemIds = new int[]
-		{
-			KIRUNAK_SKULL
-		};
+		setItemsIds(KIRUNAK_SKULL);
 		
 		addStartNpc(30149);
 		addTalkId(30149);

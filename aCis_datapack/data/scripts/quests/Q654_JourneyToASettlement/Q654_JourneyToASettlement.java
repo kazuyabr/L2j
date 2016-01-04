@@ -19,10 +19,7 @@ public class Q654_JourneyToASettlement extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			ANTELOPE_SKIN
-		};
+		setItemsIds(ANTELOPE_SKIN);
 		
 		addStartNpc(31453); // Nameless Spirit
 		addTalkId(31453);

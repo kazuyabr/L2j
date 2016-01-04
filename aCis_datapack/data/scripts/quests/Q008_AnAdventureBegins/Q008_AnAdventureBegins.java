@@ -38,10 +38,7 @@ public class Q008_AnAdventureBegins extends Quest
 	{
 		super(8, qn, "An Adventure Begins");
 		
-		questItemIds = new int[]
-		{
-			ROSELYN_NOTE
-		};
+		setItemsIds(ROSELYN_NOTE);
 		
 		addStartNpc(JASMINE);
 		addTalkId(JASMINE, ROSELYN, HARNE);

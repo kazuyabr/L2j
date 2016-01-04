@@ -16,33 +16,24 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q331_ArrowOfVengeance extends Quest
 {
 	private static final String qn = "Q331_ArrowOfVengeance";
 	
-	// Npc
-	private static final int BELTON = 30125;
-	
 	// Items
 	private static final int HARPY_FEATHER = 1452;
 	private static final int MEDUSA_VENOM = 1453;
-	private static final int WYRMS_TOOTH = 1454;
+	private static final int WYRM_TOOTH = 1454;
 	
-	public Q331_ArrowOfVengeance(int questId, String name, String descr)
+	public Q331_ArrowOfVengeance()
 	{
-		super(questId, name, descr);
+		super(331, qn, "Arrow Of Vengeance");
 		
-		questItemIds = new int[]
-		{
-			HARPY_FEATHER,
-			MEDUSA_VENOM,
-			WYRMS_TOOTH
-		};
+		setItemsIds(HARPY_FEATHER, MEDUSA_VENOM, WYRM_TOOTH);
 		
-		addStartNpc(BELTON);
-		addTalkId(BELTON);
+		addStartNpc(30125); // Belton
+		addTalkId(30125);
 		
 		addKillId(20145, 20158, 20176);
 	}
@@ -57,8 +48,8 @@ public class Q331_ArrowOfVengeance extends Quest
 		
 		if (event.equalsIgnoreCase("30125-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30125-06.htm"))
@@ -81,26 +72,20 @@ public class Q331_ArrowOfVengeance extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 32)
-					htmltext = "30125-02.htm";
-				else
-				{
-					htmltext = "30125-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 32) ? "30125-01.htm" : "30125-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int harpyFeather = st.getQuestItemsCount(HARPY_FEATHER);
-				int medusaVenom = st.getQuestItemsCount(MEDUSA_VENOM);
-				int wyrmTooth = st.getQuestItemsCount(WYRMS_TOOTH);
+				final int harpyFeather = st.getQuestItemsCount(HARPY_FEATHER);
+				final int medusaVenom = st.getQuestItemsCount(MEDUSA_VENOM);
+				final int wyrmTooth = st.getQuestItemsCount(WYRM_TOOTH);
 				
 				if (harpyFeather + medusaVenom + wyrmTooth > 0)
 				{
 					htmltext = "30125-05.htm";
 					st.takeItems(HARPY_FEATHER, -1);
 					st.takeItems(MEDUSA_VENOM, -1);
-					st.takeItems(WYRMS_TOOTH, -1);
+					st.takeItems(WYRM_TOOTH, -1);
 					
 					int reward = harpyFeather * 78 + medusaVenom * 88 + wyrmTooth * 92;
 					if (harpyFeather + medusaVenom + wyrmTooth > 10)
@@ -110,10 +95,6 @@ public class Q331_ArrowOfVengeance extends Quest
 				}
 				else
 					htmltext = "30125-04.htm";
-				break;
-			
-			case STATE_COMPLETED:
-				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		
@@ -127,23 +108,19 @@ public class Q331_ArrowOfVengeance extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 50)
+		switch (npc.getNpcId())
 		{
-			switch (npc.getNpcId())
-			{
-				case 20145:
-					st.giveItems(HARPY_FEATHER, 1);
-					break;
-				
-				case 20158:
-					st.giveItems(MEDUSA_VENOM, 1);
-					break;
-				
-				case 20176:
-					st.giveItems(WYRMS_TOOTH, 1);
-					break;
-			}
-			st.playSound(QuestState.SOUND_ITEMGET);
+			case 20145:
+				st.dropItems(HARPY_FEATHER, 1, 0, 590000);
+				break;
+			
+			case 20158:
+				st.dropItems(MEDUSA_VENOM, 1, 0, 610000);
+				break;
+			
+			case 20176:
+				st.dropItems(WYRM_TOOTH, 1, 0, 600000);
+				break;
 		}
 		
 		return null;
@@ -151,6 +128,6 @@ public class Q331_ArrowOfVengeance extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q331_ArrowOfVengeance(331, qn, "Arrow Of Vengeance");
+		new Q331_ArrowOfVengeance();
 	}
 }

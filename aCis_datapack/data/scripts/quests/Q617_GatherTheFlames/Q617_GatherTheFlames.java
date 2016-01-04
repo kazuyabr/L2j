@@ -84,10 +84,7 @@ public class Q617_GatherTheFlames extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			TORCH
-		};
+		setItemsIds(TORCH);
 		
 		addStartNpc(VULCAN, HILDA);
 		addTalkId(VULCAN, HILDA, ROONEY);

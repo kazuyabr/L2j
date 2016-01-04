@@ -39,15 +39,7 @@ public class Q004_LongliveThePaagrioLord extends Quest
 	{
 		super(4, qn, "Long live the Pa'agrio Lord!");
 		
-		questItemIds = new int[]
-		{
-			1541,
-			1542,
-			1543,
-			1544,
-			1545,
-			1546
-		};
+		setItemsIds(1541, 1542, 1543, 1544, 1545, 1546);
 		
 		addStartNpc(30578); // Nakusin
 		addTalkId(30578, 30585, 30566, 30562, 30560, 30559, 30587);

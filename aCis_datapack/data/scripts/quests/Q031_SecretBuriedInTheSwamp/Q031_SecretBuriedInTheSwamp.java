@@ -36,10 +36,7 @@ public class Q031_SecretBuriedInTheSwamp extends Quest
 	{
 		super(31, qn, "Secret Buried in the Swamp");
 		
-		questItemIds = new int[]
-		{
-			KRORIN_JOURNAL
-		};
+		setItemsIds(KRORIN_JOURNAL);
 		
 		addStartNpc(ABERCROMBIE);
 		addTalkId(ABERCROMBIE, CORPSE_OF_DWARF, FORGOTTEN_MONUMENT_1, FORGOTTEN_MONUMENT_2, FORGOTTEN_MONUMENT_3, FORGOTTEN_MONUMENT_4);

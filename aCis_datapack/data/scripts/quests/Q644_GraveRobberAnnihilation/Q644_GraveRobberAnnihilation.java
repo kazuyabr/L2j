@@ -61,10 +61,7 @@ public class Q644_GraveRobberAnnihilation extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			GOODS
-		};
+		setItemsIds(GOODS);
 		
 		addStartNpc(KARUDA);
 		addTalkId(KARUDA);

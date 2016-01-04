@@ -72,10 +72,7 @@ public class Q627_HeartInSearchOfPower extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			BEAD_OF_OBEDIENCE
-		};
+		setItemsIds(BEAD_OF_OBEDIENCE);
 		
 		addStartNpc(NECROMANCER);
 		addTalkId(NECROMANCER, ENFEUX);

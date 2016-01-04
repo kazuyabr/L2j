@@ -48,12 +48,7 @@ public class Q101_SwordOfSolidarity extends Quest
 	{
 		super(101, qn, "Sword of Solidarity");
 		
-		questItemIds = new int[]
-		{
-			BROKEN_SWORD_HANDLE,
-			BROKEN_BLADE_BOTTOM,
-			BROKEN_BLADE_TOP
-		};
+		setItemsIds(BROKEN_SWORD_HANDLE, BROKEN_BLADE_BOTTOM, BROKEN_BLADE_TOP);
 		
 		addStartNpc(ROIEN);
 		addTalkId(ROIEN, ALTRAN);

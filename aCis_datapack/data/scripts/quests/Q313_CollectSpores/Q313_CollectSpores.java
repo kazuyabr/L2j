@@ -21,25 +21,19 @@ public class Q313_CollectSpores extends Quest
 {
 	private static final String qn = "Q313_CollectSpores";
 	
-	// NPC
-	private static final int Herbiel = 30150;
-	
 	// Item
-	private static final int SporeSac = 1118;
+	private static final int SPORE_SAC = 1118;
 	
-	public Q313_CollectSpores(int questId, String name, String descr)
+	public Q313_CollectSpores()
 	{
-		super(questId, name, descr);
+		super(313, qn, "Collect Spores");
 		
-		questItemIds = new int[]
-		{
-			SporeSac
-		};
+		setItemsIds(SPORE_SAC);
 		
-		addStartNpc(Herbiel);
-		addTalkId(Herbiel);
+		addStartNpc(30150); // Herbiel
+		addTalkId(30150);
 		
-		addKillId(20509); // SporeFungus
+		addKillId(20509); // Spore Fungus
 	}
 	
 	@Override
@@ -52,8 +46,8 @@ public class Q313_CollectSpores extends Quest
 		
 		if (event.equalsIgnoreCase("30150-05.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -71,34 +65,19 @@ public class Q313_CollectSpores extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 8)
-					htmltext = "30150-03.htm";
-				else
-				{
-					htmltext = "30150-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 8) ? "30150-02.htm" : "30150-03.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				if (cond == 1)
+				if (st.getInt("cond") == 1)
 					htmltext = "30150-06.htm";
-				else if (cond == 2)
+				else
 				{
-					if (st.getQuestItemsCount(SporeSac) < 10)
-					{
-						st.set("cond", "1");
-						htmltext = "30150-06.htm";
-					}
-					else
-					{
-						htmltext = "30150-07.htm";
-						st.takeItems(SporeSac, -1);
-						st.rewardItems(57, 3500);
-						st.playSound(QuestState.SOUND_FINISH);
-						st.exitQuest(true);
-					}
+					htmltext = "30150-07.htm";
+					st.takeItems(SPORE_SAC, -1);
+					st.rewardItems(57, 3500);
+					st.playSound(QuestState.SOUND_FINISH);
+					st.exitQuest(true);
 				}
 				break;
 		}
@@ -113,7 +92,7 @@ public class Q313_CollectSpores extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(SporeSac, 1, 10, 700000))
+		if (st.dropItems(SPORE_SAC, 1, 10, 700000))
 			st.set("cond", "2");
 		
 		return null;
@@ -121,6 +100,6 @@ public class Q313_CollectSpores extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q313_CollectSpores(313, qn, "Collect Spores");
+		new Q313_CollectSpores();
 	}
 }

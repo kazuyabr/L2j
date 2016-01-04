@@ -54,20 +54,7 @@ public class Q419_GetAPet extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			AnimalLoversList,
-			AnimalSlayers1stList,
-			AnimalSlayers2ndList,
-			AnimalSlayers3rdList,
-			AnimalSlayers4thList,
-			AnimalSlayers5thList,
-			BloodyFang,
-			BloodyClaw,
-			BloodyNail,
-			BloodyKashaFang,
-			BloodyTarantulaNail
-		};
+		setItemsIds(AnimalLoversList, AnimalSlayers1stList, AnimalSlayers2ndList, AnimalSlayers3rdList, AnimalSlayers4thList, AnimalSlayers5thList, BloodyFang, BloodyClaw, BloodyNail, BloodyKashaFang, BloodyTarantulaNail);
 		
 		addStartNpc(Martin);
 		addTalkId(Martin, Bella, Ellie, Metty);

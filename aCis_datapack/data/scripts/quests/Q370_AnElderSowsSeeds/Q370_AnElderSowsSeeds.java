@@ -35,14 +35,7 @@ public class Q370_AnElderSowsSeeds extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SPELLBOOK_PAGE,
-			CHAPTER_OF_FIRE,
-			CHAPTER_OF_WATER,
-			CHAPTER_OF_WIND,
-			CHAPTER_OF_EARTH
-		};
+		setItemsIds(SPELLBOOK_PAGE, CHAPTER_OF_FIRE, CHAPTER_OF_WATER, CHAPTER_OF_WIND, CHAPTER_OF_EARTH);
 		
 		addStartNpc(CASIAN);
 		addTalkId(CASIAN);

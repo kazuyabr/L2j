@@ -113,14 +113,7 @@ public class Q509_TheClansPrestige extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DAIMONS_EYES,
-			HESTIAS_FAIRY_STONE,
-			NUCLEUS_OF_LESSER_GOLEM,
-			FALSTON_FANG,
-			SHAIDS_TALON
-		};
+		setItemsIds(DAIMONS_EYES, HESTIAS_FAIRY_STONE, NUCLEUS_OF_LESSER_GOLEM, FALSTON_FANG, SHAIDS_TALON);
 		
 		addStartNpc(VALDIS);
 		addTalkId(VALDIS);

@@ -19,6 +19,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.util.Rnd;
 
 public class Q217_TestimonyOfTrust extends Quest
@@ -94,36 +95,7 @@ public class Q217_TestimonyOfTrust extends Quest
 	{
 		super(217, qn, "Testimony of Trust");
 		
-		questItemIds = new int[]
-		{
-			LETTER_TO_ELF,
-			LETTER_TO_DARK_ELF,
-			LETTER_TO_DWARF,
-			LETTER_TO_ORC,
-			LETTER_TO_SERESIN,
-			SCROLL_OF_DARK_ELF_TRUST,
-			SCROLL_OF_ELF_TRUST,
-			SCROLL_OF_DWARF_TRUST,
-			SCROLL_OF_ORC_TRUST,
-			RECOMMENDATION_OF_HOLLINT,
-			ORDER_OF_ASTERIOS,
-			BREATH_OF_WINDS,
-			SEED_OF_VERDURE,
-			LETTER_FROM_THIFIELL,
-			BLOOD_GUARDIAN_BASILIK,
-			GIANT_APHID,
-			STAKATO_FLUIDS,
-			BASILIK_PLASMA,
-			HONEY_DEW,
-			STAKATO_ICHOR,
-			ORDER_OF_CLAYTON,
-			PARASITE_OF_LOTA,
-			LETTER_TO_MANAKIA,
-			LETTER_OF_MANAKIA,
-			LETTER_TO_NIKOLA,
-			ORDER_OF_NIKOLA,
-			HEARTSTONE_OF_PORTA
-		};
+		setItemsIds(LETTER_TO_ELF, LETTER_TO_DARK_ELF, LETTER_TO_DWARF, LETTER_TO_ORC, LETTER_TO_SERESIN, SCROLL_OF_DARK_ELF_TRUST, SCROLL_OF_ELF_TRUST, SCROLL_OF_DWARF_TRUST, SCROLL_OF_ORC_TRUST, RECOMMENDATION_OF_HOLLINT, ORDER_OF_ASTERIOS, BREATH_OF_WINDS, SEED_OF_VERDURE, LETTER_FROM_THIFIELL, BLOOD_GUARDIAN_BASILIK, GIANT_APHID, STAKATO_FLUIDS, BASILIK_PLASMA, HONEY_DEW, STAKATO_ICHOR, ORDER_OF_CLAYTON, PARASITE_OF_LOTA, LETTER_TO_MANAKIA, LETTER_OF_MANAKIA, LETTER_TO_NIKOLA, ORDER_OF_NIKOLA, HEARTSTONE_OF_PORTA);
 		
 		addStartNpc(HOLLINT);
 		addTalkId(HOLLINT, ASTERIOS, THIFIELL, CLAYTON, SERESIN, KAKAI, MANAKIA, LOCKIRIN, NIKOLA, BIOTIN);
@@ -227,8 +199,6 @@ public class Q217_TestimonyOfTrust extends Quest
 			case STATE_CREATED:
 				if (player.getClassId().level() != 1)
 					htmltext = "30191-01a.htm";
-				else if (st.hasQuestItems(MARK_OF_TRUST))
-					htmltext = "30191-01b.htm";
 				else if (player.getRace() != Race.Human)
 					htmltext = "30191-02.htm";
 				else if (player.getLevel() < 37)
@@ -412,11 +382,16 @@ public class Q217_TestimonyOfTrust extends Quest
 							st.takeItems(RECOMMENDATION_OF_HOLLINT, 1);
 							st.giveItems(MARK_OF_TRUST, 1);
 							st.rewardExpAndSp(39571, 2500);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
-							st.exitQuest(true);
+							st.exitQuest(false);
 						}
 						break;
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		
@@ -488,7 +463,7 @@ public class Q217_TestimonyOfTrust extends Quest
 					st.takeItems(STAKATO_FLUIDS, -1);
 					st.giveItems(STAKATO_ICHOR, 1);
 					
-					if (st.hasQuestItems(BASILIK_PLASMA) && st.hasQuestItems(HONEY_DEW) && st.hasQuestItems(STAKATO_ICHOR))
+					if (st.hasQuestItems(BASILIK_PLASMA, HONEY_DEW))
 						st.set("cond", "7");
 				}
 				break;
@@ -503,7 +478,7 @@ public class Q217_TestimonyOfTrust extends Quest
 					st.takeItems(GIANT_APHID, -1);
 					st.giveItems(HONEY_DEW, 1);
 					
-					if (st.hasQuestItems(BASILIK_PLASMA) && st.hasQuestItems(HONEY_DEW) && st.hasQuestItems(STAKATO_ICHOR))
+					if (st.hasQuestItems(BASILIK_PLASMA, STAKATO_ICHOR))
 						st.set("cond", "7");
 				}
 				break;
@@ -514,7 +489,7 @@ public class Q217_TestimonyOfTrust extends Quest
 					st.takeItems(BLOOD_GUARDIAN_BASILIK, -1);
 					st.giveItems(BASILIK_PLASMA, 1);
 					
-					if (st.hasQuestItems(BASILIK_PLASMA) && st.hasQuestItems(HONEY_DEW) && st.hasQuestItems(STAKATO_ICHOR))
+					if (st.hasQuestItems(HONEY_DEW, STAKATO_ICHOR))
 						st.set("cond", "7");
 				}
 				break;

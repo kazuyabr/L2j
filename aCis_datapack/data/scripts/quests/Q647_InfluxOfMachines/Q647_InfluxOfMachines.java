@@ -47,10 +47,7 @@ public class Q647_InfluxOfMachines extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DESTROYED_GOLEM_SHARD
-		};
+		setItemsIds(DESTROYED_GOLEM_SHARD);
 		
 		addStartNpc(Gutenhagen);
 		addTalkId(Gutenhagen);

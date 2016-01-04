@@ -30,10 +30,7 @@ public class Q608_SlayTheEnemyCommander extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Mos_Head
-		};
+		setItemsIds(Mos_Head);
 		
 		addStartNpc(31370); // Kadun Zu Ketra
 		addTalkId(31370);

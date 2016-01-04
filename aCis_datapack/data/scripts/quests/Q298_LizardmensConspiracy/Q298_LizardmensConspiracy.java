@@ -16,7 +16,6 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q298_LizardmensConspiracy extends Quest
 {
@@ -31,16 +30,11 @@ public class Q298_LizardmensConspiracy extends Quest
 	private static final int WHITE_GEM = 7183;
 	private static final int RED_GEM = 7184;
 	
-	public Q298_LizardmensConspiracy(int questId, String name, String descr)
+	public Q298_LizardmensConspiracy()
 	{
-		super(questId, name, descr);
+		super(298, qn, "Lizardmen's Conspiracy");
 		
-		questItemIds = new int[]
-		{
-			PATROL_REPORT,
-			WHITE_GEM,
-			RED_GEM
-		};
+		setItemsIds(PATROL_REPORT, WHITE_GEM, RED_GEM);
 		
 		addStartNpc(PRAGA);
 		addTalkId(PRAGA, ROHMER);
@@ -58,29 +52,28 @@ public class Q298_LizardmensConspiracy extends Quest
 		
 		if (event.equalsIgnoreCase("30333-1.htm"))
 		{
-			st.set("cond", "1");
-			st.giveItems(PATROL_REPORT, 1);
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
+			st.giveItems(PATROL_REPORT, 1);
 		}
 		else if (event.equalsIgnoreCase("30344-1.htm"))
 		{
-			st.takeItems(PATROL_REPORT, 1);
 			st.set("cond", "2");
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(PATROL_REPORT, 1);
 		}
-		else if (event.equalsIgnoreCase("30344-3.htm"))
+		else if (event.equalsIgnoreCase("30344-4.htm"))
 		{
-			if (st.getQuestItemsCount(WHITE_GEM) >= 50 && st.getQuestItemsCount(RED_GEM) >= 50)
+			if (st.getInt("cond") == 3)
 			{
+				htmltext = "30344-3.htm";
 				st.takeItems(WHITE_GEM, -1);
 				st.takeItems(RED_GEM, -1);
 				st.rewardExpAndSp(0, 42000);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
 			}
-			else
-				htmltext = "30344-4.htm";
 		}
 		
 		return htmltext;
@@ -101,7 +94,6 @@ public class Q298_LizardmensConspiracy extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
 					case PRAGA:
@@ -109,14 +101,9 @@ public class Q298_LizardmensConspiracy extends Quest
 						break;
 					
 					case ROHMER:
-						if (cond == 1)
-						{
-							if (st.hasQuestItems(PATROL_REPORT))
-								htmltext = "30344-0.htm";
-							else
-								htmltext = "30344-0a.htm";
-						}
-						else if (cond == 2 || cond == 3)
+						if (st.getInt("cond") == 1)
+							htmltext = (st.hasQuestItems(PATROL_REPORT)) ? "30344-0.htm" : "30344-0a.htm";
+						else
 							htmltext = "30344-2.htm";
 						break;
 				}
@@ -135,41 +122,20 @@ public class Q298_LizardmensConspiracy extends Quest
 		
 		QuestState st = partyMember.getQuestState(qn);
 		
-		if (Rnd.get(100) < 62)
+		switch (npc.getNpcId())
 		{
-			switch (npc.getNpcId())
-			{
-				case 20926:
-				case 20927:
-					if (st.getQuestItemsCount(RED_GEM) < 50)
-					{
-						st.giveItems(RED_GEM, 1);
-						if (st.getQuestItemsCount(WHITE_GEM) >= 50 && st.getQuestItemsCount(RED_GEM) >= 50)
-						{
-							st.set("cond", "3");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
-							st.playSound(QuestState.SOUND_ITEMGET);
-					}
-					break;
-				
-				case 20922:
-				case 20923:
-				case 20924:
-					if (st.getQuestItemsCount(WHITE_GEM) < 50)
-					{
-						st.giveItems(WHITE_GEM, 1);
-						if (st.getQuestItemsCount(RED_GEM) >= 50 && st.getQuestItemsCount(WHITE_GEM) >= 50)
-						{
-							st.set("cond", "3");
-							st.playSound(QuestState.SOUND_MIDDLE);
-						}
-						else
-							st.playSound(QuestState.SOUND_ITEMGET);
-					}
-					break;
-			}
+			case 20922:
+			case 20923:
+			case 20924:
+				if (st.dropItems(WHITE_GEM, 1, 50, 620000) && st.getQuestItemsCount(RED_GEM) >= 50)
+					st.set("cond", "3");
+				break;
+			
+			case 20926:
+			case 20927:
+				if (st.dropItems(RED_GEM, 1, 50, 620000) && st.getQuestItemsCount(WHITE_GEM) >= 50)
+					st.set("cond", "3");
+				break;
 		}
 		
 		return null;
@@ -177,6 +143,6 @@ public class Q298_LizardmensConspiracy extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q298_LizardmensConspiracy(298, qn, "Lizardmen's Conspiracy");
+		new Q298_LizardmensConspiracy();
 	}
 }

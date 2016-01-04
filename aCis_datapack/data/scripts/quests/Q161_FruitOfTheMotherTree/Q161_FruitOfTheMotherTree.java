@@ -34,11 +34,7 @@ public class Q161_FruitOfTheMotherTree extends Quest
 	{
 		super(161, qn, "Fruit of the Mothertree");
 		
-		questItemIds = new int[]
-		{
-			ANDELLIA_LETTER,
-			MOTHERTREE_FRUIT
-		};
+		setItemsIds(ANDELLIA_LETTER, MOTHERTREE_FRUIT);
 		
 		addStartNpc(ANDELLIA);
 		addTalkId(ANDELLIA, THALIA);

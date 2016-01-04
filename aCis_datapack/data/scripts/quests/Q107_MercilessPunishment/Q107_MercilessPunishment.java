@@ -49,15 +49,7 @@ public class Q107_MercilessPunishment extends Quest
 	{
 		super(107, qn, "Merciless Punishment");
 		
-		questItemIds = new int[]
-		{
-			HATOS_ORDER_1,
-			HATOS_ORDER_2,
-			HATOS_ORDER_3,
-			LETTER_TO_HUMAN,
-			LETTER_TO_DARKELF,
-			LETTER_TO_ELF
-		};
+		setItemsIds(HATOS_ORDER_1, HATOS_ORDER_2, HATOS_ORDER_3, LETTER_TO_HUMAN, LETTER_TO_DARKELF, LETTER_TO_ELF);
 		
 		addStartNpc(HATOS);
 		addTalkId(HATOS, PARUGON);

@@ -32,10 +32,7 @@ public class Q119_LastImperialPrince extends Quest
 	{
 		super(119, qn, "Last Imperial Prince");
 		
-		questItemIds = new int[]
-		{
-			ANTIQUE_BROOCH
-		};
+		setItemsIds(ANTIQUE_BROOCH);
 		
 		addStartNpc(NAMELESS_SPIRIT);
 		addTalkId(NAMELESS_SPIRIT, DEVORIN);

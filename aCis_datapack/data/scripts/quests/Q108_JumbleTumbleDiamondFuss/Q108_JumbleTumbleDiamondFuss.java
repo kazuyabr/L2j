@@ -36,13 +36,13 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 	private static final int GOUPH_CONTRACT = 1559;
 	private static final int REEP_CONTRACT = 1560;
 	private static final int ELVEN_WINE = 1561;
-	private static final int BRUNO_DICE = 1562;
-	private static final int BRUNO_CONTRACT = 1563;
+	private static final int BRUNON_DICE = 1562;
+	private static final int BRUNON_CONTRACT = 1563;
 	private static final int AQUAMARINE = 1564;
 	private static final int CHRYSOBERYL = 1565;
 	private static final int GEM_BOX = 1566;
 	private static final int COAL_PIECE = 1567;
-	private static final int BRUNO_LETTER = 1568;
+	private static final int BRUNON_LETTER = 1568;
 	private static final int BERRY_TART = 1569;
 	private static final int BAT_DIAGRAM = 1570;
 	private static final int STAR_DIAMOND = 1571;
@@ -63,26 +63,43 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 	private static final int ECHO_CELEBRATION = 4416;
 	private static final int LESSER_HEALING_POTION = 1060;
 	
+	private static final int[][] LEADER_DROPLIST =
+	{
+		{
+			AQUAMARINE,
+			1,
+			10,
+			800000
+		},
+		{
+			CHRYSOBERYL,
+			1,
+			10,
+			800000
+		}
+	};
+	
+	private static final int[][] LIEUTENANT_DROPLIST =
+	{
+		{
+			AQUAMARINE,
+			1,
+			10,
+			600000
+		},
+		{
+			CHRYSOBERYL,
+			1,
+			10,
+			600000
+		}
+	};
+	
 	public Q108_JumbleTumbleDiamondFuss()
 	{
 		super(108, qn, "Jumble, Tumble, Diamond Fuss");
 		
-		questItemIds = new int[]
-		{
-			GOUPH_CONTRACT,
-			REEP_CONTRACT,
-			ELVEN_WINE,
-			BRUNO_DICE,
-			BRUNO_CONTRACT,
-			AQUAMARINE,
-			CHRYSOBERYL,
-			GEM_BOX,
-			COAL_PIECE,
-			BRUNO_LETTER,
-			BERRY_TART,
-			BAT_DIAGRAM,
-			STAR_DIAMOND
-		};
+		setItemsIds(GOUPH_CONTRACT, REEP_CONTRACT, ELVEN_WINE, BRUNON_DICE, BRUNON_CONTRACT, AQUAMARINE, CHRYSOBERYL, GEM_BOX, COAL_PIECE, BRUNON_LETTER, BERRY_TART, BAT_DIAGRAM, STAR_DIAMOND);
 		
 		addStartNpc(GOUPH);
 		addTalkId(GOUPH, REEP, MURDOC, AIRY, BRUNON, MARON, TOROCCO);
@@ -116,8 +133,8 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 		{
 			st.set("cond", "5");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			st.takeItems(BRUNO_DICE, 1);
-			st.giveItems(BRUNO_CONTRACT, 1);
+			st.takeItems(BRUNON_DICE, 1);
+			st.giveItems(BRUNON_CONTRACT, 1);
 		}
 		
 		return htmltext;
@@ -224,7 +241,7 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 							st.set("cond", "4");
 							st.playSound(QuestState.SOUND_MIDDLE);
 							st.takeItems(ELVEN_WINE, 1);
-							st.giveItems(BRUNO_DICE, 1);
+							st.giveItems(BRUNON_DICE, 1);
 						}
 						else if (cond == 4)
 							htmltext = "30529-02.htm";
@@ -242,7 +259,7 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 							htmltext = "30526-04.htm";
 							st.set("cond", "7");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(BRUNO_CONTRACT, 1);
+							st.takeItems(BRUNON_CONTRACT, 1);
 							st.takeItems(AQUAMARINE, -1);
 							st.takeItems(CHRYSOBERYL, -1);
 							st.giveItems(GEM_BOX, 1);
@@ -255,7 +272,7 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 							st.set("cond", "9");
 							st.playSound(QuestState.SOUND_MIDDLE);
 							st.takeItems(COAL_PIECE, 1);
-							st.giveItems(BRUNO_LETTER, 1);
+							st.giveItems(BRUNON_LETTER, 1);
 						}
 						else if (cond == 9)
 							htmltext = "30526-07.htm";
@@ -269,7 +286,7 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 							htmltext = "30521-01.htm";
 							st.set("cond", "10");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(BRUNO_LETTER, 1);
+							st.takeItems(BRUNON_LETTER, 1);
 							st.giveItems(BERRY_TART, 1);
 						}
 						else if (cond == 10)
@@ -312,13 +329,13 @@ public class Q108_JumbleTumbleDiamondFuss extends Quest
 		switch (npc.getNpcId())
 		{
 			case GOBLIN_BRIGAND_LEADER:
+				if (st.getInt("cond") == 5 && st.dropMultipleItems(LEADER_DROPLIST))
+					st.set("cond", "6");
+				break;
+			
 			case GOBLIN_BRIGAND_LIEUTENANT:
-				if (st.getInt("cond") == 5)
-				{
-					int chance = (npc.getNpcId() == GOBLIN_BRIGAND_LEADER) ? 800000 : 600000;
-					if (st.dropItems(AQUAMARINE, 1, 10, chance) && st.dropItems(CHRYSOBERYL, 1, 10, chance))
-						st.set("cond", "6");
-				}
+				if (st.getInt("cond") == 5 && st.dropMultipleItems(LIEUTENANT_DROPLIST))
+					st.set("cond", "6");
 				break;
 			
 			case BLADE_BAT:

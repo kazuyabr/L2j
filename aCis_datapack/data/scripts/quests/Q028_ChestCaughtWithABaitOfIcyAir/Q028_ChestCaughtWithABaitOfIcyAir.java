@@ -34,10 +34,7 @@ public class Q028_ChestCaughtWithABaitOfIcyAir extends Quest
 	{
 		super(28, qn, "Chest caught with a bait of icy air");
 		
-		questItemIds = new int[]
-		{
-			KIKI_LETTER
-		};
+		setItemsIds(KIKI_LETTER);
 		
 		addStartNpc(OFULLE);
 		addTalkId(OFULLE, KIKI);

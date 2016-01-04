@@ -95,14 +95,7 @@ public class Q038_DragonFangs extends Quest
 	{
 		super(38, qn, "Dragon Fangs");
 		
-		questItemIds = new int[]
-		{
-			FEATHER_ORNAMENT,
-			TOOTH_OF_TOTEM,
-			TOOTH_OF_DRAGON,
-			LETTER_OF_IRIS,
-			LETTER_OF_ROHMER
-		};
+		setItemsIds(FEATHER_ORNAMENT, TOOTH_OF_TOTEM, TOOTH_OF_DRAGON, LETTER_OF_IRIS, LETTER_OF_ROHMER);
 		
 		addStartNpc(LUIS);
 		addTalkId(LUIS, IRIS, ROHMER);

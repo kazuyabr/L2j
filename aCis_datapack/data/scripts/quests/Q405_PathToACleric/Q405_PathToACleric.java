@@ -52,19 +52,7 @@ public class Q405_PathToACleric extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			FirstLetter,
-			SimplonsBook,
-			PragasBook,
-			VivyansBook,
-			MothersNecklace,
-			MothersPendant,
-			SecondLetter,
-			LionelsBook,
-			Certificate,
-			Covenant
-		};
+		setItemsIds(FirstLetter, SimplonsBook, PragasBook, VivyansBook, MothersNecklace, MothersPendant, SecondLetter, LionelsBook, Certificate, Covenant);
 		
 		addStartNpc(Zigaunt);
 		addTalkId(Zigaunt, Simplon, Praga, Vivyan, Lionel, Gallint);

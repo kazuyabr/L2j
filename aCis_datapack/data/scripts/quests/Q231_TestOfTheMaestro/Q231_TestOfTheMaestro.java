@@ -21,6 +21,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q231_TestOfTheMaestro extends Quest
 {
@@ -69,24 +70,7 @@ public class Q231_TestOfTheMaestro extends Quest
 	{
 		super(231, qn, "Test Of The Maestro");
 		
-		questItemIds = new int[]
-		{
-			RECOMMENDATION_OF_BALANKI,
-			RECOMMENDATION_OF_FILAUR,
-			RECOMMENDATION_OF_ARIN,
-			LETTER_OF_SOLDER_DETACHMENT,
-			PAINT_OF_KAMURU,
-			NECKLACE_OF_KAMURU,
-			PAINT_OF_TELEPORT_DEVICE,
-			TELEPORT_DEVICE,
-			ARCHITECTURE_OF_KRUMA,
-			REPORT_OF_KRUMA,
-			INGREDIENTS_OF_ANTIDOTE,
-			STINGER_WASP_NEEDLE,
-			MARSH_SPIDER_WEB,
-			BLOOD_OF_LEECH,
-			BROKEN_TELEPORT_DEVICE
-		};
+		setItemsIds(RECOMMENDATION_OF_BALANKI, RECOMMENDATION_OF_FILAUR, RECOMMENDATION_OF_ARIN, LETTER_OF_SOLDER_DETACHMENT, PAINT_OF_KAMURU, NECKLACE_OF_KAMURU, PAINT_OF_TELEPORT_DEVICE, TELEPORT_DEVICE, ARCHITECTURE_OF_KRUMA, REPORT_OF_KRUMA, INGREDIENTS_OF_ANTIDOTE, STINGER_WASP_NEEDLE, MARSH_SPIDER_WEB, BLOOD_OF_LEECH, BROKEN_TELEPORT_DEVICE);
 		
 		addStartNpc(LOCKIRIN);
 		addTalkId(LOCKIRIN, SPIRON, BALANKI, KEEF, FILAUR, ARIN, TOMA, CROTO, DUBABAH, LORAIN);
@@ -166,9 +150,7 @@ public class Q231_TestOfTheMaestro extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (st.hasQuestItems(MARK_OF_MAESTRO))
-					htmltext = getAlreadyCompletedMsg();
-				else if (player.getClassId() != ClassId.artisan)
+				if (player.getClassId() != ClassId.artisan)
 					htmltext = "30531-01.htm";
 				else if (player.getLevel() < 39)
 					htmltext = "30531-02.htm";
@@ -191,8 +173,9 @@ public class Q231_TestOfTheMaestro extends Quest
 							st.takeItems(RECOMMENDATION_OF_FILAUR, 1);
 							st.giveItems(MARK_OF_MAESTRO, 1);
 							st.rewardExpAndSp(46000, 5900);
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
-							st.exitQuest(true);
+							st.exitQuest(false);
 						}
 						break;
 					
@@ -218,7 +201,7 @@ public class Q231_TestOfTheMaestro extends Quest
 							st.takeItems(LETTER_OF_SOLDER_DETACHMENT, 1);
 							st.giveItems(RECOMMENDATION_OF_BALANKI, 1);
 							
-							if (st.hasQuestItems(RECOMMENDATION_OF_ARIN) && st.hasQuestItems(RECOMMENDATION_OF_FILAUR))
+							if (st.hasQuestItems(RECOMMENDATION_OF_ARIN, RECOMMENDATION_OF_FILAUR))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
@@ -271,7 +254,7 @@ public class Q231_TestOfTheMaestro extends Quest
 							st.takeItems(TELEPORT_DEVICE, -1);
 							st.giveItems(RECOMMENDATION_OF_ARIN, 1);
 							
-							if (st.hasQuestItems(RECOMMENDATION_OF_BALANKI) && st.hasQuestItems(RECOMMENDATION_OF_FILAUR))
+							if (st.hasQuestItems(RECOMMENDATION_OF_BALANKI, RECOMMENDATION_OF_FILAUR))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
@@ -317,7 +300,7 @@ public class Q231_TestOfTheMaestro extends Quest
 							st.takeItems(REPORT_OF_KRUMA, 1);
 							st.giveItems(RECOMMENDATION_OF_FILAUR, 1);
 							
-							if (st.hasQuestItems(RECOMMENDATION_OF_BALANKI) && st.hasQuestItems(RECOMMENDATION_OF_ARIN))
+							if (st.hasQuestItems(RECOMMENDATION_OF_BALANKI, RECOMMENDATION_OF_ARIN))
 							{
 								st.set("cond", "2");
 								st.playSound(QuestState.SOUND_MIDDLE);
@@ -349,6 +332,10 @@ public class Q231_TestOfTheMaestro extends Quest
 							htmltext = "30673-05.htm";
 						break;
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		

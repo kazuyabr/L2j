@@ -37,10 +37,7 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			STOLEN_RED_TOTEM
-		};
+		setItemsIds(STOLEN_RED_TOTEM);
 		
 		addStartNpc(NARAN);
 		addTalkId(NARAN, UDAN, ASEFA_BOX);

@@ -31,10 +31,7 @@ public class Q432_BirthdayPartySong extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			RED_CRYSTAL
-		};
+		setItemsIds(RED_CRYSTAL);
 		
 		addStartNpc(OCTAVIA);
 		addTalkId(OCTAVIA);

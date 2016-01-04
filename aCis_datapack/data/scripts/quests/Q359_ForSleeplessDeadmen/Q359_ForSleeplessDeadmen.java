@@ -22,11 +22,13 @@ public class Q359_ForSleeplessDeadmen extends Quest
 {
 	private static final String qn = "Q359_ForSleeplessDeadmen";
 	
-	// NPCs
-	private static final int ORVEN = 30857;
-	
 	// Item
 	private static final int REMAINS = 5869;
+	
+	// NPCs
+	private static final int DOOM_SERVANT = 21006;
+	private static final int DOOM_GUARD = 21007;
+	private static final int DOOM_ARCHER = 21008;
 	
 	// Reward
 	private static final int REWARD[] =
@@ -41,19 +43,16 @@ public class Q359_ForSleeplessDeadmen extends Quest
 		5495
 	};
 	
-	public Q359_ForSleeplessDeadmen(int questId, String name, String descr)
+	public Q359_ForSleeplessDeadmen()
 	{
-		super(questId, name, descr);
+		super(359, qn, "For Sleepless Deadmen");
 		
-		questItemIds = new int[]
-		{
-			REMAINS
-		};
+		setItemsIds(REMAINS);
 		
-		addStartNpc(ORVEN);
-		addTalkId(ORVEN);
+		addStartNpc(30857); // Orven
+		addTalkId(30857);
 		
-		addKillId(21006, 21007, 21008);
+		addKillId(DOOM_SERVANT, DOOM_GUARD, DOOM_ARCHER);
 	}
 	
 	@Override
@@ -66,8 +65,8 @@ public class Q359_ForSleeplessDeadmen extends Quest
 		
 		if (event.equalsIgnoreCase("30857-06.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30857-10.htm"))
@@ -76,6 +75,7 @@ public class Q359_ForSleeplessDeadmen extends Quest
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
+		
 		return htmltext;
 	}
 	
@@ -90,17 +90,11 @@ public class Q359_ForSleeplessDeadmen extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 60)
-					htmltext = "30857-02.htm";
-				else
-				{
-					htmltext = "30857-01.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 60) ? "30857-01.htm" : "30857-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				if (cond == 1)
 					htmltext = "30857-07.htm";
 				else if (cond == 2)
@@ -125,14 +119,29 @@ public class Q359_ForSleeplessDeadmen extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(REMAINS, 1, 60, 100000))
-			st.set("cond", "2");
+		switch (npc.getNpcId())
+		{
+			case DOOM_SERVANT:
+				if (st.dropItems(REMAINS, 1, 60, 365000))
+					st.set("cond", "2");
+				break;
+			
+			case DOOM_GUARD:
+				if (st.dropItems(REMAINS, 1, 60, 392000))
+					st.set("cond", "2");
+				break;
+			
+			case DOOM_ARCHER:
+				if (st.dropItems(REMAINS, 1, 60, 503000))
+					st.set("cond", "2");
+				break;
+		}
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q359_ForSleeplessDeadmen(359, qn, "For Sleepless Deadmen");
+		new Q359_ForSleeplessDeadmen();
 	}
 }

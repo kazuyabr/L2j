@@ -46,11 +46,7 @@ public class Q375_WhisperOfDreams_Part2 extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			KARIK_HORN,
-			CAVE_HOWLER_SKULL
-		};
+		setItemsIds(KARIK_HORN, CAVE_HOWLER_SKULL);
 		
 		addStartNpc(MANAKIA);
 		addTalkId(MANAKIA);

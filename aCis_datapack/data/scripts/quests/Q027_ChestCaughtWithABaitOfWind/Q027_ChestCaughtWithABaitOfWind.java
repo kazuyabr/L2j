@@ -34,10 +34,7 @@ public class Q027_ChestCaughtWithABaitOfWind extends Quest
 	{
 		super(27, qn, "Chest caught with a bait of wind");
 		
-		questItemIds = new int[]
-		{
-			STRANGE_BLUEPRINT
-		};
+		setItemsIds(STRANGE_BLUEPRINT);
 		
 		addStartNpc(LANOSCO);
 		addTalkId(LANOSCO, SHALING);

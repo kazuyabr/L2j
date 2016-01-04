@@ -23,41 +23,32 @@ public class Q345_MethodToRaiseTheDead extends Quest
 	private static final String qn = "Q345_MethodToRaiseTheDead";
 	
 	// Items
-	private static final int VICTIMS_ARM_BONE = 4274;
-	private static final int VICTIMS_THIGH_BONE = 4275;
-	private static final int VICTIMS_SKULL = 4276;
-	private static final int VICTIMS_RIB_BONE = 4277;
-	private static final int VICTIMS_SPINE = 4278;
+	private static final int VICTIM_ARM_BONE = 4274;
+	private static final int VICTIM_THIGH_BONE = 4275;
+	private static final int VICTIM_SKULL = 4276;
+	private static final int VICTIM_RIB_BONE = 4277;
+	private static final int VICTIM_SPINE = 4278;
 	private static final int USELESS_BONE_PIECES = 4280;
 	private static final int POWDER_TO_SUMMON_DEAD_SOULS = 4281;
 	
 	// NPCs
-	private static final int Xenovia = 30912;
-	private static final int Dorothy = 30970;
-	private static final int Orpheus = 30971;
-	private static final int Medium_Jar = 30973;
+	private static final int XENOVIA = 30912;
+	private static final int DOROTHY = 30970;
+	private static final int ORPHEUS = 30971;
+	private static final int MEDIUM_JAR = 30973;
 	
 	// Rewards
 	private static final int BILL_OF_IASON_HEINE = 4310;
 	private static final int IMPERIAL_DIAMOND = 3456;
 	
-	public Q345_MethodToRaiseTheDead(int questId, String name, String descr)
+	public Q345_MethodToRaiseTheDead()
 	{
-		super(questId, name, descr);
+		super(345, qn, "Method to Raise the Dead");
 		
-		questItemIds = new int[]
-		{
-			VICTIMS_ARM_BONE,
-			VICTIMS_THIGH_BONE,
-			VICTIMS_SKULL,
-			VICTIMS_RIB_BONE,
-			VICTIMS_SPINE,
-			POWDER_TO_SUMMON_DEAD_SOULS,
-			USELESS_BONE_PIECES
-		};
+		setItemsIds(VICTIM_ARM_BONE, VICTIM_THIGH_BONE, VICTIM_SKULL, VICTIM_RIB_BONE, VICTIM_SPINE, POWDER_TO_SUMMON_DEAD_SOULS, USELESS_BONE_PIECES);
 		
-		addStartNpc(Dorothy);
-		addTalkId(Dorothy, Xenovia, Medium_Jar, Orpheus);
+		addStartNpc(DOROTHY);
+		addTalkId(DOROTHY, XENOVIA, MEDIUM_JAR, ORPHEUS);
 		
 		addKillId(20789, 20791);
 	}
@@ -72,8 +63,8 @@ public class Q345_MethodToRaiseTheDead extends Quest
 		
 		if (event.equalsIgnoreCase("30970-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30970-06.htm"))
@@ -85,65 +76,52 @@ public class Q345_MethodToRaiseTheDead extends Quest
 		{
 			if (player.getAdena() >= 1000)
 			{
-				if (st.getQuestItemsCount(VICTIMS_ARM_BONE) + st.getQuestItemsCount(VICTIMS_THIGH_BONE) + st.getQuestItemsCount(VICTIMS_SKULL) + st.getQuestItemsCount(VICTIMS_RIB_BONE) + st.getQuestItemsCount(VICTIMS_SPINE) == 5)
-				{
-					st.set("cond", "3");
-					st.takeItems(57, 1000);
-					htmltext = "30912-03.htm";
-					st.giveItems(POWDER_TO_SUMMON_DEAD_SOULS, 1);
-					st.playSound(QuestState.SOUND_ITEMGET);
-				}
-				else
-					st.set("cond", "1");
+				htmltext = "30912-03.htm";
+				st.set("cond", "3");
+				st.playSound(QuestState.SOUND_MIDDLE);
+				st.takeItems(57, 1000);
+				st.giveItems(POWDER_TO_SUMMON_DEAD_SOULS, 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("30973-04.htm"))
 		{
 			if (st.getInt("cond") == 3)
 			{
-				if (st.getQuestItemsCount(POWDER_TO_SUMMON_DEAD_SOULS) + st.getQuestItemsCount(VICTIMS_ARM_BONE) + st.getQuestItemsCount(VICTIMS_THIGH_BONE) + st.getQuestItemsCount(VICTIMS_SKULL) + st.getQuestItemsCount(VICTIMS_RIB_BONE) + st.getQuestItemsCount(VICTIMS_SPINE) == 6)
+				final int chance = Rnd.get(3);
+				if (chance == 0)
 				{
-					int chance = Rnd.get(3);
-					if (chance == 0)
-					{
-						st.set("cond", "6");
-						htmltext = "30973-02a.htm";
-					}
-					else if (chance == 1)
-					{
-						st.set("cond", "6");
-						htmltext = "30973-02b.htm";
-					}
-					else
-					{
-						st.set("cond", "7");
-						htmltext = "30973-02c.htm";
-					}
-					
-					st.takeItems(POWDER_TO_SUMMON_DEAD_SOULS, -1);
-					st.takeItems(VICTIMS_ARM_BONE, -1);
-					st.takeItems(VICTIMS_THIGH_BONE, -1);
-					st.takeItems(VICTIMS_SKULL, -1);
-					st.takeItems(VICTIMS_RIB_BONE, -1);
-					st.takeItems(VICTIMS_SPINE, -1);
-					
-					st.playSound(QuestState.SOUND_MIDDLE);
+					st.set("cond", "6");
+					htmltext = "30973-02a.htm";
+				}
+				else if (chance == 1)
+				{
+					st.set("cond", "6");
+					htmltext = "30973-02b.htm";
 				}
 				else
 				{
-					st.set("cond", "1");
-					st.takeItems(POWDER_TO_SUMMON_DEAD_SOULS, -1);
+					st.set("cond", "7");
+					htmltext = "30973-02c.htm";
 				}
+				
+				st.takeItems(POWDER_TO_SUMMON_DEAD_SOULS, -1);
+				st.takeItems(VICTIM_ARM_BONE, -1);
+				st.takeItems(VICTIM_THIGH_BONE, -1);
+				st.takeItems(VICTIM_SKULL, -1);
+				st.takeItems(VICTIM_RIB_BONE, -1);
+				st.takeItems(VICTIM_SPINE, -1);
+				
+				st.playSound(QuestState.SOUND_MIDDLE);
 			}
 		}
 		else if (event.equalsIgnoreCase("30971-02a.htm"))
 		{
-			if (st.getQuestItemsCount(USELESS_BONE_PIECES) > 0)
+			if (st.hasQuestItems(USELESS_BONE_PIECES))
 				htmltext = "30971-02.htm";
 		}
 		else if (event.equalsIgnoreCase("30971-03.htm"))
 		{
-			if (st.getQuestItemsCount(USELESS_BONE_PIECES) > 0)
+			if (st.hasQuestItems(USELESS_BONE_PIECES))
 			{
 				int amount = st.getQuestItemsCount(USELESS_BONE_PIECES) * 104;
 				st.takeItems(USELESS_BONE_PIECES, -1);
@@ -167,32 +145,21 @@ public class Q345_MethodToRaiseTheDead extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 35)
-					htmltext = "30970-01.htm";
-				else
-				{
-					htmltext = "30970-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 35) ? "30970-00.htm" : "30970-01.htm";
 				break;
 			
 			case STATE_STARTED:
 				int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Dorothy:
+					case DOROTHY:
 						if (cond == 1)
-						{
-							if (st.getQuestItemsCount(VICTIMS_ARM_BONE) + st.getQuestItemsCount(VICTIMS_THIGH_BONE) + st.getQuestItemsCount(VICTIMS_SKULL) + st.getQuestItemsCount(VICTIMS_RIB_BONE) + st.getQuestItemsCount(VICTIMS_SPINE) < 5)
-								htmltext = "30970-04.htm";
-							else
-								htmltext = "30970-05.htm";
-						}
+							htmltext = (!st.hasQuestItems(VICTIM_ARM_BONE, VICTIM_THIGH_BONE, VICTIM_SKULL, VICTIM_RIB_BONE, VICTIM_SPINE)) ? "30970-04.htm" : "30970-05.htm";
 						else if (cond == 2)
 							htmltext = "30970-07.htm";
-						else if (cond >= 3 && cond <= 5)
+						else if (cond > 2 && cond < 6)
 							htmltext = "30970-08.htm";
-						else if (cond >= 6)
+						else
 						{
 							// Shared part between cond 6 and 7.
 							int amount = st.getQuestItemsCount(USELESS_BONE_PIECES) * 70;
@@ -222,18 +189,18 @@ public class Q345_MethodToRaiseTheDead extends Quest
 						}
 						break;
 					
-					case Xenovia:
+					case XENOVIA:
 						if (cond == 2)
 							htmltext = "30912-01.htm";
-						else if (cond >= 3)
+						else if (cond > 2)
 							htmltext = "30912-06.htm";
 						break;
 					
-					case Medium_Jar:
+					case MEDIUM_JAR:
 						htmltext = "30973-01.htm";
 						break;
 					
-					case Orpheus:
+					case ORPHEUS:
 						htmltext = "30971-01.htm";
 						break;
 				}
@@ -250,14 +217,9 @@ public class Q345_MethodToRaiseTheDead extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 66)
+		if (!st.dropItems(USELESS_BONE_PIECES, 1, 0, 660000))
 		{
-			st.giveItems(USELESS_BONE_PIECES, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
-		else
-		{
-			final int randomPart = Rnd.get(VICTIMS_ARM_BONE, VICTIMS_SPINE);
+			final int randomPart = Rnd.get(VICTIM_ARM_BONE, VICTIM_SPINE);
 			if (!st.hasQuestItems(randomPart))
 			{
 				st.giveItems(randomPart, 1);
@@ -270,6 +232,6 @@ public class Q345_MethodToRaiseTheDead extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q345_MethodToRaiseTheDead(345, qn, "Method to Raise the Dead");
+		new Q345_MethodToRaiseTheDead();
 	}
 }

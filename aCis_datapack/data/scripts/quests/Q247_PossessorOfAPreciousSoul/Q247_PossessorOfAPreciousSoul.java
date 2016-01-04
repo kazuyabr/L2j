@@ -64,7 +64,7 @@ public class Q247_PossessorOfAPreciousSoul extends Quest
 			player.setNoble(true, true);
 			st.giveItems(NOBLESS_TIARA, 1);
 			st.rewardExpAndSp(93836, 0);
-			st.playSound(QuestState.SOUND_FANFARE);
+			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(false);
 		}
 		

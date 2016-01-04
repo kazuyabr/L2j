@@ -23,32 +23,22 @@ public class Q275_DarkWingedSpies extends Quest
 {
 	private static final String qn = "Q275_DarkWingedSpies";
 	
-	// NPC
-	private static final int TANTUS = 30567;
-	
 	// Monsters
 	private static final int DARKWING_BAT = 20316;
 	private static final int VARANGKA_TRACKER = 27043;
 	
 	// Items
 	private static final int DARKWING_BAT_FANG = 1478;
-	private static final int VARANGKAS_PARASITE = 1479;
+	private static final int VARANGKA_PARASITE = 1479;
 	
-	// Reward
-	private static final int ADENA = 57;
-	
-	public Q275_DarkWingedSpies(int questId, String name, String descr)
+	public Q275_DarkWingedSpies()
 	{
-		super(questId, name, descr);
+		super(275, qn, "Dark Winged Spies");
 		
-		questItemIds = new int[]
-		{
-			DARKWING_BAT_FANG,
-			VARANGKAS_PARASITE
-		};
+		setItemsIds(DARKWING_BAT_FANG, VARANGKA_PARASITE);
 		
-		addStartNpc(TANTUS);
-		addTalkId(TANTUS);
+		addStartNpc(30567); // Tantus
+		addTalkId(30567);
 		
 		addKillId(DARKWING_BAT, VARANGKA_TRACKER);
 	}
@@ -63,8 +53,8 @@ public class Q275_DarkWingedSpies extends Quest
 		
 		if (event.equalsIgnoreCase("30567-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -91,14 +81,14 @@ public class Q275_DarkWingedSpies extends Quest
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(DARKWING_BAT_FANG) < 70)
+				if (st.getInt("cond") == 1)
 					htmltext = "30567-04.htm";
 				else
 				{
 					htmltext = "30567-05.htm";
 					st.takeItems(DARKWING_BAT_FANG, -1);
-					st.takeItems(VARANGKAS_PARASITE, -1);
-					st.rewardItems(ADENA, 4220);
+					st.takeItems(VARANGKA_PARASITE, -1);
+					st.rewardItems(57, 4200);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
@@ -111,47 +101,31 @@ public class Q275_DarkWingedSpies extends Quest
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		QuestState st = checkPlayerCondition(player, npc, "cond", "1");
 		if (st == null)
 			return null;
 		
 		switch (npc.getNpcId())
 		{
 			case DARKWING_BAT:
-				if (st.getQuestItemsCount(DARKWING_BAT_FANG) < 70)
+				if (st.dropItemsAlways(DARKWING_BAT_FANG, 1, 70))
+					st.set("cond", "2");
+				else if (Rnd.get(100) < 10)
 				{
-					st.giveItems(DARKWING_BAT_FANG, 1);
-					
-					if (st.getQuestItemsCount(DARKWING_BAT_FANG) == 70)
-					{
-						st.playSound(QuestState.SOUND_MIDDLE);
-						st.set("cond", "2");
-					}
-					else
-						st.playSound(QuestState.SOUND_ITEMGET);
-					
 					// Spawn of Varangka Tracker on the npc position.
-					if (st.getQuestItemsCount(DARKWING_BAT_FANG) < 66 && Rnd.get(100) < 10)
-					{
-						addSpawn(VARANGKA_TRACKER, npc, true, 0, true);
-						st.giveItems(VARANGKAS_PARASITE, 1);
-					}
+					addSpawn(VARANGKA_TRACKER, npc, true, 0, true);
+					
+					st.giveItems(VARANGKA_PARASITE, 1);
 				}
 				break;
 			
 			case VARANGKA_TRACKER:
-				if (st.getQuestItemsCount(DARKWING_BAT_FANG) < 66 && st.getQuestItemsCount(VARANGKAS_PARASITE) == 1)
+				if (st.hasQuestItems(VARANGKA_PARASITE))
 				{
-					st.takeItems(VARANGKAS_PARASITE, -1);
-					st.giveItems(DARKWING_BAT_FANG, 5);
+					st.takeItems(VARANGKA_PARASITE, 1);
 					
-					if (st.getQuestItemsCount(DARKWING_BAT_FANG) == 70)
-					{
-						st.playSound(QuestState.SOUND_MIDDLE);
+					if (st.dropItemsAlways(DARKWING_BAT_FANG, 5, 70))
 						st.set("cond", "2");
-					}
-					else
-						st.playSound(QuestState.SOUND_ITEMGET);
 				}
 				break;
 		}
@@ -161,6 +135,6 @@ public class Q275_DarkWingedSpies extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q275_DarkWingedSpies(275, qn, "Dark Winged Spies");
+		new Q275_DarkWingedSpies();
 	}
 }

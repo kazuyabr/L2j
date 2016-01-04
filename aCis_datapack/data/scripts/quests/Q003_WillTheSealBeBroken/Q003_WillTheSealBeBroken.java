@@ -34,12 +34,7 @@ public class Q003_WillTheSealBeBroken extends Quest
 	{
 		super(3, qn, "Will the Seal be Broken?");
 		
-		questItemIds = new int[]
-		{
-			ONYX_BEAST_EYE,
-			TAINT_STONE,
-			SUCCUBUS_BLOOD
-		};
+		setItemsIds(ONYX_BEAST_EYE, TAINT_STONE, SUCCUBUS_BLOOD);
 		
 		addStartNpc(30141); // Talloth
 		addTalkId(30141);
@@ -119,14 +114,14 @@ public class Q003_WillTheSealBeBroken extends Quest
 		{
 			case 20031:
 				if (st.dropItemsAlways(ONYX_BEAST_EYE, 1, 1))
-					if (st.hasQuestItems(TAINT_STONE) && st.hasQuestItems(SUCCUBUS_BLOOD))
+					if (st.hasQuestItems(TAINT_STONE, SUCCUBUS_BLOOD))
 						st.set("cond", "2");
 				break;
 			
 			case 20041:
 			case 20046:
 				if (st.dropItemsAlways(TAINT_STONE, 1, 1))
-					if (st.hasQuestItems(ONYX_BEAST_EYE) && st.hasQuestItems(SUCCUBUS_BLOOD))
+					if (st.hasQuestItems(ONYX_BEAST_EYE, SUCCUBUS_BLOOD))
 						st.set("cond", "2");
 				break;
 			
@@ -134,7 +129,7 @@ public class Q003_WillTheSealBeBroken extends Quest
 			case 20052:
 			case 20057:
 				if (st.dropItemsAlways(SUCCUBUS_BLOOD, 1, 1))
-					if (st.hasQuestItems(ONYX_BEAST_EYE) && st.hasQuestItems(TAINT_STONE))
+					if (st.hasQuestItems(ONYX_BEAST_EYE, TAINT_STONE))
 						st.set("cond", "2");
 				break;
 		}

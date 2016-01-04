@@ -68,15 +68,7 @@ public class Q620_FourGoblets extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			SEALED_BOX,
-			USED_PASS,
-			GOBLET_1,
-			GOBLET_2,
-			GOBLET_3,
-			GOBLET_4
-		};
+		setItemsIds(SEALED_BOX, USED_PASS, GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4);
 		
 		addStartNpc(NAMELESS_SPIRIT, CONQ_SM, EMPER_SM, SAGES_SM, JUDGE_SM, GHOST_CHAMBERLAIN_1, GHOST_CHAMBERLAIN_2);
 		addTalkId(NAMELESS_SPIRIT, CONQ_SM, EMPER_SM, SAGES_SM, JUDGE_SM, GHOST_CHAMBERLAIN_1, GHOST_CHAMBERLAIN_2, GHOST_OF_WIGOTH_1, GHOST_OF_WIGOTH_2);
@@ -110,7 +102,7 @@ public class Q620_FourGoblets extends Quest
 		}
 		else if (event.equalsIgnoreCase("31453-16.htm"))
 		{
-			if (st.hasQuestItems(GOBLET_1) && st.hasQuestItems(GOBLET_2) && st.hasQuestItems(GOBLET_3) && st.hasQuestItems(GOBLET_4))
+			if (st.hasQuestItems(GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4))
 			{
 				st.takeItems(GOBLET_1, -1);
 				st.takeItems(GOBLET_2, -1);
@@ -237,7 +229,7 @@ public class Q620_FourGoblets extends Quest
 			if (cond == 0)
 				htmltext = (player.getLevel() >= 74) ? "31453-01.htm" : "31453-12.htm";
 			else if (cond == 1)
-				htmltext = (st.hasQuestItems(GOBLET_1) && st.hasQuestItems(GOBLET_2) && st.hasQuestItems(GOBLET_3) && st.hasQuestItems(GOBLET_4)) ? "31453-15.htm" : "31453-14.htm";
+				htmltext = (st.hasQuestItems(GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4)) ? "31453-15.htm" : "31453-14.htm";
 			else if (cond == 2)
 				htmltext = "31453-17.htm";
 		}
@@ -246,7 +238,7 @@ public class Q620_FourGoblets extends Quest
 			// Possibilities : 0 = nothing, 1 = seal boxes only, 2 = relics only, 3 = both, 4/5/6/7 = "4 goblets" versions of 0/1/2/3.
 			int index = 0;
 			
-			if (st.hasQuestItems(GOBLET_1) && st.hasQuestItems(GOBLET_2) && st.hasQuestItems(GOBLET_3) && st.hasQuestItems(GOBLET_4))
+			if (st.hasQuestItems(GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4))
 				index = 4;
 			
 			final boolean gotSealBoxes = st.hasQuestItems(SEALED_BOX);

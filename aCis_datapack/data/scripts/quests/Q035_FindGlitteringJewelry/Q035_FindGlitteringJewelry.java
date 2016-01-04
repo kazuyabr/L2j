@@ -38,10 +38,7 @@ public class Q035_FindGlitteringJewelry extends Quest
 	{
 		super(35, qn, "Find Glittering Jewelry");
 		
-		questItemIds = new int[]
-		{
-			ROUGH_JEWEL
-		};
+		setItemsIds(ROUGH_JEWEL);
 		
 		addStartNpc(ELLIE);
 		addTalkId(ELLIE, FELTON);

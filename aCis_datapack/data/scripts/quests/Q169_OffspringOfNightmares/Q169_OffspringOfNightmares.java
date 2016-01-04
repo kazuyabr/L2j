@@ -32,11 +32,7 @@ public class Q169_OffspringOfNightmares extends Quest
 	{
 		super(169, qn, "Offspring of Nightmares");
 		
-		questItemIds = new int[]
-		{
-			CRACKED_SKULL,
-			PERFECT_SKULL
-		};
+		setItemsIds(CRACKED_SKULL, PERFECT_SKULL);
 		
 		addStartNpc(30145); // Vlasty
 		addTalkId(30145);

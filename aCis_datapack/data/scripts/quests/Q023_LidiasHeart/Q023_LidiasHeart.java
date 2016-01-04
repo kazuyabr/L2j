@@ -43,13 +43,7 @@ public class Q023_LidiasHeart extends Quest
 	{
 		super(23, qn, "Lidia's Heart");
 		
-		questItemIds = new int[]
-		{
-			FOREST_OF_DEADMAN_MAP,
-			SILVER_KEY,
-			LIDIA_DIARY,
-			SILVER_SPEAR
-		};
+		setItemsIds(FOREST_OF_DEADMAN_MAP, SILVER_KEY, LIDIA_DIARY, SILVER_SPEAR);
 		
 		addStartNpc(INNOCENTIN);
 		addTalkId(INNOCENTIN, BROKEN_BOOKSHELF, GHOST_OF_VON_HELLMANN, VIOLET, BOX, TOMBSTONE);

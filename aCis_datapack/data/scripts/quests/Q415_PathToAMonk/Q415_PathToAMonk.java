@@ -65,33 +65,7 @@ public class Q415_PathToAMonk extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			Pomegranate,
-			LeatherPouch1,
-			LeatherPouch2,
-			LeatherPouch3,
-			LeatherPouchFull1,
-			LeatherPouchFull2,
-			LeatherPouchFull3,
-			KashaBearClaw,
-			KashaBladeSpiderTalon,
-			ScarletSalamanderScale,
-			FierySpiritScroll,
-			RosheeksLetter,
-			GantakisRecommendation,
-			Fig,
-			LeatherPouch4,
-			LeatherPouchFull4,
-			VukuOrcTusk,
-			RatmanFang,
-			LangkLizardmanTeeth,
-			FelimLizardmanTeeth,
-			IronWillScroll,
-			TorukusLetter,
-			KashaSpidersTeeth,
-			HornOfBaarDreVanul
-		};
+		setItemsIds(Pomegranate, LeatherPouch1, LeatherPouch2, LeatherPouch3, LeatherPouchFull1, LeatherPouchFull2, LeatherPouchFull3, KashaBearClaw, KashaBladeSpiderTalon, ScarletSalamanderScale, FierySpiritScroll, RosheeksLetter, GantakisRecommendation, Fig, LeatherPouch4, LeatherPouchFull4, VukuOrcTusk, RatmanFang, LangkLizardmanTeeth, FelimLizardmanTeeth, IronWillScroll, TorukusLetter, KashaSpidersTeeth, HornOfBaarDreVanul);
 		
 		addStartNpc(Gantaki);
 		addTalkId(Gantaki, Rosheek, Kasman, Toruku, Aren, Moira);

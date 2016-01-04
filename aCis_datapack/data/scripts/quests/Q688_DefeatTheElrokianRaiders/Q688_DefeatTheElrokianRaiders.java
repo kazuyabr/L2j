@@ -36,10 +36,7 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DINOSAUR_FANG_NECKLACE
-		};
+		setItemsIds(DINOSAUR_FANG_NECKLACE);
 		
 		addStartNpc(DINN);
 		addTalkId(DINN);

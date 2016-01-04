@@ -16,29 +16,23 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q317_CatchTheWind extends Quest
 {
 	private static final String qn = "Q317_CatchTheWind";
 	
-	// NPC
-	private static final int RIZRAELL = 30361;
-	
 	// Item
 	private static final int WIND_SHARD = 1078;
 	
-	public Q317_CatchTheWind(int questId, String name, String descr)
+	public Q317_CatchTheWind()
 	{
-		super(questId, name, descr);
+		super(317, qn, "Catch the Wind");
 		
-		questItemIds = new int[]
-		{
-			WIND_SHARD
-		};
+		setItemsIds(WIND_SHARD);
 		
-		addStartNpc(RIZRAELL);
-		addTalkId(RIZRAELL);
+		addStartNpc(30361); // Rizraell
+		addTalkId(30361);
+		
 		addKillId(20036, 20044);
 	}
 	
@@ -52,8 +46,8 @@ public class Q317_CatchTheWind extends Quest
 		
 		if (event.equalsIgnoreCase("30361-04.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30361-08.htm"))
@@ -76,28 +70,22 @@ public class Q317_CatchTheWind extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 18)
-					htmltext = "30361-03.htm";
-				else
-				{
-					htmltext = "30361-02.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 18) ? "30361-02.htm" : "30361-03.htm";
 				break;
 			
 			case STATE_STARTED:
-				int shards = st.getQuestItemsCount(WIND_SHARD);
+				final int shards = st.getQuestItemsCount(WIND_SHARD);
 				if (shards == 0)
 					htmltext = "30361-05.htm";
 				else
 				{
-					int reward = 40 * shards + (shards >= 10 ? 2988 : 0);
 					htmltext = "30361-07.htm";
 					st.takeItems(WIND_SHARD, -1);
-					st.rewardItems(57, reward);
+					st.rewardItems(57, 40 * shards + (shards >= 10 ? 2988 : 0));
 				}
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -108,17 +96,13 @@ public class Q317_CatchTheWind extends Quest
 		if (st == null)
 			return null;
 		
-		if (Rnd.get(100) < 50)
-		{
-			st.giveItems(WIND_SHARD, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
-		}
+		st.dropItems(WIND_SHARD, 1, 0, 500000);
 		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q317_CatchTheWind(317, qn, "Catch the Wind");
+		new Q317_CatchTheWind();
 	}
 }

@@ -23,30 +23,23 @@ public class Q271_ProofOfValor extends Quest
 {
 	private static final String qn = "Q271_ProofOfValor";
 	
-	// Items
+	// Item
 	private static final int KASHA_WOLF_FANG = 1473;
+	
+	// Rewards
 	private static final int NECKLACE_OF_VALOR = 1507;
 	private static final int NECKLACE_OF_COURAGE = 1506;
 	
-	// NPC
-	private static final int RUKAIN = 30577;
-	
-	// Mob
-	private static final int KASHA_WOLF = 20475;
-	
-	public Q271_ProofOfValor(int questId, String name, String descr)
+	public Q271_ProofOfValor()
 	{
-		super(questId, name, descr);
+		super(271, qn, "Proof of Valor");
 		
-		questItemIds = new int[]
-		{
-			KASHA_WOLF_FANG
-		};
+		setItemsIds(KASHA_WOLF_FANG);
 		
-		addStartNpc(RUKAIN);
-		addTalkId(RUKAIN);
+		addStartNpc(30577); // Rukain
+		addTalkId(30577);
 		
-		addKillId(KASHA_WOLF);
+		addKillId(20475); // Kasha Wolf
 	}
 	
 	@Override
@@ -59,11 +52,11 @@ public class Q271_ProofOfValor extends Quest
 		
 		if (event.equalsIgnoreCase("30577-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 			
-			if (st.hasQuestItems(NECKLACE_OF_COURAGE) || st.hasQuestItems(NECKLACE_OF_VALOR))
+			if (st.hasAtLeastOneQuestItem(NECKLACE_OF_COURAGE, NECKLACE_OF_VALOR))
 				htmltext = "30577-07.htm";
 		}
 		
@@ -86,43 +79,20 @@ public class Q271_ProofOfValor extends Quest
 				else if (player.getLevel() < 4)
 					htmltext = "30577-01.htm";
 				else
-				{
-					// Different HTM if you are repeating the quest.
-					if (st.hasQuestItems(NECKLACE_OF_COURAGE) || st.hasQuestItems(NECKLACE_OF_VALOR))
-						htmltext = "30577-06.htm";
-					else
-						htmltext = "30577-02.htm";
-				}
+					htmltext = (st.hasAtLeastOneQuestItem(NECKLACE_OF_COURAGE, NECKLACE_OF_VALOR)) ? "30577-06.htm" : "30577-02.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				if (cond == 1)
-				{
-					if (st.hasQuestItems(NECKLACE_OF_COURAGE) || st.hasQuestItems(NECKLACE_OF_VALOR))
-						htmltext = "30577-07.htm";
-					else
-						htmltext = "30577-04.htm";
-				}
-				else if (cond == 2)
+				if (st.getInt("cond") == 1)
+					htmltext = (st.hasAtLeastOneQuestItem(NECKLACE_OF_COURAGE, NECKLACE_OF_VALOR)) ? "30577-07.htm" : "30577-04.htm";
+				else
 				{
 					htmltext = "30577-05.htm";
 					st.takeItems(KASHA_WOLF_FANG, -1);
-					
-					if (Rnd.get(100) <= 10)
-						st.giveItems(NECKLACE_OF_VALOR, 1);
-					else
-						st.giveItems(NECKLACE_OF_COURAGE, 1);
-					
-					st.unset("cond"); // Reset cond
-					
+					st.giveItems((Rnd.get(100) < 10) ? NECKLACE_OF_VALOR : NECKLACE_OF_COURAGE, 1);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
-				break;
-			
-			case STATE_COMPLETED:
-				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		
@@ -136,7 +106,7 @@ public class Q271_ProofOfValor extends Quest
 		if (st == null)
 			return null;
 		
-		if (st.dropItems(KASHA_WOLF_FANG, 1, 50, 250000))
+		if (st.dropItemsAlways(KASHA_WOLF_FANG, (Rnd.get(100) < 25) ? 2 : 1, 50))
 			st.set("cond", "2");
 		
 		return null;
@@ -144,6 +114,6 @@ public class Q271_ProofOfValor extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q271_ProofOfValor(271, qn, "Proof of Valor");
+		new Q271_ProofOfValor();
 	}
 }

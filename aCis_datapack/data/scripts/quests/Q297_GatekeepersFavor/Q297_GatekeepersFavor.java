@@ -21,30 +21,22 @@ public class Q297_GatekeepersFavor extends Quest
 {
 	private static final String qn = "Q297_GatekeepersFavor";
 	
-	// NPC
-	private static final int WIRPHY = 30540;
-	
 	// Item
 	private static final int STARSTONE = 1573;
 	
 	// Reward
 	private static final int GATEKEEPER_TOKEN = 1659;
 	
-	// Monster
-	private static final int WHINSTONE_GOLEM = 20521;
-	
-	public Q297_GatekeepersFavor(int questId, String name, String descr)
+	public Q297_GatekeepersFavor()
 	{
-		super(questId, name, descr);
+		super(297, qn, "Gatekeeper's Favor");
 		
-		questItemIds = new int[]
-		{
-			STARSTONE
-		};
+		setItemsIds(STARSTONE);
 		
-		addStartNpc(WIRPHY);
-		addTalkId(WIRPHY);
-		addKillId(WHINSTONE_GOLEM);
+		addStartNpc(30540); // Wirphy
+		addTalkId(30540);
+		
+		addKillId(20521); // Whinstone Golem
 	}
 	
 	@Override
@@ -57,8 +49,8 @@ public class Q297_GatekeepersFavor extends Quest
 		
 		if (event.equalsIgnoreCase("30540-03.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		
@@ -80,26 +72,16 @@ public class Q297_GatekeepersFavor extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
-				if (cond == 1)
+				if (st.getInt("cond") == 1)
 					htmltext = "30540-04.htm";
-				else if (cond == 2)
+				else
 				{
-					if (st.getQuestItemsCount(STARSTONE) == 20)
-					{
-						htmltext = "30540-05.htm";
-						st.takeItems(STARSTONE, 20);
-						st.rewardItems(GATEKEEPER_TOKEN, 2);
-						st.playSound(QuestState.SOUND_FINISH);
-						st.exitQuest(true);
-					}
-					else
-						htmltext = "30540-04.htm";
+					htmltext = "30540-05.htm";
+					st.takeItems(STARSTONE, -1);
+					st.rewardItems(GATEKEEPER_TOKEN, 2);
+					st.playSound(QuestState.SOUND_FINISH);
+					st.exitQuest(true);
 				}
-				break;
-			
-			case STATE_COMPLETED:
-				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		
@@ -121,6 +103,6 @@ public class Q297_GatekeepersFavor extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q297_GatekeepersFavor(297, qn, "Gatekeeper's Favor");
+		new Q297_GatekeepersFavor();
 	}
 }

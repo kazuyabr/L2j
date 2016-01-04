@@ -41,11 +41,7 @@ public class Q117_TheOceanOfDistantStars extends Quest
 	{
 		super(117, qn, "The Ocean of Distant Stars");
 		
-		questItemIds = new int[]
-		{
-			GREY_STAR,
-			ENGRAVED_HAMMER
-		};
+		setItemsIds(GREY_STAR, ENGRAVED_HAMMER);
 		
 		addStartNpc(ABEY);
 		addTalkId(ABEY, ANCIENT_GHOST, GHOST, OBI, BOX);

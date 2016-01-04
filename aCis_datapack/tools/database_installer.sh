@@ -84,6 +84,7 @@ $MYG < ../sql/castle_doorupgrade.sql &> /dev/null
 $MYG < ../sql/castle_manor_procure.sql &> /dev/null
 $MYG < ../sql/castle_manor_production.sql &> /dev/null
 $MYG < ../sql/castle_siege_guards.sql &> /dev/null
+$MYG < ../sql/castle_trapupgrade.sql &> /dev/null
 $MYG < ../sql/character_friends.sql &> /dev/null
 $MYG < ../sql/character_hennas.sql &> /dev/null
 $MYG < ../sql/character_macroses.sql &> /dev/null
@@ -98,7 +99,6 @@ $MYG < ../sql/character_skills_save.sql &> /dev/null
 $MYG < ../sql/character_subclasses.sql &> /dev/null
 $MYG < ../sql/characters.sql &> /dev/null
 $MYG < ../sql/clan_data.sql &> /dev/null
-$MYG < ../sql/clan_notices.sql &> /dev/null
 $MYG < ../sql/clan_privs.sql &> /dev/null
 $MYG < ../sql/clan_skills.sql &> /dev/null
 $MYG < ../sql/clan_subpledges.sql &> /dev/null

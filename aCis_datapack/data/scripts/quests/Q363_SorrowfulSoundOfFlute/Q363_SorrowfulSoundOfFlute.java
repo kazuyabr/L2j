@@ -42,12 +42,7 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			NANARINS_FLUTE,
-			BLACK_BEER,
-			CLOTHES
-		};
+		setItemsIds(NANARINS_FLUTE, BLACK_BEER, CLOTHES);
 		
 		addStartNpc(NANARIN);
 		addTalkId(NANARIN, OPIX, ALDO, RANSPO, HOLVAS, BARBADO, POITAN);

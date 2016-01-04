@@ -49,11 +49,7 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			DRINK,
-			FEE
-		};
+		setItemsIds(DRINK, FEE);
 		
 		addStartNpc(JEREMY);
 		addTalkId(JEREMY, PULIN, NAFF, CROCUS, KUBER, BEOLIN, LIETTA);

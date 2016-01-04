@@ -21,23 +21,17 @@ public class Q341_HuntingForWildBeasts extends Quest
 {
 	private static final String qn = "Q341_HuntingForWildBeasts";
 	
-	// NPC
-	private static final int PANO = 30078;
-	
 	// Item
 	private static final int BEAR_SKIN = 4259;
 	
-	public Q341_HuntingForWildBeasts(int questId, String name, String descr)
+	public Q341_HuntingForWildBeasts()
 	{
-		super(questId, name, descr);
+		super(341, qn, "Hunting for Wild Beasts");
 		
-		questItemIds = new int[]
-		{
-			BEAR_SKIN
-		};
+		setItemsIds(BEAR_SKIN);
 		
-		addStartNpc(PANO);
-		addTalkId(PANO);
+		addStartNpc(30078); // Pano
+		addTalkId(30078);
 		
 		// Red bear, brown bear, grizzly, Dion grizzly.
 		addKillId(20203, 20021, 20310, 20143);
@@ -53,10 +47,11 @@ public class Q341_HuntingForWildBeasts extends Quest
 		
 		if (event.equalsIgnoreCase("30078-02.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
+		
 		return htmltext;
 	}
 	
@@ -71,17 +66,13 @@ public class Q341_HuntingForWildBeasts extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 20)
-					htmltext = "30078-01.htm";
-				else
-				{
-					htmltext = "30078-00.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 20) ? "30078-00.htm" : "30078-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(BEAR_SKIN) >= 20)
+				if (st.getQuestItemsCount(BEAR_SKIN) < 20)
+					htmltext = "30078-03.htm";
+				else
 				{
 					htmltext = "30078-04.htm";
 					st.takeItems(BEAR_SKIN, -1);
@@ -89,10 +80,9 @@ public class Q341_HuntingForWildBeasts extends Quest
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(true);
 				}
-				else
-					htmltext = "30078-03.htm";
 				break;
 		}
+		
 		return htmltext;
 	}
 	
@@ -104,11 +94,12 @@ public class Q341_HuntingForWildBeasts extends Quest
 			return null;
 		
 		st.dropItems(BEAR_SKIN, 1, 20, 400000);
+		
 		return null;
 	}
 	
 	public static void main(String[] args)
 	{
-		new Q341_HuntingForWildBeasts(341, qn, "Hunting for Wild Beasts");
+		new Q341_HuntingForWildBeasts();
 	}
 }

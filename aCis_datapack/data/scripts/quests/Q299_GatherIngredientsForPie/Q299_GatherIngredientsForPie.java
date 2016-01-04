@@ -31,25 +31,16 @@ public class Q299_GatherIngredientsForPie extends Quest
 	private static final int AVELLAN_SPICE = 7137;
 	private static final int HONEY_POUCH = 7138;
 	
-	// Monsters
-	private static final int WASP_WORKER = 20934;
-	private static final int WASP_LEADER = 20935;
-	
-	public Q299_GatherIngredientsForPie(int questId, String name, String descr)
+	public Q299_GatherIngredientsForPie()
 	{
-		super(questId, name, descr);
+		super(299, qn, "Gather Ingredients for Pie");
 		
-		questItemIds = new int[]
-		{
-			FRUIT_BASKET,
-			AVELLAN_SPICE,
-			HONEY_POUCH
-		};
+		setItemsIds(FRUIT_BASKET, AVELLAN_SPICE, HONEY_POUCH);
 		
 		addStartNpc(EMILY);
 		addTalkId(EMILY, LARA, BRIGHT);
 		
-		addKillId(WASP_WORKER, WASP_LEADER);
+		addKillId(20934, 20935); // Wasp Worker, Wasp Leader
 	}
 	
 	@Override
@@ -62,40 +53,40 @@ public class Q299_GatherIngredientsForPie extends Quest
 		
 		if (event.equalsIgnoreCase("30620-1.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30620-3.htm"))
 		{
 			st.set("cond", "3");
-			st.takeItems(HONEY_POUCH, -1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(HONEY_POUCH, -1);
 		}
 		else if (event.equalsIgnoreCase("30063-1.htm"))
 		{
 			st.set("cond", "4");
-			st.giveItems(AVELLAN_SPICE, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(AVELLAN_SPICE, 1);
 		}
 		else if (event.equalsIgnoreCase("30620-5.htm"))
 		{
 			st.set("cond", "5");
-			st.takeItems(AVELLAN_SPICE, -1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(AVELLAN_SPICE, 1);
 		}
 		else if (event.equalsIgnoreCase("30466-1.htm"))
 		{
 			st.set("cond", "6");
-			st.giveItems(FRUIT_BASKET, 1);
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(FRUIT_BASKET, 1);
 		}
 		else if (event.equalsIgnoreCase("30620-7a.htm"))
 		{
-			if (st.getQuestItemsCount(FRUIT_BASKET) >= 1)
+			if (st.hasQuestItems(FRUIT_BASKET))
 			{
 				htmltext = "30620-7.htm";
-				st.takeItems(FRUIT_BASKET, -1);
+				st.takeItems(FRUIT_BASKET, 1);
 				st.rewardItems(57, 25000);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
@@ -142,7 +133,7 @@ public class Q299_GatherIngredientsForPie extends Quest
 							htmltext = "30620-3a.htm";
 						else if (cond == 4)
 						{
-							if (st.getQuestItemsCount(AVELLAN_SPICE) >= 1)
+							if (st.hasQuestItems(AVELLAN_SPICE))
 								htmltext = "30620-4.htm";
 							else
 							{
@@ -159,14 +150,14 @@ public class Q299_GatherIngredientsForPie extends Quest
 					case LARA:
 						if (cond == 3)
 							htmltext = "30063-0.htm";
-						else if (cond >= 4)
+						else if (cond > 3)
 							htmltext = "30063-1a.htm";
 						break;
 					
 					case BRIGHT:
 						if (cond == 5)
 							htmltext = "30466-0.htm";
-						else if (cond >= 6)
+						else if (cond > 5)
 							htmltext = "30466-1a.htm";
 						break;
 				}
@@ -193,6 +184,6 @@ public class Q299_GatherIngredientsForPie extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q299_GatherIngredientsForPie(299, qn, "Gather Ingredients for Pie");
+		new Q299_GatherIngredientsForPie();
 	}
 }

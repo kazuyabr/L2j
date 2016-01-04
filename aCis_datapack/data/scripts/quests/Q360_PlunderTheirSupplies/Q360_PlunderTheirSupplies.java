@@ -16,33 +16,56 @@ import net.sf.l2j.gameserver.model.actor.L2Npc;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.util.Rnd;
 
 public class Q360_PlunderTheirSupplies extends Quest
 {
 	private static final String qn = "Q360_PlunderTheirSupplies";
-	
-	// NPC
-	private static final int COLEMAN = 30873;
 	
 	// Items
 	private static final int SUPPLY_ITEM = 5872;
 	private static final int SUSPICIOUS_DOCUMENT = 5871;
 	private static final int RECIPE_OF_SUPPLY = 5870;
 	
-	public Q360_PlunderTheirSupplies(int questId, String name, String descr)
+	private static final int[][][] DROPLIST =
 	{
-		super(questId, name, descr);
-		
-		questItemIds = new int[]
 		{
-			RECIPE_OF_SUPPLY,
-			SUPPLY_ITEM,
-			SUSPICIOUS_DOCUMENT
-		};
+			{
+				SUSPICIOUS_DOCUMENT,
+				1,
+				0,
+				100000
+			},
+			{
+				SUPPLY_ITEM,
+				1,
+				0,
+				500000
+			}
+		},
+		{
+			{
+				SUSPICIOUS_DOCUMENT,
+				1,
+				0,
+				100000
+			},
+			{
+				SUPPLY_ITEM,
+				1,
+				0,
+				750000
+			}
+		}
+	};
+	
+	public Q360_PlunderTheirSupplies()
+	{
+		super(360, qn, "Plunder Their Supplies");
 		
-		addStartNpc(COLEMAN);
-		addTalkId(COLEMAN);
+		setItemsIds(RECIPE_OF_SUPPLY, SUPPLY_ITEM, SUSPICIOUS_DOCUMENT);
+		
+		addStartNpc(30873); // Coleman
+		addTalkId(30873);
 		
 		addKillId(20666, 20669);
 	}
@@ -57,8 +80,8 @@ public class Q360_PlunderTheirSupplies extends Quest
 		
 		if (event.equalsIgnoreCase("30873-2.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
 		}
 		else if (event.equalsIgnoreCase("30873-6.htm"))
@@ -84,23 +107,18 @@ public class Q360_PlunderTheirSupplies extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 52)
-					htmltext = "30873-0.htm";
-				else
-				{
-					htmltext = "30873-0a.htm";
-					st.exitQuest(true);
-				}
+				htmltext = (player.getLevel() < 52) ? "30873-0a.htm" : "30873-0.htm";
 				break;
 			
 			case STATE_STARTED:
-				if (st.getQuestItemsCount(SUPPLY_ITEM) == 0)
+				final int supplyItems = st.getQuestItemsCount(SUPPLY_ITEM);
+				if (supplyItems == 0)
 					htmltext = "30873-3.htm";
 				else
 				{
-					htmltext = "30873-5.htm";
+					final int reward = 6000 + (supplyItems * 100) + (st.getQuestItemsCount(RECIPE_OF_SUPPLY) * 6000);
 					
-					int reward = 6000 + st.getQuestItemsCount(SUPPLY_ITEM) * 100 + st.getQuestItemsCount(RECIPE_OF_SUPPLY) * 6000;
+					htmltext = "30873-5.htm";
 					st.takeItems(SUPPLY_ITEM, -1);
 					st.takeItems(RECIPE_OF_SUPPLY, -1);
 					st.rewardItems(57, reward);
@@ -118,19 +136,12 @@ public class Q360_PlunderTheirSupplies extends Quest
 		if (st == null)
 			return null;
 		
-		int chance = Rnd.get(100);
-		if (chance < 10)
+		st.dropMultipleItems(DROPLIST[(npc.getNpcId() == 20666) ? 0 : 1]);
+		
+		if (st.getQuestItemsCount(SUSPICIOUS_DOCUMENT) == 5)
 		{
-			if (st.dropItemsAlways(SUSPICIOUS_DOCUMENT, 1, 5))
-			{
-				st.takeItems(SUSPICIOUS_DOCUMENT, 5);
-				st.giveItems(RECIPE_OF_SUPPLY, 1);
-			}
-		}
-		else if (chance < 70)
-		{
-			st.giveItems(SUPPLY_ITEM, 1);
-			st.playSound(QuestState.SOUND_ITEMGET);
+			st.takeItems(SUSPICIOUS_DOCUMENT, 5);
+			st.giveItems(RECIPE_OF_SUPPLY, 1);
 		}
 		
 		return null;
@@ -138,6 +149,6 @@ public class Q360_PlunderTheirSupplies extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q360_PlunderTheirSupplies(360, qn, "Plunder Their Supplies");
+		new Q360_PlunderTheirSupplies();
 	}
 }

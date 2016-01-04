@@ -31,10 +31,7 @@ public class Q050_LanoscosSpecialBait extends Quest
 	{
 		super(50, qn, "Lanosco's Special Bait");
 		
-		questItemIds = new int[]
-		{
-			ESSENCE_OF_WIND
-		};
+		setItemsIds(ESSENCE_OF_WIND);
 		
 		addStartNpc(31570); // Lanosco
 		addTalkId(31570);

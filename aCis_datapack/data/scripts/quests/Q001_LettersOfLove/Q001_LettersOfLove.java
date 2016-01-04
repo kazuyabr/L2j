@@ -39,13 +39,7 @@ public class Q001_LettersOfLove extends Quest
 	{
 		super(1, qn, "Letters of Love");
 		
-		questItemIds = new int[]
-		{
-			DARINGS_LETTER,
-			RAPUNZELS_KERCHIEF,
-			DARINGS_RECEIPT,
-			BAULROS_POTION
-		};
+		setItemsIds(DARINGS_LETTER, RAPUNZELS_KERCHIEF, DARINGS_RECEIPT, BAULROS_POTION);
 		
 		addStartNpc(DARIN);
 		addTalkId(DARIN, ROXXY, BAULRO);

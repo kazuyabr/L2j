@@ -42,15 +42,7 @@ public class Q048_ToTheImmortalPlateau extends Quest
 	{
 		super(48, qn, "To the Immortal Plateau");
 		
-		questItemIds = new int[]
-		{
-			ORDER_DOCUMENT_1,
-			ORDER_DOCUMENT_2,
-			ORDER_DOCUMENT_3,
-			MAGIC_SWORD_HILT,
-			GEMSTONE_POWDER,
-			PURIFIED_MAGIC_NECKLACE
-		};
+		setItemsIds(ORDER_DOCUMENT_1, ORDER_DOCUMENT_2, ORDER_DOCUMENT_3, MAGIC_SWORD_HILT, GEMSTONE_POWDER, PURIFIED_MAGIC_NECKLACE);
 		
 		addStartNpc(GALLADUCCI);
 		addTalkId(GALLADUCCI, SANDRA, DUSTIN, GENTLER);

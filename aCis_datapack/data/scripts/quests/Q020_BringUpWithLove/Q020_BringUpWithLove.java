@@ -28,10 +28,7 @@ public class Q020_BringUpWithLove extends Quest
 	{
 		super(20, qn, "Bring Up With Love");
 		
-		questItemIds = new int[]
-		{
-			JEWEL_OF_INNOCENCE
-		};
+		setItemsIds(JEWEL_OF_INNOCENCE);
 		
 		addStartNpc(31537); // Tunatun
 		addTalkId(31537);

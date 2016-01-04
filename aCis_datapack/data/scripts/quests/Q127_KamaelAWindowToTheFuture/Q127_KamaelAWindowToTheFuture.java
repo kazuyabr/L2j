@@ -45,15 +45,7 @@ public class Q127_KamaelAWindowToTheFuture extends Quest
 	{
 		super(127, qn, "Kamael: A Window to the Future");
 		
-		questItemIds = new int[]
-		{
-			MARK_DOMINIC,
-			MARK_HUMAN,
-			MARK_DWARF,
-			MARK_ORC,
-			MARK_DELF,
-			MARK_ELF
-		};
+		setItemsIds(MARK_DOMINIC, MARK_HUMAN, MARK_DWARF, MARK_ORC, MARK_DELF, MARK_ELF);
 		
 		addStartNpc(DOMINIC);
 		addTalkId(DOMINIC, KLAUS, ALDER, AKLAN, OLTLIN, JURIS, RODEMAI);

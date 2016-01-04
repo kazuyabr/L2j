@@ -18,6 +18,7 @@ import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
 public class Q232_TestOfTheLord extends Quest
 {
@@ -76,34 +77,7 @@ public class Q232_TestOfTheLord extends Quest
 	{
 		super(232, qn, "Test of the Lord");
 		
-		questItemIds = new int[]
-		{
-			VARKEES_CHARM,
-			TANTUS_CHARM,
-			HATOS_CHARM,
-			TAKUNA_CHARM,
-			CHIANTA_CHARM,
-			MANAKIAS_ORDERS,
-			BREKA_ORC_FANG,
-			MANAKIAS_AMULET,
-			HUGE_ORC_FANG,
-			SUMARIS_LETTER,
-			URUTU_BLADE,
-			TIMAK_ORC_SKULL,
-			SWORD_INTO_SKULL,
-			NERUGA_AXE_BLADE,
-			AXE_OF_CEREMONY,
-			MARSH_SPIDER_FEELER,
-			MARSH_SPIDER_FEET,
-			HANDIWORK_SPIDER_BROOCH,
-			MONSTEREYE_CORNEA,
-			MONSTEREYE_WOODCARVING,
-			BEAR_FANG_NECKLACE,
-			MARTANKUS_CHARM,
-			RAGNA_ORC_HEAD,
-			RAGNA_ORC_HEAD,
-			IMMORTAL_FLAME
-		};
+		setItemsIds(VARKEES_CHARM, TANTUS_CHARM, HATOS_CHARM, TAKUNA_CHARM, CHIANTA_CHARM, MANAKIAS_ORDERS, BREKA_ORC_FANG, MANAKIAS_AMULET, HUGE_ORC_FANG, SUMARIS_LETTER, URUTU_BLADE, TIMAK_ORC_SKULL, SWORD_INTO_SKULL, NERUGA_AXE_BLADE, AXE_OF_CEREMONY, MARSH_SPIDER_FEELER, MARSH_SPIDER_FEET, HANDIWORK_SPIDER_BROOCH, MONSTEREYE_CORNEA, MONSTEREYE_WOODCARVING, BEAR_FANG_NECKLACE, MARTANKUS_CHARM, RAGNA_ORC_HEAD, RAGNA_ORC_HEAD, IMMORTAL_FLAME);
 		
 		addStartNpc(KAKAI);
 		addTalkId(KAKAI, CHIANTA, HATOS, SOMAK, SUMARI, TAKUNA, TANTUS, JAKAL, VARKEES, MANAKIA, ANCESTOR_MARTANKUS, FIRST_ORC);
@@ -211,9 +185,6 @@ public class Q232_TestOfTheLord extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (st.hasQuestItems(MARK_LORD))
-					return getAlreadyCompletedMsg();
-				
 				if (player.getRace() != Race.Orc)
 					htmltext = "30565-01.htm";
 				else if (player.getClassId() != ClassId.orcShaman)
@@ -240,7 +211,7 @@ public class Q232_TestOfTheLord extends Quest
 								st.takeItems(MANAKIAS_AMULET, -1);
 								st.giveItems(HUGE_ORC_FANG, 1);
 								
-								if (st.hasQuestItems(SWORD_INTO_SKULL) && st.hasQuestItems(AXE_OF_CEREMONY) && st.hasQuestItems(MONSTEREYE_WOODCARVING) && st.hasQuestItems(HANDIWORK_SPIDER_BROOCH) && st.hasQuestItems(ORDEAL_NECKLACE))
+								if (st.hasQuestItems(SWORD_INTO_SKULL, AXE_OF_CEREMONY, MONSTEREYE_WOODCARVING, HANDIWORK_SPIDER_BROOCH, ORDEAL_NECKLACE))
 								{
 									st.set("cond", "2");
 									st.playSound(QuestState.SOUND_MIDDLE);
@@ -294,7 +265,7 @@ public class Q232_TestOfTheLord extends Quest
 								st.takeItems(TANTUS_CHARM, 1);
 								st.giveItems(AXE_OF_CEREMONY, 1);
 								
-								if (st.hasQuestItems(SWORD_INTO_SKULL) && st.hasQuestItems(MONSTEREYE_WOODCARVING) && st.hasQuestItems(HANDIWORK_SPIDER_BROOCH) && st.hasQuestItems(ORDEAL_NECKLACE) && st.hasQuestItems(HUGE_ORC_FANG))
+								if (st.hasQuestItems(SWORD_INTO_SKULL, MONSTEREYE_WOODCARVING, HANDIWORK_SPIDER_BROOCH, ORDEAL_NECKLACE, HUGE_ORC_FANG))
 								{
 									st.set("cond", "2");
 									st.playSound(QuestState.SOUND_MIDDLE);
@@ -336,7 +307,7 @@ public class Q232_TestOfTheLord extends Quest
 								st.takeItems(TIMAK_ORC_SKULL, -1);
 								st.giveItems(SWORD_INTO_SKULL, 1);
 								
-								if (st.hasQuestItems(AXE_OF_CEREMONY) && st.hasQuestItems(MONSTEREYE_WOODCARVING) && st.hasQuestItems(HANDIWORK_SPIDER_BROOCH) && st.hasQuestItems(ORDEAL_NECKLACE) && st.hasQuestItems(HUGE_ORC_FANG))
+								if (st.hasQuestItems(AXE_OF_CEREMONY, MONSTEREYE_WOODCARVING, HANDIWORK_SPIDER_BROOCH, ORDEAL_NECKLACE, HUGE_ORC_FANG))
 								{
 									st.set("cond", "2");
 									st.playSound(QuestState.SOUND_MIDDLE);
@@ -391,7 +362,7 @@ public class Q232_TestOfTheLord extends Quest
 								st.takeItems(TAKUNA_CHARM, 1);
 								st.giveItems(HANDIWORK_SPIDER_BROOCH, 1);
 								
-								if (st.hasQuestItems(SWORD_INTO_SKULL) && st.hasQuestItems(AXE_OF_CEREMONY) && st.hasQuestItems(MONSTEREYE_WOODCARVING) && st.hasQuestItems(ORDEAL_NECKLACE) && st.hasQuestItems(HUGE_ORC_FANG))
+								if (st.hasQuestItems(SWORD_INTO_SKULL, AXE_OF_CEREMONY, MONSTEREYE_WOODCARVING, ORDEAL_NECKLACE, HUGE_ORC_FANG))
 								{
 									st.set("cond", "2");
 									st.playSound(QuestState.SOUND_MIDDLE);
@@ -418,7 +389,7 @@ public class Q232_TestOfTheLord extends Quest
 								st.takeItems(CHIANTA_CHARM, 1);
 								st.giveItems(MONSTEREYE_WOODCARVING, 1);
 								
-								if (st.hasQuestItems(SWORD_INTO_SKULL) && st.hasQuestItems(AXE_OF_CEREMONY) && st.hasQuestItems(HANDIWORK_SPIDER_BROOCH) && st.hasQuestItems(ORDEAL_NECKLACE) && st.hasQuestItems(HUGE_ORC_FANG))
+								if (st.hasQuestItems(SWORD_INTO_SKULL, AXE_OF_CEREMONY, HANDIWORK_SPIDER_BROOCH, ORDEAL_NECKLACE, HUGE_ORC_FANG))
 								{
 									st.set("cond", "2");
 									st.playSound(QuestState.SOUND_MIDDLE);
@@ -449,9 +420,9 @@ public class Q232_TestOfTheLord extends Quest
 							st.takeItems(IMMORTAL_FLAME, 1);
 							st.giveItems(MARK_LORD, 1);
 							st.rewardExpAndSp(92955, 16250);
-							
+							player.broadcastPacket(new SocialAction(player, 3));
 							st.playSound(QuestState.SOUND_FINISH);
-							st.exitQuest(true);
+							st.exitQuest(false);
 						}
 						break;
 					
@@ -484,6 +455,10 @@ public class Q232_TestOfTheLord extends Quest
 							htmltext = "30643-03.htm";
 						break;
 				}
+				break;
+			
+			case STATE_COMPLETED:
+				htmltext = getAlreadyCompletedMsg();
 				break;
 		}
 		

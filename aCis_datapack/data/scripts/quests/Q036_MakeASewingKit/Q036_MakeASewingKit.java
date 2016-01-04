@@ -33,10 +33,7 @@ public class Q036_MakeASewingKit extends Quest
 	{
 		super(36, qn, "Make a Sewing Kit");
 		
-		questItemIds = new int[]
-		{
-			REINFORCED_STEEL
-		};
+		setItemsIds(REINFORCED_STEEL);
 		
 		addStartNpc(30847); // Ferris
 		addTalkId(30847);

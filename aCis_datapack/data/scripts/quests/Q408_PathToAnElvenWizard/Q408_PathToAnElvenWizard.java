@@ -51,22 +51,7 @@ public class Q408_PathToAnElvenWizard extends Quest
 	{
 		super(questId, name, descr);
 		
-		questItemIds = new int[]
-		{
-			RosellasLetter,
-			RedDown,
-			MagicalPowersRuby,
-			PureAquamarine,
-			AppetizingApple,
-			GoldenLeaves,
-			ImmortalLove,
-			Amethyst,
-			NobilityAmethyst,
-			FertilityPeridot,
-			CharmOfGrain,
-			SapOfTheMotherTree,
-			LuckyPotpourri
-		};
+		setItemsIds(RosellasLetter, RedDown, MagicalPowersRuby, PureAquamarine, AppetizingApple, GoldenLeaves, ImmortalLove, Amethyst, NobilityAmethyst, FertilityPeridot, CharmOfGrain, SapOfTheMotherTree, LuckyPotpourri);
 		
 		addStartNpc(Rosella);
 		addTalkId(Rosella, Greenis, Thalia, Northwind);
@@ -175,7 +160,7 @@ public class Q408_PathToAnElvenWizard extends Quest
 				switch (npc.getNpcId())
 				{
 					case Rosella:
-						if (st.hasQuestItems(MagicalPowersRuby) && st.hasQuestItems(PureAquamarine) && st.hasQuestItems(NobilityAmethyst))
+						if (st.hasQuestItems(MagicalPowersRuby, PureAquamarine, NobilityAmethyst))
 						{
 							htmltext = "30414-24.htm";
 							st.takeItems(MagicalPowersRuby, 1);
