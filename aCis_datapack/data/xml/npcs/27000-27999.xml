@@ -10224,6 +10224,80 @@
 			<skill id="4416" level="8"/>
 		</skills>
 	</npc>
+	<npc id="27318" name="Wendy's Guardian" title="Quest Monster">
+		<set name="level" val="46"/>
+		<set name="radius" val="16"/>
+		<set name="height" val="37.2"/>
+		<set name="rHand" val="0"/>
+		<set name="lHand" val="0"/>
+		<set name="type" val="L2Monster"/>
+		<set name="exp" val="0"/>
+		<set name="sp" val="0"/>
+		<set name="hp" val="1229.78678"/>
+		<set name="mp" val="637.8"/>
+		<set name="hpRegen" val="5.5"/>
+		<set name="mpRegen" val="2.1"/>
+		<set name="pAtk" val="248.0526"/>
+		<set name="pDef" val="182.18816"/>
+		<set name="mAtk" val="169.38777"/>
+		<set name="mDef" val="133.31739"/>
+		<set name="crit" val="4"/>
+		<set name="atkSpd" val="253"/>
+		<set name="str" val="40"/>
+		<set name="int" val="21"/>
+		<set name="dex" val="30"/>
+		<set name="wit" val="20"/>
+		<set name="con" val="43"/>
+		<set name="men" val="20"/>
+		<set name="corpseTime" val="7"/>
+		<set name="walkSpd" val="50"/>
+		<set name="runSpd" val="130"/>
+		<set name="dropHerbGroup" val="0"/>
+		<set name="attackRange" val="40"/>
+		<ai type="default" ssCount="0" ssRate="0" spsCount="0" spsRate="0" aggro="0" canMove="true" seedable="false"/>
+		<skills>
+			<skill id="4412" level="14"/>
+			<skill id="4414" level="1"/>
+			<skill id="4416" level="2"/>
+		</skills>
+	</npc>
+	<npc id="27319" name="Black Leopard" title="Quest Monster">
+		<set name="level" val="18"/>
+		<set name="radius" val="14"/>
+		<set name="height" val="14.5"/>
+		<set name="rHand" val="0"/>
+		<set name="lHand" val="0"/>
+		<set name="type" val="L2Monster"/>
+		<set name="exp" val="0"/>
+		<set name="sp" val="0"/>
+		<set name="hp" val="301.66622"/>
+		<set name="mp" val="174.64"/>
+		<set name="hpRegen" val="2.5"/>
+		<set name="mpRegen" val="1.2"/>
+		<set name="pAtk" val="37.82932"/>
+		<set name="pDef" val="81.34791"/>
+		<set name="mAtk" val="25.83252"/>
+		<set name="mDef" val="59.52687"/>
+		<set name="crit" val="4"/>
+		<set name="atkSpd" val="253"/>
+		<set name="str" val="40"/>
+		<set name="int" val="21"/>
+		<set name="dex" val="30"/>
+		<set name="wit" val="20"/>
+		<set name="con" val="43"/>
+		<set name="men" val="20"/>
+		<set name="corpseTime" val="7"/>
+		<set name="walkSpd" val="30"/>
+		<set name="runSpd" val="130"/>
+		<set name="dropHerbGroup" val="0"/>
+		<set name="attackRange" val="40"/>
+		<ai type="default" ssCount="0" ssRate="0" spsCount="0" spsRate="0" aggro="0" canMove="true" seedable="false"/>
+		<skills>
+			<skill id="4410" level="13"/>
+			<skill id="4412" level="12"/>
+			<skill id="4416" level="3"/>
+		</skills>
+	</npc>
 	<npc id="27320" name="Timora Orc" title="Quest Monster">
 		<set name="level" val="20"/>
 		<set name="radius" val="9"/>

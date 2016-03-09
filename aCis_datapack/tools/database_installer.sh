@@ -91,6 +91,7 @@ $MYG < ../sql/character_friends.sql &> /dev/null
 $MYG < ../sql/character_hennas.sql &> /dev/null
 $MYG < ../sql/character_macroses.sql &> /dev/null
 $MYG < ../sql/character_mail.sql &> /dev/null
+$MYG < ../sql/character_memo.sql &> /dev/null
 $MYG < ../sql/character_quests.sql &> /dev/null
 $MYG < ../sql/character_raid_points.sql &> /dev/null
 $MYG < ../sql/character_recipebook.sql &> /dev/null
@@ -130,7 +131,7 @@ $MYG < ../sql/posts.sql &> /dev/null
 $MYG < ../sql/raidboss_spawnlist.sql &> /dev/null
 $MYG < ../sql/random_spawn.sql &> /dev/null
 $MYG < ../sql/random_spawn_loc.sql &> /dev/null
-$MYG < ../sql/server_variables.sql &> /dev/null
+$MYG < ../sql/server_memo.sql &> /dev/null
 $MYG < ../sql/seven_signs.sql &> /dev/null
 $MYG < ../sql/seven_signs_festival.sql &> /dev/null
 $MYG < ../sql/seven_signs_status.sql &> /dev/null

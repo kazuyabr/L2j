@@ -400,7 +400,6 @@
 		<set name="default_action" val="skill_reduce" />
 		<set name="material" val="STEEL" />
 		<set name="is_stackable" val="true" />
-		<set name="etcitem_type" val="quest" />
 		<set name="handler" val="PaganKeys" />
 		<set name="item_skill" val="2238-1" />
 	</item>

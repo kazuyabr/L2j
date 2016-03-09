@@ -12,7 +12,6 @@
 	<aCar name="admin_silence" accessLevel="1" />
 	<aCar name="admin_tradeoff" accessLevel="1" />
 	<aCar name="admin_reload" accessLevel="1" />
-	<aCar name="admin_script_load" accessLevel="1" />
 
 	<!-- ANNOUNCEMENTS -->
 	<aCar name="admin_announce" accessLevel="1" />
@@ -65,7 +64,6 @@
 	<aCar name="admin_cw_info" accessLevel="1" />
 	<aCar name="admin_cw_remove" accessLevel="1" />
 	<aCar name="admin_cw_goto" accessLevel="1" />
-	<aCar name="admin_cw_reload" accessLevel="1" />
 	<aCar name="admin_cw_add" accessLevel="1" />
 	<aCar name="admin_cw_info_menu" accessLevel="1" />
 
@@ -81,9 +79,7 @@
 	<!-- EDIT CHAR -->
 	<aCar name="admin_edit_character" accessLevel="1" />
 	<aCar name="admin_current_player" accessLevel="1" />
-	<aCar name="admin_nokarma" accessLevel="1" />
 	<aCar name="admin_setkarma" accessLevel="1" />
-	<aCar name="admin_character_list" accessLevel="1" />
 	<aCar name="admin_character_info" accessLevel="1" />
 	<aCar name="admin_show_characters" accessLevel="1" />
 	<aCar name="admin_find_character" accessLevel="1" />
@@ -276,10 +272,6 @@
 	<aCar name="admin_polymorph_menu" accessLevel="1" />
 	<aCar name="admin_unpolymorph_menu" accessLevel="1" />
 
-	<!-- REPAIR CHAR -->
-	<aCar name="admin_restore" accessLevel="1" />
-	<aCar name="admin_repair" accessLevel="1" />
-
 	<!-- RES -->
 	<aCar name="admin_res" accessLevel="1" />
 	<aCar name="admin_res_monster" accessLevel="1" />
@@ -360,6 +352,5 @@
 	<!-- ZONE -->
 	<aCar name="admin_zone_check" accessLevel="1" />
 	<aCar name="admin_zone_visual" accessLevel="1" />
-	<aCar name="admin_zone_visual_clear" accessLevel="1" />
 	
 </list>

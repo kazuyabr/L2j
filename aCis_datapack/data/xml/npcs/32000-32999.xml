@@ -288,7 +288,7 @@
 			<skill id="4416" level="14"/>
 		</skills>
 	</npc>
-	<npc id="32008" name="Greymore" title="Priest">
+	<npc id="32008" name="Gremory" title="Priest">
 		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
