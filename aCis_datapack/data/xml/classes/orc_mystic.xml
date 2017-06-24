@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list>
-	<class id="49" parentId="-1">
-		<set name="className" val="Orc Mage" />
-		<set name="raceId" val="3" />
+	<class id="49"><!-- Orc Mystic -->
 		<set name="str" val="27" />
 		<set name="con" val="31" />
 		<set name="dex" val="24" />
@@ -14,6 +12,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="121" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56682" />
 		<set name="spawnY" val="-113730" />
 		<set name="spawnZ" val="-690" />
@@ -99,9 +99,7 @@
 		</skillTrees>
 		<items val="425;461;2368;5588" />
 	</class>
-	<class id="50" parentId="49">
-		<set name="className" val="Shaman" />
-		<set name="raceId" val="3" />
+	<class id="50"><!-- Orc Shaman -->
 		<set name="str" val="27" />
 		<set name="con" val="31" />
 		<set name="dex" val="24" />
@@ -113,6 +111,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="121" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56682" />
 		<set name="spawnY" val="-113730" />
 		<set name="spawnZ" val="-690" />
@@ -264,9 +264,7 @@
 			<skill id="1229" lvl="4" sp="18000" minLvl="35" />
 		</skillTrees>
 	</class>
-	<class id="51" parentId="50">
-		<set name="className" val="Overlord" />
-		<set name="raceId" val="3" />
+	<class id="51"><!-- Overlord -->
 		<set name="str" val="27" />
 		<set name="con" val="31" />
 		<set name="dex" val="24" />
@@ -278,6 +276,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="121" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56682" />
 		<set name="spawnY" val="-113730" />
 		<set name="spawnZ" val="-690" />
@@ -803,9 +803,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="52" parentId="50">
-		<set name="className" val="Warcryer" />
-		<set name="raceId" val="3" />
+	<class id="52"><!-- Warcryer -->
 		<set name="str" val="27" />
 		<set name="con" val="31" />
 		<set name="dex" val="24" />
@@ -817,6 +815,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="121" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56682" />
 		<set name="spawnY" val="-113730" />
 		<set name="spawnZ" val="-690" />
@@ -1213,9 +1213,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="115" parentId="51">
-		<set name="className" val="Dominator" />
-		<set name="raceId" val="3" />
+	<class id="115"><!-- Dominator -->
 		<set name="str" val="27" />
 		<set name="con" val="31" />
 		<set name="dex" val="24" />
@@ -1227,6 +1225,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="121" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56682" />
 		<set name="spawnY" val="-113730" />
 		<set name="spawnZ" val="-690" />
@@ -1272,9 +1272,7 @@
 			<skill id="1427" lvl="1" sp="150000000" minLvl="80" />
 		</skillTrees>
 	</class>
-	<class id="116" parentId="52">
-		<set name="className" val="Doomcryer" />
-		<set name="raceId" val="3" />
+	<class id="116"><!-- Doomcryer -->
 		<set name="str" val="27" />
 		<set name="con" val="31" />
 		<set name="dex" val="24" />
@@ -1286,6 +1284,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="121" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56682" />
 		<set name="spawnY" val="-113730" />
 		<set name="spawnZ" val="-690" />

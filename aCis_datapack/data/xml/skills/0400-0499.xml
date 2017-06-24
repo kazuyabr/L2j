@@ -993,7 +993,7 @@
 		<enchant2 name="magicLvl" val="#enchantMagicLvl" />
 		<enchant2 name="power" val="#ench2Chance" />
 		<cond msgId="113" addName="1">
-			<target race_id="7" />
+			<target race_id="8" />
 		</cond>
 		<for>
 			<effect count="10" name="Fear" time="2" val="0" />

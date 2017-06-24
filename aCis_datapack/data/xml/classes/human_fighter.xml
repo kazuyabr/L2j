@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list>
-	<class id="0" parentId="-1">
-		<set name="className" val="Human Fighter" />
-		<set name="raceId" val="0" />
+	<class id="0"><!-- Human Fighter -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -14,6 +12,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -91,9 +91,7 @@
 		</skillTrees>
 		<items val="1147;1146;10;2369;5588" />
 	</class>
-	<class id="1" parentId="0">
-		<set name="className" val="Warrior" />
-		<set name="raceId" val="0" />
+	<class id="1"><!-- Warrior -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -105,6 +103,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -239,9 +239,7 @@
 			<skill id="312" lvl="5" sp="31000" minLvl="36" />
 		</skillTrees>
 	</class>
-	<class id="4" parentId="0">
-		<set name="className" val="Human Knight" />
-		<set name="raceId" val="0" />
+	<class id="4"><!-- Knight -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -253,6 +251,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -372,9 +372,7 @@
 			<skill id="232" lvl="15" sp="13000" minLvl="36" />
 		</skillTrees>
 	</class>
-	<class id="7" parentId="0">
-		<set name="className" val="Rogue" />
-		<set name="raceId" val="0" />
+	<class id="7"><!-- Rogue -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -386,6 +384,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -519,9 +519,7 @@
 			<skill id="312" lvl="5" sp="31000" minLvl="36" />
 		</skillTrees>
 	</class>
-	<class id="2" parentId="1">
-		<set name="className" val="Gladiator" />
-		<set name="raceId" val="0" />
+	<class id="2"><!-- Gladiator -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -533,6 +531,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -1042,9 +1042,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="3" parentId="1">
-		<set name="className" val="Warlord" />
-		<set name="raceId" val="0" />
+	<class id="3"><!-- Warlord -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -1056,6 +1054,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -1387,9 +1387,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="5" parentId="4">
-		<set name="className" val="Paladin" />
-		<set name="raceId" val="0" />
+	<class id="5"><!-- Paladin -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -1401,6 +1399,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -1843,9 +1843,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="6" parentId="4">
-		<set name="className" val="Dark Avenger" />
-		<set name="raceId" val="0" />
+	<class id="6"><!-- Dark Avenger -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -1857,6 +1855,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -2278,9 +2278,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="8" parentId="7">
-		<set name="className" val="Treasure Hunter" />
-		<set name="raceId" val="0" />
+	<class id="8"><!-- Treasure Hunter -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -2292,6 +2290,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -2616,9 +2616,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="9" parentId="7">
-		<set name="className" val="Hawkeye" />
-		<set name="raceId" val="0" />
+	<class id="9"><!-- Hawkeye -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -2630,6 +2628,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -2911,9 +2911,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="88" parentId="2">
-		<set name="className" val="Duelist" />
-		<set name="raceId" val="0" />
+	<class id="88"><!-- Duelist -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -2925,6 +2923,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -2966,9 +2966,7 @@
 			<skill id="1405" lvl="4" sp="0" minLvl="76" />
 		</skillTrees>
 	</class>
-	<class id="89" parentId="3">
-		<set name="className" val="Dreadnought" />
-		<set name="raceId" val="0" />
+	<class id="89"><!-- Dreadnought -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -2980,6 +2978,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -3021,9 +3021,7 @@
 			<skill id="1405" lvl="4" sp="0" minLvl="76" />
 		</skillTrees>
 	</class>
-	<class id="90" parentId="5">
-		<set name="className" val="Phoenix Knight" />
-		<set name="raceId" val="0" />
+	<class id="90"><!-- Phoenix Knight -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -3035,6 +3033,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -3074,9 +3074,7 @@
 			<skill id="1405" lvl="4" sp="0" minLvl="76" />
 		</skillTrees>
 	</class>
-	<class id="91" parentId="6">
-		<set name="className" val="Hell Knight" />
-		<set name="raceId" val="0" />
+	<class id="91"><!-- Hell Knight -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -3088,6 +3086,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -3127,9 +3127,7 @@
 			<skill id="1405" lvl="4" sp="0" minLvl="76" />
 		</skillTrees>
 	</class>
-	<class id="92" parentId="9">
-		<set name="className" val="Sagittarius" />
-		<set name="raceId" val="0" />
+	<class id="92"><!-- Sagittarius -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -3141,6 +3139,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />
@@ -3174,9 +3174,7 @@
 			<skill id="1405" lvl="4" sp="0" minLvl="76" />
 		</skillTrees>
 	</class>
-	<class id="93" parentId="8">
-		<set name="className" val="Adventurer" />
-		<set name="raceId" val="0" />
+	<class id="93"><!-- Adventurer -->
 		<set name="str" val="40" />
 		<set name="con" val="43" />
 		<set name="dex" val="30" />
@@ -3188,6 +3186,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-71338" />
 		<set name="spawnY" val="258271" />
 		<set name="spawnZ" val="-3104" />

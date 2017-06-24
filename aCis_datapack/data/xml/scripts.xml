@@ -53,6 +53,37 @@
 	<script path="quests.Q051_OFullesSpecialBait"/>
 	<script path="quests.Q052_WilliesSpecialBait"/>
 	<script path="quests.Q053_LinnaeusSpecialBait"/>
+	<script path="quests.Q070_SagaOfThePhoenixKnight"/>
+	<script path="quests.Q071_SagaOfEvasTemplar"/>
+	<script path="quests.Q072_SagaOfTheSwordMuse"/>
+	<script path="quests.Q073_SagaOfTheDuelist"/>
+	<script path="quests.Q074_SagaOfTheDreadnought"/>
+	<script path="quests.Q075_SagaOfTheTitan"/>
+	<script path="quests.Q076_SagaOfTheGrandKhavatari"/>
+	<script path="quests.Q077_SagaOfTheDominator"/>
+	<script path="quests.Q078_SagaOfTheDoomcryer"/>
+	<script path="quests.Q079_SagaOfTheAdventurer"/>
+	<script path="quests.Q080_SagaOfTheWindRider"/>
+	<script path="quests.Q081_SagaOfTheGhostHunter"/>
+	<script path="quests.Q082_SagaOfTheSagittarius"/>
+	<script path="quests.Q083_SagaOfTheMoonlightSentinel"/>
+	<script path="quests.Q084_SagaOfTheGhostSentinel"/>
+	<script path="quests.Q085_SagaOfTheCardinal"/>
+	<script path="quests.Q086_SagaOfTheHierophant"/>
+	<script path="quests.Q087_SagaOfEvasSaint"/>
+	<script path="quests.Q088_SagaOfTheArchmage"/>
+	<script path="quests.Q089_SagaOfTheMysticMuse"/>
+	<script path="quests.Q090_SagaOfTheStormScreamer"/>
+	<script path="quests.Q091_SagaOfTheArcanaLord"/>
+	<script path="quests.Q092_SagaOfTheElementalMaster"/>
+	<script path="quests.Q093_SagaOfTheSpectralMaster"/>
+	<script path="quests.Q094_SagaOfTheSoultaker"/>
+	<script path="quests.Q095_SagaOfTheHellKnight"/>
+	<script path="quests.Q096_SagaOfTheSpectralDancer"/>
+	<script path="quests.Q097_SagaOfTheShillienTemplar"/>
+	<script path="quests.Q098_SagaOfTheShillienSaint"/>
+	<script path="quests.Q099_SagaOfTheFortuneSeeker"/>
+	<script path="quests.Q100_SagaOfTheMaestro"/>
 	<script path="quests.Q101_SwordOfSolidarity"/>
 	<script path="quests.Q102_SeaOfSporesFever"/>
 	<script path="quests.Q103_SpiritOfCraftsman"/>
@@ -66,11 +97,11 @@
 	<script path="quests.Q111_ElrokianHuntersProof"/>
 	<script path="quests.Q112_WalkOfFate"/>
 	<script path="quests.Q113_StatusOfTheBeaconTower"/>
-<!-- 	<script path="quests.Q114_ResurrectionOfAnOldManager"/> -->
+	<script path="quests.Q114_ResurrectionOfAnOldManager"/>
 <!-- 	<script path="quests.Q115_TheOtherSideOfTruth"/> -->
 	<script path="quests.Q116_BeyondTheHillsOfWinter"/>
 	<script path="quests.Q117_TheOceanOfDistantStars"/>
-<!-- 	<script path="quests.Q118_ToLeadAndBeLed"/> -->
+ 	<script path="quests.Q118_ToLeadAndBeLed"/>
 	<script path="quests.Q119_LastImperialPrince"/>
 <!-- 	<script path="quests.Q120_PavelsResearch"/> -->
 	<script path="quests.Q121_PavelTheGiant"/>
@@ -110,16 +141,16 @@
 	<script path="quests.Q217_TestimonyOfTrust"/>
 	<script path="quests.Q218_TestimonyOfLife"/>
 	<script path="quests.Q219_TestimonyOfFate"/>
- 	<script path="quests.Q220_TestimonyOfGlory"/>
-<!-- 	<script path="quests.Q221_TestimonyOfProsperity"/> -->
+	<script path="quests.Q220_TestimonyOfGlory"/>
+	<script path="quests.Q221_TestimonyOfProsperity"/>
 	<script path="quests.Q222_TestOfTheDuelist"/>
 	<script path="quests.Q223_TestOfTheChampion"/>
 	<script path="quests.Q224_TestOfSagittarius"/>
 	<script path="quests.Q225_TestOfTheSearcher"/>
- 	<script path="quests.Q226_TestOfTheHealer"/>
-<!-- 	<script path="quests.Q227_TestOfTheReformer"/> -->
+	<script path="quests.Q226_TestOfTheHealer"/>
+	<script path="quests.Q227_TestOfTheReformer"/>
 	<script path="quests.Q228_TestOfMagus"/>
-<!-- 	<script path="quests.Q229_TestOfWitchcraft"/> -->
+	<script path="quests.Q229_TestOfWitchcraft"/>
 	<script path="quests.Q230_TestOfTheSummoner"/>
 	<script path="quests.Q231_TestOfTheMaestro"/>
 	<script path="quests.Q232_TestOfTheLord"/>
@@ -173,7 +204,7 @@
 	<script path="quests.Q329_CuriosityOfADwarf"/>
 	<script path="quests.Q330_AdeptOfTaste"/>
 	<script path="quests.Q331_ArrowOfVengeance"/>
-<!-- 	<script path="quests.Q333_HuntOfTheBlackLion"/> -->
+	<script path="quests.Q333_HuntOfTheBlackLion"/>
 <!-- 	<script path="quests.Q334_TheWishingPotion"/> -->
 <!-- 	<script path="quests.Q335_SongOfTheHunter"/> -->
 <!-- 	<script path="quests.Q336_CoinsOfMagic"/> -->
@@ -235,9 +266,9 @@
 	<script path="quests.Q411_PathToAnAssassin"/>
 	<script path="quests.Q412_PathToADarkWizard"/>
 	<script path="quests.Q413_PathToAShillienOracle"/>
- 	<script path="quests.Q414_PathToAnOrcRaider"/>
+	<script path="quests.Q414_PathToAnOrcRaider"/>
 	<script path="quests.Q415_PathToAMonk"/>
- 	<script path="quests.Q416_PathToAnOrcShaman"/>
+	<script path="quests.Q416_PathToAnOrcShaman"/>
 	<script path="quests.Q417_PathToBecomeAScavenger"/>
 	<script path="quests.Q418_PathToAnArtisan"/>
 	<script path="quests.Q419_GetAPet"/>
@@ -290,7 +321,7 @@
 	<script path="quests.Q636_TruthBeyondTheGate"/>
 	<script path="quests.Q637_ThroughTheGateOnceMore"/>
 	<script path="quests.Q638_SeekersOfTheHolyGrail"/>
- 	<script path="quests.Q639_GuardiansOfTheHolyGrail"/>
+	<script path="quests.Q639_GuardiansOfTheHolyGrail"/>
 	<script path="quests.Q640_TheZeroHour"/>
 	<script path="quests.Q641_AttackSailren"/>
 	<script path="quests.Q642_APowerfulPrimevalCreature"/>
@@ -313,10 +344,11 @@
 	<script path="quests.Q662_AGameOfCards"/>
 	<script path="quests.Q663_SeductiveWhispers"/>
 	<script path="quests.Q688_DefeatTheElrokianRaiders"/>
-	<script path="quests.SagasScripts.SagasSuperClass"/>
 <!-- 	<script path="quests.Tutorial"/> -->
 
 	<!-- AI Section -->
+
+	<script path="scripts.ai.L2AttackableAIScript"/>
 
 	<script path="scripts.ai.group.Chests"/>
 	<script path="scripts.ai.group.FeedableBeasts"/>
@@ -325,7 +357,6 @@
 	<script path="scripts.ai.group.FrozenLabyrinth"/>
 	<script path="scripts.ai.group.GatekeeperZombies"/>
 	<script path="scripts.ai.group.HotSpringDisease"/>
-	<script path="scripts.ai.group.L2AttackableAIScript"/>
 	<script path="scripts.ai.group.Monastery"/>
 	<script path="scripts.ai.group.PlainsOfDion"/>
 	<script path="scripts.ai.group.PolymorphingAngel"/>
@@ -390,4 +421,50 @@
 	<script path="scripts.village_master.FirstClassChange"/>
 	<script path="scripts.village_master.SecondClassChange"/>
 
+	<!-- Tasks -->
+
+	<script path="tasks.ClansLadder" schedule="DAILY" start="00:05:00"/>
+	<script path="tasks.OlympiadSave"/>
+	<script path="tasks.RaidPointsReset" schedule="WEEKLY" start="MON 00:00:00"/>
+	<script path="tasks.Recommendation" schedule="DAILY" start="06:30:00"/>
+<!--	<script path="tasks.ServerRestart" schedule="DAILY" start="04:00:00"/> -->
+<!--	<script path="tasks.ServerShutdown" schedule="DAILY" start="04:00:00"/> -->
+	<script path="tasks.SevenSignsUpdate"/>
+
+<!--
+WHAT IS SCHEDULED SCRIPT?
+ -	a way to periodicly schedule action on your server periodicly and/or certain duration
+ -	scheduled script can be set to have starting and ending action or only starting action
+ -	all actions may be periodicly triggered, based on the scheduled settings
+
+HOW TO CREATE SCHEDULED SCRIPT?
+ 1)	Create a new script anywhere in "gameserver.scripting" package/sub-package, which inherits ScheduledQuest.
+ 2)	Implement onStart() and onEnd() methods (Note: onEnd() is not invocated, when having a script with one action)
+	Implement init() method, when you have special conditions to start scheduling a script (e.g. config settings, etc)
+
+HOW TO SCHEDULE SCRIPT?
+ 1)	Add a setup line to "scripts.xml", set up "schedule", "start" and "end" parameters
+	When "schedule" parameter is not set, the script will not be scheduled
+	When "end" parameter is not set, the script will only trigger onStart() method
+ 2)	Available configurations
+		<script path="scripts.custom.AAA" schedule="HOURLY" start="44:00"/>
+			- each hour at 44 minutes onStart() action is performed
+		<script path="scripts.custom.BBB" schedule="DAILY" start="17:17:00" end="17:17:15"/>
+			- every day at 17:17:00 onStart() action is performed
+			- every day at 17:17:15 onEnd() action is performed
+		<script path="scripts.custom.CCC" schedule="WEEKLY" start="MON 10:00:00"/>
+			- every week on Monday at 10:00:00 onStart() action is performed
+		<script path="scripts.custom.DDD" schedule="MONTHLY_DAY" start="17 20:00:00"/>
+			- every 17th of each month at 20:00:00 onStart() action is performed
+		<script path="scripts.custom.EEE" schedule="MONTHLY_WEEK" start="MON-2 6:00:00" end="FRI-3 20:00:00"/>
+			- every 2nd Monday of each month at 6:00:00 onStart() action is performed
+			- every 3rd Friday of each month at 20:00:00 onEnd() action is performed
+		<script path="scripts.custom.FFF" schedule="YEARLY_DAY" start="23-12 8:00:00" end="1-1 20:00:00"/>
+			- every year on 23rd December at 8:00:00 onStart() action is performed
+			- every year on 1st January at 20:00:00 onEnd() action is performed
+		<script path="scripts.custom.GGG" schedule="YEARLY_WEEK" start="MON-35 6:00:00" end="SAT-40 20:00:00"/>
+			- every year on the Monday of 35th week at 6:00:00 onStart() action is performed
+			- every year on the Saturday of 40th week at 20:00:00 onEnd() action is performed
+ 3)	When server starts and detects scheduled script in running period (current time between start and end condition), onStart() action is performed
+-->
 </list>

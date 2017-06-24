@@ -163,11 +163,13 @@
 	<aCar name="admin_add_exp_sp" accessLevel="1" />
 	<aCar name="admin_remove_exp_sp" accessLevel="1" />
 
-	<!-- GEODATA -->
+	<!-- GEOENGINE -->
 	<aCar name="admin_geo_bug" accessLevel="1" />
 	<aCar name="admin_geo_pos" accessLevel="1" />
-	<aCar name="admin_geo_can_see" accessLevel="1" />
-	<aCar name="admin_geo_can_move_beeline" accessLevel="1" />
+	<aCar name="admin_geo_see" accessLevel="1" />
+	<aCar name="admin_geo_move" accessLevel="1" />
+	<aCar name="admin_path_find" accessLevel="1" />
+	<aCar name="admin_path_info" accessLevel="1" />
 
 	<!-- GM -->
 	<aCar name="admin_gm" accessLevel="1" />
@@ -210,7 +212,6 @@
 	<!-- MAMMON -->
 	<aCar name="admin_mammon_find" accessLevel="1" />
 	<aCar name="admin_mammon_respawn" accessLevel="1" />
-	<aCar name="admin_msg" accessLevel="1" />
 
 	<!-- MANOR -->
 	<aCar name="admin_manor" accessLevel="1" />
@@ -246,10 +247,6 @@
 	<aCar name="admin_sethero" accessLevel="1" />
 	<aCar name="admin_setnoble" accessLevel="1" />
 	
-	<!-- PATHNODE -->
-	<aCar name="admin_pn_info" accessLevel="1" />
-	<aCar name="admin_find_path" accessLevel="1" />
-
 	<!-- PETITION -->
 	<aCar name="admin_view_petitions" accessLevel="1" />
 	<aCar name="admin_view_petition" accessLevel="1" />
@@ -262,6 +259,7 @@
 	<aCar name="admin_forge" accessLevel="1" />
 	<aCar name="admin_forge2" accessLevel="1" />
 	<aCar name="admin_forge3" accessLevel="1" />
+	<aCar name="admin_msg" accessLevel="1" />
 
 	<!-- PLEDGE -->
 	<aCar name="admin_pledge" accessLevel="1" />
@@ -332,7 +330,10 @@
 	<aCar name="admin_show_npcs" accessLevel="1" />
 	<aCar name="admin_spawnnight" accessLevel="1" />
 	<aCar name="admin_spawnday" accessLevel="1" />
-
+	<aCar name="admin_spawnfence" accessLevel="1" />
+	<aCar name="admin_deletefence" accessLevel="1" />
+	<aCar name="admin_listfence" accessLevel="1" />
+ 
 	<!-- TARGET -->
 	<aCar name="admin_target" accessLevel="1" />
 

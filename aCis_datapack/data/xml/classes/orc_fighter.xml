@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list>
-	<class id="44" parentId="-1">
-		<set name="className" val="Orc Fighter" />
-		<set name="raceId" val="3" />
+	<class id="44"><!-- Orc Fighter -->
 		<set name="str" val="40" />
 		<set name="con" val="47" />
 		<set name="dex" val="26" />
@@ -14,6 +12,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="117" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56693" />
 		<set name="spawnY" val="-113610" />
 		<set name="spawnZ" val="-690" />
@@ -85,9 +85,7 @@
 		</skillTrees>
 		<items val="1147;1146;2368;2369;5588" />
 	</class>
-	<class id="45" parentId="44">
-		<set name="className" val="Raider" />
-		<set name="raceId" val="3" />
+	<class id="45"><!-- Orc Raider -->
 		<set name="str" val="40" />
 		<set name="con" val="47" />
 		<set name="dex" val="26" />
@@ -99,6 +97,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="117" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56693" />
 		<set name="spawnY" val="-113610" />
 		<set name="spawnZ" val="-690" />
@@ -243,9 +243,7 @@
 			<skill id="312" lvl="5" sp="17000" minLvl="36" />
 		</skillTrees>
 	</class>
-	<class id="47" parentId="44">
-		<set name="className" val="Monk" />
-		<set name="raceId" val="3" />
+	<class id="47"><!-- Monk -->
 		<set name="str" val="40" />
 		<set name="con" val="47" />
 		<set name="dex" val="26" />
@@ -257,6 +255,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="117" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56682" />
 		<set name="spawnY" val="-113610" />
 		<set name="spawnZ" val="-690" />
@@ -357,9 +357,7 @@
 			<skill id="319" lvl="1" sp="5300" minLvl="20" />
 		</skillTrees>
 	</class>
-	<class id="46" parentId="45">
-		<set name="className" val="Destroyer" />
-		<set name="raceId" val="3" />
+	<class id="46"><!-- Destroyer -->
 		<set name="str" val="40" />
 		<set name="con" val="47" />
 		<set name="dex" val="26" />
@@ -371,6 +369,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="117" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56693" />
 		<set name="spawnY" val="-113610" />
 		<set name="spawnZ" val="-690" />
@@ -772,9 +772,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="48" parentId="47">
-		<set name="className" val="Tyrant" />
-		<set name="raceId" val="3" />
+	<class id="48"><!-- Tyrant -->
 		<set name="str" val="40" />
 		<set name="con" val="47" />
 		<set name="dex" val="26" />
@@ -786,6 +784,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="117" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56693" />
 		<set name="spawnY" val="-113610" />
 		<set name="spawnZ" val="-690" />
@@ -1153,9 +1153,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="113" parentId="46">
-		<set name="className" val="Titan" />
-		<set name="raceId" val="3" />
+	<class id="113"><!-- Titan -->
 		<set name="str" val="40" />
 		<set name="con" val="47" />
 		<set name="dex" val="26" />
@@ -1167,6 +1165,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="117" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56693" />
 		<set name="spawnY" val="-113610" />
 		<set name="spawnZ" val="-690" />
@@ -1206,9 +1206,7 @@
 			<skill id="1405" lvl="4" sp="0" minLvl="76" />
 		</skillTrees>
 	</class>
-	<class id="114" parentId="48">
-		<set name="className" val="Grand Khavatari" />
-		<set name="raceId" val="3" />
+	<class id="114"><!-- Grand Khavatari -->
 		<set name="str" val="40" />
 		<set name="con" val="47" />
 		<set name="dex" val="26" />
@@ -1220,6 +1218,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="117" />
+		<set name="walkSpd" val="70" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="-56693" />
 		<set name="spawnY" val="-113610" />
 		<set name="spawnZ" val="-690" />

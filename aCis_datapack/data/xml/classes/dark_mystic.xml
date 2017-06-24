@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list>
-	<class id="38" parentId="-1">
-		<set name="className" val="DE Mage" />
-		<set name="raceId" val="2" />
+	<class id="38"><!-- Dark Mystic -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -14,6 +12,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -108,9 +108,7 @@
 		</skillTrees>
 		<items val="425;461;6;5588" />
 	</class>
-	<class id="39" parentId="38">
-		<set name="className" val="DE Wizard" />
-		<set name="raceId" val="2" />
+	<class id="39"><!-- Dark Wizard -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -122,6 +120,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -287,9 +287,7 @@
 			<skill id="1266" lvl="3" sp="17600" minLvl="35" />
 		</skillTrees>
 	</class>
-	<class id="42" parentId="38">
-		<set name="className" val="Shillien Oracle" />
-		<set name="raceId" val="2" />
+	<class id="42"><!-- Shillien Oracle -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -301,6 +299,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -468,9 +468,7 @@
 			<skill id="1268" lvl="1" skillName="Vampiric Rage" sp="12000" minLvl="30" />
 		</skillTrees>
 	</class>
-	<class id="40" parentId="39">
-		<set name="className" val="Spell Howler" />
-		<set name="raceId" val="2" />
+	<class id="40"><!-- Spellhowler -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -482,6 +480,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -946,9 +946,7 @@
 			<skill id="1417" lvl="5" sp="1000000" minLvl="74" />
 		</skillTrees>
 	</class>
-	<class id="41" parentId="39">
-		<set name="className" val="Phantom Summoner" />
-		<set name="raceId" val="2" />
+	<class id="41"><!-- Phantom Summoner -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -960,6 +958,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -1349,9 +1349,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="43" parentId="42">
-		<set name="className" val="Shillien Elder" />
-		<set name="raceId" val="2" />
+	<class id="43"><!-- Shillien Elder -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -1363,6 +1361,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -1746,9 +1746,7 @@
 			<skill id="1430" lvl="5" sp="1070000" minLvl="72" />
 		</skillTrees>
 	</class>
-	<class id="110" parentId="40">
-		<set name="className" val="Storm Screamer" />
-		<set name="raceId" val="2" />
+	<class id="110"><!-- Storm Screamer -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -1760,6 +1758,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -1797,9 +1797,7 @@
 			<skill id="1420" lvl="1" sp="150000000" minLvl="80" />
 		</skillTrees>
 	</class>
-	<class id="111" parentId="41">
-		<set name="className" val="Spectral Master" />
-		<set name="raceId" val="2" />
+	<class id="111"><!-- Spectral Master -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -1811,6 +1809,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />
@@ -1850,9 +1850,7 @@
 			<skill id="1424" lvl="1" sp="150000000" minLvl="80" />
 		</skillTrees>
 	</class>
-	<class id="112" parentId="43">
-		<set name="className" val="Shillen Saint" />
-		<set name="raceId" val="2" />
+	<class id="112"><!-- Shillen Saint -->
 		<set name="str" val="23" />
 		<set name="con" val="24" />
 		<set name="dex" val="23" />
@@ -1864,6 +1862,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="28295" />
 		<set name="spawnY" val="11063" />
 		<set name="spawnZ" val="-4224" />

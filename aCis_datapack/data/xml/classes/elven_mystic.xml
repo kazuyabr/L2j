@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list>
-	<class id="25" parentId="-1">
-		<set name="className" val="Elf Mage" />
-		<set name="raceId" val="1" />
+	<class id="25"><!-- Elven Mystic -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -14,6 +12,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -105,9 +105,7 @@
 		</skillTrees>
 		<items val="425;461;6;5588" />
 	</class>
-	<class id="26" parentId="25">
-		<set name="className" val="Elf Wizard" />
-		<set name="raceId" val="1" />
+	<class id="26"><!-- Elven Wizard -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -119,6 +117,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -274,9 +274,7 @@
 			<skill id="1274" lvl="4" sp="19500" minLvl="35" />
 		</skillTrees>
 	</class>
-	<class id="29" parentId="25">
-		<set name="className" val="Oracle" />
-		<set name="raceId" val="1" />
+	<class id="29"><!-- Elven Oracle -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -288,6 +286,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -457,9 +457,7 @@
 			<skill id="1257" lvl="1" sp="21000" minLvl="35" />
 		</skillTrees>
 	</class>
-	<class id="27" parentId="26">
-		<set name="className" val="Spellsinger" />
-		<set name="raceId" val="1" />
+	<class id="27"><!-- Spellsinger -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -471,6 +469,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -944,9 +944,7 @@
 			<skill id="1417" lvl="5" sp="1000000" minLvl="74" />
 		</skillTrees>
 	</class>
-	<class id="28" parentId="26">
-		<set name="className" val="Elemental Summoner" />
-		<set name="raceId" val="1" />
+	<class id="28"><!-- Elemental Summoner -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -958,6 +956,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -1347,9 +1347,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="30" parentId="29">
-		<set name="className" val="Elder" />
-		<set name="raceId" val="1" />
+	<class id="30"><!-- Elven Elder -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -1361,6 +1359,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -1837,9 +1837,7 @@
 			<skill id="1430" lvl="5" sp="710000" minLvl="72" />
 		</skillTrees>
 	</class>
-	<class id="103" parentId="27">
-		<set name="className" val="Mystic Muse" />
-		<set name="raceId" val="1" />
+	<class id="103"><!-- Mystic Muse -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -1851,6 +1849,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -1886,9 +1886,7 @@
 			<skill id="1421" lvl="1" sp="150000000" minLvl="80" />
 		</skillTrees>
 	</class>
-	<class id="104" parentId="28">
-		<set name="className" val="Elemental Master" />
-		<set name="raceId" val="1" />
+	<class id="104"><!-- Elemental Master -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -1900,6 +1898,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />
@@ -1937,9 +1937,7 @@
 			<skill id="1424" lvl="1" sp="150000000" minLvl="80" />
 		</skillTrees>
 	</class>
-	<class id="105" parentId="30">
-		<set name="className" val="Eva Saint" />
-		<set name="raceId" val="1" />
+	<class id="105"><!-- Eva's Saint -->
 		<set name="str" val="21" />
 		<set name="con" val="25" />
 		<set name="dex" val="24" />
@@ -1951,6 +1949,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="122" />
+		<set name="walkSpd" val="85" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="46182" />
 		<set name="spawnY" val="41198" />
 		<set name="spawnZ" val="-3440" />

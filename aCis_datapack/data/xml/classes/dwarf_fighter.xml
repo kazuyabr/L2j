@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list>
-	<class id="53" parentId="-1">
-		<set name="className" val="Dwarf Fighter" />
-		<set name="raceId" val="4" />
+	<class id="53"><!-- Dwarven Fighter -->
 		<set name="str" val="39" />
 		<set name="con" val="45" />
 		<set name="dex" val="29" />
@@ -14,6 +12,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="108512" />
 		<set name="spawnY" val="-174026" />
 		<set name="spawnZ" val="-400" />
@@ -69,9 +69,7 @@
 		</skillTrees>
 		<items val="1147;1146;10;2370;5588" />
 	</class>
-	<class id="56" parentId="53">
-		<set name="className" val="Artisan" />
-		<set name="raceId" val="4" />
+	<class id="56"><!-- Artisan -->
 		<set name="str" val="39" />
 		<set name="con" val="45" />
 		<set name="dex" val="29" />
@@ -83,6 +81,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="108512" />
 		<set name="spawnY" val="-174026" />
 		<set name="spawnZ" val="-400" />
@@ -198,9 +198,7 @@
 			<skill id="248" lvl="1" sp="3700" minLvl="20" />
 		</skillTrees>
 	</class>
-	<class id="54" parentId="53">
-		<set name="className" val="Scavenger" />
-		<set name="raceId" val="4" />
+	<class id="54"><!-- Scavenger -->
 		<set name="str" val="39" />
 		<set name="con" val="45" />
 		<set name="dex" val="29" />
@@ -212,6 +210,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="108512" />
 		<set name="spawnY" val="-174026" />
 		<set name="spawnZ" val="-400" />
@@ -325,9 +325,7 @@
 			<skill id="302" lvl="2" sp="35000" minLvl="36" />
 		</skillTrees>
 	</class>
-	<class id="57" parentId="56">
-		<set name="className" val="Warsmith" />
-		<set name="raceId" val="4" />
+	<class id="57"><!-- Warsmith -->
 		<set name="str" val="39" />
 		<set name="con" val="45" />
 		<set name="dex" val="29" />
@@ -339,6 +337,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="108512" />
 		<set name="spawnY" val="-174026" />
 		<set name="spawnZ" val="-400" />
@@ -661,9 +661,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="55" parentId="54">
-		<set name="className" val="Bounty Hunter" />
-		<set name="raceId" val="4" />
+	<class id="55"><!-- Bounty Hunter -->
 		<set name="str" val="39" />
 		<set name="con" val="45" />
 		<set name="dex" val="29" />
@@ -675,6 +673,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="108512" />
 		<set name="spawnY" val="-174026" />
 		<set name="spawnZ" val="-400" />
@@ -984,9 +984,7 @@
 			<skill id="1405" lvl="2" sp="0" minLvl="61" />
 		</skillTrees>
 	</class>
-	<class id="118" parentId="57">
-		<set name="className" val="Maestro" />
-		<set name="raceId" val="4" />
+	<class id="118"><!-- Maestro -->
 		<set name="str" val="39" />
 		<set name="con" val="45" />
 		<set name="dex" val="29" />
@@ -998,6 +996,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="108512" />
 		<set name="spawnY" val="-174026" />
 		<set name="spawnZ" val="-400" />
@@ -1037,9 +1037,7 @@
 			<skill id="1405" lvl="4" sp="0" minLvl="76" />
 		</skillTrees>
 	</class>
-	<class id="117" parentId="55">
-		<set name="className" val="Fortune Seeker" />
-		<set name="raceId" val="4" />
+	<class id="117"><!-- Fortune Seeker -->
 		<set name="str" val="39" />
 		<set name="con" val="45" />
 		<set name="dex" val="29" />
@@ -1051,6 +1049,8 @@
 		<set name="mAtk" val="6" />
 		<set name="mDef" val="41" />
 		<set name="runSpd" val="115" />
+		<set name="walkSpd" val="80" />
+		<set name="swimSpd" val="50" />
 		<set name="spawnX" val="108512" />
 		<set name="spawnY" val="-174026" />
 		<set name="spawnZ" val="-400" />

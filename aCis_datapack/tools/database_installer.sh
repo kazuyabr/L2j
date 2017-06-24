@@ -112,7 +112,6 @@ $MYG < ../sql/cursed_weapons.sql &> /dev/null
 $MYG < ../sql/fishing_championship.sql &> /dev/null
 $MYG < ../sql/forums.sql &> /dev/null
 $MYG < ../sql/games.sql &> /dev/null
-$MYG < ../sql/global_tasks.sql &> /dev/null
 $MYG < ../sql/grandboss_data.sql &> /dev/null
 $MYG < ../sql/grandboss_list.sql &> /dev/null
 $MYG < ../sql/heroes_diary.sql &> /dev/null

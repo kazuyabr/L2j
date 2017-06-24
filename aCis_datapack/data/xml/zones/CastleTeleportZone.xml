@@ -3,8 +3,8 @@
 	<!-- Custom Castle Teleport Zones -->
 	<zone type="CastleTeleportZone" shape="Cuboid" minZ="-1827" maxZ="-1682"><!-- Gludio Teleport -->
 		<stat name="castleId" val="1" />
-		<stat name="spawnMinX" val="-17727" />
-		<stat name="spawnMaxX" val="-18482" />
+		<stat name="spawnMinX" val="-18482" />
+		<stat name="spawnMaxX" val="-17727" />
 		<stat name="spawnMinY" val="109041" />
 		<stat name="spawnMaxY" val="109383" />
 		<stat name="spawnZ" val="-2496" />
@@ -65,8 +65,8 @@
 		<stat name="castleId" val="7" />
 		<stat name="spawnMinX" val="147061" />
 		<stat name="spawnMaxX" val="147809" />
-		<stat name="spawnMinY" val="-48198" />
-		<stat name="spawnMaxY" val="-48779" />
+		<stat name="spawnMinY" val="-48779" />
+		<stat name="spawnMaxY" val="-48198" />
 		<stat name="spawnZ" val="-2276" />
 		<node X="147293" Y="-46267" />
 		<node X="147644" Y="-47188" />
@@ -75,8 +75,8 @@
 		<stat name="castleId" val="8" />
 		<stat name="spawnMinX" val="10985" />
 		<stat name="spawnMaxX" val="11997" />
-		<stat name="spawnMinY" val="-48780" />
-		<stat name="spawnMaxY" val="-49498" />
+		<stat name="spawnMinY" val="-49498" />
+		<stat name="spawnMaxY" val="-48780" />
 		<stat name="spawnZ" val="-546" />
 		<node X="9337" Y="-49734" />
 		<node X="11423" Y="-49297" />
@@ -87,8 +87,8 @@
 		<stat name="castleId" val="9" />
 		<stat name="spawnMinX" val="77144" />
 		<stat name="spawnMaxX" val="77927" />
-		<stat name="spawnMinY" val="-152272" />
-		<stat name="spawnMaxY" val="-152843" />
+		<stat name="spawnMinY" val="-152843" />
+		<stat name="spawnMaxY" val="-152272" />
 		<stat name="spawnZ" val="-544" />
 		<node X="77381" Y="-150335" />
 		<node X="77735" Y="-151256" />
