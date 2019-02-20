@@ -1,23 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public final class AllyDismiss extends L2GameClientPacket
@@ -36,11 +22,11 @@ public final class AllyDismiss extends L2GameClientPacket
 		if (_clanName == null)
 			return;
 		
-		final L2PcInstance player = getClient().getActiveChar();
+		final Player player = getClient().getActiveChar();
 		if (player == null)
 			return;
 		
-		final L2Clan leaderClan = player.getClan();
+		final Clan leaderClan = player.getClan();
 		if (leaderClan == null)
 		{
 			player.sendPacket(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
@@ -59,7 +45,7 @@ public final class AllyDismiss extends L2GameClientPacket
 			return;
 		}
 		
-		L2Clan clan = ClanTable.getInstance().getClanByName(_clanName);
+		Clan clan = ClanTable.getInstance().getClanByName(_clanName);
 		if (clan == null)
 		{
 			player.sendPacket(SystemMessageId.CLAN_DOESNT_EXISTS);
@@ -79,13 +65,13 @@ public final class AllyDismiss extends L2GameClientPacket
 		}
 		
 		long currentTime = System.currentTimeMillis();
-		leaderClan.setAllyPenaltyExpiryTime(currentTime + Config.ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED * 86400000L, L2Clan.PENALTY_TYPE_DISMISS_CLAN);
+		leaderClan.setAllyPenaltyExpiryTime(currentTime + Config.ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED * 86400000L, Clan.PENALTY_TYPE_DISMISS_CLAN);
 		leaderClan.updateClanInDB();
 		
 		clan.setAllyId(0);
 		clan.setAllyName(null);
 		clan.changeAllyCrest(0, true);
-		clan.setAllyPenaltyExpiryTime(currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_DISMISSED * 86400000L, L2Clan.PENALTY_TYPE_CLAN_DISMISSED);
+		clan.setAllyPenaltyExpiryTime(currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_DISMISSED * 86400000L, Clan.PENALTY_TYPE_CLAN_DISMISSED);
 		clan.updateClanInDB();
 		
 		player.sendPacket(SystemMessageId.YOU_HAVE_EXPELED_A_CLAN);

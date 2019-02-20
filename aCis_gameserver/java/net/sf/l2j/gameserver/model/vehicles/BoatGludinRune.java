@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.vehicles;
 
 import java.util.logging.Level;
@@ -20,9 +6,9 @@ import java.util.logging.Logger;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.gameserver.instancemanager.BoatManager;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.VehiclePathPoint;
-import net.sf.l2j.gameserver.model.actor.L2Vehicle;
+import net.sf.l2j.gameserver.model.actor.Vehicle;
+import net.sf.l2j.gameserver.model.location.Location;
+import net.sf.l2j.gameserver.model.location.VehicleLocation;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.clientpackets.Say2;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
@@ -36,75 +22,75 @@ public class BoatGludinRune implements Runnable
 	private static final Location OUST_LOC_2 = new Location(34513, -38009, -3640);
 	
 	// Time: 1151s
-	private static final VehiclePathPoint[] GLUDIN_TO_RUNE =
+	private static final VehicleLocation[] GLUDIN_TO_RUNE =
 	{
-		new VehiclePathPoint(-95686, 155514, -3610, 150, 800),
-		new VehiclePathPoint(-98112, 159040, -3610, 150, 800),
-		new VehiclePathPoint(-104192, 160608, -3610, 200, 1800),
-		new VehiclePathPoint(-109952, 159616, -3610, 250, 1800),
-		new VehiclePathPoint(-112768, 154784, -3610, 290, 1800),
-		new VehiclePathPoint(-114688, 139040, -3610, 290, 1800),
-		new VehiclePathPoint(-115232, 134368, -3610, 290, 1800),
-		new VehiclePathPoint(-113888, 121696, -3610, 290, 1800),
-		new VehiclePathPoint(-107808, 104928, -3610, 290, 1800),
-		new VehiclePathPoint(-97152, 75520, -3610, 290, 800),
-		new VehiclePathPoint(-85536, 67264, -3610, 290, 1800),
-		new VehiclePathPoint(-64640, 55840, -3610, 290, 1800),
-		new VehiclePathPoint(-60096, 44672, -3610, 290, 1800),
-		new VehiclePathPoint(-52672, 37440, -3610, 290, 1800),
-		new VehiclePathPoint(-46144, 33184, -3610, 290, 1800),
-		new VehiclePathPoint(-36096, 24928, -3610, 290, 1800),
-		new VehiclePathPoint(-33792, 8448, -3610, 290, 1800),
-		new VehiclePathPoint(-23776, 3424, -3610, 290, 1000),
-		new VehiclePathPoint(-12000, -1760, -3610, 290, 1000),
-		new VehiclePathPoint(672, 480, -3610, 290, 1800),
-		new VehiclePathPoint(15488, 200, -3610, 290, 1000),
-		new VehiclePathPoint(24736, 164, -3610, 290, 1000),
-		new VehiclePathPoint(32192, -1156, -3610, 290, 1000),
-		new VehiclePathPoint(39200, -8032, -3610, 270, 1000),
-		new VehiclePathPoint(44320, -25152, -3610, 270, 1000),
-		new VehiclePathPoint(40576, -31616, -3610, 250, 800),
-		new VehiclePathPoint(36819, -35315, -3610, 220, 800)
+		new VehicleLocation(-95686, 155514, -3610, 150, 800),
+		new VehicleLocation(-98112, 159040, -3610, 150, 800),
+		new VehicleLocation(-104192, 160608, -3610, 200, 1800),
+		new VehicleLocation(-109952, 159616, -3610, 250, 1800),
+		new VehicleLocation(-112768, 154784, -3610, 290, 1800),
+		new VehicleLocation(-114688, 139040, -3610, 290, 1800),
+		new VehicleLocation(-115232, 134368, -3610, 290, 1800),
+		new VehicleLocation(-113888, 121696, -3610, 290, 1800),
+		new VehicleLocation(-107808, 104928, -3610, 290, 1800),
+		new VehicleLocation(-97152, 75520, -3610, 290, 800),
+		new VehicleLocation(-85536, 67264, -3610, 290, 1800),
+		new VehicleLocation(-64640, 55840, -3610, 290, 1800),
+		new VehicleLocation(-60096, 44672, -3610, 290, 1800),
+		new VehicleLocation(-52672, 37440, -3610, 290, 1800),
+		new VehicleLocation(-46144, 33184, -3610, 290, 1800),
+		new VehicleLocation(-36096, 24928, -3610, 290, 1800),
+		new VehicleLocation(-33792, 8448, -3610, 290, 1800),
+		new VehicleLocation(-23776, 3424, -3610, 290, 1000),
+		new VehicleLocation(-12000, -1760, -3610, 290, 1000),
+		new VehicleLocation(672, 480, -3610, 290, 1800),
+		new VehicleLocation(15488, 200, -3610, 290, 1000),
+		new VehicleLocation(24736, 164, -3610, 290, 1000),
+		new VehicleLocation(32192, -1156, -3610, 290, 1000),
+		new VehicleLocation(39200, -8032, -3610, 270, 1000),
+		new VehicleLocation(44320, -25152, -3610, 270, 1000),
+		new VehicleLocation(40576, -31616, -3610, 250, 800),
+		new VehicleLocation(36819, -35315, -3610, 220, 800)
 	};
 	
-	private static final VehiclePathPoint[] RUNE_DOCK =
+	private static final VehicleLocation[] RUNE_DOCK =
 	{
-		new VehiclePathPoint(34381, -37680, -3610, 200, 800)
+		new VehicleLocation(34381, -37680, -3610, 200, 800)
 	};
 	
 	// Time: 967s
-	private static final VehiclePathPoint[] RUNE_TO_GLUDIN =
+	private static final VehicleLocation[] RUNE_TO_GLUDIN =
 	{
-		new VehiclePathPoint(32750, -39300, -3610, 150, 800),
-		new VehiclePathPoint(27440, -39328, -3610, 180, 1000),
-		new VehiclePathPoint(21456, -34272, -3610, 200, 1000),
-		new VehiclePathPoint(6608, -29520, -3610, 250, 800),
-		new VehiclePathPoint(4160, -27828, -3610, 270, 800),
-		new VehiclePathPoint(2432, -25472, -3610, 270, 1000),
-		new VehiclePathPoint(-8000, -16272, -3610, 220, 1000),
-		new VehiclePathPoint(-18976, -9760, -3610, 290, 800),
-		new VehiclePathPoint(-23776, 3408, -3610, 290, 800),
-		new VehiclePathPoint(-33792, 8432, -3610, 290, 800),
-		new VehiclePathPoint(-36096, 24912, -3610, 290, 800),
-		new VehiclePathPoint(-46144, 33184, -3610, 290, 800),
-		new VehiclePathPoint(-52688, 37440, -3610, 290, 800),
-		new VehiclePathPoint(-60096, 44672, -3610, 290, 800),
-		new VehiclePathPoint(-64640, 55840, -3610, 290, 800),
-		new VehiclePathPoint(-85552, 67248, -3610, 290, 800),
-		new VehiclePathPoint(-97168, 85264, -3610, 290, 800),
-		new VehiclePathPoint(-107824, 104912, -3610, 290, 800),
-		new VehiclePathPoint(-102151, 135704, -3610, 290, 800),
-		new VehiclePathPoint(-96686, 140595, -3610, 290, 800),
-		new VehiclePathPoint(-95686, 147717, -3610, 250, 800),
-		new VehiclePathPoint(-95686, 148218, -3610, 200, 800)
+		new VehicleLocation(32750, -39300, -3610, 150, 800),
+		new VehicleLocation(27440, -39328, -3610, 180, 1000),
+		new VehicleLocation(21456, -34272, -3610, 200, 1000),
+		new VehicleLocation(6608, -29520, -3610, 250, 800),
+		new VehicleLocation(4160, -27828, -3610, 270, 800),
+		new VehicleLocation(2432, -25472, -3610, 270, 1000),
+		new VehicleLocation(-8000, -16272, -3610, 220, 1000),
+		new VehicleLocation(-18976, -9760, -3610, 290, 800),
+		new VehicleLocation(-23776, 3408, -3610, 290, 800),
+		new VehicleLocation(-33792, 8432, -3610, 290, 800),
+		new VehicleLocation(-36096, 24912, -3610, 290, 800),
+		new VehicleLocation(-46144, 33184, -3610, 290, 800),
+		new VehicleLocation(-52688, 37440, -3610, 290, 800),
+		new VehicleLocation(-60096, 44672, -3610, 290, 800),
+		new VehicleLocation(-64640, 55840, -3610, 290, 800),
+		new VehicleLocation(-85552, 67248, -3610, 290, 800),
+		new VehicleLocation(-97168, 85264, -3610, 290, 800),
+		new VehicleLocation(-107824, 104912, -3610, 290, 800),
+		new VehicleLocation(-102151, 135704, -3610, 290, 800),
+		new VehicleLocation(-96686, 140595, -3610, 290, 800),
+		new VehicleLocation(-95686, 147717, -3610, 250, 800),
+		new VehicleLocation(-95686, 148218, -3610, 200, 800)
 	};
 	
-	private static final VehiclePathPoint[] GLUDIN_DOCK =
+	private static final VehicleLocation[] GLUDIN_DOCK =
 	{
-		new VehiclePathPoint(-95686, 150514, -3610, 150, 800)
+		new VehicleLocation(-95686, 150514, -3610, 150, 800)
 	};
 	
-	private final L2Vehicle _boat;
+	private final Vehicle _boat;
 	private int _cycle = 0;
 	private int _shoutCount = 0;
 	
@@ -140,7 +126,7 @@ public class BoatGludinRune implements Runnable
 	private final PlaySound RUNE_SOUND_LEAVE_5MIN;
 	private final PlaySound RUNE_SOUND_LEAVE_1MIN;
 	
-	public BoatGludinRune(L2Vehicle boat)
+	public BoatGludinRune(Vehicle boat)
 	{
 		_boat = boat;
 		
@@ -168,14 +154,14 @@ public class BoatGludinRune implements Runnable
 		ARRIVAL_GLUDIN5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_RUNE_AT_GLUDIN_5_MINUTES);
 		ARRIVAL_GLUDIN1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_RUNE_AT_GLUDIN_1_MINUTE);
 		
-		GLUDIN_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
-		RUNE_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), RUNE_DOCK[0].x, RUNE_DOCK[0].y, RUNE_DOCK[0].z);
+		GLUDIN_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", _boat);
+		RUNE_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", _boat);
 		
-		GLUDIN_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
-		GLUDIN_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
+		GLUDIN_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", _boat);
+		GLUDIN_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", _boat);
 		
-		RUNE_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), RUNE_DOCK[0].x, RUNE_DOCK[0].y, RUNE_DOCK[0].z);
-		RUNE_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), RUNE_DOCK[0].x, RUNE_DOCK[0].y, RUNE_DOCK[0].z);
+		RUNE_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", _boat);
+		RUNE_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", _boat);
 	}
 	
 	@Override
@@ -312,7 +298,7 @@ public class BoatGludinRune implements Runnable
 	
 	public static void load()
 	{
-		final L2Vehicle boat = BoatManager.getInstance().getNewBoat(3, -95686, 150514, -3610, 16723);
+		final Vehicle boat = BoatManager.getInstance().getNewBoat(3, -95686, 150514, -3610, 16723);
 		if (boat != null)
 		{
 			boat.registerEngine(new BoatGludinRune(boat));

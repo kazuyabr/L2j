@@ -1,33 +1,19 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.NpcTable;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.skills.AbnormalEffect;
 
 public class CharInfo extends L2GameServerPacket
 {
-	private final L2PcInstance _activeChar;
+	private final Player _activeChar;
 	private final Inventory _inv;
 	
-	public CharInfo(L2PcInstance cha)
+	public CharInfo(Player cha)
 	{
 		_activeChar = cha;
 		_inv = _activeChar.getInventory();
@@ -40,7 +26,7 @@ public class CharInfo extends L2GameServerPacket
 		
 		if (_activeChar.getAppearance().getInvisible())
 		{
-			L2PcInstance tmp = getClient().getActiveChar();
+			Player tmp = getClient().getActiveChar();
 			if (tmp != null && tmp.isGM())
 				gmSeeInvis = true;
 		}

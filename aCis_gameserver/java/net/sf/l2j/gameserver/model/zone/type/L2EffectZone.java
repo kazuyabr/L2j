@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.type;
 
 import java.util.Map;
@@ -22,10 +8,10 @@ import java.util.concurrent.Future;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.serverpackets.EtcStatusUpdate;
@@ -43,7 +29,7 @@ public class L2EffectZone extends L2ZoneType
 	private boolean _isShowDangerIcon;
 	private Future<?> _task;
 	private int _minLvl;
-	private String _target = "L2Playable"; // default only playable
+	private String _target = "Playable"; // default only playable
 	
 	protected Map<Integer, Integer> _skills = new ConcurrentHashMap<>();
 	
@@ -102,7 +88,7 @@ public class L2EffectZone extends L2ZoneType
 	}
 	
 	@Override
-	protected boolean isAffected(L2Character character)
+	protected boolean isAffected(Creature character)
 	{
 		// Check lvl
 		if (character.getLevel() < _minLvl)
@@ -123,7 +109,7 @@ public class L2EffectZone extends L2ZoneType
 	}
 	
 	@Override
-	protected void onEnter(L2Character character)
+	protected void onEnter(Creature character)
 	{
 		if (_task == null)
 		{
@@ -134,21 +120,21 @@ public class L2EffectZone extends L2ZoneType
 			}
 		}
 		
-		if (character instanceof L2PcInstance && _isShowDangerIcon)
+		if (character instanceof Player && _isShowDangerIcon)
 		{
 			character.setInsideZone(ZoneId.DANGER_AREA, true);
-			character.sendPacket(new EtcStatusUpdate((L2PcInstance) character));
+			character.sendPacket(new EtcStatusUpdate((Player) character));
 		}
 	}
 	
 	@Override
-	protected void onExit(L2Character character)
+	protected void onExit(Creature character)
 	{
-		if (character instanceof L2PcInstance && _isShowDangerIcon)
+		if (character instanceof Player && _isShowDangerIcon)
 		{
 			character.setInsideZone(ZoneId.DANGER_AREA, false);
 			if (!character.isInsideZone(ZoneId.DANGER_AREA))
-				character.sendPacket(new EtcStatusUpdate((L2PcInstance) character));
+				character.sendPacket(new EtcStatusUpdate((Player) character));
 		}
 		
 		if (_characterList.isEmpty() && _task != null)
@@ -207,7 +193,7 @@ public class L2EffectZone extends L2ZoneType
 		{
 			if (isEnabled())
 			{
-				for (L2Character temp : getCharactersInside())
+				for (Creature temp : getCharactersInside())
 				{
 					if (temp != null && !temp.isDead())
 					{
@@ -228,12 +214,12 @@ public class L2EffectZone extends L2ZoneType
 	}
 	
 	@Override
-	public void onDieInside(L2Character character)
+	public void onDieInside(Creature character)
 	{
 	}
 	
 	@Override
-	public void onReviveInside(L2Character character)
+	public void onReviveInside(Creature character)
 	{
 	}
 }

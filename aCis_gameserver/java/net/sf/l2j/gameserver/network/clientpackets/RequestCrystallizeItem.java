@@ -1,22 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.type.CrystalType;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
@@ -24,8 +10,6 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.util.IllegalPlayerAction;
-import net.sf.l2j.gameserver.util.Util;
 
 public final class RequestCrystallizeItem extends L2GameClientPacket
 {
@@ -42,15 +26,12 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
 		if (_count <= 0)
-		{
-			Util.handleIllegalPlayerAction(activeChar, "[RequestCrystallizeItem] " + activeChar.getName() + "tried to crystallize an object but count was inferior to 0", IllegalPlayerAction.PUNISH_KICK);
 			return;
-		}
 		
 		if (activeChar.isInStoreMode() || activeChar.isCrystallizing())
 		{
@@ -169,7 +150,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S).addItemName(createditem.getItemId()).addItemNumber(crystalAmount));
 		
 		activeChar.broadcastUserInfo();
-		L2World.getInstance().removeObject(removedItem);
+		World.getInstance().removeObject(removedItem);
 		activeChar.setCrystallizing(false);
 	}
 }

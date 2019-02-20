@@ -1,21 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.serverpackets.GetOnVehicle;
 import net.sf.l2j.gameserver.network.serverpackets.ValidateLocation;
@@ -41,8 +27,8 @@ public class ValidatePosition extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null || activeChar.isTeleporting() || activeChar.inObserverMode())
+		final Player activeChar = getClient().getActiveChar();
+		if (activeChar == null || activeChar.isTeleporting() || activeChar.isInObserverMode())
 			return;
 		
 		final int realX = activeChar.getX();
@@ -116,7 +102,7 @@ public class ValidatePosition extends L2GameClientPacket
 			}
 			// Sync 2 (or other), intended for geodata. Sends a validation packet to client when too far from server calculated real coordinate.
 			// Due to geodata/zone errors, some Z axis checks are made. (maybe a temporary solution)
-			// Important: this code part must work together with L2Character.updatePosition
+			// Important: this code part must work together with Creature.updatePosition
 			if (diffSq > 250000 || Math.abs(dz) > 200)
 			{
 				if (Math.abs(dz) > 200 && Math.abs(dz) < 1500 && Math.abs(_z - activeChar.getClientZ()) < 800)

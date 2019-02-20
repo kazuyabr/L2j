@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.taskmanager;
 
 import java.util.Map;
@@ -19,22 +5,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2CubicInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Cubic;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.serverpackets.AutoAttackStop;
 
 /**
- * Turns off attack stance of {@link L2Character} after PERIOD ms.
+ * Turns off attack stance of {@link Creature} after PERIOD ms.
  * @author Luca Baldi, Hasha
  */
 public final class AttackStanceTaskManager implements Runnable
 {
 	private static final long ATTACK_STANCE_PERIOD = 15000; // 15 seconds
 	
-	private final Map<L2Character, Long> _characters = new ConcurrentHashMap<>();
+	private final Map<Creature, Long> _characters = new ConcurrentHashMap<>();
 	
 	public static final AttackStanceTaskManager getInstance()
 	{
@@ -48,15 +34,15 @@ public final class AttackStanceTaskManager implements Runnable
 	}
 	
 	/**
-	 * Adds {@link L2Character} to the AttackStanceTask.
-	 * @param character : {@link L2Character} to be added and checked.
+	 * Adds {@link Creature} to the AttackStanceTask.
+	 * @param character : {@link Creature} to be added and checked.
 	 */
-	public final void add(L2Character character)
+	public final void add(Creature character)
 	{
-		if (character instanceof L2Playable)
+		if (character instanceof Playable)
 		{
-			for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
-				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+			for (Cubic cubic : character.getActingPlayer().getCubics().values())
+				if (cubic.getId() != Cubic.LIFE_CUBIC)
 					cubic.doAction();
 		}
 		
@@ -64,25 +50,25 @@ public final class AttackStanceTaskManager implements Runnable
 	}
 	
 	/**
-	 * Removes {@link L2Character} from the AttackStanceTask.
-	 * @param character : {@link L2Character} to be removed.
+	 * Removes {@link Creature} from the AttackStanceTask.
+	 * @param character : {@link Creature} to be removed.
 	 */
-	public final void remove(L2Character character)
+	public final void remove(Creature character)
 	{
-		if (character instanceof L2Summon)
+		if (character instanceof Summon)
 			character = character.getActingPlayer();
 		
 		_characters.remove(character);
 	}
 	
 	/**
-	 * Tests if {@link L2Character} is in AttackStanceTask.
-	 * @param character : {@link L2Character} to be removed.
-	 * @return boolean : True when {@link L2Character} is in attack stance.
+	 * Tests if {@link Creature} is in AttackStanceTask.
+	 * @param character : {@link Creature} to be removed.
+	 * @return boolean : True when {@link Creature} is in attack stance.
 	 */
-	public final boolean isInAttackStance(L2Character character)
+	public final boolean isInAttackStance(Creature character)
 	{
-		if (character instanceof L2Summon)
+		if (character instanceof Summon)
 			character = character.getActingPlayer();
 		
 		return _characters.containsKey(character);
@@ -99,21 +85,21 @@ public final class AttackStanceTaskManager implements Runnable
 		final long time = System.currentTimeMillis();
 		
 		// Loop all characters.
-		for (Map.Entry<L2Character, Long> entry : _characters.entrySet())
+		for (Map.Entry<Creature, Long> entry : _characters.entrySet())
 		{
 			// Time hasn't passed yet, skip.
 			if (time < entry.getValue())
 				continue;
 			
 			// Get character.
-			final L2Character character = entry.getKey();
+			final Creature character = entry.getKey();
 			
 			// Stop character attack stance animation.
 			character.broadcastPacket(new AutoAttackStop(character.getObjectId()));
 			
 			// Stop pet attack stance animation.
-			if (character instanceof L2PcInstance && ((L2PcInstance) character).getPet() != null)
-				((L2PcInstance) character).getPet().broadcastPacket(new AutoAttackStop(((L2PcInstance) character).getPet().getObjectId()));
+			if (character instanceof Player && ((Player) character).getPet() != null)
+				((Player) character).getPet().broadcastPacket(new AutoAttackStop(((Player) character).getPet().getObjectId()));
 			
 			// Inform character AI and remove task.
 			character.getAI().setAutoAttacking(false);

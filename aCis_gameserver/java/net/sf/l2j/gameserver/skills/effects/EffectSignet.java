@@ -1,27 +1,13 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.skills.effects;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2EffectPointInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.EffectPoint;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -36,7 +22,7 @@ import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 public class EffectSignet extends L2Effect
 {
 	private L2Skill _skill;
-	private L2EffectPointInstance _actor;
+	private EffectPoint _actor;
 	private boolean _srcInArena;
 	
 	public EffectSignet(Env env, EffectTemplate template)
@@ -58,7 +44,7 @@ public class EffectSignet extends L2Effect
 		else if (getSkill() instanceof L2SkillSignetCasttime)
 			_skill = SkillTable.getInstance().getInfo(((L2SkillSignetCasttime) getSkill()).effectId, getLevel());
 		
-		_actor = (L2EffectPointInstance) getEffected();
+		_actor = (EffectPoint) getEffected();
 		_srcInArena = getEffector().isInArena();
 		return true;
 	}
@@ -77,8 +63,8 @@ public class EffectSignet extends L2Effect
 		}
 		getEffector().reduceCurrentMp(mpConsume);
 		
-		List<L2Character> targets = new ArrayList<>();
-		for (L2Character cha : _actor.getKnownList().getKnownTypeInRadius(L2Character.class, getSkill().getSkillRadius()))
+		List<Creature> targets = new ArrayList<>();
+		for (Creature cha : _actor.getKnownTypeInRadius(Creature.class, getSkill().getSkillRadius()))
 		{
 			if (_skill.isOffensive() && !L2Skill.checkForAreaOffensiveSkills(getEffector(), cha, _skill, _srcInArena))
 				continue;
@@ -89,7 +75,7 @@ public class EffectSignet extends L2Effect
 		}
 		
 		if (!targets.isEmpty())
-			getEffector().callSkill(_skill, targets.toArray(new L2Character[targets.size()]));
+			getEffector().callSkill(_skill, targets.toArray(new Creature[targets.size()]));
 		
 		return true;
 	}

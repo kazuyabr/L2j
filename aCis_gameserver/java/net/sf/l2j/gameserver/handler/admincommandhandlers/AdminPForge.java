@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
@@ -19,7 +5,7 @@ import java.util.StringTokenizer;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.serverpackets.AdminForgePacket;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -39,7 +25,7 @@ public class AdminPForge implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		if (command.equals("admin_forge"))
 			showMainPage(activeChar);
@@ -101,11 +87,11 @@ public class AdminPForge implements IAdminCommandHandler
 					}
 					else if (val.toLowerCase().equals("$tclanid"))
 					{
-						val = String.valueOf(((L2PcInstance) activeChar.getTarget()).getObjectId());
+						val = String.valueOf(((Player) activeChar.getTarget()).getObjectId());
 					}
 					else if (val.toLowerCase().equals("$tallyid"))
 					{
-						val = String.valueOf(((L2PcInstance) activeChar.getTarget()).getAllyId());
+						val = String.valueOf(((Player) activeChar.getTarget()).getAllyId());
 					}
 					else if (val.toLowerCase().equals("$x"))
 					{
@@ -137,7 +123,7 @@ public class AdminPForge implements IAdminCommandHandler
 					}
 					else if (val.toLowerCase().equals("$theading"))
 					{
-						val = String.valueOf(((L2PcInstance) activeChar.getTarget()).getHeading());
+						val = String.valueOf(((Player) activeChar.getTarget()).getHeading());
 					}
 					
 					sp.addPart(format.getBytes()[i], val);
@@ -171,12 +157,12 @@ public class AdminPForge implements IAdminCommandHandler
 		return true;
 	}
 	
-	private static void showMainPage(L2PcInstance activeChar)
+	private static void showMainPage(Player activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "pforge1.htm");
 	}
 	
-	private static void showPage2(L2PcInstance activeChar, String format)
+	private static void showPage2(Player activeChar, String format)
 	{
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile("data/html/admin/pforge2.htm");
@@ -200,7 +186,7 @@ public class AdminPForge implements IAdminCommandHandler
 		activeChar.sendPacket(html);
 	}
 	
-	private static void showPage3(L2PcInstance activeChar, String format, String command)
+	private static void showPage3(Player activeChar, String format, String command)
 	{
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile("data/html/admin/pforge3.htm");

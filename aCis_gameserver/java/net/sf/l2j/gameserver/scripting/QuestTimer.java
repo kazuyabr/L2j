@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting;
 
 import java.util.concurrent.ScheduledFuture;
@@ -19,8 +5,8 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 public class QuestTimer
 {
@@ -28,13 +14,13 @@ public class QuestTimer
 	
 	protected final Quest _quest;
 	protected final String _name;
-	protected final L2Npc _npc;
-	protected final L2PcInstance _player;
+	protected final Npc _npc;
+	protected final Player _player;
 	protected final boolean _isRepeating;
 	
 	protected ScheduledFuture<?> _schedular;
 	
-	public QuestTimer(Quest quest, String name, L2Npc npc, L2PcInstance player, long time, boolean repeating)
+	public QuestTimer(Quest quest, String name, Npc npc, Player player, long time, boolean repeating)
 	{
 		_quest = quest;
 		_name = name;
@@ -88,7 +74,7 @@ public class QuestTimer
 	 * @param player : Player instance attached to the desired timer (null if no player attached)
 	 * @return boolean
 	 */
-	public final boolean equals(Quest quest, String name, L2Npc npc, L2PcInstance player)
+	public final boolean equals(Quest quest, String name, Npc npc, Player player)
 	{
 		if (quest == null || quest != _quest)
 			return false;

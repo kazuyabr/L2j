@@ -1,55 +1,37 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
-import net.sf.l2j.gameserver.datatables.DoorTable;
+import net.sf.l2j.gameserver.data.DoorTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 
-/**
- * @author chris
- */
 public class PaganKeys implements IItemHandler
 {
-	public static final int INTERACTION_DISTANCE = 100;
-	
 	@Override
-	public void useItem(L2Playable playable, ItemInstance item, boolean forceUse)
+	public void useItem(Playable playable, ItemInstance item, boolean forceUse)
 	{
-		if (!(playable instanceof L2PcInstance))
+		if (!(playable instanceof Player))
 			return;
 		
-		final L2PcInstance activeChar = (L2PcInstance) playable;
-		final L2Object target = activeChar.getTarget();
+		final Player activeChar = (Player) playable;
+		final WorldObject target = activeChar.getTarget();
 		
-		if (!(target instanceof L2DoorInstance))
+		if (!(target instanceof Door))
 		{
 			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		final L2DoorInstance door = (L2DoorInstance) target;
+		final Door door = (Door) target;
 		
-		if (!(activeChar.isInsideRadius(door, INTERACTION_DISTANCE, false, false)))
+		if (!(activeChar.isInsideRadius(door, Npc.INTERACTION_DISTANCE, false, false)))
 		{
 			activeChar.sendPacket(SystemMessageId.DIST_TOO_FAR_CASTING_STOPPED);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);

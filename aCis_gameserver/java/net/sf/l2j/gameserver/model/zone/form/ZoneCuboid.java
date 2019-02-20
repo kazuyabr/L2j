@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.form;
 
 import net.sf.l2j.gameserver.model.zone.L2ZoneForm;
@@ -141,19 +127,19 @@ public class ZoneCuboid extends L2ZoneForm
 	}
 	
 	@Override
-	public void visualizeZone(int z)
+	public void visualizeZone(int id, int z)
 	{
 		// x1->x2
 		for (int x = _x1; x < _x2; x = x + STEP)
 		{
-			dropDebugItem(57, 1, x, _y1, z);
-			dropDebugItem(57, 1, x, _y2, z);
+			dropDebugItem(id, x, _y1, z);
+			dropDebugItem(id, x, _y2, z);
 		}
 		// y1->y2
 		for (int y = _y1; y < _y2; y = y + STEP)
 		{
-			dropDebugItem(57, 1, _x1, y, z);
-			dropDebugItem(57, 1, _x2, y, z);
+			dropDebugItem(id, _x1, y, z);
+			dropDebugItem(id, _x2, y, z);
 		}
 	}
 }

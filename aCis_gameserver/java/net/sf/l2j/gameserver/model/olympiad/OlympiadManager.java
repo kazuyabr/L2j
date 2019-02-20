@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.olympiad;
 
 import java.util.ArrayList;
@@ -21,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -83,12 +69,12 @@ public class OlympiadManager
 		_classBasedRegisters.clear();
 	}
 	
-	public final boolean isRegistered(L2PcInstance noble)
+	public final boolean isRegistered(Player noble)
 	{
 		return isRegistered(noble, false);
 	}
 	
-	private final boolean isRegistered(L2PcInstance player, boolean showMessage)
+	private final boolean isRegistered(Player player, boolean showMessage)
 	{
 		final Integer objId = Integer.valueOf(player.getObjectId());
 		
@@ -112,12 +98,12 @@ public class OlympiadManager
 		return false;
 	}
 	
-	public final boolean isRegisteredInComp(L2PcInstance noble)
+	public final boolean isRegisteredInComp(Player noble)
 	{
 		return isRegistered(noble, false) || isInCompetition(noble, false);
 	}
 	
-	private static final boolean isInCompetition(L2PcInstance player, boolean showMessage)
+	private static final boolean isInCompetition(Player player, boolean showMessage)
 	{
 		if (!Olympiad._inCompPeriod)
 			return false;
@@ -139,7 +125,7 @@ public class OlympiadManager
 		return false;
 	}
 	
-	public final boolean registerNoble(L2PcInstance player, CompetitionType type)
+	public final boolean registerNoble(Player player, CompetitionType type)
 	{
 		if (!Olympiad._inCompPeriod)
 		{
@@ -187,7 +173,7 @@ public class OlympiadManager
 		return true;
 	}
 	
-	public final boolean unRegisterNoble(L2PcInstance noble)
+	public final boolean unRegisterNoble(Player noble)
 	{
 		if (!Olympiad._inCompPeriod)
 		{
@@ -230,7 +216,7 @@ public class OlympiadManager
 		return false;
 	}
 	
-	public final void removeDisconnectedCompetitor(L2PcInstance player)
+	public final void removeDisconnectedCompetitor(Player player)
 	{
 		final OlympiadGameTask task = OlympiadGameManager.getInstance().getOlympiadTask(player.getOlympiadGameId());
 		if (task != null && task.isGameStarted())
@@ -246,10 +232,10 @@ public class OlympiadManager
 	}
 	
 	/**
-	 * @param player - messages will be sent to this L2PcInstance
+	 * @param player - messages will be sent to this Player
 	 * @return true if all requirements are met
 	 */
-	private final boolean checkNoble(L2PcInstance player)
+	private final boolean checkNoble(Player player)
 	{
 		if (!player.isNoble())
 		{

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.List;
@@ -22,20 +8,20 @@ import java.util.regex.Pattern;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.datatables.FenceTable;
-import net.sf.l2j.gameserver.datatables.GmListTable;
-import net.sf.l2j.gameserver.datatables.NpcTable;
-import net.sf.l2j.gameserver.datatables.SpawnTable;
+import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.SpawnTable;
+import net.sf.l2j.gameserver.data.manager.FenceManager;
+import net.sf.l2j.gameserver.data.xml.AdminData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.DayNightSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Spawn;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2FenceInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Fence;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -70,7 +56,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		if (command.startsWith("admin_list_spawns"))
 		{
@@ -93,9 +79,9 @@ public class AdminSpawn implements IAdminCommandHandler
 			catch (Exception e)
 			{
 				// If the parameter wasn't ok, then take the current target.
-				final L2Object target = activeChar.getTarget();
-				if (target instanceof L2Npc)
-					npcId = ((L2Npc) target).getNpcId();
+				final WorldObject target = activeChar.getTarget();
+				if (target instanceof Npc)
+					npcId = ((Npc) target).getNpcId();
 			}
 			
 			// Load static Htm.
@@ -115,7 +101,7 @@ public class AdminSpawn implements IAdminCommandHandler
 					index++;
 					name = spawn.getTemplate().getName();
 					
-					final L2Npc _npc = spawn.getNpc();
+					final Npc _npc = spawn.getNpc();
 					if (_npc != null)
 					{
 						x = _npc.getX();
@@ -198,8 +184,8 @@ public class AdminSpawn implements IAdminCommandHandler
 			Broadcast.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.NPC_SERVER_NOT_OPERATING));
 			RaidBossSpawnManager.getInstance().cleanUp();
 			DayNightSpawnManager.getInstance().cleanUp();
-			L2World.getInstance().deleteVisibleNpcSpawns();
-			GmListTable.broadcastMessageToGMs("NPCs' unspawn is now complete.");
+			World.getInstance().deleteVisibleNpcSpawns();
+			AdminData.getInstance().broadcastMessageToGMs("NPCs' unspawn is now complete.");
 		}
 		else if (command.startsWith("admin_spawnday"))
 			DayNightSpawnManager.getInstance().spawnDayCreatures();
@@ -210,13 +196,13 @@ public class AdminSpawn implements IAdminCommandHandler
 			// make sure all spawns are deleted
 			RaidBossSpawnManager.getInstance().cleanUp();
 			DayNightSpawnManager.getInstance().cleanUp();
-			L2World.getInstance().deleteVisibleNpcSpawns();
+			World.getInstance().deleteVisibleNpcSpawns();
 			// now respawn all
 			NpcTable.getInstance().reloadAllNpc();
 			SpawnTable.getInstance().reloadAll();
 			RaidBossSpawnManager.getInstance().reloadBosses();
 			SevenSigns.getInstance().spawnSevenSignsNPC();
-			GmListTable.broadcastMessageToGMs("NPCs' respawn is now complete.");
+			AdminData.getInstance().broadcastMessageToGMs("NPCs' respawn is now complete.");
 		}
 		else if (command.startsWith("admin_spawnfence"))
 		{
@@ -231,7 +217,7 @@ public class AdminSpawn implements IAdminCommandHandler
 				if (st.hasMoreTokens())
 					height = Math.min(Integer.parseInt(st.nextToken()), 3);
 				
-				FenceTable.getInstance().addFence(activeChar.getX(), activeChar.getY(), activeChar.getZ(), type, sizeX, sizeY, height);
+				FenceManager.getInstance().addFence(activeChar.getX(), activeChar.getY(), activeChar.getZ(), type, sizeX, sizeY, height);
 				
 				listFences(activeChar);
 			}
@@ -246,10 +232,10 @@ public class AdminSpawn implements IAdminCommandHandler
 			st.nextToken();
 			try
 			{
-				L2Object object = L2World.getInstance().getObject(Integer.parseInt(st.nextToken()));
-				if (object instanceof L2FenceInstance)
+				WorldObject object = World.getInstance().getObject(Integer.parseInt(st.nextToken()));
+				if (object instanceof Fence)
 				{
-					FenceTable.getInstance().removeFence((L2FenceInstance) object);
+					FenceManager.getInstance().removeFence((Fence) object);
 					
 					if (st.hasMoreTokens())
 						listFences(activeChar);
@@ -292,9 +278,9 @@ public class AdminSpawn implements IAdminCommandHandler
 		return ADMIN_COMMANDS;
 	}
 	
-	private static void spawn(L2PcInstance activeChar, String monsterId, int respawnTime, boolean permanent)
+	private static void spawn(Player activeChar, String monsterId, int respawnTime, boolean permanent)
 	{
-		L2Object target = activeChar.getTarget();
+		WorldObject target = activeChar.getTarget();
 		if (target == null)
 			target = activeChar;
 		
@@ -347,9 +333,9 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 	}
 	
-	private static void showMonsters(L2PcInstance activeChar, int level, int from)
+	private static void showMonsters(Player activeChar, int level, int from)
 	{
-		final List<NpcTemplate> mobs = NpcTable.getInstance().getTemplates(t -> t.isType("L2Monster") && t.getLevel() == level);
+		final List<NpcTemplate> mobs = NpcTable.getInstance().getTemplates(t -> t.isType("Monster") && t.getLevel() == level);
 		final StringBuilder sb = new StringBuilder(200 + mobs.size() * 100);
 		
 		StringUtil.append(sb, "<html><title>Spawn Monster:</title><body><p> Level : ", level, "<br>Total Npc's : ", mobs.size(), "<br>");
@@ -368,9 +354,9 @@ public class AdminSpawn implements IAdminCommandHandler
 		activeChar.sendPacket(html);
 	}
 	
-	private static void showNpcs(L2PcInstance activeChar, String starting, int from)
+	private static void showNpcs(Player activeChar, String starting, int from)
 	{
-		final List<NpcTemplate> mobs = NpcTable.getInstance().getTemplates(t -> t.isType("L2Npc") && t.getName().startsWith(starting));
+		final List<NpcTemplate> mobs = NpcTable.getInstance().getTemplates(t -> t.isType("Folk") && t.getName().startsWith(starting));
 		final StringBuilder sb = new StringBuilder(200 + mobs.size() * 100);
 		
 		StringUtil.append(sb, "<html><title>Spawn Monster:</title><body><p> There are ", mobs.size(), " Npcs whose name starts with ", starting, ":<br>");
@@ -389,13 +375,13 @@ public class AdminSpawn implements IAdminCommandHandler
 		activeChar.sendPacket(html);
 	}
 	
-	private static void listFences(L2PcInstance activeChar)
+	private static void listFences(Player activeChar)
 	{
-		final List<L2FenceInstance> fences = FenceTable.getInstance().getFences();
+		final List<Fence> fences = FenceManager.getInstance().getFences();
 		final StringBuilder sb = new StringBuilder();
 		
 		sb.append("<html><body>Total Fences: " + fences.size() + "<br><br>");
-		for (L2FenceInstance fence : fences)
+		for (Fence fence : fences)
 			sb.append("<a action=\"bypass -h admin_deletefence " + fence.getObjectId() + " 1\">Fence: " + fence.getObjectId() + " [" + fence.getX() + " " + fence.getY() + " " + fence.getZ() + "]</a><br>");
 		sb.append("</body></html>");
 		

@@ -1,23 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.type;
 
-import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
+import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.zone.L2SpawnZone;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
@@ -51,9 +37,9 @@ public class L2ClanHallZone extends L2SpawnZone
 	}
 	
 	@Override
-	protected void onEnter(L2Character character)
+	protected void onEnter(Creature character)
 	{
-		if (character instanceof L2PcInstance)
+		if (character instanceof Player)
 		{
 			// Set as in clan hall
 			character.setInsideZone(ZoneId.CLAN_HALL, true);
@@ -64,24 +50,24 @@ public class L2ClanHallZone extends L2SpawnZone
 			
 			// Send decoration packet
 			ClanHallDecoration deco = new ClanHallDecoration(clanHall);
-			((L2PcInstance) character).sendPacket(deco);
+			((Player) character).sendPacket(deco);
 		}
 	}
 	
 	@Override
-	protected void onExit(L2Character character)
+	protected void onExit(Creature character)
 	{
-		if (character instanceof L2PcInstance)
+		if (character instanceof Player)
 			character.setInsideZone(ZoneId.CLAN_HALL, false);
 	}
 	
 	@Override
-	public void onDieInside(L2Character character)
+	public void onDieInside(Creature character)
 	{
 	}
 	
 	@Override
-	public void onReviveInside(L2Character character)
+	public void onReviveInside(Creature character)
 	{
 	}
 	
@@ -91,12 +77,12 @@ public class L2ClanHallZone extends L2SpawnZone
 	 */
 	public void banishForeigners(int owningClanId)
 	{
-		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
+		for (Player player : getKnownTypeInside(Player.class))
 		{
 			if (player.getClanId() == owningClanId)
 				continue;
 			
-			player.teleToLocation(TeleportWhereType.TOWN);
+			player.teleToLocation(TeleportType.TOWN);
 		}
 	}
 	

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model;
 
 import java.util.concurrent.ScheduledFuture;
@@ -21,24 +7,22 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.gameserver.util.Broadcast;
 
 /**
- * Model of an announcement
- * @see net.sf.l2j.gameserver.datatables.AnnouncementTable
- * @author Sikken, Tryskell
+ * A datatype used to retain informations for announcements. It notably holds a {@link ScheduledFuture}.
  */
 public class Announcement implements Runnable
 {
 	protected final String _message;
 	
-	protected boolean _critical = false;
-	protected boolean _auto = false;
-	protected boolean _unlimited = false;
+	protected boolean _critical;
+	protected boolean _auto;
+	protected boolean _unlimited;
 	
 	protected int _initialDelay;
 	protected int _delay;
 	protected int _limit;
 	protected int _tempLimit; // Temporary limit, used by current timer.
 	
-	protected ScheduledFuture<?> _task = null;
+	protected ScheduledFuture<?> _task;
 	
 	public Announcement(String message, boolean critical)
 	{

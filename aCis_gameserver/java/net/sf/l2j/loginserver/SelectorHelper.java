@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.loginserver;
 
 import java.nio.channels.SocketChannel;
@@ -25,13 +11,11 @@ import net.sf.l2j.commons.mmocore.IMMOExecutor;
 import net.sf.l2j.commons.mmocore.MMOConnection;
 import net.sf.l2j.commons.mmocore.ReceivablePacket;
 
+import net.sf.l2j.loginserver.network.LoginClient;
 import net.sf.l2j.loginserver.network.serverpackets.Init;
 import net.sf.l2j.util.IPv4Filter;
 
-/**
- * @author KenM
- */
-public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFactory<L2LoginClient>, IAcceptFilter
+public class SelectorHelper implements IMMOExecutor<LoginClient>, IClientFactory<LoginClient>, IAcceptFilter
 {
 	private final ThreadPoolExecutor _generalPacketsThreadPool;
 	
@@ -44,15 +28,15 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 	}
 	
 	@Override
-	public void execute(ReceivablePacket<L2LoginClient> packet)
+	public void execute(ReceivablePacket<LoginClient> packet)
 	{
 		_generalPacketsThreadPool.execute(packet);
 	}
 	
 	@Override
-	public L2LoginClient create(MMOConnection<L2LoginClient> con)
+	public LoginClient create(MMOConnection<LoginClient> con)
 	{
-		L2LoginClient client = new L2LoginClient(con);
+		LoginClient client = new LoginClient(con);
 		client.sendPacket(new Init(client));
 		return client;
 	}

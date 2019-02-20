@@ -1,26 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.GMViewPledgeInfo;
 
@@ -47,10 +33,10 @@ public class AdminPledge implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
-		final L2Object target = activeChar.getTarget();
-		if (!(target instanceof L2PcInstance))
+		final WorldObject target = activeChar.getTarget();
+		if (!(target instanceof Player))
 		{
 			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			showMainPage(activeChar);
@@ -64,7 +50,7 @@ public class AdminPledge implements IAdminCommandHandler
 			{
 				st.nextToken();
 				final String action = st.nextToken();
-				final L2PcInstance player = (L2PcInstance) target;
+				final Player player = (Player) target;
 				
 				if (action.equals("create"))
 				{
@@ -74,7 +60,7 @@ public class AdminPledge implements IAdminCommandHandler
 						
 						long cet = player.getClanCreateExpiryTime();
 						player.setClanCreateExpiryTime(0);
-						L2Clan clan = ClanTable.getInstance().createClan(player, parameter);
+						Clan clan = ClanTable.getInstance().createClan(player, parameter);
 						if (clan != null)
 							activeChar.sendMessage("Clan " + parameter + " have been created. Clan leader is " + player.getName() + ".");
 						else
@@ -99,9 +85,9 @@ public class AdminPledge implements IAdminCommandHandler
 					
 					if (action.equals("dismiss"))
 					{
-						ClanTable.getInstance().destroyClan(player.getClanId());
-						L2Clan clan = player.getClan();
-						if (clan == null)
+						ClanTable.getInstance().destroyClan(player.getClan());
+						
+						if (player.getClan() == null)
 							activeChar.sendMessage("The clan is now disbanded.");
 						else
 							activeChar.sendMessage("There was a problem while destroying the clan.");
@@ -132,7 +118,7 @@ public class AdminPledge implements IAdminCommandHandler
 						try
 						{
 							final int points = Integer.parseInt(st.nextToken());
-							final L2Clan clan = player.getClan();
+							final Clan clan = player.getClan();
 							
 							if (clan.getLevel() < 5)
 							{
@@ -166,7 +152,7 @@ public class AdminPledge implements IAdminCommandHandler
 		return ADMIN_COMMANDS;
 	}
 	
-	private static void showMainPage(L2PcInstance activeChar)
+	private static void showMainPage(Player activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "game_menu.htm");
 	}

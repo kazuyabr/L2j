@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests;
 
 import java.util.logging.Level;
@@ -19,9 +7,9 @@ import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager.StatusEnum;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.RaidBoss;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -44,7 +32,7 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	private static final int CHECK_INTERVAL = 600000; // 10 minutes
 	private static final int IDLE_INTERVAL = 2; // (X * CHECK_INTERVAL) = 20 minutes
 	
-	private L2Npc _npc = null;
+	private Npc _npc = null;
 	private int _status = -1;
 	
 	public Q610_MagicalPowerOfWater_Part2()
@@ -74,12 +62,12 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		// global quest timer has player==null -> cannot get QuestState
 		if (event.equals("check"))
 		{
-			L2RaidBossInstance raid = RaidBossSpawnManager.getInstance().getBosses().get(SOUL_OF_WATER_ASHUTAR);
+			RaidBoss raid = RaidBossSpawnManager.getInstance().getBosses().get(SOUL_OF_WATER_ASHUTAR);
 			if (raid != null && raid.getRaidStatus() == StatusEnum.ALIVE)
 			{
 				if (_status >= 0 && _status-- == 0)
@@ -145,7 +133,7 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -185,16 +173,16 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		_status = IDLE_INTERVAL;
 		return null;
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
-		for (L2PcInstance partyMember : getPartyMembers(player, npc, "cond", "2"))
+		for (Player partyMember : getPartyMembers(player, npc, "cond", "2"))
 		{
 			QuestState st = partyMember.getQuestState(qn);
 			st.set("cond", "3");
@@ -224,7 +212,7 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	
 	private boolean spawnRaid()
 	{
-		L2RaidBossInstance raid = RaidBossSpawnManager.getInstance().getBosses().get(SOUL_OF_WATER_ASHUTAR);
+		RaidBoss raid = RaidBossSpawnManager.getInstance().getBosses().get(SOUL_OF_WATER_ASHUTAR);
 		if (raid != null && raid.getRaidStatus() == StatusEnum.ALIVE)
 		{
 			// set temporarily spawn location (to provide correct behavior of L2RaidBossInstance.checkAndReturnToSpawn())
@@ -243,7 +231,7 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 		return false;
 	}
 	
-	private void despawnRaid(L2Npc raid)
+	private void despawnRaid(Npc raid)
 	{
 		// reset spawn location
 		raid.getSpawn().setLoc(-105900, -252700, -15542, 0);

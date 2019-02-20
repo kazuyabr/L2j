@@ -1,27 +1,13 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.ai.individual;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.network.serverpackets.SpecialCamera;
@@ -91,10 +77,10 @@ public class DrChaos extends L2AttackableAIScript
 			final int hp = info.getInteger("currentHP");
 			final int mp = info.getInteger("currentMP");
 			
-			L2GrandBossInstance golem = (L2GrandBossInstance) addSpawn(CHAOS_GOLEM, loc_x, loc_y, loc_z, heading, false, 0, false);
+			GrandBoss golem = (GrandBoss) addSpawn(CHAOS_GOLEM, loc_x, loc_y, loc_z, heading, false, 0, false);
 			GrandBossManager.getInstance().addBoss(golem);
 			
-			final L2Npc _golem = golem;
+			final Npc _golem = golem;
 			
 			_golem.setCurrentHpMp(hp, mp);
 			_golem.setRunning();
@@ -116,7 +102,7 @@ public class DrChaos extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		if (event.equalsIgnoreCase("reset_drchaos"))
 		{
@@ -157,14 +143,14 @@ public class DrChaos extends L2AttackableAIScript
 		{
 			// Delete Dr. Chaos && spawn the war golem.
 			npc.deleteMe();
-			L2GrandBossInstance golem = (L2GrandBossInstance) addSpawn(CHAOS_GOLEM, 96080, -110822, -3343, 0, false, 0, false);
+			GrandBoss golem = (GrandBoss) addSpawn(CHAOS_GOLEM, 96080, -110822, -3343, 0, false, 0, false);
 			GrandBossManager.getInstance().addBoss(golem);
 			
 			// The "npc" variable attribution is now for the golem.
 			npc = golem;
 			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 30, 200, 20, 6000, 8000, 0, 0, 1, 0));
 			npc.broadcastPacket(new SocialAction(npc, 1));
-			npc.broadcastPacket(new PlaySound(1, "Rm03_A", 0, 0, 0, 0, 0));
+			npc.broadcastPacket(new PlaySound(1, "Rm03_A", npc));
 			
 			// start monitoring Dr. Chaos's inactivity
 			_lastAttackTime = System.currentTimeMillis();
@@ -175,7 +161,7 @@ public class DrChaos extends L2AttackableAIScript
 		{
 			if (GrandBossManager.getInstance().getBossStatus(CHAOS_GOLEM) == NORMAL)
 			{
-				for (L2PcInstance obj : npc.getKnownList().getKnownTypeInRadius(L2PcInstance.class, 500))
+				for (Player obj : npc.getKnownTypeInRadius(Player.class, 500))
 				{
 					if (obj.isDead())
 						continue;
@@ -199,7 +185,7 @@ public class DrChaos extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(Npc npc, Player player)
 	{
 		String htmltext = "";
 		
@@ -221,7 +207,7 @@ public class DrChaos extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(Npc npc)
 	{
 		// 30 seconds timer at initialization.
 		_pissedOffTimer = 30;
@@ -233,7 +219,7 @@ public class DrChaos extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
 		cancelQuestTimer("golem_despawn", npc, null);
 		npc.broadcastNpcSay("Urggh! You will pay dearly for this insult.");
@@ -253,7 +239,7 @@ public class DrChaos extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttackAct(L2Npc npc, L2PcInstance victim)
+	public String onAttackAct(Npc npc, Player victim)
 	{
 		// Choose a message from 3 choices (1/100), and make him speak.
 		final int chance = Rnd.get(300);
@@ -267,7 +253,7 @@ public class DrChaos extends L2AttackableAIScript
 	 * Launches the complete animation.
 	 * @param npc the midget.
 	 */
-	private void crazyMidgetBecomesAngry(L2Npc npc)
+	private void crazyMidgetBecomesAngry(Npc npc)
 	{
 		if (GrandBossManager.getInstance().getBossStatus(CHAOS_GOLEM) != NORMAL)
 			return;

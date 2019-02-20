@@ -1,30 +1,13 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.L2CommandChannel;
-import net.sf.l2j.gameserver.model.L2Party;
+import net.sf.l2j.gameserver.model.group.CommandChannel;
+import net.sf.l2j.gameserver.model.group.Party;
 
-/**
- * @author chris_00 ch sdd d[sdd]
- */
 public class ExMultiPartyCommandChannelInfo extends L2GameServerPacket
 {
-	private final L2CommandChannel _channel;
+	private final CommandChannel _channel;
 	
-	public ExMultiPartyCommandChannelInfo(L2CommandChannel channel)
+	public ExMultiPartyCommandChannelInfo(CommandChannel channel)
 	{
 		_channel = channel;
 	}
@@ -38,16 +21,16 @@ public class ExMultiPartyCommandChannelInfo extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x30);
 		
-		writeS(_channel.getChannelLeader().getName());
+		writeS(_channel.getLeader().getName());
 		writeD(0); // Channel loot
-		writeD(_channel.getMemberCount());
+		writeD(_channel.getMembersCount());
 		
-		writeD(_channel.getPartys().size());
-		for (L2Party p : _channel.getPartys())
+		writeD(_channel.getParties().size());
+		for (Party party : _channel.getParties())
 		{
-			writeS(p.getLeader().getName());
-			writeD(p.getPartyLeaderOID());
-			writeD(p.getMemberCount());
+			writeS(party.getLeader().getName());
+			writeD(party.getLeaderObjectId());
+			writeD(party.getMembersCount());
 		}
 	}
 }

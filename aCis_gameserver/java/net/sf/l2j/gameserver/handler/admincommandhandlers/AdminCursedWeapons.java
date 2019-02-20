@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
@@ -20,8 +6,8 @@ import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.CursedWeapon;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -34,7 +20,8 @@ import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
  * <li>cw_add : adds a cursed weapon into the world - item id or name must be provided. Current target will be the owner.</li>
  * <li>cw_goto : teleports GM to the specified cursed weapon (item or player position).</li>
  * <li>cw_reload : reloads instance manager.</li>
- * </ul>>
+ * </ul>
+ * >
  */
 public class AdminCursedWeapons implements IAdminCommandHandler
 {
@@ -48,7 +35,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		StringTokenizer st = new StringTokenizer(command);
 		st.nextToken();
@@ -74,7 +61,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 						
 						if (cw.isActivated())
 						{
-							final L2PcInstance pl = cw.getPlayer();
+							final Player pl = cw.getPlayer();
 							activeChar.sendMessage("  Owner: " + (pl == null ? "null" : pl.getName()));
 							activeChar.sendMessage("  Stored values: karma=" + cw.getPlayerKarma() + " PKs=" + cw.getPlayerPkKills());
 							activeChar.sendMessage("  Current stage:" + cw.getCurrentStage());
@@ -114,7 +101,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 						
 						if (cw.isActivated())
 						{
-							L2PcInstance pl = cw.getPlayer();
+							Player pl = cw.getPlayer();
 							StringUtil.append(sb, "<tr><td>Owner:</td><td>", ((pl == null) ? "null" : pl.getName()), "</td></tr><tr><td>Stored values:</td><td>Karma=", cw.getPlayerKarma(), " PKs=", cw.getPlayerPkKills(), "</td></tr><tr><td>Current stage:</td><td>", cw.getCurrentStage(), "</td></tr><tr><td>Overall time:</td><td>", numDays, "d. ", numHours, "h. ", numMins, "m.</td></tr><tr><td>Hungry time:</td><td>", cw.getHungryTime(), "m.</td></tr><tr><td>Current kills:</td><td>", cw.getNbKills(), " / ", cw.getNumberBeforeNextStage(), "</td></tr><tr><td><button value=\"Remove\" action=\"bypass -h admin_cw_remove ", cw.getItemId(), "\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"></td><td><button value=\"Go\" action=\"bypass -h admin_cw_goto ", cw.getItemId(), "\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"></td></tr>");
 						}
 						else if (cw.isDropped())
@@ -171,9 +158,9 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 						activeChar.sendMessage("This cursed weapon is already active.");
 					else
 					{
-						L2Object target = activeChar.getTarget();
-						if (target instanceof L2PcInstance)
-							((L2PcInstance) target).addItem("AdminCursedWeaponAdd", id, 1, target, true);
+						WorldObject target = activeChar.getTarget();
+						if (target instanceof Player)
+							((Player) target).addItem("AdminCursedWeaponAdd", id, 1, target, true);
 						else
 							activeChar.addItem("AdminCursedWeaponAdd", id, 1, activeChar, true);
 						

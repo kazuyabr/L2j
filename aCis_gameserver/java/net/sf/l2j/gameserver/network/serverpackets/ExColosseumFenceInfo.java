@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.L2FenceInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Fence;
 
 /**
  * Format: (ch)ddddddd d: object id d: type (00 - no fence, 01 - only 4 columns, 02 - columns with fences) d: x coord d: y coord d: z coord d: width d: height
@@ -8,9 +8,9 @@ import net.sf.l2j.gameserver.model.actor.instance.L2FenceInstance;
 public class ExColosseumFenceInfo extends L2GameServerPacket
 {
 	private final int _objectId;
-	private final L2FenceInstance _fence;
+	private final Fence _fence;
 	
-	public ExColosseumFenceInfo(int objectId, L2FenceInstance fence)
+	public ExColosseumFenceInfo(int objectId, Fence fence)
 	{
 		_objectId = objectId;
 		_fence = fence;

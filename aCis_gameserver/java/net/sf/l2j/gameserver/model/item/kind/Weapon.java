@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.item.kind;
 
 import java.util.ArrayList;
@@ -24,9 +10,9 @@ import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.scripting.EventType;
@@ -287,12 +273,12 @@ public final class Weapon extends Item
 	}
 	
 	/**
-	 * @param caster : L2Character pointing out the caster
-	 * @param target : L2Character pointing out the target
+	 * @param caster : Creature pointing out the caster
+	 * @param target : Creature pointing out the target
 	 * @param crit : boolean tells whether the hit was critical
 	 * @return An array of L2Effect of skills associated with the item to be triggered onHit.
 	 */
-	public List<L2Effect> getSkillEffects(L2Character caster, L2Character target, boolean crit)
+	public List<L2Effect> getSkillEffects(Creature caster, Creature target, boolean crit)
 	{
 		if (_skillsOnCrit == null || !crit)
 			return Collections.emptyList();
@@ -324,12 +310,12 @@ public final class Weapon extends Item
 	}
 	
 	/**
-	 * @param caster : L2Character pointing out the caster
-	 * @param target : L2Character pointing out the target
+	 * @param caster : Creature pointing out the caster
+	 * @param target : Creature pointing out the target
 	 * @param trigger : L2Skill pointing out the skill triggering this action
 	 * @return An array of L2Effect associated with the item to be triggered onCast.
 	 */
-	public List<L2Effect> getSkillEffects(L2Character caster, L2Character target, L2Skill trigger)
+	public List<L2Effect> getSkillEffects(Creature caster, Creature target, L2Skill trigger)
 	{
 		if (_skillsOnCast == null)
 			return Collections.emptyList();
@@ -360,7 +346,7 @@ public final class Weapon extends Item
 		// Get the skill handler corresponding to the skill type
 		ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(_skillsOnCast.getSkill().getSkillType());
 		
-		L2Character[] targets = new L2Character[1];
+		Creature[] targets = new Creature[1];
 		targets[0] = target;
 		
 		// Launch the magic skill and calculate its effects
@@ -370,15 +356,15 @@ public final class Weapon extends Item
 			_skillsOnCast.getSkill().useSkill(caster, targets);
 		
 		// notify quests of a skill use
-		if (caster instanceof L2PcInstance)
+		if (caster instanceof Player)
 		{
 			// Mobs in range 1000 see spell
-			for (L2Npc npcMob : caster.getKnownList().getKnownTypeInRadius(L2Npc.class, 1000))
+			for (Npc npcMob : caster.getKnownTypeInRadius(Npc.class, 1000))
 			{
 				List<Quest> quests = npcMob.getTemplate().getEventQuests(EventType.ON_SKILL_SEE);
 				if (quests != null)
 					for (Quest quest : quests)
-						quest.notifySkillSee(npcMob, (L2PcInstance) caster, _skillsOnCast.getSkill(), targets, false);
+						quest.notifySkillSee(npcMob, (Player) caster, _skillsOnCast.getSkill(), targets, false);
 			}
 		}
 		return Collections.emptyList();

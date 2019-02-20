@@ -1,26 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model;
 
 import java.util.List;
 
-import net.sf.l2j.gameserver.datatables.AugmentationData;
-import net.sf.l2j.gameserver.datatables.AugmentationData.AugStat;
-import net.sf.l2j.gameserver.datatables.SkillTable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.xml.AugmentationData;
+import net.sf.l2j.gameserver.data.xml.AugmentationData.AugStat;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SkillCoolTime;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.skills.basefuncs.FuncAdd;
@@ -71,25 +57,25 @@ public final class L2Augmentation
 			}
 		}
 		
-		public void applyBonus(L2PcInstance player)
+		public void applyBonus(Player player)
 		{
 			// make sure the bonuses are not applied twice..
 			if (_active)
 				return;
 			
 			for (int i = 0; i < _stats.length; i++)
-				((L2Character) player).addStatFunc(new FuncAdd(_stats[i], 0x40, this, new LambdaConst(_values[i])));
+				((Creature) player).addStatFunc(new FuncAdd(_stats[i], 0x40, this, new LambdaConst(_values[i])));
 			
 			_active = true;
 		}
 		
-		public void removeBonus(L2PcInstance player)
+		public void removeBonus(Player player)
 		{
 			// make sure the bonuses are not removed twice
 			if (!_active)
 				return;
 			
-			((L2Character) player).removeStatsByOwner(this);
+			((Creature) player).removeStatsByOwner(this);
 			
 			_active = false;
 		}
@@ -118,7 +104,7 @@ public final class L2Augmentation
 	 * Applies the bonuses to the player.
 	 * @param player
 	 */
-	public void applyBonus(L2PcInstance player)
+	public void applyBonus(Player player)
 	{
 		boolean updateTimeStamp = false;
 		_boni.applyBonus(player);
@@ -149,7 +135,7 @@ public final class L2Augmentation
 	 * Removes the augmentation bonuses from the player.
 	 * @param player
 	 */
-	public void removeBonus(L2PcInstance player)
+	public void removeBonus(Player player)
 	{
 		_boni.removeBonus(player);
 		

@@ -1,37 +1,24 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.ai.individual;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.datatables.SkillTable;
-import net.sf.l2j.gameserver.datatables.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
@@ -39,7 +26,6 @@ import net.sf.l2j.gameserver.network.serverpackets.SpecialCamera;
 import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.util.Util;
 
 /**
  * That AI is heavily based on Valakas/Baium scripts.<br>
@@ -64,8 +50,8 @@ public class Antharas extends L2AttackableAIScript
 	public static final byte DEAD = 3; // Antharas has been killed. Entry is locked.
 	
 	private long _timeTracker = 0; // Time tracker for last attack on Antharas.
-	private L2PcInstance _actualVictim; // Actual target of Antharas.
-	private final List<L2Npc> _monsters = new CopyOnWriteArrayList<>(); // amount of Antharas minions.
+	private Player _actualVictim; // Actual target of Antharas.
+	private final List<Npc> _monsters = new CopyOnWriteArrayList<>(); // amount of Antharas minions.
 	
 	private int _antharasId; // The current Antharas, used when server shutdowns.
 	private L2Skill _skillRegen; // The regen skill used by Antharas.
@@ -102,8 +88,8 @@ public class Antharas extends L2AttackableAIScript
 				// Update Antharas informations.
 				updateAntharas();
 				
-				final L2Npc antharas = addSpawn(_antharasId, loc_x, loc_y, loc_z, heading, false, 0, false);
-				GrandBossManager.getInstance().addBoss(ANTHARAS, (L2GrandBossInstance) antharas);
+				final Npc antharas = addSpawn(_antharasId, loc_x, loc_y, loc_z, heading, false, 0, false);
+				GrandBossManager.getInstance().addBoss(ANTHARAS, (GrandBoss) antharas);
 				
 				antharas.setCurrentHpMp(hp, mp);
 				antharas.setRunning();
@@ -126,7 +112,7 @@ public class Antharas extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		// Regeneration && inactivity task
 		if (event.equalsIgnoreCase("regen_task"))
@@ -193,14 +179,14 @@ public class Antharas extends L2AttackableAIScript
 					break;
 				
 				final int npcId = isBehemoth ? 29069 : Rnd.get(29070, 29076);
-				final L2Npc dragon = addSpawn(npcId, npc.getX() + Rnd.get(-200, 200), npc.getY() + Rnd.get(-200, 200), npc.getZ(), 0, false, 0, true);
-				((L2Attackable) dragon).setIsRaidMinion(true);
+				final Npc dragon = addSpawn(npcId, npc.getX() + Rnd.get(-200, 200), npc.getY() + Rnd.get(-200, 200), npc.getZ(), 0, false, 0, true);
+				((Attackable) dragon).setIsRaidMinion(true);
 				
 				_monsters.add(dragon);
 				
-				final L2PcInstance victim = getRandomPlayer(dragon);
+				final Player victim = getRandomPlayer(dragon);
 				if (victim != null)
-					attack(((L2Attackable) dragon), victim);
+					attack(((Attackable) dragon), victim);
 				
 				if (!isBehemoth)
 					startQuestTimer("self_destruct", (_minionTimer / 3), dragon, null, false);
@@ -229,8 +215,8 @@ public class Antharas extends L2AttackableAIScript
 		{
 			updateAntharas();
 			
-			final L2Npc antharas = addSpawn(_antharasId, 181323, 114850, -7623, 32542, false, 0, false);
-			GrandBossManager.getInstance().addBoss(ANTHARAS, (L2GrandBossInstance) antharas);
+			final Npc antharas = addSpawn(_antharasId, 181323, 114850, -7623, 32542, false, 0, false);
+			GrandBossManager.getInstance().addBoss(ANTHARAS, (GrandBoss) antharas);
 			antharas.setIsInvul(true);
 			
 			// Launch the cinematic, and tasks (regen + skill).
@@ -256,23 +242,17 @@ public class Antharas extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(Npc npc)
 	{
 		npc.disableCoreAI(true);
 		return super.onSpawn(npc);
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		if (npc.isInvul())
 			return null;
-		
-		if (!ANTHARAS_LAIR.isInsideZone(attacker))
-		{
-			attacker.teleToLocation(82698, 148638, -3473, 0);
-			return null;
-		}
 		
 		// Debuff strider-mounted players.
 		if (attacker.getMountType() == 1)
@@ -290,7 +270,7 @@ public class Antharas extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
 		if (npc.getNpcId() == _antharasId)
 		{
@@ -299,7 +279,7 @@ public class Antharas extends L2AttackableAIScript
 			
 			// Launch death animation.
 			ANTHARAS_LAIR.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1200, 20, -10, 10000, 13000, 0, 0, 0, 0));
-			ANTHARAS_LAIR.broadcastPacket(new PlaySound(1, "BS01_D", 0, 0, 0, 0, 0));
+			ANTHARAS_LAIR.broadcastPacket(new PlaySound(1, "BS01_D", npc));
 			startQuestTimer("die_1", 8000, null, null, false);
 			
 			GrandBossManager.getInstance().setBossStatus(ANTHARAS, DEAD);
@@ -322,13 +302,13 @@ public class Antharas extends L2AttackableAIScript
 		return super.onKill(npc, killer, isPet);
 	}
 	
-	private void callSkillAI(L2Npc npc)
+	private void callSkillAI(Npc npc)
 	{
 		if (npc.isInvul() || npc.isCastingNow())
 			return;
 		
 		// Pickup a target if no or dead victim. 10% luck he decides to reconsiders his target.
-		if (_actualVictim == null || _actualVictim.isDead() || !(npc.getKnownList().knowsObject(_actualVictim)) || Rnd.get(10) == 0)
+		if (_actualVictim == null || _actualVictim.isDead() || !(npc.getKnownType(Player.class).contains(_actualVictim)) || Rnd.get(10) == 0)
 			_actualVictim = getRandomPlayer(npc);
 		
 		// If result is still null, Antharas will roam. Don't go deeper in skill AI.
@@ -352,7 +332,7 @@ public class Antharas extends L2AttackableAIScript
 		final L2Skill skill = getRandomSkill(npc);
 		
 		// Cast the skill or follow the target.
-		if (Util.checkIfInRange((skill.getCastRange() < 600) ? 600 : skill.getCastRange(), npc, _actualVictim, true))
+		if (MathUtil.checkIfInRange((skill.getCastRange() < 600) ? 600 : skill.getCastRange(), npc, _actualVictim, true))
 		{
 			npc.getAI().setIntention(CtrlIntention.IDLE);
 			npc.setTarget(_actualVictim);
@@ -368,7 +348,7 @@ public class Antharas extends L2AttackableAIScript
 	 * @param npc Antharas
 	 * @return a usable skillId
 	 */
-	private static L2Skill getRandomSkill(L2Npc npc)
+	private static L2Skill getRandomSkill(Npc npc)
 	{
 		final double hpRatio = npc.getCurrentHp() / npc.getMaxHp();
 		
@@ -480,13 +460,13 @@ public class Antharas extends L2AttackableAIScript
 	 * Drop timers, meaning Antharas is dead or inactivity task occured.
 	 * @param npc : The NPC to affect.
 	 */
-	private void dropTimers(L2Npc npc)
+	private void dropTimers(Npc npc)
 	{
 		cancelQuestTimer("regen_task", npc, null);
 		cancelQuestTimer("skill_task", npc, null);
 		cancelQuestTimer("minions_spawn", npc, null);
 		
-		for (L2Npc mob : _monsters)
+		for (Npc mob : _monsters)
 		{
 			cancelQuestTimer("self_destruct", mob, null);
 			mob.deleteMe();

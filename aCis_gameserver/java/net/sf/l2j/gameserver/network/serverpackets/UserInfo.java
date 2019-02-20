@@ -1,34 +1,20 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
-import net.sf.l2j.gameserver.model.L2Object.PolyType;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject.PolyType;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.skills.AbnormalEffect;
 
 public class UserInfo extends L2GameServerPacket
 {
-	private final L2PcInstance _activeChar;
+	private final Player _activeChar;
 	private int _relation;
 	
-	public UserInfo(L2PcInstance character)
+	public UserInfo(Player character)
 	{
 		_activeChar = character;
 		
@@ -180,7 +166,7 @@ public class UserInfo extends L2GameServerPacket
 		writeF(_activeChar.getStat().getMovementSpeedMultiplier()); // run speed multiplier
 		writeF(_activeChar.getStat().getAttackSpeedMultiplier()); // attack speed multiplier
 		
-		L2Summon pet = _activeChar.getPet();
+		Summon pet = _activeChar.getPet();
 		if (_activeChar.getMountType() != 0 && pet != null)
 		{
 			writeF(pet.getCollisionRadius());

@@ -1,38 +1,37 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.actor.template;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.datatables.HerbDropTable;
+import net.sf.l2j.gameserver.data.xml.HerbDropData;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.MinionData;
 import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.item.DropCategory;
 import net.sf.l2j.gameserver.model.item.DropData;
 import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
-public class NpcTemplate extends CharTemplate
+public class NpcTemplate extends CreatureTemplate
 {
+	public static enum SkillType
+	{
+		BUFF,
+		DEBUFF,
+		HEAL,
+		PASSIVE,
+		LONG_RANGE,
+		SHORT_RANGE,
+		SUICIDE
+	}
+	
 	public static enum AIType
 	{
 		DEFAULT,
@@ -78,7 +77,9 @@ public class NpcTemplate extends CharTemplate
 	private final int _idTemplate;
 	private final String _type;
 	private final String _name;
+	private boolean _usingServerSideName;
 	private final String _title;
+	private boolean _usingServerSideTitle;
 	private final boolean _cantBeChampionMonster;
 	private final byte _level;
 	private final int _exp;
@@ -105,18 +106,14 @@ public class NpcTemplate extends CharTemplate
 	private final boolean _canMove;
 	private final boolean _isSeedable;
 	
-	private final List<L2Skill> _buffSkills = new ArrayList<>();
-	private final List<L2Skill> _debuffSkills = new ArrayList<>();
-	private final List<L2Skill> _healSkills = new ArrayList<>();
-	private final List<L2Skill> _longRangeSkills = new ArrayList<>();
-	private final List<L2Skill> _shortRangeSkills = new ArrayList<>();
-	private final List<L2Skill> _suicideSkills = new ArrayList<>();
-	
 	private List<DropCategory> _categories;
 	private List<MinionData> _minions;
-	private final List<ClassId> _teachInfo = new ArrayList<>();
-	private final Map<Integer, L2Skill> _skills = new LinkedHashMap<>();
+	private List<ClassId> _teachInfo;
+	
+	private final Map<SkillType, List<L2Skill>> _skills = new HashMap<>();
 	private final Map<EventType, List<Quest>> _questEvents = new HashMap<>();
+	
+	private Castle _castle;
 	
 	public NpcTemplate(StatsSet set)
 	{
@@ -126,8 +123,10 @@ public class NpcTemplate extends CharTemplate
 		_idTemplate = set.getInteger("idTemplate", _npcId);
 		_type = set.getString("type");
 		_name = set.getString("name");
+		_usingServerSideName = set.getBool("usingServerSideName", false);
 		_title = set.getString("title", "");
-		_cantBeChampionMonster = _title.equalsIgnoreCase("Quest Monster") || isType("L2Chest");
+		_usingServerSideTitle = set.getBool("usingServerSideTitle", false);
+		_cantBeChampionMonster = _title.equalsIgnoreCase("Quest Monster") || isType("Chest");
 		_level = set.getByte("level", (byte) 1);
 		_exp = set.getInteger("exp", 0);
 		_sp = set.getInteger("sp", 0);
@@ -137,7 +136,7 @@ public class NpcTemplate extends CharTemplate
 		_corpseTime = set.getInteger("corpseTime", 7);
 		
 		_dropHerbGroup = set.getInteger("dropHerbGroup", 0);
-		if (_dropHerbGroup > 0 && HerbDropTable.getInstance().getHerbDroplist(_dropHerbGroup) == null)
+		if (_dropHerbGroup > 0 && HerbDropData.getInstance().getHerbDroplist(_dropHerbGroup) == null)
 		{
 			_log.warning("Missing dropHerbGroup information for npcId: " + _npcId + ", dropHerbGroup: " + _dropHerbGroup);
 			_dropHerbGroup = 0;
@@ -171,11 +170,24 @@ public class NpcTemplate extends CharTemplate
 		
 		if (set.containsKey("teachTo"))
 		{
-			for (int classId : set.getIntegerArray("teachTo"))
-				addTeachInfo(ClassId.VALUES[classId]);
+			final int[] classIds = set.getIntegerArray("teachTo");
+			
+			_teachInfo = new ArrayList<>(classIds.length);
+			for (int classId : classIds)
+				_teachInfo.add(ClassId.VALUES[classId]);
 		}
 		
 		addSkills(set.getList("skills"));
+		
+		// Set the Castle.
+		for (Castle castle : CastleManager.getInstance().getCastles())
+		{
+			if (castle.getRelatedNpcIds().contains(_npcId))
+			{
+				_castle = castle;
+				break;
+			}
+		}
 	}
 	
 	public int getNpcId()
@@ -186,11 +198,6 @@ public class NpcTemplate extends CharTemplate
 	public int getIdTemplate()
 	{
 		return _idTemplate;
-	}
-	
-	public boolean isCustomNpc()
-	{
-		return _npcId != _idTemplate;
 	}
 	
 	public String getType()
@@ -213,9 +220,19 @@ public class NpcTemplate extends CharTemplate
 		return _name;
 	}
 	
+	public boolean isUsingServerSideName()
+	{
+		return _usingServerSideName;
+	}
+	
 	public String getTitle()
 	{
 		return _title;
+	}
+	
+	public boolean isUsingServerSideTitle()
+	{
+		return _usingServerSideTitle;
 	}
 	
 	public boolean cantBeChampion()
@@ -332,50 +349,17 @@ public class NpcTemplate extends CharTemplate
 		return _isSeedable;
 	}
 	
-	public void addShortOrLongRangeSkill(L2Skill skill)
-	{
-		if (skill.getCastRange() > 150)
-			_longRangeSkills.add(skill);
-		else if (skill.getCastRange() > 0)
-			_shortRangeSkills.add(skill);
-	}
-	
-	public List<L2Skill> getSuicideSkills()
-	{
-		return _suicideSkills;
-	}
-	
-	public List<L2Skill> getHealSkills()
-	{
-		return _healSkills;
-	}
-	
-	public List<L2Skill> getDebuffSkills()
-	{
-		return _debuffSkills;
-	}
-	
-	public List<L2Skill> getBuffSkills()
-	{
-		return _buffSkills;
-	}
-	
-	public List<L2Skill> getLongRangeSkills()
-	{
-		return _longRangeSkills;
-	}
-	
-	public List<L2Skill> getShortRangeSkills()
-	{
-		return _shortRangeSkills;
-	}
-	
 	/**
 	 * @return the list of all possible UNCATEGORIZED drops of this L2NpcTemplate.
 	 */
 	public List<DropCategory> getDropData()
 	{
 		return _categories;
+	}
+	
+	public Castle getCastle()
+	{
+		return _castle;
 	}
 	
 	/**
@@ -397,6 +381,8 @@ public class NpcTemplate extends CharTemplate
 	 */
 	public void addDropData(DropData drop, int categoryType)
 	{
+		final boolean isBossType = isType("RaidBoss") || isType("GrandBoss");
+		
 		synchronized (_categories)
 		{
 			// Category exists, stores the drop and return.
@@ -404,14 +390,14 @@ public class NpcTemplate extends CharTemplate
 			{
 				if (cat.getCategoryType() == categoryType)
 				{
-					cat.addDropData(drop, isType("L2RaidBoss") || isType("L2GrandBoss"));
+					cat.addDropData(drop, isBossType);
 					return;
 				}
 			}
 			
 			// Category doesn't exist, create and store it.
 			final DropCategory cat = new DropCategory(categoryType);
-			cat.addDropData(drop, isType("L2RaidBoss") || isType("L2GrandBoss"));
+			cat.addDropData(drop, isBossType);
 			
 			_categories.add(cat);
 		}
@@ -425,91 +411,104 @@ public class NpcTemplate extends CharTemplate
 		return _minions;
 	}
 	
-	public List<ClassId> getTeachInfo()
-	{
-		return _teachInfo;
-	}
-	
-	public void addTeachInfo(ClassId classId)
-	{
-		_teachInfo.add(classId);
-	}
-	
 	public boolean canTeach(ClassId classId)
 	{
-		return _teachInfo.contains((classId.level() == 3) ? classId.getParent() : classId);
+		return _teachInfo != null && _teachInfo.contains((classId.level() == 3) ? classId.getParent() : classId);
 	}
 	
-	public Map<Integer, L2Skill> getSkills()
+	public Map<SkillType, List<L2Skill>> getSkills()
 	{
 		return _skills;
+	}
+	
+	public List<L2Skill> getSkills(SkillType type)
+	{
+		return _skills.getOrDefault(type, Collections.emptyList());
 	}
 	
 	public void addSkills(List<L2Skill> skills)
 	{
 		for (L2Skill skill : skills)
 		{
-			if (!skill.isPassive())
+			if (skill.isPassive())
 			{
-				if (skill.isSuicideAttack())
-					_suicideSkills.add(skill);
-				else
-				{
-					switch (skill.getSkillType())
-					{
-						case BUFF:
-						case CONT:
-						case REFLECT:
-							_buffSkills.add(skill);
-							break;
-						
-						case HEAL:
-						case HOT:
-						case HEAL_PERCENT:
-						case HEAL_STATIC:
-						case BALANCE_LIFE:
-						case MANARECHARGE:
-						case MANAHEAL_PERCENT:
-							_healSkills.add(skill);
-							break;
-						
-						case DEBUFF:
-						case ROOT:
-						case SLEEP:
-						case STUN:
-						case PARALYZE:
-						case POISON:
-						case DOT:
-						case MDOT:
-						case BLEED:
-						case MUTE:
-						case FEAR:
-						case CANCEL:
-						case NEGATE:
-						case WEAKNESS:
-						case AGGDEBUFF:
-							_debuffSkills.add(skill);
-							break;
-						
-						case PDAM:
-						case MDAM:
-						case BLOW:
-						case DRAIN:
-						case CHARGEDAM:
-						case FATAL:
-						case DEATHLINK:
-						case MANADAM:
-						case CPDAMPERCENT:
-						case GET_PLAYER:
-						case INSTANT_JUMP:
-						case AGGDAMAGE:
-							addShortOrLongRangeSkill(skill);
-							break;
-					}
-				}
+				addSkill(SkillType.PASSIVE, skill);
+				continue;
 			}
-			_skills.put(skill.getId(), skill);
+			
+			if (skill.isSuicideAttack())
+			{
+				addSkill(SkillType.SUICIDE, skill);
+				continue;
+			}
+			
+			switch (skill.getSkillType())
+			{
+				case BUFF:
+				case CONT:
+				case REFLECT:
+					addSkill(SkillType.BUFF, skill);
+					continue;
+				
+				case HEAL:
+				case HOT:
+				case HEAL_PERCENT:
+				case HEAL_STATIC:
+				case BALANCE_LIFE:
+				case MANARECHARGE:
+				case MANAHEAL_PERCENT:
+					addSkill(SkillType.HEAL, skill);
+					continue;
+				
+				case DEBUFF:
+				case ROOT:
+				case SLEEP:
+				case STUN:
+				case PARALYZE:
+				case POISON:
+				case DOT:
+				case MDOT:
+				case BLEED:
+				case MUTE:
+				case FEAR:
+				case CANCEL:
+				case NEGATE:
+				case WEAKNESS:
+				case AGGDEBUFF:
+					addSkill(SkillType.DEBUFF, skill);
+					continue;
+				
+				case PDAM:
+				case MDAM:
+				case BLOW:
+				case DRAIN:
+				case CHARGEDAM:
+				case FATAL:
+				case DEATHLINK:
+				case MANADAM:
+				case CPDAMPERCENT:
+				case GET_PLAYER:
+				case INSTANT_JUMP:
+				case AGGDAMAGE:
+					addSkill((skill.getCastRange() > 150) ? SkillType.LONG_RANGE : SkillType.SHORT_RANGE, skill);
+					continue;
+			}
+			// _log.warning(skill.getName() + " skill wasn't added due to specific logic."); TODO
 		}
+	}
+	
+	public void addSkill(SkillType type, L2Skill skill)
+	{
+		List<L2Skill> list = _skills.get(type);
+		if (list == null)
+		{
+			list = new ArrayList<>(5);
+			list.add(skill);
+			
+			_skills.put(type, list);
+		}
+		else
+			list.add(skill);
 	}
 	
 	public Map<EventType, List<Quest>> getEventQuests()
@@ -522,23 +521,24 @@ public class NpcTemplate extends CharTemplate
 		return _questEvents.get(EventType);
 	}
 	
-	public void addQuestEvent(EventType eventType, Quest quest)
+	public void addQuestEvent(EventType type, Quest quest)
 	{
-		List<Quest> eventList = _questEvents.get(eventType);
-		if (eventList == null)
+		List<Quest> list = _questEvents.get(type);
+		if (list == null)
 		{
-			eventList = new ArrayList<>();
-			eventList.add(quest);
-			_questEvents.put(eventType, eventList);
+			list = new ArrayList<>(5);
+			list.add(quest);
+			
+			_questEvents.put(type, list);
 		}
 		else
 		{
-			eventList.remove(quest);
+			list.remove(quest);
 			
-			if (eventType.isMultipleRegistrationAllowed() || eventList.isEmpty())
-				eventList.add(quest);
+			if (type.isMultipleRegistrationAllowed() || list.isEmpty())
+				list.add(quest);
 			else
-				_log.warning("Quest event not allow multiple quest registrations. Skipped addition of EventType \"" + eventType + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
+				_log.warning("Quest event not allow multiple quest registrations. Skipped addition of EventType \"" + type + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
 		}
 	}
 }

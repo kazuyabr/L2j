@@ -388,8 +388,8 @@
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
 			<effect name="Debuff" time="15" val="0" stackOrder="#stackOrder" stackType="armor_earth">
-				<sub order="0x40" stat="earthRes" val="30" />
-				<add order="0x40" stat="windRes" val="15" />
+				<subDiv order="0x40" stat="earthRes" val="30" />
+				<addMul order="0x40" stat="windRes" val="15" />
 			</effect>
 		</for>
 	</skill>
@@ -425,7 +425,7 @@
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
 			<effect name="Debuff" time="15" val="0" stackOrder="#stackOrder" stackType="resist_poison">
-				<add order="0x40" stat="poisonVuln" val="#poisonVuln" />
+				<subDiv order="0x40" stat="poisonVuln" val="#poisonVuln" />
 			</effect>
 		</for>
 	</skill>
@@ -1374,10 +1374,10 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect time="15" name="HealOverTime" val="#hot" stackOrder="#stackOrder" stackType="life_force_orc"/>
+			<effect count="15" name="HealOverTime" val="#hot" stackOrder="#stackOrder" stackType="life_force_orc"/>
 		</for>
 		<enchant1for>
-			<effect time="15" name="HealOverTime" val="#ench1hot" stackOrder="#ench1stackOrder" stackType="life_force_orc"/>
+			<effect count="15" name="HealOverTime" val="#ench1hot" stackOrder="#ench1stackOrder" stackType="life_force_orc"/>
 		</enchant1for>
 	</skill>
 	<skill id="1257" levels="3" name="Decrease Weight" enchantLevels1="30" enchantLevels2="30" >
@@ -1455,12 +1455,12 @@
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="resist_shock">
-				<sub order="0x40" stat="stunVuln" val="#vuln" />
+				<addMul order="0x40" stat="stunVuln" val="#vuln" />
 			</effect>
 		</for>
 		<enchant1for>
 			<effect name="Buff" time="#ench1time" val="0" stackOrder="4" stackType="resist_shock">
-				<sub order="0x40" stat="stunVuln" val="40" />
+				<addMul order="0x40" stat="stunVuln" val="40" />
 			</effect>
 		</enchant1for>
 	</skill>
@@ -2430,21 +2430,21 @@
 			<effect name="ImobilePetBuff" time="30" val="0" stackOrder="#stackOrder" stackType="pd_up_special">
 				<add order="0x40" stat="pDef" val="#pDef"/>
 				<add order="0x40" stat="mDef" val="#mDef"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</for>
 		<enchant1for>
 			<effect name="ImobilePetBuff" time="#ench1time" val="0" stackOrder="#enchstackOrder" stackType="pd_up_special">
 				<add order="0x40" stat="pDef" val="#enchpDef"/>
 				<add order="0x40" stat="mDef" val="#enchmDef"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</enchant1for>
 		<enchant2for>
 			<effect name="ImobilePetBuff" time="30" val="0" stackOrder="#enchstackOrder" stackType="pd_up_special">
 				<add order="0x40" stat="pDef" val="#enchpDef"/>
 				<add order="0x40" stat="mDef" val="#enchmDef"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</enchant2for>
 	</skill>

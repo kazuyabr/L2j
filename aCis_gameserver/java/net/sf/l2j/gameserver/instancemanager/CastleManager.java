@@ -1,329 +1,274 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.l2j.commons.concurrent.ThreadPool;
-
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.CastleUpdater;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2ClanMember;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
+import net.sf.l2j.gameserver.model.entity.Siege;
+import net.sf.l2j.gameserver.model.item.MercenaryTicket;
+import net.sf.l2j.gameserver.model.location.SpawnLocation;
+import net.sf.l2j.gameserver.model.location.TowerSpawnLocation;
+import net.sf.l2j.gameserver.model.pledge.Clan;
+import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.gameserver.xmlfactory.XMLDocumentFactory;
 
-public class CastleManager
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
+public final class CastleManager
 {
-	protected static final Logger _log = Logger.getLogger(CastleManager.class.getName());
+	private static final Logger LOG = Logger.getLogger(CastleManager.class.getName());
 	
-	public static final CastleManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private static final String LOAD_CASTLES = "SELECT * FROM castle ORDER BY id";
+	private static final String LOAD_OWNERS = "SELECT clan_id FROM clan_data WHERE hasCastle=?";
 	
-	private static final int _castleCirclets[] =
-	{
-		0,
-		6838,
-		6835,
-		6839,
-		6837,
-		6840,
-		6834,
-		6836,
-		8182,
-		8183
-	};
-	
-	private final List<Castle> _castles = new ArrayList<>();
+	private final Map<Integer, Castle> _castles = new HashMap<>();
 	
 	protected CastleManager()
 	{
-	}
-	
-	public final int findNearestCastleIndex(L2Object obj)
-	{
-		int index = getCastleIndex(obj);
-		if (index < 0)
+		// Generate Castle objects with dynamic data.
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement(LOAD_CASTLES); ResultSet rs = ps.executeQuery())
 		{
-			double closestDistance = 99999999;
-			
-			for (int i = 0; i < _castles.size(); i++)
-			{
-				Castle castle = _castles.get(i);
-				if (castle == null)
-					continue;
-				
-				double distance = castle.getDistance(obj);
-				if (closestDistance > distance)
-				{
-					closestDistance = distance;
-					index = i;
-				}
-			}
-		}
-		return index;
-	}
-	
-	public final void load()
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle ORDER BY id");
-			ResultSet rs = statement.executeQuery();
-			
-			PreparedStatement statement2 = con.prepareStatement("SELECT clan_id FROM clan_data WHERE hasCastle = ?");
 			while (rs.next())
 			{
-				// Create a new Castle object, and populate it with data.
-				final Castle castle = new Castle();
 				final int id = rs.getInt("id");
-				
-				castle.setCastleId(id);
-				castle.setName(rs.getString("name"));
+				final Castle castle = new Castle(id, rs.getString("name"));
 				
 				castle.setSiegeDate(Calendar.getInstance());
 				castle.getSiegeDate().setTimeInMillis(rs.getLong("siegeDate"));
-				
-				castle.setSiegeRegistrationEndDate(Calendar.getInstance());
-				castle.getSiegeRegistrationEndDate().setTimeInMillis(rs.getLong("regTimeEnd"));
-				
 				castle.setTimeRegistrationOver(rs.getBoolean("regTimeOver"));
 				castle.setTaxPercent(rs.getInt("taxPercent"), false);
 				castle.setTreasury(rs.getLong("treasury"));
+				castle.setLeftCertificates(rs.getInt("certificates"), false);
 				
-				// Retrieve clan owner, if any.
-				statement2.setInt(1, id);
-				ResultSet rs2 = statement2.executeQuery();
-				statement2.clearParameters();
-				
-				while (rs2.next())
+				try (PreparedStatement ps1 = con.prepareStatement(LOAD_OWNERS))
 				{
-					final int ownerId = rs2.getInt("clan_id");
-					if (ownerId > 0)
+					ps1.setInt(1, id);
+					try (ResultSet rs1 = ps1.executeQuery())
 					{
-						// Try to find clan instance
-						final L2Clan clan = ClanTable.getInstance().getClan(ownerId);
-						if (clan != null)
+						while (rs1.next())
 						{
-							castle.setOwnerId(ownerId);
-							
-							// Schedule owner tasks to start running
-							ThreadPool.schedule(new CastleUpdater(clan, 1), 3600000);
+							final int ownerId = rs1.getInt("clan_id");
+							if (ownerId > 0)
+							{
+								final Clan clan = ClanTable.getInstance().getClan(ownerId);
+								if (clan != null)
+									castle.setOwnerId(ownerId);
+							}
 						}
 					}
 				}
-				rs2.close();
 				
-				// Store the Castle object with filled data in the array.
-				_castles.add(castle);
+				_castles.put(id, castle);
 			}
-			
-			rs.close();
-			statement.close();
-			statement2.close();
-			
-			_log.info("CastleManager: Loaded " + _castles.size() + " castles.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception: loadCastleData(): " + e.getMessage(), e);
+			LOG.log(Level.WARNING, "CastleManager: SQL loading failed : " + e.getMessage(), e);
 		}
-	}
-	
-	public final Castle getCastleById(int castleId)
-	{
-		for (Castle castle : _castles)
+		
+		// Feed Castle objects with static data.
+		try
 		{
-			if (castle.getCastleId() == castleId)
-				return castle;
+			final File f = new File("./data/xml/castles.xml");
+			final StatsSet set = new StatsSet();
+			
+			final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
+			
+			final Node list = doc.getFirstChild();
+			for (Node cas = list.getFirstChild(); cas != null; cas = cas.getNextSibling())
+			{
+				if ("castle".equalsIgnoreCase(cas.getNodeName()))
+				{
+					NamedNodeMap attrs = cas.getAttributes();
+					
+					final Castle castle = _castles.get(Integer.parseInt(attrs.getNamedItem("id").getNodeValue()));
+					if (castle == null)
+						continue;
+					
+					castle.setCircletId(Integer.parseInt(attrs.getNamedItem("circletId").getNodeValue()));
+					
+					for (Node cat = cas.getFirstChild(); cat != null; cat = cat.getNextSibling())
+					{
+						if ("artifact".equalsIgnoreCase(cat.getNodeName()))
+							castle.setArtifacts(cat.getAttributes().getNamedItem("val").getNodeValue());
+						else if ("controlTowers".equalsIgnoreCase(cat.getNodeName()))
+						{
+							attrs = cat.getAttributes();
+							for (Node tower = cat.getFirstChild(); tower != null; tower = tower.getNextSibling())
+							{
+								if ("tower".equalsIgnoreCase(tower.getNodeName()))
+								{
+									attrs = tower.getAttributes();
+									
+									final String[] location = attrs.getNamedItem("loc").getNodeValue().split(",");
+									
+									castle.getControlTowers().add(new TowerSpawnLocation(13002, new SpawnLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]), Integer.parseInt(location[2]), -1)));
+								}
+							}
+						}
+						else if ("flameTowers".equalsIgnoreCase(cat.getNodeName()))
+						{
+							attrs = cat.getAttributes();
+							for (Node tower = cat.getFirstChild(); tower != null; tower = tower.getNextSibling())
+							{
+								if ("tower".equalsIgnoreCase(tower.getNodeName()))
+								{
+									attrs = tower.getAttributes();
+									
+									final String[] location = attrs.getNamedItem("loc").getNodeValue().split(",");
+									final String[] zoneIds = attrs.getNamedItem("zones").getNodeValue().split(",");
+									
+									castle.getFlameTowers().add(new TowerSpawnLocation(13004, new SpawnLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]), Integer.parseInt(location[2]), -1), zoneIds));
+								}
+							}
+						}
+						else if ("relatedNpcIds".equalsIgnoreCase(cat.getNodeName()))
+							castle.setRelatedNpcIds(cat.getAttributes().getNamedItem("val").getNodeValue());
+						else if ("tickets".equalsIgnoreCase(cat.getNodeName()))
+						{
+							attrs = cat.getAttributes();
+							for (Node ticket = cat.getFirstChild(); ticket != null; ticket = ticket.getNextSibling())
+							{
+								if ("ticket".equalsIgnoreCase(ticket.getNodeName()))
+								{
+									attrs = ticket.getAttributes();
+									
+									set.set("itemId", Integer.valueOf(attrs.getNamedItem("itemId").getNodeValue()));
+									set.set("type", attrs.getNamedItem("type").getNodeValue());
+									set.set("stationary", Boolean.valueOf(attrs.getNamedItem("stationary").getNodeValue()));
+									set.set("npcId", Integer.valueOf(attrs.getNamedItem("npcId").getNodeValue()));
+									set.set("maxAmount", Integer.valueOf(attrs.getNamedItem("maxAmount").getNodeValue()));
+									set.set("ssq", attrs.getNamedItem("ssq").getNodeValue());
+									
+									castle.getTickets().add(new MercenaryTicket(set));
+									set.clear();
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		return null;
-	}
-	
-	public final Castle getCastleByOwner(L2Clan clan)
-	{
-		for (Castle castle : _castles)
+		catch (Exception e)
 		{
-			if (castle.getOwnerId() == clan.getClanId())
-				return castle;
+			LOG.log(Level.WARNING, "CastleManager: XML loading failed : ", e);
 		}
-		return null;
-	}
-	
-	public final Castle getCastle(String name)
-	{
-		for (Castle castle : _castles)
+		LOG.info("CastleManager: Loaded " + _castles.size() + " castles.");
+		
+		// Load traps informations. Generate siege entities for every castle (if not handled, it's only processed during player login).
+		for (Castle castle : _castles.values())
 		{
-			if (castle.getName().equalsIgnoreCase(name.trim()))
-				return castle;
+			castle.loadTrapUpgrade();
+			castle.setSiege(new Siege(castle));
 		}
-		return null;
 	}
 	
-	public final Castle getCastle(int x, int y, int z)
+	public Castle getCastleById(int castleId)
 	{
-		for (Castle castle : _castles)
-		{
-			if (castle.checkIfInZone(x, y, z))
-				return castle;
-		}
-		return null;
+		return _castles.get(castleId);
 	}
 	
-	public final Castle getCastle(L2Object activeObject)
+	public Castle getCastleByOwner(Clan clan)
 	{
-		return getCastle(activeObject.getX(), activeObject.getY(), activeObject.getZ());
+		return _castles.values().stream().filter(c -> c.getOwnerId() == clan.getClanId()).findFirst().orElse(null);
 	}
 	
-	public final int getCastleIndex(int castleId)
+	public Castle getCastleByName(String name)
 	{
-		Castle castle;
-		for (int i = 0; i < _castles.size(); i++)
-		{
-			castle = _castles.get(i);
-			if (castle != null && castle.getCastleId() == castleId)
-				return i;
-		}
-		return -1;
+		return _castles.values().stream().filter(c -> c.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 	
-	public final int getCastleIndex(L2Object activeObject)
+	public Castle getCastle(int x, int y, int z)
 	{
-		return getCastleIndex(activeObject.getX(), activeObject.getY(), activeObject.getZ());
+		return _castles.values().stream().filter(c -> c.checkIfInZone(x, y, z)).findFirst().orElse(null);
 	}
 	
-	public final int getCastleIndex(int x, int y, int z)
+	public Castle getCastle(WorldObject object)
 	{
-		Castle castle;
-		for (int i = 0; i < _castles.size(); i++)
-		{
-			castle = _castles.get(i);
-			if (castle != null && castle.checkIfInZone(x, y, z))
-				return i;
-		}
-		return -1;
+		return getCastle(object.getX(), object.getY(), object.getZ());
 	}
 	
-	public final List<Castle> getCastles()
+	public Collection<Castle> getCastles()
 	{
-		return _castles;
+		return _castles.values();
 	}
 	
-	public final void validateTaxes(int sealStrifeOwner)
+	public void validateTaxes(CabalType sealStrifeOwner)
 	{
 		int maxTax;
 		switch (sealStrifeOwner)
 		{
-			case SevenSigns.CABAL_DUSK:
-				maxTax = 5;
-				break;
-			case SevenSigns.CABAL_DAWN:
+			case DAWN:
 				maxTax = 25;
 				break;
-			default: // no owner
+			
+			case DUSK:
+				maxTax = 5;
+				break;
+			
+			default:
 				maxTax = 15;
 				break;
 		}
 		
-		for (Castle castle : _castles)
-		{
-			if (castle.getTaxPercent() > maxTax)
-				castle.setTaxPercent(maxTax, true);
-		}
+		_castles.values().stream().filter(c -> c.getTaxPercent() > maxTax).forEach(c -> c.setTaxPercent(maxTax, true));
 	}
 	
-	public int getCircletByCastleId(int castleId)
+	public Siege getSiege(WorldObject object)
 	{
-		if (castleId > 0 && castleId < 10)
-			return _castleCirclets[castleId];
-		
-		return 0;
+		return getSiege(object.getX(), object.getY(), object.getZ());
 	}
 	
-	// remove this castle's circlets from the clan
-	public void removeCirclet(L2Clan clan, int castleId)
+	public Siege getSiege(int x, int y, int z)
 	{
-		for (L2ClanMember member : clan.getMembers())
-			removeCircletsAndCrown(member, castleId);
-	}
-	
-	public void removeCircletsAndCrown(L2ClanMember member, int castleId)
-	{
-		if (member == null)
-			return;
-		
-		L2PcInstance player = member.getPlayerInstance();
-		int circletId = getCircletByCastleId(castleId);
-		
-		// online player actions
-		if (player != null)
-		{
-			// Circlets removal for all members
-			ItemInstance circlet = player.getInventory().getItemByItemId(circletId);
-			if (circlet != null)
-			{
-				if (circlet.isEquipped())
-					player.getInventory().unEquipItemInSlot(circlet.getLocationSlot());
-				
-				player.destroyItemByItemId("CastleCircletRemoval", circletId, 1, player, true);
-			}
+		for (Castle castle : _castles.values())
+			if (castle.getSiege().checkIfInZone(x, y, z))
+				return castle.getSiege();
 			
-			// If the actual checked player is the clan leader, check for crown
-			if (player.isClanLeader())
-			{
-				ItemInstance crown = player.getInventory().getItemByItemId(6841);
-				if (crown != null)
-				{
-					if (crown.isEquipped())
-						player.getInventory().unEquipItemInSlot(crown.getLocationSlot());
-					
-					player.destroyItemByItemId("CastleCrownRemoval", 6841, 1, player, true);
-				}
-			}
-			return;
-		}
+		return null;
+	}
+	
+	/**
+	 * Reset all castles certificates. Reset the memory value, and run a unique query.
+	 */
+	public void resetCertificates()
+	{
+		// Reset memory. Don't use the inner save.
+		for (Castle castle : _castles.values())
+			castle.setLeftCertificates(300, false);
 		
-		// offline player actions ; remove all circlets / crowns
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		// Update all castles with a single query.
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("UPDATE castle SET certificates=300"))
 		{
-			PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE owner_id = ? AND item_id IN (?, 6841)");
-			statement.setInt(1, member.getObjectId());
-			statement.setInt(2, circletId);
-			statement.execute();
-			statement.close();
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Failed to remove castle circlets && crowns for offline player " + member.getName() + ": " + e.getMessage(), e);
+			LOG.log(Level.WARNING, "resetCertificates: " + e.getMessage(), e);
 		}
 	}
 	
-	private static class SingletonHolder
+	public static final CastleManager getInstance()
 	{
-		protected static final CastleManager _instance = new CastleManager();
+		return SingletonHolder.INSTANCE;
+	}
+	
+	private static final class SingletonHolder
+	{
+		protected static final CastleManager INSTANCE = new CastleManager();
 	}
 }

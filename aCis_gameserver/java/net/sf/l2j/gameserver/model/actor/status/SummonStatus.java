@@ -1,55 +1,58 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.actor.status;
 
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 import net.sf.l2j.gameserver.model.entity.Duel.DuelState;
+import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public class SummonStatus extends PlayableStatus
 {
-	public SummonStatus(L2Summon activeChar)
+	public SummonStatus(Summon activeChar)
 	{
 		super(activeChar);
 	}
 	
 	@Override
-	public void reduceHp(double value, L2Character attacker)
+	public void reduceHp(double value, Creature attacker)
 	{
 		reduceHp(value, attacker, true, false, false);
 	}
 	
 	@Override
-	public void reduceHp(double value, L2Character attacker, boolean awake, boolean isDOT, boolean isHPConsumption)
+	public void reduceHp(double value, Creature attacker, boolean awake, boolean isDOT, boolean isHPConsumption)
 	{
 		if (getActiveChar().isDead())
 			return;
 		
+		final Player owner = getActiveChar().getOwner();
+		
+		// We deny the duel, no matter if damage has been done or not.
 		if (attacker != null)
 		{
-			final L2PcInstance attackerPlayer = attacker.getActingPlayer();
-			if (attackerPlayer != null && (getActiveChar().getOwner() == null || getActiveChar().getOwner().getDuelId() != attackerPlayer.getDuelId()))
+			final Player attackerPlayer = attacker.getActingPlayer();
+			if (attackerPlayer != null && (owner == null || owner.getDuelId() != attackerPlayer.getDuelId()))
 				attackerPlayer.setDuelState(DuelState.INTERRUPTED);
 		}
+		
 		super.reduceHp(value, attacker, awake, isDOT, isHPConsumption);
+		
+		// Since damages have been done, we can send damage message and EVT_ATTACKED notification.
+		if (attacker != null)
+		{
+			if (!isDOT && owner != null)
+				owner.sendPacket(SystemMessage.getSystemMessage((getActiveChar() instanceof Servitor) ? SystemMessageId.SUMMON_RECEIVED_DAMAGE_S2_BY_S1 : SystemMessageId.PET_RECEIVED_S2_DAMAGE_BY_S1).addCharName(attacker).addNumber((int) value));
+			
+			getActiveChar().getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, attacker);
+		}
 	}
 	
 	@Override
-	public L2Summon getActiveChar()
+	public Summon getActiveChar()
 	{
-		return (L2Summon) super.getActiveChar();
+		return (Summon) super.getActiveChar();
 	}
 }

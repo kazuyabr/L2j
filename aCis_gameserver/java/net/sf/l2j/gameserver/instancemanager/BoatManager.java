@@ -1,34 +1,20 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.VehiclePathPoint;
-import net.sf.l2j.gameserver.model.actor.L2Vehicle;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.template.CharTemplate;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.Vehicle;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.template.CreatureTemplate;
+import net.sf.l2j.gameserver.model.location.VehicleLocation;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class BoatManager
 {
-	private final Map<Integer, L2Vehicle> _boats = new HashMap<>();
+	private final Map<Integer, Vehicle> _boats = new HashMap<>();
 	private final boolean[] _docksBusy = new boolean[3];
 	
 	public static final int TALKING_ISLAND = 0;
@@ -46,7 +32,7 @@ public class BoatManager
 	{
 	}
 	
-	public L2Vehicle getNewBoat(int boatId, int x, int y, int z, int heading)
+	public Vehicle getNewBoat(int boatId, int x, int y, int z, int heading)
 	{
 		StatsSet npcDat = new StatsSet();
 		npcDat.set("id", boatId);
@@ -83,14 +69,13 @@ public class BoatManager
 		npcDat.set("walkSpd", 0);
 		npcDat.set("runSpd", 0);
 		
-		CharTemplate template = new CharTemplate(npcDat);
-		L2Vehicle boat = new L2Vehicle(IdFactory.getInstance().getNextId(), template);
+		CreatureTemplate template = new CreatureTemplate(npcDat);
+		Vehicle boat = new Vehicle(IdFactory.getInstance().getNextId(), template);
 		
 		_boats.put(boat.getObjectId(), boat);
 		
 		boat.setHeading(heading);
-		boat.setXYZInvisible(x, y, z);
-		boat.spawnMe();
+		boat.spawnMe(x, y, z);
 		
 		return boat;
 	}
@@ -99,7 +84,7 @@ public class BoatManager
 	 * @param boatId
 	 * @return
 	 */
-	public L2Vehicle getBoat(int boatId)
+	public Vehicle getBoat(int boatId)
 	{
 		return _boats.get(boatId);
 	}
@@ -130,19 +115,19 @@ public class BoatManager
 	 * @param point2
 	 * @param packet The packet to broadcast.
 	 */
-	public void broadcastPacket(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket packet)
+	public void broadcastPacket(VehicleLocation point1, VehicleLocation point2, L2GameServerPacket packet)
 	{
-		for (L2PcInstance player : L2World.getInstance().getPlayers())
+		for (Player player : World.getInstance().getPlayers())
 		{
-			double dx = (double) player.getX() - point1.x;
-			double dy = (double) player.getY() - point1.y;
+			double dx = (double) player.getX() - point1.getX();
+			double dy = (double) player.getY() - point1.getY();
 			
 			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 				player.sendPacket(packet);
 			else
 			{
-				dx = (double) player.getX() - point2.x;
-				dy = (double) player.getY() - point2.y;
+				dx = (double) player.getX() - point2.getX();
+				dy = (double) player.getY() - point2.getY();
 				
 				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 					player.sendPacket(packet);
@@ -156,12 +141,12 @@ public class BoatManager
 	 * @param point2
 	 * @param packets The packets to broadcast.
 	 */
-	public void broadcastPackets(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket... packets)
+	public void broadcastPackets(VehicleLocation point1, VehicleLocation point2, L2GameServerPacket... packets)
 	{
-		for (L2PcInstance player : L2World.getInstance().getPlayers())
+		for (Player player : World.getInstance().getPlayers())
 		{
-			double dx = (double) player.getX() - point1.x;
-			double dy = (double) player.getY() - point1.y;
+			double dx = (double) player.getX() - point1.getX();
+			double dy = (double) player.getY() - point1.getY();
 			
 			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 			{
@@ -170,8 +155,8 @@ public class BoatManager
 			}
 			else
 			{
-				dx = (double) player.getX() - point2.x;
-				dy = (double) player.getY() - point2.y;
+				dx = (double) player.getX() - point2.getX();
+				dy = (double) player.getY() - point2.getY();
 				
 				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 					for (L2GameServerPacket p : packets)

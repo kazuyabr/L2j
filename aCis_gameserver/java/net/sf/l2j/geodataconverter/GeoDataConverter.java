@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.geodataconverter;
 
 import java.io.BufferedOutputStream;
@@ -31,7 +17,7 @@ import net.sf.l2j.gameserver.geoengine.geodata.BlockFlat;
 import net.sf.l2j.gameserver.geoengine.geodata.BlockMultilayer;
 import net.sf.l2j.gameserver.geoengine.geodata.GeoFormat;
 import net.sf.l2j.gameserver.geoengine.geodata.GeoStructure;
-import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.model.World;
 
 /**
  * @author Hasha
@@ -77,9 +63,9 @@ public final class GeoDataConverter
 		// load geo files according to geoengine config setup
 		final ExProperties props = Config.initProperties(Config.GEOENGINE_FILE);
 		int converted = 0;
-		for (int rx = L2World.TILE_X_MIN; rx <= L2World.TILE_X_MAX; rx++)
+		for (int rx = World.TILE_X_MIN; rx <= World.TILE_X_MAX; rx++)
 		{
-			for (int ry = L2World.TILE_Y_MIN; ry <= L2World.TILE_Y_MAX; ry++)
+			for (int ry = World.TILE_Y_MIN; ry <= World.TILE_Y_MAX; ry++)
 			{
 				if (props.containsKey(String.valueOf(rx) + "_" + String.valueOf(ry)))
 				{
@@ -319,7 +305,7 @@ public final class GeoDataConverter
 			for (int ix = 0; ix < GeoStructure.REGION_BLOCKS_X; ix++)
 				for (int iy = 0; iy < GeoStructure.REGION_BLOCKS_Y; iy++)
 					_blocks[ix][iy].saveBlock(bos);
-			
+				
 			// flush data to file
 			bos.flush();
 			

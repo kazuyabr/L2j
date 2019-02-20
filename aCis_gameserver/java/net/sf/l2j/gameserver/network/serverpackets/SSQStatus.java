@@ -1,28 +1,15 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.Config;
+import java.util.Map.Entry;
+
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
 import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
+import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival.FestivalType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
-/**
- * @author Tempy
- */
 public class SSQStatus extends L2GameServerPacket
 {
 	private final int _objectId;
@@ -37,14 +24,14 @@ public class SSQStatus extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		int winningCabal = SevenSigns.getInstance().getCabalHighestScore();
-		int totalDawnMembers = SevenSigns.getInstance().getTotalMembers(SevenSigns.CABAL_DAWN);
-		int totalDuskMembers = SevenSigns.getInstance().getTotalMembers(SevenSigns.CABAL_DUSK);
+		final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+		final int totalDawnMembers = SevenSigns.getInstance().getTotalMembers(CabalType.DAWN);
+		final int totalDuskMembers = SevenSigns.getInstance().getTotalMembers(CabalType.DUSK);
 		
 		writeC(0xf5);
 		
 		writeC(_page);
-		writeC(SevenSigns.getInstance().getCurrentPeriod()); // current period?
+		writeC(SevenSigns.getInstance().getCurrentPeriod().ordinal());
 		
 		int dawnPercent = 0;
 		int duskPercent = 0;
@@ -55,47 +42,40 @@ public class SSQStatus extends L2GameServerPacket
 				// [ddd cc dd ddd c ddd c]
 				writeD(SevenSigns.getInstance().getCurrentCycle());
 				
-				int currentPeriod = SevenSigns.getInstance().getCurrentPeriod();
-				
-				switch (currentPeriod)
+				switch (SevenSigns.getInstance().getCurrentPeriod())
 				{
-					case SevenSigns.PERIOD_COMP_RECRUITING:
+					case RECRUITING:
 						writeD(SystemMessageId.INITIAL_PERIOD.getId());
-						break;
-					case SevenSigns.PERIOD_COMPETITION:
-						writeD(SystemMessageId.QUEST_EVENT_PERIOD.getId());
-						break;
-					case SevenSigns.PERIOD_COMP_RESULTS:
-						writeD(SystemMessageId.RESULTS_PERIOD.getId());
-						break;
-					case SevenSigns.PERIOD_SEAL_VALIDATION:
-						writeD(SystemMessageId.VALIDATION_PERIOD.getId());
-						break;
-				}
-				
-				switch (currentPeriod)
-				{
-					case SevenSigns.PERIOD_COMP_RECRUITING:
-					case SevenSigns.PERIOD_COMP_RESULTS:
 						writeD(SystemMessageId.UNTIL_TODAY_6PM.getId());
 						break;
-					case SevenSigns.PERIOD_COMPETITION:
-					case SevenSigns.PERIOD_SEAL_VALIDATION:
+					
+					case COMPETITION:
+						writeD(SystemMessageId.QUEST_EVENT_PERIOD.getId());
+						writeD(SystemMessageId.UNTIL_MONDAY_6PM.getId());
+						break;
+					
+					case RESULTS:
+						writeD(SystemMessageId.RESULTS_PERIOD.getId());
+						writeD(SystemMessageId.UNTIL_TODAY_6PM.getId());
+						break;
+					
+					case SEAL_VALIDATION:
+						writeD(SystemMessageId.VALIDATION_PERIOD.getId());
 						writeD(SystemMessageId.UNTIL_MONDAY_6PM.getId());
 						break;
 				}
 				
-				writeC(SevenSigns.getInstance().getPlayerCabal(_objectId));
-				writeC(SevenSigns.getInstance().getPlayerSeal(_objectId));
+				writeC(SevenSigns.getInstance().getPlayerCabal(_objectId).ordinal());
+				writeC(SevenSigns.getInstance().getPlayerSeal(_objectId).ordinal());
 				
 				writeD(SevenSigns.getInstance().getPlayerStoneContrib(_objectId)); // Seal Stones Turned-In
 				writeD(SevenSigns.getInstance().getPlayerAdenaCollect(_objectId)); // Ancient Adena to Collect
 				
-				double dawnStoneScore = SevenSigns.getInstance().getCurrentStoneScore(SevenSigns.CABAL_DAWN);
-				int dawnFestivalScore = SevenSigns.getInstance().getCurrentFestivalScore(SevenSigns.CABAL_DAWN);
+				double dawnStoneScore = SevenSigns.getInstance().getCurrentStoneScore(CabalType.DAWN);
+				int dawnFestivalScore = SevenSigns.getInstance().getCurrentFestivalScore(CabalType.DAWN);
 				
-				double duskStoneScore = SevenSigns.getInstance().getCurrentStoneScore(SevenSigns.CABAL_DUSK);
-				int duskFestivalScore = SevenSigns.getInstance().getCurrentFestivalScore(SevenSigns.CABAL_DUSK);
+				double duskStoneScore = SevenSigns.getInstance().getCurrentStoneScore(CabalType.DUSK);
+				int duskFestivalScore = SevenSigns.getInstance().getCurrentFestivalScore(CabalType.DUSK);
 				
 				double totalStoneScore = duskStoneScore + dawnStoneScore;
 				
@@ -111,8 +91,8 @@ public class SSQStatus extends L2GameServerPacket
 					dawnStoneScoreProp = Math.round(((float) dawnStoneScore / (float) totalStoneScore) * 500);
 				}
 				
-				int duskTotalScore = SevenSigns.getInstance().getCurrentScore(SevenSigns.CABAL_DUSK);
-				int dawnTotalScore = SevenSigns.getInstance().getCurrentScore(SevenSigns.CABAL_DAWN);
+				int duskTotalScore = SevenSigns.getInstance().getCurrentScore(CabalType.DUSK);
+				int dawnTotalScore = SevenSigns.getInstance().getCurrentScore(CabalType.DAWN);
 				
 				int totalOverallScore = duskTotalScore + dawnTotalScore;
 				
@@ -120,20 +100,6 @@ public class SSQStatus extends L2GameServerPacket
 				{
 					dawnPercent = Math.round(((float) dawnTotalScore / (float) totalOverallScore) * 100);
 					duskPercent = Math.round(((float) duskTotalScore / (float) totalOverallScore) * 100);
-				}
-				
-				if (Config.DEBUG)
-				{
-					_log.info("Dusk Stone Score: " + duskStoneScore + " - Dawn Stone Score: " + dawnStoneScore);
-					_log.info("Dusk Festival Score: " + duskFestivalScore + " - Dawn Festival Score: " + dawnFestivalScore);
-					_log.info("Dusk Score: " + duskTotalScore + " - Dawn Score: " + dawnTotalScore);
-					_log.info("Overall Score: " + totalOverallScore);
-					_log.info("");
-					if (totalStoneScore == 0)
-						_log.info("Dusk Prop: 0 - Dawn Prop: 0");
-					else
-						_log.info("Dusk Prop: " + ((duskStoneScore / totalStoneScore) * 500) + " - Dawn Prop: " + ((dawnStoneScore / totalStoneScore) * 500));
-					_log.info("Dusk %: " + duskPercent + " - Dawn %: " + dawnPercent);
 				}
 				
 				/* DUSK */
@@ -156,18 +122,20 @@ public class SSQStatus extends L2GameServerPacket
 				
 				writeC(5); // Total number of festivals
 				
-				for (int i = 0; i < 5; i++)
+				for (FestivalType level : FestivalType.VALUES)
 				{
-					writeC(i + 1); // Current client-side festival ID
-					writeD(SevenSignsFestival.FESTIVAL_LEVEL_SCORES[i]);
+					final int festivalId = level.ordinal();
 					
-					int duskScore = SevenSignsFestival.getInstance().getHighestScore(SevenSigns.CABAL_DUSK, i);
-					int dawnScore = SevenSignsFestival.getInstance().getHighestScore(SevenSigns.CABAL_DAWN, i);
+					writeC(festivalId + 1); // Current client-side festival ID
+					writeD(level.getMaxScore());
+					
+					int duskScore = SevenSignsFestival.getInstance().getHighestScore(CabalType.DUSK, festivalId);
+					int dawnScore = SevenSignsFestival.getInstance().getHighestScore(CabalType.DAWN, festivalId);
 					
 					// Dusk Score \\
 					writeD(duskScore);
 					
-					StatsSet highScoreData = SevenSignsFestival.getInstance().getHighestScoreData(SevenSigns.CABAL_DUSK, i);
+					StatsSet highScoreData = SevenSignsFestival.getInstance().getHighestScoreData(CabalType.DUSK, festivalId);
 					String[] partyMembers = highScoreData.getString("members").split(",");
 					
 					if (partyMembers != null)
@@ -185,7 +153,7 @@ public class SSQStatus extends L2GameServerPacket
 					// Dawn Score \\
 					writeD(dawnScore);
 					
-					highScoreData = SevenSignsFestival.getInstance().getHighestScoreData(SevenSigns.CABAL_DAWN, i);
+					highScoreData = SevenSignsFestival.getInstance().getHighestScoreData(CabalType.DAWN, festivalId);
 					partyMembers = highScoreData.getString("members").split(",");
 					
 					if (partyMembers != null)
@@ -207,16 +175,16 @@ public class SSQStatus extends L2GameServerPacket
 				writeC(35); // Minimum limit for winning cabal to claim a seal
 				writeC(3); // Total number of seals
 				
-				for (int i = 1; i < 4; i++)
+				for (Entry<SealType, CabalType> entry : SevenSigns.getInstance().getSealOwners().entrySet())
 				{
-					int dawnProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DAWN);
-					int duskProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DUSK);
+					final SealType seal = entry.getKey();
+					final CabalType sealOwner = entry.getValue();
 					
-					if (Config.DEBUG)
-						_log.info(SevenSigns.getSealName(i, true) + " = Dawn Prop: " + dawnProportion + "(" + ((dawnProportion / totalDawnMembers) * 100) + "%)" + ", Dusk Prop: " + duskProportion + "(" + ((duskProportion / totalDuskMembers) * 100) + "%)");
+					int dawnProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DAWN);
+					int duskProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DUSK);
 					
-					writeC(i);
-					writeC(SevenSigns.getInstance().getSealOwner(i));
+					writeC(seal.ordinal());
+					writeC(sealOwner.ordinal());
 					
 					if (totalDuskMembers == 0)
 					{
@@ -248,145 +216,150 @@ public class SSQStatus extends L2GameServerPacket
 				break;
 			case 4:
 				// c cc [cc (cchh)]
-				writeC(winningCabal); // Overall predicted winner
+				writeC(winningCabal.ordinal()); // Overall predicted winner
 				writeC(3); // Total number of seals
 				
-				for (int i = 1; i < 4; i++)
+				for (Entry<SealType, CabalType> entry : SevenSigns.getInstance().getSealOwners().entrySet())
 				{
-					int dawnProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DAWN);
-					int duskProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DUSK);
+					final SealType seal = entry.getKey();
+					final CabalType sealOwner = entry.getValue();
+					
+					final int dawnProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DAWN);
+					final int duskProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DUSK);
+					
 					dawnPercent = Math.round((dawnProportion / (totalDawnMembers == 0 ? 1 : (float) totalDawnMembers)) * 100);
 					duskPercent = Math.round((duskProportion / (totalDuskMembers == 0 ? 1 : (float) totalDuskMembers)) * 100);
-					int sealOwner = SevenSigns.getInstance().getSealOwner(i);
 					
-					writeC(i);
+					writeC(sealOwner.ordinal());
 					
 					switch (sealOwner)
 					{
-						case SevenSigns.CABAL_NULL:
+						case NORMAL:
 							switch (winningCabal)
 							{
-								case SevenSigns.CABAL_NULL:
-									writeC(SevenSigns.CABAL_NULL);
+								case NORMAL:
+									writeC(CabalType.NORMAL.ordinal());
 									writeH(SystemMessageId.COMPETITION_TIE_SEAL_NOT_AWARDED.getId());
 									break;
-								case SevenSigns.CABAL_DAWN:
+								case DAWN:
 									if (dawnPercent >= 35)
 									{
-										writeC(SevenSigns.CABAL_DAWN);
+										writeC(CabalType.DAWN.ordinal());
 										writeH(SystemMessageId.SEAL_NOT_OWNED_35_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.SEAL_NOT_OWNED_35_LESS_VOTED.getId());
 									}
 									break;
-								case SevenSigns.CABAL_DUSK:
+								case DUSK:
 									if (duskPercent >= 35)
 									{
-										writeC(SevenSigns.CABAL_DUSK);
+										writeC(CabalType.DUSK.ordinal());
 										writeH(SystemMessageId.SEAL_NOT_OWNED_35_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.SEAL_NOT_OWNED_35_LESS_VOTED.getId());
 									}
 									break;
 							}
 							break;
-						case SevenSigns.CABAL_DAWN:
+						
+						case DAWN:
 							switch (winningCabal)
 							{
-								case SevenSigns.CABAL_NULL:
+								case NORMAL:
 									if (dawnPercent >= 10)
 									{
-										writeC(SevenSigns.CABAL_DAWN);
+										writeC(CabalType.DAWN.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.COMPETITION_TIE_SEAL_NOT_AWARDED.getId());
 									}
 									break;
 								
-								case SevenSigns.CABAL_DAWN:
+								case DAWN:
 									if (dawnPercent >= 10)
 									{
-										writeC(sealOwner);
+										writeC(sealOwner.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_LESS_VOTED.getId());
 									}
 									break;
 								
-								case SevenSigns.CABAL_DUSK:
+								case DUSK:
 									if (duskPercent >= 35)
 									{
-										writeC(SevenSigns.CABAL_DUSK);
+										writeC(CabalType.DUSK.ordinal());
 										writeH(SystemMessageId.SEAL_NOT_OWNED_35_MORE_VOTED.getId());
 									}
 									else if (dawnPercent >= 10)
 									{
-										writeC(SevenSigns.CABAL_DAWN);
+										writeC(CabalType.DAWN.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_LESS_VOTED.getId());
 									}
 									break;
 							}
 							break;
-						case SevenSigns.CABAL_DUSK:
+						
+						case DUSK:
 							switch (winningCabal)
 							{
-								case SevenSigns.CABAL_NULL:
+								case NORMAL:
 									if (duskPercent >= 10)
 									{
-										writeC(SevenSigns.CABAL_DUSK);
+										writeC(CabalType.DUSK.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.COMPETITION_TIE_SEAL_NOT_AWARDED.getId());
 									}
 									break;
 								
-								case SevenSigns.CABAL_DAWN:
+								case DAWN:
 									if (dawnPercent >= 35)
 									{
-										writeC(SevenSigns.CABAL_DAWN);
+										writeC(CabalType.DAWN.ordinal());
 										writeH(SystemMessageId.SEAL_NOT_OWNED_35_MORE_VOTED.getId());
 									}
 									else if (duskPercent >= 10)
 									{
-										writeC(sealOwner);
+										writeC(sealOwner.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_LESS_VOTED.getId());
 									}
 									break;
 								
-								case SevenSigns.CABAL_DUSK:
+								case DUSK:
 									if (duskPercent >= 10)
 									{
-										writeC(sealOwner);
+										writeC(sealOwner.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_MORE_VOTED.getId());
 									}
 									else
 									{
-										writeC(SevenSigns.CABAL_NULL);
+										writeC(CabalType.NORMAL.ordinal());
 										writeH(SystemMessageId.SEAL_OWNED_10_LESS_VOTED.getId());
 									}
 									break;

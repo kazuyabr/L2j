@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.taskmanager;
 
 import java.util.Map;
@@ -19,15 +5,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
- * Updates and clears PvP flag of {@link L2PcInstance} after specified time.
+ * Updates and clears PvP flag of {@link Player} after specified time.
  * @author Tryskell, Hasha
  */
 public final class PvpFlagTaskManager implements Runnable
 {
-	private final Map<L2PcInstance, Long> _players = new ConcurrentHashMap<>();
+	private final Map<Player, Long> _players = new ConcurrentHashMap<>();
 	
 	public static final PvpFlagTaskManager getInstance()
 	{
@@ -41,20 +27,20 @@ public final class PvpFlagTaskManager implements Runnable
 	}
 	
 	/**
-	 * Adds {@link L2PcInstance} to the PvpFlagTask.
-	 * @param player : L2PcInstance to be added and checked.
+	 * Adds {@link Player} to the PvpFlagTask.
+	 * @param player : Player to be added and checked.
 	 * @param time : Time in ms, after which the PvP flag is removed.
 	 */
-	public final void add(L2PcInstance player, long time)
+	public final void add(Player player, long time)
 	{
 		_players.put(player, System.currentTimeMillis() + time);
 	}
 	
 	/**
-	 * Removes {@link L2PcInstance} from the PvpFlagTask.
-	 * @param player : {@link L2PcInstance} to be removed.
+	 * Removes {@link Player} from the PvpFlagTask.
+	 * @param player : {@link Player} to be removed.
 	 */
-	public final void remove(L2PcInstance player)
+	public final void remove(Player player)
 	{
 		_players.remove(player);
 	}
@@ -70,10 +56,10 @@ public final class PvpFlagTaskManager implements Runnable
 		final long currentTime = System.currentTimeMillis();
 		
 		// Loop all players.
-		for (Map.Entry<L2PcInstance, Long> entry : _players.entrySet())
+		for (Map.Entry<Player, Long> entry : _players.entrySet())
 		{
 			// Get time left and check.
-			final L2PcInstance player = entry.getKey();
+			final Player player = entry.getKey();
 			final long timeLeft = entry.getValue();
 			
 			// Time is running out, clear PvP flag and remove from list.

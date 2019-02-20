@@ -1,7 +1,7 @@
 @echo off
 title aCis loginserver console
 :start
-java -Xmx128m -cp ./libs/*; net.sf.l2j.loginserver.L2LoginServer
+java -Xmx32m -cp ./libs/*; net.sf.l2j.loginserver.LoginServer
 if ERRORLEVEL 2 goto restart
 if ERRORLEVEL 1 goto error
 goto end

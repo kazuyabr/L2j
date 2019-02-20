@@ -1115,6 +1115,7 @@
 		<set name="mp_consume" val="11" />
 		<set name="mp_consume_reduce" val="26,1" />
 		<set name="reuse_delay" val="1500" />
+		<set name="item_skill" val="3552-1" />
 		<for>
 			<set order="0x08" stat="pAtk" val="581" />
 			<set order="0x08" stat="mAtk" val="132" />
@@ -1170,6 +1171,7 @@
 		<set name="reuse_delay" val="1500" />
 		<set name="oncrit_chance" val="16" />
 		<set name="oncrit_skill" val="3574-1" />
+		<set name="item_skill" val="3552-1" />
 		<for>
 			<set order="0x08" stat="pAtk" val="581" />
 			<set order="0x08" stat="mAtk" val="132" />

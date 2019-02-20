@@ -1,39 +1,25 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
+import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.ai.model.L2SummonAI;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.ai.type.SummonAI;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
+import net.sf.l2j.gameserver.model.actor.instance.Pet;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Servitor;
+import net.sf.l2j.gameserver.model.actor.instance.SiegeSummon;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcSay;
-import net.sf.l2j.gameserver.util.Util;
 
 public final class RequestActionUse extends L2GameClientPacket
 {
@@ -102,7 +88,7 @@ public final class RequestActionUse extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
@@ -113,8 +99,8 @@ public final class RequestActionUse extends L2GameClientPacket
 			return;
 		}
 		
-		final L2Summon pet = activeChar.getPet();
-		final L2Object target = activeChar.getTarget();
+		final Summon pet = activeChar.getPet();
+		final WorldObject target = activeChar.getTarget();
 		
 		switch (_actionId)
 		{
@@ -147,7 +133,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					return;
 				
 				// You can't order anymore your pet to stop if distance is superior to 2000.
-				if (pet.getFollowStatus() && Util.calculateDistance(activeChar, pet, true) > 2000)
+				if (pet.getFollowStatus() && MathUtil.calculateDistance(activeChar, pet, true) > 2000)
 					return;
 				
 				if (pet.isOutOfControl())
@@ -156,12 +142,12 @@ public final class RequestActionUse extends L2GameClientPacket
 					return;
 				}
 				
-				((L2SummonAI) pet.getAI()).notifyFollowStatusChange();
+				((SummonAI) pet.getAI()).notifyFollowStatusChange();
 				break;
 			
 			case 16:
 			case 22: // Attack (pet attack)
-				if (!(target instanceof L2Character) || pet == null || pet == target || activeChar == target)
+				if (!(target instanceof Creature) || pet == null || pet == target || activeChar == target)
 					return;
 				
 				// Sin eater, Big Boom, Wyvern can't attack with attack button.
@@ -182,7 +168,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					pet.getAI().setIntention(CtrlIntention.ATTACK, target);
 				}
 				
-				if (pet instanceof L2PetInstance && (pet.getLevel() - activeChar.getLevel() > 20))
+				if (pet instanceof Pet && (pet.getLevel() - activeChar.getLevel() > 20))
 				{
 					activeChar.sendPacket(SystemMessageId.PET_TOO_HIGH_TO_CONTROL);
 					return;
@@ -194,7 +180,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				pet.setTarget(target);
 				
 				// Summons can attack NPCs even when the owner cannot.
-				if (!target.isAutoAttackable(activeChar) && !_ctrlPressed && (!(target instanceof L2NpcInstance)))
+				if (!target.isAutoAttackable(activeChar) && !_ctrlPressed && (!(target instanceof Folk)))
 				{
 					pet.setFollowStatus(false);
 					pet.getAI().setIntention(CtrlIntention.FOLLOW, target);
@@ -202,15 +188,15 @@ public final class RequestActionUse extends L2GameClientPacket
 					return;
 				}
 				
-				if (target instanceof L2DoorInstance)
+				if (target instanceof Door)
 				{
-					if (((L2DoorInstance) target).isAutoAttackable(activeChar) && pet.getNpcId() != L2SiegeSummonInstance.SWOOP_CANNON_ID)
+					if (((Door) target).isAutoAttackable(activeChar) && pet.getNpcId() != SiegeSummon.SWOOP_CANNON_ID)
 						pet.getAI().setIntention(CtrlIntention.ATTACK, target);
 				}
 				// siege golem AI doesn't support attacking other than doors at the moment
-				else if (pet.getNpcId() != L2SiegeSummonInstance.SIEGE_GOLEM_ID)
+				else if (pet.getNpcId() != SiegeSummon.SIEGE_GOLEM_ID)
 				{
-					if (L2Character.isInsidePeaceZone(pet, target))
+					if (Creature.isInsidePeaceZone(pet, target))
 					{
 						pet.setFollowStatus(false);
 						pet.getAI().setIntention(CtrlIntention.FOLLOW, target);
@@ -235,7 +221,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				break;
 			
 			case 19: // Returns pet to control item
-				if (pet == null || !(pet instanceof L2PetInstance))
+				if (pet == null || !(pet instanceof Pet))
 					return;
 				
 				if (pet.isDead())
@@ -244,7 +230,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					activeChar.sendPacket(SystemMessageId.PET_REFUSING_ORDER);
 				else if (pet.isAttackingNow() || pet.isInCombat())
 					activeChar.sendPacket(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE);
-				else if (((L2PetInstance) pet).checkUnsummonState())
+				else if (((Pet) pet).checkUnsummonState())
 					activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RESTORE_HUNGRY_PETS);
 				else
 					pet.unSummon(activeChar);
@@ -271,7 +257,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				break;
 			
 			case 41: // Wild Hog Cannon - Attack
-				if (!(target instanceof L2DoorInstance))
+				if (!(target instanceof Door))
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return;
@@ -313,7 +299,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				break;
 			
 			case 52: // Unsummon a servitor
-				if (pet == null || !(pet instanceof L2SummonInstance))
+				if (pet == null || !(pet instanceof Servitor))
 					return;
 				
 				if (pet.isDead())
@@ -346,7 +332,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				break;
 			
 			case 1000: // Siege Golem - Siege Hammer
-				if (!(target instanceof L2DoorInstance))
+				if (!(target instanceof Door))
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return;
@@ -453,7 +439,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				break;
 			
 			case 1039: // Swoop Cannon - Cannon Fodder
-				if (target instanceof L2DoorInstance)
+				if (target instanceof Door)
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return;
@@ -463,7 +449,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				break;
 			
 			case 1040: // Swoop Cannon - Big Bang
-				if (target instanceof L2DoorInstance)
+				if (target instanceof Door)
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return;
@@ -483,20 +469,20 @@ public final class RequestActionUse extends L2GameClientPacket
 	 * @param target The target is specified as a parameter but can be overwrited or ignored depending on skill type.
 	 * @return true if you can use the skill, false otherwise.
 	 */
-	private boolean useSkill(int skillId, L2Object target)
+	private boolean useSkill(int skillId, WorldObject target)
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		
 		// No owner, or owner in shop mode.
 		if (activeChar == null || activeChar.isInStoreMode())
 			return false;
 		
-		final L2Summon activeSummon = activeChar.getPet();
+		final Summon activeSummon = activeChar.getPet();
 		if (activeSummon == null)
 			return false;
 		
 		// Pet which is 20 levels higher than owner.
-		if (activeSummon instanceof L2PetInstance && activeSummon.getLevel() - activeChar.getLevel() > 20)
+		if (activeSummon instanceof Pet && activeSummon.getLevel() - activeChar.getLevel() > 20)
 		{
 			activeChar.sendPacket(SystemMessageId.PET_TOO_HIGH_TO_CONTROL);
 			return false;
@@ -510,7 +496,7 @@ public final class RequestActionUse extends L2GameClientPacket
 		}
 		
 		// Verify if the launched skill is mastered by the summon.
-		final L2Skill skill = activeSummon.getTemplate().getSkills().get(skillId);
+		final L2Skill skill = activeSummon.getSkill(skillId);
 		if (skill == null)
 			return false;
 		

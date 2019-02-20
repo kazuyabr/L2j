@@ -1,28 +1,17 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.datatables.SoulCrystalsTable;
+import net.sf.l2j.gameserver.data.xml.SoulCrystalData;
 import net.sf.l2j.gameserver.model.AbsorbInfo;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.soulcrystal.LevelingInfo;
-import net.sf.l2j.gameserver.model.soulcrystal.SoulCrystalData;
+import net.sf.l2j.gameserver.model.soulcrystal.SoulCrystal;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -38,15 +27,15 @@ public class Q350_EnhanceYourWeapon extends Quest
 		addStartNpc(30115, 30194, 30856);
 		addTalkId(30115, 30194, 30856);
 		
-		for (int npcId : SoulCrystalsTable.getNpcInfos().keySet())
+		for (int npcId : SoulCrystalData.getInstance().getLevelingInfos().keySet())
 			addKillId(npcId);
 		
-		for (int crystalId : SoulCrystalsTable.getSoulCrystalInfos().keySet())
+		for (int crystalId : SoulCrystalData.getInstance().getSoulCrystals().keySet())
 			addItemUse(crystalId);
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -86,7 +75,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -107,7 +96,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 				for (ItemInstance item : player.getInventory().getItems())
 				{
 					// Crystal found, show "how to" html.
-					if (SoulCrystalsTable.getSoulCrystalInfos().get(item.getItemId()) != null)
+					if (SoulCrystalData.getInstance().getSoulCrystals().get(item.getItemId()) != null)
 						return npc.getNpcId() + "-03.htm";
 				}
 				// No crystal found, offer a new crystal.
@@ -119,20 +108,20 @@ public class Q350_EnhanceYourWeapon extends Quest
 	}
 	
 	@Override
-	public String onItemUse(ItemInstance item, L2PcInstance user, L2Object target)
+	public String onItemUse(ItemInstance item, Player user, WorldObject target)
 	{
 		// Caster is dead.
 		if (user.isDead())
 			return null;
 		
 		// No target, or target isn't an L2Attackable.
-		if (target == null || !(target instanceof L2Attackable))
+		if (target == null || !(target instanceof Attackable))
 			return null;
 		
-		final L2Attackable mob = ((L2Attackable) target);
+		final Attackable mob = ((Attackable) target);
 		
 		// Mob is dead or not registered in _npcInfos.
-		if (mob.isDead() || !SoulCrystalsTable.getNpcInfos().containsKey(mob.getNpcId()))
+		if (mob.isDead() || !SoulCrystalData.getInstance().getLevelingInfos().containsKey(mob.getNpcId()))
 			return null;
 		
 		// Add user to mob's absorber list.
@@ -142,33 +131,34 @@ public class Q350_EnhanceYourWeapon extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
 		// Retrieve individual mob informations.
-		final LevelingInfo npcInfo = SoulCrystalsTable.getNpcInfos().get(npc.getNpcId());
+		final LevelingInfo npcInfo = SoulCrystalData.getInstance().getLevelingInfos().get(npc.getNpcId());
 		if (npcInfo == null)
 			return null;
+		
+		final int chance = Rnd.get(1000);
 		
 		// Handle npc leveling info type.
 		switch (npcInfo.getAbsorbCrystalType())
 		{
 			case FULL_PARTY:
-				final L2Attackable mob = (L2Attackable) npc;
-				final int chance = Rnd.get(100);
+				final Attackable mob = (Attackable) npc;
 				
-				for (L2PcInstance player : getPartyMembersState(killer, npc, Quest.STATE_STARTED))
+				for (Player player : getPartyMembersState(killer, npc, Quest.STATE_STARTED))
 					tryToStageCrystal(player, mob, npcInfo, chance);
 				break;
 			
 			case PARTY_ONE_RANDOM:
-				final L2PcInstance player = getRandomPartyMemberState(killer, npc, Quest.STATE_STARTED);
+				final Player player = getRandomPartyMemberState(killer, npc, Quest.STATE_STARTED);
 				if (player != null)
-					tryToStageCrystal(player, (L2Attackable) npc, npcInfo, Rnd.get(100));
+					tryToStageCrystal(player, (Attackable) npc, npcInfo, chance);
 				break;
 			
 			case LAST_HIT:
 				if (checkPlayerState(killer, npc, Quest.STATE_STARTED) != null)
-					tryToStageCrystal(killer, (L2Attackable) npc, npcInfo, Rnd.get(100));
+					tryToStageCrystal(killer, (Attackable) npc, npcInfo, chance);
 				break;
 		}
 		
@@ -182,15 +172,15 @@ public class Q350_EnhanceYourWeapon extends Quest
 	 * @param npcInfo : The mob's leveling informations.
 	 * @param chance : Input variable used to determine keep/stage/break of the crystal.
 	 */
-	private static void tryToStageCrystal(L2PcInstance player, L2Attackable mob, LevelingInfo npcInfo, int chance)
+	private static void tryToStageCrystal(Player player, Attackable mob, LevelingInfo npcInfo, int chance)
 	{
-		SoulCrystalData crystalData = null;
+		SoulCrystal crystalData = null;
 		ItemInstance crystalItem = null;
 		
 		// Iterate through player's inventory to find crystal(s).
 		for (ItemInstance item : player.getInventory().getItems())
 		{
-			SoulCrystalData data = SoulCrystalsTable.getSoulCrystalInfos().get(item.getItemId());
+			SoulCrystal data = SoulCrystalData.getInstance().getSoulCrystals().get(item.getItemId());
 			if (data == null)
 				continue;
 			
@@ -198,7 +188,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 			if (crystalData != null)
 			{
 				// Leveling requires soul crystal being used?
-				if (npcInfo.skillRequired())
+				if (npcInfo.isSkillRequired())
 				{
 					// Absorb list contains killer and his AbsorbInfo is registered.
 					final AbsorbInfo ai = mob.getAbsorbInfo(player.getObjectId());
@@ -220,7 +210,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 			return;
 		
 		// Leveling requires soul crystal being used?
-		if (npcInfo.skillRequired())
+		if (npcInfo.isSkillRequired())
 		{
 			// Absorb list doesn't contain killer or his AbsorbInfo is not registered.
 			final AbsorbInfo ai = mob.getAbsorbInfo(player.getObjectId());
@@ -236,7 +226,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 		}
 		
 		// Check, if npc stages this type of crystal.
-		if (!npcInfo.isInLevelList(crystalData.getLevel()))
+		if (!ArraysUtil.contains(npcInfo.getLevelList(), crystalData.getLevel()))
 		{
 			player.sendPacket(SystemMessageId.SOUL_CRYSTAL_ABSORBING_REFUSED);
 			return;
@@ -263,23 +253,23 @@ public class Q350_EnhanceYourWeapon extends Quest
 	/**
 	 * Remove the old crystal and add new one if stage, broken crystal if break. Send messages in both cases.
 	 * @param player : The player to check on (inventory and send messages).
-	 * @param scd : SoulCrystalData of to take information form.
+	 * @param sc : SoulCrystal of to take information form.
 	 * @param stage : Switch to determine success or fail.
 	 */
-	private static void exchangeCrystal(L2PcInstance player, SoulCrystalData scd, boolean stage)
+	private static void exchangeCrystal(Player player, SoulCrystal sc, boolean stage)
 	{
 		QuestState st = player.getQuestState(qn);
 		
-		st.takeItems(scd.getCrystalItemId(), 1);
+		st.takeItems(sc.getInitialItemId(), 1);
 		if (stage)
 		{
 			player.sendPacket(SystemMessageId.SOUL_CRYSTAL_ABSORBING_SUCCEEDED);
-			st.giveItems(scd.getStagedItemId(), 1);
+			st.giveItems(sc.getStagedItemId(), 1);
 			st.playSound(QuestState.SOUND_ITEMGET);
 		}
 		else
 		{
-			int broken = scd.getBrokenItemId();
+			int broken = sc.getBrokenItemId();
 			if (broken != 0)
 			{
 				player.sendPacket(SystemMessageId.SOUL_CRYSTAL_BROKE);

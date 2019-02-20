@@ -1,47 +1,37 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.communitybbs.Manager.MailBBSManager;
-import net.sf.l2j.gameserver.datatables.AdminCommandAccessRights;
-import net.sf.l2j.gameserver.datatables.AnnouncementTable;
-import net.sf.l2j.gameserver.datatables.GmListTable;
-import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
-import net.sf.l2j.gameserver.datatables.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
+import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.data.xml.AdminData;
+import net.sf.l2j.gameserver.data.xml.AnnouncementData;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SiegeManager;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2Clan.SubPledge;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.base.ClassRace;
+import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
-import net.sf.l2j.gameserver.model.entity.Couple;
 import net.sf.l2j.gameserver.model.entity.Siege;
+import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
+import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
+import net.sf.l2j.gameserver.model.pledge.Clan;
+import net.sf.l2j.gameserver.model.pledge.Clan.SubPledge;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -80,7 +70,7 @@ public class EnterWorld extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		{
 			_log.warning("EnterWorld failed! activeChar is null...");
@@ -92,19 +82,19 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (activeChar.isGM())
 		{
-			if (Config.GM_STARTUP_INVULNERABLE && AdminCommandAccessRights.getInstance().hasAccess("admin_invul", activeChar.getAccessLevel()))
+			if (Config.GM_STARTUP_INVULNERABLE && AdminData.getInstance().hasAccess("admin_invul", activeChar.getAccessLevel()))
 				activeChar.setIsInvul(true);
 			
-			if (Config.GM_STARTUP_INVISIBLE && AdminCommandAccessRights.getInstance().hasAccess("admin_hide", activeChar.getAccessLevel()))
+			if (Config.GM_STARTUP_INVISIBLE && AdminData.getInstance().hasAccess("admin_hide", activeChar.getAccessLevel()))
 				activeChar.getAppearance().setInvisible();
 			
-			if (Config.GM_STARTUP_SILENCE && AdminCommandAccessRights.getInstance().hasAccess("admin_silence", activeChar.getAccessLevel()))
+			if (Config.GM_STARTUP_SILENCE && AdminData.getInstance().hasAccess("admin_silence", activeChar.getAccessLevel()))
 				activeChar.setInRefusalMode(true);
 			
-			if (Config.GM_STARTUP_AUTO_LIST && AdminCommandAccessRights.getInstance().hasAccess("admin_gmlist", activeChar.getAccessLevel()))
-				GmListTable.getInstance().addGm(activeChar, false);
+			if (Config.GM_STARTUP_AUTO_LIST && AdminData.getInstance().hasAccess("admin_gmlist", activeChar.getAccessLevel()))
+				AdminData.getInstance().addGm(activeChar, false);
 			else
-				GmListTable.getInstance().addGm(activeChar, true);
+				AdminData.getInstance().addGm(activeChar, true);
 		}
 		
 		// Set dead status if applies
@@ -112,7 +102,7 @@ public class EnterWorld extends L2GameClientPacket
 			activeChar.setIsDead(true);
 		
 		// Clan checks.
-		final L2Clan clan = activeChar.getClan();
+		final Clan clan = activeChar.getClan();
 		if (clan != null)
 		{
 			activeChar.sendPacket(new PledgeSkillList(clan));
@@ -120,11 +110,11 @@ public class EnterWorld extends L2GameClientPacket
 			// Refresh player instance.
 			clan.getClanMember(objectId).setPlayerInstance(activeChar);
 			
-			final SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_LOGGED_IN).addPcName(activeChar);
+			final SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_LOGGED_IN).addCharName(activeChar);
 			final PledgeShowMemberListUpdate update = new PledgeShowMemberListUpdate(activeChar);
 			
 			// Send packets to others members.
-			for (L2PcInstance member : clan.getOnlineMembers())
+			for (Player member : clan.getOnlineMembers())
 			{
 				if (member == activeChar)
 					continue;
@@ -136,15 +126,15 @@ public class EnterWorld extends L2GameClientPacket
 			// Send a login notification to sponsor or apprentice, if logged.
 			if (activeChar.getSponsor() != 0)
 			{
-				final L2PcInstance sponsor = L2World.getInstance().getPlayer(activeChar.getSponsor());
+				final Player sponsor = World.getInstance().getPlayer(activeChar.getSponsor());
 				if (sponsor != null)
-					sponsor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_APPRENTICE_S1_HAS_LOGGED_IN).addPcName(activeChar));
+					sponsor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_APPRENTICE_S1_HAS_LOGGED_IN).addCharName(activeChar));
 			}
 			else if (activeChar.getApprentice() != 0)
 			{
-				final L2PcInstance apprentice = L2World.getInstance().getPlayer(activeChar.getApprentice());
+				final Player apprentice = World.getInstance().getPlayer(activeChar.getApprentice());
 				if (apprentice != null)
-					apprentice.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_SPONSOR_S1_HAS_LOGGED_IN).addPcName(activeChar));
+					apprentice.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_SPONSOR_S1_HAS_LOGGED_IN).addCharName(activeChar));
 			}
 			
 			// Add message at connexion if clanHall not paid.
@@ -152,14 +142,16 @@ public class EnterWorld extends L2GameClientPacket
 			if (clanHall != null && !clanHall.getPaid())
 				activeChar.sendPacket(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
 			
-			for (Siege siege : SiegeManager.getSieges())
+			for (Castle castle : CastleManager.getInstance().getCastles())
 			{
+				final Siege siege = castle.getSiege();
 				if (!siege.isInProgress())
 					continue;
 				
-				if (siege.checkIsAttacker(clan))
+				final SiegeSide type = siege.getSide(clan);
+				if (type == SiegeSide.ATTACKER)
 					activeChar.setSiegeState((byte) 1);
-				else if (siege.checkIsDefender(clan))
+				else if (type == SiegeSide.DEFENDER || type == SiegeSide.OWNER)
 					activeChar.setSiegeState((byte) 2);
 			}
 			
@@ -173,12 +165,12 @@ public class EnterWorld extends L2GameClientPacket
 		}
 		
 		// Updating Seal of Strife Buff/Debuff
-		if (SevenSigns.getInstance().isSealValidationPeriod() && SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE) != SevenSigns.CABAL_NULL)
+		if (SevenSigns.getInstance().isSealValidationPeriod() && SevenSigns.getInstance().getSealOwner(SealType.STRIFE) != CabalType.NORMAL)
 		{
-			int cabal = SevenSigns.getInstance().getPlayerCabal(objectId);
-			if (cabal != SevenSigns.CABAL_NULL)
+			CabalType cabal = SevenSigns.getInstance().getPlayerCabal(objectId);
+			if (cabal != CabalType.NORMAL)
 			{
-				if (cabal == SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE))
+				if (cabal == SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
 					activeChar.addSkill(FrequentSkill.THE_VICTOR_OF_WAR.getSkill());
 				else
 					activeChar.addSkill(FrequentSkill.THE_VANQUISHED_OF_WAR.getSkill());
@@ -198,22 +190,21 @@ public class EnterWorld extends L2GameClientPacket
 		// Engage and notify partner.
 		if (Config.ALLOW_WEDDING)
 		{
-			for (Couple cl : CoupleManager.getInstance().getCouples())
+			for (Entry<Integer, IntIntHolder> coupleEntry : CoupleManager.getInstance().getCouples().entrySet())
 			{
-				if (cl.getPlayer1Id() == objectId || cl.getPlayer2Id() == objectId)
+				final IntIntHolder couple = coupleEntry.getValue();
+				if (couple.getId() == objectId || couple.getValue() == objectId)
 				{
-					if (cl.getMaried())
-						activeChar.setMarried(true);
-					
-					activeChar.setCoupleId(cl.getId());
+					activeChar.setCoupleId(coupleEntry.getKey());
+					break;
 				}
 			}
 		}
 		
 		// Announcements, welcome & Seven signs period messages
 		activeChar.sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
-		SevenSigns.getInstance().sendCurrentPeriodMsg(activeChar);
-		AnnouncementTable.getInstance().showAnnouncements(activeChar, false);
+		activeChar.sendPacket(SevenSigns.getInstance().getCurrentPeriod().getMessageId());
+		AnnouncementData.getInstance().showAnnouncements(activeChar, false);
 		
 		// if player is DE, check for shadow sense skill at night
 		if (activeChar.getRace() == ClassRace.DARK_ELF && activeChar.getSkillLevel(294) == 1)
@@ -227,6 +218,11 @@ public class EnterWorld extends L2GameClientPacket
 		activeChar.sendPacket(new ItemList(activeChar, false));
 		activeChar.sendPacket(new ShortCutInit(activeChar));
 		activeChar.sendPacket(new ExStorageMaxCount(activeChar));
+		
+		// no broadcast needed since the player will already spawn dead to others
+		if (activeChar.isAlikeDead())
+			activeChar.sendPacket(new Die(activeChar));
+		
 		activeChar.updateEffectIcons();
 		activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 		activeChar.sendSkillList();
@@ -309,17 +305,13 @@ public class EnterWorld extends L2GameClientPacket
 		
 		PetitionManager.getInstance().checkPetitionMessages(activeChar);
 		
-		// no broadcast needed since the player will already spawn dead to others
-		if (activeChar.isAlikeDead())
-			sendPacket(new Die(activeChar));
-		
 		activeChar.onPlayerEnter();
 		
 		sendPacket(new SkillCoolTime(activeChar));
 		
 		// If player logs back in a stadium, port him in nearest town.
 		if (Olympiad.getInstance().playerInStadia(activeChar))
-			activeChar.teleToLocation(TeleportWhereType.TOWN);
+			activeChar.teleToLocation(TeleportType.TOWN);
 		
 		if (DimensionalRiftManager.getInstance().checkIfInRiftZone(activeChar.getX(), activeChar.getY(), activeChar.getZ(), false))
 			DimensionalRiftManager.getInstance().teleportToWaitingRoom(activeChar);
@@ -329,7 +321,7 @@ public class EnterWorld extends L2GameClientPacket
 		
 		// Attacker or spectator logging into a siege zone will be ported at town.
 		if (!activeChar.isGM() && (!activeChar.isInSiege() || activeChar.getSiegeState() < 2) && activeChar.isInsideZone(ZoneId.SIEGE))
-			activeChar.teleToLocation(TeleportWhereType.TOWN);
+			activeChar.teleToLocation(TeleportType.TOWN);
 		
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}

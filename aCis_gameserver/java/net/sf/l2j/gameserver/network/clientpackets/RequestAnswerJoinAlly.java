@@ -1,26 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
-/**
- * format cdd
- */
 public final class RequestAnswerJoinAlly extends L2GameClientPacket
 {
 	private int _response;
@@ -34,13 +17,15 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
-		final L2PcInstance requestor = activeChar.getRequest().getPartner();
+		final Player requestor = activeChar.getRequest().getPartner();
 		if (requestor == null)
 			return;
+		
+		activeChar.getRequest().onRequestResponse();
 		
 		if (_response == 0)
 		{
@@ -52,21 +37,16 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 			if (!(requestor.getRequest().getRequestPacket() instanceof RequestJoinAlly))
 				return;
 			
-			L2Clan clan = requestor.getClan();
-			if (clan.checkAllyJoinCondition(requestor, activeChar))
-			{
-				// Alliance invitation success messages - no existing retail message for requestor.
-				requestor.sendMessage("You have succeeded in inviting " + activeChar.getClan().getName() + " to your alliance.");
-				activeChar.sendPacket(SystemMessageId.YOU_ACCEPTED_ALLIANCE);
-				
-				activeChar.getClan().setAllyId(clan.getAllyId());
-				activeChar.getClan().setAllyName(clan.getAllyName());
-				activeChar.getClan().setAllyPenaltyExpiryTime(0, 0);
-				activeChar.getClan().changeAllyCrest(clan.getAllyCrestId(), true);
-				activeChar.getClan().updateClanInDB();
-			}
+			if (!Clan.checkAllyJoinCondition(requestor, activeChar))
+				return;
+			
+			activeChar.getClan().setAllyId(requestor.getClan().getAllyId());
+			activeChar.getClan().setAllyName(requestor.getClan().getAllyName());
+			activeChar.getClan().setAllyPenaltyExpiryTime(0, 0);
+			activeChar.getClan().changeAllyCrest(requestor.getClan().getAllyCrestId(), true);
+			activeChar.getClan().updateClanInDB();
+			
+			activeChar.sendPacket(SystemMessageId.YOU_ACCEPTED_ALLIANCE);
 		}
-		
-		activeChar.getRequest().onRequestResponse();
 	}
 }

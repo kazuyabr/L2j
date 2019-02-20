@@ -1,28 +1,15 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
+
+import net.sf.l2j.commons.math.MathUtil;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.BlockList;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SendTradeRequest;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.util.Util;
 
 public final class TradeRequest extends L2GameClientPacket
 {
@@ -37,7 +24,7 @@ public final class TradeRequest extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance player = getClient().getActiveChar();
+		final Player player = getClient().getActiveChar();
 		if (player == null)
 			return;
 		
@@ -47,8 +34,8 @@ public final class TradeRequest extends L2GameClientPacket
 			return;
 		}
 		
-		final L2PcInstance target = L2World.getInstance().getPlayer(_objectId);
-		if (target == null || !player.getKnownList().knowsObject(target) || target.equals(player))
+		final Player target = World.getInstance().getPlayer(_objectId);
+		if (target == null || !player.getKnownType(Player.class).contains(target) || target.equals(player))
 		{
 			player.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return;
@@ -81,7 +68,7 @@ public final class TradeRequest extends L2GameClientPacket
 		
 		if (target.isProcessingRequest() || target.isProcessingTransaction())
 		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER).addPcName(target);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER).addCharName(target);
 			player.sendPacket(sm);
 			return;
 		}
@@ -94,12 +81,12 @@ public final class TradeRequest extends L2GameClientPacket
 		
 		if (BlockList.isBlocked(target, player))
 		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_ADDED_YOU_TO_IGNORE_LIST).addPcName(target);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_ADDED_YOU_TO_IGNORE_LIST).addCharName(target);
 			player.sendPacket(sm);
 			return;
 		}
 		
-		if (Util.calculateDistance(player, target, true) > L2Npc.INTERACTION_DISTANCE)
+		if (MathUtil.calculateDistance(player, target, true) > Npc.INTERACTION_DISTANCE)
 		{
 			player.sendPacket(SystemMessageId.TARGET_TOO_FAR);
 			return;
@@ -107,6 +94,6 @@ public final class TradeRequest extends L2GameClientPacket
 		
 		player.onTransactionRequest(target);
 		target.sendPacket(new SendTradeRequest(player.getObjectId()));
-		player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE).addPcName(target));
+		player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE).addCharName(target));
 	}
 }

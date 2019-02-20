@@ -1,25 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.AutoSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.AutoSpawnManager.AutoSpawnInstance;
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
  * Admin Command Handler for Mammon NPCs
@@ -34,7 +20,7 @@ public class AdminMammon implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		if (command.startsWith("admin_mammon_find"))
 		{
@@ -61,7 +47,7 @@ public class AdminMammon implements IAdminCommandHandler
 				final AutoSpawnInstance blackSpawnInst = AutoSpawnManager.getInstance().getAutoSpawnInstance(SevenSigns.MAMMON_BLACKSMITH_ID, false);
 				if (blackSpawnInst != null)
 				{
-					final L2Npc[] blackInst = blackSpawnInst.getNPCInstanceList();
+					final Npc[] blackInst = blackSpawnInst.getNPCInstanceList();
 					if (blackInst.length > 0)
 					{
 						final int x1 = blackInst[0].getX(), y1 = blackInst[0].getY(), z1 = blackInst[0].getZ();
@@ -77,7 +63,7 @@ public class AdminMammon implements IAdminCommandHandler
 				final AutoSpawnInstance merchSpawnInst = AutoSpawnManager.getInstance().getAutoSpawnInstance(SevenSigns.MAMMON_MERCHANT_ID, false);
 				if (merchSpawnInst != null)
 				{
-					final L2Npc[] merchInst = merchSpawnInst.getNPCInstanceList();
+					final Npc[] merchInst = merchSpawnInst.getNPCInstanceList();
 					if (merchInst.length > 0)
 					{
 						final int x2 = merchInst[0].getX(), y2 = merchInst[0].getY(), z2 = merchInst[0].getZ();

@@ -1,25 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.type;
 
 import java.util.concurrent.Future;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.zone.L2CastleZoneType;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -39,7 +25,7 @@ public class L2DamageZone extends L2CastleZoneType
 	private int _startTask;
 	private int _reuseTask;
 	
-	private String _target = "L2Playable"; // default only playable
+	private String _target = "Playable"; // default only playable
 	
 	public L2DamageZone(int id)
 	{
@@ -68,7 +54,7 @@ public class L2DamageZone extends L2CastleZoneType
 	}
 	
 	@Override
-	protected boolean isAffected(L2Character character)
+	protected boolean isAffected(Creature character)
 	{
 		// check obj class
 		try
@@ -85,7 +71,7 @@ public class L2DamageZone extends L2CastleZoneType
 	}
 	
 	@Override
-	protected void onEnter(L2Character character)
+	protected void onEnter(Creature character)
 	{
 		if (_task == null && _hpDps != 0)
 		{
@@ -106,21 +92,21 @@ public class L2DamageZone extends L2CastleZoneType
 			}
 		}
 		
-		if (character instanceof L2PcInstance)
+		if (character instanceof Player)
 		{
 			character.setInsideZone(ZoneId.DANGER_AREA, true);
-			character.sendPacket(new EtcStatusUpdate((L2PcInstance) character));
+			character.sendPacket(new EtcStatusUpdate((Player) character));
 		}
 	}
 	
 	@Override
-	protected void onExit(L2Character character)
+	protected void onExit(Creature character)
 	{
-		if (character instanceof L2PcInstance)
+		if (character instanceof Player)
 		{
 			character.setInsideZone(ZoneId.DANGER_AREA, false);
 			if (!character.isInsideZone(ZoneId.DANGER_AREA))
-				character.sendPacket(new EtcStatusUpdate((L2PcInstance) character));
+				character.sendPacket(new EtcStatusUpdate((Player) character));
 		}
 	}
 	
@@ -165,7 +151,7 @@ public class L2DamageZone extends L2CastleZoneType
 			}
 			
 			// Effect all people inside the zone.
-			for (L2Character temp : _dmgZone.getCharactersInside())
+			for (Creature temp : _dmgZone.getCharactersInside())
 			{
 				if (temp != null && !temp.isDead())
 					temp.reduceCurrentHp(_dmgZone.getHpDps() * (1 + (temp.calcStat(Stats.DAMAGE_ZONE_VULN, 0, null, null) / 100)), null, null);

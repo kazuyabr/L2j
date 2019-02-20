@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.memo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,16 +5,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
- * @author UnAfraid
+ * A {@link StatsSet} which overrides methods to prevent doing useless database operations if there is no changes since last edit (it uses an AtomicBoolean to keep edition tracking).<br>
+ * <br>
+ * It also has 2 abstract methods, named restoreMe() and storeMe().
  */
 @SuppressWarnings("serial")
 public abstract class AbstractMemo extends StatsSet
 {
 	private final AtomicBoolean _hasChanges = new AtomicBoolean(false);
-	
-	/**
-	 * Overriding following methods to prevent from doing useless database operations if there is no changes since player's login.
-	 */
 	
 	@Override
 	public final void set(String name, boolean value)

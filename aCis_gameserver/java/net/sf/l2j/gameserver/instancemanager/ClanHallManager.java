@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager;
 
 import java.sql.Connection;
@@ -25,10 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.model.L2Clan;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.model.entity.Auction;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.zone.type.L2ClanHallZone;
 
 /**
@@ -94,7 +80,7 @@ public class ClanHallManager
 				
 				if (ownerId > 0)
 				{
-					final L2Clan owner = ClanTable.getInstance().getClan(ownerId);
+					final Clan owner = ClanTable.getInstance().getClan(ownerId);
 					if (owner != null)
 					{
 						_clanHall.put(id, ch);
@@ -176,7 +162,7 @@ public class ClanHallManager
 	 * @param chId the clanHall id to make checks on.
 	 * @param clan the new clan owner.
 	 */
-	public final synchronized void setOwner(int chId, L2Clan clan)
+	public final synchronized void setOwner(int chId, Clan clan)
 	{
 		if (!_clanHall.containsKey(chId))
 		{
@@ -229,7 +215,7 @@ public class ClanHallManager
 	 * @param clan the clan to use.
 	 * @return a clanHall by its owner.
 	 */
-	public final ClanHall getClanHallByOwner(L2Clan clan)
+	public final ClanHall getClanHallByOwner(Clan clan)
 	{
 		for (Map.Entry<Integer, ClanHall> ch : _clanHall.entrySet())
 		{

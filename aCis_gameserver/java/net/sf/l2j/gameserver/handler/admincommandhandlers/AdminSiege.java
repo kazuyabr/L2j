@@ -1,36 +1,24 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.AuctionManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.model.location.TowerSpawnLocation;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.zone.type.L2ClanHallZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
+import net.sf.l2j.gameserver.network.serverpackets.SiegeInfo;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 /**
@@ -43,7 +31,6 @@ public class AdminSiege implements IAdminCommandHandler
 		"admin_siege",
 		"admin_add_attacker",
 		"admin_add_defender",
-		"admin_add_guard",
 		"admin_list_siege_clans",
 		"admin_clear_siege_list",
 		"admin_move_defenders",
@@ -57,11 +44,12 @@ public class AdminSiege implements IAdminCommandHandler
 		"admin_clanhalldel",
 		"admin_clanhallopendoors",
 		"admin_clanhallclosedoors",
-		"admin_clanhallteleportself"
+		"admin_clanhallteleportself",
+		"admin_reset_certificates"
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		StringTokenizer st = new StringTokenizer(command, " ");
 		command = st.nextToken(); // Get actual command
@@ -73,7 +61,7 @@ public class AdminSiege implements IAdminCommandHandler
 		if (command.startsWith("admin_clanhall"))
 			clanhall = ClanHallManager.getInstance().getClanHallById(Integer.parseInt(st.nextToken()));
 		else if (st.hasMoreTokens())
-			castle = CastleManager.getInstance().getCastle(st.nextToken());
+			castle = CastleManager.getInstance().getCastleByName(st.nextToken());
 		
 		if (clanhall == null && (castle == null || castle.getCastleId() < 0))
 		{
@@ -81,10 +69,10 @@ public class AdminSiege implements IAdminCommandHandler
 			return true;
 		}
 		
-		L2Object target = activeChar.getTarget();
-		L2PcInstance player = null;
-		if (target instanceof L2PcInstance)
-			player = (L2PcInstance) target;
+		WorldObject target = activeChar.getTarget();
+		Player player = null;
+		if (target instanceof Player)
+			player = (Player) target;
 		
 		if (castle != null)
 		{
@@ -102,21 +90,9 @@ public class AdminSiege implements IAdminCommandHandler
 				else
 					castle.getSiege().registerDefender(player);
 			}
-			else if (command.equalsIgnoreCase("admin_add_guard"))
-			{
-				try
-				{
-					int npcId = Integer.parseInt(st.nextToken());
-					castle.getSiege().getSiegeGuardManager().addSiegeGuard(activeChar, npcId);
-				}
-				catch (Exception e)
-				{
-					activeChar.sendMessage("Usage: //add_guard npcId");
-				}
-			}
 			else if (command.equalsIgnoreCase("admin_clear_siege_list"))
 			{
-				castle.getSiege().clearSiegeClan();
+				castle.getSiege().clearAllClans();
 			}
 			else if (command.equalsIgnoreCase("admin_endsiege"))
 			{
@@ -124,7 +100,7 @@ public class AdminSiege implements IAdminCommandHandler
 			}
 			else if (command.equalsIgnoreCase("admin_list_siege_clans"))
 			{
-				castle.getSiege().listRegisterClan(activeChar);
+				activeChar.sendPacket(new SiegeInfo(castle));
 				return true;
 			}
 			else if (command.equalsIgnoreCase("admin_move_defenders"))
@@ -142,7 +118,7 @@ public class AdminSiege implements IAdminCommandHandler
 			}
 			else if (command.equalsIgnoreCase("admin_removecastle"))
 			{
-				L2Clan clan = ClanTable.getInstance().getClan(castle.getOwnerId());
+				Clan clan = ClanTable.getInstance().getClan(castle.getOwnerId());
 				if (clan != null)
 					castle.removeOwner(clan);
 				else
@@ -156,7 +132,45 @@ public class AdminSiege implements IAdminCommandHandler
 			{
 				castle.getSiege().startSiege();
 			}
-			showSiegePage(activeChar, castle.getName());
+			else if (command.equalsIgnoreCase("admin_reset_certificates"))
+			{
+				castle.setLeftCertificates(300, true);
+			}
+			
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
+			html.setFile("data/html/admin/castle.htm");
+			html.replace("%castleName%", castle.getName());
+			html.replace("%circletId%", castle.getCircletId());
+			html.replace("%artifactId%", castle.getArtifacts().toString());
+			html.replace("%ticketsNumber%", castle.getTickets().size());
+			html.replace("%droppedTicketsNumber%", castle.getDroppedTickets().size());
+			html.replace("%npcsNumber%", castle.getRelatedNpcIds().size());
+			html.replace("%certificates%", castle.getLeftCertificates());
+			
+			final StringBuilder sb = new StringBuilder();
+			
+			// Feed Control Tower infos.
+			for (TowerSpawnLocation spawn : castle.getControlTowers())
+			{
+				final String teleLoc = spawn.toString().replaceAll(",", "");
+				StringUtil.append(sb, "<a action=\"bypass -h admin_move_to ", teleLoc, "\">", teleLoc, "</a><br1>");
+			}
+			
+			html.replace("%ct%", sb.toString());
+			
+			// Cleanup the sb to reuse it.
+			sb.setLength(0);
+			
+			// Feed Flame Tower infos.
+			for (TowerSpawnLocation spawn : castle.getFlameTowers())
+			{
+				final String teleLoc = spawn.toString().replaceAll(",", "");
+				StringUtil.append(sb, "<a action=\"bypass -h admin_move_to ", teleLoc, "\">", teleLoc, "</a><br1>");
+			}
+			
+			html.replace("%ft%", sb.toString());
+			
+			activeChar.sendPacket(html);
 		}
 		else if (clanhall != null)
 		{
@@ -199,12 +213,20 @@ public class AdminSiege implements IAdminCommandHandler
 				if (zone != null)
 					activeChar.teleToLocation(zone.getSpawnLoc(), 0);
 			}
-			showClanHallPage(activeChar, clanhall);
+			
+			final Clan owner = ClanTable.getInstance().getClan(clanhall.getOwnerId());
+			
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
+			html.setFile("data/html/admin/clanhall.htm");
+			html.replace("%clanhallName%", clanhall.getName());
+			html.replace("%clanhallId%", clanhall.getId());
+			html.replace("%clanhallOwner%", (owner == null) ? "None" : owner.getName());
+			activeChar.sendPacket(html);
 		}
 		return true;
 	}
 	
-	private static void showCastleSelectPage(L2PcInstance activeChar)
+	private static void showCastleSelectPage(Player activeChar)
 	{
 		int i = 0;
 		
@@ -267,26 +289,6 @@ public class AdminSiege implements IAdminCommandHandler
 			}
 		}
 		html.replace("%freeclanhalls%", sb.toString());
-		activeChar.sendPacket(html);
-	}
-	
-	private static void showSiegePage(L2PcInstance activeChar, String castleName)
-	{
-		final NpcHtmlMessage html = new NpcHtmlMessage(0);
-		html.setFile("data/html/admin/castle.htm");
-		html.replace("%castleName%", castleName);
-		activeChar.sendPacket(html);
-	}
-	
-	private static void showClanHallPage(L2PcInstance activeChar, ClanHall clanhall)
-	{
-		final L2Clan owner = ClanTable.getInstance().getClan(clanhall.getOwnerId());
-		
-		final NpcHtmlMessage html = new NpcHtmlMessage(0);
-		html.setFile("data/html/admin/clanhall.htm");
-		html.replace("%clanhallName%", clanhall.getName());
-		html.replace("%clanhallId%", clanhall.getId());
-		html.replace("%clanhallOwner%", (owner == null) ? "None" : owner.getName());
 		activeChar.sendPacket(html);
 	}
 	

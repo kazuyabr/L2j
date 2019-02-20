@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.ai.group;
 
 import java.util.HashMap;
@@ -21,14 +7,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.NpcTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2TamedBeastInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.TamedBeast;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.serverpackets.NpcSay;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
@@ -119,7 +105,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 		21827,
 		21828,
 		21829
-	// Alpen Kookaburra, Buffalo, Cougar
+		// Alpen Kookaburra, Buffalo, Cougar
 	};
 	
 	private static final Map<Integer, Integer> MAD_COW_POLYMORPH = new HashMap<>();
@@ -577,7 +563,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 		addEventIds(FEEDABLE_BEASTS, EventType.ON_KILL, EventType.ON_SKILL_SEE);
 	}
 	
-	public void spawnNext(L2Npc npc, int growthLevel, L2PcInstance player, int food)
+	public void spawnNext(Npc npc, int growthLevel, Player player, int food)
 	{
 		int npcId = npc.getNpcId();
 		int nextNpcId = 0;
@@ -622,7 +608,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 				player.getTrainedBeast().deleteMe();
 			
 			NpcTemplate template = NpcTable.getInstance().getTemplate(nextNpcId);
-			L2TamedBeastInstance nextNpc = new L2TamedBeastInstance(IdFactory.getInstance().getNextId(), template, player, food, npc.getX(), npc.getY(), npc.getZ());
+			TamedBeast nextNpc = new TamedBeast(IdFactory.getInstance().getNextId(), template, player, food, npc.getX(), npc.getY(), npc.getZ());
 			nextNpc.setRunning();
 			
 			// If player has Q020 going, give quest item
@@ -641,7 +627,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 		else
 		{
 			// If not trained, the newly spawned mob will automatically be aggro against its feeder
-			L2Attackable nextNpc = (L2Attackable) addSpawn(nextNpcId, npc, false, 0, false);
+			Attackable nextNpc = (Attackable) addSpawn(nextNpcId, npc, false, 0, false);
 			
 			if (MAD_COW_POLYMORPH.containsKey(nextNpcId))
 				startQuestTimer("polymorph Mad Cow", 10000, nextNpc, player, false);
@@ -654,7 +640,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		if (event.equalsIgnoreCase("polymorph Mad Cow") && npc != null && player != null)
 		{
@@ -668,7 +654,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 				npc.deleteMe();
 				
 				// spawn the new mob
-				L2Attackable nextNpc = (L2Attackable) addSpawn(MAD_COW_POLYMORPH.get(npc.getNpcId()), npc, false, 0, false);
+				Attackable nextNpc = (Attackable) addSpawn(MAD_COW_POLYMORPH.get(npc.getNpcId()), npc, false, 0, false);
 				
 				// register the player in the feedinfo for the mob that just spawned
 				FEED_INFO.put(nextNpc.getObjectId(), player.getObjectId());
@@ -681,7 +667,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
 	{
 		if (!ArraysUtil.contains(targets, npc))
 			return super.onSkillSee(npc, caster, skill, targets, isPet);
@@ -700,7 +686,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 		
 		if (GROWTH_CAPABLE_MOBS.containsKey(npcId))
 			growthLevel = GROWTH_CAPABLE_MOBS.get(npcId).getGrowthLevel();
-		
+			
 		// Prevent exploit which allows 2 players to simultaneously raise the same 0-growth beast
 		// If the mob is at 0th level (when it still listens to all feeders) lock it to the first feeder!
 		if (growthLevel == 0 && FEED_INFO.containsKey(objectId))
@@ -744,7 +730,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
 		// Remove the feedinfo of the mob that got killed, if any
 		FEED_INFO.remove(npc.getObjectId());

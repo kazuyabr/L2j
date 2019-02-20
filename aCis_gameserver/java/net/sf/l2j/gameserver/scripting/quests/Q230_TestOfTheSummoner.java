@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests;
 
 import java.util.Map;
@@ -17,13 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
@@ -178,7 +166,7 @@ public class Q230_TestOfTheSummoner extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -339,7 +327,7 @@ public class Q230_TestOfTheSummoner extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -615,16 +603,16 @@ public class Q230_TestOfTheSummoner extends Quest
 	}
 	
 	@Override
-	public String onDeath(L2Character killer, L2PcInstance player)
+	public String onDeath(Creature killer, Player player)
 	{
-		if (!(killer instanceof L2Attackable))
+		if (!(killer instanceof Attackable))
 			return null;
 		
-		QuestState st = checkPlayerState(player, (L2Npc) killer, STATE_STARTED);
+		QuestState st = checkPlayerState(player, (Npc) killer, STATE_STARTED);
 		if (st == null)
 			return null;
 		
-		switch (((L2Npc) killer).getNpcId())
+		switch (((Npc) killer).getNpcId())
 		{
 			case PAKO_THE_CAT:
 				if (st.getInt("Almors") == 3)
@@ -685,7 +673,7 @@ public class Q230_TestOfTheSummoner extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
 		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
@@ -851,7 +839,7 @@ public class Q230_TestOfTheSummoner extends Quest
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		QuestState st = checkPlayerState(attacker, npc, STATE_STARTED);
 		if (st == null)
@@ -879,7 +867,7 @@ public class Q230_TestOfTheSummoner extends Quest
 					// check if the attacker is the same pet as the one that attacked before.
 					if (!isPet || attacker.getPet() != duel.getPet()) // if a foul occured find the player who had the duel in progress and give a foul crystal
 					{
-						L2PcInstance foulPlayer = duel.getAttacker();
+						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
 						{
 							st = foulPlayer.getQuestState(qn);
@@ -913,7 +901,7 @@ public class Q230_TestOfTheSummoner extends Quest
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
 					if (!isPet || attacker.getPet() != duel.getPet())
 					{
-						L2PcInstance foulPlayer = duel.getAttacker();
+						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
 						{
 							st = foulPlayer.getQuestState(qn);
@@ -947,7 +935,7 @@ public class Q230_TestOfTheSummoner extends Quest
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
 					if (!isPet || attacker.getPet() != duel.getPet())
 					{
-						L2PcInstance foulPlayer = duel.getAttacker();
+						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
 						{
 							st = foulPlayer.getQuestState(qn);
@@ -981,7 +969,7 @@ public class Q230_TestOfTheSummoner extends Quest
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
 					if (!isPet || attacker.getPet() != duel.getPet())
 					{
-						L2PcInstance foulPlayer = duel.getAttacker();
+						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
 						{
 							st = foulPlayer.getQuestState(qn);
@@ -1015,7 +1003,7 @@ public class Q230_TestOfTheSummoner extends Quest
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
 					if (!isPet || attacker.getPet() != duel.getPet())
 					{
-						L2PcInstance foulPlayer = duel.getAttacker();
+						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
 						{
 							st = foulPlayer.getQuestState(qn);
@@ -1049,7 +1037,7 @@ public class Q230_TestOfTheSummoner extends Quest
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
 					if (!isPet || attacker.getPet() != duel.getPet())
 					{
-						L2PcInstance foulPlayer = duel.getAttacker();
+						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
 						{
 							st = foulPlayer.getQuestState(qn);
@@ -1074,21 +1062,21 @@ public class Q230_TestOfTheSummoner extends Quest
 	
 	private final class ProgressDuelMob
 	{
-		private final L2PcInstance _attacker;
-		private final L2Summon _pet;
+		private final Player _attacker;
+		private final Summon _pet;
 		
-		public ProgressDuelMob(L2PcInstance attacker, L2Summon pet)
+		public ProgressDuelMob(Player attacker, Summon pet)
 		{
 			_attacker = attacker;
 			_pet = pet;
 		}
 		
-		public L2PcInstance getAttacker()
+		public Player getAttacker()
 		{
 			return _attacker;
 		}
 		
-		public L2Summon getPet()
+		public Summon getPet()
 		{
 			return _pet;
 		}

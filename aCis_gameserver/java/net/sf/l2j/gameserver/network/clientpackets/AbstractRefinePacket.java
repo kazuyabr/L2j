@@ -1,23 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
 import net.sf.l2j.gameserver.model.item.type.CrystalType;
@@ -133,7 +119,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 	/*
 	 * Checks player, source item, lifestone and gemstone validity for augmentation process
 	 */
-	protected static final boolean isValid(L2PcInstance player, ItemInstance item, ItemInstance refinerItem, ItemInstance gemStones)
+	protected static final boolean isValid(Player player, ItemInstance item, ItemInstance refinerItem, ItemInstance gemStones)
 	{
 		if (!isValid(player, item, refinerItem))
 			return false;
@@ -164,7 +150,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 	 * @param refinerItem The augmentation stone.
 	 * @return true if all checks are successfully passed, false otherwise.
 	 */
-	protected static final boolean isValid(L2PcInstance player, ItemInstance item, ItemInstance refinerItem)
+	protected static final boolean isValid(Player player, ItemInstance item, ItemInstance refinerItem)
 	{
 		if (!isValid(player, item))
 			return false;
@@ -191,7 +177,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 	/*
 	 * Check both player and source item conditions for augmentation process
 	 */
-	protected static final boolean isValid(L2PcInstance player, ItemInstance item)
+	protected static final boolean isValid(Player player, ItemInstance item)
 	{
 		if (!isValid(player))
 			return false;
@@ -226,7 +212,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 				case NONE:
 				case FISHINGROD:
 					return false;
-					
+				
 				default:
 					break;
 			}
@@ -240,7 +226,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 	/*
 	 * Check if player's conditions valid for augmentation process
 	 */
-	protected static final boolean isValid(L2PcInstance player)
+	protected static final boolean isValid(Player player)
 	{
 		if (player.isInStoreMode())
 		{
@@ -290,11 +276,11 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 			case C:
 			case B:
 				return GEMSTONE_D;
-				
+			
 			case A:
 			case S:
 				return GEMSTONE_C;
-				
+			
 			default:
 				return 0;
 		}
@@ -309,16 +295,16 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 		{
 			case C:
 				return 20;
-				
+			
 			case B:
 				return 30;
-				
+			
 			case A:
 				return 20;
-				
+			
 			case S:
 				return 25;
-				
+			
 			default:
 				return 0;
 		}

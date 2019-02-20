@@ -1,21 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * @author godson
- */
 package net.sf.l2j.gameserver.model.entity;
 
 import java.sql.Connection;
@@ -35,18 +17,18 @@ import java.util.logging.Logger;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.datatables.CharNameTable;
-import net.sf.l2j.gameserver.datatables.CharTemplateTable;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.CharTemplateTable;
+import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.PlayerNameTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -298,7 +280,7 @@ public class Hero
 			
 			_heroDiaries.put(charId, _diary);
 			
-			_log.info("Hero: Loaded " + entries + " diary entries for hero: " + CharNameTable.getInstance().getPlayerName(charId));
+			_log.info("Hero: Loaded " + entries + " diary entries for hero: " + PlayerNameTable.getInstance().getPlayerName(charId));
 		}
 		catch (SQLException e)
 		{
@@ -343,7 +325,7 @@ public class Hero
 				
 				if (charId == charOneId)
 				{
-					String name = CharNameTable.getInstance().getPlayerName(charTwoId);
+					String name = PlayerNameTable.getInstance().getPlayerName(charTwoId);
 					String cls = CharTemplateTable.getInstance().getClassNameById(charTwoClass);
 					if (name != null && cls != null)
 					{
@@ -378,7 +360,7 @@ public class Hero
 				}
 				else if (charId == charTwoId)
 				{
-					String name = CharNameTable.getInstance().getPlayerName(charOneId);
+					String name = PlayerNameTable.getInstance().getPlayerName(charOneId);
 					String cls = CharTemplateTable.getInstance().getClassNameById(charOneClass);
 					if (name != null && cls != null)
 					{
@@ -422,7 +404,7 @@ public class Hero
 			_heroCounts.put(charId, heroCountData);
 			_heroFights.put(charId, _fights);
 			
-			_log.info("Hero: Loaded " + numberOfFights + " fights for: " + CharNameTable.getInstance().getPlayerName(charId));
+			_log.info("Hero: Loaded " + numberOfFights + " fights for: " + PlayerNameTable.getInstance().getPlayerName(charId));
 		}
 		catch (SQLException e)
 		{
@@ -456,7 +438,7 @@ public class Hero
 		_heroMessages.clear();
 	}
 	
-	public void showHeroDiary(L2PcInstance activeChar, int heroclass, int charid, int page)
+	public void showHeroDiary(Player activeChar, int heroclass, int charid, int page)
 	{
 		if (!_heroDiaries.containsKey(charid))
 			return;
@@ -467,7 +449,7 @@ public class Hero
 		
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile("data/html/olympiad/herodiary.htm");
-		html.replace("%heroname%", CharNameTable.getInstance().getPlayerName(charid));
+		html.replace("%heroname%", PlayerNameTable.getInstance().getPlayerName(charid));
 		html.replace("%message%", _heroMessages.get(charid));
 		html.disableValidation();
 		
@@ -515,7 +497,7 @@ public class Hero
 		activeChar.sendPacket(html);
 	}
 	
-	public void showHeroFights(L2PcInstance activeChar, int heroclass, int charid, int page)
+	public void showHeroFights(Player activeChar, int heroclass, int charid, int page)
 	{
 		if (!_heroFights.containsKey(charid))
 			return;
@@ -529,7 +511,7 @@ public class Hero
 		
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile("data/html/olympiad/herohistory.htm");
-		html.replace("%heroname%", CharNameTable.getInstance().getPlayerName(charid));
+		html.replace("%heroname%", PlayerNameTable.getInstance().getPlayerName(charid));
 		html.disableValidation();
 		
 		if (!list.isEmpty())
@@ -595,7 +577,7 @@ public class Hero
 			{
 				String name = hero.getString(Olympiad.CHAR_NAME);
 				
-				L2PcInstance player = L2World.getInstance().getPlayer(name);
+				Player player = World.getInstance().getPlayer(name);
 				if (player == null)
 					continue;
 				
@@ -837,7 +819,7 @@ public class Hero
 	 * @param player the player instance
 	 * @param message String to set
 	 */
-	public void setHeroMessage(L2PcInstance player, String message)
+	public void setHeroMessage(Player player, String message)
 	{
 		_heroMessages.put(player.getObjectId(), message);
 	}
@@ -903,7 +885,7 @@ public class Hero
 		return entry != null && entry.getInteger(ACTIVE) == 0;
 	}
 	
-	public void activateHero(L2PcInstance player)
+	public void activateHero(Player player)
 	{
 		StatsSet hero = _heroes.get(player.getObjectId());
 		hero.set(ACTIVE, 1);
@@ -914,7 +896,7 @@ public class Hero
 		player.broadcastPacket(new SocialAction(player, 16));
 		player.broadcastUserInfo();
 		
-		L2Clan clan = player.getClan();
+		Clan clan = player.getClan();
 		if (clan != null && clan.getLevel() >= 5)
 		{
 			String name = hero.getString("char_name");

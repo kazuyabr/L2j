@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.loginserver;
 
 import java.net.InetAddress;
@@ -37,9 +23,11 @@ import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
 import net.sf.l2j.loginserver.crypt.ScrambledKeyPair;
 import net.sf.l2j.loginserver.model.AccountInfo;
+import net.sf.l2j.loginserver.model.GameServerInfo;
+import net.sf.l2j.loginserver.network.LoginClient;
+import net.sf.l2j.loginserver.network.SessionKey;
 import net.sf.l2j.loginserver.network.gameserverpackets.ServerStatus;
 import net.sf.l2j.loginserver.network.serverpackets.LoginFail.LoginFailReason;
 
@@ -68,7 +56,7 @@ public class LoginController
 	/** Time before kicking the client if he didnt logged yet */
 	public static final int LOGIN_TIMEOUT = 60 * 1000;
 	
-	protected Map<String, L2LoginClient> _clients = new ConcurrentHashMap<>();
+	protected Map<String, LoginClient> _clients = new ConcurrentHashMap<>();
 	private final Map<InetAddress, Long> _bannedIps = new ConcurrentHashMap<>();
 	private final Map<InetAddress, Integer> _failedAttempts = new ConcurrentHashMap<>();
 	
@@ -136,13 +124,6 @@ public class LoginController
 		return _blowfishKeys[(int) (Math.random() * BLOWFISH_KEYS)];
 	}
 	
-	public SessionKey assignSessionKeyToClient(String account, L2LoginClient client)
-	{
-		SessionKey key = new SessionKey(Rnd.nextInt(), Rnd.nextInt(), Rnd.nextInt(), Rnd.nextInt());
-		_clients.put(account, client);
-		return key;
-	}
-	
 	public void removeAuthedLoginClient(String account)
 	{
 		if (account == null)
@@ -151,7 +132,7 @@ public class LoginController
 		_clients.remove(account);
 	}
 	
-	public L2LoginClient getAuthedClient(String account)
+	public LoginClient getAuthedClient(String account)
 	{
 		return _clients.get(account);
 	}
@@ -236,7 +217,7 @@ public class LoginController
 		}
 	}
 	
-	public AuthLoginResult tryCheckinAccount(L2LoginClient client, InetAddress address, AccountInfo info)
+	public AuthLoginResult tryCheckinAccount(LoginClient client, InetAddress address, AccountInfo info)
 	{
 		if (info.getAccessLevel() < 0)
 			return AuthLoginResult.ACCOUNT_BANNED;
@@ -264,7 +245,7 @@ public class LoginController
 	 * @param info the account info to checkin
 	 * @return true when ok to checkin, false otherwise
 	 */
-	private static boolean canCheckin(L2LoginClient client, InetAddress address, AccountInfo info)
+	private static boolean canCheckin(LoginClient client, InetAddress address, AccountInfo info)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -357,7 +338,7 @@ public class LoginController
 	
 	public SessionKey getKeyForAccount(String account)
 	{
-		final L2LoginClient client = _clients.get(account);
+		final LoginClient client = _clients.get(account);
 		return (client == null) ? null : client.getSessionKey();
 	}
 	
@@ -383,7 +364,7 @@ public class LoginController
 		return null;
 	}
 	
-	public boolean isLoginPossible(L2LoginClient client, int serverId)
+	public boolean isLoginPossible(LoginClient client, int serverId)
 	{
 		final GameServerInfo gsi = GameServerTable.getInstance().getRegisteredGameServers().get(serverId);
 		if (gsi == null || !gsi.isAuthed())
@@ -446,7 +427,7 @@ public class LoginController
 		{
 			while (!isInterrupted())
 			{
-				for (L2LoginClient client : _clients.values())
+				for (LoginClient client : _clients.values())
 				{
 					if (client == null)
 						continue;

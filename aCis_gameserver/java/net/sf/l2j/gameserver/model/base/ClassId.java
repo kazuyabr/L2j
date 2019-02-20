@@ -1,22 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.base;
 
 import java.util.EnumSet;
 
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
  * This class defines all classes (ex : human fighter, darkFighter...) that a player can chose.
@@ -349,15 +335,15 @@ public enum ClassId
 	}
 	
 	/**
-	 * Returns set of subclasses available for given {@link L2PcInstance}.<br>
+	 * Returns set of subclasses available for given {@link Player}.<br>
 	 * 1) If the race of your main class is Elf or Dark Elf, you may not select each class as a subclass to the other class.<br>
 	 * 2) You may not select Overlord and Warsmith class as a subclass.<br>
 	 * 3) You may not select a similar class as the subclass. The occupations classified as similar classes are as follows:<br>
 	 * Paladin, Dark Avenger, Temple Knight and Shillien Knight Treasure Hunter, Plainswalker and Abyss Walker Hawkeye, Silver Ranger and Phantom Ranger Warlock, Elemental Summoner and Phantom Summoner Sorcerer, Spellsinger and Spellhowler
-	 * @param player : The {@link L2PcInstance} to make checks on.
+	 * @param player : The {@link Player} to make checks on.
 	 * @return EnumSet<ClassId> : Available subclasses for given player.
 	 */
-	public static final EnumSet<ClassId> getAvailableSubclasses(L2PcInstance player)
+	public static final EnumSet<ClassId> getAvailableSubclasses(Player player)
 	{
 		ClassId classId = VALUES[player.getBaseClass()];
 		if (classId._level < 2)

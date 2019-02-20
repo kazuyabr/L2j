@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.itemcontainer;
 
 import java.sql.Connection;
@@ -23,13 +9,14 @@ import java.util.logging.Level;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.datatables.ItemTable;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemLocation;
+import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemState;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.item.type.ArmorType;
 import net.sf.l2j.gameserver.model.item.type.EtcItemType;
@@ -92,7 +79,7 @@ public abstract class Inventory extends ItemContainer
 		 * Add alteration in inventory when item equipped
 		 */
 		@Override
-		public void onEquip(int slot, ItemInstance item, L2Playable actor)
+		public void onEquip(int slot, ItemInstance item, Playable actor)
 		{
 			if (!_changed.contains(item))
 				_changed.add(item);
@@ -102,7 +89,7 @@ public abstract class Inventory extends ItemContainer
 		 * Add alteration in inventory when item unequipped
 		 */
 		@Override
-		public void onUnequip(int slot, ItemInstance item, L2Playable actor)
+		public void onUnequip(int slot, ItemInstance item, Playable actor)
 		{
 			if (!_changed.contains(item))
 				_changed.add(item);
@@ -145,11 +132,11 @@ public abstract class Inventory extends ItemContainer
 	 * Drop item from inventory and updates database
 	 * @param process : String Identifier of process triggering this action
 	 * @param item : ItemInstance to be dropped
-	 * @param actor : L2PcInstance Player requesting the item drop
-	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
+	 * @param actor : Player Player requesting the item drop
+	 * @param reference : WorldObject Object referencing current action like NPC selling item or previous item in transformation
 	 * @return ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
-	public ItemInstance dropItem(String process, ItemInstance item, L2PcInstance actor, L2Object reference)
+	public ItemInstance dropItem(String process, ItemInstance item, Player actor, WorldObject reference)
 	{
 		if (item == null)
 			return null;
@@ -162,7 +149,7 @@ public abstract class Inventory extends ItemContainer
 			removeItem(item);
 			item.setOwnerId(process, 0, actor, reference);
 			item.setLocation(ItemLocation.VOID);
-			item.setLastChange(ItemInstance.REMOVED);
+			item.setLastChange(ItemState.REMOVED);
 			
 			item.updateDatabase();
 			refreshWeight();
@@ -175,11 +162,11 @@ public abstract class Inventory extends ItemContainer
 	 * @param process : String Identifier of process triggering this action
 	 * @param objectId : int Item Instance identifier of the item to be dropped
 	 * @param count : int Quantity of items to be dropped
-	 * @param actor : L2PcInstance Player requesting the item drop
-	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
+	 * @param actor : Player Player requesting the item drop
+	 * @param reference : WorldObject Object referencing current action like NPC selling item or previous item in transformation
 	 * @return ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
-	public ItemInstance dropItem(String process, int objectId, int count, L2PcInstance actor, L2Object reference)
+	public ItemInstance dropItem(String process, int objectId, int count, Player actor, WorldObject reference)
 	{
 		ItemInstance item = getItemByObjectId(objectId);
 		if (item == null)
@@ -189,13 +176,13 @@ public abstract class Inventory extends ItemContainer
 		{
 			if (!_items.contains(item))
 				return null;
-			
+				
 			// Adjust item quantity and create new instance to drop
 			// Directly drop entire item
 			if (item.getCount() > count)
 			{
 				item.changeCount(process, -count, actor, reference);
-				item.setLastChange(ItemInstance.MODIFIED);
+				item.setLastChange(ItemState.MODIFIED);
 				item.updateDatabase();
 				
 				item = ItemTable.getInstance().createItem(process, item.getItemId(), count, actor, reference);
@@ -391,7 +378,7 @@ public abstract class Inventory extends ItemContainer
 				_paperdoll[slot] = null;
 				// Put old item from paperdoll slot to base location
 				old.setLocation(getBaseLocation());
-				old.setLastChange(ItemInstance.MODIFIED);
+				old.setLastChange(ItemState.MODIFIED);
 				
 				// delete armor mask flag (in case of two-piece armor it does not matter, we need to deactivate mask too)
 				_wornMask &= ~old.getItem().getItemMask();
@@ -402,7 +389,7 @@ public abstract class Inventory extends ItemContainer
 					if (listener == null)
 						continue;
 					
-					listener.onUnequip(slot, old, (L2Playable) getOwner());
+					listener.onUnequip(slot, old, (Playable) getOwner());
 				}
 				old.updateDatabase();
 			}
@@ -411,7 +398,7 @@ public abstract class Inventory extends ItemContainer
 			{
 				_paperdoll[slot] = item;
 				item.setLocation(getEquipLocation(), slot);
-				item.setLastChange(ItemInstance.MODIFIED);
+				item.setLastChange(ItemState.MODIFIED);
 				
 				// activate mask (check 2nd armor part for two-piece armors)
 				Item armor = item.getItem();
@@ -435,7 +422,7 @@ public abstract class Inventory extends ItemContainer
 					if (listener == null)
 						continue;
 					
-					listener.onEquip(slot, item, (L2Playable) getOwner());
+					listener.onEquip(slot, item, (Playable) getOwner());
 				}
 				item.updateDatabase();
 			}
@@ -514,6 +501,26 @@ public abstract class Inventory extends ItemContainer
 	
 	/**
 	 * Unequips item in body slot and returns alterations.
+	 * @param item : the item used to find the slot back.
+	 * @return ItemInstance[] : list of changes
+	 */
+	public ItemInstance[] unEquipItemInBodySlotAndRecord(ItemInstance item)
+	{
+		Inventory.ChangeRecorder recorder = newRecorder();
+		
+		try
+		{
+			unEquipItemInBodySlot(getSlotFromItem(item));
+		}
+		finally
+		{
+			removePaperdollListener(recorder);
+		}
+		return recorder.getChangedItems();
+	}
+	
+	/**
+	 * Unequips item in body slot and returns alterations.
 	 * @param slot : int designating the slot of the paperdoll
 	 * @return ItemInstance[] : list of changes
 	 */
@@ -554,8 +561,8 @@ public abstract class Inventory extends ItemContainer
 		try
 		{
 			unEquipItemInSlot(slot);
-			if (getOwner() instanceof L2PcInstance)
-				((L2PcInstance) getOwner()).refreshExpertisePenalty();
+			if (getOwner() instanceof Player)
+				((Player) getOwner()).refreshExpertisePenalty();
 		}
 		finally
 		{
@@ -641,8 +648,8 @@ public abstract class Inventory extends ItemContainer
 			ItemInstance old = setPaperdollItem(pdollSlot, null);
 			if (old != null)
 			{
-				if (getOwner() instanceof L2PcInstance)
-					((L2PcInstance) getOwner()).refreshExpertisePenalty();
+				if (getOwner() instanceof Player)
+					((Player) getOwner()).refreshExpertisePenalty();
 			}
 			return old;
 		}
@@ -676,10 +683,10 @@ public abstract class Inventory extends ItemContainer
 	 */
 	public void equipItem(ItemInstance item)
 	{
-		if (getOwner() instanceof L2PcInstance)
+		if (getOwner() instanceof Player)
 		{
 			// Can't equip item if you are in shop mod or hero item and you're not hero.
-			if (((L2PcInstance) getOwner()).isInStoreMode() || (!((L2PcInstance) getOwner()).isHero() && item.isHeroItem()))
+			if (((Player) getOwner()).isInStoreMode() || (!((Player) getOwner()).isHero() && item.isHeroItem()))
 				return;
 		}
 		
@@ -846,10 +853,10 @@ public abstract class Inventory extends ItemContainer
 	 */
 	public void equipPetItem(ItemInstance item)
 	{
-		if (getOwner() instanceof L2PcInstance)
+		if (getOwner() instanceof Player)
 		{
 			// Can't equip item if you are in shop mod.
-			if (((L2PcInstance) getOwner()).isInStoreMode())
+			if (((Player) getOwner()).isInStoreMode())
 				return;
 		}
 		
@@ -950,13 +957,13 @@ public abstract class Inventory extends ItemContainer
 				if (item == null)
 					continue;
 				
-				if (getOwner() instanceof L2PcInstance)
+				if (getOwner() instanceof Player)
 				{
-					if (!((L2PcInstance) getOwner()).isHero() && item.isHeroItem())
+					if (!((Player) getOwner()).isHero() && item.isHeroItem())
 						item.setLocation(ItemLocation.INVENTORY);
 				}
 				
-				L2World.getInstance().addObject(item);
+				World.getInstance().addObject(item);
 				
 				// If stackable item is found in inventory just add to current quantity
 				if (item.isStackable() && getItemByItemId(item.getItemId()) != null)
@@ -991,8 +998,8 @@ public abstract class Inventory extends ItemContainer
 				if (listener == null)
 					continue;
 				
-				listener.onUnequip(slot, element, (L2Playable) getOwner());
-				listener.onEquip(slot, element, (L2Playable) getOwner());
+				listener.onUnequip(slot, element, (Playable) getOwner());
+				listener.onEquip(slot, element, (Playable) getOwner());
 			}
 		}
 	}

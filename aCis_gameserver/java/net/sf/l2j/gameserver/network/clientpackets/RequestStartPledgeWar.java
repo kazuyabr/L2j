@@ -1,23 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
@@ -34,21 +20,21 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance player = getClient().getActiveChar();
+		final Player player = getClient().getActiveChar();
 		if (player == null)
 			return;
 		
-		final L2Clan attackerClan = player.getClan();
+		final Clan attackerClan = player.getClan();
 		if (attackerClan == null)
 			return;
 		
-		if ((player.getClanPrivileges() & L2Clan.CP_CL_PLEDGE_WAR) != L2Clan.CP_CL_PLEDGE_WAR)
+		if ((player.getClanPrivileges() & Clan.CP_CL_PLEDGE_WAR) != Clan.CP_CL_PLEDGE_WAR)
 		{
 			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
 		}
 		
-		final L2Clan attackedClan = ClanTable.getInstance().getClanByName(_pledgeName);
+		final Clan attackedClan = ClanTable.getInstance().getClanByName(_pledgeName);
 		if (attackedClan == null)
 		{
 			player.sendPacket(SystemMessageId.CLAN_WAR_CANNOT_DECLARED_CLAN_NOT_EXIST);
@@ -105,10 +91,10 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
 		
 		ClanTable.getInstance().storeClansWars(player.getClanId(), attackedClan.getClanId());
 		
-		for (L2PcInstance member : attackedClan.getOnlineMembers())
+		for (Player member : attackedClan.getOnlineMembers())
 			member.broadcastUserInfo();
 		
-		for (L2PcInstance member : attackerClan.getOnlineMembers())
+		for (Player member : attackerClan.getOnlineMembers())
 			member.broadcastUserInfo();
 	}
 }

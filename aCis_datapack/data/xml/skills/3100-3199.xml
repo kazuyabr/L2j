@@ -343,23 +343,23 @@
 		</for>
 	</skill>
 	<skill id="3125" levels="10" name="Item Skill: Battle Roar">
-		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
-		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
-		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
+		<table name="#mpConsume"> 48 53 55 59 64 65 69 73 77 82 </table>
+		<table name="#magicLvl"> 40 44 48 52 56 60 64 68 72 76 </table>
+		<table name="#stackOrder"> 1 2 3 4 5 6 7 8 9 10 </table>
+		<table name="#maxHp"> 30 60 90 120 150 180 210 240 270 300 </table>
 		<set name="magicLvl" val="#magicLvl" />
-		<set name="mpInitialConsume" val="#mpInitialConsume" />
 		<set name="mpConsume" val="#mpConsume" />
-		<set name="power" val="3" />
+		<set name="power" val="#maxHp" />
 		<set name="target" val="TARGET_SELF" />
-		<set name="reuseDelay" val="300000" />
+		<set name="reuseDelay" val="180000" />
 		<set name="staticReuse" val="true" />
-		<set name="hitTime" val="4000" />
+		<set name="hitTime" val="1500" />
 		<set name="skillType" val="HEAL_PERCENT" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="staticHitTime" val="true" />
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="abnormal_item">
-				<mul order="0x40" stat="maxHp" val="1.03" />
+			<effect name="Buff" time="120" val="0" stackOrder="#stackOrder" stackType="abnormal_item" >
+				<add order="0x40" stat="maxHp" val="#maxHp" />
 			</effect>
 		</for>
 	</skill>

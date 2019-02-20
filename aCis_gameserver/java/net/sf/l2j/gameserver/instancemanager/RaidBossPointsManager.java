@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager;
 
 import java.sql.Connection;
@@ -29,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
  * @author Kerberos JIV update 24.8.10
@@ -82,7 +68,7 @@ public class RaidBossPointsManager
 		}
 	}
 	
-	public static final void updatePointsInDB(L2PcInstance player, int raidId, int points)
+	public static final void updatePointsInDB(Player player, int raidId, int points)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -99,7 +85,7 @@ public class RaidBossPointsManager
 		}
 	}
 	
-	public final void addPoints(L2PcInstance player, int bossId, int points)
+	public final void addPoints(Player player, int bossId, int points)
 	{
 		int ownerId = player.getObjectId();
 		Map<Integer, Integer> tmpPoint = _list.get(ownerId);
@@ -132,7 +118,7 @@ public class RaidBossPointsManager
 		return totalPoints;
 	}
 	
-	public final Map<Integer, Integer> getList(L2PcInstance player)
+	public final Map<Integer, Integer> getList(Player player)
 	{
 		return _list.get(player.getObjectId());
 	}

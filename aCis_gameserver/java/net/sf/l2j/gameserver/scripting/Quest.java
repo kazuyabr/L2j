@@ -1,20 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,27 +9,31 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.datatables.ItemTable;
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2ClanMember;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Spawn;
-import net.sf.l2j.gameserver.model.SpawnLocation;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
+import net.sf.l2j.gameserver.model.entity.Siege;
+import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
+import net.sf.l2j.gameserver.model.location.SpawnLocation;
+import net.sf.l2j.gameserver.model.pledge.Clan;
+import net.sf.l2j.gameserver.model.pledge.ClanMember;
 import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -203,20 +194,20 @@ public class Quest
 	 * @param player
 	 * @return QuestState : QuestState created
 	 */
-	public QuestState newQuestState(L2PcInstance player)
+	public QuestState newQuestState(Player player)
 	{
 		return new QuestState(player, this, STATE_CREATED);
 	}
 	
 	/**
-	 * Auxiliary function for party quests. Checks the player's condition. Player member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
+	 * Auxiliary function for party quests. Checks the player's condition. Player member must be within Config.PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
 	 * @param player : the instance of a player whose party is to be searched
 	 * @param npc : the instance of a L2Npc to compare distance
 	 * @param var : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
 	 * @param value : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
 	 * @return QuestState : The QuestState of that player.
 	 */
-	public QuestState checkPlayerCondition(L2PcInstance player, L2Npc npc, String var, String value)
+	public QuestState checkPlayerCondition(Player player, Npc npc, String var, String value)
 	{
 		// No valid player or npc instance is passed, there is nothing to check.
 		if (player == null || npc == null)
@@ -232,7 +223,7 @@ public class Quest
 			return null;
 		
 		// Player is in range?
-		if (!player.isInsideRadius(npc, Config.ALT_PARTY_RANGE, true, false))
+		if (!player.isInsideRadius(npc, Config.PARTY_RANGE, true, false))
 			return null;
 		
 		return st;
@@ -244,33 +235,19 @@ public class Quest
 	 * @param npc : the instance of a L2Npc to compare distance
 	 * @param var : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
 	 * @param value : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @return List<L2PcInstance> : List of party members that matches the specified condition, empty list if none matches. If the var is null, empty list is returned (i.e. no condition is applied). The party member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null,
-	 *         distance condition is ignored.
+	 * @return List<Player> : List of party members that matches the specified condition, empty list if none matches. If the var is null, empty list is returned (i.e. no condition is applied). The party member must be within Config.PARTY_RANGE distance from the npc. If npc is null, distance
+	 *         condition is ignored.
 	 */
-	public List<L2PcInstance> getPartyMembers(L2PcInstance player, L2Npc npc, String var, String value)
+	public List<Player> getPartyMembers(Player player, Npc npc, String var, String value)
 	{
-		// Output list.
-		final List<L2PcInstance> candidates = new ArrayList<>();
+		if (player == null)
+			return Collections.emptyList();
 		
-		// Valid player instance is passed and player is in a party? Check party.
-		if (player != null && player.isInParty())
-		{
-			// Filter candidates from player's party.
-			for (L2PcInstance partyMember : player.getParty().getPartyMembers())
-			{
-				if (partyMember == null)
-					continue;
-				
-				// Check party members' quest condition.
-				if (checkPlayerCondition(partyMember, npc, var, value) != null)
-					candidates.add(partyMember);
-			}
-		}
-		// Player is solo, check the player
-		else if (checkPlayerCondition(player, npc, var, value) != null)
-			candidates.add(player);
+		final Party party = player.getParty();
+		if (party == null)
+			return (checkPlayerCondition(player, npc, var, value) != null) ? Arrays.asList(player) : Collections.emptyList();
 		
-		return candidates;
+		return party.getMembers().stream().filter(m -> checkPlayerCondition(m, npc, var, value) != null).collect(Collectors.toList());
 	}
 	
 	/**
@@ -279,10 +256,9 @@ public class Quest
 	 * @param npc : the instance of a L2Npc to compare distance
 	 * @param var : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
 	 * @param value : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @return L2PcInstance : L2PcInstance for a random party member that matches the specified condition, or null if no match. If the var is null, null is returned (i.e. no condition is applied). The party member must be within 1500 distance from the npc. If npc is null, distance condition is
-	 *         ignored.
+	 * @return Player : Player for a random party member that matches the specified condition, or null if no match. If the var is null, null is returned (i.e. no condition is applied). The party member must be within 1500 distance from the npc. If npc is null, distance condition is ignored.
 	 */
-	public L2PcInstance getRandomPartyMember(L2PcInstance player, L2Npc npc, String var, String value)
+	public Player getRandomPartyMember(Player player, Npc npc, String var, String value)
 	{
 		// No valid player instance is passed, there is nothing to check.
 		if (player == null)
@@ -297,21 +273,21 @@ public class Quest
 	 * @param player : the instance of a player whose party is to be searched
 	 * @param npc : the instance of a L2Npc to compare distance
 	 * @param value : the value of the "cond" variable that must be matched
-	 * @return L2PcInstance : L2PcInstance for a random party member that matches the specified condition, or null if no match.
+	 * @return Player : Player for a random party member that matches the specified condition, or null if no match.
 	 */
-	public L2PcInstance getRandomPartyMember(L2PcInstance player, L2Npc npc, String value)
+	public Player getRandomPartyMember(Player player, Npc npc, String value)
 	{
 		return getRandomPartyMember(player, npc, "cond", value);
 	}
 	
 	/**
-	 * Auxiliary function for party quests. Checks the player's condition. Player member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
+	 * Auxiliary function for party quests. Checks the player's condition. Player member must be within Config.PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
 	 * @param player : the instance of a player whose party is to be searched
 	 * @param npc : the instance of a L2Npc to compare distance
 	 * @param state : the state in which the party member's QuestState must be in order to be considered.
 	 * @return QuestState : The QuestState of that player.
 	 */
-	public QuestState checkPlayerState(L2PcInstance player, L2Npc npc, byte state)
+	public QuestState checkPlayerState(Player player, Npc npc, byte state)
 	{
 		// No valid player or npc instance is passed, there is nothing to check.
 		if (player == null || npc == null)
@@ -327,7 +303,7 @@ public class Quest
 			return null;
 		
 		// Player is in range?
-		if (!player.isInsideRadius(npc, Config.ALT_PARTY_RANGE, true, false))
+		if (!player.isInsideRadius(npc, Config.PARTY_RANGE, true, false))
 			return null;
 		
 		return st;
@@ -338,32 +314,18 @@ public class Quest
 	 * @param player : the instance of a player whose party is to be searched
 	 * @param npc : the instance of a L2Npc to compare distance
 	 * @param state : the state in which the party member's QuestState must be in order to be considered.
-	 * @return List<L2PcInstance> : List of party members that matches the specified quest state, empty list if none matches. The party member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
+	 * @return List<Player> : List of party members that matches the specified quest state, empty list if none matches. The party member must be within Config.PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
 	 */
-	public List<L2PcInstance> getPartyMembersState(L2PcInstance player, L2Npc npc, byte state)
+	public List<Player> getPartyMembersState(Player player, Npc npc, byte state)
 	{
-		// Output list.
-		final List<L2PcInstance> candidates = new ArrayList<>();
+		if (player == null)
+			return Collections.emptyList();
 		
-		// Valid player instance is passed and player is in a party? Check party.
-		if (player != null && player.isInParty())
-		{
-			// Filter candidates from player's party.
-			for (L2PcInstance partyMember : player.getParty().getPartyMembers())
-			{
-				if (partyMember == null)
-					continue;
-				
-				// Check party members' quest state.
-				if (checkPlayerState(partyMember, npc, state) != null)
-					candidates.add(partyMember);
-			}
-		}
-		// Player is solo, check the player
-		else if (checkPlayerState(player, npc, state) != null)
-			candidates.add(player);
+		final Party party = player.getParty();
+		if (party == null)
+			return (checkPlayerState(player, npc, state) != null) ? Arrays.asList(player) : Collections.emptyList();
 		
-		return candidates;
+		return party.getMembers().stream().filter(m -> checkPlayerState(m, npc, state) != null).collect(Collectors.toList());
 	}
 	
 	/**
@@ -371,9 +333,9 @@ public class Quest
 	 * @param player : the instance of a player whose party is to be searched
 	 * @param npc : the instance of a monster to compare distance
 	 * @param state : the state in which the party member's QuestState must be in order to be considered.
-	 * @return L2PcInstance: L2PcInstance for a random party member that matches the specified condition, or null if no match. If the var is null, any random party member is returned (i.e. no condition is applied).
+	 * @return Player: Player for a random party member that matches the specified condition, or null if no match. If the var is null, any random party member is returned (i.e. no condition is applied).
 	 */
-	public L2PcInstance getRandomPartyMemberState(L2PcInstance player, L2Npc npc, byte state)
+	public Player getRandomPartyMemberState(Player player, Npc npc, byte state)
 	{
 		// No valid player instance is passed, there is nothing to check.
 		if (player == null)
@@ -389,24 +351,24 @@ public class Quest
 	 * @param npc : the npc to test distance
 	 * @return the QuestState of the leader, or null if not found
 	 */
-	public QuestState getClanLeaderQuestState(L2PcInstance player, L2Npc npc)
+	public QuestState getClanLeaderQuestState(Player player, Npc npc)
 	{
 		// If player is the leader, retrieves directly the qS and bypass others checks
-		if (player.isClanLeader() && player.isInsideRadius(npc, Config.ALT_PARTY_RANGE, true, false))
+		if (player.isClanLeader() && player.isInsideRadius(npc, Config.PARTY_RANGE, true, false))
 			return player.getQuestState(getName());
 		
 		// Verify if the player got a clan
-		final L2Clan clan = player.getClan();
+		final Clan clan = player.getClan();
 		if (clan == null)
 			return null;
 		
 		// Verify if the leader is online
-		final L2PcInstance leader = clan.getLeader().getPlayerInstance();
+		final Player leader = clan.getLeader().getPlayerInstance();
 		if (leader == null)
 			return null;
 		
 		// Verify if the player is on the radius of the leader. If true, send leader's quest state.
-		if (leader.isInsideRadius(npc, Config.ALT_PARTY_RANGE, true, false))
+		if (leader.isInsideRadius(npc, Config.PARTY_RANGE, true, false))
 			return leader.getQuestState(getName());
 		
 		return null;
@@ -416,7 +378,7 @@ public class Quest
 	 * @param player : The player instance to check.
 	 * @return true if the given player got an online clan member sponsor in a 1500 radius range.
 	 */
-	public static boolean getSponsor(L2PcInstance player)
+	public static boolean getSponsor(Player player)
 	{
 		// Player hasn't a sponsor.
 		final int sponsorId = player.getSponsor();
@@ -424,16 +386,16 @@ public class Quest
 			return false;
 		
 		// Player hasn't a clan.
-		final L2Clan clan = player.getClan();
+		final Clan clan = player.getClan();
 		if (clan == null)
 			return false;
 		
 		// Retrieve sponsor clan member object.
-		final L2ClanMember member = clan.getClanMember(sponsorId);
+		final ClanMember member = clan.getClanMember(sponsorId);
 		if (member != null && member.isOnline())
 		{
 			// The sponsor is online, retrieve player instance and check distance.
-			final L2PcInstance sponsor = member.getPlayerInstance();
+			final Player sponsor = member.getPlayerInstance();
 			if (sponsor != null && player.isInsideRadius(sponsor, 1500, true, false))
 				return true;
 		}
@@ -445,7 +407,7 @@ public class Quest
 	 * @param player : The player instance to check.
 	 * @return the apprentice of the given player. He must be online, and in a 1500 radius range.
 	 */
-	public static L2PcInstance getApprentice(L2PcInstance player)
+	public static Player getApprentice(Player player)
 	{
 		// Player hasn't an apprentice.
 		final int apprenticeId = player.getApprentice();
@@ -453,16 +415,16 @@ public class Quest
 			return null;
 		
 		// Player hasn't a clan.
-		final L2Clan clan = player.getClan();
+		final Clan clan = player.getClan();
 		if (clan == null)
 			return null;
 		
 		// Retrieve apprentice clan member object.
-		final L2ClanMember member = clan.getClanMember(apprenticeId);
+		final ClanMember member = clan.getClanMember(apprenticeId);
 		if (member != null && member.isOnline())
 		{
 			// The apprentice is online, retrieve player instance and check distance.
-			final L2PcInstance academic = member.getPlayerInstance();
+			final Player academic = member.getPlayerInstance();
 			if (academic != null && player.isInsideRadius(academic, 1500, true, false))
 				return academic;
 		}
@@ -478,7 +440,7 @@ public class Quest
 	 * @param player player associated with this timer (can be null)
 	 * @param repeating indicates if the timer is repeatable or one-time.
 	 */
-	public void startQuestTimer(String name, long time, L2Npc npc, L2PcInstance player, boolean repeating)
+	public void startQuestTimer(String name, long time, Npc npc, Player player, boolean repeating)
 	{
 		// Get quest timers for this timer type.
 		List<QuestTimer> timers = _eventTimers.get(name.hashCode());
@@ -508,7 +470,7 @@ public class Quest
 		}
 	}
 	
-	public QuestTimer getQuestTimer(String name, L2Npc npc, L2PcInstance player)
+	public QuestTimer getQuestTimer(String name, Npc npc, Player player)
 	{
 		// Get quest timers for this timer type.
 		List<QuestTimer> timers = _eventTimers.get(name.hashCode());
@@ -527,7 +489,7 @@ public class Quest
 		return null;
 	}
 	
-	public void cancelQuestTimer(String name, L2Npc npc, L2PcInstance player)
+	public void cancelQuestTimer(String name, Npc npc, Player player)
 	{
 		// If specified timer exists, cancel him.
 		QuestTimer timer = getQuestTimer(name, npc, player);
@@ -583,7 +545,7 @@ public class Quest
 	 * @param isSummonSpawn if true, spawn with animation (if any exists).
 	 * @return instance of the newly spawned npc with summon animation.
 	 */
-	public L2Npc addSpawn(int npcId, L2Character cha, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
+	public Npc addSpawn(int npcId, Creature cha, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, despawnDelay, isSummonSpawn);
 	}
@@ -597,7 +559,7 @@ public class Quest
 	 * @param isSummonSpawn if true, spawn with animation (if any exists).
 	 * @return instance of the newly spawned npc with summon animation.
 	 */
-	public L2Npc addSpawn(int npcId, SpawnLocation loc, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
+	public Npc addSpawn(int npcId, SpawnLocation loc, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), randomOffset, despawnDelay, isSummonSpawn);
 	}
@@ -614,7 +576,7 @@ public class Quest
 	 * @param isSummonSpawn if true, spawn with animation (if any exists).
 	 * @return instance of the newly spawned npc with summon animation.
 	 */
-	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
+	public Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		try
 		{
@@ -632,7 +594,7 @@ public class Quest
 			spawn.setLoc(x, y, z + 20, heading);
 			spawn.setRespawnState(false);
 			
-			final L2Npc npc = spawn.doSpawn(isSummonSpawn);
+			final Npc npc = spawn.doSpawn(isSummonSpawn);
 			if (despawnDelay > 0)
 				npc.scheduleDespawn(despawnDelay);
 			
@@ -683,7 +645,7 @@ public class Quest
 	 * @param player : the player.
 	 * @param result : String pointing out the message to show at the player
 	 */
-	public void showResult(L2Npc npc, L2PcInstance player, String result)
+	public void showResult(Npc npc, Player player, String result)
 	{
 		if (player == null || result == null || result.isEmpty())
 			return;
@@ -719,10 +681,10 @@ public class Quest
 	
 	/**
 	 * Show message error to player who has an access level greater than 0
-	 * @param player : L2PcInstance
+	 * @param player : Player
 	 * @param e : Throwable
 	 */
-	public void showError(L2PcInstance player, Throwable e)
+	public void showError(Player player, Throwable e)
 	{
 		_log.log(Level.WARNING, getClass().getName(), e);
 		
@@ -840,7 +802,7 @@ public class Quest
 	 * @param isPet Player summon attacked?
 	 * @param skill the skill used to attack the NPC (can be null)
 	 */
-	public final void notifyAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public final void notifyAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		String res = null;
 		try
@@ -855,7 +817,7 @@ public class Quest
 		showResult(npc, attacker, res);
 	}
 	
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		return null;
 	}
@@ -875,7 +837,7 @@ public class Quest
 	 * @param npc Npc providing attack.
 	 * @param victim Attacked npc player.
 	 */
-	public final void notifyAttackAct(L2Npc npc, L2PcInstance victim)
+	public final void notifyAttackAct(Npc npc, Player victim)
 	{
 		String res = null;
 		try
@@ -890,7 +852,7 @@ public class Quest
 		showResult(npc, victim, res);
 	}
 	
-	public String onAttackAct(L2Npc npc, L2PcInstance victim)
+	public String onAttackAct(Npc npc, Player victim)
 	{
 		return null;
 	}
@@ -907,11 +869,11 @@ public class Quest
 	
 	private class OnAggroEnter implements Runnable
 	{
-		private final L2Npc _npc;
-		private final L2PcInstance _pc;
+		private final Npc _npc;
+		private final Player _pc;
 		private final boolean _isPet;
 		
-		public OnAggroEnter(L2Npc npc, L2PcInstance pc, boolean isPet)
+		public OnAggroEnter(Npc npc, Player pc, boolean isPet)
 		{
 			_npc = npc;
 			_pc = pc;
@@ -935,17 +897,17 @@ public class Quest
 		}
 	}
 	
-	public final void notifyAggro(L2Npc npc, L2PcInstance player, boolean isPet)
+	public final void notifyAggro(Npc npc, Player player, boolean isPet)
 	{
 		ThreadPool.execute(new OnAggroEnter(npc, player, isPet));
 	}
 	
-	public String onAggro(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onAggro(Npc npc, Player player, boolean isPet)
 	{
 		return null;
 	}
 	
-	public final void notifyDeath(L2Character killer, L2PcInstance player)
+	public final void notifyDeath(Creature killer, Player player)
 	{
 		String res = null;
 		try
@@ -957,15 +919,15 @@ public class Quest
 			showError(player, e);
 			return;
 		}
-		showResult((killer instanceof L2Npc) ? (L2Npc) killer : null, player, res);
+		showResult((killer instanceof Npc) ? (Npc) killer : null, player, res);
 	}
 	
-	public String onDeath(L2Character killer, L2PcInstance player)
+	public String onDeath(Creature killer, Player player)
 	{
-		return onAdvEvent("", (killer instanceof L2Npc) ? (L2Npc) killer : null, player);
+		return onAdvEvent("", (killer instanceof Npc) ? (Npc) killer : null, player);
 	}
 	
-	public final void notifyEvent(String event, L2Npc npc, L2PcInstance player)
+	public final void notifyEvent(String event, Npc npc, Player player)
 	{
 		String res = null;
 		try
@@ -980,7 +942,7 @@ public class Quest
 		showResult(npc, player, res);
 	}
 	
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		// if not overridden by a subclass, then default to the returned value of the simpler (and older) onEvent override
 		// if the player has a state, use it as parameter in the next call, else return null
@@ -998,7 +960,7 @@ public class Quest
 		return null;
 	}
 	
-	public final void notifyEnterWorld(L2PcInstance player)
+	public final void notifyEnterWorld(Player player)
 	{
 		String res = null;
 		try
@@ -1013,7 +975,7 @@ public class Quest
 		showResult(null, player, res);
 	}
 	
-	public String onEnterWorld(L2PcInstance player)
+	public String onEnterWorld(Player player)
 	{
 		return null;
 	}
@@ -1032,9 +994,9 @@ public class Quest
 		}
 	}
 	
-	public final void notifyEnterZone(L2Character character, L2ZoneType zone)
+	public final void notifyEnterZone(Creature character, L2ZoneType zone)
 	{
-		L2PcInstance player = character.getActingPlayer();
+		Player player = character.getActingPlayer();
 		String res = null;
 		try
 		{
@@ -1052,7 +1014,7 @@ public class Quest
 			showResult(null, player, res);
 	}
 	
-	public String onEnterZone(L2Character character, L2ZoneType zone)
+	public String onEnterZone(Creature character, L2ZoneType zone)
 	{
 		return null;
 	}
@@ -1071,9 +1033,9 @@ public class Quest
 		}
 	}
 	
-	public final void notifyExitZone(L2Character character, L2ZoneType zone)
+	public final void notifyExitZone(Creature character, L2ZoneType zone)
 	{
-		L2PcInstance player = character.getActingPlayer();
+		Player player = character.getActingPlayer();
 		String res = null;
 		try
 		{
@@ -1091,7 +1053,7 @@ public class Quest
 			showResult(null, player, res);
 	}
 	
-	public String onExitZone(L2Character character, L2ZoneType zone)
+	public String onExitZone(Creature character, L2ZoneType zone)
 	{
 		return null;
 	}
@@ -1106,7 +1068,7 @@ public class Quest
 			addEventId(npcId, EventType.ON_FACTION_CALL);
 	}
 	
-	public final void notifyFactionCall(L2Npc npc, L2Npc caller, L2PcInstance attacker, boolean isPet)
+	public final void notifyFactionCall(Npc npc, Npc caller, Player attacker, boolean isPet)
 	{
 		String res = null;
 		try
@@ -1121,7 +1083,7 @@ public class Quest
 		showResult(npc, attacker, res);
 	}
 	
-	public String onFactionCall(L2Npc npc, L2Npc caller, L2PcInstance attacker, boolean isPet)
+	public String onFactionCall(Npc npc, Npc caller, Player attacker, boolean isPet)
 	{
 		return null;
 	}
@@ -1136,7 +1098,7 @@ public class Quest
 			addEventId(npcId, EventType.ON_FIRST_TALK);
 	}
 	
-	public final void notifyFirstTalk(L2Npc npc, L2PcInstance player)
+	public final void notifyFirstTalk(Npc npc, Player player)
 	{
 		String res = null;
 		try
@@ -1156,7 +1118,7 @@ public class Quest
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 	
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(Npc npc, Player player)
 	{
 		return null;
 	}
@@ -1175,7 +1137,7 @@ public class Quest
 		}
 	}
 	
-	public final void notifyItemUse(ItemInstance item, L2PcInstance player, L2Object target)
+	public final void notifyItemUse(ItemInstance item, Player player, WorldObject target)
 	{
 		String res = null;
 		try
@@ -1190,7 +1152,7 @@ public class Quest
 		showResult(null, player, res);
 	}
 	
-	public String onItemUse(ItemInstance item, L2PcInstance player, L2Object target)
+	public String onItemUse(ItemInstance item, Player player, WorldObject target)
 	{
 		return null;
 	}
@@ -1205,7 +1167,7 @@ public class Quest
 			addEventId(killId, EventType.ON_KILL);
 	}
 	
-	public final void notifyKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public final void notifyKill(Npc npc, Player killer, boolean isPet)
 	{
 		String res = null;
 		try
@@ -1220,7 +1182,7 @@ public class Quest
 		showResult(npc, killer, res);
 	}
 	
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
 		return null;
 	}
@@ -1235,7 +1197,7 @@ public class Quest
 			addEventId(npcId, EventType.ON_SPAWN);
 	}
 	
-	public final void notifySpawn(L2Npc npc)
+	public final void notifySpawn(Npc npc)
 	{
 		try
 		{
@@ -1247,7 +1209,7 @@ public class Quest
 		}
 	}
 	
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(Npc npc)
 	{
 		return null;
 	}
@@ -1262,7 +1224,7 @@ public class Quest
 			addEventId(npcId, EventType.ON_DECAY);
 	}
 	
-	public final void notifyDecay(L2Npc npc)
+	public final void notifyDecay(Npc npc)
 	{
 		try
 		{
@@ -1274,7 +1236,7 @@ public class Quest
 		}
 	}
 	
-	public String onDecay(L2Npc npc)
+	public String onDecay(Npc npc)
 	{
 		return null;
 	}
@@ -1291,13 +1253,13 @@ public class Quest
 	
 	public class OnSkillSee implements Runnable
 	{
-		private final L2Npc _npc;
-		private final L2PcInstance _caster;
+		private final Npc _npc;
+		private final Player _caster;
 		private final L2Skill _skill;
-		private final L2Object[] _targets;
+		private final WorldObject[] _targets;
 		private final boolean _isPet;
 		
-		public OnSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+		public OnSkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
 		{
 			_npc = npc;
 			_caster = caster;
@@ -1323,12 +1285,12 @@ public class Quest
 		}
 	}
 	
-	public final void notifySkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public final void notifySkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
 	{
 		ThreadPool.execute(new OnSkillSee(npc, caster, skill, targets, isPet));
 	}
 	
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
 	{
 		return null;
 	}
@@ -1343,7 +1305,7 @@ public class Quest
 			addEventId(npcId, EventType.ON_SPELL_FINISHED);
 	}
 	
-	public final void notifySpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
+	public final void notifySpellFinished(Npc npc, Player player, L2Skill skill)
 	{
 		String res = null;
 		try
@@ -1358,7 +1320,7 @@ public class Quest
 		showResult(npc, player, res);
 	}
 	
-	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
+	public String onSpellFinished(Npc npc, Player player, L2Skill skill)
 	{
 		return null;
 	}
@@ -1373,7 +1335,7 @@ public class Quest
 			addEventId(talkId, EventType.ON_TALK);
 	}
 	
-	public final void notifyTalk(L2Npc npc, L2PcInstance player)
+	public final void notifyTalk(Npc npc, Player player)
 	{
 		String res = null;
 		try
@@ -1389,9 +1351,20 @@ public class Quest
 		showResult(npc, player, res);
 	}
 	
-	public String onTalk(L2Npc npc, L2PcInstance talker)
+	public String onTalk(Npc npc, Player talker)
 	{
 		return null;
+	}
+	
+	public final Siege addSiegeNotify(int castleId)
+	{
+		final Siege siege = CastleManager.getInstance().getCastleById(castleId).getSiege();
+		siege.addQuestEvent(this);
+		return siege;
+	}
+	
+	public void onSiegeEvent()
+	{
 	}
 	
 	@Override

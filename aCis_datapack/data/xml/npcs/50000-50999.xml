@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <list>
 	<npc id="50006" idTemplate="31228" name="Roy the Cat" title="Class Manager">
+		<set name="usingServerSideName" val="true"/>
+		<set name="usingServerSideTitle" val="true"/>
 		<set name="level" val="70"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="16"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2ClassMaster"/>
+		<set name="type" val="ClassMaster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="10"/>
 		<set name="hp" val="2444.46819"/>
@@ -36,12 +38,14 @@
 		</skills>
 	</npc>
 	<npc id="50007" idTemplate="31324" name="Andromeda" title="Wedding Manager">
+		<set name="usingServerSideName" val="true"/>
+		<set name="usingServerSideTitle" val="true"/>
 		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2WeddingManager"/>
+		<set name="type" val="WeddingManagerNpc"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2444.46819"/>
@@ -71,12 +75,14 @@
 		</skills>
 	</npc>
 		<npc id="50008" idTemplate="30519" name="Tryskell" title="Crappy Buffer">
+		<set name="usingServerSideName" val="true"/>
+		<set name="usingServerSideTitle" val="true"/>
 		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="18"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Buffer"/>
+		<set name="type" val="SchemeBuffer"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2444.46819"/>

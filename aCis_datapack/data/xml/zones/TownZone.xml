@@ -3,7 +3,7 @@
 	<!-- Town Zones -->
 	<zone type="TownZone" shape="NPoly" minZ="-3800" maxZ="-3300"><!-- Giran Castle Town -->
 		<stat name="townId" val="9" />
-		<stat name="taxById" val="3" />
+		<stat name="castleId" val="3" />
 		<node X="77170" Y="147420" />
 		<node X="79200" Y="147420" />
 		<node X="79200" Y="144780" />
@@ -75,7 +75,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-4700" maxZ="-3600"><!-- Dark Elven Village -->
 		<stat name="townId" val="1" />
-		<stat name="taxById" val="4" />
+		<stat name="castleId" val="4" />
 		<node X="15704" Y="15397" />
 		<node X="15765" Y="15878" />
 		<node X="15801" Y="16332" />
@@ -124,7 +124,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3800" maxZ="-3700"><!-- Talking Island -->
 		<stat name="townId" val="2" />
-		<stat name="taxById" val="1" />
+		<stat name="castleId" val="1" />
 		<node X="-83739" Y="245733" />
 		<node X="-84049" Y="246087" />
 		<node X="-84289" Y="246258" />
@@ -204,7 +204,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3600" maxZ="-2750"><!-- Elven Village -->
 		<stat name="townId" val="3" />
-		<stat name="taxById" val="4" />
+		<stat name="castleId" val="4" />
 		<node X="45364" Y="46535" />
 		<node X="45895" Y="46578" />
 		<node X="46388" Y="46713" />
@@ -285,7 +285,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-400" maxZ="-200"><!-- Orc Village -->
 		<stat name="townId" val="4" />
-		<stat name="taxById" val="9" />
+		<stat name="castleId" val="9" />
 		<node X="-45528" Y="-110079" />
 		<node X="-45711" Y="-110075" />
 		<node X="-45704" Y="-110164" />
@@ -357,7 +357,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3300" maxZ="-3000"><!-- Gludin Village -->
 		<stat name="townId" val="5" />
-		<stat name="taxById" val="1" />
+		<stat name="castleId" val="1" />
 		<node X="-84867" Y="149371" />
 		<node X="-82581" Y="149364" />
 		<node X="-82499" Y="149139" />
@@ -414,7 +414,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-1600" maxZ="-800"><!-- Dwarven Village -->
 		<stat name="townId" val="6" />
-		<stat name="taxById" val="9" />
+		<stat name="castleId" val="9" />
 		<node X="115499" Y="-176771" />
 		<node X="115301" Y="-176769" />
 		<node X="114877" Y="-176811" />
@@ -475,7 +475,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3200" maxZ="-2900"><!-- Gludio Castle Town -->
 		<stat name="townId" val="7" />
-		<stat name="taxById" val="1" />
+		<stat name="castleId" val="1" />
 		<node X="-14960" Y="121148" />
 		<node X="-14875" Y="121120" />
 		<node X="-14717" Y="121106" />
@@ -533,7 +533,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3250" maxZ="-2600"><!-- Dion Castle Town -->
 		<stat name="townId" val="8" />
-		<stat name="taxById" val="2" />
+		<stat name="castleId" val="2" />
 		<node X="15264" Y="141764" />
 		<node X="15434" Y="143574" />
 		<node X="15760" Y="144707" />
@@ -592,7 +592,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-2250" maxZ="-1400"><!-- Town of Oren -->
 		<stat name="townId" val="10" />
-		<stat name="taxById" val="4" />
+		<stat name="castleId" val="4" />
 		<node X="84014" Y="52245" />
 		<node X="84138" Y="54683" />
 		<node X="84143" Y="55029" />
@@ -659,7 +659,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-2800" maxZ="-1500"><!-- Hunter Village -->
 		<stat name="townId" val="11" />
-		<stat name="taxById" val="5" />
+		<stat name="castleId" val="5" />
 		<node X="115318" Y="74260" />
 		<node X="115019" Y="74495" />
 		<node X="113919" Y="75365" />
@@ -704,7 +704,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-2700" maxZ="-1900"><!-- Town of Aden -->
 		<stat name="townId" val="12" />
-		<stat name="taxById" val="5" />
+		<stat name="castleId" val="5" />
 		<node X="143209" Y="25727" />
 		<node X="143209" Y="26975" />
 		<node X="143463" Y="27286" />
@@ -762,7 +762,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3550" maxZ="-2600"><!-- Town of Goddard -->
 		<stat name="townId" val="13" />
-		<stat name="taxById" val="7" />
+		<stat name="castleId" val="7" />
 		<node X="144345" Y="-53353" />
 		<node X="145283" Y="-52411" />
 		<node X="146840" Y="-51665" />
@@ -834,7 +834,7 @@
 	</zone>
 	<zone type="TownZone" shape="Cuboid" minZ="-1200" maxZ="3000"><!-- Rune Castle Town -->
 		<stat name="townId" val="14" />
-		<stat name="taxById" val="8" />
+		<stat name="castleId" val="8" />
 		<node X="47150" Y="-44815" />
 		<node X="32531" Y="-52045" />
 		<spawn X="38096" Y="-46976" Z="899" />
@@ -868,7 +868,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3800" maxZ="-3400"><!-- Heine -->
 		<stat name="townId" val="15" />
-		<stat name="taxById" val="6" />
+		<stat name="castleId" val="6" />
 		<node X="111391" Y="216329" />
 		<node X="106872" Y="216579" />
 		<node X="106693" Y="217371" />
@@ -950,7 +950,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-2350" maxZ="-1200"><!-- Town of Schuttgart -->
 		<stat name="townId" val="17" />
-		<stat name="taxById" val="9" />
+		<stat name="castleId" val="9" />
 		<node X="91098" Y="-144458" />
 		<node X="91477" Y="-143218" />
 		<node X="91170" Y="-141327" />
@@ -1008,7 +1008,7 @@
 	</zone>
 	<zone type="TownZone" shape="NPoly" minZ="-3600" maxZ="-3400"><!-- Floran Village -->
 		<stat name="townId" val="16" />
-		<stat name="taxById" val="2" />
+		<stat name="castleId" val="2" />
 		<node X="16529" Y="170516" />
 		<node X="16645" Y="170141" />
 		<node X="16747" Y="169833" />

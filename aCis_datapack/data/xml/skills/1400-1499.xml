@@ -58,7 +58,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 	</skill>
 	<skill id="1402" levels="5" name="Major Group Heal" enchantLevels1="30" enchantLevels2="30" >
-		<table name="#ench1Power"> 1173 1176 1179 1182 1186 1189 1192 1195 1199 1202 1205 1208 1212 1215 1218 1221 1224 1228 1231 123 1237 1241 1244 1247 1250 1254 1257 1260 1263 1267 </table>
+		<table name="#ench1Power"> 1173 1176 1179 1182 1186 1189 1192 1195 1199 1202 1205 1208 1212 1215 1218 1221 1224 1228 1231 1234 1237 1241 1244 1247 1250 1254 1257 1260 1263 1267 </table>
 		<table name="#ench2MpConsume"> 233 231 227 225 221 218 215 212 208 206 202 198 196 192 190 186 183 180 177 173 171 167 165 161 157 155 151 148 145 142 </table>
 		<table name="#mpConsume"> 189 199 214 228 239 </table>
 		<table name="#power"> 902 979 1050 1115 1170 </table>
@@ -203,23 +203,23 @@
 		<set name="castRange" val="400"/>
 		<set name="effectRange" val="900"/>
 		<for>
-			<effect name="PhoenixBless" time="1200" val="0" stackOrder="1" stackType="resurrection_special" />
+			<effect name="PhoenixBless" time="3600" val="0" stackOrder="1" stackType="resurrection_special" />
 		</for>
 	</skill>
 	<skill id="1411" levels="1" name="Mystic Immunity">
 		<set name="castRange" val="400"/>
-		<set name="effectRange" val="900"/>
+		<set name="effectRange" val="600"/>
 		<set name="hitTime" val="4000"/>
 		<set name="isMagic" val="true"/>
 		<set name="magicLvl" val="79"/>
 		<set name="mpConsume" val="73"/>
 		<set name="operateType" val="OP_ACTIVE"/>
-		<set name="reuseDelay" val="600000"/>
+		<set name="reuseDelay" val="120000"/>
 		<set name="skillType" val="BUFF"/>
-		<set name="target" val="TARGET_ONE"/>
+		<set name="target" val="TARGET_PARTY_MEMBER"/>
 		<for>
-			<effect name="BlockBuff" time="30" val="0" stackOrder="3" stackType="abnormal_buff_invincibility" />
-			<effect name="BlockDebuff" time="30" noicon="1" val="0" stackOrder="3" stackType="abnormal_debuff_invincibility" />
+			<effect name="BlockBuff" time="30" val="0" stackOrder="2" stackType="abnormal_buff_invincibility" />
+			<effect name="BlockDebuff" time="30" noicon="1" val="0" stackOrder="2" stackType="abnormal_debuff_invincibility" />
 		</for>
 	</skill>
 	<skill id="1412" levels="1" name="Spell Turning">
@@ -284,7 +284,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="aggroPoints" val="669" />
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="multi_buff">
+			<effect name="Buff" time="300" val="0" stackOrder="2" stackType="multi_buff">
 				<mul order="0x30" stat="pAtk" val="1.1"/>
 				<mul order="0x30" stat="pDef" val="1.2"/>
 				<mul order="0x30" stat="rCrit" val="1.2"/>
@@ -296,7 +296,7 @@
 				<mul order="0x30" stat="mDef" val="1.20"/>
 				<mul order="0x30" stat="runSpd" val="0.8"/>
 				<mul order="0x30" stat="maxHp" val="1.20"/>
-				<sub order="0x40" stat="debuffVuln" val="20" />
+				<addMul order="0x40" stat="debuffVuln" val="20" />
 			</effect>
 		</for>
 	</skill>
@@ -313,8 +313,8 @@
 		<set name="aggroPoints" val="666" />
 		<for>
 			<effect name="Buff" time="300" val="0" stackOrder="2" stackType="resist_debuff_dispel">
-				<sub order="0x40" stat="cancelVuln" val="30" />
-				<sub order="0x40" stat="debuffVuln" val="20" />
+				<addMul order="0x40" stat="cancelVuln" val="30" />
+				<addMul order="0x40" stat="debuffVuln" val="20" />
 			</effect>
 		</for>
 	</skill>
@@ -323,16 +323,16 @@
 		<set name="mpConsume" val="228" />
 		<set name="itemConsumeId" val="3031"/>
 		<set name="itemConsumeCount" val="20"/> 
-		<set name="power" val="100"/>
+		<set name="power" val="800"/>
 		<set name="target" val="TARGET_ALLY"/>
 		<set name="skillRadius" val="1000"/>
 		<set name="reuseDelay" val="1200000"/>
 		<set name="hitTime" val="2500"/>
-		<set name="skillType" val="CPHEAL_PERCENT" />
+		<set name="skillType" val="COMBATPOINTHEAL" />
 		<set name="isMagic" val="true"/>
 		<set name="operateType" val="OP_ACTIVE"/>
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="2" stackType="cp_up">
+			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="cp_up">
 				<add order="0x40" stat="maxCp" val="800" />
 			</effect>
 		</for>

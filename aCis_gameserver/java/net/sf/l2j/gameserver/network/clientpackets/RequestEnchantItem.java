@@ -1,27 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.ArmorSetsTable;
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.xml.ArmorSetData;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.ArmorSet;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
@@ -34,7 +19,6 @@ import net.sf.l2j.gameserver.network.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.ItemList;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.util.Util;
 
 public final class RequestEnchantItem extends AbstractEnchantPacket
 {
@@ -49,7 +33,7 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null || _objectId == 0)
 			return;
 		
@@ -97,7 +81,6 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 		if (scroll == null)
 		{
 			activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
-			Util.handleIllegalPlayerAction(activeChar, activeChar.getName() + " tried to enchant without scroll.", Config.DEFAULT_PUNISH);
 			activeChar.setActiveEnchantItem(null);
 			activeChar.sendPacket(EnchantResult.CANCELLED);
 			return;
@@ -168,7 +151,7 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 						final ItemInstance chestItem = activeChar.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 						if (chestItem != null)
 						{
-							final ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(chestItem.getItemId());
+							final ArmorSet armorSet = ArmorSetData.getInstance().getSet(chestItem.getItemId());
 							if (armorSet != null && armorSet.isEnchanted6(activeChar)) // has all parts of set enchanted to 6 or more
 							{
 								final int skillId = armorSet.getEnchant6skillId();
@@ -211,7 +194,7 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 						final ItemInstance chestItem = activeChar.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 						if (chestItem != null)
 						{
-							final ArmorSet armorSet = ArmorSetsTable.getInstance().getSet(chestItem.getItemId());
+							final ArmorSet armorSet = ArmorSetData.getInstance().getSet(chestItem.getItemId());
 							if (armorSet != null && armorSet.isEnchanted6(activeChar)) // has all parts of set enchanted to 6 or more
 							{
 								final int skillId = armorSet.getEnchant6skillId();
@@ -249,8 +232,6 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 					ItemInstance destroyItem = activeChar.getInventory().destroyItem("Enchant", item, activeChar, null);
 					if (destroyItem == null)
 					{
-						// unable to destroy item, cheater ?
-						Util.handleIllegalPlayerAction(activeChar, "Unable to delete item on enchant failure from player " + activeChar.getName() + ", possible cheater !", Config.DEFAULT_PUNISH);
 						activeChar.setActiveEnchantItem(null);
 						activeChar.sendPacket(EnchantResult.CANCELLED);
 						return;
@@ -276,7 +257,7 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 					else
 						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENCHANTMENT_FAILED_S1_EVAPORATED).addItemName(item.getItemId()));
 					
-					L2World.getInstance().removeObject(destroyItem);
+					World.getInstance().removeObject(destroyItem);
 					if (crystalId == 0)
 						activeChar.sendPacket(EnchantResult.UNK_RESULT_4);
 					else

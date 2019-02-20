@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager;
 
 import java.io.File;
@@ -23,14 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2FeedableBeastInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2FestivalMonsterInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2RiftInvaderInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.FeedableBeast;
+import net.sf.l2j.gameserver.model.actor.instance.FestivalMonster;
+import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.RiftInvader;
+import net.sf.l2j.gameserver.model.actor.instance.SiegeGuard;
 import net.sf.l2j.gameserver.model.entity.CursedWeapon;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.xmlfactory.XMLDocumentFactory;
@@ -157,9 +143,9 @@ public class CursedWeaponsManager
 	 * @param attackable : The target to test.
 	 * @param player : The killer of the L2Attackable.
 	 */
-	public synchronized void checkDrop(L2Attackable attackable, L2PcInstance player)
+	public synchronized void checkDrop(Attackable attackable, Player player)
 	{
-		if (attackable instanceof L2SiegeGuardInstance || attackable instanceof L2RiftInvaderInstance || attackable instanceof L2FestivalMonsterInstance || attackable instanceof L2GrandBossInstance || attackable instanceof L2FeedableBeastInstance)
+		if (attackable instanceof SiegeGuard || attackable instanceof RiftInvader || attackable instanceof FestivalMonster || attackable instanceof GrandBoss || attackable instanceof FeedableBeast)
 			return;
 		
 		for (CursedWeapon cw : _cursedWeapons.values())
@@ -177,7 +163,7 @@ public class CursedWeaponsManager
 	 * @param player : The player to test.
 	 * @param item : The item player picked up.
 	 */
-	public void activate(L2PcInstance player, ItemInstance item)
+	public void activate(Player player, ItemInstance item)
 	{
 		final CursedWeapon cw = _cursedWeapons.get(item.getItemId());
 		if (player.isCursedWeaponEquipped()) // cannot own 2 cursed swords
@@ -194,7 +180,7 @@ public class CursedWeaponsManager
 			cw.activate(player, item);
 	}
 	
-	public void drop(int itemId, L2Character killer)
+	public void drop(int itemId, Creature killer)
 	{
 		_cursedWeapons.get(itemId).dropIt(killer);
 	}
@@ -213,7 +199,7 @@ public class CursedWeaponsManager
 	 * This method is used on EnterWorld in order to check if the player is equipped with a CW.
 	 * @param player
 	 */
-	public void checkPlayer(L2PcInstance player)
+	public void checkPlayer(Player player)
 	{
 		if (player == null)
 			return;

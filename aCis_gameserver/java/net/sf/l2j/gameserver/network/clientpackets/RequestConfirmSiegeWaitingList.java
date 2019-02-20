@@ -1,24 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.serverpackets.SiegeDefenderList;
 
 public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
@@ -38,12 +25,12 @@ public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getActiveChar();
+		if (player == null)
 			return;
 		
 		// Check if the player has a clan
-		if (activeChar.getClan() == null)
+		if (player.getClan() == null)
 			return;
 		
 		final Castle castle = CastleManager.getInstance().getCastleById(_castleId);
@@ -51,30 +38,28 @@ public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
 			return;
 		
 		// Check if leader of the clan who owns the castle?
-		if ((castle.getOwnerId() != activeChar.getClanId()) || (!activeChar.isClanLeader()))
+		if (castle.getOwnerId() != player.getClanId() || !player.isClanLeader())
 			return;
 		
-		final L2Clan clan = ClanTable.getInstance().getClan(_clanId);
+		final Clan clan = ClanTable.getInstance().getClan(_clanId);
 		if (clan == null)
 			return;
 		
-		if (!castle.getSiege().getIsRegistrationOver())
+		if (!castle.getSiege().isRegistrationOver())
 		{
 			if (_approved == 1)
 			{
-				if (castle.getSiege().checkIsDefenderWaiting(clan))
-					castle.getSiege().approveSiegeDefenderClan(_clanId);
-				else
-					return;
+				if (castle.getSiege().checkSide(clan, SiegeSide.PENDING))
+					castle.getSiege().registerClan(clan, SiegeSide.DEFENDER);
 			}
 			else
 			{
-				if ((castle.getSiege().checkIsDefenderWaiting(clan)) || (castle.getSiege().checkIsDefender(clan)))
-					castle.getSiege().removeSiegeClan(_clanId);
+				if (castle.getSiege().checkSides(clan, SiegeSide.PENDING, SiegeSide.DEFENDER))
+					castle.getSiege().unregisterClan(clan);
 			}
 		}
 		
 		// Update the defender list
-		activeChar.sendPacket(new SiegeDefenderList(castle));
+		player.sendPacket(new SiegeDefenderList(castle));
 	}
 }

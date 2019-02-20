@@ -1,24 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
 import net.sf.l2j.commons.util.ArraysUtil;
 
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 public class HuntingGroundsTeleport extends Quest
@@ -73,16 +61,14 @@ public class HuntingGroundsTeleport extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
-		final SevenSigns ss = SevenSigns.getInstance();
-		final int playerCabal = ss.getPlayerCabal(player.getObjectId());
-		
-		if (playerCabal == SevenSigns.CABAL_NULL)
+		final CabalType playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
+		if (playerCabal == CabalType.NORMAL)
 			return ArraysUtil.contains(DAWN_NPCS, npc.getNpcId()) ? "dawn_tele-no.htm" : "dusk_tele-no.htm";
 		
 		String htmltext = "";
-		final boolean check = ss.isSealValidationPeriod() && (playerCabal == ss.getSealOwner(SevenSigns.SEAL_GNOSIS)) && (ss.getPlayerSeal(player.getObjectId()) == SevenSigns.SEAL_GNOSIS);
+		final boolean check = SevenSigns.getInstance().isSealValidationPeriod() && playerCabal == SevenSigns.getInstance().getSealOwner(SealType.GNOSIS) && SevenSigns.getInstance().getPlayerSeal(player.getObjectId()) == SealType.GNOSIS;
 		
 		switch (npc.getNpcId())
 		{

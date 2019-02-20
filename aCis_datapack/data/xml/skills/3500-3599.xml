@@ -22,7 +22,7 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="poisonVuln" val="20"/> <!-- Poison Resistance +20% -->
+			<addMul order="0x40" stat="poisonVuln" val="20"/> <!-- Poison Resistance +20% -->
 		</for>
 	</skill>
 	<skill id="3503" levels="1" name="Reinforced Leather Set">
@@ -254,7 +254,7 @@
 			<sub order="0x40" stat="STR" val="1"/> <!-- STR -1 -->
 			<sub order="0x40" stat="CON" val="2"/> <!-- CON -2 -->
 			<add order="0x40" stat="DEX" val="3"/> <!-- DEX +3 -->
-			<sub order="0x40" stat="poisonVuln" val="20" /> <!-- Poision Resistance +20% -->
+			<addMul order="0x40" stat="poisonVuln" val="20" /> <!-- Poision Resistance +20% -->
 		</for>
 	</skill>
 	<skill id="3528" levels="1" name="Blue Wolf Robe Set">
@@ -288,7 +288,7 @@
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
 			<mul order="0x30" stat="gainHp" val="1.04"/> <!-- Heal +4% -->
-			<sub order="0x40" stat="paralyzeVuln" val="50" /> <!-- Paralysis Resistance +50% -->
+			<addMul order="0x40" stat="paralyzeVuln" val="50" /> <!-- Paralysis Resistance +50% -->
 			<sub order="0x40" stat="STR" val="2"/> <!-- STR -2 -->
 			<add order="0x40" stat="CON" val="2"/> <!-- CON +2 -->
 		</for>
@@ -300,8 +300,8 @@
 		<for>
 			<mul order="0x30" stat="pAtkSpd" val="1.08"/> <!-- Atk. Spd. +8% -->
 			<add order="0x40" stat="maxLoad" val="5759"/> <!-- Weight increased plus the point at which a weight penalty is applied +5759 -->
-			<sub order="0x40" stat="poisonVuln" val="80" /> <!-- Poison Resistance +80% -->
-			<sub order="0x40" stat="bleedVuln" val="80" /> <!-- Bleed Resistance +80% -->
+			<addMul order="0x40" stat="poisonVuln" val="80" /> <!-- Poison Resistance +80% -->
+			<addMul order="0x40" stat="bleedVuln" val="80" /> <!-- Bleed Resistance +80% -->
 			<add order="0x40" stat="STR" val="2"/> <!-- STR +2 -->
 			<sub order="0x40" stat="CON" val="2"/> <!-- CON -2 -->
 		</for>
@@ -313,7 +313,7 @@
 		<for>
 			<mul order="0x30" stat="pAtkSpd" val="1.04"/> <!-- Atk. Spd. +4% -->
 			<mul order="0x30" stat="pAtk" val="1.04"/> <!-- P. Atk. +4% -->
-			<sub order="0x40" stat="paralyzeVuln" val="50" /> <!-- Paralysis Resistance +50% -->
+			<addMul order="0x40" stat="paralyzeVuln" val="50" /> <!-- Paralysis Resistance +50% -->
 			<add order="0x40" stat="STR" val="1"/> <!-- STR +1 -->
 			<sub order="0x40" stat="CON" val="1"/> <!-- CON -1 -->
 		</for>
@@ -325,8 +325,8 @@
 		<for>
 			<mul order="0x30" stat="regMp" val="1.08"/> <!-- MP Regeneration +8% -->
 			<add order="0x40" stat="maxMp" val="222"/> <!-- MP +222 -->
-			<sub order="0x40" stat="poisonVuln" val="80" /> <!-- Poison Resistance +80% -->
-			<sub order="0x40" stat="bleedVuln" val="80" /> <!-- Bleed Resistance +80% -->
+			<addMul order="0x40" stat="poisonVuln" val="80" /> <!-- Poison Resistance +80% -->
+			<addMul order="0x40" stat="bleedVuln" val="80" /> <!-- Bleed Resistance +80% -->
 			<add order="0x40" stat="MEN" val="2"/> <!-- MEN +2 -->
 			<sub order="0x40" stat="WIT" val="2"/> <!-- WIT -2 -->
 		</for>
@@ -338,8 +338,8 @@
 		<for>
 			<mul order="0x30" stat="mAtkSpd" val="1.15"/> <!-- Casting Spd. +15% -->
 			<mul order="0x30" stat="mDef" val="1.08"/> <!-- M. Def. +8% -->
-			<sub order="0x40" stat="poisonVuln" val="80" /> <!-- Poison Resistance +80% -->
-			<sub order="0x40" stat="bleedVuln" val="80" /> <!-- Bleed Resistance +80% -->
+			<addMul order="0x40" stat="poisonVuln" val="80" /> <!-- Poison Resistance +80% -->
+			<addMul order="0x40" stat="bleedVuln" val="80" /> <!-- Bleed Resistance +80% -->
 			<sub order="0x40" stat="INT" val="2"/> <!-- INT -2 -->
 			<add order="0x40" stat="WIT" val="2"/> <!-- WIT +2 -->
 		</for>
@@ -353,7 +353,7 @@
 			<mul order="0x30" stat="mAtkSpd" val="1.15"/> <!-- Casting Spd. +15% -->
 			<add order="0x40" stat="runSpd" val="7"/> <!-- Speed +7 -->
 			<sub order="0x40" stat="cancel" val="18"/> <!-- Small decrease in chance of spell interruption - TO CHECK -->
-			<sub order="0x40" stat="paralyzeVuln" val="50" /> <!-- Paralysis Resistance +50% -->
+			<addMul order="0x40" stat="paralyzeVuln" val="50" /> <!-- Paralysis Resistance +50% -->
 			<add order="0x40" stat="WIT" val="2"/> <!-- WIT +2 -->
 			<sub order="0x40" stat="MEN" val="2"/> <!-- MEN -2 -->
 		</for>
@@ -364,8 +364,8 @@
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
 			<mul order="0x30" stat="pAtk" val="1.04"/> <!-- P. Atk. +4% -->
-			<sub order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Resistance +70% -->
-			<sub order="0x40" stat="rootVuln" val="70" /> <!-- Hold Resistance +70% -->
+			<addMul order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Resistance +70% -->
+			<addMul order="0x40" stat="rootVuln" val="70" /> <!-- Hold Resistance +70% -->
 			<add order="0x40" stat="CON" val="2"/> <!-- CON +2 -->
 			<sub order="0x40" stat="DEX" val="2"/> <!-- DEX -2 -->
 		</for>
@@ -377,7 +377,7 @@
 		<for>
 			<mul order="0x30" stat="pAtk" val="1.04"/> <!-- P. Atk. +4% -->
 			<add order="0x40" stat="accCombat" val="3"/> <!-- Accuracy +3 -->
-			<sub order="0x40" stat="stunVuln" val="50" /> <!-- Stun Resistance +50% -->
+			<addMul order="0x40" stat="stunVuln" val="50" /> <!-- Stun Resistance +50% -->
 			<add order="0x40" stat="STR" val="2"/> <!-- STR +2 -->
 			<sub order="0x40" stat="CON" val="2"/> <!-- CON -2 -->
 		</for>
@@ -388,8 +388,8 @@
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
 			<mul order="0x30" stat="mDef" val="1.04"/> <!-- M. Def. +4% -->
-			<sub order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Resistance +70% -->
-			<sub order="0x40" stat="rootVuln" val="70" /> <!-- Hold Resistance +70% -->
+			<addMul order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Resistance +70% -->
+			<addMul order="0x40" stat="rootVuln" val="70" /> <!-- Hold Resistance +70% -->
 			<add order="0x40" stat="absorbDam" val="3"/> <!-- Restores 3% of melee damage inflicted on the enemy to oneself -->
 			<add order="0x40" stat="DEX" val="1"/> <!-- DEX +1 -->
 			<sub order="0x40" stat="CON" val="1"/> <!-- CON -1 -->
@@ -405,7 +405,7 @@
 			</mul>
 			<add order="0x40" stat="maxMp" val="240"/> <!-- MP +240 -->
 			<add order="0x40" stat="maxLoad" val="5759"/> <!-- Weight increased plus the point at which a weight penalty is applied +5759 -->
-			<sub order="0x40" stat="stunVuln" val="50" /> <!-- Stun Resistance +50% -->
+			<addMul order="0x40" stat="stunVuln" val="50" /> <!-- Stun Resistance +50% -->
 			<add order="0x40" stat="DEX" val="1"/> <!-- DEX +1 -->
 			<sub order="0x40" stat="CON" val="1"/> <!-- CON -1 -->
 		</for>
@@ -417,8 +417,8 @@
 		<for>
 			<mul order="0x30" stat="regMp" val="1.04"/> <!-- MP Regeneration +4% -->
 			<mul order="0x30" stat="mAtk" val="1.08"/> <!-- M. Atk. +8% -->
-			<sub order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Resistance +70% -->
-			<sub order="0x40" stat="rootVuln" val="70" /> <!-- Hold Resistance +70% -->
+			<addMul order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Resistance +70% -->
+			<addMul order="0x40" stat="rootVuln" val="70" /> <!-- Hold Resistance +70% -->
 			<add order="0x40" stat="INT" val="2"/> <!-- INT +2 -->
 			<sub order="0x40" stat="WIT" val="2"/> <!-- WIT -2 -->
 		</for>
@@ -431,7 +431,7 @@
 			<add order="0x40" stat="maxMp" val="240"/> <!-- MP +240 -->
 			<mul order="0x30" stat="mAtkSpd" val="1.15"/> <!-- Casting Spd. +15% -->
 			<mul order="0x30" stat="regMp" val="1.08"/> <!-- MP Regeneration +8% -->
-			<sub order="0x40" stat="stunVuln" val="50" /> <!-- Stun Resistance +50% -->
+			<addMul order="0x40" stat="stunVuln" val="50" /> <!-- Stun Resistance +50% -->
 			<add order="0x40" stat="MEN" val="1"/> <!-- MEN +1 -->
 			<sub order="0x40" stat="INT" val="1"/> <!-- INT -1 -->
 		</for>
@@ -540,8 +540,8 @@
 		<for>
 			<mul order="0x30" stat="pDef" val="1.08"/> <!-- P Def. +8% -->
 			<add order="0x40" stat="maxHp" val="445"/> <!-- Maximum HP +445 -->
-			<sub order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Probability -70% -->
-			<sub order="0x40" stat="rootVuln" val="70" /> <!-- Hold Probability -70% -->
+			<addMul order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Probability -70% -->
+			<addMul order="0x40" stat="rootVuln" val="70" /> <!-- Hold Probability -70% -->
 			<sub order="0x40" stat="DEX" val="2"/> <!-- DEX -2 -->
 			<add order="0x40" stat="STR" val="2"/> <!-- STR +2 -->
 		</for>
@@ -551,8 +551,8 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="poisonVuln" val="80" />
-			<sub order="0x40" stat="bleedVuln" val="80" />
+			<addMul order="0x40" stat="poisonVuln" val="80" />
+			<addMul order="0x40" stat="bleedVuln" val="80" />
 		</for>
 	</skill>
 	<skill id="3555" levels="1" name="Draconic Light Armor Set">
@@ -581,7 +581,7 @@
 			<add order="0x40" stat="WIT" val="1"/> <!-- WIT +1 -->
 			<add order="0x40" stat="INT" val="1"/> <!-- INT +1 -->
 			<sub order="0x40" stat="MEN" val="2"/> <!-- MEN -2 -->
-			<sub order="0x40" stat="stunVuln" val="50" /> <!-- Stun resistance +50% -->
+			<addMul order="0x40" stat="stunVuln" val="50" /> <!-- Stun resistance +50% -->
 		</for>
 	</skill>
 	<skill id="3557" levels="1" name="Necklace of Valakas">
@@ -594,8 +594,8 @@
 			<mul order="0x30" stat="pAtk" val="1.04" />
 			<mul order="0x30" stat="mAtk" val="1.08" />
 			<mul order="0x30" stat="mCritRate" val="2" />
-			<add order="0x40" stat="fireRes" val="15" />
-			<sub order="0x40" stat="sleepVuln" val="80" />
+			<addMul order="0x40" stat="fireRes" val="15" />
+			<addMul order="0x40" stat="sleepVuln" val="80" />
 			<mul order="0x30" stat="pReuse" val="0.9" />
 			<mul order="0x30" stat="mReuse" val="0.9" />
 			<add order="0x40" stat="reflectDam" val="5" />
@@ -607,10 +607,10 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<add order="0x40" stat="earthRes" val="15" />
-			<sub order="0x40" stat="bleedVuln" val="80" />
-			<sub order="0x40" stat="stunVuln" val="60" />
-			<sub order="0x40" stat="derangementVuln" val="60" />
+			<addMul order="0x40" stat="earthRes" val="15" />
+			<addMul order="0x40" stat="bleedVuln" val="80" />
+			<addMul order="0x40" stat="stunVuln" val="60" />
+			<addMul order="0x40" stat="derangementVuln" val="60" />
 			<mul order="0x30" stat="gainHp" val="1.1" />
 			<mul order="0x30" stat="MagicalMpConsumeRate" val="0.95" />
 			<mul order="0x30" stat="PhysicalMpConsumeRate" val="0.95" />	
@@ -623,9 +623,9 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="bleedVuln" val="60" />
-			<sub order="0x40" stat="stunVuln" val="40" />
-			<sub order="0x40" stat="derangementVuln" val="40" />
+			<addMul order="0x40" stat="bleedVuln" val="60" />
+			<addMul order="0x40" stat="stunVuln" val="40" />
+			<addMul order="0x40" stat="derangementVuln" val="40" />
 			<mul order="0x30" stat="gainHp" val="1.1" />
 			<add order="0x40" stat="absorbDam" val="4" />
 		</for>
@@ -635,7 +635,7 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="bleedVuln" val="40" />
+			<addMul order="0x40" stat="bleedVuln" val="40" />
 			<mul order="0x30" stat="gainHp" val="1.06" />
 		</for>
 	</skill>
@@ -644,8 +644,8 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="poisonVuln" val="80" />
-			<sub order="0x40" stat="rootVuln" val="60" />
+			<addMul order="0x40" stat="poisonVuln" val="80" />
+			<addMul order="0x40" stat="rootVuln" val="60" />
 			<add order="0x40" stat="accCombat" val="2" />
 			<mul order="0x30" stat="cAtk" val="1.15" />
 			<mul order="0x30" stat="pAtkSpd" val="1.04" />
@@ -657,8 +657,8 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="poisonVuln" val="60" />
-			<sub order="0x40" stat="rootVuln" val="40" />
+			<addMul order="0x40" stat="poisonVuln" val="60" />
+			<addMul order="0x40" stat="rootVuln" val="40" />
 			<add order="0x40" stat="accCombat" val="2" />
 			<mul order="0x30" stat="cAtk" val="1.15" />	
 		</for>
@@ -668,7 +668,7 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="poisonVuln" val="40" />
+			<addMul order="0x40" stat="poisonVuln" val="40" />
 			<add order="0x40" stat="accCombat" val="1" />
 		</for>
 	</skill>
@@ -898,6 +898,7 @@
 		<for>
 			<mul order="0x30" stat="maxHp" val="1.25"/> <!-- HP +25% -->
 			<mul order="0x30" stat="maxMp" val="1.30"/> <!-- MP +30% -->
+			<mul order="0x30" stat="maxCp" val="1.5"/> <!-- CP +50% -->
 			<mul order="0x30" stat="rShld" val="1.39"/> <!-- Shield Block Rate +39% -->
 			<mul order="0x30" stat="pvpPhysDmg" val="1.05"/> <!-- PVP Damage Bonus +5% -->
 			<mul order="0x30" stat="pvpMagicalDmg" val="1.05"/> <!-- PVP Damage Bonus +5% -->

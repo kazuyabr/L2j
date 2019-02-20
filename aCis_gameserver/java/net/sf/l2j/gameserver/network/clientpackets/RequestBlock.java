@@ -1,22 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.datatables.CharNameTable;
+import net.sf.l2j.gameserver.data.PlayerNameTable;
 import net.sf.l2j.gameserver.model.BlockList;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public final class RequestBlock extends L2GameClientPacket
@@ -42,7 +28,7 @@ public final class RequestBlock extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
@@ -51,7 +37,7 @@ public final class RequestBlock extends L2GameClientPacket
 			case BLOCK:
 			case UNBLOCK:
 				// Can't block/unblock inexisting or self.
-				final int targetId = CharNameTable.getInstance().getPlayerObjectId(_name);
+				final int targetId = PlayerNameTable.getInstance().getPlayerObjectId(_name);
 				if (targetId <= 0 || activeChar.getObjectId() == targetId)
 				{
 					activeChar.sendPacket(SystemMessageId.FAILED_TO_REGISTER_TO_IGNORE_LIST);
@@ -59,7 +45,7 @@ public final class RequestBlock extends L2GameClientPacket
 				}
 				
 				// Can't block a GM character.
-				if (CharNameTable.getInstance().getPlayerAccessLevel(targetId) > 0)
+				if (PlayerNameTable.getInstance().getPlayerAccessLevel(targetId) > 0)
 				{
 					activeChar.sendPacket(SystemMessageId.YOU_MAY_NOT_IMPOSE_A_BLOCK_ON_GM);
 					return;

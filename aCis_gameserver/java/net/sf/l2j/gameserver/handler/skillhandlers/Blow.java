@@ -1,26 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.ShotType;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
@@ -43,19 +29,19 @@ public class Blow implements ISkillHandler
 	public static final int BEHIND = 70;
 	
 	@Override
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
 		
 		final boolean ss = activeChar.isChargedShot(ShotType.SOULSHOT);
 		
-		for (L2Object obj : targets)
+		for (WorldObject obj : targets)
 		{
-			if (!(obj instanceof L2Character))
+			if (!(obj instanceof Creature))
 				continue;
 			
-			final L2Character target = ((L2Character) obj);
+			final Creature target = ((Creature) obj);
 			if (target.isAlikeDead())
 				continue;
 			
@@ -79,11 +65,11 @@ public class Blow implements ISkillHandler
 				boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, skill);
 				if (skillIsEvaded)
 				{
-					if (activeChar instanceof L2PcInstance)
-						((L2PcInstance) activeChar).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DODGES_ATTACK).addCharName(target));
+					if (activeChar instanceof Player)
+						((Player) activeChar).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DODGES_ATTACK).addCharName(target));
 					
-					if (target instanceof L2PcInstance)
-						((L2PcInstance) target).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.AVOIDED_S1_ATTACK).addCharName(activeChar));
+					if (target instanceof Player)
+						((Player) target).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.AVOIDED_S1_ATTACK).addCharName(activeChar));
 					
 					// no futher calculations needed.
 					continue;
@@ -148,10 +134,10 @@ public class Blow implements ISkillHandler
 				// vengeance reflected damage
 				if ((reflect & Formulas.SKILL_REFLECT_VENGEANCE) != 0)
 				{
-					if (target instanceof L2PcInstance)
+					if (target instanceof Player)
 						target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.COUNTERED_S1_ATTACK).addCharName(activeChar));
 					
-					if (activeChar instanceof L2PcInstance)
+					if (activeChar instanceof Player)
 						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PERFORMING_COUNTERATTACK).addCharName(target));
 					
 					// Formula from Diego post, 700 from rpg tests
@@ -162,8 +148,8 @@ public class Blow implements ISkillHandler
 				// Manage cast break of the target (calculating rate, sending message...)
 				Formulas.calcCastBreak(target, damage);
 				
-				if (activeChar instanceof L2PcInstance)
-					((L2PcInstance) activeChar).sendDamageMessage(target, (int) damage, false, true, false);
+				if (activeChar instanceof Player)
+					((Player) activeChar).sendDamageMessage(target, (int) damage, false, true, false);
 			}
 			else
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ATTACK_FAILED));

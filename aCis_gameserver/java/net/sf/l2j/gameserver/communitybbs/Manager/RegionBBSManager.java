@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.communitybbs.Manager;
 
 import java.text.SimpleDateFormat;
@@ -21,13 +7,13 @@ import java.util.StringTokenizer;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 
 public class RegionBBSManager extends BaseBBSManager
 {
@@ -41,7 +27,7 @@ public class RegionBBSManager extends BaseBBSManager
 	}
 	
 	@Override
-	public void parseCmd(String command, L2PcInstance activeChar)
+	public void parseCmd(String command, Player activeChar)
 	{
 		if (command.equals("_bbsloc"))
 			showRegionsList(activeChar);
@@ -62,24 +48,24 @@ public class RegionBBSManager extends BaseBBSManager
 		return "region/";
 	}
 	
-	private static void showRegionsList(L2PcInstance activeChar)
+	private static void showRegionsList(Player activeChar)
 	{
 		final String content = HtmCache.getInstance().getHtm(CB_PATH + "region/castlelist.htm");
 		
 		final StringBuilder sb = new StringBuilder(500);
 		for (Castle castle : CastleManager.getInstance().getCastles())
 		{
-			final L2Clan owner = ClanTable.getInstance().getClan(castle.getOwnerId());
+			final Clan owner = ClanTable.getInstance().getClan(castle.getOwnerId());
 			
 			StringUtil.append(sb, "<table><tr><td width=5></td><td width=160><a action=\"bypass _bbsloc;", castle.getCastleId(), "\">", castle.getName(), "</a></td><td width=160>", ((owner != null) ? "<a action=\"bypass _bbsclan;home;" + owner.getClanId() + "\">" + owner.getName() + "</a>" : "None"), "</td><td width=160>", ((owner != null && owner.getAllyId() > 0) ? owner.getAllyName() : "None"), "</td><td width=120>", ((owner != null) ? castle.getTaxPercent() : "0"), "</td><td width=5></td></tr></table><br1><img src=\"L2UI.Squaregray\" width=605 height=1><br1>");
 		}
 		separateAndSend(content.replace("%castleList%", sb.toString()), activeChar);
 	}
 	
-	private static void showRegion(L2PcInstance activeChar, int castleId)
+	private static void showRegion(Player activeChar, int castleId)
 	{
 		final Castle castle = CastleManager.getInstance().getCastleById(castleId);
-		final L2Clan owner = ClanTable.getInstance().getClan(castle.getOwnerId());
+		final Clan owner = ClanTable.getInstance().getClan(castle.getOwnerId());
 		
 		String content = HtmCache.getInstance().getHtm(CB_PATH + "region/castle.htm");
 		
@@ -99,7 +85,7 @@ public class RegionBBSManager extends BaseBBSManager
 			
 			for (ClanHall ch : clanHalls)
 			{
-				final L2Clan chOwner = ClanTable.getInstance().getClan(ch.getOwnerId());
+				final Clan chOwner = ClanTable.getInstance().getClan(ch.getOwnerId());
 				
 				StringUtil.append(sb, "<table><tr><td width=5></td><td width=200>", ch.getName(), "</td><td width=200>", ((chOwner != null) ? "<a action=\"bypass _bbsclan;home;" + chOwner.getClanId() + "\">" + chOwner.getName() + "</a>" : "None"), "</td><td width=200>", ((chOwner != null) ? chOwner.getLeaderName() : "None"), "</td><td width=5></td></tr></table><br1><img src=\"L2UI.Squaregray\" width=605 height=1><br1>");
 			}

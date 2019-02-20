@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model;
 
 import java.util.concurrent.Future;
@@ -19,11 +5,11 @@ import java.util.concurrent.Future;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.NpcTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.FishingChampionshipManager;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PenaltyMonsterInstance;
+import net.sf.l2j.gameserver.model.actor.instance.PenaltyMonster;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExFishingHpRegen;
 import net.sf.l2j.gameserver.network.serverpackets.ExFishingStartCombat;
@@ -32,7 +18,7 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public class L2Fishing implements Runnable
 {
-	private L2PcInstance _fisher;
+	private Player _fisher;
 	private int _time;
 	private int _stop = 0;
 	private int _goodUse = 0;
@@ -74,10 +60,10 @@ public class L2Fishing implements Runnable
 	}
 	
 	// =========================================================
-	public L2Fishing(L2PcInstance Fisher, FishData fish, boolean isNoob, boolean isUpperGrade, int lureId)
+	public L2Fishing(Player Fisher, Fish fish, boolean isNoob, boolean isUpperGrade, int lureId)
 	{
 		_fisher = Fisher;
-		_fishMaxHp = fish.getHP();
+		_fishMaxHp = fish.getHp();
 		_fishCurHp = _fishMaxHp;
 		_regenHp = fish.getHpRegen();
 		_fishId = fish.getId();
@@ -98,7 +84,7 @@ public class L2Fishing implements Runnable
 		_mode = Rnd.get(100) >= 80 ? 1 : 0;
 		
 		_fisher.broadcastPacket(new ExFishingStartCombat(_fisher, _time, _fishMaxHp, _mode, _lureType, _deceptiveMode));
-		_fisher.sendPacket(new PlaySound(1, "SF_S_01", 0, 0, 0, 0, 0));
+		_fisher.sendPacket(new PlaySound(1, "SF_S_01"));
 		
 		// Succeeded in getting a bite
 		_fisher.sendPacket(SystemMessageId.GOT_A_BITE);
@@ -146,7 +132,7 @@ public class L2Fishing implements Runnable
 			{
 				int npcId = 18319 + Math.min(_fisher.getLevel() / 11, 7); // 18319-18326
 				
-				L2PenaltyMonsterInstance npc = new L2PenaltyMonsterInstance(IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(npcId));
+				PenaltyMonster npc = new PenaltyMonster(IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(npcId));
 				npc.setXYZ(_fisher.getX(), _fisher.getY(), _fisher.getZ() + 20);
 				npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
 				npc.setHeading(_fisher.getHeading());

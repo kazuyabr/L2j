@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model;
 
 import java.util.Map;
@@ -19,10 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
-import net.sf.l2j.gameserver.model.actor.L2Character;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillLaunched;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.skills.effects.EffectChanceSkillTrigger;
@@ -37,20 +23,20 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 	protected static final Logger _log = Logger.getLogger(ChanceSkillList.class.getName());
 	private static final long serialVersionUID = 1L;
 	
-	private final L2Character _owner;
+	private final Creature _owner;
 	
-	public ChanceSkillList(L2Character owner)
+	public ChanceSkillList(Creature owner)
 	{
 		super();
 		_owner = owner;
 	}
 	
-	public L2Character getOwner()
+	public Creature getOwner()
 	{
 		return _owner;
 	}
 	
-	public void onHit(L2Character target, boolean ownerWasHit, boolean wasCrit)
+	public void onHit(Creature target, boolean ownerWasHit, boolean wasCrit)
 	{
 		int event;
 		if (ownerWasHit)
@@ -69,12 +55,12 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 		onChanceSkillEvent(event, target);
 	}
 	
-	public void onEvadedHit(L2Character attacker)
+	public void onEvadedHit(Creature attacker)
 	{
 		onChanceSkillEvent(ChanceCondition.EVT_EVADED_HIT, attacker);
 	}
 	
-	public void onSkillHit(L2Character target, boolean ownerWasHit, boolean wasMagic, boolean wasOffensive)
+	public void onSkillHit(Creature target, boolean ownerWasHit, boolean wasMagic, boolean wasOffensive)
 	{
 		int event;
 		if (ownerWasHit)
@@ -115,7 +101,7 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 		onChanceSkillEvent(ChanceCondition.EVT_ON_EXIT, _owner);
 	}
 	
-	public void onChanceSkillEvent(int event, L2Character target)
+	public void onChanceSkillEvent(int event, Creature target)
 	{
 		if (_owner.isDead())
 			return;
@@ -135,7 +121,7 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 		}
 	}
 	
-	private void makeCast(L2Skill skill, L2Character target)
+	private void makeCast(L2Skill skill, Creature target)
 	{
 		try
 		{
@@ -154,12 +140,12 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 				if (skill.getReuseDelay() > 0)
 					_owner.disableSkill(skill, skill.getReuseDelay());
 				
-				L2Object[] targets = skill.getTargetList(_owner, false, target);
+				WorldObject[] targets = skill.getTargetList(_owner, false, target);
 				
 				if (targets.length == 0)
 					return;
 				
-				L2Character firstTarget = (L2Character) targets[0];
+				Creature firstTarget = (Creature) targets[0];
 				
 				ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
 				
@@ -180,7 +166,7 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 		}
 	}
 	
-	private void makeCast(EffectChanceSkillTrigger effect, L2Character target)
+	private void makeCast(EffectChanceSkillTrigger effect, Creature target)
 	{
 		try
 		{
@@ -190,7 +176,7 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 			L2Skill triggered = SkillTable.getInstance().getInfo(effect.getTriggeredChanceId(), effect.getTriggeredChanceLevel());
 			if (triggered == null)
 				return;
-			L2Character caster = triggered.getTargetType() == L2Skill.SkillTargetType.TARGET_SELF ? _owner : effect.getEffector();
+			Creature caster = triggered.getTargetType() == L2Skill.SkillTargetType.TARGET_SELF ? _owner : effect.getEffector();
 			
 			if (caster == null || triggered.getSkillType() == L2SkillType.NOTDONE || caster.isSkillDisabled(triggered))
 				return;
@@ -198,12 +184,12 @@ public class ChanceSkillList extends ConcurrentHashMap<IChanceSkillTrigger, Chan
 			if (triggered.getReuseDelay() > 0)
 				caster.disableSkill(triggered, triggered.getReuseDelay());
 			
-			L2Object[] targets = triggered.getTargetList(caster, false, target);
+			WorldObject[] targets = triggered.getTargetList(caster, false, target);
 			
 			if (targets.length == 0)
 				return;
 			
-			L2Character firstTarget = (L2Character) targets[0];
+			Creature firstTarget = (Creature) targets[0];
 			
 			ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(triggered.getSkillType());
 			

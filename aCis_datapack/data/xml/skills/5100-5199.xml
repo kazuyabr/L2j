@@ -296,7 +296,7 @@
 			<effect name="Buff" time="7" val="0" stackOrder="1" stackType="combination">
 				<add order="0x40" stat="pDef" val="1000" />
 				<add order="0x40" stat="mDef" val="800" />
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</for>
 	</skill>
@@ -313,7 +313,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<for>
 			<effect name="Buff" time="7" val="0" stackOrder="1" stackType="combination">
-				<sub order="0x40" stat="debuffVuln" val="60" />
+				<addMul order="0x40" stat="debuffVuln" val="60" />
 			</effect>
 		</for>
 	</skill>
@@ -458,7 +458,7 @@
 		<set name="mpConsume" val="214" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="power" val="6198" />
-		<set name="reuseDelay" val="8000" />
+		<set name="reuseDelay" val="30000" />
 		<set name="skillType" val="PDAM" />
 		<set name="SSBoost" val="2.0" />
 		<set name="target" val="TARGET_ONE" />
@@ -478,7 +478,7 @@
 		<set name="mpInitialConsume" val="64" />
 		<set name="mpConsume" val="258" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="power" val="228" />
+		<set name="power" val="81" />
 		<set name="reuseDelay" val="8000" />
 		<set name="skillRadius" val="200" />
 		<set name="skillType" val="MDAM" />
@@ -579,10 +579,10 @@
 				<mul order="0x30" stat="MagicalMpConsumeRate" val="3" />
 				<mul order="0x30" stat="PhysicalMpConsumeRate" val="3" />
 				<mul order="0x30" stat="DanceMpConsumeRate" val="3" />
-				<sub order="0x40" stat="fireRes" val="50" />
-				<sub order="0x40" stat="windRes" val="50" />
-				<sub order="0x40" stat="waterRes" val="50" />
-				<sub order="0x40" stat="earthRes" val="50" />
+				<subDiv order="0x40" stat="fireRes" val="50" />
+				<subDiv order="0x40" stat="windRes" val="50" />
+				<subDiv order="0x40" stat="waterRes" val="50" />
+				<subDiv order="0x40" stat="earthRes" val="50" />
 				<mul order="0x30" stat="regHp" val="0.1" />
 			</effect>
 			<effect name="BlockBuff" time="120" noicon="1" val="0" stackOrder="3" stackType="abnormal_buff_invincibility" />

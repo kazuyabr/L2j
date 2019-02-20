@@ -1,25 +1,13 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
@@ -86,7 +74,7 @@ public class Q223_TestOfTheChampion extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -155,7 +143,7 @@ public class Q223_TestOfTheChampion extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -282,7 +270,7 @@ public class Q223_TestOfTheChampion extends Quest
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		QuestState st = checkPlayerState(attacker, npc, STATE_STARTED);
 		if (st == null)
@@ -293,12 +281,12 @@ public class Q223_TestOfTheChampion extends Quest
 			case HARPY: // Possibility to spawn an HARPY _MATRIARCH.
 				if (st.getInt("cond") == 6 && Rnd.nextBoolean() && !npc.isScriptValue(1))
 				{
-					final L2Character originalKiller = isPet ? attacker.getPet() : attacker;
+					final Creature originalKiller = isPet ? attacker.getPet() : attacker;
 					
 					// Spawn one or two matriarchs.
 					for (int i = 1; i < ((Rnd.get(10) < 7) ? 2 : 3); i++)
 					{
-						final L2Attackable collector = (L2Attackable) addSpawn(HARPY_MATRIARCH, npc, true, 0, false);
+						final Attackable collector = (Attackable) addSpawn(HARPY_MATRIARCH, npc, true, 0, false);
 						
 						collector.setRunning();
 						collector.addDamageHate(originalKiller, 0, 999);
@@ -311,12 +299,12 @@ public class Q223_TestOfTheChampion extends Quest
 			case ROAD_SCAVENGER: // Possibility to spawn a Road Collector.
 				if (st.getInt("cond") == 10 && Rnd.nextBoolean() && !npc.isScriptValue(1))
 				{
-					final L2Character originalKiller = isPet ? attacker.getPet() : attacker;
+					final Creature originalKiller = isPet ? attacker.getPet() : attacker;
 					
 					// Spawn one or two collectors.
 					for (int i = 1; i < ((Rnd.get(10) < 7) ? 2 : 3); i++)
 					{
-						final L2Attackable collector = (L2Attackable) addSpawn(ROAD_COLLECTOR, npc, true, 0, false);
+						final Attackable collector = (Attackable) addSpawn(ROAD_COLLECTOR, npc, true, 0, false);
 						
 						collector.setRunning();
 						collector.addDamageHate(originalKiller, 0, 999);
@@ -331,7 +319,7 @@ public class Q223_TestOfTheChampion extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
 		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)

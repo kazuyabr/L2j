@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model;
 
 import java.util.ArrayList;
@@ -24,10 +10,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameTask;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -63,13 +50,13 @@ public class CharEffectList
 	private boolean _partyOnly = false;
 	
 	// Owner of this list
-	private final L2Character _owner;
+	private final Creature _owner;
 	
 	private L2Effect[] _effectCache;
 	private volatile boolean _rebuildCache = true;
 	private final Object _buildEffectLock = new Object();
 	
-	public CharEffectList(L2Character owner)
+	public CharEffectList(Creature owner)
 	{
 		_owner = owner;
 	}
@@ -288,6 +275,7 @@ public class CharEffectList
 				switch (e.getSkill().getSkillType())
 				{
 					case BUFF:
+					case COMBATPOINTHEAL:
 					case REFLECT:
 					case HEAL_PERCENT:
 					case MANAHEAL_PERCENT:
@@ -584,7 +572,7 @@ public class CharEffectList
 		
 		if ("none".equals(effect.getStackType()))
 		{
-			// Remove Func added by this effect from the L2Character Calculator
+			// Remove Func added by this effect from the Creature Calculator
 			_owner.removeStatsByOwner(effect);
 		}
 		else
@@ -607,7 +595,7 @@ public class CharEffectList
 				// Check if the first stacked effect was the effect to remove
 				if (index == 0)
 				{
-					// Remove all its Func objects from the L2Character calculator set
+					// Remove all its Func objects from the Creature calculator set
 					_owner.removeStatsByOwner(effect);
 					
 					// Check if there's another effect in the Stack Group
@@ -618,7 +606,7 @@ public class CharEffectList
 						{
 							// Set the effect to In Use
 							if (newStackedEffect.setInUse(true))
-								// Add its list of Funcs to the Calculator set of the L2Character
+								// Add its list of Funcs to the Calculator set of the Creature
 								_owner.addStatFuncs(newStackedEffect.getStatFuncs());
 						}
 					}
@@ -627,13 +615,13 @@ public class CharEffectList
 				if (stackQueue.isEmpty())
 					_stackedEffects.remove(effect.getStackType());
 				else
-					// Update the Stack Group table _stackedEffects of the L2Character
+					// Update the Stack Group table _stackedEffects of the Creature
 					_stackedEffects.put(effect.getStackType(), stackQueue);
 			}
 		}
 		
-		// Remove the active skill L2effect from _effects of the L2Character
-		if (effectList.remove(effect) && _owner instanceof L2PcInstance && effect.getShowIcon())
+		// Remove the active skill L2effect from _effects of the Creature
+		if (effectList.remove(effect) && _owner instanceof Player && effect.getShowIcon())
 		{
 			SystemMessage sm;
 			if (effect.getSkill().isToggle())
@@ -655,6 +643,12 @@ public class CharEffectList
 		
 		// array modified, then rebuild on next request
 		_rebuildCache = true;
+		
+		if (isAffected(newEffect.getEffectFlags()) && !newEffect.onSameEffect(null))
+		{
+			newEffect.stopEffectTask();
+			return;
+		}
 		
 		if (newSkill.isDebuff())
 		{
@@ -704,6 +698,7 @@ public class CharEffectList
 						case REFLECT:
 						case HEAL_PERCENT:
 						case MANAHEAL_PERCENT:
+						case COMBATPOINTHEAL:
 							for (L2Effect e : _buffs)
 							{
 								if (e == null)
@@ -715,6 +710,7 @@ public class CharEffectList
 									case REFLECT:
 									case HEAL_PERCENT:
 									case MANAHEAL_PERCENT:
+									case COMBATPOINTHEAL:
 										e.exit();
 										effectsToRemove--;
 										break; // break switch()
@@ -750,9 +746,9 @@ public class CharEffectList
 		{
 			// Set this L2Effect to In Use
 			if (newEffect.setInUse(true))
-				// Add Funcs of this effect to the Calculator set of the L2Character
+				// Add Funcs of this effect to the Calculator set of the Creature
 				_owner.addStatFuncs(newEffect.getStatFuncs());
-			
+		
 			return;
 		}
 		
@@ -773,7 +769,7 @@ public class CharEffectList
 				// Get the first stacked effect of the Stack group selected
 				effectToRemove = listsContains(stackQueue.get(0));
 				
-				// Create an Iterator to go through the list of stacked effects in progress on the L2Character
+				// Create an Iterator to go through the list of stacked effects in progress on the Creature
 				Iterator<L2Effect> queueIterator = stackQueue.iterator();
 				
 				while (queueIterator.hasNext())
@@ -806,7 +802,7 @@ public class CharEffectList
 			stackQueue.add(0, newEffect);
 		}
 		
-		// Update the Stack Group table _stackedEffects of the L2Character
+		// Update the Stack Group table _stackedEffects of the Creature
 		_stackedEffects.put(newEffect.getStackType(), stackQueue);
 		
 		// Get the first stacked effect of the Stack group selected
@@ -817,7 +813,7 @@ public class CharEffectList
 		{
 			if (effectToRemove != null)
 			{
-				// Remove all Func objects corresponding to this stacked effect from the Calculator set of the L2Character
+				// Remove all Func objects corresponding to this stacked effect from the Calculator set of the Creature
 				_owner.removeStatsByOwner(effectToRemove);
 				
 				// Set the L2Effect to Not In Use
@@ -828,7 +824,7 @@ public class CharEffectList
 			{
 				// Set this L2Effect to In Use
 				if (effectToAdd.setInUse(true))
-					// Add all Func objects corresponding to this stacked effect to the Calculator set of the L2Character
+					// Add all Func objects corresponding to this stacked effect to the Calculator set of the Creature
 					_owner.addStatFuncs(effectToAdd.getStatFuncs());
 			}
 		}
@@ -839,7 +835,7 @@ public class CharEffectList
 		if (_owner == null)
 			return;
 		
-		if (!(_owner instanceof L2Playable))
+		if (!(_owner instanceof Playable))
 		{
 			updateEffectFlags();
 			return;
@@ -849,7 +845,7 @@ public class CharEffectList
 		PartySpelled ps = null;
 		ExOlympiadSpelledInfo os = null;
 		
-		if (_owner instanceof L2PcInstance)
+		if (_owner instanceof Player)
 		{
 			if (_partyOnly)
 				_partyOnly = false;
@@ -859,10 +855,10 @@ public class CharEffectList
 			if (_owner.isInParty())
 				ps = new PartySpelled(_owner);
 			
-			if (((L2PcInstance) _owner).isInOlympiadMode() && ((L2PcInstance) _owner).isOlympiadStart())
-				os = new ExOlympiadSpelledInfo((L2PcInstance) _owner);
+			if (((Player) _owner).isInOlympiadMode() && ((Player) _owner).isOlympiadStart())
+				os = new ExOlympiadSpelledInfo((Player) _owner);
 		}
-		else if (_owner instanceof L2Summon)
+		else if (_owner instanceof Summon)
 			ps = new PartySpelled(_owner);
 		
 		boolean foundRemovedOnAction = false;
@@ -949,25 +945,25 @@ public class CharEffectList
 		
 		if (ps != null)
 		{
-			if (_owner instanceof L2Summon)
+			if (_owner instanceof Summon)
 			{
-				L2PcInstance summonOwner = ((L2Summon) _owner).getOwner();
-				
+				final Player summonOwner = ((Summon) _owner).getOwner();
 				if (summonOwner != null)
 				{
-					if (summonOwner.isInParty())
-						summonOwner.getParty().broadcastToPartyMembers(ps);
+					final Party party = summonOwner.getParty();
+					if (party != null)
+						party.broadcastPacket(ps);
 					else
 						summonOwner.sendPacket(ps);
 				}
 			}
-			else if (_owner instanceof L2PcInstance && _owner.isInParty())
-				_owner.getParty().broadcastToPartyMembers(ps);
+			else if (_owner instanceof Player && _owner.isInParty())
+				_owner.getParty().broadcastPacket(ps);
 		}
 		
 		if (os != null)
 		{
-			final OlympiadGameTask game = OlympiadGameManager.getInstance().getOlympiadTask(((L2PcInstance) _owner).getOlympiadGameId());
+			final OlympiadGameTask game = OlympiadGameManager.getInstance().getOlympiadTask(((Player) _owner).getOlympiadGameId());
 			if (game != null && game.isBattleStarted())
 				game.getZone().broadcastPacketToObservers(os);
 		}
@@ -1064,7 +1060,12 @@ public class CharEffectList
 	 */
 	public boolean isAffected(L2EffectFlag flag)
 	{
-		return (_effectFlags & flag.getMask()) != 0;
+		return isAffected(flag.getMask());
+	}
+	
+	public boolean isAffected(int mask)
+	{
+		return (_effectFlags & mask) != 0;
 	}
 	
 	/**

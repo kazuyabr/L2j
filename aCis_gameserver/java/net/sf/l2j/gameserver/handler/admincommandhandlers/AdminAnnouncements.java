@@ -1,23 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import net.sf.l2j.gameserver.datatables.AnnouncementTable;
+import net.sf.l2j.gameserver.data.xml.AnnouncementData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
  * This class handles following admin commands:
@@ -37,7 +23,7 @@ public class AdminAnnouncements implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		if (command.startsWith("admin_announce"))
 		{
@@ -47,26 +33,26 @@ public class AdminAnnouncements implements IAdminCommandHandler
 				switch (tokens[1])
 				{
 					case "list":
-						AnnouncementTable.getInstance().listAnnouncements(activeChar);
+						AnnouncementData.getInstance().listAnnouncements(activeChar);
 						break;
 					
 					case "all":
 					case "all_auto":
 						final boolean isAuto = tokens[1].equalsIgnoreCase("all_auto");
-						for (L2PcInstance player : L2World.getInstance().getPlayers())
-							AnnouncementTable.getInstance().showAnnouncements(player, isAuto);
+						for (Player player : World.getInstance().getPlayers())
+							AnnouncementData.getInstance().showAnnouncements(player, isAuto);
 						
-						AnnouncementTable.getInstance().listAnnouncements(activeChar);
+						AnnouncementData.getInstance().listAnnouncements(activeChar);
 						break;
 					
 					case "add":
 						String[] split = tokens[2].split(" ", 2); // boolean string
 						boolean crit = Boolean.parseBoolean(split[0]);
 						
-						if (!AnnouncementTable.getInstance().addAnnouncement(split[1], crit, false, -1, -1, -1))
+						if (!AnnouncementData.getInstance().addAnnouncement(split[1], crit, false, -1, -1, -1))
 							activeChar.sendMessage("Invalid //announce message content ; can't be null or empty.");
 						
-						AnnouncementTable.getInstance().listAnnouncements(activeChar);
+						AnnouncementData.getInstance().listAnnouncements(activeChar);
 						break;
 					
 					case "add_auto":
@@ -78,15 +64,15 @@ public class AdminAnnouncements implements IAdminCommandHandler
 						final int limit = Integer.parseInt(split[4]);
 						final String msg = split[5];
 						
-						if (!AnnouncementTable.getInstance().addAnnouncement(msg, crit, auto, idelay, delay, limit))
+						if (!AnnouncementData.getInstance().addAnnouncement(msg, crit, auto, idelay, delay, limit))
 							activeChar.sendMessage("Invalid //announce message content ; can't be null or empty.");
 						
-						AnnouncementTable.getInstance().listAnnouncements(activeChar);
+						AnnouncementData.getInstance().listAnnouncements(activeChar);
 						break;
 					
 					case "del":
-						AnnouncementTable.getInstance().delAnnouncement(Integer.parseInt(tokens[2]));
-						AnnouncementTable.getInstance().listAnnouncements(activeChar);
+						AnnouncementData.getInstance().delAnnouncement(Integer.parseInt(tokens[2]));
+						AnnouncementData.getInstance().listAnnouncements(activeChar);
 						break;
 					
 					default:
@@ -100,7 +86,7 @@ public class AdminAnnouncements implements IAdminCommandHandler
 			}
 		}
 		else if (command.startsWith("admin_ann") || command.startsWith("admin_say"))
-			AnnouncementTable.getInstance().handleAnnounce(command, 10, command.startsWith("admin_say"));
+			AnnouncementData.getInstance().handleAnnounce(command, 10, command.startsWith("admin_say"));
 		
 		return true;
 	}

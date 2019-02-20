@@ -1,29 +1,16 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.actor.stat;
 
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
 
-public class DoorStat extends CharStat
+public class DoorStat extends CreatureStat
 {
 	private int _upgradeHpRatio;
 	
-	public DoorStat(L2DoorInstance activeChar)
+	public DoorStat(Door activeChar)
 	{
 		super(activeChar);
 		
@@ -31,35 +18,45 @@ public class DoorStat extends CharStat
 	}
 	
 	@Override
-	public L2DoorInstance getActiveChar()
+	public Door getActiveChar()
 	{
-		return (L2DoorInstance) super.getActiveChar();
+		return (Door) super.getActiveChar();
 	}
 	
 	@Override
-	public int getMDef(L2Character target, L2Skill skill)
+	public int getMDef(Creature target, L2Skill skill)
 	{
 		double defense = getActiveChar().getTemplate().getBaseMDef();
 		
-		final int sealOwner = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE);
-		if (sealOwner == SevenSigns.CABAL_DAWN)
-			defense *= 1.2;
-		else if (sealOwner == SevenSigns.CABAL_DUSK)
-			defense *= 0.3;
+		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+		{
+			case DAWN:
+				defense *= 1.2;
+				break;
+			
+			case DUSK:
+				defense *= 0.3;
+				break;
+		}
 		
 		return (int) defense;
 	}
 	
 	@Override
-	public int getPDef(L2Character target)
+	public int getPDef(Creature target)
 	{
 		double defense = getActiveChar().getTemplate().getBasePDef();
 		
-		final int sealOwner = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE);
-		if (sealOwner == SevenSigns.CABAL_DAWN)
-			defense *= 1.2;
-		else if (sealOwner == SevenSigns.CABAL_DUSK)
-			defense *= 0.3;
+		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+		{
+			case DAWN:
+				defense *= 1.2;
+				break;
+			
+			case DUSK:
+				defense *= 0.3;
+				break;
+		}
 		
 		return (int) defense;
 	}

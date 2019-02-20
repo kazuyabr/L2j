@@ -1,22 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.type;
 
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
@@ -30,51 +16,50 @@ public class L2WaterZone extends L2ZoneType
 	}
 	
 	@Override
-	protected void onEnter(L2Character character)
+	protected void onEnter(Creature character)
 	{
 		character.setInsideZone(ZoneId.WATER, true);
 		
-		if (character instanceof L2PcInstance)
-			((L2PcInstance) character).broadcastUserInfo();
-		else if (character instanceof L2Npc)
+		if (character instanceof Player)
+			((Player) character).broadcastUserInfo();
+		else if (character instanceof Npc)
 		{
-			for (L2PcInstance player : character.getKnownList().getKnownType(L2PcInstance.class))
+			for (Player player : character.getKnownType(Player.class))
 			{
 				if (character.getMoveSpeed() == 0)
-					player.sendPacket(new ServerObjectInfo((L2Npc) character, player));
+					player.sendPacket(new ServerObjectInfo((Npc) character, player));
 				else
-					player.sendPacket(new NpcInfo((L2Npc) character, player));
+					player.sendPacket(new NpcInfo((Npc) character, player));
 			}
 		}
 	}
 	
 	@Override
-	protected void onExit(L2Character character)
+	protected void onExit(Creature character)
 	{
 		character.setInsideZone(ZoneId.WATER, false);
 		
-		// TODO: update to only send speed status when that packet is known
-		if (character instanceof L2PcInstance)
-			((L2PcInstance) character).broadcastUserInfo();
-		else if (character instanceof L2Npc)
+		if (character instanceof Player)
+			((Player) character).broadcastUserInfo();
+		else if (character instanceof Npc)
 		{
-			for (L2PcInstance player : character.getKnownList().getKnownType(L2PcInstance.class))
+			for (Player player : character.getKnownType(Player.class))
 			{
 				if (character.getMoveSpeed() == 0)
-					player.sendPacket(new ServerObjectInfo((L2Npc) character, player));
+					player.sendPacket(new ServerObjectInfo((Npc) character, player));
 				else
-					player.sendPacket(new NpcInfo((L2Npc) character, player));
+					player.sendPacket(new NpcInfo((Npc) character, player));
 			}
 		}
 	}
 	
 	@Override
-	public void onDieInside(L2Character character)
+	public void onDieInside(Creature character)
 	{
 	}
 	
 	@Override
-	public void onReviveInside(L2Character character)
+	public void onReviveInside(Creature character)
 	{
 	}
 	

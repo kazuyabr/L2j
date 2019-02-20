@@ -233,7 +233,7 @@
 			<effect count="0x7fffffff" name="ManaDamOverTime" time="3" val="0">
 				<mul order="0x30" stat="pDef" val="10" />
 				<mul order="0x30" stat="mDef" val="10" />
-				<sub order="0x40" stat="sleepVuln" val="70" />
+				<addMul order="0x40" stat="sleepVuln" val="70" />
 			</effect>
 		</for>
 	</skill>
@@ -481,8 +481,8 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<add order="0x40" stat="sleepVuln" val="90" />
-			<add order="0x40" stat="stunVuln" val="90" />
+			<subDiv order="0x40" stat="sleepVuln" val="90" />
+			<subDiv order="0x40" stat="stunVuln" val="90" />
 		</for>
 	</skill>
 	<skill id="4543" levels="1" name="Quest - BOSS Stun Weakness">
@@ -491,7 +491,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<add order="0x40" stat="stunVuln" val="10" />
+			<subDiv order="0x40" stat="stunVuln" val="10" />
 		</for>
 	</skill>
 	<skill id="4544" levels="3" name="Quest - BOSS Weakness">
@@ -666,11 +666,11 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<sub order="0x40" stat="poisonVuln" val="20" />
-			<sub order="0x40" stat="bleedVuln" val="20" />
-			<sub order="0x40" stat="rootVuln" val="20" />
-			<sub order="0x40" stat="stunVuln" val="20" />
-			<sub order="0x40" stat="paralyzeVuln" val="20" />
+			<addMul order="0x40" stat="poisonVuln" val="20" />
+			<addMul order="0x40" stat="bleedVuln" val="20" />
+			<addMul order="0x40" stat="rootVuln" val="20" />
+			<addMul order="0x40" stat="stunVuln" val="20" />
+			<addMul order="0x40" stat="paralyzeVuln" val="20" />
 		</for>
 	</skill>
 	<skill id="4556" levels="1" name="Dispel Hot Spring Disease A_D">

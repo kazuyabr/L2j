@@ -49,21 +49,15 @@
 		<copy todir="${build.dist.game}/config">
 			<fileset dir="config">
 				<include name="*.properties" />
+				<exclude name="banned_ips.properties" />
 				<exclude name="loginserver.properties" />
-			</fileset>
-			<fileset dir="config">
-				<include name="log.cfg" />
-				<include name="console.cfg" />
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config">
 			<fileset dir="config">
+				<include name="banned_ips.properties" />
+				<include name="logging.properties" />
 				<include name="loginserver.properties" />
-			</fileset>
-			<fileset dir="config">
-				<include name="log.cfg" />
-				<include name="banned_ip.cfg" />
-				<include name="console.cfg" />
 			</fileset>
 		</copy>
 		<mkdir dir="${build.dist.game}/data" />

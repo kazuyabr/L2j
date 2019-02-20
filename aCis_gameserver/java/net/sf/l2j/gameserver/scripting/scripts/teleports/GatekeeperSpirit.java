@@ -1,22 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 /**
@@ -25,53 +13,48 @@ import net.sf.l2j.gameserver.scripting.Quest;
  */
 public class GatekeeperSpirit extends Quest
 {
-	private static final int EnterGk = 31111;
-	private static final int ExitGk = 31112;
-	private static final int Lilith = 25283;
-	private static final int Anakim = 25286;
+	private static final int ENTER_GK = 31111;
+	private static final int EXIT_GK = 31112;
+	private static final int LILITH = 25283;
+	private static final int ANAKIM = 25286;
 	
 	public GatekeeperSpirit()
 	{
 		super(-1, "teleports");
 		
-		addStartNpc(EnterGk);
-		addFirstTalkId(EnterGk);
-		addTalkId(EnterGk);
+		addStartNpc(ENTER_GK);
+		addFirstTalkId(ENTER_GK);
+		addTalkId(ENTER_GK);
 		
-		addKillId(Lilith, Anakim);
+		addKillId(LILITH, ANAKIM);
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
-		if (event.equalsIgnoreCase("spawn_exitgk_lilith"))
-		{
-			// exit_necropolis_boss_lilith
-			addSpawn(ExitGk, 184446, -10112, -5488, 0, false, 900000, false);
-		}
-		else if (event.equalsIgnoreCase("spawn_exitgk_anakim"))
-		{
-			// exit_necropolis_boss_anakim
-			addSpawn(ExitGk, 184466, -13106, -5488, 0, false, 900000, false);
-		}
+		if (event.equalsIgnoreCase("lilith_exit"))
+			addSpawn(EXIT_GK, 184446, -10112, -5488, 0, false, 900000, false);
+		else if (event.equalsIgnoreCase("anakim_exit"))
+			addSpawn(EXIT_GK, 184466, -13106, -5488, 0, false, 900000, false);
+		
 		return super.onAdvEvent(event, npc, player);
 	}
 	
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(Npc npc, Player player)
 	{
-		int playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
-		int sealAvariceOwner = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_AVARICE);
-		int compWinner = SevenSigns.getInstance().getCabalHighestScore();
+		final CabalType playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
+		final CabalType sealAvariceOwner = SevenSigns.getInstance().getSealOwner(SealType.AVARICE);
+		final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
 		
-		if (playerCabal == sealAvariceOwner && playerCabal == compWinner)
+		if (playerCabal == sealAvariceOwner && playerCabal == winningCabal)
 		{
 			switch (sealAvariceOwner)
 			{
-				case SevenSigns.CABAL_DAWN:
+				case DAWN:
 					return "dawn.htm";
-					
-				case SevenSigns.CABAL_DUSK:
+				
+				case DUSK:
 					return "dusk.htm";
 			}
 		}
@@ -81,18 +64,16 @@ public class GatekeeperSpirit extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
 		switch (npc.getNpcId())
 		{
-			case Lilith:
-				if (getQuestTimer("spawn_exitgk_lilith", null, null) == null)
-					startQuestTimer("spawn_exitgk_lilith", 10000, null, null, false);
+			case LILITH:
+				startQuestTimer("lilith_exit", 10000, null, null, false);
 				break;
 			
-			case Anakim:
-				if (getQuestTimer("spawn_exitgk_lilith", null, null) == null)
-					startQuestTimer("spawn_exitgk_anakim", 10000, null, null, false);
+			case ANAKIM:
+				startQuestTimer("anakim_exit", 10000, null, null, false);
 				break;
 		}
 		return super.onKill(npc, killer, isPet);

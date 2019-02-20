@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.item.kind;
 
 import java.util.ArrayList;
@@ -20,11 +6,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.ItemTable;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.type.ActionType;
@@ -124,7 +110,7 @@ public abstract class Item
 	protected List<Condition> _preConditions;
 	private IntIntHolder[] _skillHolder;
 	
-	private final List<Quest> _questEvents = new ArrayList<>();
+	private List<Quest> _questEvents = Collections.emptyList();
 	
 	protected static final Logger _log = Logger.getLogger(Item.class.getName());
 	
@@ -294,10 +280,10 @@ public abstract class Item
 				case TYPE2_SHIELD_ARMOR:
 				case TYPE2_ACCESSORY:
 					return _crystalCount + getCrystalType().getCrystalEnchantBonusArmor() * (3 * enchantLevel - 6);
-					
+				
 				case TYPE2_WEAPON:
 					return _crystalCount + getCrystalType().getCrystalEnchantBonusWeapon() * (2 * enchantLevel - 3);
-					
+				
 				default:
 					return _crystalCount;
 			}
@@ -420,10 +406,10 @@ public abstract class Item
 	/**
 	 * Get the functions used by this item.
 	 * @param item : ItemInstance pointing out the item
-	 * @param player : L2Character pointing out the player
+	 * @param player : Creature pointing out the player
 	 * @return the list of functions
 	 */
-	public final List<Func> getStatFuncs(ItemInstance item, L2Character player)
+	public final List<Func> getStatFuncs(ItemInstance item, Creature player)
 	{
 		if (_funcTemplates == null || _funcTemplates.isEmpty())
 			return Collections.emptyList();
@@ -474,10 +460,10 @@ public abstract class Item
 		return _skillHolder;
 	}
 	
-	public boolean checkCondition(L2Character activeChar, L2Object target, boolean sendMessage)
+	public boolean checkCondition(Creature activeChar, WorldObject target, boolean sendMessage)
 	{
 		// Don't allow hero equipment and restricted items during Olympiad
-		if ((isOlyRestrictedItem() || isHeroItem()) && ((activeChar instanceof L2PcInstance) && activeChar.getActingPlayer().isInOlympiadMode()))
+		if ((isOlyRestrictedItem() || isHeroItem()) && ((activeChar instanceof Player) && activeChar.getActingPlayer().isInOlympiadMode()))
 		{
 			if (isEquipable())
 				activeChar.getActingPlayer().sendPacket(SystemMessageId.THIS_ITEM_CANT_BE_EQUIPPED_FOR_THE_OLYMPIAD_EVENT);
@@ -492,8 +478,8 @@ public abstract class Item
 		
 		final Env env = new Env();
 		env.setCharacter(activeChar);
-		if (target instanceof L2Character)
-			env.setTarget((L2Character) target);
+		if (target instanceof Creature)
+			env.setTarget((Creature) target);
 		
 		for (Condition preCondition : _preConditions)
 		{
@@ -502,7 +488,7 @@ public abstract class Item
 			
 			if (!preCondition.test(env))
 			{
-				if (activeChar instanceof L2Summon)
+				if (activeChar instanceof Summon)
 				{
 					activeChar.getActingPlayer().sendPacket(SystemMessageId.PET_CANNOT_USE_ITEM);
 					return false;
@@ -580,9 +566,12 @@ public abstract class Item
 		return _name + " (" + _itemId + ")";
 	}
 	
-	public void addQuestEvent(Quest q)
+	public void addQuestEvent(Quest quest)
 	{
-		_questEvents.add(q);
+		if (_questEvents.isEmpty())
+			_questEvents = new ArrayList<>(3);
+		
+		_questEvents.add(quest);
 	}
 	
 	public List<Quest> getQuestEvents()

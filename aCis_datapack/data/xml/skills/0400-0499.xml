@@ -190,7 +190,7 @@
 			<player hp="30" />
 		</cond>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="#stackOrder" stackType="possession">
+			<effect name="Buff" time="60" val="0" stackOrder="#stackOrder" stackType="possession">
 				<mul order="0x30" stat="mDef" val="1.5"/>
 				<mul order="0x30" stat="pDef" val="1.5"/>
 				<add order="0x40" stat="accCombat" val="6"/>
@@ -200,7 +200,7 @@
 				<add order="0x40" stat="rCrit" val="#rCrit">
 					<using kind="SWORD,BIGSWORD,POLE"/>
 				</add>
-				<mul order="0x30" stat="cAtkAdd" val="#cAtk">
+				<mul order="0x30" stat="cAtk" val="#cAtk">
 					<using kind="BLUNT,BIGBLUNT,FIST,DUALFIST"/>
 				</mul>
 			</effect>
@@ -383,6 +383,7 @@
 	<skill id="413" levels="8" name="Rapid Fire">
 		<table name="#mpConsume"> 28 29 30 31 32 33 34 34 </table>
 		<table name="#atk"> 62 67 73 78 83 88 94 100 </table>
+		<table name="#stackOrder"> 1 2 3 4 5 6 7 8 </table>
 		<set name="mpConsume" val="#mpConsume"/>
 		<set name="target" val="TARGET_SELF"/>
 		<set name="skillType" val="BUFF"/>
@@ -391,7 +392,7 @@
 		<set name="hitTime" val="2000"/>
 		<set name="weaponsAllowed" val="BOW" /> <!-- Bow -->
 		<for>
-			<effect count="1" name="Buff" time="120" val="0">
+			<effect count="1" name="Buff" time="120" val="0" stackOrder="#stackOrder" stackType="rapid_fire">
 				<add order="0x40" stat="pAtk" val="#atk">
 					<using kind="BOW"/>
 				</add>
@@ -500,7 +501,7 @@
 		<set name="itemConsumeId" val="1661"/>
 		<set name="mpConsume" val="#mpConsume"/>
 		<set name="hitTime" val="3000"/>
-		<set name="reuseDelay" val="120000"/>
+		<set name="reuseDelay" val="1200000"/>
 		<set name="target" val="TARGET_SELF"/>
 		<set name="skillType" val="EXTRACTABLE" />
 		<set name="operateType" val="OP_ACTIVE"/>
@@ -594,7 +595,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<for>
 			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="holy_attack">
-				<add order="0x40" stat="fireRes" val="#vuln" />
+				<addMul order="0x40" stat="fireRes" val="#vuln" />
 				<add order="0x40" stat="firePower" val="#firePower" />
 			</effect>
 		</for>
@@ -608,8 +609,8 @@
 		<set name="operateType" val="OP_TOGGLE"/>
 		<for>
 			<effect count="0x7fffffff" name="ManaDamOverTime" time="3" val="#mpConsume">
-				<sub order="0x40" stat="stunVuln" val="#stunVuln" />
-				<sub order="0x40" stat="sleepVuln" val="#sleepVuln" />
+				<addMul order="0x40" stat="stunVuln" val="#stunVuln" />
+				<addMul order="0x40" stat="sleepVuln" val="#sleepVuln" />
 			</effect>
 		</for>
 	</skill>
@@ -703,7 +704,7 @@
 			<add order="0x40" stat="pAtk" val="200">
 				<using kind="BOW"/>
 			</add>
-			<add order="0x40" stat="pAtkRange" val="300">
+			<add order="0x40" stat="pAtkRange" val="100">
 				<using kind="BOW"/>
 			</add>
 		</for>
@@ -724,10 +725,10 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<add order="0x40" stat="fireRes" val="5" />
-			<add order="0x40" stat="windRes" val="5" />
-			<add order="0x40" stat="waterRes" val="5" />
-			<add order="0x40" stat="earthRes" val="5" />
+			<addMul order="0x40" stat="fireRes" val="5" />
+			<addMul order="0x40" stat="windRes" val="5" />
+			<addMul order="0x40" stat="waterRes" val="5" />
+			<addMul order="0x40" stat="earthRes" val="5" />
 			<mul order="0x30" stat="mAtk" val="1.03"/>
 		</for>
 	</skill>
@@ -736,7 +737,7 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<add order="0x40" stat="darkRes" val="10" />
+			<addMul order="0x40" stat="darkRes" val="10" />
 			<mul order="0x30" stat="mAtk" val="1.03"/>
 		</for>
 	</skill>
@@ -798,8 +799,8 @@
 	</skill>
 	<skill id="439" levels="1" name="Shield of Revenge">
 		<set name="magicLvl" val="79" />
+		<set name="mpConsume" val="87"/>
 		<set name="hitTime" val="4000" />
-		<set name="mpConsume" val="78" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="reuseDelay" val="600000" />
 		<set name="skillType" val="BUFF" />
@@ -860,7 +861,7 @@
 		<set name="mpConsume" val="72"/>
 		<set name="target" val="TARGET_SELF"/>
 		<set name="hitTime" val="2000"/>
-		<set name="reuseDelay" val="600000"/>
+		<set name="reuseDelay" val="900000"/>
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="numCharges" val="4" /> <!-- 4 Charges are consumed -->
@@ -882,12 +883,12 @@
 		<set name="target" val="TARGET_AREA_CORPSE_MOB" />
 	</skill>
 	<skill id="445" levels="1" name="Mirage">
-		<set name="aggroPoints" val="673" />
+		<set name="aggroPoints" val="669" />
 		<set name="hitTime" val="2000"/>  
 		<set name="magicLvl" val="79"/> 
-		<set name="mpConsume" val="43"/> 
+		<set name="mpConsume" val="63"/> 
 		<set name="operateType" val="OP_ACTIVE"/> 
-		<set name="reuseDelay" val="300000"/> 
+		<set name="reuseDelay" val="600000"/> 
 		<set name="skillType" val="BUFF"/> 
 		<set name="target" val="TARGET_SELF"/> 
 		<for>
@@ -895,29 +896,31 @@
 		</for>
 	</skill>
 	<skill id="446" levels="1" name="Dodge">
+		<set name="aggroPoints" val="669" />
 		<set name="hitTime" val="500" />
-		<set name="mpConsume" val="29" />
+		<set name="mpConsume" val="49" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="reuseDelay" val="150000" />
+		<set name="reuseDelay" val="300000" />
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
 			<effect name="Buff" time="5" val="0" stackOrder="1" stackType="avoid_skill">
-				<add order="0x40" stat="pSkillEvas" val="90" />
+				<add order="0x40" stat="pSkillEvas" val="100" />
 			</effect>
 		</for>
 	</skill>
 	<skill id="447" levels="1" name="Counterattack">
+		<set name="aggroPoints" val="669" />
 		<set name="magicLvl" val="79" />
 		<set name="hitTime" val="500" />
-		<set name="mpConsume" val="29" />
+		<set name="mpConsume" val="49" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="reuseDelay" val="150000" />
+		<set name="reuseDelay" val="300000" />
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<effect name="Buff" time="10" val="0" stackOrder="1" stackType="counter_skill">
-				<add order="0x40" stat="vengeancePdam" val="90" />
+			<effect name="Buff" time="5" val="0" stackOrder="1" stackType="counter_skill">
+				<add order="0x40" stat="vengeancePdam" val="100" />
 			</effect>
 		</for>
 	</skill>
@@ -1020,8 +1023,9 @@
 			</effect>
 		</for>
 	</skill>
-	<skill id="452" levels="5" name="Shock Stomp">
-		<table name="#effectPower"> 40 50 60 70 80 </table>
+	<skill id="452" levels="5" name="Shock Stomp" enchantLevels1="30" >
+		<table name="#enchantMagicLvl"> 76 76 76 77 77 77 78 78 78 79 79 79 80 80 80 81 81 81 82 82 82 82 83 83 83 84 84 85 85 85 </table>
+		<table name="#ench1power"> 50 51 52 52 53 54 54 55 56 56 57 58 58 59 60 60 61 62 62 63 64 64 65 66 66 67 68 68 69 70 </table>
 		<table name="#magicLvl"> 55 60 64 68 72 </table>
 		<table name="#mpConsume"> 55 55 55 55 55 </table>
 		<set name="weaponsAllowed" val="POLE"/>
@@ -1037,9 +1041,11 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="skillType" val="STUN" />
 		<set name="isDebuff" val="true" />
+		<enchant1 name="power" val="#ench1power"/>
+		<enchant1 name="magicLvl" val="#enchantMagicLvl"/>
 		<for>
-			<effect name="Stun" time="5" val="0" stackOrder="2" stackType="stun" />
-			<effect name="RemoveTarget" noicon="1" val="0" effectPower="#effectPower" effectType="DEBUFF" />
+			<effect name="Stun" time="9" val="0" stackOrder="2" stackType="stun" />
+			<effect name="RemoveTarget" noicon="1" val="0" effectPower="50" effectType="DEBUFF" />
 		</for>
 	</skill>
 	<skill id="453" levels="1" name="Escape Shackle">

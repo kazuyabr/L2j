@@ -64,7 +64,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="windRes" val="15" />
+			<subDiv order="0x40" stat="windRes" val="15" />
 			<mul order="0x30" stat="bowWpnVuln" val="1.1" />
 		</for>
 	</skill>
@@ -74,8 +74,8 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="fireRes" val="15" />
-			<sub order="0x40" stat="poisonVuln" val="50" />
+			<subDiv order="0x40" stat="fireRes" val="15" />
+			<addMul order="0x40" stat="poisonVuln" val="50" />
 		</for>
 	</skill>
 	<skill id="4007" levels="1" name="Immortal Life">
@@ -84,7 +84,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="holyRes" val="20" />
+			<addMul order="0x40" stat="holyRes" val="20" />
 			<sub order="0x40" stat="darkPower" val="20" />
 		</for>
 	</skill>
@@ -94,7 +94,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="fireRes" val="15" />
+			<subDiv order="0x40" stat="fireRes" val="15" />
 		</for>
 	</skill>
 	<skill id="4009" levels="5" name="Resist Fire">

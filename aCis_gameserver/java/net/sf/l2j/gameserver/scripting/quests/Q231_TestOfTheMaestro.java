@@ -1,23 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
@@ -79,7 +65,7 @@ public class Q231_TestOfTheMaestro extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -132,15 +118,15 @@ public class Q231_TestOfTheMaestro extends Quest
 		// Spawns 3 King Bugbears
 		else if (event.equalsIgnoreCase("spawn_bugbears"))
 		{
-			final L2Attackable bugbear1 = (L2Attackable) addSpawn(KING_BUGBEAR, 140333, -194153, -3138, 0, false, 200000, true);
+			final Attackable bugbear1 = (Attackable) addSpawn(KING_BUGBEAR, 140333, -194153, -3138, 0, false, 200000, true);
 			bugbear1.addDamageHate(player, 0, 999);
 			bugbear1.getAI().setIntention(CtrlIntention.ATTACK, player);
 			
-			final L2Attackable bugbear2 = (L2Attackable) addSpawn(KING_BUGBEAR, 140395, -194147, -3146, 0, false, 200000, true);
+			final Attackable bugbear2 = (Attackable) addSpawn(KING_BUGBEAR, 140395, -194147, -3146, 0, false, 200000, true);
 			bugbear2.addDamageHate(player, 0, 999);
 			bugbear2.getAI().setIntention(CtrlIntention.ATTACK, player);
 			
-			final L2Attackable bugbear3 = (L2Attackable) addSpawn(KING_BUGBEAR, 140304, -194082, -3157, 0, false, 200000, true);
+			final Attackable bugbear3 = (Attackable) addSpawn(KING_BUGBEAR, 140304, -194082, -3157, 0, false, 200000, true);
 			bugbear3.addDamageHate(player, 0, 999);
 			bugbear3.getAI().setIntention(CtrlIntention.ATTACK, player);
 			
@@ -151,7 +137,7 @@ public class Q231_TestOfTheMaestro extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -364,7 +350,7 @@ public class Q231_TestOfTheMaestro extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
 		QuestState st = checkPlayerCondition(player, npc, "cond", "1");
 		if (st == null)

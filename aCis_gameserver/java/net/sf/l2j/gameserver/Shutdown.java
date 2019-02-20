@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver;
 
 import java.util.logging.Level;
@@ -22,9 +8,10 @@ import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.datatables.BufferTable;
-import net.sf.l2j.gameserver.datatables.ServerMemo;
+import net.sf.l2j.gameserver.data.BufferTable;
+import net.sf.l2j.gameserver.data.sql.ServerMemoTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
+import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.FishingChampionshipManager;
 import net.sf.l2j.gameserver.instancemanager.FourSepulchersManager;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
@@ -32,8 +19,8 @@ import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
 import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.network.L2GameClient;
@@ -175,7 +162,7 @@ public class Shutdown extends Thread
 			_log.info("Hero data has been saved.");
 			
 			// Save all manor data
-			CastleManorManager.getInstance().save();
+			CastleManorManager.getInstance().storeMe();
 			_log.info("Manors data has been saved.");
 			
 			// Save Fishing tournament data
@@ -186,8 +173,15 @@ public class Shutdown extends Thread
 			BufferTable.getInstance().saveSchemes();
 			_log.info("BufferTable data has been saved.");
 			
+			// Couples save.
+			if (Config.ALLOW_WEDDING)
+			{
+				CoupleManager.getInstance().save();
+				_log.info("CoupleManager data has been saved.");
+			}
+			
 			// Save server memos.
-			ServerMemo.getInstance().storeMe();
+			ServerMemoTable.getInstance().storeMe();
 			_log.info("ServerMemo data has been saved.");
 			
 			// Save items on ground before closing
@@ -203,7 +197,7 @@ public class Shutdown extends Thread
 			
 			try
 			{
-				GameServer.gameServer.getSelectorThread().shutdown();
+				GameServer.getInstance().getSelectorThread().shutdown();
 			}
 			catch (Throwable t)
 			{
@@ -252,7 +246,7 @@ public class Shutdown extends Thread
 	 * @param seconds seconds until shutdown
 	 * @param restart true if the server will restart after shutdown
 	 */
-	public void startShutdown(L2PcInstance activeChar, String ghostEntity, int seconds, boolean restart)
+	public void startShutdown(Player activeChar, String ghostEntity, int seconds, boolean restart)
 	{
 		if (restart)
 			_shutdownMode = GM_RESTART;
@@ -302,7 +296,7 @@ public class Shutdown extends Thread
 	 * This function aborts a running countdown
 	 * @param activeChar GM who issued the abort command
 	 */
-	public void abort(L2PcInstance activeChar)
+	public void abort(Player activeChar)
 	{
 		if (_counterInstance != null)
 		{
@@ -417,7 +411,7 @@ public class Shutdown extends Thread
 	 */
 	private static void disconnectAllCharacters()
 	{
-		for (L2PcInstance player : L2World.getInstance().getPlayers())
+		for (Player player : World.getInstance().getPlayers())
 		{
 			try
 			{

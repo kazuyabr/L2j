@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.communitybbs.Manager;
 
 import java.text.DateFormat;
@@ -28,8 +14,8 @@ import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.communitybbs.BB.Post;
 import net.sf.l2j.gameserver.communitybbs.BB.Topic;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 public class TopicBBSManager extends BaseBBSManager
 {
@@ -48,7 +34,7 @@ public class TopicBBSManager extends BaseBBSManager
 	}
 	
 	@Override
-	public void parseWrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
+	public void parseWrite(String ar1, String ar2, String ar3, String ar4, String ar5, Player activeChar)
 	{
 		if (ar1.equals("crea"))
 		{
@@ -97,7 +83,7 @@ public class TopicBBSManager extends BaseBBSManager
 	}
 	
 	@Override
-	public void parseCmd(String command, L2PcInstance activeChar)
+	public void parseCmd(String command, Player activeChar)
 	{
 		if (command.equals("_bbsmemo"))
 		{
@@ -201,7 +187,7 @@ public class TopicBBSManager extends BaseBBSManager
 		return null;
 	}
 	
-	private static void showNewTopic(Forum forum, L2PcInstance activeChar, int idf)
+	private static void showNewTopic(Forum forum, Player activeChar, int idf)
 	{
 		if (forum == null)
 		{
@@ -215,14 +201,14 @@ public class TopicBBSManager extends BaseBBSManager
 			separateAndSend("<html><body><br><br><center>The forum named '" + forum.getName() + "' doesn't exist.</center></body></html>", activeChar);
 	}
 	
-	private static void showMemoNewTopics(Forum forum, L2PcInstance activeChar)
+	private static void showMemoNewTopics(Forum forum, Player activeChar)
 	{
 		final String html = "<html><body><br><br><table border=0 width=610><tr><td width=10></td><td width=600 align=left><a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">Memo Form</a></td></tr></table><img src=\"L2UI.squareblank\" width=\"1\" height=\"10\"><center><table border=0 cellspacing=0 cellpadding=0><tr><td width=610><img src=\"sek.cbui355\" width=\"610\" height=\"1\"><br1><img src=\"sek.cbui355\" width=\"610\" height=\"1\"></td></tr></table><table fixwidth=610 border=0 cellspacing=0 cellpadding=0><tr><td><img src=\"l2ui.mini_logo\" width=5 height=20></td></tr><tr><td><img src=\"l2ui.mini_logo\" width=5 height=1></td><td align=center FIXWIDTH=60 height=29>&$413;</td><td FIXWIDTH=540><edit var = \"Title\" width=540 height=13></td><td><img src=\"l2ui.mini_logo\" width=5 height=1></td></tr></table><table fixwidth=610 border=0 cellspacing=0 cellpadding=0><tr><td><img src=\"l2ui.mini_logo\" width=5 height=10></td></tr><tr><td><img src=\"l2ui.mini_logo\" width=5 height=1></td><td align=center FIXWIDTH=60 height=29 valign=top>&$427;</td><td align=center FIXWIDTH=540><MultiEdit var =\"Content\" width=535 height=313></td><td><img src=\"l2ui.mini_logo\" width=5 height=1></td></tr><tr><td><img src=\"l2ui.mini_logo\" width=5 height=10></td></tr></table><table fixwidth=610 border=0 cellspacing=0 cellpadding=0><tr><td><img src=\"l2ui.mini_logo\" width=5 height=10></td></tr><tr><td><img src=\"l2ui.mini_logo\" width=5 height=1></td><td align=center FIXWIDTH=60 height=29>&nbsp;</td><td align=center FIXWIDTH=70><button value=\"&$140;\" action=\"Write Topic crea " + forum.getID() + " Title Content Title\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\" ></td><td align=center FIXWIDTH=70><button value = \"&$141;\" action=\"bypass _bbsmemo\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"> </td><td align=center FIXWIDTH=400>&nbsp;</td><td><img src=\"l2ui.mini_logo\" width=5 height=1></td></tr></table></center></body></html>";
 		send1001(html, activeChar);
 		send1002(activeChar);
 	}
 	
-	private void showTopics(Forum forum, L2PcInstance activeChar, int index, int idf)
+	private void showTopics(Forum forum, Player activeChar, int index, int idf)
 	{
 		if (forum == null)
 		{
@@ -236,7 +222,7 @@ public class TopicBBSManager extends BaseBBSManager
 			separateAndSend("<html><body><br><br><center>The forum named '" + forum.getName() + "' doesn't exist.</center></body></html>", activeChar);
 	}
 	
-	private void showMemoTopics(Forum forum, L2PcInstance activeChar, int index)
+	private void showMemoTopics(Forum forum, Player activeChar, int index)
 	{
 		forum.vload();
 		final StringBuilder sb = new StringBuilder("<html><body><br><br><table border=0 width=610><tr><td width=10></td><td width=600 align=left><a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">Memo Form</a></td></tr></table><img src=\"L2UI.squareblank\" width=\"1\" height=\"10\"><center><table border=0 cellspacing=0 cellpadding=2 bgcolor=888888 width=610><tr><td FIXWIDTH=5></td><td FIXWIDTH=415 align=center>&$413;</td><td FIXWIDTH=120 align=center></td><td FIXWIDTH=70 align=center>&$418;</td></tr></table>");
@@ -264,7 +250,7 @@ public class TopicBBSManager extends BaseBBSManager
 		
 		int nbp;
 		nbp = forum.getTopicSize() / 8;
-		if (nbp * 8 != ClanTable.getInstance().getClans().length)
+		if (nbp * 8 != ClanTable.getInstance().getClans().size())
 			nbp++;
 		
 		for (int i = 1; i <= nbp; i++)

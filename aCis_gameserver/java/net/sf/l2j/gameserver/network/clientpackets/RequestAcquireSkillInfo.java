@@ -1,28 +1,14 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.SkillTable;
-import net.sf.l2j.gameserver.datatables.SkillTreeTable;
-import net.sf.l2j.gameserver.datatables.SpellbookTable;
+import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.xml.SpellbookData;
 import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.serverpackets.AcquireSkillInfo;
 
 public class RequestAcquireSkillInfo extends L2GameClientPacket
@@ -45,15 +31,15 @@ public class RequestAcquireSkillInfo extends L2GameClientPacket
 		if (_skillId <= 0 || _skillLevel <= 0)
 			return;
 		
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
-		final L2Npc trainer = activeChar.getCurrentFolkNPC();
+		final Npc trainer = activeChar.getCurrentFolkNPC();
 		if (trainer == null)
 			return;
 		
-		if (!activeChar.isInsideRadius(trainer, L2Npc.INTERACTION_DISTANCE, false, false) && !activeChar.isGM())
+		if (!activeChar.isInsideRadius(trainer, Npc.INTERACTION_DISTANCE, false, false) && !activeChar.isGM())
 			return;
 		
 		final L2Skill skill = SkillTable.getInstance().getInfo(_skillId, _skillLevel);
@@ -62,7 +48,7 @@ public class RequestAcquireSkillInfo extends L2GameClientPacket
 		
 		switch (_skillType)
 		{
-		// General skills
+			// General skills
 			case 0:
 				int skillLvl = activeChar.getSkillLevel(_skillId);
 				if (skillLvl >= _skillLevel)
@@ -79,7 +65,7 @@ public class RequestAcquireSkillInfo extends L2GameClientPacket
 					if (sl.getId() == _skillId && sl.getLevel() == _skillLevel)
 					{
 						AcquireSkillInfo asi = new AcquireSkillInfo(_skillId, _skillLevel, sl.getSpCost(), 0);
-						int spellbookItemId = SpellbookTable.getInstance().getBookForSkill(_skillId, _skillLevel);
+						int spellbookItemId = SpellbookData.getInstance().getBookForSkill(_skillId, _skillLevel);
 						if (spellbookItemId != 0)
 							asi.addRequirement(99, spellbookItemId, 1, 50);
 						sendPacket(asi);

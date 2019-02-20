@@ -397,9 +397,9 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="rootVuln" val="100" />
-			<sub order="0x40" stat="sleepVuln" val="100" />
-			<sub order="0x40" stat="derangementVuln" val="100" />
+			<addMul order="0x40" stat="rootVuln" val="100" />
+			<addMul order="0x40" stat="sleepVuln" val="100" />
+			<addMul order="0x40" stat="derangementVuln" val="100" />
 		</for>
 	</skill>
 	<skill id="4333" levels="6" name="Resist Dark Attack">
@@ -408,7 +408,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<add order="0x40" stat="darkRes" val="#darkRes" />
+			<addMul order="0x40" stat="darkRes" val="#darkRes" />
 		</for>
 	</skill>
 	<skill id="4334" levels="1" name="SSQ Cancel">
@@ -435,7 +435,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="darkRes" val="#darkRes" />
+			<subDiv order="0x40" stat="darkRes" val="#darkRes" />
 		</for>
 	</skill>
 	<skill id="4337" levels="6" name="Resist Sacred Attack">
@@ -444,7 +444,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<add order="0x40" stat="holyRes" val="#holyRes" />
+			<addMul order="0x40" stat="holyRes" val="#holyRes" />
 		</for>
 	</skill>
 	<skill id="4338" levels="1" name="Life Cubic for Beginners">
@@ -884,9 +884,9 @@
 		<for>
 			<effect name="Debuff" time="1200" val="0" stackOrder="#stackOrder" stackType="ssq_town_curse">
 				<sub order="0x40" stat="accCombat" val="10"/>
-				<add order="0x40" stat="sleepVuln" val="#vuln" />
-				<add order="0x40" stat="rootVuln" val="#vuln" />
-				<add order="0x40" stat="stunVuln" val="#vuln" />
+				<subDiv order="0x40" stat="sleepVuln" val="#vuln" />
+				<subDiv order="0x40" stat="rootVuln" val="#vuln" />
+				<subDiv order="0x40" stat="stunVuln" val="#vuln" />
 			</effect>
 		</for>
 	</skill>
@@ -905,9 +905,9 @@
 		<for>
 			<effect name="Debuff" time="1200" val="0" stackOrder="#stackOrder" stackType="ssq_town_curse">
 				<mul order="0x30" stat="mAtkSpd" val="0.7"/>
-				<add order="0x40" stat="sleepVuln" val="#vuln" />
-				<add order="0x40" stat="rootVuln" val="#vuln" />
-				<add order="0x40" stat="stunVuln" val="#vuln" />
+				<subDiv order="0x40" stat="sleepVuln" val="#vuln" />
+				<subDiv order="0x40" stat="rootVuln" val="#vuln" />
+				<subDiv order="0x40" stat="stunVuln" val="#vuln" />
 			</effect>
 		</for>
 	</skill>
@@ -940,11 +940,11 @@
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="ssq_town_blessing">
 				<mul order="0x30" stat="maxLoad" val="1.25"/>
-				<sub order="0x40" stat="poisonVuln" val="25" />
-				<sub order="0x40" stat="bleedVuln" val="25" />
-				<sub order="0x40" stat="rootVuln" val="#additionalVulns" />
-				<sub order="0x40" stat="stunVuln" val="#additionalVulns" />
-				<sub order="0x40" stat="paralyzeVuln" val="#additionalVulns" />
+				<addMul order="0x40" stat="poisonVuln" val="25" />
+				<addMul order="0x40" stat="bleedVuln" val="25" />
+				<addMul order="0x40" stat="rootVuln" val="#additionalVulns" />
+				<addMul order="0x40" stat="stunVuln" val="#additionalVulns" />
+				<addMul order="0x40" stat="paralyzeVuln" val="#additionalVulns" />
 			</effect>
 		</for>
 	</skill>
@@ -961,11 +961,11 @@
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="ssq_town_blessing">
 				<sub order="0x40" stat="cancel" val="25"/>
-				<sub order="0x40" stat="poisonVuln" val="25" />
-				<sub order="0x40" stat="bleedVuln" val="25" />
-				<sub order="0x40" stat="derangementVuln" val="25" />
-				<sub order="0x40" stat="stunVuln" val="#additionalVulns" />
-				<sub order="0x40" stat="paralyzeVuln" val="#additionalVulns" />
+				<addMul order="0x40" stat="poisonVuln" val="25" />
+				<addMul order="0x40" stat="bleedVuln" val="25" />
+				<addMul order="0x40" stat="derangementVuln" val="25" />
+				<addMul order="0x40" stat="stunVuln" val="#additionalVulns" />
+				<addMul order="0x40" stat="paralyzeVuln" val="#additionalVulns" />
 			</effect>
 		</for>
 	</skill>
@@ -980,8 +980,8 @@
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="1" stackType="decrease_weight_penalty">
 				<mul order="0x30" stat="maxLoad" val="1.25"/>
-				<sub order="0x40" stat="poisonVuln" val="25" />
-				<sub order="0x40" stat="bleedVuln" val="25" />
+				<addMul order="0x40" stat="poisonVuln" val="25" />
+				<addMul order="0x40" stat="bleedVuln" val="25" />
 			</effect>
 		</for>
 	</skill>
@@ -1233,7 +1233,7 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="paralyzeVuln" val="#power" />
+			<addMul order="0x40" stat="paralyzeVuln" val="#power" />
 		</for>
 	</skill>
 	<skill id="4389" levels="6" name="Resist Mental Derangement">
@@ -1251,7 +1251,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<sub order="0x40" stat="debuffVuln" val="100" />
+			<addMul order="0x40" stat="debuffVuln" val="100" />
 		</for>
 	</skill>
 	<skill id="4391" levels="2" name="Wind Walk">

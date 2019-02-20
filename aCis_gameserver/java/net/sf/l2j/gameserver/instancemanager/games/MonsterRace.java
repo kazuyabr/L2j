@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager.games;
 
 import java.lang.reflect.Constructor;
@@ -32,9 +18,9 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.NpcTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
+import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.zone.type.L2DerbyTrackZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -56,8 +42,8 @@ public class MonsterRace
 		RACE_END
 	}
 	
-	protected static final PlaySound SOUND_1 = new PlaySound(1, "S_Race", 0, 0, 0, 0, 0);
-	protected static final PlaySound SOUND_2 = new PlaySound(0, "ItemSound2.race_start", 1, 121209259, 12125, 182487, -3559);
+	protected static final PlaySound SOUND_1 = new PlaySound(1, "S_Race");
+	protected static final PlaySound SOUND_2 = new PlaySound("ItemSound2.race_start");
 	
 	protected static final int[][] CODES =
 	{
@@ -86,7 +72,7 @@ public class MonsterRace
 	
 	protected MonRaceInfo _packet;
 	
-	private final L2Npc[] _monsters;
+	private final Npc[] _monsters;
 	private Constructor<?> _constructor;
 	private int[][] _speeds;
 	private final int[] _first, _second;
@@ -103,7 +89,7 @@ public class MonsterRace
 		for (int i = 31003; i < 31027; i++)
 			_npcTemplates.add(i);
 		
-		_monsters = new L2Npc[8];
+		_monsters = new Npc[8];
 		_speeds = new int[8][20];
 		_first = new int[2];
 		_second = new int[2];
@@ -314,9 +300,9 @@ public class MonsterRace
 			try
 			{
 				NpcTemplate template = NpcTable.getInstance().getTemplate(_npcTemplates.get(i));
-				_constructor = Class.forName("net.sf.l2j.gameserver.model.actor.instance." + template.getType() + "Instance").getConstructors()[0];
+				_constructor = Class.forName("net.sf.l2j.gameserver.model.actor.instance." + template.getType()).getConstructors()[0];
 				int objectId = IdFactory.getInstance().getNextId();
-				_monsters[i] = (L2Npc) _constructor.newInstance(objectId, template);
+				_monsters[i] = (Npc) _constructor.newInstance(objectId, template);
 			}
 			catch (Exception e)
 			{
@@ -507,7 +493,7 @@ public class MonsterRace
 			_odds.add((amount == 0) ? 0D : Math.max(1.25, sumOfAllLanes * 0.7 / amount));
 	}
 	
-	public L2Npc[] getMonsters()
+	public Npc[] getMonsters()
 	{
 		return _monsters;
 	}

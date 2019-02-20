@@ -1,45 +1,67 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.item;
 
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
+import net.sf.l2j.gameserver.templates.StatsSet;
 
-/**
- * @author Luno
- */
 public final class ArmorSet
 {
-	private final int[] _set;
-	private final int _skillId;
+	private final String _name;
 	
+	private final int[] _set = new int[5];
+	
+	private final int _skillId;
 	private final int _shield;
 	private final int _shieldSkillId;
-	
 	private final int _enchant6Skill;
 	
-	public ArmorSet(int[] set, int skillId, int shield, int shieldSkillId, int enchant6Skill)
+	public ArmorSet(StatsSet set)
 	{
-		_set = set;
-		_skillId = skillId;
+		_name = set.getString("name");
 		
-		_shield = shield;
-		_shieldSkillId = shieldSkillId;
+		_set[0] = set.getInteger("chest");
+		_set[1] = set.getInteger("legs");
+		_set[2] = set.getInteger("head");
+		_set[3] = set.getInteger("gloves");
+		_set[4] = set.getInteger("feet");
 		
-		_enchant6Skill = enchant6Skill;
+		_skillId = set.getInteger("skillId");
+		_shield = set.getInteger("shield");
+		_shieldSkillId = set.getInteger("shieldSkillId");
+		_enchant6Skill = set.getInteger("enchant6Skill");
+	}
+	
+	@Override
+	public String toString()
+	{
+		return _name;
+		
+	}
+	
+	public int[] getSetItemsId()
+	{
+		return _set;
+	}
+	
+	public int getShield()
+	{
+		return _shield;
+	}
+	
+	public int getSkillId()
+	{
+		return _skillId;
+	}
+	
+	public int getShieldSkillId()
+	{
+		return _shieldSkillId;
+	}
+	
+	public int getEnchant6skillId()
+	{
+		return _enchant6Skill;
 	}
 	
 	/**
@@ -47,7 +69,7 @@ public final class ArmorSet
 	 * @param player whose inventory is being checked
 	 * @return True if player equips whole set
 	 */
-	public boolean containAll(L2PcInstance player)
+	public boolean containAll(Player player)
 	{
 		final Inventory inv = player.getInventory();
 		
@@ -93,30 +115,25 @@ public final class ArmorSet
 		{
 			case Inventory.PAPERDOLL_CHEST:
 				return _set[0] == itemId;
-				
+			
 			case Inventory.PAPERDOLL_LEGS:
 				return _set[1] == itemId;
-				
+			
 			case Inventory.PAPERDOLL_HEAD:
 				return _set[2] == itemId;
-				
+			
 			case Inventory.PAPERDOLL_GLOVES:
 				return _set[3] == itemId;
-				
+			
 			case Inventory.PAPERDOLL_FEET:
 				return _set[4] == itemId;
-				
+			
 			default:
 				return false;
 		}
 	}
 	
-	public int getSkillId()
-	{
-		return _skillId;
-	}
-	
-	public boolean containShield(L2PcInstance player)
+	public boolean containShield(Player player)
 	{
 		final ItemInstance shieldItem = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
 		if (shieldItem != null && shieldItem.getItemId() == _shield)
@@ -133,22 +150,12 @@ public final class ArmorSet
 		return _shield == shieldId;
 	}
 	
-	public int getShieldSkillId()
-	{
-		return _shieldSkillId;
-	}
-	
-	public int getEnchant6skillId()
-	{
-		return _enchant6Skill;
-	}
-	
 	/**
 	 * Checks if all parts of set are enchanted to +6 or more
 	 * @param player
 	 * @return
 	 */
-	public boolean isEnchanted6(L2PcInstance player)
+	public boolean isEnchanted6(Player player)
 	{
 		final Inventory inv = player.getInventory();
 		
@@ -190,21 +197,5 @@ public final class ArmorSet
 			return false;
 		
 		return true;
-	}
-	
-	/**
-	 * @return chest, legs, gloves, feet, head
-	 */
-	public int[] getSetItemsId()
-	{
-		return _set;
-	}
-	
-	/**
-	 * @return shield id
-	 */
-	public int getShield()
-	{
-		return _shield;
 	}
 }

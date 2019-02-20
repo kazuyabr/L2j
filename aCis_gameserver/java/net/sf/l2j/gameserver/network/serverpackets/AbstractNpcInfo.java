@@ -1,32 +1,16 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2Object.PolyType;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.model.WorldObject.PolyType;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
+import net.sf.l2j.gameserver.model.actor.instance.Pet;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 
 public abstract class AbstractNpcInfo extends L2GameServerPacket
 {
@@ -41,7 +25,7 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 	
 	protected String _name = "", _title = "";
 	
-	public AbstractNpcInfo(L2Character cha)
+	public AbstractNpcInfo(Creature cha)
 	{
 		_isSummoned = cha.isShowSummonAnimation();
 		_x = cha.getX();
@@ -59,9 +43,9 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 	 */
 	public static class NpcInfo extends AbstractNpcInfo
 	{
-		private final L2Npc _npc;
+		private final Npc _npc;
 		
-		public NpcInfo(L2Npc cha, L2Character attacker)
+		public NpcInfo(Npc cha, Creature attacker)
 		{
 			super(cha);
 			_npc = cha;
@@ -87,29 +71,21 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 				_collisionRadius = _npc.getCollisionRadius();
 			}
 			
-			if (_npc.getTemplate().isCustomNpc())
-				_name = _npc.getTemplate().getName();
+			if (_npc.getTemplate().isUsingServerSideName())
+				_name = _npc.getName();
 			
 			if (_npc.isChampion())
-				_title = ("Champion");
-			else if (_npc.getTemplate().isCustomNpc())
-				_title = _npc.getTemplate().getTitle();
-			else
+				_title = "Champion";
+			else if (_npc.getTemplate().isUsingServerSideTitle())
 				_title = _npc.getTitle();
 			
-			if (Config.SHOW_NPC_LVL && _npc instanceof L2MonsterInstance)
-			{
-				String t = "Lv " + _npc.getLevel() + (_npc.getTemplate().getAggroRange() > 0 ? "*" : "");
-				if (_title != null)
-					t += " " + _title;
-				
-				_title = t;
-			}
+			if (Config.SHOW_NPC_LVL && _npc instanceof Monster)
+				_title = "Lv " + _npc.getLevel() + (_npc.getTemplate().getAggroRange() > 0 ? "* " : " ") + _title;
 			
 			// NPC crest system
-			if (Config.SHOW_NPC_CREST && _npc instanceof L2NpcInstance && _npc.isInsideZone(ZoneId.TOWN) && _npc.getCastle().getOwnerId() != 0)
+			if (Config.SHOW_NPC_CREST && _npc.getCastle() != null && _npc.getCastle().getOwnerId() != 0)
 			{
-				L2Clan clan = ClanTable.getInstance().getClan(_npc.getCastle().getOwnerId());
+				Clan clan = ClanTable.getInstance().getClan(_npc.getCastle().getOwnerId());
 				_clanCrest = clan.getCrestId();
 				_clanId = clan.getClanId();
 				_allyCrest = clan.getAllyCrestId();
@@ -190,11 +166,11 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 	 */
 	public static class SummonInfo extends AbstractNpcInfo
 	{
-		private final L2Summon _summon;
-		private final L2PcInstance _owner;
+		private final Summon _summon;
+		private final Player _owner;
 		private int _summonAnimation = 0;
 		
-		public SummonInfo(L2Summon cha, L2PcInstance attacker, int val)
+		public SummonInfo(Summon cha, Player attacker, int val)
 		{
 			super(cha);
 			_summon = cha;
@@ -209,8 +185,7 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			_lhand = 0;
 			_chest = _summon.getArmor();
 			_enchantEffect = _summon.getTemplate().getEnchantEffect();
-			_name = _summon.getName();
-			_title = _owner != null ? (!_owner.isOnline() ? "" : _owner.getName()) : "";
+			_title = (_owner == null || !_owner.isOnline()) ? "" : _owner.getName();
 			_idTemplate = _summon.getTemplate().getIdTemplate();
 			
 			_collisionHeight = _summon.getCollisionHeight();
@@ -219,7 +194,7 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			// NPC crest system
 			if (Config.SHOW_SUMMON_CREST && _owner != null && _owner.getClan() != null)
 			{
-				L2Clan clan = ClanTable.getInstance().getClan(_owner.getClanId());
+				Clan clan = ClanTable.getInstance().getClan(_owner.getClanId());
 				_clanCrest = clan.getCrestId();
 				_clanId = clan.getClanId();
 				_allyCrest = clan.getAllyCrestId();
@@ -276,7 +251,7 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			writeS(_name);
 			writeS(_title);
 			
-			writeD(_summon instanceof L2PetInstance ? 0x00 : 0x01);
+			writeD(_summon instanceof Pet ? 0x00 : 0x01);
 			writeD(_summon.getPvpFlag());
 			writeD(_summon.getKarma());
 			
@@ -303,11 +278,11 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 	 */
 	public static class PcMorphInfo extends AbstractNpcInfo
 	{
-		private final L2PcInstance _pc;
+		private final Player _pc;
 		private final NpcTemplate _template;
 		private final int _swimSpd;
 		
-		public PcMorphInfo(L2PcInstance cha, NpcTemplate template)
+		public PcMorphInfo(Player cha, NpcTemplate template)
 		{
 			super(cha);
 			_pc = cha;

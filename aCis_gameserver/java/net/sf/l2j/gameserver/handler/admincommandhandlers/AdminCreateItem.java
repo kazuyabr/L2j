@@ -1,30 +1,18 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
 
-import net.sf.l2j.gameserver.datatables.ArmorSetsTable;
-import net.sf.l2j.gameserver.datatables.ItemTable;
+import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.xml.ArmorSetData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.ArmorSet;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.network.serverpackets.ItemList;
+import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class handles following admin commands:<br>
@@ -47,7 +35,7 @@ public class AdminCreateItem implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		StringTokenizer st = new StringTokenizer(command);
 		command = st.nextToken();
@@ -63,8 +51,8 @@ public class AdminCreateItem implements IAdminCommandHandler
 				final int id = Integer.parseInt(st.nextToken());
 				final int count = (st.hasMoreTokens()) ? Integer.parseInt(st.nextToken()) : 1;
 				
-				final Collection<L2PcInstance> players = L2World.getInstance().getPlayers();
-				for (L2PcInstance player : players)
+				final Collection<Player> players = World.getInstance().getPlayers();
+				for (Player player : players)
 					createItem(activeChar, player, id, count, 0, false);
 				
 				activeChar.sendMessage(players.size() + " players rewarded with " + ItemTable.getInstance().getTemplate(id).getName());
@@ -77,9 +65,9 @@ public class AdminCreateItem implements IAdminCommandHandler
 		}
 		else
 		{
-			L2PcInstance target = activeChar;
-			if (activeChar.getTarget() != null && activeChar.getTarget() instanceof L2PcInstance)
-				target = (L2PcInstance) activeChar.getTarget();
+			Player target = activeChar;
+			if (activeChar.getTarget() != null && activeChar.getTarget() instanceof Player)
+				target = (Player) activeChar.getTarget();
 			
 			if (command.equals("admin_create_item"))
 			{
@@ -126,40 +114,66 @@ public class AdminCreateItem implements IAdminCommandHandler
 			}
 			else if (command.equals("admin_create_set"))
 			{
-				try
+				// More tokens means you try to use the command directly with a chestId.
+				if (st.hasMoreTokens())
 				{
-					final int chestId = Integer.parseInt(st.nextToken());
-					final ArmorSet set = ArmorSetsTable.getInstance().getSet(chestId);
-					if (set == null)
+					try
 					{
-						activeChar.sendMessage("This chest has no set.");
-						return false;
+						final ArmorSet set = ArmorSetData.getInstance().getSet(Integer.parseInt(st.nextToken()));
+						if (set == null)
+						{
+							activeChar.sendMessage("This chest has no set.");
+							return false;
+						}
+						
+						for (int itemId : set.getSetItemsId())
+						{
+							if (itemId > 0)
+								target.getInventory().addItem("Admin", itemId, 1, target, activeChar);
+						}
+						
+						if (set.getShield() > 0)
+							target.getInventory().addItem("Admin", set.getShield(), 1, target, activeChar);
+						
+						activeChar.sendMessage("You have spawned " + set.toString() + " in " + target.getName() + "'s inventory.");
+						
+						// Send the whole item list and open inventory window.
+						target.sendPacket(new ItemList(target, true));
 					}
-					
-					for (int itemId : set.getSetItemsId())
+					catch (Exception e)
 					{
-						if (ItemTable.getInstance().getTemplate(itemId) != null)
-							target.getInventory().addItem("Admin", itemId, 1, target, activeChar);
+						activeChar.sendMessage("Usage: //create_set <chestId>");
 					}
-					
-					if (set.getShield() > 0)
-						target.getInventory().addItem("Admin", set.getShield(), 1, target, activeChar);
-					
-					activeChar.sendMessage("You have spawned " + ItemTable.getInstance().getTemplate(chestId) + " set in " + target.getName() + "'s inventory.");
-					
-					// Send the whole item list and open inventory window.
-					target.sendPacket(new ItemList(target, true));
 				}
-				catch (Exception e)
+				
+				// Regular case (first HTM with all possible sets).
+				int i = 0;
+				
+				final StringBuilder sb = new StringBuilder();
+				for (ArmorSet set : ArmorSetData.getInstance().getSets())
 				{
-					activeChar.sendMessage("Usage: //create_set <chestId>");
+					final boolean isNextLine = i % 2 == 0;
+					if (isNextLine)
+						sb.append("<tr>");
+					
+					sb.append("<td><a action=\"bypass -h admin_create_set " + set.getSetItemsId()[0] + "\">" + set.toString() + "</a></td>");
+					
+					if (isNextLine)
+						sb.append("</tr>");
+					
+					i++;
 				}
+				
+				final NpcHtmlMessage html = new NpcHtmlMessage(0);
+				html.setFile("data/html/admin/itemsets.htm");
+				html.replace("%sets%", sb.toString());
+				activeChar.sendPacket(html);
 			}
 		}
 		return true;
 	}
 	
-	private static void createItem(L2PcInstance activeChar, L2PcInstance target, int id, int num, int radius, boolean sendGmMessage)
+	private static void createItem(Player activeChar, Player target, int id, int num, int radius, boolean sendGmMessage)
 	{
 		final Item template = ItemTable.getInstance().getTemplate(id);
 		if (template == null)
@@ -176,23 +190,15 @@ public class AdminCreateItem implements IAdminCommandHandler
 		
 		if (radius > 0)
 		{
-			int counter = 0;
-			
-			for (L2PcInstance obj : activeChar.getKnownList().getKnownTypeInRadius(L2PcInstance.class, radius))
+			final List<Player> players = activeChar.getKnownTypeInRadius(Player.class, radius);
+			for (Player obj : players)
 			{
-				if (!(obj.equals(activeChar)))
-				{
-					obj.getInventory().addItem("Admin", id, num, obj, activeChar);
-					obj.sendMessage("A GM spawned " + num + " " + template.getName() + " in your inventory.");
-					counter++;
-					
-					// Send whole item list and open inventory window
-					obj.sendPacket(new ItemList(obj, true));
-				}
+				obj.addItem("Admin", id, num, activeChar, false);
+				obj.sendMessage("A GM spawned " + num + " " + template.getName() + " in your inventory.");
 			}
 			
 			if (sendGmMessage)
-				activeChar.sendMessage(counter + " players rewarded with " + num + " " + template.getName() + " in a " + radius + " radius.");
+				activeChar.sendMessage(players.size() + " players rewarded with " + num + " " + template.getName() + " in a " + radius + " radius.");
 		}
 		else
 		{

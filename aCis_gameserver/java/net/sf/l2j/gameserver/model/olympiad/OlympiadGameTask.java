@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.olympiad;
 
 import java.util.logging.Level;
@@ -168,7 +154,7 @@ public final class OlympiadGameTask implements Runnable
 			int delay = 1; // schedule next call after 1s
 			switch (_state)
 			{
-			// Game created
+				// Game created
 				case BEGIN:
 				{
 					_state = GameState.TELE_TO_ARENA;
@@ -205,7 +191,10 @@ public final class OlympiadGameTask implements Runnable
 					_zone.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S).addNumber(_countDown));
 					
 					if (_countDown == 20)
-						_game.buffAndHealPlayers();
+					{
+						_game.buffPlayers();
+						_game.healPlayers();
+					}
 					
 					delay = getDelay(BATTLE_START_TIME);
 					if (_countDown <= 0)
@@ -217,7 +206,10 @@ public final class OlympiadGameTask implements Runnable
 				case BATTLE_STARTED:
 				{
 					_countDown = 0;
+					
+					_game.healPlayers();
 					_game.resetDamage();
+					
 					_state = GameState.BATTLE_IN_PROGRESS; // set state first, used in zone update
 					if (!startBattle())
 						_state = GameState.GAME_STOPPED;

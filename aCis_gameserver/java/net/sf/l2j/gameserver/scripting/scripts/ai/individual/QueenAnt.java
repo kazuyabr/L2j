@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.ai.individual;
 
 import java.util.ArrayList;
@@ -20,17 +6,17 @@ import java.util.List;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.datatables.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
@@ -70,10 +56,10 @@ public class QueenAnt extends L2AttackableAIScript
 	private static final IntIntHolder HEAL1 = new IntIntHolder(4020, 1);
 	private static final IntIntHolder HEAL2 = new IntIntHolder(4024, 1);
 	
-	private static final List<L2MonsterInstance> _nurses = new ArrayList<>(5);
+	private static final List<Monster> _nurses = new ArrayList<>(5);
 	
-	private L2MonsterInstance _queen = null;
-	private L2MonsterInstance _larva = null;
+	private Monster _queen = null;
+	private Monster _larva = null;
 	
 	public QueenAnt()
 	{
@@ -91,7 +77,7 @@ public class QueenAnt extends L2AttackableAIScript
 			// the time has already expired while the server was offline. Immediately spawn queen ant.
 			else
 			{
-				L2GrandBossInstance queen = (L2GrandBossInstance) addSpawn(QUEEN, QUEEN_X, QUEEN_Y, QUEEN_Z, 0, false, 0, false);
+				GrandBoss queen = (GrandBoss) addSpawn(QUEEN, QUEEN_X, QUEEN_Y, QUEEN_Z, 0, false, 0, false);
 				GrandBossManager.getInstance().setBossStatus(QUEEN, ALIVE);
 				spawnBoss(queen);
 			}
@@ -111,7 +97,7 @@ public class QueenAnt extends L2AttackableAIScript
 				loc_z = QUEEN_Z;
 			}
 			
-			L2GrandBossInstance queen = (L2GrandBossInstance) addSpawn(QUEEN, loc_x, loc_y, loc_z, heading, false, 0, false);
+			GrandBoss queen = (GrandBoss) addSpawn(QUEEN, loc_x, loc_y, loc_z, heading, false, 0, false);
 			queen.setCurrentHpMp(hp, mp);
 			spawnBoss(queen);
 		}
@@ -124,7 +110,7 @@ public class QueenAnt extends L2AttackableAIScript
 		addFactionCallId(NURSE);
 	}
 	
-	private void spawnBoss(L2GrandBossInstance npc)
+	private void spawnBoss(GrandBoss npc)
 	{
 		if (Rnd.get(100) < 33)
 			AQ_LAIR.movePlayersTo(-19480, 187344, -5600);
@@ -136,21 +122,21 @@ public class QueenAnt extends L2AttackableAIScript
 		GrandBossManager.getInstance().addBoss(npc);
 		startQuestTimer("action", 10000, npc, null, true);
 		startQuestTimer("heal", 1000, null, null, true);
-		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		npc.broadcastPacket(new PlaySound(1, "BS02_D", npc));
 		
 		_queen = npc;
-		_larva = (L2MonsterInstance) addSpawn(LARVA, -21600, 179482, -5846, Rnd.get(360), false, 0, false);
+		_larva = (Monster) addSpawn(LARVA, -21600, 179482, -5846, Rnd.get(360), false, 0, false);
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		if (event.equalsIgnoreCase("heal"))
 		{
 			boolean notCasting;
 			final boolean larvaNeedHeal = _larva != null && _larva.getCurrentHp() < _larva.getMaxHp();
 			final boolean queenNeedHeal = _queen != null && _queen.getCurrentHp() < _queen.getMaxHp();
-			for (L2MonsterInstance nurse : _nurses)
+			for (Monster nurse : _nurses)
 			{
 				if (nurse == null || nurse.isDead() || nurse.isCastingNow())
 					continue;
@@ -196,7 +182,7 @@ public class QueenAnt extends L2AttackableAIScript
 		}
 		else if (event.equalsIgnoreCase("queen_unlock"))
 		{
-			L2GrandBossInstance queen = (L2GrandBossInstance) addSpawn(QUEEN, QUEEN_X, QUEEN_Y, QUEEN_Z, 0, false, 0, false);
+			GrandBoss queen = (GrandBoss) addSpawn(QUEEN, QUEEN_X, QUEEN_Y, QUEEN_Z, 0, false, 0, false);
 			GrandBossManager.getInstance().setBossStatus(QUEEN, ALIVE);
 			spawnBoss(queen);
 		}
@@ -204,9 +190,9 @@ public class QueenAnt extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onSpawn(L2Npc npc)
+	public String onSpawn(Npc npc)
 	{
-		final L2MonsterInstance mob = (L2MonsterInstance) npc;
+		final Monster mob = (Monster) npc;
 		switch (npc.getNpcId())
 		{
 			case LARVA:
@@ -228,7 +214,7 @@ public class QueenAnt extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onFactionCall(L2Npc npc, L2Npc caller, L2PcInstance attacker, boolean isPet)
+	public String onFactionCall(Npc npc, Npc caller, Player attacker, boolean isPet)
 	{
 		if (caller == null || npc == null)
 			return super.onFactionCall(npc, caller, attacker, isPet);
@@ -238,20 +224,20 @@ public class QueenAnt extends L2AttackableAIScript
 			if (caller.getCurrentHp() < caller.getMaxHp())
 			{
 				npc.setTarget(caller);
-				((L2Attackable) npc).useMagic(HEAL1.getSkill());
+				((Attackable) npc).useMagic(HEAL1.getSkill());
 			}
 		}
 		return null;
 	}
 	
 	@Override
-	public String onAggro(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onAggro(Npc npc, Player player, boolean isPet)
 	{
 		if (npc == null)
 			return null;
 		
 		final boolean isMage;
-		final L2Playable character;
+		final Playable character;
 		if (isPet)
 		{
 			isMage = false;
@@ -286,14 +272,14 @@ public class QueenAnt extends L2AttackableAIScript
 				curse.getEffects(npc, character);
 			}
 			
-			((L2Attackable) npc).stopHating(character); // for calling again
+			((Attackable) npc).stopHating(character); // for calling again
 			return null;
 		}
 		return super.onAggro(npc, player, isPet);
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
 		// Acts only once.
 		if (GrandBossManager.getInstance().getBossStatus(QUEEN) == ALIVE)
@@ -301,7 +287,7 @@ public class QueenAnt extends L2AttackableAIScript
 			int npcId = npc.getNpcId();
 			if (npcId == QUEEN)
 			{
-				npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+				npc.broadcastPacket(new PlaySound(1, "BS02_D", npc));
 				GrandBossManager.getInstance().setBossStatus(QUEEN, DEAD);
 				
 				long respawnTime = (long) Config.SPAWN_INTERVAL_AQ + Rnd.get(-Config.RANDOM_SPAWN_TIME_AQ, Config.RANDOM_SPAWN_TIME_AQ);
@@ -325,13 +311,13 @@ public class QueenAnt extends L2AttackableAIScript
 			{
 				if (npcId == ROYAL)
 				{
-					L2MonsterInstance mob = (L2MonsterInstance) npc;
+					Monster mob = (Monster) npc;
 					if (mob.getLeader() != null)
 						mob.getLeader().getMinionList().onMinionDie(mob, (280 + Rnd.get(40)) * 1000);
 				}
 				else if (npcId == NURSE)
 				{
-					L2MonsterInstance mob = (L2MonsterInstance) npc;
+					Monster mob = (Monster) npc;
 					_nurses.remove(mob);
 					if (mob.getLeader() != null)
 						mob.getLeader().getMinionList().onMinionDie(mob, 10000);

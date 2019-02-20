@@ -55,8 +55,8 @@
 		<set name="effectRange" val="1100" />
 		<for>
 			<effect name="Debuff" time="30" val="0" stackOrder="#stackOrder" stackType="armor_fire">
-				<sub order="0x40" stat="fireRes" val="#fireRes" />
-				<add order="0x40" stat="waterRes" val="#waterRes" />
+				<subDiv order="0x40" stat="fireRes" val="#fireRes" />
+				<addMul order="0x40" stat="waterRes" val="#waterRes" />
 			</effect>
 		</for>
 	</skill>
@@ -390,7 +390,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="derangementVuln" val="#derangementVuln" />
+			<addMul order="0x40" stat="derangementVuln" val="#derangementVuln" />
 		</for>
 	</skill>
 	<skill id="4122" levels="1" name="Antharas">
@@ -399,8 +399,8 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<sub order="0x40" stat="stunVuln" val="80" />
-			<sub order="0x40" stat="debuffVuln" val="100" />
+			<addMul order="0x40" stat="stunVuln" val="80" />
+			<addMul order="0x40" stat="debuffVuln" val="100" />
 		</for>
 	</skill>
 	<skill id="4123" levels="12" name="Hostile Feeling">

@@ -1,26 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.type;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameTask;
 import net.sf.l2j.gameserver.model.zone.L2SpawnZone;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
@@ -48,27 +34,27 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 		_task = task;
 	}
 	
-	public final void broadcastStatusUpdate(L2PcInstance player)
+	public final void broadcastStatusUpdate(Player player)
 	{
 		final ExOlympiadUserInfo packet = new ExOlympiadUserInfo(player);
-		for (L2PcInstance plyr : getKnownTypeInside(L2PcInstance.class))
+		for (Player plyr : getKnownTypeInside(Player.class))
 		{
-			if (plyr.inObserverMode() || plyr.getOlympiadSide() != player.getOlympiadSide())
+			if (plyr.isInObserverMode() || plyr.getOlympiadSide() != player.getOlympiadSide())
 				plyr.sendPacket(packet);
 		}
 	}
 	
 	public final void broadcastPacketToObservers(L2GameServerPacket packet)
 	{
-		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
+		for (Player player : getKnownTypeInside(Player.class))
 		{
-			if (player.inObserverMode())
+			if (player.isInObserverMode())
 				player.sendPacket(packet);
 		}
 	}
 	
 	@Override
-	protected final void onEnter(L2Character character)
+	protected final void onEnter(Creature character)
 	{
 		character.setInsideZone(ZoneId.NO_SUMMON_FRIEND, true);
 		character.setInsideZone(ZoneId.NO_RESTART, true);
@@ -78,7 +64,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 			if (_task.isBattleStarted())
 			{
 				character.setInsideZone(ZoneId.PVP, true);
-				if (character instanceof L2PcInstance)
+				if (character instanceof Player)
 				{
 					character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 					_task.getGame().sendOlympiadInfo(character);
@@ -86,20 +72,20 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 			}
 		}
 		
-		if (character instanceof L2Playable)
+		if (character instanceof Playable)
 		{
-			final L2PcInstance player = character.getActingPlayer();
+			final Player player = character.getActingPlayer();
 			if (player != null)
 			{
 				// only participants, observers and GMs allowed
-				if (!player.isGM() && !player.isInOlympiadMode() && !player.inObserverMode())
+				if (!player.isGM() && !player.isInOlympiadMode() && !player.isInObserverMode())
 					ThreadPool.execute(new KickPlayer(player));
 			}
 		}
 	}
 	
 	@Override
-	protected final void onExit(L2Character character)
+	protected final void onExit(Creature character)
 	{
 		character.setInsideZone(ZoneId.NO_SUMMON_FRIEND, false);
 		character.setInsideZone(ZoneId.NO_RESTART, false);
@@ -109,7 +95,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 			if (_task.isBattleStarted())
 			{
 				character.setInsideZone(ZoneId.PVP, false);
-				if (character instanceof L2PcInstance)
+				if (character instanceof Player)
 				{
 					character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 					character.sendPacket(ExOlympiadMatchEnd.STATIC_PACKET);
@@ -130,21 +116,18 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 		else
 			sm = SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE);
 		
-		for (L2Character character : _characterList)
+		for (Creature character : _characterList.values())
 		{
-			if (character == null)
-				continue;
-			
 			if (battleStarted)
 			{
 				character.setInsideZone(ZoneId.PVP, true);
-				if (character instanceof L2PcInstance)
+				if (character instanceof Player)
 					character.sendPacket(sm);
 			}
 			else
 			{
 				character.setInsideZone(ZoneId.PVP, false);
-				if (character instanceof L2PcInstance)
+				if (character instanceof Player)
 				{
 					character.sendPacket(sm);
 					character.sendPacket(ExOlympiadMatchEnd.STATIC_PACKET);
@@ -154,20 +137,20 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 	}
 	
 	@Override
-	public void onDieInside(L2Character character)
+	public void onDieInside(Creature character)
 	{
 	}
 	
 	@Override
-	public void onReviveInside(L2Character character)
+	public void onReviveInside(Creature character)
 	{
 	}
 	
 	private static final class KickPlayer implements Runnable
 	{
-		private L2PcInstance _player;
+		private Player _player;
 		
-		public KickPlayer(L2PcInstance player)
+		public KickPlayer(Player player)
 		{
 			_player = player;
 		}
@@ -177,11 +160,11 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 		{
 			if (_player != null)
 			{
-				final L2Summon summon = _player.getPet();
+				final Summon summon = _player.getPet();
 				if (summon != null)
 					summon.unSummon(_player);
 				
-				_player.teleToLocation(TeleportWhereType.TOWN);
+				_player.teleToLocation(TeleportType.TOWN);
 				_player = null;
 			}
 		}

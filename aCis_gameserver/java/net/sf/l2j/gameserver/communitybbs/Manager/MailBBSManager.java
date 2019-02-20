@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.communitybbs.Manager;
 
 import java.sql.Connection;
@@ -30,10 +16,10 @@ import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.datatables.CharNameTable;
+import net.sf.l2j.gameserver.data.PlayerNameTable;
 import net.sf.l2j.gameserver.model.BlockList;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExMailArrived;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
@@ -109,7 +95,7 @@ public class MailBBSManager extends BaseBBSManager
 	}
 	
 	@Override
-	public void parseCmd(String command, L2PcInstance activeChar)
+	public void parseCmd(String command, Player activeChar)
 	{
 		if (command.equals("_bbsmail") || command.equals("_maillist_0_1_0_"))
 			showMailList(activeChar, 1, MailType.INBOX);
@@ -179,7 +165,7 @@ public class MailBBSManager extends BaseBBSManager
 	}
 	
 	@Override
-	public void parseWrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
+	public void parseWrite(String ar1, String ar2, String ar3, String ar4, String ar5, Player activeChar)
 	{
 		if (ar1.equals("Send"))
 		{
@@ -261,7 +247,7 @@ public class MailBBSManager extends BaseBBSManager
 		return _letters;
 	}
 	
-	private Mail getLetter(L2PcInstance activeChar, int letterId)
+	private Mail getLetter(Player activeChar, int letterId)
 	{
 		for (Mail letter : getPlayerMails(activeChar.getObjectId()))
 		{
@@ -276,7 +262,7 @@ public class MailBBSManager extends BaseBBSManager
 		return s.length() > maxWidth ? s.substring(0, maxWidth) : s;
 	}
 	
-	public int checkUnreadMail(L2PcInstance activeChar)
+	public int checkUnreadMail(Player activeChar)
 	{
 		int count = 0;
 		for (Mail letter : getPlayerMails(activeChar.getObjectId()))
@@ -287,12 +273,12 @@ public class MailBBSManager extends BaseBBSManager
 		return count;
 	}
 	
-	private void showMailList(L2PcInstance activeChar, int page, MailType type)
+	private void showMailList(Player activeChar, int page, MailType type)
 	{
 		showMailList(activeChar, page, type, "", "");
 	}
 	
-	private void showMailList(L2PcInstance activeChar, int page, MailType type, String sType, String search)
+	private void showMailList(Player activeChar, int page, MailType type, String sType, String search)
 	{
 		List<Mail> letters;
 		if (!sType.equals("") && !search.equals(""))
@@ -432,7 +418,7 @@ public class MailBBSManager extends BaseBBSManager
 		separateAndSend(content, activeChar);
 	}
 	
-	private void showLetterView(L2PcInstance activeChar, Mail letter)
+	private void showLetterView(Player activeChar, Mail letter)
 	{
 		if (letter == null)
 		{
@@ -455,13 +441,13 @@ public class MailBBSManager extends BaseBBSManager
 		separateAndSend(content, activeChar);
 	}
 	
-	private static void showWriteView(L2PcInstance activeChar)
+	private static void showWriteView(Player activeChar)
 	{
 		String content = HtmCache.getInstance().getHtm(CB_PATH + "mail/mail-write.htm");
 		separateAndSend(content, activeChar);
 	}
 	
-	private static void showWriteView(L2PcInstance activeChar, String parcipientName, Mail letter)
+	private static void showWriteView(Player activeChar, String parcipientName, Mail letter)
 	{
 		String content = HtmCache.getInstance().getHtm(CB_PATH + "mail/mail-reply.htm");
 		
@@ -474,7 +460,7 @@ public class MailBBSManager extends BaseBBSManager
 		send1002(activeChar, " ", "Re: " + letter.subject, "0");
 	}
 	
-	public void sendLetter(String recipients, String subject, String message, L2PcInstance activeChar)
+	public void sendLetter(String recipients, String subject, String message, Player activeChar)
 	{
 		// Current time.
 		final long currentDate = Calendar.getInstance().getTimeInMillis();
@@ -514,14 +500,14 @@ public class MailBBSManager extends BaseBBSManager
 			for (String recipientName : recipientNames)
 			{
 				// Recipient is an invalid player, or is the sender.
-				final int recipientId = CharNameTable.getInstance().getPlayerObjectId(recipientName);
+				final int recipientId = PlayerNameTable.getInstance().getPlayerObjectId(recipientName);
 				if (recipientId <= 0 || recipientId == activeChar.getObjectId())
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					continue;
 				}
 				
-				final L2PcInstance recipientPlayer = L2World.getInstance().getPlayer(recipientId);
+				final Player recipientPlayer = World.getInstance().getPlayer(recipientId);
 				
 				if (!activeChar.isGM())
 				{
@@ -654,9 +640,9 @@ public class MailBBSManager extends BaseBBSManager
 		return count;
 	}
 	
-	private static boolean isBlocked(L2PcInstance activeChar, int recipId)
+	private static boolean isBlocked(Player activeChar, int recipId)
 	{
-		for (L2PcInstance player : L2World.getInstance().getPlayers())
+		for (Player player : World.getInstance().getPlayers())
 		{
 			if (player.getObjectId() == recipId)
 			{
@@ -669,7 +655,7 @@ public class MailBBSManager extends BaseBBSManager
 		return false;
 	}
 	
-	private void deleteLetter(L2PcInstance activeChar, int letterId)
+	private void deleteLetter(Player activeChar, int letterId)
 	{
 		for (Mail letter : getPlayerMails(activeChar.getObjectId()))
 		{
@@ -693,7 +679,7 @@ public class MailBBSManager extends BaseBBSManager
 		}
 	}
 	
-	private void setLetterToRead(L2PcInstance activeChar, int letterId)
+	private void setLetterToRead(Player activeChar, int letterId)
 	{
 		getLetter(activeChar, letterId).unread = false;
 		
@@ -711,7 +697,7 @@ public class MailBBSManager extends BaseBBSManager
 		}
 	}
 	
-	private void setLetterLocation(L2PcInstance activeChar, int letterId, MailType location)
+	private void setLetterLocation(Player activeChar, int letterId, MailType location)
 	{
 		getLetter(activeChar, letterId).location = location;
 		
@@ -731,7 +717,7 @@ public class MailBBSManager extends BaseBBSManager
 	
 	private static String getCharName(int charId)
 	{
-		String name = CharNameTable.getInstance().getPlayerName(charId);
+		String name = PlayerNameTable.getInstance().getPlayerName(charId);
 		return name == null ? "Unknown" : name;
 	}
 	
@@ -760,7 +746,7 @@ public class MailBBSManager extends BaseBBSManager
 		return getCountLetters(charId, MailType.INBOX, "", "") >= 100;
 	}
 	
-	private void showLastForum(L2PcInstance activeChar)
+	private void showLastForum(Player activeChar)
 	{
 		final int page = activeChar.getMailPosition() % 1000;
 		final int type = activeChar.getMailPosition() / 1000;

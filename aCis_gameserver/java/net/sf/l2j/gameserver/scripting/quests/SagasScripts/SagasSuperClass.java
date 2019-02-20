@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests.SagasScripts;
 
 import java.util.ArrayList;
@@ -22,15 +8,15 @@ import java.util.Map;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -50,7 +36,7 @@ public class SagasSuperClass extends Quest
 	public int[] Y = {};
 	public int[] Z = {};
 	
-	private final Map<L2Npc, Integer> _SpawnList = new HashMap<>();
+	private final Map<Npc, Integer> _SpawnList = new HashMap<>();
 	
 	private static final String[] Text = new String[]
 	{
@@ -159,18 +145,18 @@ public class SagasSuperClass extends Quest
 			addKillId(Guardian_Angel);
 	}
 	
-	private static void cast(L2Npc npc, L2Character target, int skillId, int level)
+	private static void cast(Npc npc, Creature target, int skillId, int level)
 	{
 		target.broadcastPacket(new MagicSkillUse(target, target, skillId, level, 6000, 1));
 		target.broadcastPacket(new MagicSkillUse(npc, npc, skillId, level, 6000, 1));
 	}
 	
-	public void AddSpawn(QuestState st, L2Npc mob)
+	public void AddSpawn(QuestState st, Npc mob)
 	{
 		_SpawnList.put(mob, st.getPlayer().getObjectId());
 	}
 	
-	public void DeleteSpawn(QuestState st, L2Npc npc)
+	public void DeleteSpawn(QuestState st, Npc npc)
 	{
 		if (_SpawnList.containsKey(npc))
 		{
@@ -179,11 +165,11 @@ public class SagasSuperClass extends Quest
 		}
 	}
 	
-	public QuestState findRightState(L2Npc npc)
+	public QuestState findRightState(Npc npc)
 	{
 		if (_SpawnList.containsKey(npc))
 		{
-			final L2PcInstance player = L2World.getInstance().getPlayer(_SpawnList.get(npc));
+			final Player player = World.getInstance().getPlayer(_SpawnList.get(npc));
 			if (player != null)
 				return player.getQuestState(getName());
 		}
@@ -197,13 +183,13 @@ public class SagasSuperClass extends Quest
 			if (st2.getQuestItemsCount(Items[3]) >= 700)
 			{
 				st2.takeItems(Items[3], 20);
-				L2Npc Archon = addSpawn(Mob[1], st2.getPlayer(), false, 0, true);
+				Npc Archon = addSpawn(Mob[1], st2.getPlayer(), false, 0, true);
 				AddSpawn(st2, Archon);
 				st2.set("spawned", "1");
 				startQuestTimer("Archon Hellisha has despawned", 600000, Archon, st2.getPlayer(), false);
 				
 				// Attack player
-				((L2Attackable) Archon).addDamageHate(st2.getPlayer(), 0, 99999);
+				((Attackable) Archon).addDamageHate(st2.getPlayer(), 0, 99999);
 				Archon.getAI().setIntention(CtrlIntention.ATTACK, st2.getPlayer(), null);
 			}
 			else
@@ -214,7 +200,7 @@ public class SagasSuperClass extends Quest
 		}
 	}
 	
-	public QuestState findQuest(L2PcInstance player)
+	public QuestState findQuest(Player player)
 	{
 		QuestState st = player.getQuestState(getName());
 		if (st != null && player.getClassId().getId() == QuestClass[qnu - 70])
@@ -223,18 +209,18 @@ public class SagasSuperClass extends Quest
 		return null;
 	}
 	
-	public int getClassId(L2PcInstance player)
+	public int getClassId(Player player)
 	{
 		return classid;
 	}
 	
-	public int getPrevClass(L2PcInstance player)
+	public int getPrevClass(Player player)
 	{
 		return prevclass;
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		QuestState st = player.getQuestState(getName());
 		String htmltext = "";
@@ -380,7 +366,7 @@ public class SagasSuperClass extends Quest
 					htmltext = "7-03.htm";
 				else if (st.getInt("spawned") == 0)
 				{
-					L2Npc Mob_1 = addSpawn(Mob[0], X[0], Y[0], Z[0], 0, false, 0, true);
+					Npc Mob_1 = addSpawn(Mob[0], X[0], Y[0], Z[0], 0, false, 0, true);
 					st.set("spawned", "1");
 					startQuestTimer("Mob_1 Timer 1", 500, Mob_1, player, false);
 					startQuestTimer("Mob_1 has despawned", 300000, Mob_1, player, false);
@@ -419,8 +405,8 @@ public class SagasSuperClass extends Quest
 				if (st.getInt("Quest0") == 0)
 				{
 					// Spawn NPC and mob fighting each other, and register them in _Spawnlist.
-					L2Npc Mob_3 = addSpawn(Mob[2], X[1], Y[1], Z[1], 0, false, 0, true);
-					L2Npc Mob_2 = addSpawn(NPC[4], X[2], Y[2], Z[2], 0, false, 0, true);
+					Npc Mob_3 = addSpawn(Mob[2], X[1], Y[1], Z[1], 0, false, 0, true);
+					Npc Mob_2 = addSpawn(NPC[4], X[2], Y[2], Z[2], 0, false, 0, true);
 					AddSpawn(st, Mob_3);
 					AddSpawn(st, Mob_2);
 					
@@ -458,7 +444,7 @@ public class SagasSuperClass extends Quest
 			else if (event.equalsIgnoreCase("Mob_1 Timer 1"))
 			{
 				// Attack player
-				((L2Attackable) npc).addDamageHate(st.getPlayer(), 0, 99999);
+				((Attackable) npc).addDamageHate(st.getPlayer(), 0, 99999);
 				npc.getAI().setIntention(CtrlIntention.ATTACK, st.getPlayer(), null);
 				
 				npc.broadcastNpcSay(Text[0].replace("PLAYERNAME", player.getName()));
@@ -480,13 +466,13 @@ public class SagasSuperClass extends Quest
 			else if (event.equalsIgnoreCase("Mob_3 Timer 1"))
 			{
 				// Search the NPC.
-				L2Npc Mob_2 = (L2Npc) L2World.getInstance().getObject(st.getInt("Mob_2"));
+				Npc Mob_2 = (Npc) World.getInstance().getObject(st.getInt("Mob_2"));
 				if (Mob_2 == null)
 					return null;
 				
 				if (_SpawnList.containsKey(Mob_2) && _SpawnList.get(Mob_2) == player.getObjectId())
 				{
-					((L2Attackable) npc).addDamageHate(Mob_2, 0, 99999);
+					((Attackable) npc).addDamageHate(Mob_2, 0, 99999);
 					npc.getAI().setIntention(CtrlIntention.ATTACK, Mob_2, null);
 					
 					npc.broadcastNpcSay(Text[14]);
@@ -549,7 +535,7 @@ public class SagasSuperClass extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(getName());
@@ -719,7 +705,7 @@ public class SagasSuperClass extends Quest
 	}
 	
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(Npc npc, Player player)
 	{
 		String htmltext = "";
 		QuestState st = player.getQuestState(getName());
@@ -779,7 +765,7 @@ public class SagasSuperClass extends Quest
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player player, int damage, boolean isPet, L2Skill skill)
 	{
 		QuestState st2 = findRightState(npc);
 		if (st2 == null)
@@ -816,15 +802,15 @@ public class SagasSuperClass extends Quest
 	}
 	
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance player, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(Npc npc, Player player, L2Skill skill, WorldObject[] targets, boolean isPet)
 	{
 		if (_SpawnList.containsKey(npc) && _SpawnList.get(npc) != player.getObjectId())
 		{
-			L2PcInstance quest_player = L2World.getInstance().getPlayer(_SpawnList.get(npc));
+			Player quest_player = World.getInstance().getPlayer(_SpawnList.get(npc));
 			if (quest_player == null)
 				return null;
 			
-			for (L2Object obj : targets)
+			for (WorldObject obj : targets)
 			{
 				if (obj == quest_player || obj == npc)
 				{
@@ -843,7 +829,7 @@ public class SagasSuperClass extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
 		int npcId = npc.getNpcId();
 		
@@ -851,14 +837,14 @@ public class SagasSuperClass extends Quest
 		{
 			if (npcId == Archon_Minion)
 			{
-				L2Party party = player.getParty();
+				Party party = player.getParty();
 				if (party != null)
 				{
 					List<QuestState> PartyQuestMembers = new ArrayList<>();
-					for (L2PcInstance player1 : party.getPartyMembers())
+					for (Player player1 : party.getMembers())
 					{
 						QuestState st1 = findQuest(player1);
-						if (st1 != null && player1.isInsideRadius(player, Config.ALT_PARTY_RANGE2, false, false))
+						if (st1 != null && player1.isInsideRadius(player, Config.PARTY_RANGE, false, false))
 						{
 							if (st1.getInt("cond") == 15)
 								PartyQuestMembers.add(st1);

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.taskmanager;
 
 import java.sql.Connection;
@@ -27,19 +13,20 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 
 /**
  * Destroys item on ground after specified time. When server is about to shutdown/restart, saves all dropped items in to SQL. Loads them during server start.
- * @author Hasha
  */
 public final class ItemsOnGroundTaskManager implements Runnable
 {
-	private static final Logger _log = Logger.getLogger(ItemsOnGroundTaskManager.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ItemsOnGroundTaskManager.class.getName());
 	
 	private static final String LOAD_ITEMS = "SELECT object_id,item_id,count,enchant_level,x,y,z,time FROM items_on_ground";
 	private static final String DELETE_ITEMS = "DELETE FROM items_on_ground";
@@ -47,89 +34,72 @@ public final class ItemsOnGroundTaskManager implements Runnable
 	
 	private final Map<ItemInstance, Long> _items = new ConcurrentHashMap<>();
 	
-	public static final ItemsOnGroundTaskManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
 	public ItemsOnGroundTaskManager()
 	{
 		// Run task each 5 seconds.
 		ThreadPool.scheduleAtFixedRate(this, 5000, 5000);
 		
-		// Item saving is disabled, return.
-		if (!Config.SAVE_DROPPED_ITEM)
-			return;
-		
 		// Load all items.
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); ResultSet rs = con.createStatement().executeQuery(LOAD_ITEMS))
 		{
 			// Get current time.
 			final long time = System.currentTimeMillis();
 			
-			ResultSet result = con.createStatement().executeQuery(LOAD_ITEMS);
-			while (result.next())
+			while (rs.next())
 			{
-				// TODO: maybe add destroy item check here and remove mercenary ticket handling system
-				
 				// Create new item.
-				final ItemInstance item = new ItemInstance(result.getInt(1), result.getInt(2));
-				L2World.getInstance().addObject(item);
+				final ItemInstance item = new ItemInstance(rs.getInt(1), rs.getInt(2));
+				World.getInstance().addObject(item);
 				
 				// Check and set count.
-				final int count = result.getInt(3);
+				final int count = rs.getInt(3);
 				if (item.isStackable() && count > 1)
 					item.setCount(count);
 				
 				// Check and set enchant.
-				final int enchant = result.getInt(4);
+				final int enchant = rs.getInt(4);
 				if (enchant > 0)
 					item.setEnchantLevel(enchant);
 				
 				// Spawn item in the world.
-				item.getPosition().set(result.getInt(5), result.getInt(6), result.getInt(7));
-				item.setRegion(L2World.getInstance().getRegion(item.getPosition()));
-				item.getRegion().addVisibleObject(item);
-				item.setIsVisible(true);
-				L2World.getInstance().addVisibleObject(item, item.getRegion());
+				item.spawnMe(rs.getInt(5), rs.getInt(6), rs.getInt(7));
+				
+				// If item is on a Castle ground, verify if it's an allowed ticket. If yes, add it to associated castle.
+				final Castle castle = CastleManager.getInstance().getCastle(item);
+				if (castle != null && castle.getTicket(item.getItemId()) != null)
+					castle.addDroppedTicket(item);
 				
 				// Get interval, add item to the list.
-				long interval = result.getLong(8);
-				if (interval == 0)
-					_items.put(item, (long) 0);
-				else
-					_items.put(item, time + interval);
+				final long interval = rs.getLong(8);
+				_items.put(item, (interval == 0) ? 0L : time + interval);
 			}
-			result.close();
 			
-			_log.info("ItemsOnGroundTaskManager: Restored " + _items.size() + " items on ground.");
-		}
-		catch (Exception e)
-		{
-			_log.warning("ItemsOnGroundTaskManager: Error while loading \"items_on_ground\" table: " + e.getMessage());
-		}
-		
-		// Delete all items from database.
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement(DELETE_ITEMS);
-			statement.execute();
-			statement.close();
+			LOGGER.info("ItemsOnGroundTaskManager: Restored " + _items.size() + " items on ground.");
 		}
 		catch (SQLException e)
 		{
-			_log.warning("ItemsOnGroundTaskManager: Can not empty \"items_on_ground\" table to save new items: " + e.getMessage());
+			LOGGER.warning("ItemsOnGroundTaskManager: Error while loading \"items_on_ground\" table: " + e.getMessage());
+		}
+		
+		// Delete all items from database.
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement st = con.prepareStatement(DELETE_ITEMS))
+		{
+			st.execute();
+		}
+		catch (SQLException e)
+		{
+			LOGGER.warning("ItemsOnGroundTaskManager: Can not empty \"items_on_ground\" table to save new items: " + e.getMessage());
 		}
 	}
 	
 	/**
 	 * Adds {@link ItemInstance} to the ItemAutoDestroyTask.
 	 * @param item : {@link ItemInstance} to be added and checked.
-	 * @param actor : {@link L2Character} who dropped the item.
+	 * @param actor : {@link Creature} who dropped the item.
 	 */
-	public final void add(ItemInstance item, L2Character actor)
+	public final void add(ItemInstance item, Creature actor)
 	{
-		// Actor doesn't exist or item is protected, do not store item to destroy task (e.g. tickets for castle mercenaries -> handled by other manager)
+		// Actor doesn't exist or item is protected, don't bother with the item (e.g. Cursed Weapons).
 		if (actor == null || item.isDestroyProtected())
 			return;
 		
@@ -145,10 +115,14 @@ public final class ItemsOnGroundTaskManager implements Runnable
 		else if (item.isEquipable())
 			dropTime = Config.EQUIPABLE_ITEM_AUTO_DESTROY_TIME;
 		else
-			dropTime = Config.ITEM_AUTO_DESTROY_TIME;
+		{
+			// If item is on a Castle ground, verify if it's an allowed ticket. If yes, the associated timer is always 0.
+			final Castle castle = CastleManager.getInstance().getCastle(item);
+			dropTime = (castle != null && castle.getTicket(item.getItemId()) != null) ? 0 : Config.ITEM_AUTO_DESTROY_TIME;
+		}
 		
 		// Item was dropped by playable, apply the multiplier.
-		if (actor instanceof L2Playable)
+		if (actor instanceof Playable)
 			dropTime *= Config.PLAYER_DROPPED_ITEM_MULTIPLIER;
 		
 		// If drop time exists, set real drop time.
@@ -184,45 +158,31 @@ public final class ItemsOnGroundTaskManager implements Runnable
 			// Get and validate destroy time.
 			final long destroyTime = entry.getValue();
 			
-			// Item can't be destroyed, skip.
-			if (destroyTime == 0)
-				continue;
-			
-			// Time hasn't passed yet, skip.
-			if (time < destroyTime)
+			// Item can't be destroyed or time hasn't passed yet, skip.
+			if (destroyTime == 0 || time < destroyTime)
 				continue;
 			
 			// Destroy item and remove from task.
 			final ItemInstance item = entry.getKey();
-			L2World.getInstance().removeVisibleObject(item, item.getRegion());
-			L2World.getInstance().removeObject(item);
-			_items.remove(item);
+			item.decayMe();
 		}
 	}
 	
 	public final void save()
 	{
-		// Item saving is disabled, return.
-		if (!Config.SAVE_DROPPED_ITEM)
-		{
-			_log.info("ItemsOnGroundTaskManager: Item save is disabled.");
-			return;
-		}
-		
 		// List is empty, return.
 		if (_items.isEmpty())
 		{
-			_log.info("ItemsOnGroundTaskManager: List is empty.");
+			LOGGER.info("ItemsOnGroundTaskManager: List is empty.");
 			return;
 		}
 		
 		// Store whole items list to database.
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement st = con.prepareStatement(SAVE_ITEMS))
 		{
 			// Get current time.
 			final long time = System.currentTimeMillis();
 			
-			PreparedStatement statement = con.prepareStatement(SAVE_ITEMS);
 			for (Entry<ItemInstance, Long> entry : _items.entrySet())
 			{
 				// Get item and destroy time interval.
@@ -232,41 +192,36 @@ public final class ItemsOnGroundTaskManager implements Runnable
 				if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
 					continue;
 				
-				try
-				{
-					statement.setInt(1, item.getObjectId());
-					statement.setInt(2, item.getItemId());
-					statement.setInt(3, item.getCount());
-					statement.setInt(4, item.getEnchantLevel());
-					statement.setInt(5, item.getX());
-					statement.setInt(6, item.getY());
-					statement.setInt(7, item.getZ());
-					long left = entry.getValue();
-					if (left == 0)
-						statement.setLong(8, 0);
-					else
-						statement.setLong(8, left - time);
-					
-					statement.execute();
-					statement.clearParameters();
-				}
-				catch (Exception e)
-				{
-					_log.warning("ItemsOnGroundTaskManager: Error while saving item id=" + item.getItemId() + " name=" + item.getName() + ": " + e.getMessage());
-				}
+				st.setInt(1, item.getObjectId());
+				st.setInt(2, item.getItemId());
+				st.setInt(3, item.getCount());
+				st.setInt(4, item.getEnchantLevel());
+				st.setInt(5, item.getX());
+				st.setInt(6, item.getY());
+				st.setInt(7, item.getZ());
+				
+				final long left = entry.getValue();
+				st.setLong(8, (left == 0) ? 0 : left - time);
+				
+				st.addBatch();
 			}
-			statement.close();
+			st.executeBatch();
 			
-			_log.info("ItemsOnGroundTaskManager: Saved " + _items.size() + " items on ground.");
+			LOGGER.info("ItemsOnGroundTaskManager: Saved " + _items.size() + " items on ground.");
 		}
 		catch (SQLException e)
 		{
-			_log.warning("ItemsOnGroundTaskManager: Could not save items on ground to \"items_on_ground\" table: " + e.getMessage());
+			LOGGER.warning("ItemsOnGroundTaskManager: Could not save items on ground to \"items_on_ground\" table: " + e.getMessage());
 		}
+	}
+	
+	public static final ItemsOnGroundTaskManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final ItemsOnGroundTaskManager _instance = new ItemsOnGroundTaskManager();
+		protected static final ItemsOnGroundTaskManager INSTANCE = new ItemsOnGroundTaskManager();
 	}
 }

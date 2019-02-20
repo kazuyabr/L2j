@@ -1,29 +1,14 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.skills.l2skills;
 
-import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.NpcTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2CubicInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Cubic;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Servitor;
+import net.sf.l2j.gameserver.model.actor.instance.SiegeSummon;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -79,11 +64,11 @@ public class L2SkillSummon extends L2Skill
 		_itemConsumeSteps = set.getInteger("itemConsumeSteps", 0);
 	}
 	
-	public boolean checkCondition(L2Character activeChar)
+	public boolean checkCondition(Creature activeChar)
 	{
-		if (activeChar instanceof L2PcInstance)
+		if (activeChar instanceof Player)
 		{
-			L2PcInstance player = (L2PcInstance) activeChar;
+			Player player = (Player) activeChar;
 			
 			if (isCubic())
 			{
@@ -102,7 +87,7 @@ public class L2SkillSummon extends L2Skill
 			}
 			else
 			{
-				if (player.inObserverMode())
+				if (player.isInObserverMode())
 					return false;
 				
 				if (player.getPet() != null)
@@ -116,12 +101,12 @@ public class L2SkillSummon extends L2Skill
 	}
 	
 	@Override
-	public void useSkill(L2Character caster, L2Object[] targets)
+	public void useSkill(Creature caster, WorldObject[] targets)
 	{
-		if (caster.isAlikeDead() || !(caster instanceof L2PcInstance))
+		if (caster.isAlikeDead() || !(caster instanceof Player))
 			return;
 		
-		L2PcInstance activeChar = (L2PcInstance) caster;
+		Player activeChar = (Player) caster;
 		
 		if (_npcId == 0)
 		{
@@ -137,12 +122,12 @@ public class L2SkillSummon extends L2Skill
 			
 			if (targets.length > 1) // Mass cubic skill
 			{
-				for (L2Object obj : targets)
+				for (WorldObject obj : targets)
 				{
-					if (!(obj instanceof L2PcInstance))
+					if (!(obj instanceof Player))
 						continue;
 					
-					L2PcInstance player = ((L2PcInstance) obj);
+					Player player = ((Player) obj);
 					
 					int mastery = player.getSkillLevel(SKILL_CUBIC_MASTERY);
 					if (mastery < 0)
@@ -151,7 +136,7 @@ public class L2SkillSummon extends L2Skill
 					if (mastery == 0 && !player.getCubics().isEmpty())
 					{
 						// Player can have only 1 cubic - we shuld replace old cubic with new one
-						for (L2CubicInstance c : player.getCubics().values())
+						for (Cubic c : player.getCubics().values())
 						{
 							c.stopAction();
 							c = null;
@@ -161,7 +146,7 @@ public class L2SkillSummon extends L2Skill
 					
 					if (player.getCubics().containsKey(_npcId))
 					{
-						L2CubicInstance cubic = player.getCubic(_npcId);
+						Cubic cubic = player.getCubic(_npcId);
 						cubic.stopAction();
 						cubic.cancelDisappear();
 						player.delCubic(_npcId);
@@ -175,7 +160,7 @@ public class L2SkillSummon extends L2Skill
 					else
 						// given by other player
 						player.addCubic(_npcId, _cubicSkillLevel, getPower(), _activationtime, _activationchance, _summonTotalLifeTime, true);
-					
+				
 					player.broadcastUserInfo();
 				}
 				return;
@@ -187,7 +172,7 @@ public class L2SkillSummon extends L2Skill
 			
 			if (activeChar.getCubics().containsKey(_npcId))
 			{
-				L2CubicInstance cubic = activeChar.getCubic(_npcId);
+				Cubic cubic = activeChar.getCubic(_npcId);
 				cubic.stopAction();
 				cubic.cancelDisappear();
 				activeChar.delCubic(_npcId);
@@ -195,8 +180,6 @@ public class L2SkillSummon extends L2Skill
 			
 			if (activeChar.getCubics().size() > mastery)
 			{
-				if (Config.DEBUG)
-					_log.fine("player can't summon any more cubics. ignore summon skill");
 				activeChar.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
 				return;
 			}
@@ -207,13 +190,9 @@ public class L2SkillSummon extends L2Skill
 		}
 		
 		if (activeChar.getPet() != null || activeChar.isMounted())
-		{
-			if (Config.DEBUG)
-				_log.fine("player has a pet already. ignore summon skill");
 			return;
-		}
 		
-		L2SummonInstance summon;
+		Servitor summon;
 		NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(_npcId);
 		if (summonTemplate == null)
 		{
@@ -221,10 +200,10 @@ public class L2SkillSummon extends L2Skill
 			return;
 		}
 		
-		if (summonTemplate.isType("L2SiegeSummon"))
-			summon = new L2SiegeSummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
+		if (summonTemplate.isType("SiegeSummon"))
+			summon = new SiegeSummon(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
 		else
-			summon = new L2SummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
+			summon = new Servitor(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
 		
 		summon.setName(summonTemplate.getName());
 		summon.setTitle(activeChar.getName());

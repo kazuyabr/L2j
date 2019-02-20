@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import java.util.List;
@@ -19,11 +5,11 @@ import java.util.List;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -42,17 +28,17 @@ public class Harvest implements ISkillHandler
 	};
 	
 	@Override
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets)
 	{
-		if (!(activeChar instanceof L2PcInstance))
+		if (!(activeChar instanceof Player))
 			return;
 		
-		final L2Object object = targets[0];
-		if (!(object instanceof L2MonsterInstance))
+		final WorldObject object = targets[0];
+		if (!(object instanceof Monster))
 			return;
 		
-		final L2PcInstance player = (L2PcInstance) activeChar;
-		final L2MonsterInstance target = (L2MonsterInstance) object;
+		final Player player = (Player) activeChar;
+		final Monster target = (Monster) object;
 		
 		if (player.getObjectId() != target.getSeederId())
 		{
@@ -93,7 +79,7 @@ public class Harvest implements ISkillHandler
 						player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S2_S1).addItemName(cropId).addNumber(total));
 						
 						if (player.isInParty())
-							player.getParty().broadcastToPartyMembers(player, SystemMessage.getSystemMessage(SystemMessageId.S1_HARVESTED_S3_S2S).addPcName(player).addItemName(cropId).addNumber(total));
+							player.getParty().broadcastToPartyMembers(player, SystemMessage.getSystemMessage(SystemMessageId.S1_HARVESTED_S3_S2S).addCharName(player).addItemName(cropId).addNumber(total));
 						
 						player.sendPacket(iu);
 					}
@@ -107,7 +93,7 @@ public class Harvest implements ISkillHandler
 			player.sendPacket(SystemMessageId.THE_HARVEST_FAILED_BECAUSE_THE_SEED_WAS_NOT_SOWN);
 	}
 	
-	private static boolean calcSuccess(L2Character activeChar, L2Character target)
+	private static boolean calcSuccess(Creature activeChar, Creature target)
 	{
 		int basicSuccess = 100;
 		final int levelPlayer = activeChar.getLevel();

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model;
 
 import java.util.ArrayList;
@@ -24,9 +10,9 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.AbnormalStatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.ExOlympiadSpelledInfo;
@@ -53,8 +39,8 @@ public abstract class L2Effect
 		FINISHING
 	}
 	
-	private final L2Character _effector;
-	private final L2Character _effected;
+	private final Creature _effector;
+	private final Creature _effected;
 	
 	private final L2Skill _skill; // the skill that was used.
 	
@@ -134,7 +120,7 @@ public abstract class L2Effect
 		
 		if (_skill.getId() > 2277 && _skill.getId() < 2286)
 		{
-			if (_effected instanceof L2SummonInstance || (_effected instanceof L2PcInstance && ((L2PcInstance) _effected).getPet() != null))
+			if (_effected instanceof Servitor || (_effected instanceof Player && ((Player) _effected).getPet() != null))
 				temp /= 2;
 		}
 		
@@ -232,12 +218,12 @@ public abstract class L2Effect
 		return _skill;
 	}
 	
-	public final L2Character getEffector()
+	public final Creature getEffector()
 	{
 		return _effector;
 	}
 	
-	public final L2Character getEffected()
+	public final Creature getEffected()
 	{
 		return _effected;
 	}
@@ -292,7 +278,8 @@ public abstract class L2Effect
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Cancel the effect in the the abnormal effect map of the L2Character</li> <li>Stop the task of the L2Effect, remove it and update client magic icon</li><BR>
+	 * <li>Cancel the effect in the the abnormal effect map of the Creature</li>
+	 * <li>Stop the task of the L2Effect, remove it and update client magic icon</li><BR>
 	 * <BR>
 	 */
 	public final void exit()
@@ -312,7 +299,8 @@ public abstract class L2Effect
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Cancel the task</li> <li>Stop and remove L2Effect from L2Character and update client magic icon</li><BR>
+	 * <li>Cancel the task</li>
+	 * <li>Stop and remove L2Effect from Creature and update client magic icon</li><BR>
 	 * <BR>
 	 */
 	public final synchronized void stopEffectTask()
@@ -349,7 +337,7 @@ public abstract class L2Effect
 	}
 	
 	/**
-	 * Cancel the effect in the the abnormal effect map of the effected L2Character.
+	 * Cancel the effect in the the abnormal effect map of the effected Creature.
 	 */
 	public void onExit()
 	{
@@ -384,7 +372,7 @@ public abstract class L2Effect
 			{
 				_state = EffectState.ACTING;
 				
-				if (_skill.isPvpSkill() && _icon && getEffected() instanceof L2PcInstance)
+				if (_skill.isPvpSkill() && _icon && getEffected() instanceof Player)
 				{
 					SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 					smsg.addSkillName(_skill);
@@ -419,7 +407,7 @@ public abstract class L2Effect
 			case FINISHING:
 			{
 				// If the time left is equal to zero, send the message
-				if (_count == 0 && _icon && getEffected() instanceof L2PcInstance)
+				if (_count == 0 && _icon && getEffected() instanceof Player)
 					getEffected().sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WORN_OFF).addSkillName(_skill));
 				
 				// if task is null - stopEffectTask does not remove effect
@@ -429,7 +417,7 @@ public abstract class L2Effect
 				// Stop the task of the L2Effect, remove it and update client magic icon
 				stopEffectTask();
 				
-				// Cancel the effect in the the abnormal effect map of the L2Character
+				// Cancel the effect in the the abnormal effect map of the Creature
 				if (getInUse() || !(_count > 1 || _period > 0))
 					if (_startConditionsCorrect)
 						onExit();
@@ -541,5 +529,10 @@ public abstract class L2Effect
 	public boolean isSelfEffectType()
 	{
 		return false;
+	}
+	
+	public boolean onSameEffect(L2Effect effect)
+	{
+		return true;
 	}
 }

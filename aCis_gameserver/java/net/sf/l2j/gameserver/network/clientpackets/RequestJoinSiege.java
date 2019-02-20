@@ -1,27 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.network.serverpackets.SiegeInfo;
 
-/**
- * @author KenM
- */
 public final class RequestJoinSiege extends L2GameClientPacket
 {
 	private int _castleId;
@@ -39,13 +23,13 @@ public final class RequestJoinSiege extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getActiveChar();
+		if (player == null)
 			return;
 		
-		if (!activeChar.isClanLeader())
+		if (!player.isClanLeader())
 		{
-			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
 		}
 		
@@ -55,20 +39,20 @@ public final class RequestJoinSiege extends L2GameClientPacket
 		
 		if (_isJoining == 1)
 		{
-			if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
+			if (System.currentTimeMillis() < player.getClan().getDissolvingExpiryTime())
 			{
-				activeChar.sendPacket(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
+				player.sendPacket(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
 				return;
 			}
 			
 			if (_isAttacker == 1)
-				castle.getSiege().registerAttacker(activeChar);
+				castle.getSiege().registerAttacker(player);
 			else
-				castle.getSiege().registerDefender(activeChar);
+				castle.getSiege().registerDefender(player);
 		}
 		else
-			castle.getSiege().removeSiegeClan(activeChar);
+			castle.getSiege().unregisterClan(player.getClan());
 		
-		castle.getSiege().listRegisterClan(activeChar);
+		player.sendPacket(new SiegeInfo(castle));
 	}
 }

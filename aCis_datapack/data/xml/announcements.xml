@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version='1.0' encoding='utf-8'?>
 <!-- 
 @param String message - the message to be announced 
 @param Boolean critical - type of announcement (true = critical,false = normal) 

@@ -1,31 +1,17 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
 import java.util.List;
 
+import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.DoorTable;
+import net.sf.l2j.gameserver.data.DoorTable;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -34,7 +20,6 @@ import net.sf.l2j.gameserver.scripting.scripts.ai.individual.Antharas;
 import net.sf.l2j.gameserver.scripting.scripts.ai.individual.Baium;
 import net.sf.l2j.gameserver.scripting.scripts.ai.individual.Sailren;
 import net.sf.l2j.gameserver.scripting.scripts.ai.individual.Valakas;
-import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This script leads behavior of multiple bosses teleporters.
@@ -58,16 +43,16 @@ public class GrandBossTeleporters extends Quest
 {
 	private static final String qn = "GrandBossTeleporters";
 	
-	private static final Location baiumTeleIn = new Location(113100, 14500, 10077);
-	private static final Location[] baiumTeleOut =
+	private static final Location BAIUM_IN = new Location(113100, 14500, 10077);
+	private static final Location[] BAIUM_OUT =
 	{
 		new Location(108784, 16000, -4928),
 		new Location(113824, 10448, -5164),
 		new Location(115488, 22096, -5168)
 	};
 	
-	private static final Location sailrenTeleIn = new Location(27333, -6835, -1970);
-	private static final Location[] sailrenTeleOut =
+	private static final Location SAILREN_IN = new Location(27333, -6835, -1970);
+	private static final Location[] SAILREN_OUT =
 	{
 		new Location(10610, -24035, -3676),
 		new Location(10703, -24041, -3673),
@@ -86,12 +71,14 @@ public class GrandBossTeleporters extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = "";
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
+		
+		st.setState(STATE_STARTED);
 		
 		if (event.equalsIgnoreCase("baium"))
 		{
@@ -108,13 +95,13 @@ public class GrandBossTeleporters extends Quest
 				
 				// allow entry for the player for the next 30 secs.
 				ZoneManager.getInstance().getZoneById(110002, L2BossZone.class).allowPlayerEntry(player, 30);
-				player.teleToLocation(baiumTeleIn, 0);
+				player.teleToLocation(BAIUM_IN, 0);
 			}
 		}
 		else if (event.equalsIgnoreCase("baium_story"))
 			htmltext = "31862-02.htm";
 		else if (event.equalsIgnoreCase("baium_exit"))
-			player.teleToLocation(baiumTeleOut[Rnd.get(baiumTeleOut.length)], 100);
+			player.teleToLocation(Rnd.get(BAIUM_OUT), 100);
 		else if (event.equalsIgnoreCase("31540"))
 		{
 			if (st.hasQuestItems(7267))
@@ -130,12 +117,14 @@ public class GrandBossTeleporters extends Quest
 	}
 	
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(Npc npc, Player player)
 	{
 		String htmltext = "";
 		QuestState st = player.getQuestState(qn);
 		if (st == null)
 			st = newQuestState(player);
+		
+		st.setState(STATE_STARTED);
 		
 		switch (npc.getNpcId())
 		{
@@ -158,12 +147,14 @@ public class GrandBossTeleporters extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = "";
 		QuestState st = player.getQuestState(getName());
 		if (st == null)
 			return null;
+		
+		st.setState(STATE_STARTED);
 		
 		int status;
 		switch (npc.getNpcId())
@@ -213,11 +204,10 @@ public class GrandBossTeleporters extends Quest
 						
 						_valakasPlayersCount++;
 						
-						if (status == 0)
+						if (status == Valakas.DORMANT)
 						{
-							L2GrandBossInstance valakas = GrandBossManager.getInstance().getBoss(Valakas.VALAKAS);
-							GrandBossManager.getInstance().setBossStatus(Valakas.VALAKAS, 1);
-							ScriptManager.getInstance().getQuest("Valakas").startQuestTimer("beginning", Config.WAIT_TIME_VALAKAS, valakas, null, false);
+							GrandBossManager.getInstance().setBossStatus(Valakas.VALAKAS, Valakas.WAITING);
+							ScriptManager.getInstance().getQuest("Valakas").startQuestTimer("beginning", Config.WAIT_TIME_VALAKAS, null, null, false);
 						}
 					}
 					else
@@ -259,7 +249,7 @@ public class GrandBossTeleporters extends Quest
 				break;
 			
 			case 32107:
-				player.teleToLocation(sailrenTeleOut[Rnd.get(sailrenTeleOut.length)], 100);
+				player.teleToLocation(Rnd.get(SAILREN_OUT), 100);
 				break;
 			
 			case 32109:
@@ -274,15 +264,15 @@ public class GrandBossTeleporters extends Quest
 						status = GrandBossManager.getInstance().getBossStatus(Sailren.SAILREN);
 						if (status == Sailren.DORMANT)
 						{
-							final List<L2PcInstance> party = player.getParty().getPartyMembers();
+							final List<Player> party = player.getParty().getMembers();
 							
 							// Check players conditions.
-							for (L2PcInstance member : party)
+							for (Player member : party)
 							{
 								if (member.getLevel() < 70)
 									return "32109-06.htm";
 								
-								if (!Util.checkIfInRange(1000, player, member, true))
+								if (!MathUtil.checkIfInRange(1000, player, member, true))
 									return "32109-07.htm";
 							}
 							
@@ -292,12 +282,12 @@ public class GrandBossTeleporters extends Quest
 							final L2BossZone nest = ZoneManager.getInstance().getZoneById(110015, L2BossZone.class);
 							
 							// Teleport players.
-							for (L2PcInstance member : party)
+							for (Player member : party)
 							{
 								if (nest != null)
 								{
 									nest.allowPlayerEntry(member, 30);
-									member.teleToLocation(sailrenTeleIn, 100);
+									member.teleToLocation(SAILREN_IN, 100);
 								}
 							}
 							GrandBossManager.getInstance().setBossStatus(Sailren.SAILREN, Sailren.FIGHTING);

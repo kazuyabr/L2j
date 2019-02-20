@@ -1,35 +1,20 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.type;
 
-import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.zone.L2SpawnZone;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
 
 /**
- * A castle zone
- * @author durgus
+ * A castle zone handles following spawns type :
+ * <ul>
+ * <li>Generic spawn locs : owner_restart_point_list (spawns used on siege, to respawn on mass gatekeeper room.</li>
+ * <li>Chaotic spawn locs : banish_point_list (spawns used to banish players on regular owner maintenance).</li>
+ * </ul>
  */
 public class L2CastleZone extends L2SpawnZone
 {
 	private int _castleId;
-	private Castle _castle = null;
 	
 	public L2CastleZone(int id)
 	{
@@ -46,26 +31,24 @@ public class L2CastleZone extends L2SpawnZone
 	}
 	
 	@Override
-	protected void onEnter(L2Character character)
+	protected void onEnter(Creature character)
 	{
-		if (getCastle() != null)
-			character.setInsideZone(ZoneId.CASTLE, true);
+		character.setInsideZone(ZoneId.CASTLE, true);
 	}
 	
 	@Override
-	protected void onExit(L2Character character)
+	protected void onExit(Creature character)
 	{
-		if (getCastle() != null)
-			character.setInsideZone(ZoneId.CASTLE, false);
+		character.setInsideZone(ZoneId.CASTLE, false);
 	}
 	
 	@Override
-	public void onDieInside(L2Character character)
+	public void onDieInside(Creature character)
 	{
 	}
 	
 	@Override
-	public void onReviveInside(L2Character character)
+	public void onReviveInside(Creature character)
 	{
 	}
 	
@@ -75,25 +58,20 @@ public class L2CastleZone extends L2SpawnZone
 	 */
 	public void banishForeigners(int owningClanId)
 	{
-		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
+		if (_characterList.isEmpty())
+			return;
+		
+		for (Player player : getKnownTypeInside(Player.class))
 		{
 			if (player.getClanId() == owningClanId)
 				continue;
 			
-			player.teleToLocation(TeleportWhereType.TOWN);
+			player.teleToLocation(getChaoticSpawnLoc(), 20);
 		}
 	}
 	
 	public int getCastleId()
 	{
 		return _castleId;
-	}
-	
-	private final Castle getCastle()
-	{
-		if (_castle == null)
-			_castle = CastleManager.getInstance().getCastleById(_castleId);
-		
-		return _castle;
 	}
 }

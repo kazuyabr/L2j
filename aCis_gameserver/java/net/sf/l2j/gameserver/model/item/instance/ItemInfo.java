@@ -1,19 +1,6 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.item.instance;
 
+import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemState;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 
 /**
@@ -47,7 +34,7 @@ public class ItemInfo
 	private int _equipped;
 	
 	/** The action to do clientside (1=ADD, 2=MODIFY, 3=REMOVE) */
-	private int _change;
+	private ItemState _change;
 	
 	/** The mana of this item */
 	private int _mana;
@@ -87,30 +74,13 @@ public class ItemInfo
 		_equipped = item.isEquipped() ? 1 : 0;
 		
 		// Get the action to do clientside
-		switch (item.getLastChange())
-		{
-			case (ItemInstance.ADDED):
-			{
-				_change = 1;
-				break;
-			}
-			case (ItemInstance.MODIFIED):
-			{
-				_change = 2;
-				break;
-			}
-			case (ItemInstance.REMOVED):
-			{
-				_change = 3;
-				break;
-			}
-		}
+		_change = item.getLastChange();
 		
 		// Get shadow item mana
 		_mana = item.getMana();
 	}
 	
-	public ItemInfo(ItemInstance item, int change)
+	public ItemInfo(ItemInstance item, ItemState change)
 	{
 		if (item == null)
 			return;
@@ -192,7 +162,7 @@ public class ItemInfo
 		return _equipped;
 	}
 	
-	public int getChange()
+	public ItemState getChange()
 	{
 		return _change;
 	}

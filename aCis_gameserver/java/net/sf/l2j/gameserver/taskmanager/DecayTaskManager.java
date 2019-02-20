@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.taskmanager;
 
 import java.util.Map;
@@ -19,16 +5,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 
 /**
- * Destroys {@link L2Character} corpse after specified time.
+ * Destroys {@link Creature} corpse after specified time.
  * @author Hasha
  */
 public final class DecayTaskManager implements Runnable
 {
-	private final Map<L2Character, Long> _characters = new ConcurrentHashMap<>();
+	private final Map<Creature, Long> _characters = new ConcurrentHashMap<>();
 	
 	public static final DecayTaskManager getInstance()
 	{
@@ -42,16 +28,16 @@ public final class DecayTaskManager implements Runnable
 	}
 	
 	/**
-	 * Adds {@link L2Character} to the DecayTask with additional interval.
-	 * @param character : {@link L2Character} to be added.
+	 * Adds {@link Creature} to the DecayTask with additional interval.
+	 * @param character : {@link Creature} to be added.
 	 * @param interval : Interval in seconds, after which the decay task is triggered.
 	 */
-	public final void add(L2Character character, int interval)
+	public final void add(Creature character, int interval)
 	{
 		// if character is monster
-		if (character instanceof L2Attackable)
+		if (character instanceof Attackable)
 		{
-			final L2Attackable monster = ((L2Attackable) character);
+			final Attackable monster = ((Attackable) character);
 			
 			// monster is spoiled or seeded, double the corpse delay
 			if (monster.getSpoilerId() != 0 || monster.isSeeded())
@@ -62,20 +48,20 @@ public final class DecayTaskManager implements Runnable
 	}
 	
 	/**
-	 * Removes {@link L2Character} from the DecayTask.
-	 * @param actor : {@link L2Character} to be removed.
+	 * Removes {@link Creature} from the DecayTask.
+	 * @param actor : {@link Creature} to be removed.
 	 */
-	public final void cancel(L2Character actor)
+	public final void cancel(Creature actor)
 	{
 		_characters.remove(actor);
 	}
 	
 	/**
-	 * Removes {@link L2Attackable} from the DecayTask.
-	 * @param monster : {@link L2Attackable} to be tested.
+	 * Removes {@link Attackable} from the DecayTask.
+	 * @param monster : {@link Attackable} to be tested.
 	 * @return boolean : True, when action can be applied on a corpse.
 	 */
-	public final boolean isCorpseActionAllowed(L2Attackable monster)
+	public final boolean isCorpseActionAllowed(Attackable monster)
 	{
 		// get time and verify, if corpse exists
 		Long time = _characters.get(monster);
@@ -104,13 +90,13 @@ public final class DecayTaskManager implements Runnable
 		final long time = System.currentTimeMillis();
 		
 		// Loop all characters.
-		for (Map.Entry<L2Character, Long> entry : _characters.entrySet())
+		for (Map.Entry<Creature, Long> entry : _characters.entrySet())
 		{
 			// Time hasn't passed yet, skip.
 			if (time < entry.getValue())
 				continue;
 			
-			final L2Character character = entry.getKey();
+			final Creature character = entry.getKey();
 			
 			// Decay character and remove task.
 			character.onDecay();

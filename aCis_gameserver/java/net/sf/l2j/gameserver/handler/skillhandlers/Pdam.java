@@ -1,28 +1,14 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import java.util.List;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.ShotType;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -40,7 +26,7 @@ public class Pdam implements ISkillHandler
 	};
 	
 	@Override
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
@@ -51,13 +37,13 @@ public class Pdam implements ISkillHandler
 		
 		final ItemInstance weapon = activeChar.getActiveWeaponInstance();
 		
-		for (L2Object obj : targets)
+		for (WorldObject obj : targets)
 		{
-			if (!(obj instanceof L2Character))
+			if (!(obj instanceof Creature))
 				continue;
 			
-			final L2Character target = ((L2Character) obj);
-			if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && ((L2PcInstance) target).isFakeDeath())
+			final Creature target = ((Creature) obj);
+			if (activeChar instanceof Player && target instanceof Player && ((Player) target).isFakeDeath())
 				target.stopFakeDeath(true);
 			else if (target.isDead())
 				continue;
@@ -65,11 +51,11 @@ public class Pdam implements ISkillHandler
 			// Calculate skill evasion. As Dodge blocks only melee skills, make an exception with bow weapons.
 			if (weapon != null && weapon.getItemType() != WeaponType.BOW && Formulas.calcPhysicalSkillEvasion(target, skill))
 			{
-				if (activeChar instanceof L2PcInstance)
-					((L2PcInstance) activeChar).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DODGES_ATTACK).addCharName(target));
+				if (activeChar instanceof Player)
+					((Player) activeChar).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DODGES_ATTACK).addCharName(target));
 				
-				if (target instanceof L2PcInstance)
-					((L2PcInstance) target).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.AVOIDED_S1_ATTACK).addCharName(activeChar));
+				if (target instanceof Player)
+					((Player) target).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.AVOIDED_S1_ATTACK).addCharName(activeChar));
 				
 				// no futher calculations needed.
 				continue;
@@ -124,10 +110,10 @@ public class Pdam implements ISkillHandler
 				// vengeance reflected damage
 				if ((reflect & Formulas.SKILL_REFLECT_VENGEANCE) != 0)
 				{
-					if (target instanceof L2PcInstance)
+					if (target instanceof Player)
 						target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.COUNTERED_S1_ATTACK).addCharName(activeChar));
 					
-					if (activeChar instanceof L2PcInstance)
+					if (activeChar instanceof Player)
 						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PERFORMING_COUNTERATTACK).addCharName(target));
 					
 					double vegdamage = (700 * target.getPAtk(activeChar) / activeChar.getPDef(target));

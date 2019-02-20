@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.taskmanager;
 
 import java.util.Collections;
@@ -21,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.listeners.OnEquipListener;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -37,7 +23,7 @@ public class ShadowItemTaskManager implements Runnable, OnEquipListener
 {
 	private static final int DELAY = 1; // 1 second
 	
-	private final Map<ItemInstance, L2PcInstance> _shadowItems = new ConcurrentHashMap<>();
+	private final Map<ItemInstance, Player> _shadowItems = new ConcurrentHashMap<>();
 	
 	public static final ShadowItemTaskManager getInstance()
 	{
@@ -51,21 +37,21 @@ public class ShadowItemTaskManager implements Runnable, OnEquipListener
 	}
 	
 	@Override
-	public final void onEquip(int slot, ItemInstance item, L2Playable playable)
+	public final void onEquip(int slot, ItemInstance item, Playable playable)
 	{
 		// Must be a shadow item.
 		if (!item.isShadowItem())
 			return;
 		
 		// Must be a player.
-		if (!(playable instanceof L2PcInstance))
+		if (!(playable instanceof Player))
 			return;
 		
-		_shadowItems.put(item, (L2PcInstance) playable);
+		_shadowItems.put(item, (Player) playable);
 	}
 	
 	@Override
-	public final void onUnequip(int slot, ItemInstance item, L2Playable actor)
+	public final void onUnequip(int slot, ItemInstance item, Playable actor)
 	{
 		// Must be a shadow item.
 		if (!item.isShadowItem())
@@ -74,7 +60,7 @@ public class ShadowItemTaskManager implements Runnable, OnEquipListener
 		_shadowItems.remove(item);
 	}
 	
-	public final void remove(L2PcInstance player)
+	public final void remove(Player player)
 	{
 		// List is empty, skip.
 		if (_shadowItems.isEmpty())
@@ -92,11 +78,11 @@ public class ShadowItemTaskManager implements Runnable, OnEquipListener
 			return;
 		
 		// For all items.
-		for (Entry<ItemInstance, L2PcInstance> entry : _shadowItems.entrySet())
+		for (Entry<ItemInstance, Player> entry : _shadowItems.entrySet())
 		{
 			// Get item and player.
 			final ItemInstance item = entry.getKey();
-			final L2PcInstance player = entry.getValue();
+			final Player player = entry.getValue();
 			
 			// Decrease item mana.
 			int mana = item.decreaseMana(DELAY);

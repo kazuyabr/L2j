@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.skills;
 
 import java.io.File;
@@ -163,8 +149,12 @@ abstract class DocumentBase
 		{
 			if ("add".equalsIgnoreCase(n.getNodeName()))
 				attachFunc(n, template, "Add", condition);
+			else if ("addMul".equalsIgnoreCase(n.getNodeName()))
+				attachFunc(n, template, "AddMul", condition);
 			else if ("sub".equalsIgnoreCase(n.getNodeName()))
 				attachFunc(n, template, "Sub", condition);
+			else if ("subDiv".equalsIgnoreCase(n.getNodeName()))
+				attachFunc(n, template, "SubDiv", condition);
 			else if ("mul".equalsIgnoreCase(n.getNodeName()))
 				attachFunc(n, template, "Mul", condition);
 			else if ("basemul".equalsIgnoreCase(n.getNodeName()))
@@ -362,7 +352,7 @@ abstract class DocumentBase
 		for (n = n.getFirstChild(); n != null; n = n.getNextSibling())
 			if (n.getNodeType() == Node.ELEMENT_NODE)
 				cond.add(parseCondition(n, template));
-		
+			
 		if (cond.conditions == null || cond.conditions.length == 0)
 			_log.severe("Empty <and> condition in " + _file);
 		
@@ -375,7 +365,7 @@ abstract class DocumentBase
 		for (n = n.getFirstChild(); n != null; n = n.getNextSibling())
 			if (n.getNodeType() == Node.ELEMENT_NODE)
 				cond.add(parseCondition(n, template));
-		
+			
 		if (cond.conditions == null || cond.conditions.length == 0)
 			_log.severe("Empty <or> condition in " + _file);
 		
@@ -387,7 +377,7 @@ abstract class DocumentBase
 		for (n = n.getFirstChild(); n != null; n = n.getNextSibling())
 			if (n.getNodeType() == Node.ELEMENT_NODE)
 				return new ConditionLogicNot(parseCondition(n, template));
-		
+			
 		_log.severe("Empty <not> condition in " + _file);
 		return null;
 	}

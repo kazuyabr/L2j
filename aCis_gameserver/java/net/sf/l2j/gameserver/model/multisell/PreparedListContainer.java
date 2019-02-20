@@ -1,33 +1,24 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.multisell;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
 
+/**
+ * A dynamic layer of {@link ListContainer}, which holds the current {@link Npc} objectId for security reasons.<br>
+ * <br>
+ * It can also allow to check inventory content.
+ */
 public class PreparedListContainer extends ListContainer
 {
 	private int _npcObjectId = 0;
 	
-	public PreparedListContainer(ListContainer template, boolean inventoryOnly, L2PcInstance player, L2Npc npc)
+	public PreparedListContainer(ListContainer template, boolean inventoryOnly, Player player, Npc npc)
 	{
 		super(template.getId());
 		
@@ -38,7 +29,7 @@ public class PreparedListContainer extends ListContainer
 		if (npc != null)
 		{
 			_npcObjectId = npc.getObjectId();
-			if (template.getApplyTaxes() && npc.getIsInTown() && npc.getCastle().getOwnerId() > 0)
+			if (template.getApplyTaxes() && npc.getCastle() != null && npc.getCastle().getOwnerId() > 0)
 			{
 				setApplyTaxes(true);
 				taxRate = npc.getCastle().getTaxRate();

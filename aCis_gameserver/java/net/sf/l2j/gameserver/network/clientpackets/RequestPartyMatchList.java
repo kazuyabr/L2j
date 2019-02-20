@@ -1,20 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoom;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoomList;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchWaitingList;
@@ -45,7 +32,7 @@ public class RequestPartyMatchList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
@@ -61,7 +48,7 @@ public class RequestPartyMatchList extends L2GameClientPacket
 				room.setLootType(_loot);
 				room.setTitle(_roomtitle);
 				
-				for (L2PcInstance member : room.getPartyMembers())
+				for (Player member : room.getPartyMembers())
 				{
 					if (member == null)
 						continue;
@@ -83,16 +70,17 @@ public class RequestPartyMatchList extends L2GameClientPacket
 			PartyMatchWaitingList.getInstance().removePlayer(activeChar);
 			PartyMatchRoomList.getInstance().addPartyMatchRoom(maxid, room);
 			
-			if (activeChar.isInParty())
+			final Party party = activeChar.getParty();
+			if (party != null)
 			{
-				for (L2PcInstance ptmember : activeChar.getParty().getPartyMembers())
+				for (Player member : party.getMembers())
 				{
-					if (ptmember == null || ptmember == activeChar)
+					if (member == activeChar)
 						continue;
 					
-					ptmember.setPartyRoom(maxid);
+					member.setPartyRoom(maxid);
 					
-					room.addMember(ptmember);
+					room.addMember(member);
 				}
 			}
 			

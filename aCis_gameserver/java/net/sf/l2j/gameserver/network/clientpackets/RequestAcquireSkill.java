@@ -1,32 +1,18 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.SkillTable;
-import net.sf.l2j.gameserver.datatables.SkillTreeTable;
-import net.sf.l2j.gameserver.datatables.SpellbookTable;
+import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.xml.SpellbookData;
 import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
 import net.sf.l2j.gameserver.model.L2ShortCut;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2FishermanInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2VillageMasterInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Fisherman;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.VillageMaster;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExStorageMaxCount;
 import net.sf.l2j.gameserver.network.serverpackets.ShortCutRegister;
@@ -54,17 +40,17 @@ public class RequestAcquireSkill extends L2GameClientPacket
 			return;
 		
 		// Incorrect player, return.
-		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
 		// Incorrect npc, return.
-		final L2Npc trainer = activeChar.getCurrentFolkNPC();
+		final Npc trainer = activeChar.getCurrentFolkNPC();
 		if (trainer == null)
 			return;
 		
 		// Distance check for player <-> npc.
-		if (!activeChar.isInsideRadius(trainer, L2Npc.INTERACTION_DISTANCE, false, false) && !activeChar.isGM())
+		if (!activeChar.isInsideRadius(trainer, Npc.INTERACTION_DISTANCE, false, false) && !activeChar.isGM())
 			return;
 		
 		// Skill doesn't exist, return.
@@ -112,18 +98,18 @@ public class RequestAcquireSkill extends L2GameClientPacket
 				if (activeChar.getSp() < spCost)
 				{
 					activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
-					L2NpcInstance.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
+					Folk.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
 					return;
 				}
 				
 				// Get spellbook and try to consume it.
-				int spbId = SpellbookTable.getInstance().getBookForSkill(_skillId, _skillLevel);
+				int spbId = SpellbookData.getInstance().getBookForSkill(_skillId, _skillLevel);
 				if (spbId > 0)
 				{
 					if (!activeChar.destroyItemByItemId("SkillLearn", spbId, 1, trainer, true))
 					{
 						activeChar.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
-						L2NpcInstance.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
+						Folk.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
 						return;
 					}
 				}
@@ -138,7 +124,7 @@ public class RequestAcquireSkill extends L2GameClientPacket
 				// Update player and return.
 				updateShortCuts(activeChar);
 				activeChar.sendSkillList();
-				L2NpcInstance.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
+				Folk.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
 				break;
 			
 			case 1: // Common skills.
@@ -169,7 +155,7 @@ public class RequestAcquireSkill extends L2GameClientPacket
 				if (!activeChar.destroyItemByItemId("Consume", costId, costCount, trainer, true))
 				{
 					activeChar.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
-					L2FishermanInstance.showFishSkillList(activeChar);
+					Fisherman.showFishSkillList(activeChar);
 					return;
 				}
 				
@@ -181,7 +167,7 @@ public class RequestAcquireSkill extends L2GameClientPacket
 				
 				updateShortCuts(activeChar);
 				activeChar.sendSkillList();
-				L2FishermanInstance.showFishSkillList(activeChar);
+				Fisherman.showFishSkillList(activeChar);
 				break;
 			
 			case 2: // Pledge skills.
@@ -208,7 +194,7 @@ public class RequestAcquireSkill extends L2GameClientPacket
 				if (activeChar.getClan().getReputationScore() < repCost)
 				{
 					activeChar.sendPacket(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
-					L2VillageMasterInstance.showPledgeSkillList(activeChar);
+					VillageMaster.showPledgeSkillList(activeChar);
 					return;
 				}
 				
@@ -217,7 +203,7 @@ public class RequestAcquireSkill extends L2GameClientPacket
 					if (!activeChar.destroyItemByItemId("Consume", itemId, 1, trainer, true))
 					{
 						activeChar.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
-						L2VillageMasterInstance.showPledgeSkillList(activeChar);
+						VillageMaster.showPledgeSkillList(activeChar);
 						return;
 					}
 				}
@@ -227,12 +213,12 @@ public class RequestAcquireSkill extends L2GameClientPacket
 				
 				activeChar.getClan().addNewSkill(skill);
 				
-				L2VillageMasterInstance.showPledgeSkillList(activeChar);
+				VillageMaster.showPledgeSkillList(activeChar);
 				return;
 		}
 	}
 	
-	private void updateShortCuts(L2PcInstance player)
+	private void updateShortCuts(Player player)
 	{
 		if (_skillLevel > 1)
 		{

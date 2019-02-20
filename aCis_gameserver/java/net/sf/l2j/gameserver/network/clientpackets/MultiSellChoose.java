@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import java.util.ArrayList;
@@ -19,19 +5,19 @@ import java.util.List;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Augmentation;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
 import net.sf.l2j.gameserver.model.multisell.Entry;
 import net.sf.l2j.gameserver.model.multisell.Ingredient;
 import net.sf.l2j.gameserver.model.multisell.PreparedListContainer;
+import net.sf.l2j.gameserver.network.FloodProtectors;
+import net.sf.l2j.gameserver.network.FloodProtectors.Action;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ItemList;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.util.FloodProtectors;
-import net.sf.l2j.gameserver.util.FloodProtectors.Action;
 
 public class MultiSellChoose extends L2GameClientPacket
 {
@@ -42,7 +28,6 @@ public class MultiSellChoose extends L2GameClientPacket
 	private int _listId;
 	private int _entryId;
 	private int _amount;
-	private int _transactionTax; // local handling of taxation
 	
 	@Override
 	protected void readImpl()
@@ -50,13 +35,12 @@ public class MultiSellChoose extends L2GameClientPacket
 		_listId = readD();
 		_entryId = readD();
 		_amount = readD();
-		_transactionTax = 0;
 	}
 	
 	@Override
 	public void runImpl()
 	{
-		final L2PcInstance player = getClient().getActiveChar();
+		final Player player = getClient().getActiveChar();
 		if (player == null)
 			return;
 		
@@ -79,7 +63,7 @@ public class MultiSellChoose extends L2GameClientPacket
 			return;
 		}
 		
-		final L2Npc npc = player.getCurrentFolkNPC();
+		final Npc npc = player.getCurrentFolkNPC();
 		if ((npc != null && !list.isNpcAllowed(npc.getNpcId())) || (npc == null && list.isNpcOnly()))
 		{
 			player.setMultiSell(null);
@@ -352,7 +336,7 @@ public class MultiSellChoose extends L2GameClientPacket
 				
 				// finally, give the tax to the castle...
 				if (npc != null && entry.getTaxAmount() > 0)
-					npc.getCastle().addToTreasury(_transactionTax * _amount);
+					npc.getCastle().addToTreasury(entry.getTaxAmount() * _amount);
 				
 				break;
 			}

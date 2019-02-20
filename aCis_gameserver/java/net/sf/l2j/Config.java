@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j;
 
 import java.io.File;
@@ -29,8 +15,8 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import net.sf.l2j.commons.config.ExProperties;
+import net.sf.l2j.commons.math.MathUtil;
 
-import net.sf.l2j.gameserver.model.holder.BuffSkillHolder;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 
 /**
@@ -75,8 +61,7 @@ public final class Config
 	public static int ALT_MANOR_REFRESH_MIN;
 	public static int ALT_MANOR_APPROVE_TIME;
 	public static int ALT_MANOR_APPROVE_MIN;
-	public static int ALT_MANOR_MAINTENANCE_PERIOD;
-	public static boolean ALT_MANOR_SAVE_ALL_ACTIONS;
+	public static int ALT_MANOR_MAINTENANCE_MIN;
 	public static int ALT_MANOR_SAVE_PERIOD_RATE;
 	
 	/** Clan Hall function */
@@ -177,7 +162,6 @@ public final class Config
 	public static long ALT_FESTIVAL_SECOND_SPAWN;
 	public static long ALT_FESTIVAL_SECOND_SWARM;
 	public static long ALT_FESTIVAL_CHEST_SPAWN;
-	public static boolean ALT_SEVENSIGNS_LAZY_UPDATE;
 	
 	/** Four Sepulchers */
 	public static int FS_TIME_ATTACK;
@@ -259,18 +243,15 @@ public final class Config
 	public static String LOGIN_BIND_ADDRESS;
 	public static int PORT_LOGIN;
 	
-	public static boolean ACCEPT_NEW_GAMESERVER;
-	public static int REQUEST_ID;
-	public static boolean ACCEPT_ALTERNATE_ID;
-	
 	public static int LOGIN_TRY_BEFORE_BAN;
 	public static int LOGIN_BLOCK_AFTER_BAN;
-	
-	public static boolean LOG_LOGIN_CONTROLLER;
+	public static boolean ACCEPT_NEW_GAMESERVER;
 	
 	public static boolean SHOW_LICENCE;
 	
 	public static boolean AUTO_CREATE_ACCOUNTS;
+	
+	public static boolean LOG_LOGIN_CONTROLLER;
 	
 	public static boolean FLOOD_PROTECTION;
 	public static int FAST_CONNECTION_LIMIT;
@@ -298,10 +279,7 @@ public final class Config
 	
 	/** Buffer */
 	public static int BUFFER_MAX_SCHEMES;
-	public static int BUFFER_MAX_SKILLS;
 	public static int BUFFER_STATIC_BUFF_COST;
-	public static String BUFFER_BUFFS;
-	public static Map<Integer, BuffSkillHolder> BUFFER_BUFFLIST;
 	
 	/** Misc */
 	public static boolean ALLOW_CLASS_MASTERS;
@@ -309,7 +287,6 @@ public final class Config
 	public static boolean ALLOW_ENTIRE_TREE;
 	public static boolean ANNOUNCE_MAMMON_SPAWN;
 	public static boolean ALT_MOB_AGRO_IN_PEACEZONE;
-	public static boolean ALT_GAME_FREE_TELEPORT;
 	public static boolean SHOW_NPC_LVL;
 	public static boolean SHOW_NPC_CREST;
 	public static boolean SHOW_SUMMON_CREST;
@@ -365,22 +342,16 @@ public final class Config
 	/** AI */
 	public static boolean GUARD_ATTACK_AGGRO_MOB;
 	public static int MAX_DRIFT_RANGE;
-	public static long KNOWNLIST_UPDATE_INTERVAL;
 	public static int MIN_NPC_ANIMATION;
 	public static int MAX_NPC_ANIMATION;
 	public static int MIN_MONSTER_ANIMATION;
 	public static int MAX_MONSTER_ANIMATION;
-	
-	public static boolean GRIDS_ALWAYS_ON;
-	public static int GRID_NEIGHBOR_TURNON_TIME;
-	public static int GRID_NEIGHBOR_TURNOFF_TIME;
 	
 	// --------------------------------------------------
 	// Players
 	// --------------------------------------------------
 	
 	/** Misc */
-	public static int STARTING_ADENA;
 	public static boolean EFFECT_CANCELING;
 	public static double HP_REGEN_MULTIPLIER;
 	public static double MP_REGEN_MULTIPLIER;
@@ -454,15 +425,10 @@ public final class Config
 	public static String PARTY_XP_CUTOFF_METHOD;
 	public static int PARTY_XP_CUTOFF_LEVEL;
 	public static double PARTY_XP_CUTOFF_PERCENT;
-	public static int ALT_PARTY_RANGE;
-	public static int ALT_PARTY_RANGE2;
-	public static boolean ALT_LEAVE_PARTY_LEADER;
+	public static int PARTY_RANGE;
 	
 	/** GMs & Admin Stuff */
-	public static boolean EVERYBODY_HAS_ADMIN_RIGHTS;
-	public static int MASTERACCESS_LEVEL;
-	public static int MASTERACCESS_NAME_COLOR;
-	public static int MASTERACCESS_TITLE_COLOR;
+	public static int DEFAULT_ACCESS_LEVEL;
 	public static boolean GM_HERO_AURA;
 	public static boolean GM_STARTUP_INVULNERABLE;
 	public static boolean GM_STARTUP_INVISIBLE;
@@ -496,27 +462,39 @@ public final class Config
 	public static int BUFFS_MAX_AMOUNT;
 	
 	// --------------------------------------------------
+	// Sieges
+	// --------------------------------------------------
+	
+	public static int SIEGE_LENGTH;
+	public static int MINIMUM_CLAN_LEVEL;
+	public static int MAX_ATTACKERS_NUMBER;
+	public static int MAX_DEFENDERS_NUMBER;
+	public static int ATTACKERS_RESPAWN_DELAY;
+	
+	// --------------------------------------------------
 	// Server
 	// --------------------------------------------------
 	
 	public static String GAMESERVER_HOSTNAME;
 	public static int PORT_GAME;
-	public static String EXTERNAL_HOSTNAME;
-	public static String INTERNAL_HOSTNAME;
+	public static String HOSTNAME;
 	public static int GAME_SERVER_LOGIN_PORT;
 	public static String GAME_SERVER_LOGIN_HOST;
+	public static int REQUEST_ID;
+	public static boolean ACCEPT_ALTERNATE_ID;
 	
 	/** Access to database */
 	public static String DATABASE_URL;
 	public static String DATABASE_LOGIN;
 	public static String DATABASE_PASSWORD;
 	public static int DATABASE_MAX_CONNECTIONS;
-	public static int DATABASE_MAX_IDLE_TIME;
 	
 	/** serverList & Test */
 	public static boolean SERVER_LIST_BRACKET;
 	public static boolean SERVER_LIST_CLOCK;
+	public static int SERVER_LIST_AGE;
 	public static boolean SERVER_LIST_TESTSERVER;
+	public static boolean SERVER_LIST_PVPSERVER;
 	public static boolean SERVER_GMONLY;
 	
 	/** clients related */
@@ -524,10 +502,6 @@ public final class Config
 	public static int MAXIMUM_ONLINE_USERS;
 	public static int MIN_PROTOCOL_REVISION;
 	public static int MAX_PROTOCOL_REVISION;
-	
-	/** Jail & Punishements **/
-	public static int DEFAULT_PUNISH;
-	public static int DEFAULT_PUNISH_PARAM;
 	
 	/** Auto-loot */
 	public static boolean AUTO_LOOT;
@@ -542,7 +516,6 @@ public final class Config
 	public static int EQUIPABLE_ITEM_AUTO_DESTROY_TIME;
 	public static Map<Integer, Integer> SPECIAL_ITEM_DESTROY_TIME;
 	public static int PLAYER_DROPPED_ITEM_MULTIPLIER;
-	public static boolean SAVE_DROPPED_ITEM;
 	
 	/** Rate control */
 	public static double RATE_XP;
@@ -656,16 +629,16 @@ public final class Config
 	
 	/** MMO settings */
 	public static int MMO_SELECTOR_SLEEP_TIME = 20; // default 20
-	public static int MMO_MAX_SEND_PER_PASS = 12; // default 12
-	public static int MMO_MAX_READ_PER_PASS = 12; // default 12
+	public static int MMO_MAX_SEND_PER_PASS = 80; // default 80
+	public static int MMO_MAX_READ_PER_PASS = 80; // default 80
 	public static int MMO_HELPER_BUFFER_COUNT = 20; // default 20
 	
 	/** Client Packets Queue settings */
 	public static int CLIENT_PACKET_QUEUE_SIZE = 14; // default MMO_MAX_READ_PER_PASS + 2
 	public static int CLIENT_PACKET_QUEUE_MAX_BURST_SIZE = 13; // default MMO_MAX_READ_PER_PASS + 1
-	public static int CLIENT_PACKET_QUEUE_MAX_PACKETS_PER_SECOND = 80; // default 80
+	public static int CLIENT_PACKET_QUEUE_MAX_PACKETS_PER_SECOND = 160; // default 160
 	public static int CLIENT_PACKET_QUEUE_MEASURE_INTERVAL = 5; // default 5
-	public static int CLIENT_PACKET_QUEUE_MAX_AVERAGE_PACKETS_PER_SECOND = 40; // default 40
+	public static int CLIENT_PACKET_QUEUE_MAX_AVERAGE_PACKETS_PER_SECOND = 80; // default 80
 	public static int CLIENT_PACKET_QUEUE_MAX_FLOODS_PER_MIN = 2; // default 2
 	public static int CLIENT_PACKET_QUEUE_MAX_OVERFLOWS_PER_MIN = 1; // default 1
 	public static int CLIENT_PACKET_QUEUE_MAX_UNDERFLOWS_PER_MIN = 1; // default 1
@@ -765,9 +738,8 @@ public final class Config
 		ALT_MANOR_REFRESH_MIN = clans.getProperty("AltManorRefreshMin", 0);
 		ALT_MANOR_APPROVE_TIME = clans.getProperty("AltManorApproveTime", 6);
 		ALT_MANOR_APPROVE_MIN = clans.getProperty("AltManorApproveMin", 0);
-		ALT_MANOR_MAINTENANCE_PERIOD = clans.getProperty("AltManorMaintenancePeriod", 360000);
-		ALT_MANOR_SAVE_ALL_ACTIONS = clans.getProperty("AltManorSaveAllActions", false);
-		ALT_MANOR_SAVE_PERIOD_RATE = clans.getProperty("AltManorSavePeriodRate", 2);
+		ALT_MANOR_MAINTENANCE_MIN = clans.getProperty("AltManorMaintenanceMin", 6);
+		ALT_MANOR_SAVE_PERIOD_RATE = clans.getProperty("AltManorSavePeriodRate", 2) * 3600000;
 		
 		CH_TELE_FEE_RATIO = clans.getProperty("ClanHallTeleportFunctionFeeRatio", 86400000);
 		CH_TELE1_FEE = clans.getProperty("ClanHallTeleportFunctionFeeLvl1", 7000);
@@ -858,7 +830,7 @@ public final class Config
 		
 		ALT_GAME_CASTLE_DAWN = events.getProperty("AltCastleForDawn", true);
 		ALT_GAME_CASTLE_DUSK = events.getProperty("AltCastleForDusk", true);
-		ALT_FESTIVAL_MIN_PLAYER = events.getProperty("AltFestivalMinPlayer", 5);
+		ALT_FESTIVAL_MIN_PLAYER = MathUtil.limit(events.getProperty("AltFestivalMinPlayer", 5), 2, 9);
 		ALT_MAXIMUM_PLAYER_CONTRIB = events.getProperty("AltMaxPlayerContrib", 1000000);
 		ALT_FESTIVAL_MANAGER_START = events.getProperty("AltFestivalManagerStart", 120000);
 		ALT_FESTIVAL_LENGTH = events.getProperty("AltFestivalLength", 1080000);
@@ -868,12 +840,11 @@ public final class Config
 		ALT_FESTIVAL_SECOND_SPAWN = events.getProperty("AltFestivalSecondSpawn", 540000);
 		ALT_FESTIVAL_SECOND_SWARM = events.getProperty("AltFestivalSecondSwarm", 720000);
 		ALT_FESTIVAL_CHEST_SPAWN = events.getProperty("AltFestivalChestSpawn", 900000);
-		ALT_SEVENSIGNS_LAZY_UPDATE = events.getProperty("AltSevenSignsLazyUpdate", true);
 		
 		FS_TIME_ATTACK = events.getProperty("TimeOfAttack", 50);
 		FS_TIME_ENTRY = events.getProperty("TimeOfEntry", 3);
 		FS_TIME_WARMUP = events.getProperty("TimeOfWarmUp", 2);
-		FS_PARTY_MEMBER_COUNT = events.getProperty("NumberOfNecessaryPartyMembers", 4);
+		FS_PARTY_MEMBER_COUNT = MathUtil.limit(events.getProperty("NumberOfNecessaryPartyMembers", 4), 2, 9);
 		
 		RIFT_MIN_PARTY_SIZE = events.getProperty("RiftMinPartySize", 2);
 		RIFT_MAX_JUMPS = events.getProperty("MaxRiftJumps", 4);
@@ -1000,23 +971,13 @@ public final class Config
 		CHAMPION_REWARD_QTY = npcs.getProperty("ChampionRewardItemQty", 1);
 		
 		BUFFER_MAX_SCHEMES = npcs.getProperty("BufferMaxSchemesPerChar", 4);
-		BUFFER_MAX_SKILLS = npcs.getProperty("BufferMaxSkillsPerScheme", 24);
 		BUFFER_STATIC_BUFF_COST = npcs.getProperty("BufferStaticCostPerBuff", -1);
-		BUFFER_BUFFS = npcs.getProperty("BufferBuffs");
-		
-		BUFFER_BUFFLIST = new HashMap<>();
-		for (String skillInfo : BUFFER_BUFFS.split(";"))
-		{
-			final String[] infos = skillInfo.split(",");
-			BUFFER_BUFFLIST.put(Integer.valueOf(infos[0]), new BuffSkillHolder(Integer.valueOf(infos[0]), Integer.valueOf(infos[1]), infos[2]));
-		}
 		
 		ALLOW_CLASS_MASTERS = npcs.getProperty("AllowClassMasters", false);
 		ALLOW_ENTIRE_TREE = npcs.getProperty("AllowEntireTree", false);
 		if (ALLOW_CLASS_MASTERS)
 			CLASS_MASTER_SETTINGS = new ClassMasterSettings(npcs.getProperty("ConfigClassMaster"));
 		
-		ALT_GAME_FREE_TELEPORT = npcs.getProperty("AltFreeTeleporting", false);
 		ANNOUNCE_MAMMON_SPAWN = npcs.getProperty("AnnounceMammonSpawn", true);
 		ALT_MOB_AGRO_IN_PEACEZONE = npcs.getProperty("AltMobAgroInPeaceZone", true);
 		SHOW_NPC_LVL = npcs.getProperty("ShowNpcLevel", false);
@@ -1070,15 +1031,10 @@ public final class Config
 		
 		GUARD_ATTACK_AGGRO_MOB = npcs.getProperty("GuardAttackAggroMob", false);
 		MAX_DRIFT_RANGE = npcs.getProperty("MaxDriftRange", 300);
-		KNOWNLIST_UPDATE_INTERVAL = npcs.getProperty("KnownListUpdateInterval", 1250);
 		MIN_NPC_ANIMATION = npcs.getProperty("MinNPCAnimation", 20);
 		MAX_NPC_ANIMATION = npcs.getProperty("MaxNPCAnimation", 40);
 		MIN_MONSTER_ANIMATION = npcs.getProperty("MinMonsterAnimation", 10);
 		MAX_MONSTER_ANIMATION = npcs.getProperty("MaxMonsterAnimation", 40);
-		
-		GRIDS_ALWAYS_ON = npcs.getProperty("GridsAlwaysOn", false);
-		GRID_NEIGHBOR_TURNON_TIME = npcs.getProperty("GridNeighborTurnOnTime", 1);
-		GRID_NEIGHBOR_TURNOFF_TIME = npcs.getProperty("GridNeighborTurnOffTime", 90);
 	}
 	
 	/**
@@ -1088,7 +1044,6 @@ public final class Config
 	private static final void loadPlayers()
 	{
 		final ExProperties players = initProperties(PLAYERS_FILE);
-		STARTING_ADENA = players.getProperty("StartingAdena", 100);
 		EFFECT_CANCELING = players.getProperty("CancelLesserEffect", true);
 		HP_REGEN_MULTIPLIER = players.getProperty("HpRegenMultiplier", 1.);
 		MP_REGEN_MULTIPLIER = players.getProperty("MpRegenMultiplier", 1.);
@@ -1136,7 +1091,7 @@ public final class Config
 		AUGMENTATION_BASESTAT_CHANCE = players.getProperty("AugmentationBaseStatChance", 1);
 		
 		KARMA_PLAYER_CAN_BE_KILLED_IN_PZ = players.getProperty("KarmaPlayerCanBeKilledInPeaceZone", false);
-		KARMA_PLAYER_CAN_SHOP = players.getProperty("KarmaPlayerCanShop", true);
+		KARMA_PLAYER_CAN_SHOP = players.getProperty("KarmaPlayerCanShop", false);
 		KARMA_PLAYER_CAN_USE_GK = players.getProperty("KarmaPlayerCanUseGK", false);
 		KARMA_PLAYER_CAN_TELEPORT = players.getProperty("KarmaPlayerCanTeleport", true);
 		KARMA_PLAYER_CAN_TRADE = players.getProperty("KarmaPlayerCanTrade", true);
@@ -1169,14 +1124,9 @@ public final class Config
 		PARTY_XP_CUTOFF_METHOD = players.getProperty("PartyXpCutoffMethod", "level");
 		PARTY_XP_CUTOFF_PERCENT = players.getProperty("PartyXpCutoffPercent", 3.);
 		PARTY_XP_CUTOFF_LEVEL = players.getProperty("PartyXpCutoffLevel", 20);
-		ALT_PARTY_RANGE = players.getProperty("AltPartyRange", 1600);
-		ALT_PARTY_RANGE2 = players.getProperty("AltPartyRange2", 1400);
-		ALT_LEAVE_PARTY_LEADER = players.getProperty("AltLeavePartyLeader", false);
+		PARTY_RANGE = players.getProperty("PartyRange", 1500);
 		
-		EVERYBODY_HAS_ADMIN_RIGHTS = players.getProperty("EverybodyHasAdminRights", false);
-		MASTERACCESS_LEVEL = players.getProperty("MasterAccessLevel", 127);
-		MASTERACCESS_NAME_COLOR = Integer.decode("0x" + players.getProperty("MasterNameColor", "00FF00"));
-		MASTERACCESS_TITLE_COLOR = Integer.decode("0x" + players.getProperty("MasterTitleColor", "00FF00"));
+		DEFAULT_ACCESS_LEVEL = players.getProperty("DefaultAccessLevel", 0);
 		GM_HERO_AURA = players.getProperty("GMHeroAura", false);
 		GM_STARTUP_INVULNERABLE = players.getProperty("GMStartupInvulnerable", true);
 		GM_STARTUP_INVISIBLE = players.getProperty("GMStartupInvisible", true);
@@ -1207,6 +1157,20 @@ public final class Config
 	}
 	
 	/**
+	 * Loads siege settings.
+	 */
+	private static final void loadSieges()
+	{
+		final ExProperties sieges = initProperties(Config.SIEGE_FILE);
+		
+		SIEGE_LENGTH = sieges.getProperty("SiegeLength", 120);
+		MINIMUM_CLAN_LEVEL = sieges.getProperty("SiegeClanMinLevel", 4);
+		MAX_ATTACKERS_NUMBER = sieges.getProperty("AttackerMaxClans", 10);
+		MAX_DEFENDERS_NUMBER = sieges.getProperty("DefenderMaxClans", 10);
+		ATTACKERS_RESPAWN_DELAY = sieges.getProperty("AttackerRespawn", 10000);
+	}
+	
+	/**
 	 * Loads gameserver settings.<br>
 	 * IP addresses, database, rates, feature enabled/disabled, misc.
 	 */
@@ -1217,8 +1181,7 @@ public final class Config
 		GAMESERVER_HOSTNAME = server.getProperty("GameserverHostname");
 		PORT_GAME = server.getProperty("GameserverPort", 7777);
 		
-		EXTERNAL_HOSTNAME = server.getProperty("ExternalHostname", "*");
-		INTERNAL_HOSTNAME = server.getProperty("InternalHostname", "*");
+		HOSTNAME = server.getProperty("Hostname", "*");
 		
 		GAME_SERVER_LOGIN_PORT = server.getProperty("LoginPort", 9014);
 		GAME_SERVER_LOGIN_HOST = server.getProperty("LoginHost", "127.0.0.1");
@@ -1230,12 +1193,13 @@ public final class Config
 		DATABASE_LOGIN = server.getProperty("Login", "root");
 		DATABASE_PASSWORD = server.getProperty("Password", "");
 		DATABASE_MAX_CONNECTIONS = server.getProperty("MaximumDbConnections", 10);
-		DATABASE_MAX_IDLE_TIME = server.getProperty("MaximumDbIdleTime", 0);
 		
 		SERVER_LIST_BRACKET = server.getProperty("ServerListBrackets", false);
 		SERVER_LIST_CLOCK = server.getProperty("ServerListClock", false);
 		SERVER_GMONLY = server.getProperty("ServerGMOnly", false);
+		SERVER_LIST_AGE = server.getProperty("ServerListAgeLimit", 0);
 		SERVER_LIST_TESTSERVER = server.getProperty("TestServer", false);
+		SERVER_LIST_PVPSERVER = server.getProperty("PvpServer", true);
 		
 		DELETE_DAYS = server.getProperty("DeleteCharAfterDays", 7);
 		MAXIMUM_ONLINE_USERS = server.getProperty("MaximumOnlineUsers", 100);
@@ -1243,9 +1207,6 @@ public final class Config
 		MAX_PROTOCOL_REVISION = server.getProperty("MaxProtocolRevision", 746);
 		if (MIN_PROTOCOL_REVISION > MAX_PROTOCOL_REVISION)
 			throw new Error("MinProtocolRevision is bigger than MaxProtocolRevision in server.properties.");
-		
-		DEFAULT_PUNISH = server.getProperty("DefaultPunish", 2);
-		DEFAULT_PUNISH_PARAM = server.getProperty("DefaultPunishParam", 0);
 		
 		AUTO_LOOT = server.getProperty("AutoLoot", false);
 		AUTO_LOOT_HERBS = server.getProperty("AutoLootHerbs", false);
@@ -1267,7 +1228,6 @@ public final class Config
 			}
 		}
 		PLAYER_DROPPED_ITEM_MULTIPLIER = server.getProperty("PlayerDroppedItemMultiplier", 1);
-		SAVE_DROPPED_ITEM = server.getProperty("SaveDroppedItem", false);
 		
 		RATE_XP = server.getProperty("RateXp", 1.);
 		RATE_SP = server.getProperty("RateSp", 1.);
@@ -1365,42 +1325,38 @@ public final class Config
 	private static final void loadLogin()
 	{
 		final ExProperties server = initProperties(LOGIN_CONFIGURATION_FILE);
-		GAME_SERVER_LOGIN_HOST = server.getProperty("LoginHostname", "*");
-		GAME_SERVER_LOGIN_PORT = server.getProperty("LoginPort", 9013);
+		HOSTNAME = server.getProperty("Hostname", "localhost");
 		
 		LOGIN_BIND_ADDRESS = server.getProperty("LoginserverHostname", "*");
 		PORT_LOGIN = server.getProperty("LoginserverPort", 2106);
 		
-		DEBUG = server.getProperty("Debug", false);
-		DEVELOPER = server.getProperty("Developer", false);
-		PACKET_HANDLER_DEBUG = server.getProperty("PacketHandlerDebug", false);
-		ACCEPT_NEW_GAMESERVER = server.getProperty("AcceptNewGameServer", true);
-		REQUEST_ID = server.getProperty("RequestServerID", 0);
-		ACCEPT_ALTERNATE_ID = server.getProperty("AcceptAlternateID", true);
+		GAME_SERVER_LOGIN_HOST = server.getProperty("LoginHostname", "*");
+		GAME_SERVER_LOGIN_PORT = server.getProperty("LoginPort", 9014);
 		
 		LOGIN_TRY_BEFORE_BAN = server.getProperty("LoginTryBeforeBan", 3);
 		LOGIN_BLOCK_AFTER_BAN = server.getProperty("LoginBlockAfterBan", 600);
+		ACCEPT_NEW_GAMESERVER = server.getProperty("AcceptNewGameServer", false);
 		
-		LOG_LOGIN_CONTROLLER = server.getProperty("LogLoginController", false);
-		
-		INTERNAL_HOSTNAME = server.getProperty("InternalHostname", "localhost");
-		EXTERNAL_HOSTNAME = server.getProperty("ExternalHostname", "localhost");
+		SHOW_LICENCE = server.getProperty("ShowLicence", true);
 		
 		DATABASE_URL = server.getProperty("URL", "jdbc:mysql://localhost/acis");
 		DATABASE_LOGIN = server.getProperty("Login", "root");
 		DATABASE_PASSWORD = server.getProperty("Password", "");
 		DATABASE_MAX_CONNECTIONS = server.getProperty("MaximumDbConnections", 10);
-		DATABASE_MAX_IDLE_TIME = server.getProperty("MaximumDbIdleTime", 0);
-		
-		SHOW_LICENCE = server.getProperty("ShowLicence", true);
 		
 		AUTO_CREATE_ACCOUNTS = server.getProperty("AutoCreateAccounts", true);
+		
+		LOG_LOGIN_CONTROLLER = server.getProperty("LogLoginController", false);
 		
 		FLOOD_PROTECTION = server.getProperty("EnableFloodProtection", true);
 		FAST_CONNECTION_LIMIT = server.getProperty("FastConnectionLimit", 15);
 		NORMAL_CONNECTION_TIME = server.getProperty("NormalConnectionTime", 700);
 		FAST_CONNECTION_TIME = server.getProperty("FastConnectionTime", 350);
 		MAX_CONNECTION_PER_IP = server.getProperty("MaxConnectionPerIP", 50);
+		
+		DEBUG = server.getProperty("Debug", false);
+		DEVELOPER = server.getProperty("Developer", false);
+		PACKET_HANDLER_DEBUG = server.getProperty("PacketHandlerDebug", false);
 	}
 	
 	public static final void loadGameServer()
@@ -1424,6 +1380,9 @@ public final class Config
 		
 		// players settings
 		loadPlayers();
+		
+		// siege settings
+		loadSieges();
 		
 		// server settings
 		loadServer();

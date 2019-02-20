@@ -1,33 +1,19 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.skills;
 
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2CubicInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Cubic;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 
 /**
- * An Env object is a class to pass parameters to a calculator such as L2PcInstance, ItemInstance, Initial value.
+ * An Env object is a class to pass parameters to a calculator such as Player, ItemInstance, Initial value.
  */
 public final class Env
 {
-	private L2Character _character;
-	private L2CubicInstance _cubic;
-	private L2Character _target;
+	private Creature _character;
+	private Cubic _cubic;
+	private Creature _target;
 	private ItemInstance _item;
 	private L2Skill _skill;
 	
@@ -56,7 +42,7 @@ public final class Env
 	/**
 	 * @return the _character
 	 */
-	public L2Character getCharacter()
+	public Creature getCharacter()
 	{
 		return _character;
 	}
@@ -64,7 +50,7 @@ public final class Env
 	/**
 	 * @return the _cubic
 	 */
-	public L2CubicInstance getCubic()
+	public Cubic getCubic()
 	{
 		return _cubic;
 	}
@@ -72,7 +58,7 @@ public final class Env
 	/**
 	 * @return the _target
 	 */
-	public L2Character getTarget()
+	public Creature getTarget()
 	{
 		return _target;
 	}
@@ -96,7 +82,7 @@ public final class Env
 	/**
 	 * @return the acting player.
 	 */
-	public L2PcInstance getPlayer()
+	public Player getPlayer()
 	{
 		return _character == null ? null : _character.getActingPlayer();
 	}
@@ -160,7 +146,7 @@ public final class Env
 	/**
 	 * @param character the _character to set
 	 */
-	public void setCharacter(L2Character character)
+	public void setCharacter(Creature character)
 	{
 		_character = character;
 	}
@@ -168,7 +154,7 @@ public final class Env
 	/**
 	 * @param cubic the _cubic to set
 	 */
-	public void setCubic(L2CubicInstance cubic)
+	public void setCubic(Cubic cubic)
 	{
 		_cubic = cubic;
 	}
@@ -176,7 +162,7 @@ public final class Env
 	/**
 	 * @param target the _target to set
 	 */
-	public void setTarget(L2Character target)
+	public void setTarget(Creature target)
 	{
 		_target = target;
 	}

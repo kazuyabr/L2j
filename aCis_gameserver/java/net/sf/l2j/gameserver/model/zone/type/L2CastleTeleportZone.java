@@ -1,29 +1,14 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.zone.type;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 import net.sf.l2j.gameserver.model.zone.ZoneId;
 
 /**
- * A castle teleporter zone used for Mass Gatekeepers
- * @author Kerberos
+ * A castle teleporter zone used for Mass Gatekeepers.
  */
 public class L2CastleTeleportZone extends L2ZoneType
 {
@@ -57,24 +42,24 @@ public class L2CastleTeleportZone extends L2ZoneType
 	}
 	
 	@Override
-	protected void onEnter(L2Character character)
+	protected void onEnter(Creature character)
 	{
 		character.setInsideZone(ZoneId.NO_SUMMON_FRIEND, true);
 	}
 	
 	@Override
-	protected void onExit(L2Character character)
+	protected void onExit(Creature character)
 	{
 		character.setInsideZone(ZoneId.NO_SUMMON_FRIEND, false);
 	}
 	
 	@Override
-	public void onDieInside(L2Character character)
+	public void onDieInside(Creature character)
 	{
 	}
 	
 	@Override
-	public void onReviveInside(L2Character character)
+	public void onReviveInside(Creature character)
 	{
 	}
 	
@@ -83,24 +68,12 @@ public class L2CastleTeleportZone extends L2ZoneType
 		if (_characterList.isEmpty())
 			return;
 		
-		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
-		{
-			if (player.isOnline())
-				player.teleToLocation(Rnd.get(_spawnLoc[0], _spawnLoc[1]), Rnd.get(_spawnLoc[2], _spawnLoc[3]), _spawnLoc[4], 0);
-		}
+		for (Player player : getKnownTypeInside(Player.class))
+			player.teleToLocation(Rnd.get(_spawnLoc[0], _spawnLoc[1]), Rnd.get(_spawnLoc[2], _spawnLoc[3]), _spawnLoc[4], 0);
 	}
 	
 	public int getCastleId()
 	{
 		return _castleId;
-	}
-	
-	/**
-	 * Get the spawn locations
-	 * @return
-	 */
-	public int[] getSpawn()
-	{
-		return _spawnLoc;
 	}
 }

@@ -874,7 +874,7 @@
 		<set name="castRange" val="600"/>
 		<set name="effectRange" val="1100"/>
 		<for>
-			<effect count="5" name="Fear" time="6" val="0" stackOrder="1" stackType="turn_flee" />
+			<effect name="Fear" time="30" val="0" stackOrder="1" stackType="turn_flee" />
 		</for>
 	</skill>
 	<skill id="1170" levels="13" name="Anchor" enchantLevels1="30" enchantLevels2="30" >
@@ -1115,12 +1115,12 @@
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="armor_water">
-				<add order="0x40" stat="waterRes" val="#vuln" />
+				<addMul order="0x40" stat="waterRes" val="#vuln" />
 			</effect>
 		</for>
 		<enchant1for>
 			<effect name="Buff" time="#ench1time" val="0" stackOrder="3" stackType="armor_water">
-				<add order="0x40" stat="waterRes" val="30" />
+				<addMul order="0x40" stat="waterRes" val="30" />
 			</effect>
 		</enchant1for>
 	</skill>
@@ -1203,12 +1203,12 @@
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="armor_wind">
-				<add order="0x40" stat="windRes" val="#vuln" />
+				<addMul order="0x40" stat="windRes" val="#vuln" />
 			</effect>
 		</for>
 		<enchant1for>
 			<effect name="Buff" time="#ench1time" val="0" stackOrder="3" stackType="armor_wind">
-				<add order="0x40" stat="windRes" val="30" />
+				<addMul order="0x40" stat="windRes" val="30" />
 			</effect>
 		</enchant1for>
 	</skill>
@@ -1236,12 +1236,12 @@
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="armor_fire">
-				<add order="0x40" stat="fireRes" val="#vuln" />
+				<addMul order="0x40" stat="fireRes" val="#vuln" />
 			</effect>
 		</for>
 		<enchant1for>
 			<effect name="Buff" time="#ench1time" val="0" stackOrder="3" stackType="armor_fire">
-				<add order="0x40" stat="fireRes" val="30" />
+				<addMul order="0x40" stat="fireRes" val="30" />
 			</effect>
 		</enchant1for>
 	</skill>

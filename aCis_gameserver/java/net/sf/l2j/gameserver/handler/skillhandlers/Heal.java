@@ -1,30 +1,16 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.ShotType;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SiegeFlagInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.SiegeFlag;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -40,7 +26,7 @@ public class Heal implements ISkillHandler
 	};
 	
 	@Override
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets)
 	{
 		// check for other effects
 		final ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(L2SkillType.BUFF);
@@ -61,7 +47,7 @@ public class Heal implements ISkillHandler
 				double staticShotBonus = 0;
 				int mAtkMul = 1; // mAtk multiplier
 				
-				if ((sps || bsps) && (activeChar instanceof L2PcInstance && activeChar.getActingPlayer().isMageClass()) || activeChar instanceof L2Summon)
+				if ((sps || bsps) && (activeChar instanceof Player && activeChar.getActingPlayer().isMageClass()) || activeChar instanceof Summon)
 				{
 					staticShotBonus = skill.getMpConsume(); // static bonus for spiritshots
 					
@@ -73,7 +59,7 @@ public class Heal implements ISkillHandler
 					else
 						mAtkMul = 2;
 				}
-				else if ((sps || bsps) && activeChar instanceof L2Npc)
+				else if ((sps || bsps) && activeChar instanceof Npc)
 				{
 					staticShotBonus = 2.4 * skill.getMpConsume(); // always blessed spiritshots
 					mAtkMul = 4;
@@ -94,24 +80,24 @@ public class Heal implements ISkillHandler
 		}
 		
 		double hp;
-		for (L2Object obj : targets)
+		for (WorldObject obj : targets)
 		{
-			if (!(obj instanceof L2Character))
+			if (!(obj instanceof Creature))
 				continue;
 			
-			final L2Character target = ((L2Character) obj);
+			final Creature target = ((Creature) obj);
 			if (target.isDead() || target.isInvul())
 				continue;
 			
-			if (target instanceof L2DoorInstance || target instanceof L2SiegeFlagInstance)
+			if (target instanceof Door || target instanceof SiegeFlag)
 				continue;
 			
 			// Player holding a cursed weapon can't be healed and can't heal
 			if (target != activeChar)
 			{
-				if (target instanceof L2PcInstance && ((L2PcInstance) target).isCursedWeaponEquipped())
+				if (target instanceof Player && ((Player) target).isCursedWeaponEquipped())
 					continue;
-				else if (activeChar instanceof L2PcInstance && ((L2PcInstance) activeChar).isCursedWeaponEquipped())
+				else if (activeChar instanceof Player && ((Player) activeChar).isCursedWeaponEquipped())
 					continue;
 			}
 			
@@ -137,13 +123,13 @@ public class Heal implements ISkillHandler
 			su.addAttribute(StatusUpdate.CUR_HP, (int) target.getCurrentHp());
 			target.sendPacket(su);
 			
-			if (target instanceof L2PcInstance)
+			if (target instanceof Player)
 			{
 				if (skill.getId() == 4051)
 					target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REJUVENATING_HP));
 				else
 				{
-					if (activeChar instanceof L2PcInstance && activeChar != target)
+					if (activeChar instanceof Player && activeChar != target)
 						target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S2_HP_RESTORED_BY_S1).addCharName(activeChar).addNumber((int) hp));
 					else
 						target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HP_RESTORED).addNumber((int) hp));

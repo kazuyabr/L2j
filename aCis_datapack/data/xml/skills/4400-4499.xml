@@ -220,7 +220,7 @@
 			<mul stat="bluntWpnVuln" val="#pDefBlunts" order="0x30" />
 			<mul stat="swordWpnVuln" val="#pDefSwords" order="0x30" />
 			<mul stat="dualWpnVuln" val="#pDefDuals" order="0x30" />
-			<sub order="0x40" stat="stunVuln" val="#pDefShocks" />
+			<addMul order="0x40" stat="stunVuln" val="#pDefShocks" />
 		</for>
 	</skill>
 	<skill id="4417" levels="38" name="Race Types">
@@ -238,10 +238,10 @@
 			<mul stat="bowWpnVuln" val="#pDefBows" order="0x30" />
 			<mul stat="bluntWpnVuln" val="#pDefBlunts" order="0x30" />
 			<mul stat="daggerWpnVuln" val="#pDefDagger" order="0x30" />
-			<sub order="0x40" stat="poisonVuln" val="#pDefPoison" />
-			<sub order="0x40" stat="bleedVuln" val="#pDefBleed" />
-			<sub order="0x40" stat="sleepVuln" val="#pDefSleep" />
-			<sub order="0x40" stat="rootVuln" val="#pDefHold" />
+			<addMul order="0x40" stat="poisonVuln" val="#pDefPoison" />
+			<addMul order="0x40" stat="bleedVuln" val="#pDefBleed" />
+			<addMul order="0x40" stat="sleepVuln" val="#pDefSleep" />
+			<addMul order="0x40" stat="rootVuln" val="#pDefHold" />
 		</for>
 	</skill>
 	<skill id="4418" levels="5" name="Fire Attacks">
@@ -250,7 +250,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="fireRes" val="#vuln" />
+			<addMul order="0x40" stat="fireRes" val="#vuln" />
 			<add order="0x40" stat="firePower" val="10" />
 		</for>
 	</skill>
@@ -260,7 +260,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="waterRes" val="#vuln" />
+			<addMul order="0x40" stat="waterRes" val="#vuln" />
 			<add order="0x40" stat="waterPower" val="10" />
 		</for>
 	</skill>
@@ -270,7 +270,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="windRes" val="#vuln" />
+			<addMul order="0x40" stat="windRes" val="#vuln" />
 			<add order="0x40" stat="windPower" val="10" />
 		</for>
 	</skill>
@@ -280,7 +280,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="earthRes" val="#vuln" />
+			<addMul order="0x40" stat="earthRes" val="#vuln" />
 			<add order="0x40" stat="earthPower" val="10" />
 		</for>
 	</skill>
@@ -290,7 +290,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="darkRes" val="#vuln" />
+			<addMul order="0x40" stat="darkRes" val="#vuln" />
 			<add order="0x40" stat="darkPower" val="10" />
 		</for>
 	</skill>
@@ -300,7 +300,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="holyRes" val="#vuln" />
+			<addMul order="0x40" stat="holyRes" val="#vuln" />
 			<add order="0x40" stat="holyPower" val="10" />
 		</for>
 	</skill>
@@ -356,7 +356,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="fireRes" val="#vuln" />
+			<addMul order="0x40" stat="fireRes" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4430" levels="5" name="Greater Resist Water Attacks">
@@ -365,7 +365,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="waterRes" val="#vuln" />
+			<addMul order="0x40" stat="waterRes" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4431" levels="5" name="Greater Resist Wind Attacks">
@@ -374,7 +374,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="windRes" val="#vuln" />
+			<addMul order="0x40" stat="windRes" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4432" levels="5" name="Greater Resist Earth Attacks">
@@ -383,7 +383,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="earthRes" val="#vuln" />
+			<addMul order="0x40" stat="earthRes" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4433" levels="5" name="Greater Resist Sacred Attacks">
@@ -392,7 +392,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="holyRes" val="#vuln" />
+			<addMul order="0x40" stat="holyRes" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4434" levels="5" name="Greater Resist Dark Attacks">
@@ -401,7 +401,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="darkRes" val="#vuln" />
+			<addMul order="0x40" stat="darkRes" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4435" levels="5" name="Greater Resist Stun">
@@ -410,7 +410,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="stunVuln" val="#vuln" />
+			<addMul order="0x40" stat="stunVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4436" levels="5" name="Greater Resist Poison">
@@ -419,7 +419,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="poisonVuln" val="#vuln" />
+			<addMul order="0x40" stat="poisonVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4437" levels="5" name="Greater Resist Bleeding">
@@ -428,7 +428,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="bleedVuln" val="#vuln" />
+			<addMul order="0x40" stat="bleedVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4438" levels="5" name="Greater Resist Sleep">
@@ -437,7 +437,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="sleepVuln" val="#vuln" />
+			<addMul order="0x40" stat="sleepVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4439" levels="5" name="Greater Resist Hold">
@@ -446,7 +446,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="rootVuln" val="#vuln" />
+			<addMul order="0x40" stat="rootVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4440" levels="5" name="Greater Resist Paralysis">
@@ -455,7 +455,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="paralyzeVuln" val="#vuln" />
+			<addMul order="0x40" stat="paralyzeVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4441" levels="5" name="Greater Resist Mental Derangement">
@@ -464,7 +464,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<sub order="0x40" stat="derangementVuln" val="#vuln" />
+			<addMul order="0x40" stat="derangementVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4442" levels="5" name="Greater Resist Hand-to-hand Weapons">
@@ -546,7 +546,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="stunVuln" val="#vuln" />
+			<subDiv order="0x40" stat="stunVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4451" levels="5" name="Poison Attack Weak Point">
@@ -555,7 +555,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="poisonVuln" val="#vuln" />
+			<subDiv order="0x40" stat="poisonVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4452" levels="5" name="Bleed Attack Weak Point">
@@ -564,7 +564,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="bleedVuln" val="#vuln" />
+			<subDiv order="0x40" stat="bleedVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4453" levels="5" name="Sleep Attack Weak Point">
@@ -573,7 +573,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="sleepVuln" val="#vuln" />
+			<subDiv order="0x40" stat="sleepVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4454" levels="5" name="Hold Attack Weak Point">
@@ -582,7 +582,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="rootVuln" val="#vuln" />
+			<subDiv order="0x40" stat="rootVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4455" levels="5" name="Paralysis Attack Weak Point">
@@ -591,7 +591,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="paralyzeVuln" val="#vuln" />
+			<subDiv order="0x40" stat="paralyzeVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4456" levels="5" name="Mental Attack Weak Point">
@@ -600,7 +600,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add order="0x40" stat="derangementVuln" val="#vuln" />
+			<subDiv order="0x40" stat="derangementVuln" val="#vuln" />
 		</for>
 	</skill>
 	<skill id="4457" levels="5" name="Hand-to-hand Weapon Weak Point">
@@ -678,8 +678,8 @@
 		<set name="mpConsume" val="#mpConsume" />
 		<for>
 			<effect name="Debuff" time="30" val="0" stackOrder="#stackOrder" stackType="armor_water">
-				<add order="0x40" stat="fireRes" val="#fire" />
-				<sub order="0x40" stat="waterRes" val="#water" />
+				<addMul order="0x40" stat="fireRes" val="#fire" />
+				<subDiv order="0x40" stat="waterRes" val="#water" />
 			</effect>
 		</for>
 	</skill>
@@ -703,8 +703,8 @@
 		<set name="mpConsume" val="#mpConsume" />
 		<for>
 			<effect name="Debuff" time="30" val="0" stackOrder="#stackOrder" stackType="armor_wind">
-				<sub order="0x40" stat="windRes" val="#wind" />
-				<add order="0x40" stat="earthRes" val="#earth" />
+				<subDiv order="0x40" stat="windRes" val="#wind" />
+				<addMul order="0x40" stat="earthRes" val="#earth" />
 			</effect>
 		</for>
 	</skill>
@@ -728,8 +728,8 @@
 		<set name="mpConsume" val="#mpConsume" />
 		<for>
 			<effect name="Debuff" time="30" val="0" stackOrder="#stackOrder" stackType="armor_earth">
-				<sub order="0x40" stat="earthRes" val="#earth" />
-				<add order="0x40" stat="windRes" val="#wind" />
+				<subDiv order="0x40" stat="earthRes" val="#earth" />
+				<addMul order="0x40" stat="windRes" val="#wind" />
 			</effect>
 		</for>
 	</skill>
@@ -754,8 +754,8 @@
 		<set name="mpConsume" val="#mpConsume" />
 		<for>
 			<effect name="Debuff" time="30" val="0" stackOrder="#stackOrder" stackType="armor_unholy">
-				<sub order="0x40" stat="darkRes" val="#dark" />
-				<add order="0x40" stat="holyRes" val="#holy" />
+				<subDiv order="0x40" stat="darkRes" val="#dark" />
+				<addMul order="0x40" stat="holyRes" val="#holy" />
 			</effect>
 		</for>
 	</skill>
@@ -780,8 +780,8 @@
 		<set name="mpConsume" val="#mpConsume" />
 		<for>
 			<effect name="Debuff" time="30" val="0" stackOrder="#stackOrder" stackType="armor_holy">
-				<sub order="0x40" stat="holyRes" val="#holy" />
-				<add order="0x40" stat="darkRes" val="#dark" />
+				<subDiv order="0x40" stat="holyRes" val="#holy" />
+				<addMul order="0x40" stat="darkRes" val="#dark" />
 			</effect>
 		</for>
 	</skill>
@@ -893,7 +893,7 @@
 		<set name="mpConsume" val="50" />
 		<for>
 			<effect name="Buff" time="300" val="0" stackOrder="10" stackType="bleeding">
-				<sub order="0x40" stat="bleedVuln" val="100" />
+				<addMul order="0x40" stat="bleedVuln" val="100" />
 			</effect>
 		</for>
 	</skill>
@@ -955,7 +955,7 @@
 		<set name="mpConsume" val="39" />
 		<for>
 			<effect name="Buff" time="1800" val="0" stackOrder="4" stackType="armor_water">
-				<add order="0x40" stat="waterRes" val="50" />
+				<addMul order="0x40" stat="waterRes" val="50" />
 			</effect>
 		</for>
 	</skill>

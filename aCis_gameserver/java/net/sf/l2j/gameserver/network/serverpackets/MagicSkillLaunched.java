@@ -1,21 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.L2Character;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
 
 /**
  * format ddddd d
@@ -26,10 +12,10 @@ public class MagicSkillLaunched extends L2GameServerPacket
 	private final int _skillId;
 	private final int _skillLevel;
 	private final int _numberOfTargets;
-	private L2Object[] _targets;
+	private WorldObject[] _targets;
 	private final int _singleTargetId;
 	
-	public MagicSkillLaunched(L2Character cha, int skillId, int skillLevel, L2Object[] targets)
+	public MagicSkillLaunched(Creature cha, int skillId, int skillLevel, WorldObject[] targets)
 	{
 		_charObjId = cha.getObjectId();
 		_skillId = skillId;
@@ -39,7 +25,7 @@ public class MagicSkillLaunched extends L2GameServerPacket
 		_singleTargetId = 0;
 	}
 	
-	public MagicSkillLaunched(L2Character cha, int skillId, int skillLevel)
+	public MagicSkillLaunched(Creature cha, int skillId, int skillLevel)
 	{
 		_charObjId = cha.getObjectId();
 		_skillId = skillId;
@@ -59,7 +45,7 @@ public class MagicSkillLaunched extends L2GameServerPacket
 		if (_singleTargetId != 0 || _numberOfTargets == 0)
 			writeD(_singleTargetId);
 		else
-			for (L2Object target : _targets)
+			for (WorldObject target : _targets)
 			{
 				try
 				{

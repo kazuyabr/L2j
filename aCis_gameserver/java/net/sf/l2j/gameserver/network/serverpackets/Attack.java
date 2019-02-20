@@ -1,22 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
  * format dddc dddh (ddc)
@@ -34,7 +20,7 @@ public class Attack extends L2GameServerPacket
 		protected final int _damage;
 		protected int _flags;
 		
-		Hit(L2Object target, int damage, boolean miss, boolean crit, byte shld)
+		Hit(WorldObject target, int damage, boolean miss, boolean crit, byte shld)
 		{
 			_targetId = target.getObjectId();
 			_damage = damage;
@@ -51,7 +37,7 @@ public class Attack extends L2GameServerPacket
 			if (crit)
 				_flags |= HITFLAG_CRIT;
 			
-			if (shld > 0 && !(target instanceof L2PcInstance && ((L2PcInstance) target).isInOlympiadMode()))
+			if (shld > 0 && !(target instanceof Player && ((Player) target).isInOlympiadMode()))
 				_flags |= HITFLAG_SHLD;
 		}
 	}
@@ -63,11 +49,11 @@ public class Attack extends L2GameServerPacket
 	private Hit[] _hits;
 	
 	/**
-	 * @param attacker The attacking L2Character.
+	 * @param attacker The attacking Creature.
 	 * @param useShots True if soulshots are used.
 	 * @param ssGrade The grade of the soulshots.
 	 */
-	public Attack(L2Character attacker, boolean useShots, int ssGrade)
+	public Attack(Creature attacker, boolean useShots, int ssGrade)
 	{
 		_attackerObjId = attacker.getObjectId();
 		soulshot = useShots;
@@ -77,7 +63,7 @@ public class Attack extends L2GameServerPacket
 		_z = attacker.getZ();
 	}
 	
-	public Hit createHit(L2Object target, int damage, boolean miss, boolean crit, byte shld)
+	public Hit createHit(WorldObject target, int damage, boolean miss, boolean crit, byte shld)
 	{
 		return new Hit(target, damage, miss, crit, shld);
 	}

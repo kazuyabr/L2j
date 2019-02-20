@@ -1,22 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.actor.stat;
 
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Pet;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.InventoryUpdate;
@@ -26,7 +12,7 @@ import net.sf.l2j.gameserver.skills.Stats;
 
 public class PetStat extends SummonStat
 {
-	public PetStat(L2PetInstance activeChar)
+	public PetStat(Pet activeChar)
 	{
 		super(activeChar);
 	}
@@ -70,9 +56,9 @@ public class PetStat extends SummonStat
 	}
 	
 	@Override
-	public L2PetInstance getActiveChar()
+	public Pet getActiveChar()
 	{
-		return (L2PetInstance) super.getActiveChar();
+		return (Pet) super.getActiveChar();
 	}
 	
 	@Override
@@ -80,9 +66,7 @@ public class PetStat extends SummonStat
 	{
 		getActiveChar().setPetData(getActiveChar().getTemplate().getPetDataEntry(value));
 		
-		getActiveChar().stopFeed();
 		super.setLevel(value); // Set level.
-		getActiveChar().startFeed();
 		
 		// If a control item exists and its level is different of the new level.
 		final ItemInstance controlItem = getActiveChar().getControlItem();
@@ -112,7 +96,7 @@ public class PetStat extends SummonStat
 	}
 	
 	@Override
-	public int getMAtk(L2Character target, L2Skill skill)
+	public int getMAtk(Creature target, L2Skill skill)
 	{
 		double attack = getActiveChar().getPetData().getMAtk();
 		
@@ -134,13 +118,13 @@ public class PetStat extends SummonStat
 	}
 	
 	@Override
-	public int getMDef(L2Character target, L2Skill skill)
+	public int getMDef(Creature target, L2Skill skill)
 	{
 		return (int) calcStat(Stats.MAGIC_DEFENCE, getActiveChar().getPetData().getMDef(), target, skill);
 	}
 	
 	@Override
-	public int getPAtk(L2Character target)
+	public int getPAtk(Creature target)
 	{
 		return (int) calcStat(Stats.POWER_ATTACK, getActiveChar().getPetData().getPAtk(), target, null);
 	}
@@ -157,7 +141,7 @@ public class PetStat extends SummonStat
 	}
 	
 	@Override
-	public int getPDef(L2Character target)
+	public int getPDef(Creature target)
 	{
 		return (int) calcStat(Stats.POWER_DEFENCE, getActiveChar().getPetData().getPDef(), target, null);
 	}

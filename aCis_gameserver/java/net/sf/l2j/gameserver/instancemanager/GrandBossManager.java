@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager;
 
 import java.sql.Connection;
@@ -24,8 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.datatables.NpcTable;
-import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
+import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
@@ -40,7 +26,7 @@ public class GrandBossManager
 	private static final String UPDATE_GRAND_BOSS_DATA = "UPDATE grandboss_data set loc_x = ?, loc_y = ?, loc_z = ?, heading = ?, respawn_time = ?, currentHP = ?, currentMP = ?, status = ? where boss_id = ?";
 	private static final String UPDATE_GRAND_BOSS_DATA2 = "UPDATE grandboss_data set status = ? where boss_id = ?";
 	
-	private final Map<Integer, L2GrandBossInstance> _bosses = new HashMap<>();
+	private final Map<Integer, GrandBoss> _bosses = new HashMap<>();
 	private final Map<Integer, StatsSet> _storedInfo = new HashMap<>();
 	private final Map<Integer, Integer> _bossStatus = new HashMap<>();
 	
@@ -100,7 +86,7 @@ public class GrandBossManager
 	 * Adds a L2GrandBossInstance to the list of bosses.
 	 * @param boss The boss to add.
 	 */
-	public void addBoss(L2GrandBossInstance boss)
+	public void addBoss(GrandBoss boss)
 	{
 		if (boss != null)
 			_bosses.put(boss.getNpcId(), boss);
@@ -111,13 +97,13 @@ public class GrandBossManager
 	 * @param npcId The npcId to use for registration.
 	 * @param boss The boss to add.
 	 */
-	public void addBoss(int npcId, L2GrandBossInstance boss)
+	public void addBoss(int npcId, GrandBoss boss)
 	{
 		if (boss != null)
 			_bosses.put(npcId, boss);
 	}
 	
-	public L2GrandBossInstance getBoss(int bossId)
+	public GrandBoss getBoss(int bossId)
 	{
 		return _bosses.get(bossId);
 	}
@@ -144,7 +130,7 @@ public class GrandBossManager
 			{
 				final int bossId = infoEntry.getKey();
 				
-				L2GrandBossInstance boss = _bosses.get(bossId);
+				GrandBoss boss = _bosses.get(bossId);
 				StatsSet info = infoEntry.getValue();
 				if (boss == null || info == null)
 				{
@@ -181,7 +167,7 @@ public class GrandBossManager
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			L2GrandBossInstance boss = _bosses.get(bossId);
+			GrandBoss boss = _bosses.get(bossId);
 			StatsSet info = _storedInfo.get(bossId);
 			PreparedStatement statement = null;
 			

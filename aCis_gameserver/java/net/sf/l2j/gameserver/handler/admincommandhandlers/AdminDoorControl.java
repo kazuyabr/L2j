@@ -1,24 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import net.sf.l2j.gameserver.datatables.DoorTable;
+import net.sf.l2j.gameserver.data.DoorTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
@@ -41,20 +27,20 @@ public class AdminDoorControl implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		if (command.startsWith("admin_open"))
 		{
 			if (command.equals("admin_openall"))
 			{
-				for (L2DoorInstance door : DoorTable.getInstance().getDoors())
+				for (Door door : DoorTable.getInstance().getDoors())
 					door.openMe();
 			}
 			else
 			{
 				try
 				{
-					final L2DoorInstance door = DoorTable.getInstance().getDoor(Integer.parseInt(command.substring(11)));
+					final Door door = DoorTable.getInstance().getDoor(Integer.parseInt(command.substring(11)));
 					if (door != null)
 						door.openMe();
 					else
@@ -62,10 +48,10 @@ public class AdminDoorControl implements IAdminCommandHandler
 				}
 				catch (Exception e)
 				{
-					final L2Object target = activeChar.getTarget();
+					final WorldObject target = activeChar.getTarget();
 					
-					if (target instanceof L2DoorInstance)
-						((L2DoorInstance) target).openMe();
+					if (target instanceof Door)
+						((Door) target).openMe();
 					else
 						activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				}
@@ -75,14 +61,14 @@ public class AdminDoorControl implements IAdminCommandHandler
 		{
 			if (command.equals("admin_closeall"))
 			{
-				for (L2DoorInstance door : DoorTable.getInstance().getDoors())
+				for (Door door : DoorTable.getInstance().getDoors())
 					door.closeMe();
 			}
 			else
 			{
 				try
 				{
-					final L2DoorInstance door = DoorTable.getInstance().getDoor(Integer.parseInt(command.substring(12)));
+					final Door door = DoorTable.getInstance().getDoor(Integer.parseInt(command.substring(12)));
 					if (door != null)
 						door.closeMe();
 					else
@@ -90,10 +76,10 @@ public class AdminDoorControl implements IAdminCommandHandler
 				}
 				catch (Exception e)
 				{
-					final L2Object target = activeChar.getTarget();
+					final WorldObject target = activeChar.getTarget();
 					
-					if (target instanceof L2DoorInstance)
-						((L2DoorInstance) target).closeMe();
+					if (target instanceof Door)
+						((Door) target).closeMe();
 					else
 						activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				}

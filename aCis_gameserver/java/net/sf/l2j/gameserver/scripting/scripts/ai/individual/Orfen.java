@@ -1,36 +1,22 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.ai.individual;
 
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Spawn;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.SpawnLocation;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.location.Location;
+import net.sf.l2j.gameserver.model.location.SpawnLocation;
 import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
@@ -90,7 +76,7 @@ public class Orfen extends L2AttackableAIScript
 				// The time has already expired while the server was offline. Spawn Orfen in a random place.
 				_currentIndex = Rnd.get(1, 3);
 				
-				final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, ORFEN_LOCATION[_currentIndex], false, 0, false);
+				final GrandBoss orfen = (GrandBoss) addSpawn(ORFEN, ORFEN_LOCATION[_currentIndex], false, 0, false);
 				GrandBossManager.getInstance().setBossStatus(ORFEN, ALIVE);
 				spawnBoss(orfen);
 			}
@@ -104,7 +90,7 @@ public class Orfen extends L2AttackableAIScript
 			final int hp = info.getInteger("currentHP");
 			final int mp = info.getInteger("currentMP");
 			
-			final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, loc_x, loc_y, loc_z, heading, false, 0, false);
+			final GrandBoss orfen = (GrandBoss) addSpawn(ORFEN, loc_x, loc_y, loc_z, heading, false, 0, false);
 			orfen.setCurrentHpMp(hp, mp);
 			spawnBoss(orfen);
 		}
@@ -120,13 +106,13 @@ public class Orfen extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		if (event.equalsIgnoreCase("orfen_unlock"))
 		{
 			_currentIndex = Rnd.get(1, 3);
 			
-			final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, ORFEN_LOCATION[_currentIndex], false, 0, false);
+			final GrandBoss orfen = (GrandBoss) addSpawn(ORFEN, ORFEN_LOCATION[_currentIndex], false, 0, false);
 			GrandBossManager.getInstance().setBossStatus(ORFEN, ALIVE);
 			spawnBoss(orfen);
 		}
@@ -159,9 +145,9 @@ public class Orfen extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
 	{
-		L2Character originalCaster = isPet ? caster.getPet() : caster;
+		Creature originalCaster = isPet ? caster.getPet() : caster;
 		if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
 		{
 			npc.broadcastNpcSay(ORFEN_CHAT[Rnd.get(4)].replace("$s1", caster.getName()));
@@ -173,7 +159,7 @@ public class Orfen extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onFactionCall(L2Npc npc, L2Npc caller, L2PcInstance attacker, boolean isPet)
+	public String onFactionCall(Npc npc, Npc caller, Player attacker, boolean isPet)
 	{
 		if (caller == null || npc == null || npc.isCastingNow())
 			return super.onFactionCall(npc, caller, attacker, isPet);
@@ -202,7 +188,7 @@ public class Orfen extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		if (npc.getNpcId() == ORFEN)
 		{
@@ -235,9 +221,9 @@ public class Orfen extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
-		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		npc.broadcastPacket(new PlaySound(1, "BS02_D", npc));
 		GrandBossManager.getInstance().setBossStatus(ORFEN, DEAD);
 		
 		long respawnTime = (long) Config.SPAWN_INTERVAL_ORFEN + Rnd.get(-Config.RANDOM_SPAWN_TIME_ORFEN, Config.RANDOM_SPAWN_TIME_ORFEN);
@@ -260,9 +246,9 @@ public class Orfen extends L2AttackableAIScript
 	 * @param npc : Orfen in any case.
 	 * @param index : 0 for her lair (teleport) or 1-3 (walking through desert).
 	 */
-	private static void goTo(L2Npc npc, SpawnLocation index)
+	private static void goTo(Npc npc, SpawnLocation index)
 	{
-		((L2Attackable) npc).getAggroList().clear();
+		((Attackable) npc).getAggroList().clear();
 		npc.getAI().setIntention(CtrlIntention.IDLE, null, null);
 		
 		// Edit the spawn location in case server crashes.
@@ -275,10 +261,10 @@ public class Orfen extends L2AttackableAIScript
 			npc.getAI().setIntention(CtrlIntention.MOVE_TO, new Location(index.getX(), index.getY(), index.getZ()));
 	}
 	
-	private void spawnBoss(L2GrandBossInstance npc)
+	private void spawnBoss(GrandBoss npc)
 	{
 		GrandBossManager.getInstance().addBoss(npc);
-		npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		npc.broadcastPacket(new PlaySound(1, "BS01_A", npc));
 		startQuestTimer("check_orfen_pos", 60000, npc, null, true);
 		
 		// start monitoring Orfen's inactivity

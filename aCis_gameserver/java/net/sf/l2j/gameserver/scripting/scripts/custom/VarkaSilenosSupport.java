@@ -1,30 +1,17 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.custom;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.datatables.SkillTable;
-import net.sf.l2j.gameserver.datatables.SkillTable.FrequentSkill;
-import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.L2Playable;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -112,7 +99,7 @@ public class VarkaSilenosSupport extends Quest
 			4357,
 			6
 		}
-	// Haste: Requires 6 Nepenthese Seeds
+		// Haste: Requires 6 Nepenthese Seeds
 	};
 	
 	/**
@@ -144,7 +131,7 @@ public class VarkaSilenosSupport extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(getName());
@@ -191,7 +178,7 @@ public class VarkaSilenosSupport extends Quest
 	}
 	
 	@Override
-	public String onFirstTalk(L2Npc npc, L2PcInstance player)
+	public String onFirstTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -298,15 +285,13 @@ public class VarkaSilenosSupport extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
-		if (player.isInParty())
+		final Party party = player.getParty();
+		if (party != null)
 		{
-			for (L2PcInstance partyMember : player.getParty().getPartyMembers())
-			{
-				if (partyMember != null)
-					testVarkaDemote(partyMember);
-			}
+			for (Player member : party.getMembers())
+				testVarkaDemote(member);
 		}
 		else
 			testVarkaDemote(player);
@@ -315,7 +300,7 @@ public class VarkaSilenosSupport extends Quest
 	}
 	
 	@Override
-	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
 	{
 		// Caster is an allied.
 		if (caster.isAlliedWithVarka())
@@ -329,27 +314,27 @@ public class VarkaSilenosSupport extends Quest
 				case HEAL_STATIC:
 				case BALANCE_LIFE:
 				case HOT:
-					for (L2Character target : (L2Character[]) targets)
+					for (Creature target : (Creature[]) targets)
 					{
 						// Character isn't existing, is dead or is current caster, we drop check.
 						if (target == null || target.isDead() || target == caster)
 							continue;
 						
 						// Target isn't a summon nor a player, we drop check.
-						if (!(target instanceof L2Playable))
+						if (!(target instanceof Playable))
 							continue;
 						
 						// Retrieve the player behind that target.
-						final L2PcInstance player = target.getActingPlayer();
+						final Player player = target.getActingPlayer();
 						
 						// If player is neutral or enemy, go further.
 						if (!(player.isAlliedWithVarka()))
 						{
 							// If the NPC got that player registered in aggro list, go further.
-							if (((L2Attackable) npc).getAggroList().containsKey(player))
+							if (((Attackable) npc).getAggroList().containsKey(player))
 							{
 								// Save current target for future use.
-								final L2Object oldTarget = npc.getTarget();
+								final WorldObject oldTarget = npc.getTarget();
 								
 								// Curse the heretic or his pet.
 								npc.setTarget((isPet && player.getPet() != null) ? caster.getPet() : caster);
@@ -374,7 +359,7 @@ public class VarkaSilenosSupport extends Quest
 	 * If any Varka quest is in progress, it stops the quest (and drop all related qItems) :
 	 * @param player The player to check.
 	 */
-	private static void testVarkaDemote(L2PcInstance player)
+	private static void testVarkaDemote(Player player)
 	{
 		if (player.isAlliedWithVarka())
 		{

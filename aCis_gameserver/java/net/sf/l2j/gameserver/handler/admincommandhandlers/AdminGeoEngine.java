@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.List;
@@ -20,10 +6,10 @@ import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.geoengine.geodata.ABlock;
 import net.sf.l2j.gameserver.geoengine.geodata.GeoStructure;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
@@ -46,7 +32,7 @@ public class AdminGeoEngine implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		if (command.startsWith("admin_geo_bug"))
 		{
@@ -72,8 +58,8 @@ public class AdminGeoEngine implements IAdminCommandHandler
 		{
 			final int geoX = GeoEngine.getGeoX(activeChar.getX());
 			final int geoY = GeoEngine.getGeoY(activeChar.getY());
-			final int rx = (activeChar.getX() - L2World.WORLD_X_MIN) / L2World.TILE_SIZE + L2World.TILE_X_MIN;
-			final int ry = (activeChar.getY() - L2World.WORLD_Y_MIN) / L2World.TILE_SIZE + L2World.TILE_Y_MIN;
+			final int rx = (activeChar.getX() - World.WORLD_X_MIN) / World.TILE_SIZE + World.TILE_X_MIN;
+			final int ry = (activeChar.getY() - World.WORLD_Y_MIN) / World.TILE_SIZE + World.TILE_Y_MIN;
 			final ABlock block = GeoEngine.getInstance().getBlock(geoX, geoY);
 			activeChar.sendMessage("Region: " + rx + "_" + ry + "; Block: " + block.getClass().getSimpleName());
 			if (block.hasGeoPos())
@@ -92,7 +78,7 @@ public class AdminGeoEngine implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_geo_see"))
 		{
-			L2Object target = activeChar.getTarget();
+			WorldObject target = activeChar.getTarget();
 			if (target != null)
 			{
 				if (GeoEngine.getInstance().canSeeTarget(activeChar, target))
@@ -105,7 +91,7 @@ public class AdminGeoEngine implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_geo_move"))
 		{
-			L2Object target = activeChar.getTarget();
+			WorldObject target = activeChar.getTarget();
 			if (target != null)
 			{
 				if (GeoEngine.getInstance().canMoveToTarget(activeChar.getX(), activeChar.getY(), activeChar.getZ(), target.getX(), target.getY(), target.getZ()))

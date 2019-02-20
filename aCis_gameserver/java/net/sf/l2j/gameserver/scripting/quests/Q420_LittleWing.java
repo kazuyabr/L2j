@@ -1,23 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.location.SpawnLocation;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -72,20 +59,30 @@ public class Q420_LittleWing extends Quest
 	private static final int SHAMHAI = 30752;
 	private static final int COOPER = 30829;
 	
+	// Spawn Points
+	private static final SpawnLocation[] LOCATIONS =
+	{
+		new SpawnLocation(109816, 40854, -4640, 0),
+		new SpawnLocation(108940, 41615, -4643, 0),
+		new SpawnLocation(110395, 41625, -4642, 0)
+	};
+	
+	private static int _counter = 0;
+	
 	public Q420_LittleWing()
 	{
 		super(420, "Little Wing");
 		
 		setItemsIds(FAIRY_STONE, DELUXE_FAIRY_STONE, FAIRY_STONE_LIST, DELUXE_FAIRY_STONE_LIST, TOAD_LORD_BACK_SKIN, JUICE_OF_MONKSHOOD, SCALE_OF_DRAKE_EXARION, EGG_OF_DRAKE_EXARION, SCALE_OF_DRAKE_ZWOV, EGG_OF_DRAKE_ZWOV, SCALE_OF_DRAKE_KALIBRAN, EGG_OF_DRAKE_KALIBRAN, SCALE_OF_WYVERN_SUZET, EGG_OF_WYVERN_SUZET, SCALE_OF_WYVERN_SHAMHAI, EGG_OF_WYVERN_SHAMHAI);
 		
-		addStartNpc(COOPER);
+		addStartNpc(COOPER, MIMYU);
 		addTalkId(MARIA, CRONOS, BYRON, MIMYU, EXARION, ZWOV, KALIBRAN, SUZET, SHAMHAI, COOPER);
 		
 		addKillId(20202, 20231, 20233, 20270, 20551, 20580, 20589, 20590, 20591, 20592, 20593, 20594, 20595, 20596, 20597, 20598, 20599);
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -268,7 +265,7 @@ public class Q420_LittleWing extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -278,7 +275,17 @@ public class Q420_LittleWing extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				htmltext = (player.getLevel() >= 35) ? "30829-01.htm" : "30829-03.htm";
+				switch (npc.getNpcId())
+				{
+					case COOPER:
+						htmltext = (player.getLevel() >= 35) ? "30829-01.htm" : "30829-03.htm";
+						break;
+					
+					case MIMYU:
+						_counter += 1;
+						npc.teleToLocation(LOCATIONS[_counter % 3], 0);
+						return null;
+				}
 				break;
 			
 			case STATE_STARTED:
@@ -384,6 +391,12 @@ public class Q420_LittleWing extends Quest
 						}
 						else if (cond == 7)
 							htmltext = "30747-11.htm";
+						else
+						{
+							_counter += 1;
+							npc.teleToLocation(LOCATIONS[_counter % 3], 0);
+							return null;
+						}
 						break;
 					
 					case EXARION:
@@ -482,7 +495,7 @@ public class Q420_LittleWing extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(Npc npc, Player player, boolean isPet)
 	{
 		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)

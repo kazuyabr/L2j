@@ -1,43 +1,29 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Pet;
+import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 
 public class PetStatusUpdate extends L2GameServerPacket
 {
-	private final L2Summon _summon;
+	private final Summon _summon;
 	private final int _maxHp, _maxMp;
 	private int _maxFed, _curFed;
 	
-	public PetStatusUpdate(L2Summon summon)
+	public PetStatusUpdate(Summon summon)
 	{
 		_summon = summon;
 		_maxHp = _summon.getMaxHp();
 		_maxMp = _summon.getMaxMp();
-		if (_summon instanceof L2PetInstance)
+		if (_summon instanceof Pet)
 		{
-			L2PetInstance pet = (L2PetInstance) _summon;
+			Pet pet = (Pet) _summon;
 			_curFed = pet.getCurrentFed();
 			_maxFed = pet.getPetData().getMaxMeal();
 		}
-		else if (_summon instanceof L2SummonInstance)
+		else if (_summon instanceof Servitor)
 		{
-			L2SummonInstance sum = (L2SummonInstance) _summon;
+			Servitor sum = (Servitor) _summon;
 			_curFed = sum.getTimeRemaining();
 			_maxFed = sum.getTotalLifeTime();
 		}

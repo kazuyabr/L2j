@@ -1,28 +1,16 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -61,7 +49,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -93,13 +81,13 @@ public class Q421_LittleWingsBigAdventure extends Quest
 		}
 		else if (event.equalsIgnoreCase("30747-02.htm"))
 		{
-			final L2Summon summon = player.getPet();
+			final Summon summon = player.getPet();
 			if (summon != null)
 				htmltext = (summon.getControlItemId() == st.getInt("summonOid")) ? "30747-04.htm" : "30747-03.htm";
 		}
 		else if (event.equalsIgnoreCase("30747-05.htm"))
 		{
-			final L2Summon summon = player.getPet();
+			final Summon summon = player.getPet();
 			if (summon == null || summon.getControlItemId() != st.getInt("summonOid"))
 				htmltext = "30747-06.htm";
 			else
@@ -115,7 +103,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(Npc npc, Player player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -162,7 +150,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 						}
 						else if (id == 2)
 						{
-							final L2Summon summon = player.getPet();
+							final Summon summon = player.getPet();
 							htmltext = (summon != null) ? ((summon.getControlItemId() == st.getInt("summonOid")) ? "30747-04.htm" : "30747-03.htm") : "30747-02.htm";
 						}
 						else if (id == 3) // Explanation is done, leaves are already given.
@@ -171,7 +159,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 							htmltext = "30747-11.htm";
 						else if (id == 63) // Did all trees, no more leaves.
 						{
-							final L2Summon summon = player.getPet();
+							final Summon summon = player.getPet();
 							if (summon == null)
 								return "30747-12.htm";
 							
@@ -183,7 +171,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 						}
 						else if (id == 100) // Spoke with the Fairy.
 						{
-							final L2Summon summon = player.getPet();
+							final Summon summon = player.getPet();
 							if (summon != null && summon.getControlItemId() == st.getInt("summonOid"))
 								return "30747-15.htm";
 							
@@ -219,12 +207,12 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	}
 	
 	@Override
-	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		// Minions scream no matter current quest state.
-		if (((L2MonsterInstance) npc).hasMinions())
+		if (((Monster) npc).hasMinions())
 		{
-			for (L2MonsterInstance ghost : ((L2MonsterInstance) npc).getMinionList().getSpawnedMinions())
+			for (Monster ghost : ((Monster) npc).getMinionList().getSpawnedMinions())
 			{
 				if (!ghost.isDead() && Rnd.get(100) < 1)
 					ghost.broadcastNpcSay("We must protect the fairy tree!");
@@ -269,9 +257,9 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onKill(Npc npc, Player killer, boolean isPet)
 	{
-		final L2Character originalKiller = isPet ? killer.getPet() : killer;
+		final Creature originalKiller = isPet ? killer.getPet() : killer;
 		
 		// Tree curses the killer.
 		if (Rnd.get(100) < 30)
@@ -287,7 +275,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 		// Spawn 20 ghosts, attacking the killer.
 		for (int i = 0; i < 20; i++)
 		{
-			final L2Attackable newNpc = (L2Attackable) addSpawn(27189, npc, true, 300000, false);
+			final Attackable newNpc = (Attackable) addSpawn(27189, npc, true, 300000, false);
 			
 			newNpc.setRunning();
 			newNpc.addDamageHate(originalKiller, 0, 999);

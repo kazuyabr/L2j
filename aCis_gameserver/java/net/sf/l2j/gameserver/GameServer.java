@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver;
 
 import java.io.File;
@@ -20,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -29,44 +14,43 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.commons.mmocore.SelectorConfig;
 import net.sf.l2j.commons.mmocore.SelectorThread;
+import net.sf.l2j.commons.util.SysUtil;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
-import net.sf.l2j.gameserver.datatables.AccessLevels;
-import net.sf.l2j.gameserver.datatables.AdminCommandAccessRights;
-import net.sf.l2j.gameserver.datatables.AnnouncementTable;
-import net.sf.l2j.gameserver.datatables.ArmorSetsTable;
-import net.sf.l2j.gameserver.datatables.AugmentationData;
-import net.sf.l2j.gameserver.datatables.BookmarkTable;
-import net.sf.l2j.gameserver.datatables.BufferTable;
-import net.sf.l2j.gameserver.datatables.BuyListTable;
-import net.sf.l2j.gameserver.datatables.CharNameTable;
-import net.sf.l2j.gameserver.datatables.CharTemplateTable;
-import net.sf.l2j.gameserver.datatables.ClanTable;
-import net.sf.l2j.gameserver.datatables.DoorTable;
-import net.sf.l2j.gameserver.datatables.FishTable;
-import net.sf.l2j.gameserver.datatables.GmListTable;
-import net.sf.l2j.gameserver.datatables.HelperBuffTable;
-import net.sf.l2j.gameserver.datatables.HennaTable;
-import net.sf.l2j.gameserver.datatables.HerbDropTable;
-import net.sf.l2j.gameserver.datatables.ItemTable;
-import net.sf.l2j.gameserver.datatables.MapRegionTable;
-import net.sf.l2j.gameserver.datatables.MultisellData;
-import net.sf.l2j.gameserver.datatables.NpcTable;
-import net.sf.l2j.gameserver.datatables.NpcWalkerRoutesTable;
-import net.sf.l2j.gameserver.datatables.RecipeTable;
-import net.sf.l2j.gameserver.datatables.ServerMemo;
-import net.sf.l2j.gameserver.datatables.SkillTable;
-import net.sf.l2j.gameserver.datatables.SkillTreeTable;
-import net.sf.l2j.gameserver.datatables.SoulCrystalsTable;
-import net.sf.l2j.gameserver.datatables.SpawnTable;
-import net.sf.l2j.gameserver.datatables.SpellbookTable;
-import net.sf.l2j.gameserver.datatables.StaticObjects;
-import net.sf.l2j.gameserver.datatables.SummonItemsData;
-import net.sf.l2j.gameserver.datatables.TeleportLocationTable;
+import net.sf.l2j.gameserver.data.BufferTable;
+import net.sf.l2j.gameserver.data.CharTemplateTable;
+import net.sf.l2j.gameserver.data.DoorTable;
+import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.MapRegionTable;
+import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.PlayerNameTable;
+import net.sf.l2j.gameserver.data.RecipeTable;
+import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.SpawnTable;
+import net.sf.l2j.gameserver.data.manager.BuyListManager;
+import net.sf.l2j.gameserver.data.sql.BookmarkTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.data.sql.ServerMemoTable;
+import net.sf.l2j.gameserver.data.xml.AdminData;
+import net.sf.l2j.gameserver.data.xml.AnnouncementData;
+import net.sf.l2j.gameserver.data.xml.ArmorSetData;
+import net.sf.l2j.gameserver.data.xml.AugmentationData;
+import net.sf.l2j.gameserver.data.xml.FishData;
+import net.sf.l2j.gameserver.data.xml.HennaData;
+import net.sf.l2j.gameserver.data.xml.HerbDropData;
+import net.sf.l2j.gameserver.data.xml.MultisellData;
+import net.sf.l2j.gameserver.data.xml.NewbieBuffData;
+import net.sf.l2j.gameserver.data.xml.SoulCrystalData;
+import net.sf.l2j.gameserver.data.xml.SpellbookData;
+import net.sf.l2j.gameserver.data.xml.StaticObjectData;
+import net.sf.l2j.gameserver.data.xml.SummonItemData;
+import net.sf.l2j.gameserver.data.xml.TeleportLocationData;
+import net.sf.l2j.gameserver.data.xml.WalkerRouteData;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
 import net.sf.l2j.gameserver.handler.ChatHandler;
@@ -87,18 +71,15 @@ import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.FishingChampionshipManager;
 import net.sf.l2j.gameserver.instancemanager.FourSepulchersManager;
 import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.instancemanager.MercTicketManager;
 import net.sf.l2j.gameserver.instancemanager.MovieMakerManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossPointsManager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
 import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.instancemanager.games.MonsterRace;
-import net.sf.l2j.gameserver.model.L2Manor;
-import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
@@ -116,7 +97,6 @@ import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
 import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
 import net.sf.l2j.gameserver.taskmanager.ItemsOnGroundTaskManager;
-import net.sf.l2j.gameserver.taskmanager.KnownListUpdateTaskManager;
 import net.sf.l2j.gameserver.taskmanager.MovementTaskManager;
 import net.sf.l2j.gameserver.taskmanager.PvpFlagTaskManager;
 import net.sf.l2j.gameserver.taskmanager.RandomAnimationTaskManager;
@@ -131,26 +111,39 @@ public class GameServer
 	private static final Logger _log = Logger.getLogger(GameServer.class.getName());
 	
 	private final SelectorThread<L2GameClient> _selectorThread;
-	private final L2GamePacketHandler _gamePacketHandler;
-	private final DeadLockDetector _deadDetectThread;
-	public static GameServer gameServer;
-	private final LoginServerThread _loginThread;
-	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
 	
-	public long getUsedMemoryMB()
-	{
-		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
-	}
+	private static GameServer _gameServer;
 	
-	public SelectorThread<L2GameClient> getSelectorThread()
+	public static void main(String[] args) throws Exception
 	{
-		return _selectorThread;
+		_gameServer = new GameServer();
 	}
 	
 	public GameServer() throws Exception
 	{
-		gameServer = this;
+		// Create log folder
+		new File("./log").mkdir();
+		new File("./log/chat").mkdir();
+		new File("./log/console").mkdir();
+		new File("./log/error").mkdir();
+		new File("./log/gmaudit").mkdir();
+		new File("./log/item").mkdir();
 		new File("./data/crests").mkdirs();
+		
+		// Create input stream for log file -- or store file data into memory
+		try (InputStream is = new FileInputStream(new File("config/logging.properties")))
+		{
+			LogManager.getLogManager().readConfiguration(is);
+		}
+		
+		StringUtil.printSection("aCis");
+		
+		// Initialize config
+		Config.loadGameServer();
+		
+		// Factories
+		XMLDocumentFactory.getInstance();
+		L2DatabaseFactory.getInstance();
 		
 		StringUtil.printSection("ThreadPool");
 		ThreadPool.init();
@@ -159,10 +152,10 @@ public class GameServer
 		IdFactory.getInstance();
 		
 		StringUtil.printSection("World");
-		L2World.getInstance();
+		World.getInstance();
 		MapRegionTable.getInstance();
-		AnnouncementTable.getInstance();
-		ServerMemo.getInstance();
+		AnnouncementData.getInstance();
+		ServerMemoTable.getInstance();
 		
 		StringUtil.printSection("Skills");
 		SkillTable.getInstance();
@@ -170,31 +163,29 @@ public class GameServer
 		
 		StringUtil.printSection("Items");
 		ItemTable.getInstance();
-		SummonItemsData.getInstance();
-		BuyListTable.getInstance();
+		SummonItemData.getInstance();
+		HennaData.getInstance();
+		BuyListManager.getInstance();
 		MultisellData.getInstance();
 		RecipeTable.getInstance();
-		ArmorSetsTable.getInstance();
-		FishTable.getInstance();
-		SpellbookTable.getInstance();
-		SoulCrystalsTable.load();
+		ArmorSetData.getInstance();
+		FishData.getInstance();
+		SpellbookData.getInstance();
+		SoulCrystalData.getInstance();
 		AugmentationData.getInstance();
 		CursedWeaponsManager.getInstance();
 		
 		StringUtil.printSection("Admins");
-		AccessLevels.getInstance();
-		AdminCommandAccessRights.getInstance();
+		AdminData.getInstance();
 		BookmarkTable.getInstance();
-		GmListTable.getInstance();
 		MovieMakerManager.getInstance();
 		PetitionManager.getInstance();
 		
 		StringUtil.printSection("Characters");
 		CharTemplateTable.getInstance();
-		CharNameTable.getInstance();
-		HennaTable.getInstance();
-		HelperBuffTable.getInstance();
-		TeleportLocationTable.getInstance();
+		PlayerNameTable.getInstance();
+		NewbieBuffData.getInstance();
+		TeleportLocationData.getInstance();
 		HtmCache.getInstance();
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
@@ -223,7 +214,6 @@ public class GameServer
 		DecayTaskManager.getInstance();
 		GameTimeTaskManager.getInstance();
 		ItemsOnGroundTaskManager.getInstance();
-		KnownListUpdateTaskManager.getInstance();
 		MovementTaskManager.getInstance();
 		PvpFlagTaskManager.getInstance();
 		RandomAnimationTaskManager.getInstance();
@@ -231,28 +221,22 @@ public class GameServer
 		WaterTaskManager.getInstance();
 		
 		StringUtil.printSection("Castles");
-		CastleManager.getInstance().load();
+		CastleManager.getInstance();
 		
 		StringUtil.printSection("Seven Signs");
 		SevenSigns.getInstance().spawnSevenSignsNPC();
 		SevenSignsFestival.getInstance();
 		
-		StringUtil.printSection("Sieges");
-		SiegeManager.getInstance();
-		SiegeManager.getSieges();
-		MercTicketManager.getInstance();
-		
 		StringUtil.printSection("Manor Manager");
 		CastleManorManager.getInstance();
-		L2Manor.getInstance();
 		
 		StringUtil.printSection("NPCs");
 		BufferTable.getInstance();
-		HerbDropTable.getInstance();
+		HerbDropData.getInstance();
 		NpcTable.getInstance();
-		NpcWalkerRoutesTable.getInstance();
+		WalkerRouteData.getInstance();
 		DoorTable.getInstance().spawn();
-		StaticObjects.load();
+		StaticObjectData.getInstance();
 		SpawnTable.getInstance();
 		RaidBossSpawnManager.getInstance();
 		GrandBossManager.getInstance();
@@ -280,8 +264,14 @@ public class GameServer
 			BoatTalkingGludin.load();
 		}
 		
-		StringUtil.printSection("Monster Derby Track");
+		StringUtil.printSection("Events");
 		MonsterRace.getInstance();
+		
+		if (Config.ALLOW_WEDDING)
+			CoupleManager.getInstance();
+		
+		if (Config.ALT_FISH_CHAMPIONSHIP_ENABLED)
+			FishingChampionshipManager.getInstance();
 		
 		StringUtil.printSection("Handlers");
 		_log.config("AutoSpawnHandler: Loaded " + AutoSpawnManager.getInstance().size() + " handlers.");
@@ -291,12 +281,6 @@ public class GameServer
 		_log.config("SkillHandler: Loaded " + SkillHandler.getInstance().size() + " handlers.");
 		_log.config("UserCommandHandler: Loaded " + UserCommandHandler.getInstance().size() + " handlers.");
 		
-		if (Config.ALLOW_WEDDING)
-			CoupleManager.getInstance();
-		
-		if (Config.ALT_FISH_CHAMPIONSHIP_ENABLED)
-			FishingChampionshipManager.getInstance();
-		
 		StringUtil.printSection("System");
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 		ForumsBBSManager.getInstance();
@@ -305,27 +289,21 @@ public class GameServer
 		if (Config.DEADLOCK_DETECTOR)
 		{
 			_log.info("Deadlock detector is enabled. Timer: " + Config.DEADLOCK_CHECK_INTERVAL + "s.");
-			_deadDetectThread = new DeadLockDetector();
-			_deadDetectThread.setDaemon(true);
-			_deadDetectThread.start();
+			
+			final DeadLockDetector deadDetectThread = new DeadLockDetector();
+			deadDetectThread.setDaemon(true);
+			deadDetectThread.start();
 		}
 		else
-		{
 			_log.info("Deadlock detector is disabled.");
-			_deadDetectThread = null;
-		}
 		
 		System.gc();
 		
-		long usedMem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576;
-		long totalMem = Runtime.getRuntime().maxMemory() / 1048576;
-		
-		_log.info("Gameserver have started, used memory: " + usedMem + " / " + totalMem + " Mo.");
+		_log.info("Gameserver have started, used memory: " + SysUtil.getUsedMemory() + " / " + SysUtil.getMaxMemory() + " Mo.");
 		_log.info("Maximum allowed players: " + Config.MAXIMUM_ONLINE_USERS);
 		
 		StringUtil.printSection("Login");
-		_loginThread = LoginServerThread.getInstance();
-		_loginThread.start();
+		LoginServerThread.getInstance().start();
 		
 		final SelectorConfig sc = new SelectorConfig();
 		sc.MAX_READ_PER_PASS = Config.MMO_MAX_READ_PER_PASS;
@@ -333,8 +311,8 @@ public class GameServer
 		sc.SLEEP_TIME = Config.MMO_SELECTOR_SLEEP_TIME;
 		sc.HELPER_BUFFER_COUNT = Config.MMO_HELPER_BUFFER_COUNT;
 		
-		_gamePacketHandler = new L2GamePacketHandler();
-		_selectorThread = new SelectorThread<>(sc, _gamePacketHandler, _gamePacketHandler, _gamePacketHandler, new IPv4Filter());
+		final L2GamePacketHandler handler = new L2GamePacketHandler();
+		_selectorThread = new SelectorThread<>(sc, handler, handler, handler, new IPv4Filter());
 		
 		InetAddress bindAddress = null;
 		if (!Config.GAMESERVER_HOSTNAME.equals("*"))
@@ -361,29 +339,13 @@ public class GameServer
 		_selectorThread.start();
 	}
 	
-	public static void main(String[] args) throws Exception
+	public static GameServer getInstance()
 	{
-		final String LOG_FOLDER = "./log"; // Name of folder for log file
-		final String LOG_NAME = "config/log.cfg"; // Name of log file
-		
-		// Create log folder
-		File logFolder = new File(LOG_FOLDER);
-		logFolder.mkdir();
-		
-		// Create input stream for log file -- or store file data into memory
-		InputStream is = new FileInputStream(new File(LOG_NAME));
-		LogManager.getLogManager().readConfiguration(is);
-		is.close();
-		
-		StringUtil.printSection("aCis");
-		
-		// Initialize config
-		Config.loadGameServer();
-		
-		// Factories
-		XMLDocumentFactory.getInstance();
-		L2DatabaseFactory.getInstance();
-		
-		gameServer = new GameServer();
+		return _gameServer;
+	}
+	
+	public SelectorThread<L2GameClient> getSelectorThread()
+	{
+		return _selectorThread;
 	}
 }

@@ -1,32 +1,17 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.instance.Chest;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import net.sf.l2j.gameserver.network.serverpackets.Earthquake;
 import net.sf.l2j.gameserver.network.serverpackets.ExRedSky;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
@@ -48,10 +33,9 @@ import net.sf.l2j.gameserver.util.Broadcast;
  * <li>para/unpara = paralyze/remove paralysis from target.</li>
  * <li>para_all/unpara_all = same as para/unpara, affects the whole world.</li>
  * <li>polyself/unpolyself = makes you look as a specified mob.</li>
- * <li>changename = temporary change name.</li>
- * <li>social = forces an L2Character instance to broadcast social action packets.</li>
- * <li>effect = forces an L2Character instance to broadcast MSU packets.</li>
- * <li>abnormal = force changes over an L2Character instance's abnormal state.</li>
+ * <li>social = forces an Creature instance to broadcast social action packets.</li>
+ * <li>effect = forces an Creature instance to broadcast MSU packets.</li>
+ * <li>abnormal = force changes over an Creature instance's abnormal state.</li>
  * <li>play_sound/jukebox = Music broadcasting related commands.</li>
  * <li>atmosphere = sky change related commands.</li>
  * </ul>
@@ -73,8 +57,6 @@ public class AdminEffects implements IAdminCommandHandler
 		"admin_para_all_menu",
 		"admin_unpara_menu",
 		"admin_para_menu",
-		"admin_changename",
-		"admin_changename_menu",
 		"admin_social",
 		"admin_social_menu",
 		"admin_effect",
@@ -88,7 +70,7 @@ public class AdminEffects implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		StringTokenizer st = new StringTokenizer(command);
 		st.nextToken();
@@ -172,7 +154,7 @@ public class AdminEffects implements IAdminCommandHandler
 			try
 			{
 				final String sound = command.substring(17);
-				final PlaySound snd = (sound.contains(".")) ? new PlaySound(sound) : new PlaySound(1, sound, 0, 0, 0, 0, 0);
+				final PlaySound snd = (sound.contains(".")) ? new PlaySound(sound) : new PlaySound(1, sound);
 				
 				activeChar.broadcastPacket(snd);
 				activeChar.sendMessage("Playing " + sound + ".");
@@ -183,7 +165,7 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_para_all"))
 		{
-			for (L2PcInstance player : activeChar.getKnownList().getKnownType(L2PcInstance.class))
+			for (Player player : activeChar.getKnownType(Player.class))
 			{
 				if (!player.isGM())
 				{
@@ -195,7 +177,7 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_unpara_all"))
 		{
-			for (L2PcInstance player : activeChar.getKnownList().getKnownType(L2PcInstance.class))
+			for (Player player : activeChar.getKnownType(Player.class))
 			{
 				player.stopAbnormalEffect(0x0800);
 				player.setIsParalyzed(false);
@@ -203,10 +185,10 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_para"))
 		{
-			final L2Object target = activeChar.getTarget();
-			if (target instanceof L2Character)
+			final WorldObject target = activeChar.getTarget();
+			if (target instanceof Creature)
 			{
-				final L2Character player = (L2Character) target;
+				final Creature player = (Creature) target;
 				
 				player.startAbnormalEffect(0x0800);
 				player.setIsParalyzed(true);
@@ -217,10 +199,10 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_unpara"))
 		{
-			final L2Object target = activeChar.getTarget();
-			if (target instanceof L2Character)
+			final WorldObject target = activeChar.getTarget();
+			if (target instanceof Creature)
 			{
-				final L2Character player = (L2Character) target;
+				final Creature player = (Creature) target;
 				
 				player.stopAbnormalEffect(0x0800);
 				player.setIsParalyzed(false);
@@ -247,58 +229,18 @@ public class AdminEffects implements IAdminCommandHandler
 				activeChar.updateEffectIcons();
 			}
 		}
-		else if (command.startsWith("admin_changename"))
-		{
-			try
-			{
-				String name = st.nextToken();
-				String oldName = "null";
-				
-				L2Object target = activeChar.getTarget();
-				L2Character player = null;
-				
-				if (target instanceof L2Character)
-				{
-					player = (L2Character) target;
-					oldName = player.getName();
-				}
-				else
-				{
-					player = activeChar;
-					oldName = activeChar.getName();
-				}
-				
-				if (player instanceof L2PcInstance)
-					L2World.getInstance().removePlayer((L2PcInstance) player);
-				
-				player.setName(name);
-				
-				if (player instanceof L2PcInstance)
-				{
-					L2World.getInstance().addVisibleObject(player, null);
-					((L2PcInstance) player).broadcastUserInfo();
-				}
-				else if (player instanceof L2Npc)
-					player.broadcastPacket(new NpcInfo((L2Npc) player, null));
-				
-				activeChar.sendMessage("Changed name from " + oldName + " to " + name + ".");
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		else if (command.startsWith("admin_social"))
 		{
 			try
 			{
 				final int social = Integer.parseInt(st.nextToken());
 				
-				if (st.countTokens() == 2)
+				if (st.hasMoreTokens())
 				{
 					final String targetOrRadius = st.nextToken();
 					if (targetOrRadius != null)
 					{
-						L2PcInstance player = L2World.getInstance().getPlayer(targetOrRadius);
+						Player player = World.getInstance().getPlayer(targetOrRadius);
 						if (player != null)
 						{
 							if (performSocial(social, player))
@@ -310,16 +252,16 @@ public class AdminEffects implements IAdminCommandHandler
 						{
 							final int radius = Integer.parseInt(targetOrRadius);
 							
-							for (L2Object object : activeChar.getKnownList().getKnownTypeInRadius(L2Character.class, radius))
+							for (Creature object : activeChar.getKnownTypeInRadius(Creature.class, radius))
 								performSocial(social, object);
 							
 							activeChar.sendMessage(radius + " units radius was affected by your social request.");
 						}
 					}
 				}
-				else if (st.countTokens() == 1)
+				else
 				{
-					L2Object obj = activeChar.getTarget();
+					WorldObject obj = activeChar.getTarget();
 					if (obj == null)
 						obj = activeChar;
 					
@@ -328,8 +270,6 @@ public class AdminEffects implements IAdminCommandHandler
 					else
 						activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 				}
-				else if (!command.contains("menu"))
-					activeChar.sendMessage("Usage: //social <social_id> [player_name|radius]");
 			}
 			catch (Exception e)
 			{
@@ -342,12 +282,12 @@ public class AdminEffects implements IAdminCommandHandler
 			{
 				final int abnormal = Integer.decode("0x" + st.nextToken());
 				
-				if (st.countTokens() == 2)
+				if (st.hasMoreTokens())
 				{
 					final String targetOrRadius = st.nextToken();
 					if (targetOrRadius != null)
 					{
-						L2PcInstance player = L2World.getInstance().getPlayer(targetOrRadius);
+						Player player = World.getInstance().getPlayer(targetOrRadius);
 						if (player != null)
 						{
 							if (performAbnormal(abnormal, player))
@@ -359,16 +299,16 @@ public class AdminEffects implements IAdminCommandHandler
 						{
 							final int radius = Integer.parseInt(targetOrRadius);
 							
-							for (L2Object object : activeChar.getKnownList().getKnownTypeInRadius(L2Character.class, radius))
+							for (Creature object : activeChar.getKnownTypeInRadius(Creature.class, radius))
 								performAbnormal(abnormal, object);
 							
 							activeChar.sendMessage(radius + " units radius was affected by your abnormal request.");
 						}
 					}
 				}
-				else if (st.countTokens() == 1)
+				else
 				{
-					L2Object obj = activeChar.getTarget();
+					WorldObject obj = activeChar.getTarget();
 					if (obj == null)
 						obj = activeChar;
 					
@@ -377,8 +317,6 @@ public class AdminEffects implements IAdminCommandHandler
 					else
 						activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 				}
-				else if (!command.contains("menu"))
-					activeChar.sendMessage("Usage: //abnormal <abnormal_mask> [player_name|radius]");
 			}
 			catch (Exception e)
 			{
@@ -389,7 +327,7 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			try
 			{
-				L2Object obj = activeChar.getTarget();
+				WorldObject obj = activeChar.getTarget();
 				int level = 1, hittime = 1;
 				int skill = Integer.parseInt(st.nextToken());
 				
@@ -401,11 +339,11 @@ public class AdminEffects implements IAdminCommandHandler
 				if (obj == null)
 					obj = activeChar;
 				
-				if (!(obj instanceof L2Character))
+				if (!(obj instanceof Creature))
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				else
 				{
-					L2Character target = (L2Character) obj;
+					Creature target = (Creature) obj;
 					target.broadcastPacket(new MagicSkillUse(target, activeChar, skill, level, hittime, 0));
 					activeChar.sendMessage(obj.getName() + " performs MSU " + skill + "/" + level + " by your request.");
 				}
@@ -430,11 +368,11 @@ public class AdminEffects implements IAdminCommandHandler
 		return true;
 	}
 	
-	private static boolean performAbnormal(int action, L2Object target)
+	private static boolean performAbnormal(int action, WorldObject target)
 	{
-		if (target instanceof L2Character)
+		if (target instanceof Creature)
 		{
-			final L2Character character = (L2Character) target;
+			final Creature character = (Creature) target;
 			if ((character.getAbnormalEffect() & action) == action)
 				character.stopAbnormalEffect(action);
 			else
@@ -445,14 +383,14 @@ public class AdminEffects implements IAdminCommandHandler
 		return false;
 	}
 	
-	private static boolean performSocial(int action, L2Object target)
+	private static boolean performSocial(int action, WorldObject target)
 	{
-		if (target instanceof L2Character)
+		if (target instanceof Creature)
 		{
-			if (target instanceof L2Summon || target instanceof L2ChestInstance || (target instanceof L2Npc && (action < 1 || action > 3)) || (target instanceof L2PcInstance && (action < 2 || action > 16)))
+			if (target instanceof Summon || target instanceof Chest || (target instanceof Npc && (action < 1 || action > 3)) || (target instanceof Player && (action < 2 || action > 16)))
 				return false;
 			
-			final L2Character character = (L2Character) target;
+			final Creature character = (Creature) target;
 			character.broadcastPacket(new SocialAction(character, action));
 			return true;
 		}

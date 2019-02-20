@@ -6,7 +6,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="4536"/>
 		<set name="sp" val="394"/>
 		<set name="hp" val="1933.24044"/>
@@ -70,7 +70,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="4320"/>
 		<set name="sp" val="375"/>
 		<set name="hp" val="1933.2"/>
@@ -109,7 +109,7 @@
 		<set name="height" val="10"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="29"/>
 		<set name="sp" val="2"/>
 		<set name="hp" val="39.7"/>
@@ -166,7 +166,7 @@
 		<set name="height" val="72"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="1"/>
 		<set name="hp" val="1372.2"/>
@@ -203,7 +203,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="3244"/>
 		<set name="sp" val="251"/>
 		<set name="hp" val="1569.5"/>
@@ -238,7 +238,7 @@
 		<set name="height" val="45"/>
 		<set name="rHand" val="1472"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="6057"/>
 		<set name="sp" val="586"/>
 		<set name="hp" val="2421.5"/>
@@ -278,7 +278,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="5951"/>
 		<set name="sp" val="582"/>
 		<set name="hp" val="2395.5"/>
@@ -364,7 +364,7 @@
 		<set name="height" val="90"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="6370"/>
 		<set name="sp" val="632"/>
 		<set name="hp" val="2444.5"/>
@@ -449,7 +449,7 @@
 		<set name="height" val="26.4"/>
 		<set name="rHand" val="127"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1754"/>
 		<set name="sp" val="102"/>
 		<set name="hp" val="736.96177"/>
@@ -489,7 +489,7 @@
 		<set name="height" val="21"/>
 		<set name="rHand" val="218"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1523"/>
 		<set name="sp" val="86"/>
 		<set name="hp" val="668.47132"/>
@@ -533,7 +533,7 @@
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1001"/>
 		<set name="sp" val="53"/>
 		<set name="hp" val="543.79576"/>
@@ -570,7 +570,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="125"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1026"/>
 		<set name="sp" val="55"/>
 		<set name="hp" val="573.42917"/>
@@ -615,7 +615,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1227"/>
 		<set name="sp" val="66"/>
 		<set name="hp" val="573.42917"/>
@@ -662,7 +662,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="292"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2276"/>
 		<set name="sp" val="140"/>
 		<set name="hp" val="847.31754"/>
@@ -708,7 +708,7 @@
 		<set name="height" val="26.4"/>
 		<set name="rHand" val="158"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1650"/>
 		<set name="sp" val="96"/>
 		<set name="hp" val="736.96177"/>
@@ -753,7 +753,7 @@
 		<set name="height" val="30"/>
 		<set name="rHand" val="273"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1265"/>
 		<set name="sp" val="71"/>
 		<set name="hp" val="668.47132"/>
@@ -790,7 +790,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="129"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1650"/>
 		<set name="sp" val="96"/>
 		<set name="hp" val="736.96177"/>
@@ -832,7 +832,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="72"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2171"/>
 		<set name="sp" val="138"/>
 		<set name="hp" val="925.85879"/>
@@ -876,7 +876,7 @@
 		<set name="height" val="27.6"/>
 		<set name="rHand" val="72"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3013"/>
 		<set name="sp" val="210"/>
 		<set name="hp" val="1183.80594"/>
@@ -916,7 +916,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="223"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2751"/>
 		<set name="sp" val="186"/>
 		<set name="hp" val="1094.28943"/>
@@ -960,7 +960,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="275"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1879"/>
 		<set name="sp" val="119"/>
 		<set name="hp" val="925.85879"/>
@@ -997,7 +997,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="127"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1920"/>
 		<set name="sp" val="124"/>
 		<set name="hp" val="966.57792"/>
@@ -1042,7 +1042,7 @@
 		<set name="height" val="16"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2296"/>
 		<set name="sp" val="148"/>
 		<set name="hp" val="966.57792"/>
@@ -1089,7 +1089,7 @@
 		<set name="height" val="32"/>
 		<set name="rHand" val="297"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3832"/>
 		<set name="sp" val="280"/>
 		<set name="hp" val="1324.01623"/>
@@ -1135,7 +1135,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="172"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2891"/>
 		<set name="sp" val="201"/>
 		<set name="hp" val="1183.80594"/>
@@ -1180,7 +1180,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="277"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2285"/>
 		<set name="sp" val="154"/>
 		<set name="hp" val="1094.28943"/>
@@ -1217,7 +1217,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="74"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2891"/>
 		<set name="sp" val="201"/>
 		<set name="hp" val="1183.80594"/>
@@ -1259,7 +1259,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="133"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3570"/>
 		<set name="sp" val="269"/>
 		<set name="hp" val="1421.00103"/>
@@ -1303,7 +1303,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="133"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4666"/>
 		<set name="sp" val="383"/>
 		<set name="hp" val="1724.6831"/>
@@ -1343,7 +1343,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="226"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4339"/>
 		<set name="sp" val="346"/>
 		<set name="hp" val="1621.75618"/>
@@ -1387,7 +1387,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="278"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3090"/>
 		<set name="sp" val="233"/>
 		<set name="hp" val="1421.00103"/>
@@ -1424,7 +1424,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="72"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3121"/>
 		<set name="sp" val="238"/>
 		<set name="hp" val="1470.41596"/>
@@ -1469,7 +1469,7 @@
 		<set name="height" val="16"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3732"/>
 		<set name="sp" val="285"/>
 		<set name="hp" val="1470.41596"/>
@@ -1516,7 +1516,7 @@
 		<set name="height" val="30"/>
 		<set name="rHand" val="301"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5789"/>
 		<set name="sp" val="495"/>
 		<set name="hp" val="1880.92519"/>
@@ -1562,7 +1562,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="91"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4478"/>
 		<set name="sp" val="368"/>
 		<set name="hp" val="1724.6831"/>
@@ -1607,7 +1607,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="282"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3604"/>
 		<set name="sp" val="287"/>
 		<set name="hp" val="1621.75618"/>
@@ -1644,7 +1644,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="135"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4478"/>
 		<set name="sp" val="368"/>
 		<set name="hp" val="1724.6831"/>
@@ -1686,7 +1686,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="79"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5313"/>
 		<set name="sp" val="468"/>
 		<set name="hp" val="1985.55926"/>
@@ -1730,7 +1730,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="79"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6679"/>
 		<set name="sp" val="636"/>
 		<set name="hp" val="2295.48154"/>
@@ -1770,7 +1770,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="234"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6286"/>
 		<set name="sp" val="584"/>
 		<set name="hp" val="2193.43142"/>
@@ -1814,7 +1814,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="283"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4599"/>
 		<set name="sp" val="405"/>
 		<set name="hp" val="1985.55926"/>
@@ -1851,7 +1851,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="133"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4612"/>
 		<set name="sp" val="411"/>
 		<set name="hp" val="2037.81082"/>
@@ -1896,7 +1896,7 @@
 		<set name="height" val="16"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5516"/>
 		<set name="sp" val="492"/>
 		<set name="hp" val="2037.81082"/>
@@ -1943,7 +1943,7 @@
 		<set name="height" val="30"/>
 		<set name="rHand" val="97"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8149"/>
 		<set name="sp" val="808"/>
 		<set name="hp" val="2444.46819"/>
@@ -1989,7 +1989,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="2503"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6410"/>
 		<set name="sp" val="610"/>
 		<set name="hp" val="2295.48154"/>
@@ -2034,7 +2034,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="286"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5222"/>
 		<set name="sp" val="485"/>
 		<set name="hp" val="2193.43142"/>
@@ -2071,7 +2071,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="142"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6410"/>
 		<set name="sp" val="610"/>
 		<set name="hp" val="2295.48154"/>
@@ -2113,7 +2113,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="2500"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7402"/>
 		<set name="sp" val="752"/>
 		<set name="hp" val="2540.15331"/>
@@ -2157,7 +2157,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="2500"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="9052"/>
 		<set name="sp" val="991"/>
 		<set name="hp" val="2802.89989"/>
@@ -2197,7 +2197,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="236"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8594"/>
 		<set name="sp" val="919"/>
 		<set name="hp" val="2719.97952"/>
@@ -2241,7 +2241,7 @@
 		<set name="height" val="27"/>
 		<set name="rHand" val="287"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7899"/>
 		<set name="sp" val="955"/>
 		<set name="hp" val="3010.8929976"/>
@@ -2278,7 +2278,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="79"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7301"/>
 		<set name="sp" val="862"/>
 		<set name="hp" val="2937.9838056"/>
@@ -2323,7 +2323,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8732"/>
 		<set name="sp" val="1031"/>
 		<set name="hp" val="2937.9838056"/>
@@ -2370,7 +2370,7 @@
 		<set name="height" val="35"/>
 		<set name="rHand" val="305"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="10119"/>
 		<set name="sp" val="1239"/>
 		<set name="hp" val="2975.2369188"/>
@@ -2416,7 +2416,7 @@
 		<set name="height" val="34.8"/>
 		<set name="rHand" val="175"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8687"/>
 		<set name="sp" val="951"/>
 		<set name="hp" val="2802.89989"/>
@@ -2461,7 +2461,7 @@
 		<set name="height" val="32.4"/>
 		<set name="rHand" val="289"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7139"/>
 		<set name="sp" val="763"/>
 		<set name="hp" val="2719.97952"/>
@@ -2498,7 +2498,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="151"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8687"/>
 		<set name="sp" val="951"/>
 		<set name="hp" val="2802.89989"/>
@@ -2540,7 +2540,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="2500"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="9351"/>
 		<set name="sp" val="1144"/>
 		<set name="hp" val="3044.88717"/>
@@ -2584,7 +2584,7 @@
 		<set name="height" val="26.4"/>
 		<set name="rHand" val="127"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1720"/>
 		<set name="sp" val="100"/>
 		<set name="hp" val="736.96177"/>
@@ -2624,7 +2624,7 @@
 		<set name="height" val="21"/>
 		<set name="rHand" val="218"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1523"/>
 		<set name="sp" val="86"/>
 		<set name="hp" val="668.47132"/>
@@ -2668,7 +2668,7 @@
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1001"/>
 		<set name="sp" val="53"/>
 		<set name="hp" val="543.79576"/>
@@ -2705,7 +2705,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="125"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1026"/>
 		<set name="sp" val="55"/>
 		<set name="hp" val="573.42917"/>
@@ -2750,7 +2750,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1227"/>
 		<set name="sp" val="66"/>
 		<set name="hp" val="573.42917"/>
@@ -2797,7 +2797,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="292"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2276"/>
 		<set name="sp" val="140"/>
 		<set name="hp" val="847.31754"/>
@@ -2843,7 +2843,7 @@
 		<set name="height" val="26.4"/>
 		<set name="rHand" val="158"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1650"/>
 		<set name="sp" val="96"/>
 		<set name="hp" val="736.96177"/>
@@ -2888,7 +2888,7 @@
 		<set name="height" val="30"/>
 		<set name="rHand" val="273"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1265"/>
 		<set name="sp" val="71"/>
 		<set name="hp" val="668.47132"/>
@@ -2925,7 +2925,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="129"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1650"/>
 		<set name="sp" val="96"/>
 		<set name="hp" val="736.96177"/>
@@ -2967,7 +2967,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="72"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2171"/>
 		<set name="sp" val="138"/>
 		<set name="hp" val="925.85879"/>
@@ -3011,7 +3011,7 @@
 		<set name="height" val="27.6"/>
 		<set name="rHand" val="72"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3013"/>
 		<set name="sp" val="210"/>
 		<set name="hp" val="1183.80594"/>
@@ -3051,7 +3051,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="223"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2751"/>
 		<set name="sp" val="186"/>
 		<set name="hp" val="1094.28943"/>
@@ -3095,7 +3095,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="275"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1879"/>
 		<set name="sp" val="119"/>
 		<set name="hp" val="925.85879"/>
@@ -3132,7 +3132,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="127"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="1920"/>
 		<set name="sp" val="124"/>
 		<set name="hp" val="966.57792"/>
@@ -3177,7 +3177,7 @@
 		<set name="height" val="16"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2296"/>
 		<set name="sp" val="148"/>
 		<set name="hp" val="966.57792"/>
@@ -3224,7 +3224,7 @@
 		<set name="height" val="32"/>
 		<set name="rHand" val="297"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3832"/>
 		<set name="sp" val="280"/>
 		<set name="hp" val="1324.01623"/>
@@ -3270,7 +3270,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="172"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2891"/>
 		<set name="sp" val="201"/>
 		<set name="hp" val="1183.80594"/>
@@ -3315,7 +3315,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="277"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2285"/>
 		<set name="sp" val="154"/>
 		<set name="hp" val="1094.28943"/>
@@ -3352,7 +3352,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="74"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="2891"/>
 		<set name="sp" val="201"/>
 		<set name="hp" val="1183.80594"/>
@@ -3394,7 +3394,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="133"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3570"/>
 		<set name="sp" val="269"/>
 		<set name="hp" val="1421.00103"/>
@@ -3438,7 +3438,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="133"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4666"/>
 		<set name="sp" val="383"/>
 		<set name="hp" val="1724.6831"/>
@@ -3478,7 +3478,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="226"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4339"/>
 		<set name="sp" val="346"/>
 		<set name="hp" val="1621.75618"/>
@@ -3522,7 +3522,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="278"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3090"/>
 		<set name="sp" val="233"/>
 		<set name="hp" val="1421.00103"/>
@@ -3559,7 +3559,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="72"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3121"/>
 		<set name="sp" val="238"/>
 		<set name="hp" val="1470.41596"/>
@@ -3604,7 +3604,7 @@
 		<set name="height" val="16"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3732"/>
 		<set name="sp" val="285"/>
 		<set name="hp" val="1470.41596"/>
@@ -3651,7 +3651,7 @@
 		<set name="height" val="30"/>
 		<set name="rHand" val="301"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5789"/>
 		<set name="sp" val="495"/>
 		<set name="hp" val="1880.92519"/>
@@ -3697,7 +3697,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="91"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4478"/>
 		<set name="sp" val="368"/>
 		<set name="hp" val="1724.6831"/>
@@ -3742,7 +3742,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="282"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="3604"/>
 		<set name="sp" val="287"/>
 		<set name="hp" val="1621.75618"/>
@@ -3779,7 +3779,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="135"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4478"/>
 		<set name="sp" val="368"/>
 		<set name="hp" val="1724.6831"/>
@@ -3821,7 +3821,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="79"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5313"/>
 		<set name="sp" val="468"/>
 		<set name="hp" val="1985.55926"/>
@@ -3865,7 +3865,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="79"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6679"/>
 		<set name="sp" val="636"/>
 		<set name="hp" val="2295.48154"/>
@@ -3905,7 +3905,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="234"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6286"/>
 		<set name="sp" val="584"/>
 		<set name="hp" val="2193.43142"/>
@@ -3949,7 +3949,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="283"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4599"/>
 		<set name="sp" val="405"/>
 		<set name="hp" val="1985.55926"/>
@@ -3986,7 +3986,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="133"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="4612"/>
 		<set name="sp" val="411"/>
 		<set name="hp" val="2037.81082"/>
@@ -4031,7 +4031,7 @@
 		<set name="height" val="16"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5516"/>
 		<set name="sp" val="492"/>
 		<set name="hp" val="2037.81082"/>
@@ -4078,7 +4078,7 @@
 		<set name="height" val="30"/>
 		<set name="rHand" val="97"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8149"/>
 		<set name="sp" val="808"/>
 		<set name="hp" val="2444.46819"/>
@@ -4124,7 +4124,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="2503"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6410"/>
 		<set name="sp" val="610"/>
 		<set name="hp" val="2295.48154"/>
@@ -4169,7 +4169,7 @@
 		<set name="height" val="25.3"/>
 		<set name="rHand" val="286"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="5222"/>
 		<set name="sp" val="485"/>
 		<set name="hp" val="2193.43142"/>
@@ -4206,7 +4206,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="142"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="6410"/>
 		<set name="sp" val="610"/>
 		<set name="hp" val="2295.48154"/>
@@ -4248,7 +4248,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="2500"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7402"/>
 		<set name="sp" val="752"/>
 		<set name="hp" val="2540.15331"/>
@@ -4292,7 +4292,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="2500"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="9052"/>
 		<set name="sp" val="991"/>
 		<set name="hp" val="2802.89989"/>
@@ -4332,7 +4332,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="236"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8594"/>
 		<set name="sp" val="919"/>
 		<set name="hp" val="2719.97952"/>
@@ -4376,7 +4376,7 @@
 		<set name="height" val="27"/>
 		<set name="rHand" val="287"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7899"/>
 		<set name="sp" val="955"/>
 		<set name="hp" val="3010.8929976"/>
@@ -4413,7 +4413,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="79"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7301"/>
 		<set name="sp" val="862"/>
 		<set name="hp" val="2937.9838056"/>
@@ -4458,7 +4458,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="316"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8732"/>
 		<set name="sp" val="1031"/>
 		<set name="hp" val="2937.9838056"/>
@@ -4505,7 +4505,7 @@
 		<set name="height" val="35"/>
 		<set name="rHand" val="305"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="10373"/>
 		<set name="sp" val="1239"/>
 		<set name="hp" val="2975.2369188"/>
@@ -4551,7 +4551,7 @@
 		<set name="height" val="34.8"/>
 		<set name="rHand" val="175"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8687"/>
 		<set name="sp" val="951"/>
 		<set name="hp" val="2802.89989"/>
@@ -4596,7 +4596,7 @@
 		<set name="height" val="32.4"/>
 		<set name="rHand" val="289"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="7139"/>
 		<set name="sp" val="763"/>
 		<set name="hp" val="2719.97952"/>
@@ -4633,7 +4633,7 @@
 		<set name="height" val="24"/>
 		<set name="rHand" val="151"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8687"/>
 		<set name="sp" val="951"/>
 		<set name="hp" val="2802.89989"/>
@@ -4675,7 +4675,7 @@
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="2500"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="8687"/>
 		<set name="sp" val="1144"/>
 		<set name="hp" val="3044.88717"/>
@@ -4719,7 +4719,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="90"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="632.8549633"/>
@@ -4764,7 +4764,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="168"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="942.3925179"/>
@@ -4810,7 +4810,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="270"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1302.758046"/>
@@ -4856,7 +4856,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="396"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1671.377796"/>
@@ -4902,7 +4902,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="518"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1938.889453"/>
@@ -4948,7 +4948,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="90"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="632.8549633"/>
@@ -4993,7 +4993,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="168"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="942.3925179"/>
@@ -5039,7 +5039,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="270"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1302.758046"/>
@@ -5085,7 +5085,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="396"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1671.377796"/>
@@ -5131,7 +5131,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2FestivalMonster"/>
+		<set name="type" val="FestivalMonster"/>
 		<set name="exp" val="518"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1938.889453"/>
@@ -5177,7 +5177,7 @@
 		<set name="height" val="21"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2089.92274"/>
@@ -5214,7 +5214,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="54325"/>
 		<set name="sp" val="6648"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5258,7 +5258,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51522"/>
 		<set name="sp" val="6306"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5302,7 +5302,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="39348"/>
 		<set name="sp" val="4818"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5345,7 +5345,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="54325"/>
 		<set name="sp" val="6648"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5389,7 +5389,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51522"/>
 		<set name="sp" val="6306"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5433,7 +5433,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="39348"/>
 		<set name="sp" val="4818"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5476,7 +5476,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="54325"/>
 		<set name="sp" val="6648"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5520,7 +5520,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51522"/>
 		<set name="sp" val="6306"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5564,7 +5564,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="39348"/>
 		<set name="sp" val="4818"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5607,7 +5607,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="54325"/>
 		<set name="sp" val="6648"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5651,7 +5651,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51522"/>
 		<set name="sp" val="6306"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5695,7 +5695,7 @@
 		<set name="height" val="36"/>
 		<set name="rHand" val="134"/>
 		<set name="lHand" val="6721"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="39348"/>
 		<set name="sp" val="4818"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5738,7 +5738,7 @@
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="55355"/>
 		<set name="sp" val="6774"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5779,7 +5779,7 @@
 		<set name="height" val="66"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51131"/>
 		<set name="sp" val="6258"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5816,7 +5816,7 @@
 		<set name="height" val="66"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38424"/>
 		<set name="sp" val="4704"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5853,7 +5853,7 @@
 		<set name="height" val="66"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="50905"/>
 		<set name="sp" val="6234"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5891,7 +5891,7 @@
 		<set name="height" val="66"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51131"/>
 		<set name="sp" val="6258"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5929,7 +5929,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="37902"/>
 		<set name="sp" val="4638"/>
 		<set name="hp" val="2975.2369188"/>
@@ -5967,7 +5967,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="50459"/>
 		<set name="sp" val="6174"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6006,7 +6006,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="49711"/>
 		<set name="sp" val="6084"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6045,7 +6045,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="50434"/>
 		<set name="sp" val="6174"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6083,7 +6083,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="32437"/>
 		<set name="sp" val="3972"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6123,7 +6123,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="32437"/>
 		<set name="sp" val="3972"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6163,7 +6163,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="32437"/>
 		<set name="sp" val="3972"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6203,7 +6203,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="32437"/>
 		<set name="sp" val="3972"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6243,7 +6243,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="27444"/>
 		<set name="sp" val="3360"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6282,7 +6282,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="28072"/>
 		<set name="sp" val="3436"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6320,7 +6320,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="26134"/>
 		<set name="sp" val="3200"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6358,7 +6358,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="30427"/>
 		<set name="sp" val="3724"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6396,7 +6396,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="26882"/>
 		<set name="sp" val="3292"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6435,7 +6435,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6470,7 +6470,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6505,7 +6505,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6540,7 +6540,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6575,7 +6575,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6610,7 +6610,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6645,7 +6645,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6680,7 +6680,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -6715,7 +6715,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -6757,7 +6757,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -6799,7 +6799,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -6841,7 +6841,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -6883,7 +6883,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -6925,7 +6925,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -6967,7 +6967,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -7009,7 +7009,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="17851.4215128"/>
@@ -7051,7 +7051,7 @@
 		<set name="height" val="31"/>
 		<set name="rHand" val="142"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38975"/>
 		<set name="sp" val="4770"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7089,7 +7089,7 @@
 		<set name="height" val="31"/>
 		<set name="rHand" val="142"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38424"/>
 		<set name="sp" val="4704"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7128,7 +7128,7 @@
 		<set name="height" val="31"/>
 		<set name="rHand" val="142"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="39497"/>
 		<set name="sp" val="4836"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7167,7 +7167,7 @@
 		<set name="height" val="31"/>
 		<set name="rHand" val="142"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38234"/>
 		<set name="sp" val="4680"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7206,7 +7206,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38274"/>
 		<set name="sp" val="4686"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7246,7 +7246,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="39764"/>
 		<set name="sp" val="4866"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7286,7 +7286,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="37902"/>
 		<set name="sp" val="4638"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7325,7 +7325,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7367,7 +7367,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7411,7 +7411,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7454,7 +7454,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7496,7 +7496,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7540,7 +7540,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7583,7 +7583,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7625,7 +7625,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7669,7 +7669,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7712,7 +7712,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7754,7 +7754,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51861"/>
 		<set name="sp" val="6348"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7798,7 +7798,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="39687"/>
 		<set name="sp" val="4860"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7841,7 +7841,7 @@
 		<set name="height" val="12"/>
 		<set name="rHand" val="5129"/>
 		<set name="lHand" val="5129"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="52372"/>
 		<set name="sp" val="6414"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7882,7 +7882,7 @@
 		<set name="height" val="12"/>
 		<set name="rHand" val="5129"/>
 		<set name="lHand" val="5129"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="52672"/>
 		<set name="sp" val="6450"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7924,7 +7924,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51131"/>
 		<set name="sp" val="6258"/>
 		<set name="hp" val="2975.2369188"/>
@@ -7963,7 +7963,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38424"/>
 		<set name="sp" val="4704"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8001,7 +8001,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="50905"/>
 		<set name="sp" val="6234"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8041,7 +8041,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51131"/>
 		<set name="sp" val="6258"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8081,7 +8081,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="3939"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="37902"/>
 		<set name="sp" val="4638"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8120,7 +8120,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="3939"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="50459"/>
 		<set name="sp" val="6174"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8161,7 +8161,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="3939"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="49711"/>
 		<set name="sp" val="6084"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8202,7 +8202,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="3939"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="50434"/>
 		<set name="sp" val="6174"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8242,7 +8242,7 @@
 		<set name="height" val="8"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38647"/>
 		<set name="sp" val="4728"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8281,7 +8281,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8321,7 +8321,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8361,7 +8361,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8401,7 +8401,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8441,7 +8441,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8481,7 +8481,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8521,7 +8521,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8561,7 +8561,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8601,7 +8601,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8641,7 +8641,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8681,7 +8681,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8721,7 +8721,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8761,7 +8761,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8801,7 +8801,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8841,7 +8841,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8881,7 +8881,7 @@
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="126242"/>
 		<set name="sp" val="15456"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8921,7 +8921,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -8965,7 +8965,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9009,7 +9009,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9053,7 +9053,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9097,7 +9097,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9141,7 +9141,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9185,7 +9185,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9229,7 +9229,7 @@
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="160990"/>
 		<set name="sp" val="19710"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9273,7 +9273,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="3939"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="52672"/>
 		<set name="sp" val="6450"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9316,7 +9316,7 @@
 		<set name="height" val="23"/>
 		<set name="rHand" val="3939"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="54084"/>
 		<set name="sp" val="6618"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9360,7 +9360,7 @@
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51241"/>
 		<set name="sp" val="6270"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9399,7 +9399,7 @@
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="38424"/>
 		<set name="sp" val="4704"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9437,7 +9437,7 @@
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51759"/>
 		<set name="sp" val="6336"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9477,7 +9477,7 @@
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="51241"/>
 		<set name="sp" val="6270"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9517,7 +9517,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="37902"/>
 		<set name="sp" val="4638"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9556,7 +9556,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="65130"/>
 		<set name="sp" val="7974"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9597,7 +9597,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="48966"/>
 		<set name="sp" val="5994"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9638,7 +9638,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="50434"/>
 		<set name="sp" val="6174"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9678,7 +9678,7 @@
 		<set name="height" val="8"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="20851"/>
 		<set name="sp" val="2553"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9717,7 +9717,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9758,7 +9758,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9799,7 +9799,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9840,7 +9840,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9881,7 +9881,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9922,7 +9922,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -9963,7 +9963,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10004,7 +10004,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10045,7 +10045,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10086,7 +10086,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10127,7 +10127,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10168,7 +10168,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10209,7 +10209,7 @@
 		<set name="height" val="42"/>
 		<set name="rHand" val="5795"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="62031"/>
 		<set name="sp" val="7596"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10255,7 +10255,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10295,7 +10295,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10335,7 +10335,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10375,7 +10375,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10415,7 +10415,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10455,7 +10455,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10495,7 +10495,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10535,7 +10535,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10575,7 +10575,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10615,7 +10615,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10655,7 +10655,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10695,7 +10695,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2975.2369188"/>
@@ -10735,7 +10735,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2SepulcherMonster"/>
+		<set name="type" val="SepulcherMonster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1.07"/>
@@ -10790,7 +10790,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -10825,7 +10825,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -10860,7 +10860,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -10895,7 +10895,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -10930,7 +10930,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -10965,7 +10965,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -11000,7 +11000,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -11035,7 +11035,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3365.21163635201"/>
@@ -11070,7 +11070,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="631"/>
 		<set name="sp" val="29"/>
 		<set name="hp" val="376.063268689487"/>
@@ -11120,7 +11120,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="772"/>
 		<set name="sp" val="38"/>
 		<set name="hp" val="449.397334531729"/>
@@ -11169,7 +11169,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="919"/>
 		<set name="sp" val="47"/>
 		<set name="hp" val="531.808581237041"/>
@@ -11219,7 +11219,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="1080"/>
 		<set name="sp" val="59"/>
 		<set name="hp" val="623.584092631874"/>
@@ -11268,7 +11268,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="1307"/>
 		<set name="sp" val="75"/>
 		<set name="hp" val="724.871874675055"/>
@@ -11317,7 +11317,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="1555"/>
 		<set name="sp" val="94"/>
 		<set name="hp" val="835.657991997797"/>
@@ -11367,7 +11367,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="1825"/>
 		<set name="sp" val="116"/>
 		<set name="hp" val="955.745616539336"/>
@@ -11416,7 +11416,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="2117"/>
 		<set name="sp" val="141"/>
 		<set name="hp" val="1084.73699369686"/>
@@ -11467,7 +11467,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="2430"/>
 		<set name="sp" val="169"/>
 		<set name="hp" val="1222.01933711761"/>
@@ -11516,7 +11516,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="2765"/>
 		<set name="sp" val="202"/>
 		<set name="hp" val="1366.75562200403"/>
@@ -11565,7 +11565,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="3121"/>
 		<set name="sp" val="238"/>
 		<set name="hp" val="1517.88115502146"/>
@@ -11616,7 +11616,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="3499"/>
 		<set name="sp" val="279"/>
 		<set name="hp" val="1674.10665553836"/>
@@ -11665,7 +11665,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="3899"/>
 		<set name="sp" val="324"/>
 		<set name="hp" val="1833.9283898078"/>
@@ -11714,7 +11714,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="4320"/>
 		<set name="sp" val="375"/>
 		<set name="hp" val="1995.64566170597"/>
@@ -11765,7 +11765,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="4763"/>
 		<set name="sp" val="430"/>
 		<set name="hp" val="2157.38568876994"/>
@@ -11814,7 +11814,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="5227"/>
 		<set name="sp" val="492"/>
 		<set name="hp" val="2317.13559141445"/>
@@ -11863,7 +11863,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="5713"/>
 		<set name="sp" val="559"/>
 		<set name="hp" val="2472.78090975059"/>
@@ -11912,7 +11912,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="6221"/>
 		<set name="sp" val="632"/>
 		<set name="hp" val="2622.14975164374"/>
@@ -11962,7 +11962,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="6750"/>
 		<set name="sp" val="712"/>
 		<set name="hp" val="2763.06138388172"/>
@@ -12012,7 +12012,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="7301"/>
 		<set name="sp" val="799"/>
 		<set name="hp" val="2893.37782205212"/>
@@ -12062,7 +12062,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="7301"/>
 		<set name="sp" val="894"/>
 		<set name="hp" val="3101.38847262351"/>
@@ -12112,7 +12112,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="7301"/>
 		<set name="sp" val="996"/>
 		<set name="hp" val="3301.05636251825"/>
@@ -12162,7 +12162,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="702.20463"/>
@@ -12206,7 +12206,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="772.73802"/>
@@ -12250,7 +12250,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1094.28943"/>
@@ -12294,7 +12294,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1183.80594"/>
@@ -12338,7 +12338,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1570.8463"/>
@@ -12382,7 +12382,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="1673.05473"/>
@@ -12426,7 +12426,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2089.92274"/>
@@ -12470,7 +12470,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2193.43142"/>
@@ -12514,7 +12514,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2586.66898"/>
@@ -12558,7 +12558,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2676.65854"/>
@@ -12602,7 +12602,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3134.442675"/>
@@ -12646,7 +12646,7 @@
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Chest"/>
+		<set name="type" val="Chest"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3259.9791329"/>
@@ -12690,7 +12690,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="4893"/>
 		<set name="sp" val="288"/>
 		<set name="hp" val="2318.21406"/>
@@ -12730,7 +12730,7 @@
 		<set name="height" val="21"/>
 		<set name="rHand" val="158"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="1751"/>
 		<set name="sp" val="100"/>
 		<set name="hp" val="702.20463"/>
@@ -12768,7 +12768,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="8451"/>
 		<set name="sp" val="597"/>
 		<set name="hp" val="3689.36034"/>
@@ -12808,7 +12808,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="172"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="3113"/>
 		<set name="sp" val="213"/>
 		<set name="hp" val="1138.62924"/>
@@ -12846,7 +12846,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="12978"/>
 		<set name="sp" val="1077"/>
 		<set name="hp" val="5329.74054"/>
@@ -12886,7 +12886,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="91"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="4864"/>
 		<set name="sp" val="393"/>
 		<set name="hp" val="1673.05473"/>
@@ -12924,7 +12924,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="18471"/>
 		<set name="sp" val="1782"/>
 		<set name="hp" val="7037.30094"/>
@@ -12964,7 +12964,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="2503"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="7004"/>
 		<set name="sp" val="659"/>
 		<set name="hp" val="2244.67715"/>
@@ -13002,7 +13002,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="24306"/>
 		<set name="sp" val="2763"/>
 		<set name="hp" val="8612.3322261"/>
@@ -13042,7 +13042,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="175"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="9533"/>
 		<set name="sp" val="1032"/>
 		<set name="hp" val="2762.08447"/>
@@ -13080,7 +13080,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="4893"/>
 		<set name="sp" val="288"/>
 		<set name="hp" val="2318.21406"/>
@@ -13120,7 +13120,7 @@
 		<set name="height" val="21"/>
 		<set name="rHand" val="158"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="1751"/>
 		<set name="sp" val="100"/>
 		<set name="hp" val="702.20463"/>
@@ -13158,7 +13158,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="8451"/>
 		<set name="sp" val="597"/>
 		<set name="hp" val="3689.36034"/>
@@ -13198,7 +13198,7 @@
 		<set name="height" val="22"/>
 		<set name="rHand" val="172"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="3113"/>
 		<set name="sp" val="213"/>
 		<set name="hp" val="1138.62924"/>
@@ -13236,7 +13236,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="12978"/>
 		<set name="sp" val="1077"/>
 		<set name="hp" val="5329.74054"/>
@@ -13276,7 +13276,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="91"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="4864"/>
 		<set name="sp" val="393"/>
 		<set name="hp" val="1673.05473"/>
@@ -13314,7 +13314,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="18471"/>
 		<set name="sp" val="1782"/>
 		<set name="hp" val="7037.30094"/>
@@ -13354,7 +13354,7 @@
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="2503"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="7004"/>
 		<set name="sp" val="659"/>
 		<set name="hp" val="2244.67715"/>
@@ -13392,7 +13392,7 @@
 		<set name="height" val="13"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="24306"/>
 		<set name="sp" val="2763"/>
 		<set name="hp" val="8527.06161"/>
@@ -13432,7 +13432,7 @@
 		<set name="height" val="20"/>
 		<set name="rHand" val="175"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Npc"/>
+		<set name="type" val="Folk"/>
 		<set name="exp" val="9533"/>
 		<set name="sp" val="1032"/>
 		<set name="hp" val="2762.08447"/>
@@ -13470,7 +13470,7 @@
 		<set name="height" val="10"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="421"/>
 		<set name="sp" val="14"/>
 		<set name="hp" val="163.28607"/>
@@ -13520,7 +13520,7 @@
 		<set name="height" val="27"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="843"/>
 		<set name="sp" val="37"/>
 		<set name="hp" val="342.5127"/>
@@ -13570,7 +13570,7 @@
 		<set name="height" val="39"/>
 		<set name="rHand" val="156"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="1550"/>
 		<set name="sp" val="85"/>
 		<set name="hp" val="604.08419"/>
@@ -13620,7 +13620,7 @@
 		<set name="height" val="44"/>
 		<set name="rHand" val="131"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="2755"/>
 		<set name="sp" val="178"/>
 		<set name="hp" val="966.57792"/>
@@ -13670,7 +13670,7 @@
 		<set name="height" val="32"/>
 		<set name="rHand" val="291"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="4305"/>
 		<set name="sp" val="324"/>
 		<set name="hp" val="1421.00103"/>
@@ -13720,7 +13720,7 @@
 		<set name="height" val="32.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="6200"/>
 		<set name="sp" val="538"/>
 		<set name="hp" val="1933.24044"/>
@@ -13770,7 +13770,7 @@
 		<set name="height" val="34"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="8438"/>
 		<set name="sp" val="837"/>
 		<set name="hp" val="2444.46819"/>
@@ -13820,7 +13820,7 @@
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2PenaltyMonster"/>
+		<set name="type" val="PenaltyMonster"/>
 		<set name="exp" val="10478"/>
 		<set name="sp" val="1237"/>
 		<set name="hp" val="2880.37628"/>
@@ -13870,7 +13870,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="3520001"/>
 		<set name="sp" val="320000"/>
 		<set name="hp" val="1828.68266"/>
@@ -13909,7 +13909,7 @@
 		<set name="height" val="21"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="100000"/>
@@ -13947,7 +13947,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -13990,7 +13990,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="326"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14031,7 +14031,7 @@
 		<set name="height" val="31"/>
 		<set name="rHand" val="78"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14074,7 +14074,7 @@
 		<set name="height" val="31"/>
 		<set name="rHand" val="124"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14117,7 +14117,7 @@
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14160,7 +14160,7 @@
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14201,7 +14201,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="1894475"/>
 		<set name="sp" val="160000"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14242,7 +14242,7 @@
 		<set name="height" val="45"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="1894475"/>
 		<set name="sp" val="160000"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14284,7 +14284,7 @@
 		<set name="height" val="32.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="1894475"/>
 		<set name="sp" val="160000"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14326,7 +14326,7 @@
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="1420856"/>
 		<set name="sp" val="120000"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14367,7 +14367,7 @@
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="1894475"/>
 		<set name="sp" val="160000"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14407,7 +14407,7 @@
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="1894475"/>
 		<set name="sp" val="160000"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14447,7 +14447,7 @@
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="1894475"/>
 		<set name="sp" val="160000"/>
 		<set name="hp" val="3835.59060587002"/>
@@ -14489,7 +14489,7 @@
 		<set name="height" val="15"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="29"/>
 		<set name="sp" val="2"/>
 		<set name="hp" val="39.74519"/>
@@ -14528,7 +14528,7 @@
 		<set name="height" val="30.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="3346200"/>
 		<set name="sp" val="320000"/>
 		<set name="hp" val="2985.1835"/>
@@ -14567,7 +14567,7 @@
 		<set name="height" val="33.5"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="10"/>
@@ -14602,7 +14602,7 @@
 		<set name="height" val="67"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2974.35686398316"/>
@@ -14641,7 +14641,7 @@
 		<set name="height" val="67"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="L2Monster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2974.35686398316"/>

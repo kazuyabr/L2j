@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.sql.Connection;
@@ -23,8 +9,8 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
@@ -59,19 +45,19 @@ public class AdminBan implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		StringTokenizer st = new StringTokenizer(command);
 		st.nextToken();
 		String player = "";
 		int duration = -1;
-		L2PcInstance targetPlayer = null;
+		Player targetPlayer = null;
 		
 		// One parameter, player name
 		if (st.hasMoreTokens())
 		{
 			player = st.nextToken();
-			targetPlayer = L2World.getInstance().getPlayer(player);
+			targetPlayer = World.getInstance().getPlayer(player);
 			
 			// Second parameter, duration
 			if (st.hasMoreTokens())
@@ -90,8 +76,8 @@ public class AdminBan implements IAdminCommandHandler
 		else
 		{
 			// If there is no name, select target
-			if (activeChar.getTarget() != null && activeChar.getTarget() instanceof L2PcInstance)
-				targetPlayer = (L2PcInstance) activeChar.getTarget();
+			if (activeChar.getTarget() != null && activeChar.getTarget() instanceof Player)
+				targetPlayer = (Player) activeChar.getTarget();
 		}
 		
 		// Can't ban yourself
@@ -120,7 +106,7 @@ public class AdminBan implements IAdminCommandHandler
 			}
 			else
 			{
-				targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.ACC, 0);
+				targetPlayer.setPunishLevel(Player.PunishLevel.ACC, 0);
 				activeChar.sendMessage(targetPlayer.getAccountName() + " account is now banned.");
 			}
 		}
@@ -151,7 +137,7 @@ public class AdminBan implements IAdminCommandHandler
 				}
 				
 				String banLengthStr = "";
-				targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.CHAT, duration);
+				targetPlayer.setPunishLevel(Player.PunishLevel.CHAT, duration);
 				
 				if (duration > 0)
 					banLengthStr = " for " + duration + " minutes";
@@ -212,7 +198,7 @@ public class AdminBan implements IAdminCommandHandler
 			{
 				if (targetPlayer.isChatBanned())
 				{
-					targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.NONE, 0);
+					targetPlayer.setPunishLevel(Player.PunishLevel.NONE, 0);
 					activeChar.sendMessage(targetPlayer.getName() + "'s chat ban has been lifted.");
 				}
 				else
@@ -231,7 +217,7 @@ public class AdminBan implements IAdminCommandHandler
 			
 			if (targetPlayer != null)
 			{
-				targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.JAIL, duration);
+				targetPlayer.setPunishLevel(Player.PunishLevel.JAIL, duration);
 				activeChar.sendMessage(targetPlayer.getName() + " have been jailed for " + (duration > 0 ? duration + " minutes." : "ever !"));
 			}
 			else
@@ -246,7 +232,7 @@ public class AdminBan implements IAdminCommandHandler
 			}
 			else if (targetPlayer != null)
 			{
-				targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.NONE, 0);
+				targetPlayer.setPunishLevel(Player.PunishLevel.NONE, 0);
 				activeChar.sendMessage(targetPlayer.getName() + " have been unjailed.");
 			}
 			else
@@ -255,19 +241,19 @@ public class AdminBan implements IAdminCommandHandler
 		return true;
 	}
 	
-	private static void banChatOfflinePlayer(L2PcInstance activeChar, String name, int delay, boolean ban)
+	private static void banChatOfflinePlayer(Player activeChar, String name, int delay, boolean ban)
 	{
 		int level = 0;
 		long value = 0;
 		
 		if (ban)
 		{
-			level = L2PcInstance.PunishLevel.CHAT.value();
+			level = Player.PunishLevel.CHAT.value();
 			value = (delay > 0 ? delay * 60000L : 60000);
 		}
 		else
 		{
-			level = L2PcInstance.PunishLevel.NONE.value();
+			level = Player.PunishLevel.NONE.value();
 			value = 0;
 		}
 		
@@ -297,7 +283,7 @@ public class AdminBan implements IAdminCommandHandler
 		}
 	}
 	
-	private static void jailOfflinePlayer(L2PcInstance activeChar, String name, int delay)
+	private static void jailOfflinePlayer(Player activeChar, String name, int delay)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -305,7 +291,7 @@ public class AdminBan implements IAdminCommandHandler
 			statement.setInt(1, -114356);
 			statement.setInt(2, -249645);
 			statement.setInt(3, -2984);
-			statement.setInt(4, L2PcInstance.PunishLevel.JAIL.value());
+			statement.setInt(4, Player.PunishLevel.JAIL.value());
 			statement.setLong(5, (delay > 0 ? delay * 60000L : 0));
 			statement.setString(6, name);
 			
@@ -326,7 +312,7 @@ public class AdminBan implements IAdminCommandHandler
 		}
 	}
 	
-	private static void unjailOfflinePlayer(L2PcInstance activeChar, String name)
+	private static void unjailOfflinePlayer(Player activeChar, String name)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -353,7 +339,7 @@ public class AdminBan implements IAdminCommandHandler
 		}
 	}
 	
-	private static boolean changeCharAccessLevel(L2PcInstance targetPlayer, String player, L2PcInstance activeChar, int lvl)
+	private static boolean changeCharAccessLevel(Player targetPlayer, String player, Player activeChar, int lvl)
 	{
 		if (targetPlayer != null)
 		{

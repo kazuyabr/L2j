@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.geoengine;
 
 import java.io.File;
@@ -42,12 +28,12 @@ import net.sf.l2j.gameserver.geoengine.geodata.GeoStructure;
 import net.sf.l2j.gameserver.geoengine.geodata.IBlockDynamic;
 import net.sf.l2j.gameserver.geoengine.geodata.IGeoObject;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
+import net.sf.l2j.gameserver.model.location.Location;
 
 /**
  * @author Hasha
@@ -93,9 +79,9 @@ public class GeoEngine
 		final ExProperties props = Config.initProperties(Config.GEOENGINE_FILE);
 		int loaded = 0;
 		int failed = 0;
-		for (int rx = L2World.TILE_X_MIN; rx <= L2World.TILE_X_MAX; rx++)
+		for (int rx = World.TILE_X_MIN; rx <= World.TILE_X_MAX; rx++)
 		{
-			for (int ry = L2World.TILE_Y_MIN; ry <= L2World.TILE_Y_MAX; ry++)
+			for (int ry = World.TILE_Y_MIN; ry <= World.TILE_Y_MAX; ry++)
 			{
 				if (props.containsKey(String.valueOf(rx) + "_" + String.valueOf(ry)))
 				{
@@ -158,8 +144,8 @@ public class GeoEngine
 			buffer.order(ByteOrder.LITTLE_ENDIAN);
 			
 			// get block indexes
-			final int blockX = (regionX - L2World.TILE_X_MIN) * GeoStructure.REGION_BLOCKS_X;
-			final int blockY = (regionY - L2World.TILE_Y_MIN) * GeoStructure.REGION_BLOCKS_Y;
+			final int blockX = (regionX - World.TILE_X_MIN) * GeoStructure.REGION_BLOCKS_X;
+			final int blockY = (regionY - World.TILE_Y_MIN) * GeoStructure.REGION_BLOCKS_Y;
 			
 			// loop over region blocks
 			for (int ix = 0; ix < GeoStructure.REGION_BLOCKS_X; ix++)
@@ -220,8 +206,8 @@ public class GeoEngine
 	private final void loadNullBlocks(int regionX, int regionY)
 	{
 		// get block indexes
-		final int blockX = (regionX - L2World.TILE_X_MIN) * GeoStructure.REGION_BLOCKS_X;
-		final int blockY = (regionY - L2World.TILE_Y_MIN) * GeoStructure.REGION_BLOCKS_Y;
+		final int blockX = (regionX - World.TILE_X_MIN) * GeoStructure.REGION_BLOCKS_X;
+		final int blockY = (regionY - World.TILE_Y_MIN) * GeoStructure.REGION_BLOCKS_Y;
 		
 		// load all null blocks
 		for (int ix = 0; ix < GeoStructure.REGION_BLOCKS_X; ix++)
@@ -238,7 +224,7 @@ public class GeoEngine
 	 */
 	public static final int getGeoX(int worldX)
 	{
-		return (MathUtil.limit(worldX, L2World.WORLD_X_MIN, L2World.WORLD_X_MAX) - L2World.WORLD_X_MIN) >> 4;
+		return (MathUtil.limit(worldX, World.WORLD_X_MIN, World.WORLD_X_MAX) - World.WORLD_X_MIN) >> 4;
 	}
 	
 	/**
@@ -248,7 +234,7 @@ public class GeoEngine
 	 */
 	public static final int getGeoY(int worldY)
 	{
-		return (MathUtil.limit(worldY, L2World.WORLD_Y_MIN, L2World.WORLD_Y_MAX) - L2World.WORLD_Y_MIN) >> 4;
+		return (MathUtil.limit(worldY, World.WORLD_Y_MIN, World.WORLD_Y_MAX) - World.WORLD_Y_MIN) >> 4;
 	}
 	
 	/**
@@ -258,7 +244,7 @@ public class GeoEngine
 	 */
 	public static final int getWorldX(int geoX)
 	{
-		return (MathUtil.limit(geoX, 0, GeoStructure.GEO_CELLS_X) << 4) + L2World.WORLD_X_MIN + 8;
+		return (MathUtil.limit(geoX, 0, GeoStructure.GEO_CELLS_X) << 4) + World.WORLD_X_MIN + 8;
 	}
 	
 	/**
@@ -268,7 +254,7 @@ public class GeoEngine
 	 */
 	public static final int getWorldY(int geoY)
 	{
-		return (MathUtil.limit(geoY, 0, GeoStructure.GEO_CELLS_Y) << 4) + L2World.WORLD_Y_MIN + 8;
+		return (MathUtil.limit(geoY, 0, GeoStructure.GEO_CELLS_Y) << 4) + World.WORLD_Y_MIN + 8;
 	}
 	
 	/**
@@ -423,10 +409,10 @@ public class GeoEngine
 					if (ix > 0 && iy > 0)
 						if (inside[ix - 1][iy - 1] || inside[ix][iy - 1] || inside[ix - 1][iy])
 							nswe &= ~GeoStructure.CELL_FLAG_NW;
-					
+						
 					result[ix][iy] = nswe;
 				}
-		
+			
 		return result;
 	}
 	
@@ -521,12 +507,12 @@ public class GeoEngine
 	// PATHFINDING
 	
 	/**
-	 * Check line of sight from {@link L2Object} to {@link L2Object}.
+	 * Check line of sight from {@link WorldObject} to {@link WorldObject}.
 	 * @param origin : The origin object.
 	 * @param target : The target object.
 	 * @return {@code boolean} : True if origin can see target
 	 */
-	public final boolean canSeeTarget(L2Object origin, L2Object target)
+	public final boolean canSeeTarget(WorldObject origin, WorldObject target)
 	{
 		// get origin and target world coordinates
 		final int ox = origin.getX();
@@ -550,7 +536,7 @@ public class GeoEngine
 		if (!hasGeoPos(gtx, gty))
 			return true;
 		
-		final boolean door = target instanceof L2DoorInstance;
+		final boolean door = target instanceof Door;
 		final short gtz = door ? getHeightNearestOriginal(gtx, gty, tz) : getHeightNearest(gtx, gty, tz);
 		
 		// origin and target coordinates are same
@@ -559,24 +545,24 @@ public class GeoEngine
 		
 		// get origin and target height, real height = collision height * 2
 		double oheight = 0;
-		if (origin instanceof L2Character)
-			oheight = ((L2Character) origin).getCollisionHeight() * 2;
+		if (origin instanceof Creature)
+			oheight = ((Creature) origin).getCollisionHeight() * 2;
 		
 		double theight = 0;
-		if (target instanceof L2Character)
-			theight = ((L2Character) target).getCollisionHeight() * 2;
+		if (target instanceof Creature)
+			theight = ((Creature) target).getCollisionHeight() * 2;
 		
 		// perform geodata check
 		return door ? checkSeeOriginal(gox, goy, goz, oheight, gtx, gty, gtz, theight) : checkSee(gox, goy, goz, oheight, gtx, gty, gtz, theight);
 	}
 	
 	/**
-	 * Check line of sight from {@link L2Object} to {@link Location}.
+	 * Check line of sight from {@link WorldObject} to {@link Location}.
 	 * @param origin : The origin object.
 	 * @param position : The target position.
 	 * @return {@code boolean} : True if object can see position
 	 */
-	public final boolean canSeeTarget(L2Object origin, Location position)
+	public final boolean canSeeTarget(WorldObject origin, Location position)
 	{
 		// get origin and target world coordinates
 		final int ox = origin.getX();
@@ -608,8 +594,8 @@ public class GeoEngine
 		
 		// get origin and target height, real height = collision height * 2
 		double oheight = 0;
-		if (origin instanceof L2Character)
-			oheight = ((L2Character) origin).getTemplate().getCollisionHeight();
+		if (origin instanceof Creature)
+			oheight = ((Creature) origin).getTemplate().getCollisionHeight();
 		
 		// perform geodata check
 		return checkSee(gox, goy, goz, oheight, gtx, gty, gtz, 0);
@@ -620,11 +606,11 @@ public class GeoEngine
 	 * @param gox : origin X geodata coordinate
 	 * @param goy : origin Y geodata coordinate
 	 * @param goz : origin Z geodata coordinate
-	 * @param oheight : origin height (if instance of {@link L2Character})
+	 * @param oheight : origin height (if instance of {@link Creature})
 	 * @param gtx : target X geodata coordinate
 	 * @param gty : target Y geodata coordinate
 	 * @param gtz : target Z geodata coordinate
-	 * @param theight : target height (if instance of {@link L2Character})
+	 * @param theight : target height (if instance of {@link Creature})
 	 * @return {@code boolean} : True, when target can be seen.
 	 */
 	protected final boolean checkSee(int gox, int goy, int goz, double oheight, int gtx, int gty, int gtz, double theight)
@@ -786,11 +772,11 @@ public class GeoEngine
 	 * @param gox : origin X geodata coordinate
 	 * @param goy : origin Y geodata coordinate
 	 * @param goz : origin Z geodata coordinate
-	 * @param oheight : origin height (if instance of {@link L2Character})
+	 * @param oheight : origin height (if instance of {@link Creature})
 	 * @param gtx : target X geodata coordinate
 	 * @param gty : target Y geodata coordinate
 	 * @param gtz : target Z geodata coordinate
-	 * @param theight : target height (if instance of {@link L2Character} or {@link L2DoorInstance})
+	 * @param theight : target height (if instance of {@link Creature} or {@link Door})
 	 * @return {@code boolean} : True, when target can be seen.
 	 */
 	protected final boolean checkSeeOriginal(int gox, int goy, int goz, double oheight, int gtx, int gty, int gtz, double theight)
@@ -1184,8 +1170,8 @@ public class GeoEngine
 		int gox = getGeoX(loc.getX());
 		int goy = getGeoY(loc.getY());
 		int goz = loc.getZ();
-		int rx = gox / GeoStructure.REGION_CELLS_X + L2World.TILE_X_MIN;
-		int ry = goy / GeoStructure.REGION_CELLS_Y + L2World.TILE_Y_MIN;
+		int rx = gox / GeoStructure.REGION_CELLS_X + World.TILE_X_MIN;
+		int ry = goy / GeoStructure.REGION_CELLS_Y + World.TILE_Y_MIN;
 		int bx = (gox / GeoStructure.BLOCK_CELLS_X) % GeoStructure.REGION_BLOCKS_X;
 		int by = (goy / GeoStructure.BLOCK_CELLS_Y) % GeoStructure.REGION_BLOCKS_Y;
 		int cx = gox % GeoStructure.BLOCK_CELLS_X;

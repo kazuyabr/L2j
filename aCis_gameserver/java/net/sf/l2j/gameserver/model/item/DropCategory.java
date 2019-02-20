@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.item;
 
 import java.util.ArrayList;
@@ -105,19 +91,19 @@ public class DropCategory
 			}
 		}
 		
+		if (subCatChance == 0)
+			return null;
+		
 		// among the results choose one.
-		int randomIndex = Rnd.get(subCatChance);
+		final int randomIndex = Rnd.get(subCatChance);
+		
 		int sum = 0;
 		for (DropData drop : drops)
 		{
 			sum += drop.getChance();
 			
 			if (sum > randomIndex) // drop this item and exit the function
-			{
-				drops.clear();
-				drops = null;
 				return drop;
-			}
 		}
 		// since it is still within category, only drop one of the acceptable drops from the results.
 		return null;

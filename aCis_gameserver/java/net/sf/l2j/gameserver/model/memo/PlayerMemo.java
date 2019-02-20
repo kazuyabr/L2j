@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.memo;
 
 import java.sql.Connection;
@@ -24,12 +10,12 @@ import java.util.logging.Logger;
 import net.sf.l2j.L2DatabaseFactory;
 
 /**
- * @author UnAfraid
+ * An implementation of {@link AbstractMemo} used for Player. There is a restore/save system.
  */
 @SuppressWarnings("serial")
 public class PlayerMemo extends AbstractMemo
 {
-	private static final Logger _log = Logger.getLogger(PlayerMemo.class.getName());
+	private static final Logger LOG = Logger.getLogger(PlayerMemo.class.getName());
 	
 	private static final String SELECT_QUERY = "SELECT * FROM character_memo WHERE charId = ?";
 	private static final String DELETE_QUERY = "DELETE FROM character_memo WHERE charId = ?";
@@ -61,7 +47,7 @@ public class PlayerMemo extends AbstractMemo
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Couldn't restore variables for player id: " + _objectId, e);
+			LOG.log(Level.SEVERE, "Couldn't restore variables for player id: " + _objectId, e);
 			return false;
 		}
 		finally
@@ -100,7 +86,7 @@ public class PlayerMemo extends AbstractMemo
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Couldn't update variables for player id: " + _objectId, e);
+			LOG.log(Level.SEVERE, "Couldn't update variables for player id: " + _objectId, e);
 			return false;
 		}
 		finally

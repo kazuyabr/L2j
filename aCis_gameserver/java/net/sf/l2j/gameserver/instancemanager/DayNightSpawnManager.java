@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.instancemanager;
 
 import java.util.ArrayList;
@@ -22,8 +8,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.model.L2Spawn;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.RaidBoss;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
 
 /**
@@ -35,7 +21,7 @@ public class DayNightSpawnManager
 	
 	private final List<L2Spawn> _dayCreatures;
 	private final List<L2Spawn> _nightCreatures;
-	private final Map<L2Spawn, L2RaidBossInstance> _bosses;
+	private final Map<L2Spawn, RaidBoss> _bosses;
 	
 	public static DayNightSpawnManager getInstance()
 	{
@@ -97,7 +83,7 @@ public class DayNightSpawnManager
 						continue;
 					
 					spawn.setRespawnState(false);
-					L2Npc last = spawn.getNpc();
+					Npc last = spawn.getNpc();
 					if (last != null)
 					{
 						last.deleteMe();
@@ -175,16 +161,16 @@ public class DayNightSpawnManager
 	{
 		try
 		{
-			for (Map.Entry<L2Spawn, L2RaidBossInstance> infoEntry : _bosses.entrySet())
+			for (Map.Entry<L2Spawn, RaidBoss> infoEntry : _bosses.entrySet())
 			{
-				L2RaidBossInstance boss = infoEntry.getValue();
+				RaidBoss boss = infoEntry.getValue();
 				if (boss == null)
 				{
 					if (mode == 1)
 					{
 						final L2Spawn spawn = infoEntry.getKey();
 						
-						boss = (L2RaidBossInstance) spawn.doSpawn(false);
+						boss = (RaidBoss) spawn.doSpawn(false);
 						RaidBossSpawnManager.getInstance().notifySpawnNightBoss(boss);
 						
 						_bosses.put(spawn, boss);
@@ -204,7 +190,7 @@ public class DayNightSpawnManager
 		}
 	}
 	
-	private static void handleHellmans(L2RaidBossInstance boss, int mode)
+	private static void handleHellmans(RaidBoss boss, int mode)
 	{
 		switch (mode)
 		{
@@ -220,14 +206,14 @@ public class DayNightSpawnManager
 		}
 	}
 	
-	public L2RaidBossInstance handleBoss(L2Spawn spawnDat)
+	public RaidBoss handleBoss(L2Spawn spawnDat)
 	{
 		if (_bosses.containsKey(spawnDat))
 			return _bosses.get(spawnDat);
 		
 		if (GameTimeTaskManager.getInstance().isNight())
 		{
-			L2RaidBossInstance raidboss = (L2RaidBossInstance) spawnDat.doSpawn(false);
+			RaidBoss raidboss = (RaidBoss) spawnDat.doSpawn(false);
 			_bosses.put(spawnDat, raidboss);
 			
 			return raidboss;

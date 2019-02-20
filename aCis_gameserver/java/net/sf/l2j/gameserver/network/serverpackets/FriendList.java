@@ -1,25 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.gameserver.datatables.CharNameTable;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.data.PlayerNameTable;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
  * Support for "Chat with Friends" dialog.
@@ -43,14 +29,14 @@ public class FriendList extends L2GameServerPacket
 		}
 	}
 	
-	public FriendList(L2PcInstance player)
+	public FriendList(Player player)
 	{
 		_info = new ArrayList<>(player.getFriendList().size());
 		
 		for (int objId : player.getFriendList())
 		{
-			final String name = CharNameTable.getInstance().getPlayerName(objId);
-			final L2PcInstance player1 = L2World.getInstance().getPlayer(objId);
+			final String name = PlayerNameTable.getInstance().getPlayerName(objId);
+			final Player player1 = World.getInstance().getPlayer(objId);
 			
 			_info.add(new FriendInfo(objId, name, (player1 != null && player1.isOnline())));
 		}

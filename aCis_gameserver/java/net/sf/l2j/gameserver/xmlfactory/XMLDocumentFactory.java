@@ -1,6 +1,3 @@
-/*
- * Copyright 2010 InC-Gaming, Patrick Biesenbach aka. Forsaiken. All rights reserved.
- */
 package net.sf.l2j.gameserver.xmlfactory;
 
 import java.io.File;

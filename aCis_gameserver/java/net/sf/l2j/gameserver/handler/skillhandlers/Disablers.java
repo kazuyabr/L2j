@@ -1,32 +1,18 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
-import net.sf.l2j.gameserver.ai.CtrlEvent;
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.ai.model.L2AttackableAI;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.ShotType;
-import net.sf.l2j.gameserver.model.actor.L2Attackable;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.L2Summon;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.ai.type.AttackableAI;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.SiegeSummon;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
@@ -60,7 +46,7 @@ public class Disablers implements ISkillHandler
 	};
 	
 	@Override
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets)
 	{
 		L2SkillType type = skill.getSkillType();
 		
@@ -68,12 +54,12 @@ public class Disablers implements ISkillHandler
 		final boolean sps = activeChar.isChargedShot(ShotType.SPIRITSHOT);
 		final boolean bsps = activeChar.isChargedShot(ShotType.BLESSED_SPIRITSHOT);
 		
-		for (L2Object obj : targets)
+		for (WorldObject obj : targets)
 		{
-			if (!(obj instanceof L2Character))
+			if (!(obj instanceof Creature))
 				continue;
 			
-			L2Character target = (L2Character) obj;
+			Creature target = (Creature) obj;
 			if (target.isDead() || (target.isInvul() && !target.isParalyzed())) // bypass if target is dead or invul (excluding invul from Petrification)
 				continue;
 			
@@ -102,7 +88,7 @@ public class Disablers implements ISkillHandler
 						skill.getEffects(activeChar, target, new Env(shld, ss, sps, bsps));
 					else
 					{
-						if (activeChar instanceof L2PcInstance)
+						if (activeChar instanceof Player)
 							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill.getId()));
 					}
 					break;
@@ -116,7 +102,7 @@ public class Disablers implements ISkillHandler
 						skill.getEffects(activeChar, target, new Env(shld, ss, sps, bsps));
 					else
 					{
-						if (activeChar instanceof L2PcInstance)
+						if (activeChar instanceof Player)
 							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill.getId()));
 					}
 					break;
@@ -138,14 +124,14 @@ public class Disablers implements ISkillHandler
 					}
 					else
 					{
-						if (activeChar instanceof L2PcInstance)
+						if (activeChar instanceof Player)
 							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill.getId()));
 					}
 					break;
 				
 				case CONFUSION:
 					// do nothing if not on mob
-					if (target instanceof L2Attackable)
+					if (target instanceof Attackable)
 					{
 						if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, bsps))
 						{
@@ -159,7 +145,7 @@ public class Disablers implements ISkillHandler
 						}
 						else
 						{
-							if (activeChar instanceof L2PcInstance)
+							if (activeChar instanceof Player)
 								activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill));
 						}
 					}
@@ -168,7 +154,7 @@ public class Disablers implements ISkillHandler
 					break;
 				
 				case AGGDAMAGE:
-					if (target instanceof L2Attackable)
+					if (target instanceof Attackable)
 						target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) ((150 * skill.getPower()) / (target.getLevel() + 7)));
 					
 					skill.getEffects(activeChar, target, new Env(shld, ss, sps, bsps));
@@ -176,16 +162,16 @@ public class Disablers implements ISkillHandler
 				
 				case AGGREDUCE:
 					// these skills needs to be rechecked
-					if (target instanceof L2Attackable)
+					if (target instanceof Attackable)
 					{
 						skill.getEffects(activeChar, target, new Env(shld, ss, sps, bsps));
 						
-						double aggdiff = ((L2Attackable) target).getHating(activeChar) - target.calcStat(Stats.AGGRESSION, ((L2Attackable) target).getHating(activeChar), target, skill);
+						double aggdiff = ((Attackable) target).getHating(activeChar) - target.calcStat(Stats.AGGRESSION, ((Attackable) target).getHating(activeChar), target, skill);
 						
 						if (skill.getPower() > 0)
-							((L2Attackable) target).reduceHate(null, (int) skill.getPower());
+							((Attackable) target).reduceHate(null, (int) skill.getPower());
 						else if (aggdiff > 0)
-							((L2Attackable) target).reduceHate(null, (int) aggdiff);
+							((Attackable) target).reduceHate(null, (int) aggdiff);
 					}
 					break;
 				
@@ -193,13 +179,13 @@ public class Disablers implements ISkillHandler
 					// these skills needs to be rechecked
 					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, bsps))
 					{
-						if (target instanceof L2Attackable)
+						if (target instanceof Attackable)
 						{
-							L2Attackable targ = (L2Attackable) target;
+							Attackable targ = (Attackable) target;
 							targ.stopHating(activeChar);
-							if (targ.getMostHated() == null && targ.hasAI() && targ.getAI() instanceof L2AttackableAI)
+							if (targ.getMostHated() == null && targ.hasAI() && targ.getAI() instanceof AttackableAI)
 							{
-								((L2AttackableAI) targ.getAI()).setGlobalAggro(-25);
+								((AttackableAI) targ.getAI()).setGlobalAggro(-25);
 								targ.getAggroList().clear();
 								targ.getAI().setIntention(CtrlIntention.ACTIVE);
 								targ.setWalking();
@@ -209,7 +195,7 @@ public class Disablers implements ISkillHandler
 					}
 					else
 					{
-						if (activeChar instanceof L2PcInstance)
+						if (activeChar instanceof Player)
 							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill));
 						
 						target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
@@ -218,21 +204,21 @@ public class Disablers implements ISkillHandler
 				
 				case AGGREMOVE:
 					// these skills needs to be rechecked
-					if (target instanceof L2Attackable && !target.isRaid())
+					if (target instanceof Attackable && !target.isRaid())
 					{
 						if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, bsps))
 						{
 							if (skill.getTargetType() == L2Skill.SkillTargetType.TARGET_UNDEAD)
 							{
 								if (target.isUndead())
-									((L2Attackable) target).reduceHate(null, ((L2Attackable) target).getHating(((L2Attackable) target).getMostHated()));
+									((Attackable) target).reduceHate(null, ((Attackable) target).getHating(((Attackable) target).getMostHated()));
 							}
 							else
-								((L2Attackable) target).reduceHate(null, ((L2Attackable) target).getHating(((L2Attackable) target).getMostHated()));
+								((Attackable) target).reduceHate(null, ((Attackable) target).getHating(((Attackable) target).getMostHated()));
 						}
 						else
 						{
-							if (activeChar instanceof L2PcInstance)
+							if (activeChar instanceof Player)
 								activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill));
 							
 							target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
@@ -244,10 +230,10 @@ public class Disablers implements ISkillHandler
 				
 				case ERASE:
 					// doesn't affect siege summons
-					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, bsps) && !(target instanceof L2SiegeSummonInstance))
+					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, bsps) && !(target instanceof SiegeSummon))
 					{
-						final L2PcInstance summonOwner = ((L2Summon) target).getOwner();
-						final L2Summon summonPet = summonOwner.getPet();
+						final Player summonOwner = ((Summon) target).getOwner();
+						final Summon summonPet = summonOwner.getPet();
 						if (summonPet != null)
 						{
 							summonPet.unSummon(summonOwner);
@@ -256,7 +242,7 @@ public class Disablers implements ISkillHandler
 					}
 					else
 					{
-						if (activeChar instanceof L2PcInstance)
+						if (activeChar instanceof Player)
 							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill));
 					}
 					break;

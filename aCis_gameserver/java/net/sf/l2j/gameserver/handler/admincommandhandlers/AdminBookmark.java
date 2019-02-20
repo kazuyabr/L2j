@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.List;
@@ -20,10 +6,10 @@ import java.util.StringTokenizer;
 import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.commons.math.MathUtil;
 
-import net.sf.l2j.gameserver.datatables.BookmarkTable;
+import net.sf.l2j.gameserver.data.sql.BookmarkTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2Bookmark;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.Bookmark;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
@@ -43,7 +29,7 @@ public class AdminBookmark implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		if (command.startsWith("admin_bkpage"))
 		{
@@ -114,10 +100,10 @@ public class AdminBookmark implements IAdminCommandHandler
 	 * @param activeChar The player to make checks on.
 	 * @param page The page id to show.
 	 */
-	private static void showBookmarks(L2PcInstance activeChar, int page)
+	private static void showBookmarks(Player activeChar, int page)
 	{
 		final int objId = activeChar.getObjectId();
-		List<L2Bookmark> bookmarks = BookmarkTable.getInstance().getBookmarks(objId);
+		List<Bookmark> bookmarks = BookmarkTable.getInstance().getBookmarks(objId);
 		
 		// Load static Htm.
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
@@ -137,7 +123,7 @@ public class AdminBookmark implements IAdminCommandHandler
 		// Generate data.
 		final StringBuilder sb = new StringBuilder(2000);
 		
-		for (L2Bookmark bk : bookmarks)
+		for (Bookmark bk : bookmarks)
 		{
 			final String name = bk.getName();
 			final int x = bk.getX();

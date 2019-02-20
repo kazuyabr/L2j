@@ -1,25 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting.scripts.ai.group;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 public class HotSpringDisease extends L2AttackableAIScript
@@ -63,7 +49,7 @@ public class HotSpringDisease extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttackAct(L2Npc npc, L2PcInstance victim)
+	public String onAttackAct(Npc npc, Player victim)
 	{
 		for (int i = 0; i < 6; i++)
 		{
@@ -76,7 +62,7 @@ public class HotSpringDisease extends L2AttackableAIScript
 		return super.onAttackAct(npc, victim);
 	}
 	
-	private static void tryToApplyEffect(L2Npc npc, L2PcInstance victim, int skillId)
+	private static void tryToApplyEffect(Npc npc, Player victim, int skillId)
 	{
 		if (Rnd.get(100) < DISEASE_CHANCE)
 		{

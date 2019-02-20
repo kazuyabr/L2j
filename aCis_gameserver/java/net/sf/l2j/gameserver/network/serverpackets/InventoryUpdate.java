@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.ArrayList;
@@ -19,6 +5,7 @@ import java.util.List;
 
 import net.sf.l2j.gameserver.model.item.instance.ItemInfo;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
+import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemState;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 
 /**
@@ -47,19 +34,19 @@ public class InventoryUpdate extends L2GameServerPacket
 	public void addNewItem(ItemInstance item)
 	{
 		if (item != null)
-			_items.add(new ItemInfo(item, 1));
+			_items.add(new ItemInfo(item, ItemState.ADDED));
 	}
 	
 	public void addModifiedItem(ItemInstance item)
 	{
 		if (item != null)
-			_items.add(new ItemInfo(item, 2));
+			_items.add(new ItemInfo(item, ItemState.MODIFIED));
 	}
 	
 	public void addRemovedItem(ItemInstance item)
 	{
 		if (item != null)
-			_items.add(new ItemInfo(item, 3));
+			_items.add(new ItemInfo(item, ItemState.REMOVED));
 	}
 	
 	public void addItems(List<ItemInstance> items)
@@ -78,12 +65,9 @@ public class InventoryUpdate extends L2GameServerPacket
 		
 		for (ItemInfo temp : _items)
 		{
-			if (temp == null || temp.getItem() == null)
-				continue;
-			
 			Item item = temp.getItem();
 			
-			writeH(temp.getChange());
+			writeH(temp.getChange().ordinal());
 			writeH(item.getType1());
 			writeD(temp.getObjectId());
 			writeD(item.getItemId());
@@ -97,7 +81,5 @@ public class InventoryUpdate extends L2GameServerPacket
 			writeD(temp.getAugmentationBoni());
 			writeD(temp.getMana());
 		}
-		_items.clear();
-		_items = null;
 	}
 }

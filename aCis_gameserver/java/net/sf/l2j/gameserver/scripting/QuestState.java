@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.scripting;
 
 import java.sql.Connection;
@@ -26,7 +12,7 @@ import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.DropData;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
@@ -68,7 +54,7 @@ public final class QuestState
 	public static final byte DROP_FIXED_COUNT = 2;
 	public static final byte DROP_FIXED_BOTH = 3;
 	
-	private final L2PcInstance _player;
+	private final Player _player;
 	private final Quest _quest;
 	private byte _state;
 	private final Map<String, String> _vars = new HashMap<>();
@@ -77,12 +63,14 @@ public final class QuestState
 	 * Constructor of the QuestState : save the quest in the list of quests of the player.<BR/>
 	 * <BR/>
 	 * <U><I>Actions :</U></I><BR/>
-	 * <LI>Save informations in the object QuestState created (Quest, Player, Completion, State)</LI> <LI>Add the QuestState in the player's list of quests by using setQuestState()</LI> <LI>Add drops gotten by the quest</LI> <BR/>
+	 * <LI>Save informations in the object QuestState created (Quest, Player, Completion, State)</LI>
+	 * <LI>Add the QuestState in the player's list of quests by using setQuestState()</LI>
+	 * <LI>Add drops gotten by the quest</LI> <BR/>
 	 * @param quest : quest associated with the QuestState
-	 * @param player : L2PcInstance pointing out the player
+	 * @param player : Player pointing out the player
 	 * @param state : state of the quest
 	 */
-	public QuestState(L2PcInstance player, Quest quest, byte state)
+	public QuestState(Player player, Quest quest, byte state)
 	{
 		_player = player;
 		_quest = quest;
@@ -92,10 +80,10 @@ public final class QuestState
 	}
 	
 	/**
-	 * Return the L2PcInstance
-	 * @return L2PcInstance
+	 * Return the Player
+	 * @return Player
 	 */
-	public L2PcInstance getPlayer()
+	public Player getPlayer()
 	{
 		return _player;
 	}
@@ -232,8 +220,10 @@ public final class QuestState
 	 * Return value of parameter "val" after adding the couple (var,val) in class variable "vars".<BR>
 	 * <BR>
 	 * <U><I>Actions :</I></U><BR>
-	 * <LI>Initialize class variable "vars" if is null</LI> <LI>Initialize parameter "val" if is null</LI> <LI>Add/Update couple (var,val) in class variable FastMap "vars"</LI> <LI>If the key represented by "var" exists in FastMap "vars", the couple (var,val) is updated in the database. The key is
-	 * known as existing if the preceding value of the key (given as result of function put()) is not null.<BR>
+	 * <LI>Initialize class variable "vars" if is null</LI>
+	 * <LI>Initialize parameter "val" if is null</LI>
+	 * <LI>Add/Update couple (var,val) in class variable FastMap "vars"</LI>
+	 * <LI>If the key represented by "var" exists in FastMap "vars", the couple (var,val) is updated in the database. The key is known as existing if the preceding value of the key (given as result of function put()) is not null.<BR>
 	 * If the key doesn't exist, the couple is added/created in the database</LI>
 	 * @param var : String indicating the name of the variable for quest
 	 * @param value : String indicating the value of the variable for quest
@@ -287,8 +277,11 @@ public final class QuestState
 	 * Internally handles the progression of the quest so that it is ready for sending appropriate packets to the client<BR>
 	 * <BR>
 	 * <U><I>Actions :</I></U><BR>
-	 * <LI>Check if the new progress number resets the quest to a previous (smaller) step</LI> <LI>If not, check if quest progress steps have been skipped</LI> <LI>If skipped, prepare the variable completedStateFlags appropriately to be ready for sending to clients</LI> <LI>If no steps were skipped,
-	 * flags do not need to be prepared...</LI> <LI>If the passed step resets the quest to a previous step, reset such that steps after the parameter are not considered, while skipped steps before the parameter, if any, maintain their info</LI>
+	 * <LI>Check if the new progress number resets the quest to a previous (smaller) step</LI>
+	 * <LI>If not, check if quest progress steps have been skipped</LI>
+	 * <LI>If skipped, prepare the variable completedStateFlags appropriately to be ready for sending to clients</LI>
+	 * <LI>If no steps were skipped, flags do not need to be prepared...</LI>
+	 * <LI>If the passed step resets the quest to a previous step, reset such that steps after the parameter are not considered, while skipped steps before the parameter, if any, maintain their info</LI>
 	 * @param cond : int indicating the step number for the current quest progress (as will be shown to the client)
 	 * @param old : int indicating the previously noted step For more info on the variable communicating the progress steps to the client, please see
 	 */
@@ -506,7 +499,7 @@ public final class QuestState
 		for (ItemInstance item : _player.getInventory().getItems())
 			if (item != null && item.getItemId() == itemId)
 				count += item.getCount();
-		
+			
 		return count;
 	}
 	
@@ -613,7 +606,7 @@ public final class QuestState
 		// Disarm item, if equipped.
 		if (item.isEquipped())
 		{
-			ItemInstance[] unequiped = _player.getInventory().unEquipItemInBodySlotAndRecord(item.getItem().getBodyPart());
+			ItemInstance[] unequiped = _player.getInventory().unEquipItemInBodySlotAndRecord(item);
 			InventoryUpdate iu = new InventoryUpdate();
 			for (ItemInstance itm : unequiped)
 				iu.addModifiedItem(itm);
@@ -872,7 +865,7 @@ public final class QuestState
 	
 	public void playTutorialVoice(String voice)
 	{
-		_player.sendPacket(new PlaySound(2, voice, 0, 0, _player.getX(), _player.getY(), _player.getZ()));
+		_player.sendPacket(new PlaySound(2, voice, _player));
 	}
 	
 	public void showTutorialHTML(String html)

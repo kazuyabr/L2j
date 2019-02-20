@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler;
 
 import java.util.HashMap;
@@ -24,7 +10,6 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBookmark;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBuffs;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCache;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCamera;
-import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminChangeAccessLevel;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCreateItem;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCursedWeapons;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminDelete;
@@ -47,7 +32,6 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMaintenance;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMammon;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminManor;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMenu;
-import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMonsterRace;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMovieMaker;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminOlympiad;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminPForge;
@@ -82,7 +66,6 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminBuffs());
 		registerAdminCommandHandler(new AdminCache());
 		registerAdminCommandHandler(new AdminCamera());
-		registerAdminCommandHandler(new AdminChangeAccessLevel());
 		registerAdminCommandHandler(new AdminCreateItem());
 		registerAdminCommandHandler(new AdminCursedWeapons());
 		registerAdminCommandHandler(new AdminDelete());
@@ -105,7 +88,6 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminMammon());
 		registerAdminCommandHandler(new AdminManor());
 		registerAdminCommandHandler(new AdminMenu());
-		registerAdminCommandHandler(new AdminMonsterRace());
 		registerAdminCommandHandler(new AdminMovieMaker());
 		registerAdminCommandHandler(new AdminOlympiad());
 		registerAdminCommandHandler(new AdminPetition());

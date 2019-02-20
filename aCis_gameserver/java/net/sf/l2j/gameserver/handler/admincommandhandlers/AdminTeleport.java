@@ -1,29 +1,16 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
+import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.group.Party;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
@@ -47,7 +34,7 @@ public class AdminTeleport implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		// runmod
 		if (command.equals("admin_runmod") || command.equals("admin_instant_move"))
@@ -71,7 +58,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			{
 				st.nextToken();
 				String plyr = st.nextToken();
-				L2PcInstance player = L2World.getInstance().getPlayer(plyr);
+				Player player = World.getInstance().getPlayer(plyr);
 				if (player == null)
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
@@ -86,7 +73,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(13);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				Player player = World.getInstance().getPlayer(targetName);
 				if (player == null)
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
@@ -104,17 +91,18 @@ public class AdminTeleport implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(19);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				Player player = World.getInstance().getPlayer(targetName);
 				if (player == null)
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return false;
 				}
 				
-				if (player.isInParty())
+				final Party party = player.getParty();
+				if (party != null)
 				{
-					for (L2PcInstance pm : player.getParty().getPartyMembers())
-						teleportCharacter(pm, activeChar.getX(), activeChar.getY(), activeChar.getZ());
+					for (Player member : party.getMembers())
+						teleportCharacter(member, activeChar.getX(), activeChar.getY(), activeChar.getZ());
 					
 					activeChar.sendMessage("You recall " + player.getName() + "'s party.");
 				}
@@ -133,17 +121,17 @@ public class AdminTeleport implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(18);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				Player player = World.getInstance().getPlayer(targetName);
 				if (player == null)
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return false;
 				}
 				
-				L2Clan clan = player.getClan();
+				Clan clan = player.getClan();
 				if (clan != null)
 				{
-					for (L2PcInstance member : clan.getOnlineMembers())
+					for (Player member : clan.getOnlineMembers())
 						teleportCharacter(member, activeChar.getX(), activeChar.getY(), activeChar.getZ());
 					
 					activeChar.sendMessage("You recall " + player.getName() + "'s clan.");
@@ -178,7 +166,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			{
 				st.nextToken();
 				String plyr = st.nextToken();
-				L2PcInstance player = L2World.getInstance().getPlayer(plyr);
+				Player player = World.getInstance().getPlayer(plyr);
 				if (player == null)
 				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
@@ -189,12 +177,12 @@ public class AdminTeleport implements IAdminCommandHandler
 			}
 			else
 			{
-				L2Object target = activeChar.getTarget();
-				L2PcInstance player = null;
+				WorldObject target = activeChar.getTarget();
+				Player player = null;
 				
 				// if target isn't a player, select yourself as target
-				if (target instanceof L2PcInstance)
-					player = (L2PcInstance) target;
+				if (target instanceof Player)
+					player = (Player) target;
 				else
 					player = activeChar;
 				
@@ -204,14 +192,14 @@ public class AdminTeleport implements IAdminCommandHandler
 		return true;
 	}
 	
-	private static void sendHome(L2PcInstance player)
+	private static void sendHome(Player player)
 	{
-		player.teleToLocation(TeleportWhereType.TOWN);
+		player.teleToLocation(TeleportType.TOWN);
 		player.setIsIn7sDungeon(false);
 		player.sendMessage("A GM sent you at nearest town.");
 	}
 	
-	private static void teleportTo(L2PcInstance activeChar, String Cords)
+	private static void teleportTo(Player activeChar, String Cords)
 	{
 		try
 		{
@@ -234,14 +222,14 @@ public class AdminTeleport implements IAdminCommandHandler
 		}
 	}
 	
-	private static void teleportCharacter(L2PcInstance player, int x, int y, int z)
+	private static void teleportCharacter(Player player, int x, int y, int z)
 	{
 		player.getAI().setIntention(CtrlIntention.IDLE);
 		player.teleToLocation(x, y, z, 0);
 		player.sendMessage("A GM is teleporting you.");
 	}
 	
-	private static void teleportToCharacter(L2PcInstance activeChar, L2PcInstance target)
+	private static void teleportToCharacter(Player activeChar, Player target)
 	{
 		if (target.getObjectId() == activeChar.getObjectId())
 			activeChar.sendPacket(SystemMessageId.CANNOT_USE_ON_YOURSELF);

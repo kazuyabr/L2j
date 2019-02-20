@@ -1,48 +1,38 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.entity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.l2j.commons.concurrent.ThreadPool;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.CastleUpdater;
-import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager.CropProcure;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager.SeedProduction;
 import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SiegeManager;
+import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2Manor;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.TowerSpawn;
-import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
+import net.sf.l2j.gameserver.model.actor.instance.HolyThing;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
+import net.sf.l2j.gameserver.model.item.MercenaryTicket;
+import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
+import net.sf.l2j.gameserver.model.location.TowerSpawnLocation;
+import net.sf.l2j.gameserver.model.pledge.Clan;
+import net.sf.l2j.gameserver.model.pledge.ClanMember;
 import net.sf.l2j.gameserver.model.zone.type.L2CastleTeleportZone;
 import net.sf.l2j.gameserver.model.zone.type.L2CastleZone;
 import net.sf.l2j.gameserver.model.zone.type.L2SiegeZone;
@@ -55,48 +45,77 @@ public class Castle
 {
 	protected static final Logger _log = Logger.getLogger(Castle.class.getName());
 	
-	private static final String CASTLE_MANOR_DELETE_PRODUCTION = "DELETE FROM castle_manor_production WHERE castle_id=?;";
-	private static final String CASTLE_MANOR_DELETE_PRODUCTION_PERIOD = "DELETE FROM castle_manor_production WHERE castle_id=? AND period=?;";
-	private static final String CASTLE_MANOR_DELETE_PROCURE = "DELETE FROM castle_manor_procure WHERE castle_id=?;";
-	private static final String CASTLE_MANOR_DELETE_PROCURE_PERIOD = "DELETE FROM castle_manor_procure WHERE castle_id=? AND period=?;";
-	private static final String CASTLE_UPDATE_CROP = "UPDATE castle_manor_procure SET can_buy=? WHERE crop_id=? AND castle_id=? AND period=?";
-	private static final String CASTLE_UPDATE_SEED = "UPDATE castle_manor_production SET can_produce=? WHERE seed_id=? AND castle_id=? AND period=?";
+	private final int _castleId;
+	private final String _name;
 	
-	private int _castleId;
-	private String _name;
+	private int _circletId;
 	private int _ownerId;
-	private L2Clan _formerOwner;
+	private Clan _formerOwner;
 	
-	private List<CropProcure> _procure = new ArrayList<>();
-	private List<SeedProduction> _production = new ArrayList<>();
-	private List<CropProcure> _procureNext = new ArrayList<>();
-	private List<SeedProduction> _productionNext = new ArrayList<>();
-	private boolean _isNextPeriodApproved;
+	private final List<Door> _doors = new ArrayList<>();
+	private final List<MercenaryTicket> _tickets = new ArrayList<>(60);
+	private final List<Integer> _artifacts = new ArrayList<>(1);
+	private final List<Integer> _relatedNpcIds = new ArrayList<>();
 	
-	private final List<L2DoorInstance> _doors = new ArrayList<>();
+	private final Set<ItemInstance> _droppedTickets = new ConcurrentSkipListSet<>();
+	private final List<Npc> _siegeGuards = new ArrayList<>();
+	
+	private final List<TowerSpawnLocation> _controlTowers = new ArrayList<>();
+	private final List<TowerSpawnLocation> _flameTowers = new ArrayList<>();
 	
 	private Siege _siege;
 	private Calendar _siegeDate;
 	private boolean _isTimeRegistrationOver = true;
-	private Calendar _siegeRegistrationEndDate;
 	
 	private int _taxPercent;
 	private double _taxRate;
 	private long _treasury;
 	
-	private L2SiegeZone _zone;
+	private L2SiegeZone _siegeZone;
 	private L2CastleZone _castleZone;
 	private L2CastleTeleportZone _teleZone;
 	
-	private final List<L2ArtefactInstance> _artefacts = new ArrayList<>(1);
+	private int _leftCertificates;
 	
-	public Castle()
+	public Castle(int id, String name)
 	{
+		_castleId = id;
+		_name = name;
+		
+		// Feed _siegeZone.
+		for (L2SiegeZone zone : ZoneManager.getInstance().getAllZones(L2SiegeZone.class))
+		{
+			if (zone.getSiegeObjectId() == _castleId)
+			{
+				_siegeZone = zone;
+				break;
+			}
+		}
+		
+		// Feed _castleZone.
+		for (L2CastleZone zone : ZoneManager.getInstance().getAllZones(L2CastleZone.class))
+		{
+			if (zone.getCastleId() == _castleId)
+			{
+				_castleZone = zone;
+				break;
+			}
+		}
+		
+		// Feed _teleZone.
+		for (L2CastleTeleportZone zone : ZoneManager.getInstance().getAllZones(L2CastleTeleportZone.class))
+		{
+			if (zone.getCastleId() == _castleId)
+			{
+				_teleZone = zone;
+				break;
+			}
+		}
 	}
 	
-	public synchronized void engrave(L2Clan clan, L2Object target)
+	public synchronized void engrave(Clan clan, WorldObject target)
 	{
-		if (!_artefacts.contains(target))
+		if (!isGoodArtifact(target))
 			return;
 		
 		setOwner(clan);
@@ -116,7 +135,7 @@ public class Castle
 		
 		if (_name.equalsIgnoreCase("Schuttgart") || _name.equalsIgnoreCase("Goddard"))
 		{
-			Castle rune = CastleManager.getInstance().getCastle("rune");
+			Castle rune = CastleManager.getInstance().getCastleByName("rune");
 			if (rune != null)
 			{
 				int runeTax = (int) (amount * rune._taxRate);
@@ -128,7 +147,7 @@ public class Castle
 		
 		if (!_name.equalsIgnoreCase("aden") && !_name.equalsIgnoreCase("Rune") && !_name.equalsIgnoreCase("Schuttgart") && !_name.equalsIgnoreCase("Goddard")) // If current castle instance is not Aden, Rune, Goddard or Schuttgart.
 		{
-			Castle aden = CastleManager.getInstance().getCastle("aden");
+			Castle aden = CastleManager.getInstance().getCastleByName("aden");
 			if (aden != null)
 			{
 				int adenTax = (int) (amount * aden._taxRate); // Find out what Aden gets from the current castle instance's income
@@ -197,54 +216,21 @@ public class Castle
 	 */
 	public boolean checkIfInZone(int x, int y, int z)
 	{
-		return getZone().isInsideZone(x, y, z);
+		return getSiegeZone().isInsideZone(x, y, z);
 	}
 	
-	public L2SiegeZone getZone()
+	public L2SiegeZone getSiegeZone()
 	{
-		if (_zone == null)
-		{
-			for (L2SiegeZone zone : ZoneManager.getInstance().getAllZones(L2SiegeZone.class))
-			{
-				if (zone.getSiegeObjectId() == _castleId)
-				{
-					_zone = zone;
-					break;
-				}
-			}
-		}
-		return _zone;
+		return _siegeZone;
 	}
 	
 	public L2CastleZone getCastleZone()
 	{
-		if (_castleZone == null)
-		{
-			for (L2CastleZone zone : ZoneManager.getInstance().getAllZones(L2CastleZone.class))
-			{
-				if (zone.getCastleId() == _castleId)
-				{
-					_castleZone = zone;
-					break;
-				}
-			}
-		}
 		return _castleZone;
 	}
 	
 	public L2CastleTeleportZone getTeleZone()
 	{
-		if (_teleZone == null)
-		{
-			for (L2CastleTeleportZone zone : ZoneManager.getInstance().getAllZones(L2CastleTeleportZone.class))
-			{
-				if (zone.getCastleId() == _castleId)
-				{
-					_teleZone = zone;
-					break;
-				}
-			}
-		}
 		return _teleZone;
 	}
 	
@@ -253,32 +239,61 @@ public class Castle
 		getTeleZone().oustAllPlayers();
 	}
 	
-	/**
-	 * Get the object distance to this castle zone.
-	 * @param obj The L2Object to make tests on.
-	 * @return the distance between the L2Object and the zone.
-	 */
-	public double getDistance(L2Object obj)
+	public int getLeftCertificates()
 	{
-		return getZone().getDistanceToZone(obj);
+		return _leftCertificates;
 	}
 	
-	public void closeDoor(L2PcInstance activeChar, int doorId)
+	/**
+	 * Set (and optionally save on database) left certificates count.
+	 * @param leftCertificates : the count to save.
+	 * @param save : true means we store it on database. Basically setted to false on server startup.
+	 */
+	public void setLeftCertificates(int leftCertificates, boolean save)
+	{
+		_leftCertificates = leftCertificates;
+		
+		if (save)
+		{
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("UPDATE castle SET certificates=? WHERE id=?"))
+			{
+				ps.setInt(1, leftCertificates);
+				ps.setInt(2, _castleId);
+				ps.executeUpdate();
+			}
+			catch (Exception e)
+			{
+				_log.log(Level.WARNING, "setLeftCertificates: " + e.getMessage(), e);
+			}
+		}
+	}
+	
+	/**
+	 * Get the object distance to this castle zone.
+	 * @param obj The WorldObject to make tests on.
+	 * @return the distance between the WorldObject and the zone.
+	 */
+	public double getDistance(WorldObject obj)
+	{
+		return getSiegeZone().getDistanceToZone(obj);
+	}
+	
+	public void closeDoor(Player activeChar, int doorId)
 	{
 		openCloseDoor(activeChar, doorId, false);
 	}
 	
-	public void openDoor(L2PcInstance activeChar, int doorId)
+	public void openDoor(Player activeChar, int doorId)
 	{
 		openCloseDoor(activeChar, doorId, true);
 	}
 	
-	public void openCloseDoor(L2PcInstance activeChar, int doorId, boolean open)
+	public void openCloseDoor(Player activeChar, int doorId, boolean open)
 	{
 		if (activeChar.getClanId() != _ownerId)
 			return;
 		
-		L2DoorInstance door = getDoor(doorId);
+		Door door = getDoor(doorId);
 		if (door != null)
 		{
 			if (open)
@@ -292,13 +307,13 @@ public class Castle
 	 * This method setup the castle owner.
 	 * @param clan The clan who will own the castle.
 	 */
-	public void setOwner(L2Clan clan)
+	public void setOwner(Clan clan)
 	{
 		// Act only if castle owner is different of NPC, or if old owner is different of new owner.
 		if (_ownerId > 0 && (clan == null || clan.getClanId() != _ownerId))
 		{
 			// Try to find clan instance of the old owner.
-			L2Clan oldOwner = ClanTable.getInstance().getClan(_ownerId);
+			Clan oldOwner = ClanTable.getInstance().getClan(_ownerId);
 			if (oldOwner != null)
 			{
 				// Set the former owner.
@@ -306,7 +321,7 @@ public class Castle
 					_formerOwner = oldOwner;
 				
 				// Dismount the old leader if he was riding a wyvern.
-				L2PcInstance oldLeader = oldOwner.getLeader().getPlayerInstance();
+				Player oldLeader = oldOwner.getLeader().getPlayerInstance();
 				if (oldLeader != null)
 				{
 					if (oldLeader.getMountType() == 2)
@@ -335,7 +350,7 @@ public class Castle
 	 * Remove the castle owner. This method is only used by admin command.
 	 * @param clan The clan which is victim of the command.
 	 **/
-	public void removeOwner(L2Clan clan)
+	public void removeOwner(Clan clan)
 	{
 		if (clan != null)
 		{
@@ -343,19 +358,17 @@ public class Castle
 			
 			clan.setCastle(0);
 			clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+			
+			// Remove clan from siege registered clans (as owners are automatically added).
+			getSiege().getRegisteredClans().remove(clan);
 		}
 		
 		updateOwnerInDB(null);
 		
 		if (getSiege().isInProgress())
 			getSiege().midVictory();
-		else
-		{
-			// Remove circlets only if a siege isn't in progress, and if an owner exists
-			if (Config.REMOVE_CASTLE_CIRCLETS)
-				if (_formerOwner != null)
-					CastleManager.getInstance().removeCirclet(_formerOwner, _castleId);
-		}
+		else if (Config.REMOVE_CASTLE_CIRCLETS && _formerOwner != null)
+			removeCirclet(_formerOwner);
 	}
 	
 	/**
@@ -363,18 +376,20 @@ public class Castle
 	 * @param activeChar Sends informative messages to that character (success or fail).
 	 * @param taxPercent The new tax rate to apply.
 	 */
-	public void setTaxPercent(L2PcInstance activeChar, int taxPercent)
+	public void setTaxPercent(Player activeChar, int taxPercent)
 	{
 		int maxTax;
-		switch (SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_STRIFE))
+		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
 		{
-			case SevenSigns.CABAL_DAWN:
+			case DAWN:
 				maxTax = 25;
 				break;
-			case SevenSigns.CABAL_DUSK:
+			
+			case DUSK:
 				maxTax = 5;
 				break;
-			default: // no owner
+			
+			default:
 				maxTax = 15;
 		}
 		
@@ -415,7 +430,7 @@ public class Castle
 	 */
 	public void spawnDoors(boolean isDoorWeak)
 	{
-		for (L2DoorInstance door : _doors)
+		for (Door door : _doors)
 		{
 			if (door.isDead())
 				door.doRevive();
@@ -431,7 +446,7 @@ public class Castle
 	 */
 	public void closeDoors()
 	{
-		for (L2DoorInstance door : _doors)
+		for (Door door : _doors)
 			door.closeMe();
 	}
 	
@@ -443,7 +458,7 @@ public class Castle
 	 */
 	public void upgradeDoor(int doorId, int hp, boolean db)
 	{
-		L2DoorInstance door = getDoor(doorId);
+		Door door = getDoor(doorId);
 		if (door == null)
 			return;
 		
@@ -497,7 +512,7 @@ public class Castle
 	 */
 	public void removeDoorUpgrade()
 	{
-		for (L2DoorInstance door : _doors)
+		for (Door door : _doors)
 			door.getStat().setUpgradeHpRatio(1);
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -513,14 +528,14 @@ public class Castle
 		}
 	}
 	
-	private void updateOwnerInDB(L2Clan clan)
+	private void updateOwnerInDB(Clan clan)
 	{
 		if (clan != null)
 			_ownerId = clan.getClanId(); // Update owner id property
 		else
 		{
 			_ownerId = 0; // Remove owner
-			resetManor();
+			CastleManorManager.getInstance().resetManorData(_castleId);
 		}
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -540,8 +555,7 @@ public class Castle
 			if (clan != null)
 			{
 				clan.setCastle(_castleId); // Set castle flag for new owner
-				clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan), new PlaySound(1, "Siege_Victory", 0, 0, 0, 0, 0));
-				ThreadPool.schedule(new CastleUpdater(clan, 1), 3600000); // Schedule owner tasks to start running
+				clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan), new PlaySound(1, "Siege_Victory"));
 			}
 		}
 		catch (Exception e)
@@ -555,14 +569,9 @@ public class Castle
 		return _castleId;
 	}
 	
-	public void setCastleId(int id)
+	public Door getDoor(int doorId)
 	{
-		_castleId = id;
-	}
-	
-	public L2DoorInstance getDoor(int doorId)
-	{
-		for (L2DoorInstance door : _doors)
+		for (Door door : _doors)
 		{
 			if (door.getDoorId() == doorId)
 				return door;
@@ -570,9 +579,160 @@ public class Castle
 		return null;
 	}
 	
-	public List<L2DoorInstance> getDoors()
+	public List<Door> getDoors()
 	{
 		return _doors;
+	}
+	
+	public List<MercenaryTicket> getTickets()
+	{
+		return _tickets;
+	}
+	
+	public MercenaryTicket getTicket(int itemId)
+	{
+		return _tickets.stream().filter(t -> t.getItemId() == itemId).findFirst().orElse(null);
+	}
+	
+	public Set<ItemInstance> getDroppedTickets()
+	{
+		return _droppedTickets;
+	}
+	
+	public void addDroppedTicket(ItemInstance item)
+	{
+		_droppedTickets.add(item);
+	}
+	
+	public void removeDroppedTicket(ItemInstance item)
+	{
+		_droppedTickets.remove(item);
+	}
+	
+	public int getDroppedTicketsCount(int itemId)
+	{
+		return (int) _droppedTickets.stream().filter(t -> t.getItemId() == itemId).count();
+	}
+	
+	public boolean isTooCloseFromDroppedTicket(int x, int y, int z)
+	{
+		for (ItemInstance item : _droppedTickets)
+		{
+			double dx = x - item.getX();
+			double dy = y - item.getY();
+			double dz = z - item.getZ();
+			
+			if ((dx * dx + dy * dy + dz * dz) < 25 * 25)
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * That method is used to spawn NPCs, being neutral guards or player-based mercenaries.
+	 * <ul>
+	 * <li>If castle got an owner, it spawns mercenaries following tickets. Otherwise it uses SpawnManager territory.</li>
+	 * <li>It feeds the nearest Control Tower with the spawn. If tower is broken, associated spawns are removed.</li>
+	 * </ul>
+	 */
+	public void spawnSiegeGuardsOrMercenaries()
+	{
+		if (_ownerId > 0)
+		{
+			for (ItemInstance item : _droppedTickets)
+			{
+				// Retrieve MercenaryTicket information.
+				final MercenaryTicket ticket = getTicket(item.getItemId());
+				if (ticket == null)
+					continue;
+				
+				// Generate templates, feed them with ticket information.
+				final NpcTemplate template = NpcTable.getInstance().getTemplate(ticket.getNpcId());
+				if (template == null)
+					continue;
+				
+				try
+				{
+					final L2Spawn spawn = new L2Spawn(template);
+					spawn.setLoc(item.getPosition());
+					spawn.setRespawnState(false);
+					
+					_siegeGuards.add(spawn.doSpawn(false));
+				}
+				catch (Exception e)
+				{
+					_log.warning("Could not spawn Npc " + ticket.getNpcId());
+				}
+				
+				// Delete the ticket item.
+				item.decayMe();
+			}
+			
+			_droppedTickets.clear();
+		}
+		else
+		{
+			// TODO Territory based spawn
+		}
+	}
+	
+	/**
+	 * Despawn neutral guards or player-based mercenaries.
+	 */
+	public void despawnSiegeGuardsOrMercenaries()
+	{
+		if (_ownerId > 0)
+		{
+			for (Npc npc : _siegeGuards)
+				npc.doDie(npc);
+			
+			_siegeGuards.clear();
+		}
+		else
+		{
+			// TODO territory based despawn
+		}
+	}
+	
+	public List<TowerSpawnLocation> getControlTowers()
+	{
+		return _controlTowers;
+	}
+	
+	public List<TowerSpawnLocation> getFlameTowers()
+	{
+		return _flameTowers;
+	}
+	
+	public void loadTrapUpgrade()
+	{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_trapupgrade WHERE castleId=?");
+			statement.setInt(1, _castleId);
+			ResultSet rs = statement.executeQuery();
+			
+			while (rs.next())
+				_flameTowers.get(rs.getInt("towerIndex")).setUpgradeLevel(rs.getInt("level"));
+			
+			rs.close();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.warning("Exception: loadTrapUpgrade(): " + e);
+		}
+	}
+	
+	public List<Integer> getRelatedNpcIds()
+	{
+		return _relatedNpcIds;
+	}
+	
+	public void setRelatedNpcIds(String idsToSplit)
+	{
+		for (String splittedId : idsToSplit.split(";"))
+			_relatedNpcIds.add(Integer.parseInt(splittedId));
 	}
 	
 	public String getName()
@@ -580,9 +740,14 @@ public class Castle
 		return _name;
 	}
 	
-	public void setName(String name)
+	public int getCircletId()
 	{
-		_name = name;
+		return _circletId;
+	}
+	
+	public void setCircletId(int circletId)
+	{
+		_circletId = circletId;
 	}
 	
 	public int getOwnerId()
@@ -597,10 +762,12 @@ public class Castle
 	
 	public Siege getSiege()
 	{
-		if (_siege == null)
-			_siege = new Siege(this);
-		
 		return _siege;
+	}
+	
+	public void setSiege(Siege siege)
+	{
+		_siege = siege;
 	}
 	
 	public Calendar getSiegeDate()
@@ -623,16 +790,6 @@ public class Castle
 		_isTimeRegistrationOver = val;
 	}
 	
-	public Calendar getSiegeRegistrationEndDate()
-	{
-		return _siegeRegistrationEndDate;
-	}
-	
-	public void setSiegeRegistrationEndDate(Calendar siegeRegistrationEndDate)
-	{
-		_siegeRegistrationEndDate = siegeRegistrationEndDate;
-	}
-	
 	public int getTaxPercent()
 	{
 		return _taxPercent;
@@ -653,427 +810,67 @@ public class Castle
 		_treasury = treasury;
 	}
 	
-	public List<SeedProduction> getSeedProduction(int period)
-	{
-		return (period == CastleManorManager.PERIOD_CURRENT ? _production : _productionNext);
-	}
-	
-	public List<CropProcure> getCropProcure(int period)
-	{
-		return (period == CastleManorManager.PERIOD_CURRENT ? _procure : _procureNext);
-	}
-	
-	public void setSeedProduction(List<SeedProduction> seed, int period)
-	{
-		if (period == CastleManorManager.PERIOD_CURRENT)
-			_production = seed;
-		else
-			_productionNext = seed;
-	}
-	
-	public void setCropProcure(List<CropProcure> crop, int period)
-	{
-		if (period == CastleManorManager.PERIOD_CURRENT)
-			_procure = crop;
-		else
-			_procureNext = crop;
-	}
-	
-	public SeedProduction getSeed(int seedId, int period)
-	{
-		for (SeedProduction seed : getSeedProduction(period))
-		{
-			if (seed.getId() == seedId)
-				return seed;
-		}
-		return null;
-	}
-	
-	public CropProcure getCrop(int cropId, int period)
-	{
-		for (CropProcure crop : getCropProcure(period))
-		{
-			if (crop.getId() == cropId)
-				return crop;
-		}
-		return null;
-	}
-	
-	public long getManorCost(int period)
-	{
-		List<CropProcure> procure;
-		List<SeedProduction> production;
-		
-		if (period == CastleManorManager.PERIOD_CURRENT)
-		{
-			procure = _procure;
-			production = _production;
-		}
-		else
-		{
-			procure = _procureNext;
-			production = _productionNext;
-		}
-		
-		long total = 0;
-		if (production != null)
-		{
-			for (SeedProduction seed : production)
-				total += L2Manor.getInstance().getSeedBuyPrice(seed.getId()) * seed.getStartProduce();
-		}
-		
-		if (procure != null)
-		{
-			for (CropProcure crop : procure)
-				total += crop.getPrice() * crop.getStartAmount();
-		}
-		return total;
-	}
-	
 	/**
-	 * Save manor production data.
+	 * Update clan reputation points over siege end, as following :
+	 * <ul>
+	 * <li>The former clan failed to defend the castle : 1000 points for new owner, -1000 for former clan.</li>
+	 * <li>The former clan successfully defended the castle, ending in a draw : 500 points for former clan.</li>
+	 * <li>No former clan, which means players successfully attacked over NPCs : 1000 points for new owner.</li>
+	 * </ul>
 	 */
-	public void saveSeedData()
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PRODUCTION);
-			statement.setInt(1, getCastleId());
-			statement.execute();
-			statement.close();
-			
-			if (_production != null)
-			{
-				int count = 0;
-				String query = "INSERT INTO castle_manor_production VALUES ";
-				String values[] = new String[_production.size()];
-				for (SeedProduction s : _production)
-					values[count++] = "(" + getCastleId() + "," + s.getId() + "," + s.getCanProduce() + "," + s.getStartProduce() + "," + s.getPrice() + "," + CastleManorManager.PERIOD_CURRENT + ")";
-				
-				if (values.length > 0)
-				{
-					query += values[0];
-					for (int i = 1; i < values.length; i++)
-						query += "," + values[i];
-					
-					statement = con.prepareStatement(query);
-					statement.execute();
-					statement.close();
-				}
-			}
-			
-			if (_productionNext != null)
-			{
-				int count = 0;
-				String query = "INSERT INTO castle_manor_production VALUES ";
-				String values[] = new String[_productionNext.size()];
-				for (SeedProduction s : _productionNext)
-					values[count++] = "(" + getCastleId() + "," + s.getId() + "," + s.getCanProduce() + "," + s.getStartProduce() + "," + s.getPrice() + "," + CastleManorManager.PERIOD_NEXT + ")";
-				
-				if (values.length > 0)
-				{
-					query += values[0];
-					for (int i = 1; i < values.length; i++)
-						query += "," + values[i];
-					
-					statement = con.prepareStatement(query);
-					statement.execute();
-					statement.close();
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			_log.info("Error adding seed production data for castle " + getName() + ": " + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Save manor production data for specified period.
-	 * @param period The period number.
-	 */
-	public void saveSeedData(int period)
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PRODUCTION_PERIOD);
-			statement.setInt(1, getCastleId());
-			statement.setInt(2, period);
-			statement.execute();
-			statement.close();
-			
-			List<SeedProduction> prod = getSeedProduction(period);
-			if (prod != null)
-			{
-				int count = 0;
-				String query = "INSERT INTO castle_manor_production VALUES ";
-				String values[] = new String[prod.size()];
-				for (SeedProduction s : prod)
-					values[count++] = "(" + getCastleId() + "," + s.getId() + "," + s.getCanProduce() + "," + s.getStartProduce() + "," + s.getPrice() + "," + period + ")";
-				
-				if (values.length > 0)
-				{
-					query += values[0];
-					for (int i = 1; i < values.length; i++)
-						query += "," + values[i];
-					
-					statement = con.prepareStatement(query);
-					statement.execute();
-					statement.close();
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			_log.info("Error adding seed production data for castle " + getName() + ": " + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Save crop procure data.
-	 */
-	public void saveCropData()
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PROCURE);
-			statement.setInt(1, getCastleId());
-			statement.execute();
-			statement.close();
-			
-			if (_procure != null)
-			{
-				int count = 0;
-				String query = "INSERT INTO castle_manor_procure VALUES ";
-				String values[] = new String[_procure.size()];
-				for (CropProcure cp : _procure)
-					values[count++] = "(" + getCastleId() + "," + cp.getId() + "," + cp.getAmount() + "," + cp.getStartAmount() + "," + cp.getPrice() + "," + cp.getReward() + "," + CastleManorManager.PERIOD_CURRENT + ")";
-				
-				if (values.length > 0)
-				{
-					query += values[0];
-					for (int i = 1; i < values.length; i++)
-						query += "," + values[i];
-					
-					statement = con.prepareStatement(query);
-					statement.execute();
-					statement.close();
-				}
-			}
-			
-			if (_procureNext != null)
-			{
-				int count = 0;
-				String query = "INSERT INTO castle_manor_procure VALUES ";
-				String values[] = new String[_procureNext.size()];
-				for (CropProcure cp : _procureNext)
-					values[count++] = "(" + getCastleId() + "," + cp.getId() + "," + cp.getAmount() + "," + cp.getStartAmount() + "," + cp.getPrice() + "," + cp.getReward() + "," + CastleManorManager.PERIOD_NEXT + ")";
-				
-				if (values.length > 0)
-				{
-					query += values[0];
-					for (int i = 1; i < values.length; i++)
-						query += "," + values[i];
-					
-					statement = con.prepareStatement(query);
-					statement.execute();
-					statement.close();
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			_log.info("Error adding crop data for castle " + getName() + ": " + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Save crop procure data for specified period.
-	 * @param period The period number.
-	 */
-	public void saveCropData(int period)
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PROCURE_PERIOD);
-			statement.setInt(1, getCastleId());
-			statement.setInt(2, period);
-			statement.execute();
-			statement.close();
-			
-			List<CropProcure> proc = getCropProcure(period);
-			if (proc != null)
-			{
-				int count = 0;
-				String query = "INSERT INTO castle_manor_procure VALUES ";
-				String values[] = new String[proc.size()];
-				
-				for (CropProcure cp : proc)
-					values[count++] = "(" + getCastleId() + "," + cp.getId() + "," + cp.getAmount() + "," + cp.getStartAmount() + "," + cp.getPrice() + "," + cp.getReward() + "," + period + ")";
-				
-				if (values.length > 0)
-				{
-					query += values[0];
-					for (int i = 1; i < values.length; i++)
-						query += "," + values[i];
-					
-					statement = con.prepareStatement(query);
-					statement.execute();
-					statement.close();
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			_log.info("Error adding crop data for castle " + getName() + ": " + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Update crop informations.
-	 * @param cropId
-	 * @param amount
-	 * @param period
-	 */
-	public void updateCrop(int cropId, int amount, int period)
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement(CASTLE_UPDATE_CROP);
-			statement.setInt(1, amount);
-			statement.setInt(2, cropId);
-			statement.setInt(3, getCastleId());
-			statement.setInt(4, period);
-			statement.execute();
-			statement.close();
-		}
-		catch (Exception e)
-		{
-			_log.info("Error adding crop data for castle " + getName() + ": " + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Update seeds informations.
-	 * @param seedId
-	 * @param amount
-	 * @param period
-	 */
-	public void updateSeed(int seedId, int amount, int period)
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement(CASTLE_UPDATE_SEED);
-			statement.setInt(1, amount);
-			statement.setInt(2, seedId);
-			statement.setInt(3, getCastleId());
-			statement.setInt(4, period);
-			statement.execute();
-			statement.close();
-		}
-		catch (Exception e)
-		{
-			_log.info("Error adding seed production data for castle " + getName() + ": " + e.getMessage());
-		}
-	}
-	
-	public boolean isNextPeriodApproved()
-	{
-		return _isNextPeriodApproved;
-	}
-	
-	public void setNextPeriodApproved(boolean val)
-	{
-		_isNextPeriodApproved = val;
-	}
-	
 	public void updateClansReputation()
 	{
-		SystemMessage msg;
-		
+		final Clan owner = ClanTable.getInstance().getClan(getOwnerId());
 		if (_formerOwner != null)
 		{
-			if (_formerOwner != ClanTable.getInstance().getClan(getOwnerId()))
+			// Defenders fail
+			if (_formerOwner != owner)
 			{
-				int maxreward = Math.max(0, _formerOwner.getReputationScore());
 				_formerOwner.takeReputationScore(1000);
+				_formerOwner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_WAS_DEFEATED_IN_SIEGE_AND_LOST_S1_REPUTATION_POINTS).addNumber(1000));
 				
-				// Defenders fail
-				msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_WAS_DEFEATED_IN_SIEGE_AND_LOST_S1_REPUTATION_POINTS);
-				msg.addNumber(1000);
-				_formerOwner.broadcastToOnlineMembers(msg);
-				
-				L2Clan owner = ClanTable.getInstance().getClan(getOwnerId());
+				// Attackers succeed over defenders
 				if (owner != null)
 				{
-					owner.addReputationScore(Math.min(1000, maxreward));
-					
-					// Attackers succeed over defenders
-					msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS);
-					msg.addNumber(1000);
-					owner.broadcastToOnlineMembers(msg);
+					owner.addReputationScore(1000);
+					owner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS).addNumber(1000));
 				}
 			}
+			// Draw
 			else
 			{
 				_formerOwner.addReputationScore(500);
-				
-				// Draw
-				msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS);
-				msg.addNumber(500);
-				_formerOwner.broadcastToOnlineMembers(msg);
+				_formerOwner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS).addNumber(500));
 			}
 		}
-		else
+		// Attackers win over NPCs
+		else if (owner != null)
 		{
-			L2Clan owner = ClanTable.getInstance().getClan(getOwnerId());
-			if (owner != null)
-			{
-				owner.addReputationScore(1000);
-				
-				// Attackers win over NPCs
-				msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS);
-				msg.addNumber(1000);
-				owner.broadcastToOnlineMembers(msg);
-			}
+			owner.addReputationScore(1000);
+			owner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS).addNumber(1000));
 		}
 	}
 	
-	/**
-	 * Register an artefact instance.
-	 * @param artefact The instance to register in _artefacts List.
-	 */
-	public void registerArtefact(L2ArtefactInstance artefact)
+	public List<Integer> getArtifacts()
 	{
-		_artefacts.add(artefact);
+		return _artifacts;
 	}
 	
-	/**
-	 * @return the artefacts List.
-	 */
-	public List<L2ArtefactInstance> getArtefacts()
+	public void setArtifacts(String idsToSplit)
 	{
-		return _artefacts;
+		for (String idToSplit : idsToSplit.split(";"))
+			_artifacts.add(Integer.parseInt(idToSplit));
 	}
 	
-	public void resetManor()
+	public boolean isGoodArtifact(WorldObject object)
 	{
-		setCropProcure(new ArrayList<CropProcure>(), CastleManorManager.PERIOD_CURRENT);
-		setCropProcure(new ArrayList<CropProcure>(), CastleManorManager.PERIOD_NEXT);
-		setSeedProduction(new ArrayList<SeedProduction>(), CastleManorManager.PERIOD_CURRENT);
-		setSeedProduction(new ArrayList<SeedProduction>(), CastleManorManager.PERIOD_NEXT);
-		
-		if (Config.ALT_MANOR_SAVE_ALL_ACTIONS)
-		{
-			saveCropData();
-			saveSeedData();
-		}
+		return object instanceof HolyThing && _artifacts.contains(((HolyThing) object).getNpcId());
 	}
 	
 	/**
 	 * @return the initial castle owner. Used to clean crowns && others castles related functions.
 	 */
-	public L2Clan getInitialCastleOwner()
+	public Clan getInitialCastleOwner()
 	{
 		return _formerOwner;
 	}
@@ -1084,7 +881,7 @@ public class Castle
 	 */
 	public int getTrapUpgradeLevel(int towerIndex)
 	{
-		final TowerSpawn spawn = SiegeManager.getInstance().getFlameTowers(_castleId).get(towerIndex);
+		final TowerSpawnLocation spawn = _flameTowers.get(towerIndex);
 		return (spawn != null) ? spawn.getUpgradeLevel() : 0;
 	}
 	
@@ -1113,7 +910,7 @@ public class Castle
 			}
 		}
 		
-		final TowerSpawn spawn = SiegeManager.getInstance().getFlameTowers(_castleId).get(towerIndex);
+		final TowerSpawnLocation spawn = _flameTowers.get(towerIndex);
 		if (spawn != null)
 			spawn.setUpgradeLevel(level);
 	}
@@ -1123,7 +920,7 @@ public class Castle
 	 */
 	public void removeTrapUpgrade()
 	{
-		for (TowerSpawn ts : SiegeManager.getInstance().getFlameTowers(_castleId))
+		for (TowerSpawnLocation ts : _flameTowers)
 			ts.setUpgradeLevel(0);
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -1136,6 +933,55 @@ public class Castle
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, "Exception: removeTrapUpgrade(): " + e.getMessage(), e);
+		}
+	}
+	
+	public void removeCirclet(Clan clan)
+	{
+		Arrays.stream(clan.getMembers()).forEach(m -> removeCircletsAndCrown(m));
+	}
+	
+	public void removeCircletsAndCrown(ClanMember member)
+	{
+		if (member == null)
+			return;
+		
+		final Player player = member.getPlayerInstance();
+		
+		if (player != null)
+		{
+			final ItemInstance circlet = player.getInventory().getItemByItemId(_circletId);
+			if (circlet != null)
+			{
+				if (circlet.isEquipped())
+					player.getInventory().unEquipItemInSlot(circlet.getLocationSlot());
+				
+				player.destroyItemByItemId("CastleCircletRemoval", _circletId, 1, player, true);
+			}
+			
+			if (player.isClanLeader())
+			{
+				final ItemInstance crown = player.getInventory().getItemByItemId(6841);
+				if (crown != null)
+				{
+					if (crown.isEquipped())
+						player.getInventory().unEquipItemInSlot(crown.getLocationSlot());
+					
+					player.destroyItemByItemId("CastleCrownRemoval", 6841, 1, player, true);
+				}
+			}
+			return;
+		}
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("DELETE FROM items WHERE owner_id = ? AND item_id IN (?, 6841)"))
+		{
+			ps.setInt(1, member.getObjectId());
+			ps.setInt(2, _circletId);
+			ps.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "Failed to remove castle circlets && crowns for offline player " + member.getName() + ": " + e.getMessage(), e);
 		}
 	}
 }

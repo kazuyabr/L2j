@@ -1,28 +1,14 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.Chest;
+import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.skills.L2SkillType;
@@ -36,13 +22,13 @@ public class Unlock implements ISkillHandler
 	};
 	
 	@Override
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets)
 	{
-		final L2Object object = targets[0];
+		final WorldObject object = targets[0];
 		
-		if (object instanceof L2DoorInstance)
+		if (object instanceof Door)
 		{
-			final L2DoorInstance door = (L2DoorInstance) object;
+			final Door door = (Door) object;
 			if (!door.isUnlockable() && skill.getSkillType() != L2SkillType.UNLOCK_SPECIAL)
 			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.UNABLE_TO_UNLOCK_DOOR));
@@ -54,9 +40,9 @@ public class Unlock implements ISkillHandler
 			else
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_UNLOCK_DOOR));
 		}
-		else if (object instanceof L2ChestInstance)
+		else if (object instanceof Chest)
 		{
-			final L2ChestInstance chest = (L2ChestInstance) object;
+			final Chest chest = (Chest) object;
 			if (chest.isDead() || chest.isInteracted())
 				return;
 			
@@ -96,7 +82,7 @@ public class Unlock implements ISkillHandler
 		}
 	}
 	
-	private static final boolean chestUnlock(L2Skill skill, L2Character chest)
+	private static final boolean chestUnlock(L2Skill skill, Creature chest)
 	{
 		int chance = 0;
 		if (chest.getLevel() > 60)

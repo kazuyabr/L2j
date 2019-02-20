@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.taskmanager;
 
 import java.util.Iterator;
@@ -22,12 +8,12 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.ai.CtrlEvent;
-import net.sf.l2j.gameserver.ai.model.L2CharacterAI;
-import net.sf.l2j.gameserver.model.actor.L2Character;
+import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
+import net.sf.l2j.gameserver.model.actor.ai.type.CreatureAI;
 
 /**
- * Updates position of moving {@link L2Character} periodically. Task created as separate Thread with MAX_PRIORITY.
+ * Updates position of moving {@link Creature} periodically. Task created as separate Thread with MAX_PRIORITY.
  * @author Forsaiken, Hasha
  */
 public final class MovementTaskManager extends Thread
@@ -37,7 +23,7 @@ public final class MovementTaskManager extends Thread
 	// Update the position of all moving characters each MILLIS_PER_UPDATE.
 	private static final int MILLIS_PER_UPDATE = 100;
 	
-	private final Map<Integer, L2Character> _characters = new ConcurrentHashMap<>();
+	private final Map<Integer, Creature> _characters = new ConcurrentHashMap<>();
 	
 	public static final MovementTaskManager getInstance()
 	{
@@ -53,10 +39,10 @@ public final class MovementTaskManager extends Thread
 	}
 	
 	/**
-	 * Add a {@link L2Character} to MovementTask in order to update its location every MILLIS_PER_UPDATE ms.
-	 * @param cha The L2Character to add to movingObjects of GameTimeController
+	 * Add a {@link Creature} to MovementTask in order to update its location every MILLIS_PER_UPDATE ms.
+	 * @param cha The Creature to add to movingObjects of GameTimeController
 	 */
-	public final void add(final L2Character cha)
+	public final void add(final Creature cha)
 	{
 		_characters.putIfAbsent(cha.getObjectId(), cha);
 	}
@@ -76,13 +62,13 @@ public final class MovementTaskManager extends Thread
 			try
 			{
 				// For all moving characters.
-				for (Iterator<Map.Entry<Integer, L2Character>> iterator = _characters.entrySet().iterator(); iterator.hasNext();)
+				for (Iterator<Map.Entry<Integer, Creature>> iterator = _characters.entrySet().iterator(); iterator.hasNext();)
 				{
 					// Get entry of current iteration.
-					Map.Entry<Integer, L2Character> entry = iterator.next();
+					Map.Entry<Integer, Creature> entry = iterator.next();
 					
 					// Get character.
-					L2Character character = entry.getValue();
+					Creature character = entry.getValue();
 					
 					// Update character position, final position isn't reached yet.
 					if (!character.updatePosition())
@@ -92,7 +78,7 @@ public final class MovementTaskManager extends Thread
 					iterator.remove();
 					
 					// Get character AI, if AI doesn't exist, skip.
-					final L2CharacterAI ai = character.getAI();
+					final CreatureAI ai = character.getAI();
 					if (ai == null)
 						continue;
 					

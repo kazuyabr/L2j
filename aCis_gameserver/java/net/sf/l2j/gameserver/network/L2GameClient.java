@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.network;
 
 import java.net.InetAddress;
@@ -35,17 +21,15 @@ import net.sf.l2j.commons.mmocore.ReceivablePacket;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.LoginServerThread;
-import net.sf.l2j.gameserver.LoginServerThread.SessionKey;
-import net.sf.l2j.gameserver.datatables.CharNameTable;
-import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.data.PlayerNameTable;
+import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.model.CharSelectInfoPackage;
-import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.network.serverpackets.ServerClose;
-import net.sf.l2j.gameserver.util.FloodProtectors;
 
 /**
  * Represents a client connected on Game Server
@@ -67,7 +51,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	// Info
 	private String _accountName;
 	private SessionKey _sessionId;
-	private L2PcInstance _activeChar;
+	private Player _activeChar;
 	private final ReentrantLock _activeCharLock = new ReentrantLock();
 	
 	@SuppressWarnings("unused")
@@ -148,12 +132,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		return true;
 	}
 	
-	public L2PcInstance getActiveChar()
+	public Player getActiveChar()
 	{
 		return _activeChar;
 	}
 	
-	public void setActiveChar(L2PcInstance pActiveChar)
+	public void setActiveChar(Player pActiveChar)
 	{
 		_activeChar = pActiveChar;
 	}
@@ -215,7 +199,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	/**
 	 * Method to handle character deletion
 	 * @param charslot The slot to check.
-	 * @return a byte: <li>-1: Error: No char was found for such charslot, caught exception, etc... <li>0: character is not member of any clan, proceed with deletion <li>1: character is member of a clan, but not clan leader <li>2: character is clan leader
+	 * @return a byte:
+	 *         <li>-1: Error: No char was found for such charslot, caught exception, etc...
+	 *         <li>0: character is not member of any clan, proceed with deletion
+	 *         <li>1: character is member of a clan, but not clan leader
+	 *         <li>2: character is clan leader
 	 */
 	public byte markToDeleteChar(int charslot)
 	{
@@ -236,7 +224,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			byte answer = 0;
 			if (clanId != 0)
 			{
-				L2Clan clan = ClanTable.getInstance().getClan(clanId);
+				Clan clan = ClanTable.getInstance().getClan(clanId);
 				
 				if (clan == null)
 					answer = 0; // jeezes!
@@ -297,7 +285,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		if (objid < 0)
 			return;
 		
-		CharNameTable.getInstance().removePlayer(objid);
+		PlayerNameTable.getInstance().removePlayer(objid);
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -395,37 +383,39 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		}
 	}
 	
-	public L2PcInstance loadCharFromDisk(int charslot)
+	public Player loadCharFromDisk(int slot)
 	{
-		final int objId = getObjectIdForSlot(charslot);
-		if (objId < 0)
+		final int objectId = getObjectIdForSlot(slot);
+		if (objectId < 0)
 			return null;
 		
-		L2PcInstance character = L2World.getInstance().getPlayer(objId);
-		if (character != null)
+		Player player = World.getInstance().getPlayer(objectId);
+		if (player != null)
 		{
 			// exploit prevention, should not happens in normal way
-			_log.severe("Attempt of double login: " + character.getName() + "(" + objId + ") " + getAccountName());
-			if (character.getClient() != null)
-				character.getClient().closeNow();
+			_log.severe("Attempt of double login: " + player.getName() + "(" + objectId + ") " + getAccountName());
+			
+			if (player.getClient() != null)
+				player.getClient().closeNow();
 			else
-				character.deleteMe();
+				player.deleteMe();
 			
 			return null;
 		}
 		
-		character = L2PcInstance.restore(objId);
-		if (character != null)
+		player = Player.restore(objectId);
+		if (player != null)
 		{
-			character.setRunning(); // running is default
-			character.standUp(); // standing is default
+			player.setRunning(); // running is default
+			player.standUp(); // standing is default
 			
-			character.setOnlineStatus(true, false);
+			player.setOnlineStatus(true, false);
+			World.getInstance().addPlayer(player);
 		}
 		else
-			_log.severe("L2GameClient: could not restore in slot: " + charslot);
+			_log.severe("L2GameClient: could not restore in slot: " + slot);
 		
-		return character;
+		return player;
 	}
 	
 	/**

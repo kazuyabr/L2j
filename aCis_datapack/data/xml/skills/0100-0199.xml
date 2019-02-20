@@ -259,21 +259,21 @@
 			<effect name="ImobileBuff" time="30" val="0" stackOrder="#stackOrder" stackType="pd_up_special">
 				<add order="0x40" stat="pDef" val="#pDef"/>
 				<add order="0x40" stat="mDef" val="#mDef"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</for>
 		<enchant1for>
 			<effect name="ImobileBuff" time="#ench1time" val="0" stackOrder="#enchstackOrder" stackType="pd_up_special">
 				<add order="0x40" stat="pDef" val="#ench1pDef"/>
 				<add order="0x40" stat="mDef" val="#ench1mDef"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</enchant1for>
 		<enchant2for>
 			<effect name="ImobileBuff" time="30" val="0" stackOrder="#enchstackOrder" stackType="pd_up_special">
 				<add order="0x40" stat="pDef" val="#ench1pDef"/>
 				<add order="0x40" stat="mDef" val="#ench1mDef"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</enchant2for>
 	</skill>
@@ -298,13 +298,13 @@
 		<for>
 			<effect name="Buff" time="30" val="0" stackOrder="#stackOrder" stackType="avoid_up_special">
 				<add order="0x40" stat="rEvas" val="#rEvas"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</for>
 		<enchant1for>
 			<effect name="Buff" time="#ench1time" val="0" stackOrder="2" stackType="avoid_up_special">
 				<add order="0x40" stat="rEvas" val="25"/>
-				<sub order="0x40" stat="cancelVuln" val="80" />
+				<addMul order="0x40" stat="cancelVuln" val="80" />
 			</effect>
 		</enchant1for>
 	</skill>
@@ -647,9 +647,9 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<for>
-			<sub order="0x40" stat="rootVuln" val="20" />
-			<sub order="0x40" stat="sleepVuln" val="20" />
-			<sub order="0x40" stat="poisonVuln" val="20" />
+			<addMul order="0x40" stat="rootVuln" val="20" />
+			<addMul order="0x40" stat="sleepVuln" val="20" />
+			<addMul order="0x40" stat="poisonVuln" val="20" />
 		</for>
 	</skill>
 	<skill id="137" levels="3" name="Critical Chance">
@@ -986,7 +986,7 @@
 		<set name="operateType" val="OP_TOGGLE"/>
 		<for>
 			<effect count="0x7fffffff" name="ManaDamOverTime" time="3" val="0">
-				<add order="0x40" stat="darkRes" val="#darkRes" />
+				<addMul order="0x40" stat="darkRes" val="#darkRes" />
 			</effect>
 		</for>
 	</skill>

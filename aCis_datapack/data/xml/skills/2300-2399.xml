@@ -48,7 +48,7 @@
 		<set name="target" val="TARGET_SELF" />
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="1" stackType="potion_of_genesis">
-				<sub order="0x40" stat="stunVuln" val="15" />
+				<addMul order="0x40" stat="stunVuln" val="15" />
 			</effect>
 		</for>
 	</skill>

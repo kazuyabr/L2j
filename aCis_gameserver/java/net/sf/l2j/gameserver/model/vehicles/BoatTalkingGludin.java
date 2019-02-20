@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.vehicles;
 
 import java.util.logging.Level;
@@ -20,9 +6,9 @@ import java.util.logging.Logger;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.gameserver.instancemanager.BoatManager;
-import net.sf.l2j.gameserver.model.Location;
-import net.sf.l2j.gameserver.model.VehiclePathPoint;
-import net.sf.l2j.gameserver.model.actor.L2Vehicle;
+import net.sf.l2j.gameserver.model.actor.Vehicle;
+import net.sf.l2j.gameserver.model.location.Location;
+import net.sf.l2j.gameserver.model.location.VehicleLocation;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.clientpackets.Say2;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
@@ -36,45 +22,45 @@ public class BoatTalkingGludin implements Runnable
 	private static final Location OUST_LOC_2 = new Location(-90015, 150422, -3610);
 	
 	// Time: 919s
-	private static final VehiclePathPoint[] TALKING_TO_GLUDIN =
+	private static final VehicleLocation[] TALKING_TO_GLUDIN =
 	{
-		new VehiclePathPoint(-121385, 261660, -3610, 180, 800),
-		new VehiclePathPoint(-127694, 253312, -3610, 200, 800),
-		new VehiclePathPoint(-129274, 237060, -3610, 250, 800),
-		new VehiclePathPoint(-114688, 139040, -3610, 200, 800),
-		new VehiclePathPoint(-109663, 135704, -3610, 180, 800),
-		new VehiclePathPoint(-102151, 135704, -3610, 180, 800),
-		new VehiclePathPoint(-96686, 140595, -3610, 180, 800),
-		new VehiclePathPoint(-95686, 147718, -3610, 180, 800),
-		new VehiclePathPoint(-95686, 148718, -3610, 180, 800),
-		new VehiclePathPoint(-95686, 149718, -3610, 150, 800)
+		new VehicleLocation(-121385, 261660, -3610, 180, 800),
+		new VehicleLocation(-127694, 253312, -3610, 200, 800),
+		new VehicleLocation(-129274, 237060, -3610, 250, 800),
+		new VehicleLocation(-114688, 139040, -3610, 200, 800),
+		new VehicleLocation(-109663, 135704, -3610, 180, 800),
+		new VehicleLocation(-102151, 135704, -3610, 180, 800),
+		new VehicleLocation(-96686, 140595, -3610, 180, 800),
+		new VehicleLocation(-95686, 147718, -3610, 180, 800),
+		new VehicleLocation(-95686, 148718, -3610, 180, 800),
+		new VehicleLocation(-95686, 149718, -3610, 150, 800)
 	};
 	
-	private static final VehiclePathPoint[] GLUDIN_DOCK =
+	private static final VehicleLocation[] GLUDIN_DOCK =
 	{
-		new VehiclePathPoint(-95686, 150514, -3610, 150, 800)
+		new VehicleLocation(-95686, 150514, -3610, 150, 800)
 	};
 	
 	// Time: 780s
-	private static final VehiclePathPoint[] GLUDIN_TO_TALKING =
+	private static final VehicleLocation[] GLUDIN_TO_TALKING =
 	{
-		new VehiclePathPoint(-95686, 155514, -3610, 180, 800),
-		new VehiclePathPoint(-95686, 185514, -3610, 250, 800),
-		new VehiclePathPoint(-60136, 238816, -3610, 200, 800),
-		new VehiclePathPoint(-60520, 259609, -3610, 180, 1800),
-		new VehiclePathPoint(-65344, 261460, -3610, 180, 1800),
-		new VehiclePathPoint(-83344, 261560, -3610, 180, 1800),
-		new VehiclePathPoint(-88344, 261660, -3610, 180, 1800),
-		new VehiclePathPoint(-92344, 261660, -3610, 150, 1800),
-		new VehiclePathPoint(-94242, 261659, -3610, 150, 1800)
+		new VehicleLocation(-95686, 155514, -3610, 180, 800),
+		new VehicleLocation(-95686, 185514, -3610, 250, 800),
+		new VehicleLocation(-60136, 238816, -3610, 200, 800),
+		new VehicleLocation(-60520, 259609, -3610, 180, 1800),
+		new VehicleLocation(-65344, 261460, -3610, 180, 1800),
+		new VehicleLocation(-83344, 261560, -3610, 180, 1800),
+		new VehicleLocation(-88344, 261660, -3610, 180, 1800),
+		new VehicleLocation(-92344, 261660, -3610, 150, 1800),
+		new VehicleLocation(-94242, 261659, -3610, 150, 1800)
 	};
 	
-	private static final VehiclePathPoint[] TALKING_DOCK =
+	private static final VehicleLocation[] TALKING_DOCK =
 	{
-		new VehiclePathPoint(-96622, 261660, -3610, 150, 1800)
+		new VehicleLocation(-96622, 261660, -3610, 150, 1800)
 	};
 	
-	private final L2Vehicle _boat;
+	private final Vehicle _boat;
 	private int _cycle = 0;
 	private int _shoutCount = 0;
 	
@@ -110,7 +96,7 @@ public class BoatTalkingGludin implements Runnable
 	private final PlaySound GLUDIN_SOUND_LEAVE_5MIN;
 	private final PlaySound GLUDIN_SOUND_LEAVE_1MIN;
 	
-	public BoatTalkingGludin(L2Vehicle boat)
+	public BoatTalkingGludin(Vehicle boat)
 	{
 		_boat = boat;
 		_cycle = 0;
@@ -138,14 +124,14 @@ public class BoatTalkingGludin implements Runnable
 		ARRIVAL_TALKING5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_GLUDIN_ARRIVE_AT_TALKING_5_MINUTES);
 		ARRIVAL_TALKING1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_GLUDIN_ARRIVE_AT_TALKING_1_MINUTE);
 		
-		TALKING_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), TALKING_DOCK[0].x, TALKING_DOCK[0].y, TALKING_DOCK[0].z);
-		GLUDIN_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
+		TALKING_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", _boat);
+		GLUDIN_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", _boat);
 		
-		TALKING_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), TALKING_DOCK[0].x, TALKING_DOCK[0].y, TALKING_DOCK[0].z);
-		TALKING_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), TALKING_DOCK[0].x, TALKING_DOCK[0].y, TALKING_DOCK[0].z);
+		TALKING_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", _boat);
+		TALKING_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", _boat);
 		
-		GLUDIN_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
-		GLUDIN_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", 1, _boat.getObjectId(), GLUDIN_DOCK[0].x, GLUDIN_DOCK[0].y, GLUDIN_DOCK[0].z);
+		GLUDIN_SOUND_LEAVE_5MIN = new PlaySound(0, "itemsound.ship_5min", _boat);
+		GLUDIN_SOUND_LEAVE_1MIN = new PlaySound(0, "itemsound.ship_1min", _boat);
 	}
 	
 	@Override
@@ -279,7 +265,7 @@ public class BoatTalkingGludin implements Runnable
 	
 	public static void load()
 	{
-		final L2Vehicle boat = BoatManager.getInstance().getNewBoat(1, -96622, 261660, -3610, 32768);
+		final Vehicle boat = BoatManager.getInstance().getNewBoat(1, -96622, 261660, -3610, 32768);
 		if (boat != null)
 		{
 			boat.registerEngine(new BoatTalkingGludin(boat));

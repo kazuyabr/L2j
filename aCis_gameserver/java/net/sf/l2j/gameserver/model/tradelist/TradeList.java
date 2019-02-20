@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.model.tradelist;
 
 import java.util.ArrayList;
@@ -19,12 +5,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.ItemTable;
+import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.model.ItemRequest;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
@@ -32,36 +17,35 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.util.Util;
 
 public class TradeList
 {
-	private final L2PcInstance _owner;
+	private final Player _owner;
 	private final List<TradeItem> _items = new CopyOnWriteArrayList<>();
 	
-	private L2PcInstance _partner;
+	private Player _partner;
 	private String _title;
 	
 	private boolean _packaged;
 	private boolean _confirmed;
 	private boolean _locked;
 	
-	public TradeList(L2PcInstance owner)
+	public TradeList(Player owner)
 	{
 		_owner = owner;
 	}
 	
-	public L2PcInstance getOwner()
+	public Player getOwner()
 	{
 		return _owner;
 	}
 	
-	public void setPartner(L2PcInstance partner)
+	public void setPartner(Player partner)
 	{
 		_partner = partner;
 	}
 	
-	public L2PcInstance getPartner()
+	public Player getPartner()
 	{
 		return _partner;
 	}
@@ -187,7 +171,7 @@ public class TradeList
 		if (isLocked())
 			return null;
 		
-		L2Object o = L2World.getInstance().getObject(objectId);
+		WorldObject o = World.getInstance().getObject(objectId);
 		if (!(o instanceof ItemInstance))
 			return null;
 		
@@ -395,7 +379,7 @@ public class TradeList
 	private boolean validate()
 	{
 		// Check for Owner validity
-		if (_owner == null || L2World.getInstance().getPlayer(_owner.getObjectId()) == null)
+		if (_owner == null || World.getInstance().getPlayer(_owner.getObjectId()) == null)
 			return false;
 		
 		// Check for Item validity
@@ -415,7 +399,7 @@ public class TradeList
 	 * @param partnerIU
 	 * @return true if ok, false otherwise.
 	 */
-	private boolean transferItems(L2PcInstance partner, InventoryUpdate ownerIU, InventoryUpdate partnerIU)
+	private boolean transferItems(Player partner, InventoryUpdate ownerIU, InventoryUpdate partnerIU)
 	{
 		for (TradeItem titem : _items)
 		{
@@ -452,7 +436,7 @@ public class TradeList
 	 * @param partner
 	 * @return
 	 */
-	public int countItemsSlots(L2PcInstance partner)
+	public int countItemsSlots(Player partner)
 	{
 		int slots = 0;
 		
@@ -548,7 +532,7 @@ public class TradeList
 	 * @param items
 	 * @return int: result of trading. 0 - ok, 1 - canceled (no adena), 2 - failed (item error)
 	 */
-	public synchronized int privateStoreBuy(L2PcInstance player, Set<ItemRequest> items)
+	public synchronized int privateStoreBuy(Player player, Set<ItemRequest> items)
 	{
 		if (_locked)
 			return 1;
@@ -590,10 +574,7 @@ public class TradeList
 			if (!found)
 			{
 				if (isPackaged())
-				{
-					Util.handleIllegalPlayerAction(player, "[TradeList.privateStoreBuy()] Player " + player.getName() + " tried to cheat the package sell and buy only a part of the package! Ban this player for bot usage!", Config.DEFAULT_PUNISH);
 					return 2;
-				}
 				
 				item.setCount(0);
 				continue;
@@ -748,7 +729,7 @@ public class TradeList
 	 * @param items
 	 * @return : boolean true if success
 	 */
-	public synchronized boolean privateStoreSell(L2PcInstance player, ItemRequest[] items)
+	public synchronized boolean privateStoreSell(Player player, ItemRequest[] items)
 	{
 		if (_locked)
 			return false;
@@ -826,11 +807,9 @@ public class TradeList
 				if (oldItem == null)
 					continue;
 			}
+			
 			if (oldItem.getItemId() != item.getItemId())
-			{
-				Util.handleIllegalPlayerAction(player, player + " is cheating with sell items", Config.DEFAULT_PUNISH);
 				return false;
-			}
 			
 			if (!oldItem.isTradable())
 				continue;

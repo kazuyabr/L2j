@@ -1,35 +1,21 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.datatables.BuyListTable;
-import net.sf.l2j.gameserver.datatables.ItemTable;
-import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.manager.BuyListManager;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.L2Npc;
-import net.sf.l2j.gameserver.model.actor.instance.L2MerchantInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.instance.Merchant;
+import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
+import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.SkillType;
 import net.sf.l2j.gameserver.model.buylist.NpcBuyList;
 import net.sf.l2j.gameserver.model.buylist.Product;
 import net.sf.l2j.gameserver.model.item.DropCategory;
@@ -39,9 +25,6 @@ import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
-/**
- * @author terry
- */
 public class AdminEditNpc implements IAdminCommandHandler
 {
 	private static final int PAGE_LIMIT = 20;
@@ -56,7 +39,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	};
 	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	public boolean useAdminCommand(String command, Player activeChar)
 	{
 		final StringTokenizer st = new StringTokenizer(command, " ");
 		st.nextToken();
@@ -123,9 +106,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 		return true;
 	}
 	
-	private static void showShopList(L2PcInstance activeChar, int listId)
+	private static void showShopList(Player activeChar, int listId)
 	{
-		final NpcBuyList buyList = BuyListTable.getInstance().getBuyList(listId);
+		final NpcBuyList buyList = BuyListManager.getInstance().getBuyList(listId);
 		if (buyList == null)
 		{
 			activeChar.sendMessage("BuyList template is unknown for id: " + listId + ".");
@@ -145,9 +128,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 		activeChar.sendPacket(html);
 	}
 	
-	private static void showShop(L2PcInstance activeChar, int npcId)
+	private static void showShop(Player activeChar, int npcId)
 	{
-		final List<NpcBuyList> buyLists = BuyListTable.getInstance().getBuyListsByNpcId(npcId);
+		final List<NpcBuyList> buyLists = BuyListManager.getInstance().getBuyListsByNpcId(npcId);
 		if (buyLists.isEmpty())
 		{
 			activeChar.sendMessage("No buyLists found for id: " + npcId + ".");
@@ -157,9 +140,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 		final StringBuilder sb = new StringBuilder(500);
 		StringUtil.append(sb, "<html><title>Merchant Shop Lists</title><body>");
 		
-		if (activeChar.getTarget() instanceof L2MerchantInstance)
+		if (activeChar.getTarget() instanceof Merchant)
 		{
-			L2Npc merchant = (L2Npc) activeChar.getTarget();
+			Npc merchant = (Npc) activeChar.getTarget();
 			int taxRate = merchant.getCastle().getTaxPercent();
 			
 			StringUtil.append(sb, "<center><font color=\"LEVEL\">", merchant.getName(), " (", npcId, ")</font></center><br>Tax rate: ", taxRate, "%");
@@ -177,7 +160,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		activeChar.sendPacket(html);
 	}
 	
-	private static void showNpcDropList(L2PcInstance activeChar, int npcId, int page)
+	private static void showNpcDropList(Player activeChar, int npcId, int page)
 	{
 		final NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
 		if (npcData == null)
@@ -258,7 +241,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		activeChar.sendPacket(html);
 	}
 	
-	private static void showNpcSkillList(L2PcInstance activeChar, int npcId)
+	private static void showNpcSkillList(Player activeChar, int npcId)
 	{
 		final NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
 		if (npcData == null)
@@ -267,22 +250,37 @@ public class AdminEditNpc implements IAdminCommandHandler
 			return;
 		}
 		
-		final Collection<L2Skill> skills = npcData.getSkills().values();
-		
 		final StringBuilder sb = new StringBuilder(500);
-		StringUtil.append(sb, "<html><body><center><font color=\"LEVEL\">", npcData.getName(), " (", npcId, "): ", skills.size(), " skills</font></center><table width=\"100%\">");
+		StringUtil.append(sb, "<html><body><center><font color=\"LEVEL\">", npcData.getName(), " (", npcId, ") skills</font></center><br>");
 		
-		for (L2Skill skill : skills)
-			StringUtil.append(sb, "<tr><td>", ((skill.getSkillType() == L2SkillType.NOTDONE) ? ("<font color=\"777777\">" + skill.getName() + "</font>") : skill.getName()), " [", skill.getId(), "-", skill.getLevel(), "]</td></tr>");
+		if (!npcData.getSkills().isEmpty())
+		{
+			SkillType type = null; // Used to see if we moved of type.
+			
+			// For any type of SkillType
+			for (Map.Entry<SkillType, List<L2Skill>> entry : npcData.getSkills().entrySet())
+			{
+				if (type != entry.getKey())
+				{
+					type = entry.getKey();
+					StringUtil.append(sb, "<br><font color=\"LEVEL\">", type.name(), "</font><br1>");
+				}
+				
+				for (L2Skill skill : entry.getValue())
+					StringUtil.append(sb, ((skill.getSkillType() == L2SkillType.NOTDONE) ? ("<font color=\"777777\">" + skill.getName() + "</font>") : skill.getName()), " [", skill.getId(), "-", skill.getLevel(), "]<br1>");
+			}
+		}
+		else
+			sb.append("This NPC doesn't hold any skill.");
 		
-		sb.append("</table></body></html>");
+		sb.append("</body></html>");
 		
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setHtml(sb.toString());
 		activeChar.sendPacket(html);
 	}
 	
-	private static void showScriptsList(L2PcInstance activeChar, int npcId)
+	private static void showScriptsList(Player activeChar, int npcId)
 	{
 		final NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
 		if (npcData == null)
@@ -298,7 +296,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		{
 			EventType type = null; // Used to see if we moved of type.
 			
-			// For any type of QuestEventType
+			// For any type of EventType
 			for (Map.Entry<EventType, List<Quest>> entry : npcData.getEventQuests().entrySet())
 			{
 				if (type != entry.getKey())

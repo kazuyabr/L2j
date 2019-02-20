@@ -3,10 +3,7 @@ title aCis gameserver console
 :start
 REM -------------------------------------
 REM Default parameters for a basic server.
-java -Xmx2G -cp ./libs/*; net.sf.l2j.gameserver.GameServer
-REM
-REM If you have a big server and lots of memory, you could experiment for example with
-REM java -server -Xmx1536m -Xms1024m -Xmn512m -XX:PermSize=256m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts
+java -XX:+UseConcMarkSweepGC -Xmx2G -cp ./libs/*; net.sf.l2j.gameserver.GameServer
 REM -------------------------------------
 if ERRORLEVEL 2 goto restart
 if ERRORLEVEL 1 goto error
