@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.l2j.gameserver.enums.skills.AbnormalEffect;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.model.ChanceCondition;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.skills.AbnormalEffect;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.basefuncs.FuncTemplate;
 import net.sf.l2j.gameserver.skills.basefuncs.Lambda;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 /**
  * @author mkizub

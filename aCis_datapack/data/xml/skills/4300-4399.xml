@@ -585,9 +585,9 @@
 		<set name="effectRange" val="900"/>
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="resist_derangement">
-				<sub stat="rootVuln" val="#vuln" order="0x40" />
-				<sub stat="sleepVuln" val="#vuln" order="0x40" />
-				<sub stat="derangementVuln" val="#vuln" order="0x40" />
+				<addMul stat="rootVuln" val="#vuln" order="0x40" />
+				<addMul stat="sleepVuln" val="#vuln" order="0x40" />
+				<addMul stat="derangementVuln" val="#vuln" order="0x40" />
 			</effect>
 		</for>
 	</skill>
@@ -663,7 +663,7 @@
 		<set name="effectRange" val="900"/>
 		<for>
 			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="resist_shock">
-				<sub stat="stunVuln" val="#vuln" order="0x40" />
+				<addMul stat="stunVuln" val="#vuln" order="0x40" />
 			</effect>
 		</for>
 	</skill>

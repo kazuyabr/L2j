@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
 import net.sf.l2j.gameserver.model.manor.Seed;
 import net.sf.l2j.gameserver.model.manor.SeedProduction;
 

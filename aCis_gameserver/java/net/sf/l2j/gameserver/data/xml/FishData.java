@@ -1,24 +1,22 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.model.Fish;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores {@link Fish} infos.<br>
  * TODO Plain wrong values and system, have to be reworked entirely.
  */
-public class FishData extends XMLDocument
+public class FishData implements IXmlReader
 {
 	private final List<Fish> _fish = new ArrayList<>();
 	
@@ -28,35 +26,16 @@ public class FishData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/fish.xml");
-		LOG.info("Loaded " + _fish.size() + " fish.");
+		parseFile("./data/xml/fish.xml");
+		LOGGER.info("Loaded {} fish.", _fish.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
-		{
-			if (!"fish".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			// Parse and feed content.
-			parseAndFeed(o.getAttributes(), set);
-			
-			// Feed the list with new data.
-			_fish.add(new Fish(set));
-			
-			// Clear the StatsSet.
-			set.clear();
-		}
+		forEach(doc, "list", listNode -> forEach(listNode, "fish", fishNode -> _fish.add(new Fish(parseAttributes(fishNode)))));
 	}
 	
 	/**

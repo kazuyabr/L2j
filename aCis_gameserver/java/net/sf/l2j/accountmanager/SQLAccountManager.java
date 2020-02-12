@@ -147,7 +147,9 @@ public class SQLAccountManager
 		}
 		q = q.concat(" ORDER BY login ASC");
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement(q); ResultSet rset = ps.executeQuery())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(q);
+			ResultSet rset = ps.executeQuery())
 		{
 			while (rset.next())
 			{
@@ -166,7 +168,8 @@ public class SQLAccountManager
 	
 	private static void addOrUpdateAccount(String account, String password, String level)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("REPLACE accounts(login, password, access_level) VALUES (?, ?, ?)"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement("REPLACE accounts(login, password, access_level) VALUES (?, ?, ?)"))
 		{
 			byte[] newPassword = MessageDigest.getInstance("SHA").digest(password.getBytes("UTF-8"));
 			
@@ -191,7 +194,8 @@ public class SQLAccountManager
 	
 	private static void changeAccountLevel(String account, String level)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("UPDATE accounts SET access_level = ? WHERE login = ?"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement("UPDATE accounts SET access_level = ? WHERE login = ?"))
 		{
 			ps.setString(1, level);
 			ps.setString(2, account);
@@ -213,7 +217,8 @@ public class SQLAccountManager
 	
 	private static void deleteAccount(String account)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("DELETE FROM accounts WHERE login = ?"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement("DELETE FROM accounts WHERE login = ?"))
 		{
 			ps.setString(1, account);
 			if (ps.executeUpdate() > 0)

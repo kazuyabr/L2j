@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.model.itemcontainer.listeners;
 
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
@@ -34,7 +34,7 @@ public class ItemPassiveSkillsListener implements OnEquipListener
 				item.getAugmentation().applyBonus(player);
 			
 			// Verify if the grade penalty is occuring. If yes, then forget +4 dual skills and SA attached to weapon.
-			if (player.getExpertiseIndex() < it.getCrystalType().getId())
+			if (player.getSkillLevel(L2Skill.SKILL_EXPERTISE) < it.getCrystalType().getId())
 				return;
 			
 			// Add skills bestowed from +4 Duals
@@ -109,7 +109,7 @@ public class ItemPassiveSkillsListener implements OnEquipListener
 				final L2Skill enchant4Skill = ((Weapon) it).getEnchant4Skill();
 				if (enchant4Skill != null)
 				{
-					player.removeSkill(enchant4Skill, false, enchant4Skill.isPassive());
+					player.removeSkill(enchant4Skill.getId(), false, enchant4Skill.isPassive() || enchant4Skill.isToggle());
 					update = true;
 				}
 			}
@@ -139,7 +139,7 @@ public class ItemPassiveSkillsListener implements OnEquipListener
 					
 					if (!found)
 					{
-						player.removeSkill(itemSkill, false, itemSkill.isPassive());
+						player.removeSkill(itemSkill.getId(), false, itemSkill.isPassive() || itemSkill.isToggle());
 						update = true;
 					}
 				}

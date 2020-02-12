@@ -13,10 +13,6 @@ public class PreparedEntry extends Entry
 	
 	public PreparedEntry(Entry template, ItemInstance item, boolean applyTaxes, boolean maintainEnchantment, double taxRate)
 	{
-		_id = template.getId() * 100000;
-		if (maintainEnchantment && item != null)
-			_id += item.getEnchantLevel();
-		
 		int adenaAmount = 0;
 		
 		_ingredients = new ArrayList<>(template.getIngredients().size());

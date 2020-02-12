@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -31,7 +31,7 @@ public class Q023_LidiasHeart extends Quest
 	{
 		super(23, "Lidia's Heart");
 		
-		setItemsIds(FOREST_OF_DEADMAN_MAP, SILVER_KEY, LIDIA_DIARY, SILVER_SPEAR);
+		setItemsIds(SILVER_KEY, LIDIA_DIARY, SILVER_SPEAR);
 		
 		addStartNpc(INNOCENTIN);
 		addTalkId(INNOCENTIN, BROKEN_BOOKSHELF, GHOST_OF_VON_HELLMANN, VIOLET, BOX, TOMBSTONE);
@@ -176,6 +176,13 @@ public class Q023_LidiasHeart extends Quest
 							htmltext = "31328-07.htm";
 						else if (cond == 4)
 							htmltext = "31328-08.htm";
+						else if (cond == 5)
+						{
+							if (st.getInt("diary") == 1)
+								htmltext = "31328-14.htm";
+							else
+								htmltext = "31328-11.htm";
+						}
 						else if (cond > 5)
 							htmltext = "31328-21.htm";
 						break;

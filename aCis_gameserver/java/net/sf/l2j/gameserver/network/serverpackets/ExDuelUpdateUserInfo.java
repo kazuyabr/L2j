@@ -1,18 +1,14 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
-/**
- * Format: ch Sddddddddd
- * @author KenM
- */
 public class ExDuelUpdateUserInfo extends L2GameServerPacket
 {
-	private final Player _activeChar;
+	private final Player _player;
 	
-	public ExDuelUpdateUserInfo(Player cha)
+	public ExDuelUpdateUserInfo(Player player)
 	{
-		_activeChar = cha;
+		_player = player;
 	}
 	
 	@Override
@@ -20,15 +16,15 @@ public class ExDuelUpdateUserInfo extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x4f);
-		writeS(_activeChar.getName());
-		writeD(_activeChar.getObjectId());
-		writeD(_activeChar.getClassId().getId());
-		writeD(_activeChar.getLevel());
-		writeD((int) _activeChar.getCurrentHp());
-		writeD(_activeChar.getMaxHp());
-		writeD((int) _activeChar.getCurrentMp());
-		writeD(_activeChar.getMaxMp());
-		writeD((int) _activeChar.getCurrentCp());
-		writeD(_activeChar.getMaxCp());
+		writeS(_player.getName());
+		writeD(_player.getObjectId());
+		writeD(_player.getClassId().getId());
+		writeD(_player.getLevel());
+		writeD((int) _player.getCurrentHp());
+		writeD(_player.getMaxHp());
+		writeD((int) _player.getCurrentMp());
+		writeD(_player.getMaxMp());
+		writeD((int) _player.getCurrentCp());
+		writeD(_player.getMaxCp());
 	}
 }

@@ -2,8 +2,9 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.AiEventType;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 
 public class PenaltyMonster extends Monster
@@ -31,7 +32,7 @@ public class PenaltyMonster extends Monster
 		
 		_ptk = ptk;
 		
-		getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _ptk, Rnd.get(1, 100));
+		getAI().notifyEvent(AiEventType.AGGRESSION, _ptk, Rnd.get(1, 100));
 	}
 	
 	@Override

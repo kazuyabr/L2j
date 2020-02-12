@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
@@ -17,15 +17,13 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
 		final Player requestor = activeChar.getRequest().getPartner();
 		if (requestor == null)
 			return;
-		
-		activeChar.getRequest().onRequestResponse();
 		
 		if (_response == 0)
 		{
@@ -48,5 +46,6 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 			
 			activeChar.sendPacket(SystemMessageId.YOU_ACCEPTED_ALLIANCE);
 		}
+		activeChar.getRequest().onRequestResponse();
 	}
 }

@@ -1,12 +1,12 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
-import net.sf.l2j.gameserver.data.DoorTable;
+import net.sf.l2j.gameserver.data.xml.DoorData;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -48,8 +48,8 @@ public class PaganKeys implements IItemHandler
 			case 8056:
 				if (doorId == 23150004 || doorId == 23150003)
 				{
-					DoorTable.getInstance().getDoor(23150003).openMe();
-					DoorTable.getInstance().getDoor(23150004).openMe();
+					DoorData.getInstance().getDoor(23150003).openMe();
+					DoorData.getInstance().getDoor(23150004).openMe();
 				}
 				else
 					activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
@@ -66,7 +66,7 @@ public class PaganKeys implements IItemHandler
 					case 19160007:
 					case 19160008:
 					case 19160009:
-						DoorTable.getInstance().getDoor(doorId).openMe();
+						DoorData.getInstance().getDoor(doorId).openMe();
 						break;
 					
 					default:
@@ -80,7 +80,7 @@ public class PaganKeys implements IItemHandler
 				{
 					case 19160012:
 					case 19160013:
-						DoorTable.getInstance().getDoor(doorId).openMe();
+						DoorData.getInstance().getDoor(doorId).openMe();
 						break;
 					
 					default:

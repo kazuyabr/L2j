@@ -8,9 +8,6 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.geoengine.geodata.GeoStructure;
 
-/**
- * @author DS, Hasha; Credits to Diamond
- */
 public class NodeBuffer
 {
 	private final ReentrantLock _lock = new ReentrantLock();

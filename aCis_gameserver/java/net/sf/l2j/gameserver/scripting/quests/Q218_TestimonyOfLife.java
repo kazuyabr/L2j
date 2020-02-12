@@ -2,9 +2,10 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.actors.ClassRace;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassRace;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
@@ -386,9 +387,11 @@ public class Q218_TestimonyOfLife extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
@@ -445,13 +448,19 @@ public class Q218_TestimonyOfLife extends Quest
 					{
 						if (!st.hasQuestItems(itemId))
 						{
-							st.playSound(QuestState.SOUND_ITEMGET);
 							st.giveItems(itemId, 1);
+							
+							if (st.hasQuestItems(TALINS_PIECES))
+							{
+								st.set("cond", "16");
+								st.playSound(QuestState.SOUND_MIDDLE);
+							}
+							else
+								st.playSound(QuestState.SOUND_ITEMGET);
+							
 							return null;
 						}
 					}
-					st.set("cond", "16");
-					st.playSound(QuestState.SOUND_MIDDLE);
 				}
 				break;
 		}

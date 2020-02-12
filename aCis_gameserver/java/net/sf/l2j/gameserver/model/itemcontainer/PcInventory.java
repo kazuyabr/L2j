@@ -1,19 +1,15 @@
 package net.sf.l2j.gameserver.model.itemcontainer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.enums.ShortcutType;
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemLocation;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
 import net.sf.l2j.gameserver.model.itemcontainer.listeners.ArmorSetListener;
 import net.sf.l2j.gameserver.model.itemcontainer.listeners.BowRodListener;
 import net.sf.l2j.gameserver.model.itemcontainer.listeners.ItemPassiveSkillsListener;
@@ -247,7 +243,7 @@ public class PcInventory extends Inventory
 	 */
 	public List<ItemInstance> getSellableItems()
 	{
-		return _items.stream().filter(i -> !i.isEquipped() && i.isSellable() && (getOwner().getPet() == null || i.getObjectId() != getOwner().getPet().getControlItemId())).collect(Collectors.toList());
+		return _items.stream().filter(i -> !i.isEquipped() && i.isSellable() && (getOwner().getSummon() == null || i.getObjectId() != getOwner().getSummon().getControlItemId())).collect(Collectors.toList());
 	}
 	
 	/**
@@ -472,7 +468,7 @@ public class PcInventory extends Inventory
 	@Override
 	public ItemInstance destroyItem(String process, ItemInstance item, Player actor, WorldObject reference)
 	{
-		return this.destroyItem(process, item, item.getCount(), actor, reference);
+		return destroyItem(process, item, item.getCount(), actor, reference);
 	}
 	
 	/**
@@ -513,7 +509,7 @@ public class PcInventory extends Inventory
 		if (item == null)
 			return null;
 		
-		return this.destroyItem(process, item, count, actor, reference);
+		return destroyItem(process, item, count, actor, reference);
 	}
 	
 	/**
@@ -532,7 +528,7 @@ public class PcInventory extends Inventory
 		if (item == null)
 			return null;
 		
-		return this.destroyItem(process, item, count, actor, reference);
+		return destroyItem(process, item, count, actor, reference);
 	}
 	
 	/**
@@ -587,8 +583,8 @@ public class PcInventory extends Inventory
 	@Override
 	protected boolean removeItem(ItemInstance item)
 	{
-		// Removes any reference to the item from Shortcut bar
-		getOwner().removeItemFromShortCut(item.getObjectId());
+		// Delete all existing shortcuts refering to this object id.
+		getOwner().getShortcutList().deleteShortcuts(item.getObjectId(), ShortcutType.ITEM);
 		
 		// Removes active Enchant Scroll
 		if (item.equals(getOwner().getActiveEnchantItem()))
@@ -609,6 +605,7 @@ public class PcInventory extends Inventory
 	public void refreshWeight()
 	{
 		super.refreshWeight();
+		
 		getOwner().refreshOverloaded();
 	}
 	
@@ -619,35 +616,9 @@ public class PcInventory extends Inventory
 	public void restore()
 	{
 		super.restore();
+		
 		_adena = getItemByItemId(ADENA_ID);
 		_ancientAdena = getItemByItemId(ANCIENT_ADENA_ID);
-	}
-	
-	public static int[][] restoreVisibleInventory(int objectId)
-	{
-		int[][] paperdoll = new int[0x12][3];
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement2 = con.prepareStatement("SELECT object_id,item_id,loc_data,enchant_level FROM items WHERE owner_id=? AND loc='PAPERDOLL'");
-			statement2.setInt(1, objectId);
-			ResultSet invdata = statement2.executeQuery();
-			
-			while (invdata.next())
-			{
-				int slot = invdata.getInt("loc_data");
-				paperdoll[slot][0] = invdata.getInt("object_id");
-				paperdoll[slot][1] = invdata.getInt("item_id");
-				paperdoll[slot][2] = invdata.getInt("enchant_level");
-			}
-			
-			invdata.close();
-			statement2.close();
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, "Could not restore inventory: " + e.getMessage(), e);
-		}
-		return paperdoll;
 	}
 	
 	public boolean validateCapacity(ItemInstance item)

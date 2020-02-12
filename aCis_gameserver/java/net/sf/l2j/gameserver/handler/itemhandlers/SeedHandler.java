@@ -1,13 +1,13 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.data.MapRegionTable;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.data.xml.MapRegionData;
 import net.sf.l2j.gameserver.handler.IItemHandler;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.manor.Seed;
@@ -22,13 +22,13 @@ public class SeedHandler implements IItemHandler
 			return;
 		
 		final WorldObject tgt = playable.getTarget();
-		if (!(tgt instanceof Attackable) || !((Attackable) tgt).getTemplate().isSeedable())
+		if (!(tgt instanceof Monster) || !((Monster) tgt).getTemplate().isSeedable())
 		{
 			playable.sendPacket(SystemMessageId.THE_TARGET_IS_UNAVAILABLE_FOR_SEEDING);
 			return;
 		}
 		
-		final Attackable target = (Attackable) tgt;
+		final Monster target = (Monster) tgt;
 		if (target.isDead() || target.isSeeded())
 		{
 			playable.sendPacket(SystemMessageId.INCORRECT_TARGET);
@@ -39,7 +39,7 @@ public class SeedHandler implements IItemHandler
 		if (seed == null)
 			return;
 		
-		if (seed.getCastleId() != MapRegionTable.getInstance().getAreaCastle(playable.getX(), playable.getY()))
+		if (seed.getCastleId() != MapRegionData.getInstance().getAreaCastle(playable.getX(), playable.getY()))
 		{
 			playable.sendPacket(SystemMessageId.THIS_SEED_MAY_NOT_BE_SOWN_HERE);
 			return;

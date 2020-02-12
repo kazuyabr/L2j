@@ -2,6 +2,7 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.List;
 
+import net.sf.l2j.gameserver.enums.SiegeSide;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
@@ -40,24 +41,15 @@ public class SiegeDefenderList extends L2GameServerPacket
 				writeD(clan.getCrestId());
 				writeD(0x00); // signed time (seconds) (not storated by L2J)
 				
-				switch (_castle.getSiege().getSide(clan))
-				{
-					case OWNER:
-						writeD(0x01);
-						break;
-					
-					case PENDING:
-						writeD(0x02);
-						break;
-					
-					case DEFENDER:
-						writeD(0x03);
-						break;
-					
-					default:
-						writeD(0x00);
-						break;
-				}
+				final SiegeSide side = _castle.getSiege().getSide(clan);
+				if (side == SiegeSide.OWNER)
+					writeD(0x01);
+				else if (side == SiegeSide.PENDING)
+					writeD(0x02);
+				else if (side == SiegeSide.DEFENDER)
+					writeD(0x03);
+				else
+					writeD(0x00);
 				
 				writeD(clan.getAllyId());
 				writeS(clan.getAllyName());

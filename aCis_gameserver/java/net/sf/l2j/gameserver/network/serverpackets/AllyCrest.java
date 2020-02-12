@@ -4,7 +4,7 @@ public class AllyCrest extends L2GameServerPacket
 {
 	private final int _crestId;
 	private final int _crestSize;
-	private byte[] _data;
+	private final byte[] _data;
 	
 	public AllyCrest(int crestId, byte[] data)
 	{
@@ -20,6 +20,5 @@ public class AllyCrest extends L2GameServerPacket
 		writeD(_crestId);
 		writeD(_crestSize);
 		writeB(_data);
-		_data = null;
 	}
 }

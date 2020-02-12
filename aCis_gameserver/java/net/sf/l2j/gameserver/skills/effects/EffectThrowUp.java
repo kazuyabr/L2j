@@ -1,14 +1,14 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.skills.FlyType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectFlag;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.FlyToLocation;
-import net.sf.l2j.gameserver.network.serverpackets.FlyToLocation.FlyType;
 import net.sf.l2j.gameserver.network.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectFlag;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 public class EffectThrowUp extends L2Effect
 {

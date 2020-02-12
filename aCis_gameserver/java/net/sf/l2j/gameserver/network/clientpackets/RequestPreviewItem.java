@@ -2,7 +2,6 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
@@ -10,8 +9,8 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.manager.BuyListManager;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Merchant;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.buylist.NpcBuyList;
 import net.sf.l2j.gameserver.model.buylist.Product;
 import net.sf.l2j.gameserver.model.item.kind.Item;
@@ -29,30 +28,6 @@ public final class RequestPreviewItem extends L2GameClientPacket
 	private int _listId;
 	private int _count;
 	private int[] _items;
-	
-	private class RemoveWearItemsTask implements Runnable
-	{
-		private final Player activeChar;
-		
-		protected RemoveWearItemsTask(Player player)
-		{
-			activeChar = player;
-		}
-		
-		@Override
-		public void run()
-		{
-			try
-			{
-				activeChar.sendPacket(SystemMessageId.NO_LONGER_TRYING_ON);
-				activeChar.sendPacket(new UserInfo(activeChar));
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "", e);
-			}
-		}
-	}
 	
 	@Override
 	protected void readImpl()
@@ -87,7 +62,7 @@ public final class RequestPreviewItem extends L2GameClientPacket
 		}
 		
 		// Get the current player and return if null
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -99,10 +74,7 @@ public final class RequestPreviewItem extends L2GameClientPacket
 		// Get the current merchant targeted by the player
 		final Merchant merchant = (target instanceof Merchant) ? (Merchant) target : null;
 		if (merchant == null)
-		{
-			_log.warning(getClass().getName() + " Null merchant!");
 			return;
-		}
 		
 		final NpcBuyList buyList = BuyListManager.getInstance().getBuyList(_listId);
 		if (buyList == null)
@@ -141,7 +113,7 @@ public final class RequestPreviewItem extends L2GameClientPacket
 		}
 		
 		// Charge buyer and add tax to castle treasury if not owned by npc clan because a Try On is not Free
-		if (totalPrice < 0 || !activeChar.reduceAdena("Wear", totalPrice, activeChar.getCurrentFolkNPC(), true))
+		if (totalPrice < 0 || !activeChar.reduceAdena("Wear", totalPrice, activeChar.getCurrentFolk(), true))
 		{
 			activeChar.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 			return;
@@ -152,7 +124,11 @@ public final class RequestPreviewItem extends L2GameClientPacket
 			activeChar.sendPacket(new ShopPreviewInfo(_itemList));
 			
 			// Schedule task
-			ThreadPool.schedule(new RemoveWearItemsTask(activeChar), Config.WEAR_DELAY * 1000);
+			ThreadPool.schedule(() ->
+			{
+				activeChar.sendPacket(SystemMessageId.NO_LONGER_TRYING_ON);
+				activeChar.sendPacket(new UserInfo(activeChar));
+			}, Config.WEAR_DELAY * 1000);
 		}
 	}
 }

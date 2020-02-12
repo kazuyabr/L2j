@@ -7,18 +7,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.TamedBeast;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.serverpackets.NpcSay;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.QuestState;
 import net.sf.l2j.gameserver.scripting.quests.Q020_BringUpWithLove;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
@@ -560,7 +561,7 @@ public class FeedableBeasts extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(FEEDABLE_BEASTS, EventType.ON_KILL, EventType.ON_SKILL_SEE);
+		addEventIds(FEEDABLE_BEASTS, ScriptEventType.ON_KILL, ScriptEventType.ON_SKILL_SEE);
 	}
 	
 	public void spawnNext(Npc npc, int growthLevel, Player player, int food)
@@ -607,8 +608,8 @@ public class FeedableBeasts extends L2AttackableAIScript
 			if (player.getTrainedBeast() != null)
 				player.getTrainedBeast().deleteMe();
 			
-			NpcTemplate template = NpcTable.getInstance().getTemplate(nextNpcId);
-			TamedBeast nextNpc = new TamedBeast(IdFactory.getInstance().getNextId(), template, player, food, npc.getX(), npc.getY(), npc.getZ());
+			NpcTemplate template = NpcData.getInstance().getTemplate(nextNpcId);
+			TamedBeast nextNpc = new TamedBeast(IdFactory.getInstance().getNextId(), template, player, food, npc.getPosition());
 			nextNpc.setRunning();
 			
 			// If player has Q020 going, give quest item
@@ -730,11 +731,11 @@ public class FeedableBeasts extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		// Remove the feedinfo of the mob that got killed, if any
 		FEED_INFO.remove(npc.getObjectId());
 		
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 }

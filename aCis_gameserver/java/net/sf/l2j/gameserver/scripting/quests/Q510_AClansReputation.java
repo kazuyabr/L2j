@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PledgeShowInfoUpdate;
@@ -90,10 +91,12 @@ public class Q510_AClansReputation extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
+		final Player player = killer.getActingPlayer();
+		
 		// Retrieve the qs of the clan leader.
-		QuestState st = getClanLeaderQuestState(player, npc);
+		final QuestState st = getClanLeaderQuestState(player, npc);
 		if (st == null || !st.isStarted())
 			return null;
 		

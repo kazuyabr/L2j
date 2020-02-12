@@ -2,9 +2,15 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
+/**
+ * An instance type extending {@link Doorman}, used by castle doorman.<br>
+ * <br>
+ * isUnderSiege() checks current siege state associated to the doorman castle, while isOwnerClan() checks if the user is part of clan owning the castle and got the rights to open/close doors.
+ */
 public class CastleDoorman extends Doorman
 {
 	public CastleDoorman(int objectID, NpcTemplate template)

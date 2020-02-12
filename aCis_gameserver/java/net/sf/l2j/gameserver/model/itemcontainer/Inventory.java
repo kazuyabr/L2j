@@ -5,28 +5,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
-import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.manager.HeroManager;
+import net.sf.l2j.gameserver.enums.items.ArmorType;
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemLocation;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemState;
 import net.sf.l2j.gameserver.model.item.kind.Item;
-import net.sf.l2j.gameserver.model.item.type.ArmorType;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.model.itemcontainer.listeners.OnEquipListener;
 import net.sf.l2j.gameserver.model.itemcontainer.listeners.StatsListener;
 
 /**
  * This class manages inventory
- * @author Advi
  */
 public abstract class Inventory extends ItemContainer
 {
@@ -48,6 +45,8 @@ public abstract class Inventory extends ItemContainer
 	public static final int PAPERDOLL_HAIR = 15;
 	public static final int PAPERDOLL_HAIRALL = 16;
 	public static final int PAPERDOLL_TOTALSLOTS = 17;
+	
+	private static final String RESTORE_INVENTORY = "SELECT object_id, item_id, count, enchant_level, loc, loc_data, custom_type1, custom_type2, mana_left, time FROM items WHERE owner_id=? AND (loc=? OR loc=?) ORDER BY loc_data";
 	
 	private final ItemInstance[] _paperdoll;
 	private final List<OnEquipListener> _paperdollListeners;
@@ -185,7 +184,7 @@ public abstract class Inventory extends ItemContainer
 				item.setLastChange(ItemState.MODIFIED);
 				item.updateDatabase();
 				
-				item = ItemTable.getInstance().createItem(process, item.getItemId(), count, actor, reference);
+				item = ItemInstance.create(item.getItemId(), count, actor, reference);
 				item.updateDatabase();
 				refreshWeight();
 				return item;
@@ -578,9 +577,6 @@ public abstract class Inventory extends ItemContainer
 	 */
 	public ItemInstance unEquipItemInBodySlot(int slot)
 	{
-		if (Config.DEBUG)
-			_log.fine("--- unequip body slot:" + slot);
-		
 		int pdollSlot = -1;
 		
 		switch (slot)
@@ -641,8 +637,9 @@ public abstract class Inventory extends ItemContainer
 				pdollSlot = PAPERDOLL_UNDER;
 				break;
 			default:
-				_log.info("Unhandled slot type: " + slot);
+				LOGGER.warn("Slot type {} is unhandled.", slot);
 		}
+		
 		if (pdollSlot >= 0)
 		{
 			ItemInstance old = setPaperdollItem(pdollSlot, null);
@@ -686,7 +683,7 @@ public abstract class Inventory extends ItemContainer
 		if (getOwner() instanceof Player)
 		{
 			// Can't equip item if you are in shop mod or hero item and you're not hero.
-			if (((Player) getOwner()).isInStoreMode() || (!((Player) getOwner()).isHero() && item.isHeroItem()))
+			if (((Player) getOwner()).isInStoreMode() || (item.isHeroItem() && !HeroManager.getInstance().isActiveHero(getOwnerId())))
 				return;
 		}
 		
@@ -843,7 +840,7 @@ public abstract class Inventory extends ItemContainer
 				break;
 			
 			default:
-				_log.warning("Unknown body slot " + targetSlot + " for Item ID:" + item.getItemId());
+				LOGGER.warn("Unknown body slot {} for itemId {}.", targetSlot, item.getItemId());
 		}
 	}
 	
@@ -943,42 +940,42 @@ public abstract class Inventory extends ItemContainer
 	@Override
 	public void restore()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(RESTORE_INVENTORY))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT object_id, item_id, count, enchant_level, loc, loc_data, custom_type1, custom_type2, mana_left, time FROM items WHERE owner_id=? AND (loc=? OR loc=?) ORDER BY loc_data");
-			statement.setInt(1, getOwnerId());
-			statement.setString(2, getBaseLocation().name());
-			statement.setString(3, getEquipLocation().name());
-			ResultSet inv = statement.executeQuery();
+			ps.setInt(1, getOwnerId());
+			ps.setString(2, getBaseLocation().name());
+			ps.setString(3, getEquipLocation().name());
 			
-			while (inv.next())
+			try (ResultSet rs = ps.executeQuery())
 			{
-				ItemInstance item = ItemInstance.restoreFromDb(getOwnerId(), inv);
-				if (item == null)
-					continue;
-				
-				if (getOwner() instanceof Player)
+				while (rs.next())
 				{
-					if (!((Player) getOwner()).isHero() && item.isHeroItem())
+					// Restore the item.
+					final ItemInstance item = ItemInstance.restoreFromDb(getOwnerId(), rs);
+					if (item == null)
+						continue;
+					
+					// If the item is an hero item and inventory's owner is a player who isn't an hero, then set it to inventory.
+					if (getOwner() instanceof Player && item.isHeroItem() && !HeroManager.getInstance().isActiveHero(getOwnerId()))
 						item.setLocation(ItemLocation.INVENTORY);
+					
+					// Add the item to world objects list.
+					World.getInstance().addObject(item);
+					
+					// If stackable item is found in inventory just add to current quantity
+					if (item.isStackable() && getItemByItemId(item.getItemId()) != null)
+						addItem("Restore", item, getOwner().getActingPlayer(), null);
+					else
+						addItem(item);
 				}
-				
-				World.getInstance().addObject(item);
-				
-				// If stackable item is found in inventory just add to current quantity
-				if (item.isStackable() && getItemByItemId(item.getItemId()) != null)
-					addItem("Restore", item, getOwner().getActingPlayer(), null);
-				else
-					addItem(item);
 			}
-			inv.close();
-			statement.close();
-			refreshWeight();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Could not restore inventory: " + e.getMessage(), e);
+			LOGGER.error("Couldn't restore inventory for {}.", e, getOwnerId());
 		}
+		refreshWeight();
 	}
 	
 	/**

@@ -3,9 +3,6 @@ package net.sf.l2j.gameserver.geoengine.geodata;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Hasha
- */
 public final class BlockMultilayerDynamic extends BlockMultilayer implements IBlockDynamic
 {
 	private final int _bx;

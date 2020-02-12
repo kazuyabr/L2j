@@ -1,29 +1,31 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import java.nio.BufferUnderflowException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.mmocore.ReceivablePacket;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.network.L2GameClient;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.network.GameClient;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 
 /**
- * Packets received by the game server from clients
- * @author KenM
+ * Packets received by the gameserver from clients.
  */
-public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
+public abstract class L2GameClientPacket extends ReceivablePacket<GameClient>
 {
-	protected static final Logger _log = Logger.getLogger(L2GameClientPacket.class.getName());
+	protected static final CLogger LOGGER = new CLogger(L2GameClientPacket.class.getName());
+	
+	protected abstract void readImpl();
+	
+	protected abstract void runImpl();
 	
 	@Override
 	protected boolean read()
 	{
 		if (Config.PACKET_HANDLER_DEBUG)
-			_log.info(getType());
+			LOGGER.info(getType());
 		
 		try
 		{
@@ -32,15 +34,15 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Client: " + getClient().toString() + " - Failed reading: " + getType() + " ; " + e, e);
-			
-			if (e instanceof BufferUnderflowException) // only one allowed per client per minute
+			if (e instanceof BufferUnderflowException)
+			{
 				getClient().onBufferUnderflow();
+				return false;
+			}
+			LOGGER.error("Failed reading {} for {}. ", e, getType(), getClient().toString());
 		}
 		return false;
 	}
-	
-	protected abstract void readImpl();
 	
 	@Override
 	public void run()
@@ -52,25 +54,19 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 			// Depending of the packet send, removes spawn protection
 			if (triggersOnActionRequest())
 			{
-				final Player actor = getClient().getActiveChar();
-				if (actor != null && actor.isSpawnProtected())
-				{
-					actor.onActionRequest();
-					if (Config.DEBUG)
-						_log.info("Spawn protection for player " + actor.getName() + " removed by packet: " + getType());
-				}
+				final Player player = getClient().getPlayer();
+				if (player != null && player.isSpawnProtected())
+					player.onActionRequest();
 			}
 		}
 		catch (Throwable t)
 		{
-			_log.log(Level.SEVERE, "Client: " + getClient().toString() + " - Failed reading: " + getType() + " ; " + t, t);
+			LOGGER.error("Failed reading {} for {}. ", t, getType(), getClient().toString());
 			
 			if (this instanceof EnterWorld)
 				getClient().closeNow();
 		}
 	}
-	
-	protected abstract void runImpl();
 	
 	protected final void sendPacket(L2GameServerPacket gsp)
 	{

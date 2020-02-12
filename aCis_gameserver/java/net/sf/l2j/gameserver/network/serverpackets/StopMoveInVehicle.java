@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
 
 public class StopMoveInVehicle extends L2GameServerPacket
@@ -13,7 +13,7 @@ public class StopMoveInVehicle extends L2GameServerPacket
 	{
 		_objectId = player.getObjectId();
 		_boatId = boatId;
-		_loc = player.getVehiclePosition();
+		_loc = player.getBoatPosition();
 	}
 	
 	@Override

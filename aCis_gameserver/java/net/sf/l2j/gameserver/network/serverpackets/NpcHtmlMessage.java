@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * the HTML parser in the client knowns these standard and non-standard tags and attributes VOLUMN UNKNOWN UL U TT TR TITLE TEXTCODE TEXTAREA TD TABLE SUP SUB STRIKE SPIN SELECT RIGHT PRE P OPTION OL MULTIEDIT LI LEFT INPUT IMG I HTML H7 H6 H5 H4 H3 H2 H1 FONT EXTEND EDIT COMMENT COMBOBOX CENTER
@@ -26,7 +26,7 @@ public final class NpcHtmlMessage extends L2GameServerPacket
 		if (!_validate)
 			return;
 		
-		Player activeChar = getClient().getActiveChar();
+		Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -77,7 +77,7 @@ public final class NpcHtmlMessage extends L2GameServerPacket
 		if (text.length() > 8192)
 		{
 			_html = "<html><body>Html was too long.</body></html>";
-			_log.warning("NpcHtmlMessage: html is too long");
+			LOGGER.warn("An html content was too long.");
 			return;
 		}
 		_html = text;

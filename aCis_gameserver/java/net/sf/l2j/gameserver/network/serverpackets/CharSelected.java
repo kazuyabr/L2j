@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
 
 public class CharSelected extends L2GameServerPacket

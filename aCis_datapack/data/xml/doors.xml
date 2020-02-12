@@ -2604,7 +2604,7 @@
 			<loc x="52427" y="219185" z="-3224" />
 		</coordinates>
 		<stats hp="150000" pDef="1000000" mDef="383" height="256" />
-		<function closeTime="120" />
+		<function closeTime="600" />
 	</door>
 	<door id="22250001" type="DOOR" level="1" name="Eva_001">
 		<position x="86216" y="247064" z="-8824" />

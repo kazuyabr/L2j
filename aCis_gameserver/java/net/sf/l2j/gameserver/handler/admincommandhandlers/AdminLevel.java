@@ -5,8 +5,8 @@ import java.util.StringTokenizer;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.Experience;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.player.Experience;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public class AdminLevel implements IAdminCommandHandler

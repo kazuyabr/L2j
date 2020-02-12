@@ -2,40 +2,11 @@ package net.sf.l2j.gameserver.scripting;
 
 import java.util.Calendar;
 
-import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.ScheduleType;
 
-/**
- * @author Hasha
- */
 public abstract class ScheduledQuest extends Quest
 {
-	/**
-	 * Period of the script.
-	 */
-	public enum Schedule
-	{
-		HOURLY(Calendar.HOUR),
-		DAILY(Calendar.DAY_OF_YEAR),
-		WEEKLY(Calendar.WEEK_OF_YEAR),
-		MONTHLY_DAY(Calendar.MONTH),
-		MONTHLY_WEEK(Calendar.MONTH),
-		YEARLY_DAY(Calendar.YEAR),
-		YEARLY_WEEK(Calendar.YEAR);
-		
-		private final int _period;
-		
-		private Schedule(int period)
-		{
-			_period = period;
-		}
-		
-		public final int getPeriod()
-		{
-			return _period;
-		}
-	}
-	
-	private Schedule _type;
+	private ScheduleType _type;
 	private Calendar _start;
 	private Calendar _end;
 	private boolean _started;
@@ -65,7 +36,7 @@ public abstract class ScheduledQuest extends Quest
 	{
 		try
 		{
-			_type = Enum.valueOf(Schedule.class, type);
+			_type = Enum.valueOf(ScheduleType.class, type);
 			_start = parseTimeStamp(start);
 			_end = parseTimeStamp(end);
 			_started = false;
@@ -121,7 +92,8 @@ public abstract class ScheduledQuest extends Quest
 		}
 		catch (Exception e)
 		{
-			_log.warning(getName() + ": Error while loading schedule data: " + e);
+			LOGGER.error("Error loading schedule data for {}.", e, toString());
+			
 			_type = null;
 			_start = null;
 			_end = null;
@@ -237,7 +209,7 @@ public abstract class ScheduledQuest extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning(getName() + ": Error while starting the script: " + e.getMessage());
+				LOGGER.error("Error starting {}.", e, toString());
 			}
 			
 			// schedule next start
@@ -257,7 +229,7 @@ public abstract class ScheduledQuest extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning(getName() + ": Error while ending the script: " + e.getMessage());
+				LOGGER.error("Error ending {}.", e, toString());
 			}
 			
 			// schedule start
@@ -274,7 +246,7 @@ public abstract class ScheduledQuest extends Quest
 			}
 			catch (Exception e)
 			{
-				_log.warning(getName() + ": Error while starting the script: " + e.getMessage());
+				LOGGER.error("Error starting {}.", e, toString());
 			}
 			
 			// schedule end
@@ -334,9 +306,6 @@ public abstract class ScheduledQuest extends Quest
 	
 	private final void print(Calendar c)
 	{
-		if (!Config.DEBUG)
-			return;
-		
-		_log.info(getName() + (c == _start ? ": Next start = " : ": Next end = ") + String.format("%d.%d.%d %d:%02d:%02d", c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND)));
+		LOGGER.debug("{}: {} = {}.", toString(), ((c == _start) ? "Next start" : "Next end"), String.format("%d.%d.%d %d:%02d:%02d", c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND)));
 	}
 }

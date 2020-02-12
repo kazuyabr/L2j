@@ -9,8 +9,8 @@ import net.sf.l2j.gameserver.communitybbs.Manager.PostBBSManager;
 import net.sf.l2j.gameserver.communitybbs.Manager.RegionBBSManager;
 import net.sf.l2j.gameserver.communitybbs.Manager.TopBBSManager;
 import net.sf.l2j.gameserver.communitybbs.Manager.TopicBBSManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.network.L2GameClient;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.network.GameClient;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public class CommunityBoard
@@ -19,73 +19,73 @@ public class CommunityBoard
 	{
 	}
 	
-	public static CommunityBoard getInstance()
+	public void handleCommands(GameClient client, String command)
 	{
-		return SingletonHolder._instance;
-	}
-	
-	public void handleCommands(L2GameClient client, String command)
-	{
-		final Player activeChar = client.getActiveChar();
-		if (activeChar == null)
+		final Player player = client.getPlayer();
+		if (player == null)
 			return;
 		
 		if (!Config.ENABLE_COMMUNITY_BOARD)
 		{
-			activeChar.sendPacket(SystemMessageId.CB_OFFLINE);
+			player.sendPacket(SystemMessageId.CB_OFFLINE);
 			return;
 		}
 		
 		if (command.startsWith("_bbshome"))
-			TopBBSManager.getInstance().parseCmd(command, activeChar);
+			TopBBSManager.getInstance().parseCmd(command, player);
 		else if (command.startsWith("_bbsloc"))
-			RegionBBSManager.getInstance().parseCmd(command, activeChar);
+			RegionBBSManager.getInstance().parseCmd(command, player);
 		else if (command.startsWith("_bbsclan"))
-			ClanBBSManager.getInstance().parseCmd(command, activeChar);
+			ClanBBSManager.getInstance().parseCmd(command, player);
 		else if (command.startsWith("_bbsmemo"))
-			TopicBBSManager.getInstance().parseCmd(command, activeChar);
+			TopicBBSManager.getInstance().parseCmd(command, player);
 		else if (command.startsWith("_bbsmail") || command.equals("_maillist_0_1_0_"))
-			MailBBSManager.getInstance().parseCmd(command, activeChar);
+			MailBBSManager.getInstance().parseCmd(command, player);
 		else if (command.startsWith("_friend") || command.startsWith("_block"))
-			FriendsBBSManager.getInstance().parseCmd(command, activeChar);
+			FriendsBBSManager.getInstance().parseCmd(command, player);
 		else if (command.startsWith("_bbstopics"))
-			TopicBBSManager.getInstance().parseCmd(command, activeChar);
+			TopicBBSManager.getInstance().parseCmd(command, player);
 		else if (command.startsWith("_bbsposts"))
-			PostBBSManager.getInstance().parseCmd(command, activeChar);
+			PostBBSManager.getInstance().parseCmd(command, player);
 		else
-			BaseBBSManager.separateAndSend("<html><body><br><br><center>The command: " + command + " isn't implemented.</center></body></html>", activeChar);
+			BaseBBSManager.separateAndSend("<html><body><br><br><center>The command: " + command + " isn't implemented.</center></body></html>", player);
 	}
 	
-	public void handleWriteCommands(L2GameClient client, String url, String arg1, String arg2, String arg3, String arg4, String arg5)
+	public void handleWriteCommands(GameClient client, String url, String arg1, String arg2, String arg3, String arg4, String arg5)
 	{
-		final Player activeChar = client.getActiveChar();
-		if (activeChar == null)
+		final Player player = client.getPlayer();
+		if (player == null)
 			return;
 		
 		if (!Config.ENABLE_COMMUNITY_BOARD)
 		{
-			activeChar.sendPacket(SystemMessageId.CB_OFFLINE);
+			player.sendPacket(SystemMessageId.CB_OFFLINE);
 			return;
 		}
 		
 		if (url.equals("Topic"))
-			TopicBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, activeChar);
+			TopicBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, player);
 		else if (url.equals("Post"))
-			PostBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, activeChar);
+			PostBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, player);
 		else if (url.equals("_bbsloc"))
-			RegionBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, activeChar);
+			RegionBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, player);
 		else if (url.equals("_bbsclan"))
-			ClanBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, activeChar);
+			ClanBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, player);
 		else if (url.equals("Mail"))
-			MailBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, activeChar);
+			MailBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, player);
 		else if (url.equals("_friend"))
-			FriendsBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, activeChar);
+			FriendsBBSManager.getInstance().parseWrite(arg1, arg2, arg3, arg4, arg5, player);
 		else
-			BaseBBSManager.separateAndSend("<html><body><br><br><center>The command: " + url + " isn't implemented.</center></body></html>", activeChar);
+			BaseBBSManager.separateAndSend("<html><body><br><br><center>The command: " + url + " isn't implemented.</center></body></html>", player);
+	}
+	
+	public static CommunityBoard getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final CommunityBoard _instance = new CommunityBoard();
+		protected static final CommunityBoard INSTANCE = new CommunityBoard();
 	}
 }

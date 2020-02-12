@@ -1,21 +1,20 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.model.NewbieBuff;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and store {@link NewbieBuff} into a List.
  */
-public class NewbieBuffData extends XMLDocument
+public class NewbieBuffData implements IXmlReader
 {
 	private final List<NewbieBuff> _buffs = new ArrayList<>();
 	
@@ -31,37 +30,24 @@ public class NewbieBuffData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/newbieBuffs.xml");
-		LOG.info("Loaded " + _buffs.size() + " newbie buffs.");
+		parseFile("./data/xml/newbieBuffs.xml");
+		LOGGER.info("Loaded {} newbie buffs.", _buffs.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File f)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "buff", buffNode ->
 		{
-			if (!"buff".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			// Parse and feed content.
-			parseAndFeed(o.getAttributes(), set);
-			
+			final StatsSet set = parseAttributes(buffNode);
 			final int lowerLevel = set.getInteger("lowerLevel");
 			final int upperLevel = set.getInteger("upperLevel");
-			
 			if (set.getBool("isMagicClass"))
 			{
 				if (lowerLevel < _magicLowestLevel)
 					_magicLowestLevel = lowerLevel;
-				
 				if (upperLevel > _magicHighestLevel)
 					_magicHighestLevel = upperLevel;
 			}
@@ -69,17 +55,11 @@ public class NewbieBuffData extends XMLDocument
 			{
 				if (lowerLevel < _physicLowestLevel)
 					_physicLowestLevel = lowerLevel;
-				
 				if (upperLevel > _physicHighestLevel)
 					_physicHighestLevel = upperLevel;
 			}
-			
-			// Feed the list with new data.
 			_buffs.add(new NewbieBuff(set));
-			
-			// Clear the StatsSet.
-			set.clear();
-		}
+		}));
 	}
 	
 	/**

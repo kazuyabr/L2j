@@ -5,13 +5,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import net.sf.l2j.commons.logging.CLogger;
+
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.enums.actors.Sex;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.Sex;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class ClanMember
 {
+	private static final CLogger LOGGER = new CLogger(ClanMember.class.getName());
+	
+	private static final String UPDATE_PLEDGE = "UPDATE characters SET subpledge=? WHERE obj_id=?";
+	private static final String UPDATE_POWER_GRADE = "UPDATE characters SET power_grade=? WHERE obj_id=?";
+	private static final String UPDATE_SPONSOR = "UPDATE characters SET apprentice=?,sponsor=? WHERE obj_Id=?";
+	
 	private final Clan _clan;
 	private int _objectId;
 	private String _name;
@@ -27,34 +35,34 @@ public class ClanMember
 	private int _sponsor;
 	
 	/**
-	 * Used to restore a clan member from the database.
-	 * @param clan the clan where the clan member belongs.
-	 * @param clanMember the clan member result set
-	 * @throws SQLException if the columnLabel is not valid or a database error occurs
+	 * Used to restore a {@link ClanMember} from the database.
+	 * @param clan : The clan where the clan member belongs.
+	 * @param rs : The ClanMember {@link ResultSet}.
+	 * @throws SQLException if the columnLabel is not valid or a database error occurs.
 	 */
-	public ClanMember(Clan clan, ResultSet clanMember) throws SQLException
+	public ClanMember(Clan clan, ResultSet rs) throws SQLException
 	{
 		if (clan == null)
 			throw new IllegalArgumentException("Cannot create a clan member with a null clan.");
 		
 		_clan = clan;
-		_name = clanMember.getString("char_name");
-		_level = clanMember.getInt("level");
-		_classId = clanMember.getInt("classid");
-		_objectId = clanMember.getInt("obj_Id");
-		_pledgeType = clanMember.getInt("subpledge");
-		_title = clanMember.getString("title");
-		_powerGrade = clanMember.getInt("power_grade");
-		_apprentice = clanMember.getInt("apprentice");
-		_sponsor = clanMember.getInt("sponsor");
-		_sex = Sex.values()[clanMember.getInt("sex")];
-		_raceOrdinal = clanMember.getInt("race");
+		_name = rs.getString("char_name");
+		_level = rs.getInt("level");
+		_classId = rs.getInt("classid");
+		_objectId = rs.getInt("obj_Id");
+		_pledgeType = rs.getInt("subpledge");
+		_title = rs.getString("title");
+		_powerGrade = rs.getInt("power_grade");
+		_apprentice = rs.getInt("apprentice");
+		_sponsor = rs.getInt("sponsor");
+		_sex = Sex.values()[rs.getInt("sex")];
+		_raceOrdinal = rs.getInt("race");
 	}
 	
 	/**
-	 * Creates a clan member from a player instance.
-	 * @param clan the clan where the player belongs
-	 * @param player the player from which the clan member will be created
+	 * Creates a {@link ClanMember} from a {@link Player} instance.
+	 * @param clan : The clan where the player belongs.
+	 * @param player : The player instance used to create the ClanMember.
 	 */
 	public ClanMember(Clan clan, Player player)
 	{
@@ -100,7 +108,7 @@ public class ClanMember
 			
 			if (_clan.getReputationScore() >= 0)
 			{
-				for (L2Skill sk : _clan.getClanSkills())
+				for (L2Skill sk : _clan.getClanSkills().values())
 				{
 					if (sk.getMinPledgeClass() <= player.getPledgeClass())
 						player.addSkill(sk, false);
@@ -128,6 +136,12 @@ public class ClanMember
 	public int getLevel()
 	{
 		return (_player != null) ? _player.getLevel() : _level;
+	}
+	
+	public void refreshLevel()
+	{
+		if (_player != null)
+			_level = _player.getLevel();
 	}
 	
 	public String getName()
@@ -162,16 +176,16 @@ public class ClanMember
 	
 	public void updatePledgeType()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(UPDATE_PLEDGE))
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET subpledge=? WHERE obj_id=?");
-			statement.setInt(1, _pledgeType);
-			statement.setInt(2, getObjectId());
-			statement.execute();
-			statement.close();
+			ps.setInt(1, _pledgeType);
+			ps.setInt(2, getObjectId());
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
+			LOGGER.error("Couldn't update ClanMember pledge.", e);
 		}
 	}
 	
@@ -195,16 +209,16 @@ public class ClanMember
 	 */
 	public void updatePowerGrade()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(UPDATE_POWER_GRADE))
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET power_grade=? WHERE obj_id=?");
-			statement.setInt(1, _powerGrade);
-			statement.setInt(2, getObjectId());
-			statement.execute();
-			statement.close();
+			ps.setInt(1, _powerGrade);
+			ps.setInt(2, getObjectId());
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
+			LOGGER.error("Couldn't update ClanMember power grade.", e);
 		}
 	}
 	
@@ -433,17 +447,17 @@ public class ClanMember
 	
 	public void saveApprenticeAndSponsor(int apprentice, int sponsor)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(UPDATE_SPONSOR))
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET apprentice=?,sponsor=? WHERE obj_Id=?");
-			statement.setInt(1, apprentice);
-			statement.setInt(2, sponsor);
-			statement.setInt(3, getObjectId());
-			statement.execute();
-			statement.close();
+			ps.setInt(1, apprentice);
+			ps.setInt(2, sponsor);
+			ps.setInt(3, getObjectId());
+			ps.executeUpdate();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
+			LOGGER.error("Couldn't update ClanMember sponsor/apprentice.", e);
 		}
 	}
 }

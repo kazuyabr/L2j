@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.EtcItem;
@@ -43,7 +43,7 @@ public class SoulCrystals implements IItemHandler
 		if (player.isSkillDisabled(itemSkill))
 			return;
 		
-		player.getAI().setIntention(CtrlIntention.IDLE);
+		player.getAI().setIntention(IntentionType.IDLE);
 		if (!player.useMagic(itemSkill, forceUse, false))
 			return;
 		

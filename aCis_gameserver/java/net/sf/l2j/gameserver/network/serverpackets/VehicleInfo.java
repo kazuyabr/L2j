@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.Vehicle;
+import net.sf.l2j.gameserver.model.actor.Boat;
 
 public class VehicleInfo extends L2GameServerPacket
 {
@@ -10,7 +10,7 @@ public class VehicleInfo extends L2GameServerPacket
 	private final int _z;
 	private final int _heading;
 	
-	public VehicleInfo(Vehicle boat)
+	public VehicleInfo(Boat boat)
 	{
 		_objectId = boat.getObjectId();
 		_x = boat.getX();

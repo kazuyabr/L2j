@@ -1,9 +1,10 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.ShowTownMap;
@@ -78,11 +79,11 @@ public class StaticObject extends WorldObject
 			player.setTarget(this);
 		else
 		{
-			// Calculate the distance between the Player and the L2Npc
+			// Calculate the distance between the Player and the Npc.
 			if (!player.isInsideRadius(this, Npc.INTERACTION_DISTANCE, false, false))
 			{
 				// Notify the Player AI with INTERACT
-				player.getAI().setIntention(CtrlIntention.INTERACT, this);
+				player.getAI().setIntention(IntentionType.INTERACT, this);
 			}
 			else
 			{

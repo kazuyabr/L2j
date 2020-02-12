@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SiegeInfo;
@@ -23,7 +23,7 @@ public final class RequestJoinSiege extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		

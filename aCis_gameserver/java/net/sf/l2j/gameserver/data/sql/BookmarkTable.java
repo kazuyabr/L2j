@@ -5,13 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.Bookmark;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * This class loads and handles {@link Bookmark} into a List.<br>
@@ -19,22 +19,24 @@ import net.sf.l2j.gameserver.model.actor.instance.Player;
  */
 public class BookmarkTable
 {
-	private static final Logger LOGGER = Logger.getLogger(BookmarkTable.class.getName());
+	private static final CLogger LOGGER = new CLogger(BookmarkTable.class.getName());
 	
 	private final List<Bookmark> _bks = new ArrayList<>();
 	
 	protected BookmarkTable()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("SELECT * FROM bookmarks"); ResultSet rs = ps.executeQuery())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM bookmarks");
+			ResultSet rs = ps.executeQuery())
 		{
 			while (rs.next())
 				_bks.add(new Bookmark(rs.getString("name"), rs.getInt("obj_Id"), rs.getInt("x"), rs.getInt("y"), rs.getInt("z")));
 		}
 		catch (Exception e)
 		{
-			LOGGER.log(Level.SEVERE, "Error restoring BookmarkTable: ", e);
+			LOGGER.error("Couldn't restore bookmarks.", e);
 		}
-		LOGGER.info("Loaded " + _bks.size() + " bookmarks.");
+		LOGGER.info("Loaded {} bookmarks.", _bks.size());
 	}
 	
 	/**
@@ -87,7 +89,8 @@ public class BookmarkTable
 		
 		_bks.add(new Bookmark(name, objId, x, y, z));
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("INSERT INTO bookmarks (name, obj_Id, x, y, z) values (?,?,?,?,?)"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement("INSERT INTO bookmarks (name, obj_Id, x, y, z) values (?,?,?,?,?)"))
 		{
 			ps.setString(1, name);
 			ps.setInt(2, objId);
@@ -98,7 +101,7 @@ public class BookmarkTable
 		}
 		catch (Exception e)
 		{
-			LOGGER.log(Level.SEVERE, "Error adding bookmark on DB.", e);
+			LOGGER.error("Couldn't save bookmark.", e);
 		}
 	}
 	
@@ -114,7 +117,8 @@ public class BookmarkTable
 		{
 			_bks.remove(bookmark);
 			
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("DELETE FROM bookmarks WHERE name=? AND obj_Id=?"))
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement("DELETE FROM bookmarks WHERE name=? AND obj_Id=?"))
 			{
 				ps.setString(1, name);
 				ps.setInt(2, objId);
@@ -122,7 +126,7 @@ public class BookmarkTable
 			}
 			catch (Exception e)
 			{
-				LOGGER.log(Level.SEVERE, "Error removing bookmark from DB.", e);
+				LOGGER.error("Couldn't delete bookmark.", e);
 			}
 		}
 	}

@@ -2,8 +2,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -89,7 +90,7 @@ public class Q375_WhisperOfDreams_Part2 extends Quest
 					st.playSound(QuestState.SOUND_MIDDLE);
 					st.takeItems(KARIK_HORN, 100);
 					st.takeItems(CAVE_HOWLER_SKULL, 100);
-					st.giveItems(REWARDS[Rnd.get(REWARDS.length)], 1);
+					st.giveItems(Rnd.get(REWARDS), 1);
 				}
 				else
 					htmltext = "30515-04.htm";
@@ -99,14 +100,14 @@ public class Q375_WhisperOfDreams_Part2 extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		// Drop horn or skull to anyone.
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
-			return null;
+		final Player player = killer.getActingPlayer();
 		
-		QuestState st = partyMember.getQuestState(qn);
+		// Drop horn or skull to anyone.
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
+			return null;
 		
 		switch (npc.getNpcId())
 		{

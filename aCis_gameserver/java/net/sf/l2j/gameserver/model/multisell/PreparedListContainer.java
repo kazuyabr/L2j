@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
@@ -24,6 +24,8 @@ public class PreparedListContainer extends ListContainer
 		
 		setMaintainEnchantment(template.getMaintainEnchantment());
 		setApplyTaxes(false);
+		
+		_npcsAllowed = template._npcsAllowed;
 		
 		double taxRate = 0;
 		if (npc != null)

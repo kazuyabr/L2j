@@ -4,6 +4,7 @@ import net.sf.l2j.gameserver.geoengine.geodata.IGeoObject;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ExColosseumFenceInfo;
 
 /**
@@ -71,9 +72,9 @@ public class Fence extends WorldObject implements IGeoObject
 		
 		// spawn dummy fences
 		if (_object2 != null)
-			_object2.spawnMe(getX(), getY(), getZ());
+			_object2.spawnMe(getPosition());
 		if (_object3 != null)
-			_object3.spawnMe(getX(), getY(), getZ());
+			_object3.spawnMe(getPosition());
 	}
 	
 	@Override

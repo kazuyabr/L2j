@@ -2,9 +2,6 @@ package net.sf.l2j.gameserver.geoengine.pathfinding;
 
 import net.sf.l2j.gameserver.geoengine.geodata.GeoLocation;
 
-/**
- * @author Hasha
- */
 public class Node
 {
 	// node coords and nswe flag

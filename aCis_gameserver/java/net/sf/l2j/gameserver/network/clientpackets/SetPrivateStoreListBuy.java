@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.Player.StoreType;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.actors.StoreType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.tradelist.TradeList;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PrivateStoreManageListBuy;
 import net.sf.l2j.gameserver.network.serverpackets.PrivateStoreMsgBuy;
@@ -44,7 +44,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		Player player = getClient().getActiveChar();
+		Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		

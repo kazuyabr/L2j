@@ -2,10 +2,11 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -26,20 +27,18 @@ public class SiegeFlag extends Npc
 		// Player clan became null during flag initialization ; don't bother setting clan flag.
 		if (_clan != null)
 			_clan.setFlag(this);
-		
-		setIsInvul(false);
 	}
 	
 	@Override
 	public boolean isAttackable()
 	{
-		return !isInvul();
+		return true;
 	}
 	
 	@Override
 	public boolean isAutoAttackable(Creature attacker)
 	{
-		return !isInvul();
+		return true;
 	}
 	
 	@Override
@@ -70,9 +69,13 @@ public class SiegeFlag extends Npc
 		else
 		{
 			if (isAutoAttackable(player) && Math.abs(player.getZ() - getZ()) < 100)
-				player.getAI().setIntention(CtrlIntention.ATTACK, this);
+				player.getAI().setIntention(IntentionType.ATTACK, this);
 			else
 			{
+				// Stop moving if we're already in interact range.
+				if (player.isMoving() || player.isInCombat())
+					player.getAI().setIntention(IntentionType.IDLE);
+				
 				// Rotate the player to face the instance
 				player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 				
@@ -80,6 +83,12 @@ public class SiegeFlag extends Npc
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 			}
 		}
+	}
+	
+	@Override
+	public boolean hasRandomAnimation()
+	{
+		return false;
 	}
 	
 	@Override
@@ -91,7 +100,7 @@ public class SiegeFlag extends Npc
 			_clan.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.BASE_UNDER_ATTACK));
 			
 			setScriptValue(1);
-			ThreadPool.schedule(() -> setScriptValue(0), 20000);
+			ThreadPool.schedule(() -> setScriptValue(0), 30000);
 		}
 		super.reduceCurrentHp(damage, attacker, skill);
 	}

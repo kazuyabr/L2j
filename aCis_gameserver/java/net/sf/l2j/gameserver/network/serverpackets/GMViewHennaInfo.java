@@ -1,25 +1,19 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import java.util.List;
+
+import net.sf.l2j.gameserver.enums.actors.HennaType;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.player.HennaList;
 import net.sf.l2j.gameserver.model.item.Henna;
 
 public class GMViewHennaInfo extends L2GameServerPacket
 {
-	private final Player _activeChar;
-	private final Henna[] _hennas = new Henna[3];
-	private int _count;
+	private final HennaList _hennaList;
 	
 	public GMViewHennaInfo(Player activeChar)
 	{
-		_activeChar = activeChar;
-		_count = 0;
-		
-		for (int i = 0; i < 3; i++)
-		{
-			Henna h = _activeChar.getHenna(i + 1);
-			if (h != null)
-				_hennas[_count++] = h;
-		}
+		_hennaList = activeChar.getHennaList();
 	}
 	
 	@Override
@@ -27,20 +21,21 @@ public class GMViewHennaInfo extends L2GameServerPacket
 	{
 		writeC(0xea);
 		
-		writeC(_activeChar.getHennaStatINT());
-		writeC(_activeChar.getHennaStatSTR());
-		writeC(_activeChar.getHennaStatCON());
-		writeC(_activeChar.getHennaStatMEN());
-		writeC(_activeChar.getHennaStatDEX());
-		writeC(_activeChar.getHennaStatWIT());
+		writeC(_hennaList.getStat(HennaType.INT));
+		writeC(_hennaList.getStat(HennaType.STR));
+		writeC(_hennaList.getStat(HennaType.CON));
+		writeC(_hennaList.getStat(HennaType.MEN));
+		writeC(_hennaList.getStat(HennaType.DEX));
+		writeC(_hennaList.getStat(HennaType.WIT));
 		
-		writeD(3); // slots?
+		writeD(_hennaList.getMaxSize());
 		
-		writeD(_count); // size
-		for (int i = 0; i < _count; i++)
+		final List<Henna> hennas = _hennaList.getHennas();
+		writeD(hennas.size());
+		for (Henna h : hennas)
 		{
-			writeD(_hennas[i].getSymbolId());
-			writeD(_hennas[i].canBeUsedBy(_activeChar) ? _hennas[i].getSymbolId() : 0);
+			writeD(h.getSymbolId());
+			writeD(_hennaList.canBeUsedBy(h) ? h.getSymbolId() : 0);
 		}
 	}
 }

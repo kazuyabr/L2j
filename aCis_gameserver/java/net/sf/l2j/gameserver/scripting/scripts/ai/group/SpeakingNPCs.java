@@ -1,9 +1,9 @@
 package net.sf.l2j.gameserver.scripting.scripts.ai.group;
 
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 /**
@@ -18,15 +18,6 @@ public class SpeakingNPCs extends L2AttackableAIScript
 {
 	private static final int[] NPC_IDS =
 	{
-		18212, //
-		18213, //
-		18214, //
-		18215, //
-		18216, // Archon of Halisha
-		18217, //
-		18218, //
-		18219, //
-		
 		27016, // Nerkas
 		27021, // Kirunak
 		27022, // Merkenis
@@ -71,27 +62,19 @@ public class SpeakingNPCs extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(NPC_IDS, EventType.ON_ATTACK, EventType.ON_KILL);
+		addEventIds(NPC_IDS, ScriptEventType.ON_ATTACK, ScriptEventType.ON_KILL);
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		if (npc.isScriptValue(1))
-			return super.onAttack(npc, attacker, damage, isPet, skill);
+			return super.onAttack(npc, attacker, damage, skill);
 		
 		String message = "";
 		
 		switch (npc.getNpcId())
 		{
-			case 18212:
-			case 18213:
-			case 18214:
-			case 18215:
-			case 18216:
-			case 18217:
-			case 18218:
-			case 18219:
 			case 27219:
 			case 27220:
 			case 27221:
@@ -141,24 +124,16 @@ public class SpeakingNPCs extends L2AttackableAIScript
 		npc.broadcastNpcSay(message);
 		npc.setScriptValue(1); // Make the mob speaks only once, else he will spam.
 		
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		String message = "";
 		
 		switch (npc.getNpcId())
 		{
-			case 18212:
-			case 18213:
-			case 18214:
-			case 18215:
-			case 18216:
-			case 18217:
-			case 18218:
-			case 18219:
 			case 27219:
 			case 27220:
 			case 27221:
@@ -207,6 +182,6 @@ public class SpeakingNPCs extends L2AttackableAIScript
 		
 		npc.broadcastNpcSay(message);
 		
-		return super.onKill(npc, player, isPet);
+		return super.onKill(npc, killer);
 	}
 }

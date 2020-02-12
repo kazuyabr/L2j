@@ -1,14 +1,11 @@
 package net.sf.l2j.gameserver.handler.usercommandhandlers;
 
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * Support for /olympiadstat command Added by kamy
- */
 public class OlympiadStat implements IUserCommandHandler
 {
 	private static final int[] COMMAND_IDS =

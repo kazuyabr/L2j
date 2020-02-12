@@ -2,10 +2,11 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
 import net.sf.l2j.gameserver.data.xml.TeleportLocationData;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.SealType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.location.TeleportLocation;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -27,15 +28,15 @@ public class DungeonGatekeeper extends Folk
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
 		
-		final CabalType sealAvariceOwner = SevenSigns.getInstance().getSealOwner(SealType.AVARICE);
-		final CabalType sealGnosisOwner = SevenSigns.getInstance().getSealOwner(SealType.GNOSIS);
-		final CabalType playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
-		final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+		final CabalType sealAvariceOwner = SevenSignsManager.getInstance().getSealOwner(SealType.AVARICE);
+		final CabalType sealGnosisOwner = SevenSignsManager.getInstance().getSealOwner(SealType.GNOSIS);
+		final CabalType playerCabal = SevenSignsManager.getInstance().getPlayerCabal(player.getObjectId());
+		final CabalType winningCabal = SevenSignsManager.getInstance().getCabalHighestScore();
 		
 		if (actualCommand.startsWith("necro"))
 		{
 			boolean canPort = true;
-			if (SevenSigns.getInstance().isSealValidationPeriod())
+			if (SevenSignsManager.getInstance().isSealValidationPeriod())
 			{
 				if (winningCabal == CabalType.DAWN && (playerCabal != CabalType.DAWN || sealAvariceOwner != CabalType.DAWN))
 				{
@@ -61,7 +62,7 @@ public class DungeonGatekeeper extends Folk
 			if (!canPort)
 			{
 				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-				html.setFile(SevenSigns.SEVEN_SIGNS_HTML_PATH + "necro_no.htm");
+				html.setFile(SevenSignsManager.SEVEN_SIGNS_HTML_PATH + "necro_no.htm");
 				player.sendPacket(html);
 			}
 			else
@@ -73,7 +74,7 @@ public class DungeonGatekeeper extends Folk
 		else if (actualCommand.startsWith("cata"))
 		{
 			boolean canPort = true;
-			if (SevenSigns.getInstance().isSealValidationPeriod())
+			if (SevenSignsManager.getInstance().isSealValidationPeriod())
 			{
 				if (winningCabal == CabalType.DAWN && (playerCabal != CabalType.DAWN || sealGnosisOwner != CabalType.DAWN))
 				{
@@ -99,7 +100,7 @@ public class DungeonGatekeeper extends Folk
 			if (!canPort)
 			{
 				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-				html.setFile(SevenSigns.SEVEN_SIGNS_HTML_PATH + "cata_no.htm");
+				html.setFile(SevenSignsManager.SEVEN_SIGNS_HTML_PATH + "cata_no.htm");
 				player.sendPacket(html);
 			}
 			else
@@ -135,16 +136,9 @@ public class DungeonGatekeeper extends Folk
 	
 	private static void doTeleport(Player player, int val)
 	{
-		TeleportLocation list = TeleportLocationData.getInstance().getTeleportLocation(val);
-		if (list != null)
-		{
-			if (player.isAlikeDead())
-				return;
-			
-			player.teleToLocation(list, 20);
-		}
-		else
-			_log.warning("No teleport destination with id:" + val);
+		final TeleportLocation list = TeleportLocationData.getInstance().getTeleportLocation(val);
+		if (list != null && !player.isAlikeDead())
+			player.teleportTo(list, 20);
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}

@@ -7,11 +7,12 @@ import java.util.StringTokenizer;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.SealType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -25,7 +26,9 @@ import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SiegeInfo;
 
 /**
- * Castle Chamberlains implementation, used for:
+ * An instance type extending {@link Merchant}, used for castle chamberlains.<br>
+ * <br>
+ * It handles following actions :
  * <ul>
  * <li>Tax rate control</li>
  * <li>Regional manor system control</li>
@@ -123,9 +126,9 @@ public class CastleChamberlain extends Merchant
 				html.replace("%clanname%", clan.getName());
 				html.replace("%clanleadername%", clan.getLeaderName());
 				html.replace("%castlename%", getCastle().getName());
-				html.replace("%ss_event%", SevenSigns.getInstance().getCurrentPeriod().getName());
+				html.replace("%ss_event%", SevenSignsManager.getInstance().getCurrentPeriod().getName());
 				
-				switch (SevenSigns.getInstance().getSealOwner(SealType.AVARICE))
+				switch (SevenSignsManager.getInstance().getSealOwner(SealType.AVARICE))
 				{
 					case NORMAL:
 						html.replace("%ss_avarice%", "Not in Possession");
@@ -140,7 +143,7 @@ public class CastleChamberlain extends Merchant
 						break;
 				}
 				
-				switch (SevenSigns.getInstance().getSealOwner(SealType.GNOSIS))
+				switch (SevenSignsManager.getInstance().getSealOwner(SealType.GNOSIS))
 				{
 					case NORMAL:
 						html.replace("%ss_gnosis%", "Not in Possession");
@@ -155,7 +158,7 @@ public class CastleChamberlain extends Merchant
 						break;
 				}
 				
-				switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+				switch (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE))
 				{
 					case NORMAL:
 						html.replace("%ss_strife%", "Not in Possession");
@@ -436,9 +439,9 @@ public class CastleChamberlain extends Merchant
 			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 			
 			// Player is registered as dusk, or we aren't in the good side of competition.
-			if (SevenSigns.getInstance().isSealValidationPeriod())
+			if (SevenSignsManager.getInstance().isSealValidationPeriod())
 			{
-				if (SevenSigns.getInstance().getPlayerCabal(player.getObjectId()) == CabalType.DUSK)
+				if (SevenSignsManager.getInstance().getPlayerCabal(player.getObjectId()) == CabalType.DUSK)
 					html.setFile("data/html/chamberlain/not-dawn-or-event.htm");
 				// We already reached the tickets limit.
 				else if (getCastle().getLeftCertificates() == 0)
@@ -465,9 +468,9 @@ public class CastleChamberlain extends Merchant
 			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 			
 			// Player is registered as dusk, or we aren't in the good side of competition.
-			if (SevenSigns.getInstance().isSealValidationPeriod())
+			if (SevenSignsManager.getInstance().isSealValidationPeriod())
 			{
-				if (SevenSigns.getInstance().getPlayerCabal(player.getObjectId()) == CabalType.DUSK)
+				if (SevenSignsManager.getInstance().getPlayerCabal(player.getObjectId()) == CabalType.DUSK)
 					html.setFile("data/html/chamberlain/not-dawn-or-event.htm");
 				// We already reached the tickets limit.
 				else if (getCastle().getLeftCertificates() == 0)
@@ -760,7 +763,7 @@ public class CastleChamberlain extends Merchant
 				break;
 		}
 		
-		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+		switch (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE))
 		{
 			case DUSK:
 				price *= 3;
@@ -802,7 +805,7 @@ public class CastleChamberlain extends Merchant
 				break;
 		}
 		
-		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+		switch (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE))
 		{
 			case DUSK:
 				price *= 3;

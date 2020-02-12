@@ -1,5 +1,6 @@
 package net.sf.l2j.gameserver.model.actor.stat;
 
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
@@ -8,7 +9,6 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.skills.Stats;
 
 public class PetStat extends SummonStat
 {
@@ -64,7 +64,7 @@ public class PetStat extends SummonStat
 	@Override
 	public void setLevel(byte value)
 	{
-		getActiveChar().setPetData(getActiveChar().getTemplate().getPetDataEntry(value));
+		getActiveChar().setPetData(value);
 		
 		super.setLevel(value); // Set level.
 		

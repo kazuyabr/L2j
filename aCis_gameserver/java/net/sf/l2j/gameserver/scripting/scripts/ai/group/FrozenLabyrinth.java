@@ -1,12 +1,9 @@
 package net.sf.l2j.gameserver.scripting.scripts.ai.group;
 
-import net.sf.l2j.commons.random.Rnd;
-
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 /**
@@ -28,31 +25,39 @@ public final class FrozenLabyrinth extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addSkillSeeId(PRONGHORN, FROST_BUFFALO);
+		addAttackId(PRONGHORN, FROST_BUFFALO);
 	}
 	
 	@Override
-	public String onSkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		// Offensive physical skill casted on npc.
-		if (skill != null && !skill.isMagic() && skill.isOffensive() && targets[0] == npc)
+		if (skill != null && !skill.isMagic())
 		{
 			int spawnId = LOST_BUFFALO;
 			if (npc.getNpcId() == PRONGHORN)
 				spawnId = PRONGHORN_SPIRIT;
 			
-			int diff = 0;
-			for (int i = 0; i < Rnd.get(6, 8); i++)
-			{
-				int x = diff < 60 ? npc.getX() + diff : npc.getX();
-				int y = diff >= 60 ? npc.getY() + (diff - 40) : npc.getY();
-				
-				final Attackable monster = (Attackable) addSpawn(spawnId, x, y, npc.getZ(), npc.getHeading(), false, 120000, false);
-				attack(monster, caster);
-				diff += 20;
-			}
+			Attackable monster = (Attackable) addSpawn(spawnId, npc, false, 120000, false);
+			attack(monster, attacker);
+			
+			monster = (Attackable) addSpawn(spawnId, npc.getX() + 20, npc.getY(), npc.getZ(), npc.getHeading(), false, 120000, false);
+			attack(monster, attacker);
+			
+			monster = (Attackable) addSpawn(spawnId, npc.getX() + 40, npc.getY(), npc.getZ(), npc.getHeading(), false, 120000, false);
+			attack(monster, attacker);
+			
+			monster = (Attackable) addSpawn(spawnId, npc.getX(), npc.getY() + 20, npc.getZ(), npc.getHeading(), false, 120000, false);
+			attack(monster, attacker);
+			
+			monster = (Attackable) addSpawn(spawnId, npc.getX(), npc.getY() + 40, npc.getZ(), npc.getHeading(), false, 120000, false);
+			attack(monster, attacker);
+			
+			monster = (Attackable) addSpawn(spawnId, npc.getX(), npc.getY() + 60, npc.getZ(), npc.getHeading(), false, 120000, false);
+			attack(monster, attacker);
+			
 			npc.deleteMe();
 		}
-		return super.onSkillSee(npc, caster, skill, targets, isPet);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 }

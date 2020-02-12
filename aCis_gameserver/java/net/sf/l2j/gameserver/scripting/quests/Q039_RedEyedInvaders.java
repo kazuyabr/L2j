@@ -3,8 +3,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -174,14 +175,14 @@ public class Q039_RedEyedInvaders extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
+		final Player player = killer.getActingPlayer();
 		final int npcId = npc.getNpcId();
 		
-		Player partyMember = getRandomPartyMember(player, npc, "2");
-		if (partyMember != null && npcId != ARANEID)
+		QuestState st = getRandomPartyMember(player, npc, "2");
+		if (st != null && npcId != ARANEID)
 		{
-			final QuestState st = partyMember.getQuestState(qn);
 			final int[] list = FIRST_DP.get(npcId);
 			
 			if (st.dropItems(list[0], 1, 100, 500000) && st.getQuestItemsCount(list[1]) == 100)
@@ -189,10 +190,9 @@ public class Q039_RedEyedInvaders extends Quest
 		}
 		else
 		{
-			partyMember = getRandomPartyMember(player, npc, "4");
-			if (partyMember != null && npcId != MAILLE_LIZARDMAN)
+			st = getRandomPartyMember(player, npc, "4");
+			if (st != null && npcId != MAILLE_LIZARDMAN)
 			{
-				final QuestState st = partyMember.getQuestState(qn);
 				final int[] list = SECOND_DP.get(npcId);
 				
 				if (st.dropItems(list[0], 1, 30, list[2]) && st.getQuestItemsCount(list[1]) == 30)

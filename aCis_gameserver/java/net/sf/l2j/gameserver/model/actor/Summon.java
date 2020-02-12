@@ -4,29 +4,29 @@ import java.util.List;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.TeamType;
+import net.sf.l2j.gameserver.enums.items.ActionType;
+import net.sf.l2j.gameserver.enums.items.ShotType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.actor.ai.type.CreatureAI;
 import net.sf.l2j.gameserver.model.actor.ai.type.SummonAI;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
+import net.sf.l2j.gameserver.model.actor.player.Experience;
 import net.sf.l2j.gameserver.model.actor.stat.SummonStat;
 import net.sf.l2j.gameserver.model.actor.status.SummonStatus;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.SkillType;
-import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
-import net.sf.l2j.gameserver.model.item.type.ActionType;
 import net.sf.l2j.gameserver.model.itemcontainer.PetInventory;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -42,7 +42,6 @@ import net.sf.l2j.gameserver.network.serverpackets.PetStatusShow;
 import net.sf.l2j.gameserver.network.serverpackets.PetStatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.RelationChanged;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.network.serverpackets.TeleportToLocation;
 
 public abstract class Summon extends Playable
 {
@@ -136,14 +135,18 @@ public abstract class Summon extends Playable
 			player.setTarget(this);
 		else if (player == _owner)
 		{
-			// Calculate the distance between the Player and the L2Npc
+			// Calculate the distance between the Player and the Npc.
 			if (!canInteract(player))
 			{
 				// Notify the Player AI with INTERACT
-				player.getAI().setIntention(CtrlIntention.INTERACT, this);
+				player.getAI().setIntention(IntentionType.INTERACT, this);
 			}
 			else
 			{
+				// Stop moving if we're already in interact range.
+				if (player.isMoving() || player.isInCombat())
+					player.getAI().setIntention(IntentionType.IDLE);
+				
 				// Rotate the player to face the instance
 				player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 				
@@ -159,7 +162,7 @@ public abstract class Summon extends Playable
 			{
 				if (GeoEngine.getInstance().canSeeTarget(player, this))
 				{
-					player.getAI().setIntention(CtrlIntention.ATTACK, this);
+					player.getAI().setIntention(IntentionType.ATTACK, this);
 					player.onActionRequest();
 				}
 			}
@@ -172,7 +175,7 @@ public abstract class Summon extends Playable
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 				
 				if (GeoEngine.getInstance().canSeeTarget(player, this))
-					player.getAI().setIntention(CtrlIntention.FOLLOW, this);
+					player.getAI().setIntention(IntentionType.FOLLOW, this);
 			}
 		}
 	}
@@ -189,7 +192,7 @@ public abstract class Summon extends Playable
 			html.replace("%exp%", getStat().getExp());
 			html.replace("%owner%", " <a action=\"bypass -h admin_character_info " + getActingPlayer().getName() + "\">" + getActingPlayer().getName() + "</a>");
 			html.replace("%class%", getClass().getSimpleName());
-			html.replace("%ai%", hasAI() ? getAI().getIntention().name() : "NULL");
+			html.replace("%ai%", hasAI() ? getAI().getDesire().getIntention().name() : "NULL");
 			html.replace("%hp%", (int) getStatus().getCurrentHp() + "/" + getStat().getMaxHp());
 			html.replace("%mp%", (int) getStatus().getCurrentMp() + "/" + getStat().getMaxMp());
 			html.replace("%karma%", getKarma());
@@ -232,18 +235,18 @@ public abstract class Summon extends Playable
 	@Override
 	public final int getKarma()
 	{
-		return getOwner() != null ? getOwner().getKarma() : 0;
+		return (getOwner() != null) ? getOwner().getKarma() : 0;
 	}
 	
 	@Override
 	public final byte getPvpFlag()
 	{
-		return getOwner() != null ? getOwner().getPvpFlag() : 0;
+		return (getOwner() != null) ? getOwner().getPvpFlag() : 0;
 	}
 	
-	public final int getTeam()
+	public final TeamType getTeam()
 	{
-		return getOwner() != null ? getOwner().getTeam() : 0;
+		return (getOwner() != null) ? getOwner().getTeam() : TeamType.NONE;
 	}
 	
 	public final Player getOwner()
@@ -299,6 +302,9 @@ public abstract class Summon extends Playable
 	@Override
 	public void onDecay()
 	{
+		if (_owner.getSummon() != this)
+			return;
+		
 		deleteMe(_owner);
 	}
 	
@@ -311,10 +317,11 @@ public abstract class Summon extends Playable
 	
 	public void deleteMe(Player owner)
 	{
+		owner.setSummon(null);
 		owner.sendPacket(new PetDelete(getSummonType(), getObjectId()));
 		
 		decayMe();
-		owner.setPet(null);
+		
 		super.deleteMe();
 	}
 	
@@ -324,24 +331,18 @@ public abstract class Summon extends Playable
 		{
 			abortCast();
 			abortAttack();
+			setTarget(null);
 			
 			stopHpMpRegeneration();
-			getAI().stopFollow();
-			
-			owner.sendPacket(new PetDelete(getSummonType(), getObjectId()));
-			
-			store();
-			owner.setPet(null);
-			
-			// Stop AI tasks
-			if (hasAI())
-				getAI().stopAITask();
-			
 			stopAllEffects();
+			store();
+			
+			owner.setSummon(null);
+			owner.sendPacket(new PetDelete(getSummonType(), getObjectId()));
 			
 			decayMe();
 			
-			setTarget(null);
+			super.deleteMe();
 			
 			// Disable beastshots
 			for (int itemId : owner.getAutoSoulShot())
@@ -366,9 +367,9 @@ public abstract class Summon extends Playable
 	{
 		_follow = state;
 		if (_follow)
-			getAI().setIntention(CtrlIntention.FOLLOW, getOwner());
+			getAI().setIntention(IntentionType.FOLLOW, getOwner());
 		else
-			getAI().setIntention(CtrlIntention.IDLE, null);
+			getAI().setIntention(IntentionType.IDLE, null);
 	}
 	
 	public boolean getFollowStatus()
@@ -589,7 +590,7 @@ public abstract class Summon extends Playable
 		}
 		
 		// Notify the AI with CAST and target
-		getAI().setIntention(CtrlIntention.CAST, skill, target);
+		getAI().setIntention(IntentionType.CAST, skill, target);
 		return true;
 	}
 	
@@ -730,13 +731,6 @@ public abstract class Summon extends Playable
 		return 0;
 	}
 	
-	@Override
-	public void onTeleported()
-	{
-		super.onTeleported();
-		sendPacket(new TeleportToLocation(this, getPosition().getX(), getPosition().getY(), getPosition().getZ()));
-	}
-	
 	public void updateAndBroadcastStatusAndInfos(int val)
 	{
 		sendPacket(new PetInfo(this, val));
@@ -837,14 +831,14 @@ public abstract class Summon extends Playable
 			{
 				if (magic && item.getItem().getDefaultAction() == ActionType.summon_spiritshot)
 				{
-					IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getEtcItem());
+					final IItemHandler handler = ItemHandler.getInstance().getHandler(item.getEtcItem());
 					if (handler != null)
 						handler.useItem(getOwner(), item, false);
 				}
 				
 				if (physical && item.getItem().getDefaultAction() == ActionType.summon_soulshot)
 				{
-					IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getEtcItem());
+					final IItemHandler handler = ItemHandler.getInstance().getHandler(item.getEtcItem());
 					if (handler != null)
 						handler.useItem(getOwner(), item, false);
 				}
@@ -863,7 +857,7 @@ public abstract class Summon extends Playable
 				if (skill.getId() == skillId)
 					return skill.getLevel();
 		}
-		return -1;
+		return 0;
 	}
 	
 	@Override

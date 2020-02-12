@@ -5,17 +5,19 @@ import java.util.Map;
 import net.sf.l2j.commons.math.MathUtil;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.RewardInfo;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.Experience;
+import net.sf.l2j.gameserver.model.actor.npc.RewardInfo;
+import net.sf.l2j.gameserver.model.actor.player.Experience;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.pledge.Clan;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
-import net.sf.l2j.gameserver.model.zone.type.L2SwampZone;
+import net.sf.l2j.gameserver.model.pledge.ClanMember;
+import net.sf.l2j.gameserver.model.zone.type.SwampZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
@@ -23,7 +25,6 @@ import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.network.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.scripting.QuestState;
-import net.sf.l2j.gameserver.skills.Stats;
 
 public class PlayerStat extends PlayableStat
 {
@@ -53,7 +54,7 @@ public class PlayerStat extends PlayableStat
 	/**
 	 * Add Experience and SP rewards to the Player, remove its Karma (if necessary) and Launch increase level task.
 	 * <ul>
-	 * <li>Remove Karma when the player kills L2MonsterInstance</li>
+	 * <li>Remove Karma when the player kills Monster</li>
 	 * <li>Send StatusUpdate to the Player</li>
 	 * <li>Send a Server->Client System Message to the Player</li>
 	 * <li>If the Player increases its level, send SocialAction (broadcast)</li>
@@ -86,7 +87,7 @@ public class PlayerStat extends PlayableStat
 	/**
 	 * Add Experience and SP rewards to the Player, remove its Karma (if necessary) and Launch increase level task.
 	 * <ul>
-	 * <li>Remove Karma when the player kills L2MonsterInstance</li>
+	 * <li>Remove Karma when the player kills Monster</li>
 	 * <li>Send StatusUpdate to the Player</li>
 	 * <li>Send a Server->Client System Message to the Player</li>
 	 * <li>If the Player increases its level, send SocialAction (broadcast)</li>
@@ -107,7 +108,7 @@ public class PlayerStat extends PlayableStat
 		// If this player has a pet, give the xp to the pet now (if any).
 		if (getActiveChar().hasPet())
 		{
-			final Pet pet = (Pet) getActiveChar().getPet();
+			final Pet pet = (Pet) getActiveChar().getSummon();
 			if (pet.getStat().getExp() <= (pet.getTemplate().getPetDataEntry(81).getMaxExp() + 10000) && !pet.isDead())
 			{
 				if (MathUtil.checkIfInShortRadius(Config.PARTY_RANGE, pet, getActiveChar(), true))
@@ -195,13 +196,16 @@ public class PlayerStat extends PlayableStat
 			getActiveChar().sendPacket(SystemMessageId.YOU_INCREASED_YOUR_LEVEL);
 		}
 		
-		// Give Expertise skill of this level
-		getActiveChar().rewardSkills();
+		// Refresh player skills (autoGet skills or all available skills if Config.AUTO_LEARN_SKILLS is activated).
+		getActiveChar().giveSkills();
 		
 		final Clan clan = getActiveChar().getClan();
 		if (clan != null)
 		{
-			clan.updateClanMember(getActiveChar());
+			final ClanMember member = clan.getClanMember(getActiveChar().getObjectId());
+			if (member != null)
+				member.refreshLevel();
+			
 			clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(getActiveChar()));
 		}
 		
@@ -390,7 +394,7 @@ public class PlayerStat extends PlayableStat
 		// apply zone modifier before final calculation
 		if (getActiveChar().isInsideZone(ZoneId.SWAMP))
 		{
-			final L2SwampZone zone = ZoneManager.getInstance().getZone(getActiveChar(), L2SwampZone.class);
+			final SwampZone zone = ZoneManager.getInstance().getZone(getActiveChar(), SwampZone.class);
 			if (zone != null)
 				baseValue *= (100 + zone.getMoveBonus()) / 100.0;
 		}
@@ -457,7 +461,10 @@ public class PlayerStat extends PlayableStat
 	@Override
 	public int getPAtkSpd()
 	{
-		if (getActiveChar().isMounted())
+		if (getActiveChar().isFlying())
+			return (getActiveChar().checkFoodState(getActiveChar().getPetTemplate().getHungryLimit())) ? 150 : 300;
+		
+		if (getActiveChar().isRiding())
 		{
 			int base = getActiveChar().getPetDataEntry().getMountAtkSpd();
 			

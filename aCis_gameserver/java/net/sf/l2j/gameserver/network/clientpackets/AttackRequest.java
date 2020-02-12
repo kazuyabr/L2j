@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 
@@ -13,7 +13,7 @@ public final class AttackRequest extends L2GameClientPacket
 	@SuppressWarnings("unused")
 	private int _originX, _originY, _originZ;
 	@SuppressWarnings("unused")
-	private int _attackId;
+	private boolean _isShiftAction;
 	
 	@Override
 	protected void readImpl()
@@ -22,13 +22,13 @@ public final class AttackRequest extends L2GameClientPacket
 		_originX = readD();
 		_originY = readD();
 		_originZ = readD();
-		_attackId = readC(); // 0 for simple click 1 for shift-click
+		_isShiftAction = readC() != 0;
 	}
 	
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -47,7 +47,10 @@ public final class AttackRequest extends L2GameClientPacket
 			target = World.getInstance().getObject(_objectId);
 		
 		if (target == null)
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
 		
 		if (activeChar.getTarget() != target)
 			target.onAction(activeChar);

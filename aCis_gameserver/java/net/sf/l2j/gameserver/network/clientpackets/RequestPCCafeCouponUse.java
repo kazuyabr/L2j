@@ -1,11 +1,8 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-/**
- * Format: (ch) S
- * @author -Wooden-
- */
 public final class RequestPCCafeCouponUse extends L2GameClientPacket
 {
+	@SuppressWarnings("unused")
 	private String _str;
 	
 	@Override
@@ -17,7 +14,5 @@ public final class RequestPCCafeCouponUse extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// TODO : implement it
-		_log.info("C5: RequestPCCafeCouponUse: " + _str);
 	}
 }

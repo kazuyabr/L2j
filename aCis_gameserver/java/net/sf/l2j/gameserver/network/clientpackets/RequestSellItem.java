@@ -1,12 +1,12 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.cache.HtmCache;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Fisherman;
 import net.sf.l2j.gameserver.model.actor.instance.MercenaryManagerNpc;
 import net.sf.l2j.gameserver.model.actor.instance.Merchant;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.serverpackets.ItemList;
@@ -51,7 +51,7 @@ public final class RequestSellItem extends L2GameClientPacket
 		if (_items == null)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		

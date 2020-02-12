@@ -3,18 +3,15 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.items.ShotType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
-/**
- * @author DS
- */
 public class Cancel implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
@@ -120,7 +117,7 @@ public class Cancel implements ISkillHandler
 		double rate = (2 * diffLevel + baseRate + effectPeriod / 120) * vuln;
 		
 		if (Config.DEVELOPER)
-			_log.info("calcCancelSuccess(): diffLevel:" + diffLevel + ", baseRate:" + baseRate + ", vuln:" + vuln + ", total:" + rate);
+			LOGGER.info("calcCancelSuccess(): diffLevel:{}, baseRate:{}, vuln:{}, total:{}.", diffLevel, baseRate, vuln, rate);
 		
 		if (rate < minRate)
 			rate = minRate;

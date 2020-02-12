@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.ClanWarehouse;
@@ -49,7 +49,7 @@ public final class SendWarehouseWithdrawList extends L2GameClientPacket
 		if (_items == null)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -70,8 +70,8 @@ public final class SendWarehouseWithdrawList extends L2GameClientPacket
 		if (warehouse == null)
 			return;
 		
-		final Npc manager = player.getCurrentFolkNPC();
-		if (manager == null || !manager.isWarehouse() || !manager.canInteract(player))
+		final Folk folk = player.getCurrentFolk();
+		if (folk == null || !folk.isWarehouse() || !folk.canInteract(player))
 			return;
 		
 		if (!(warehouse instanceof PcWarehouse) && !player.getAccessLevel().allowTransaction())
@@ -137,17 +137,11 @@ public final class SendWarehouseWithdrawList extends L2GameClientPacket
 		{
 			ItemInstance oldItem = warehouse.getItemByObjectId(i.getId());
 			if (oldItem == null || oldItem.getCount() < i.getValue())
-			{
-				_log.warning("Error withdrawing a warehouse object for " + player.getName() + " (olditem == null)");
 				return;
-			}
 			
-			final ItemInstance newItem = warehouse.transferItem(warehouse.getName(), i.getId(), i.getValue(), player.getInventory(), player, manager);
+			final ItemInstance newItem = warehouse.transferItem(warehouse.getName(), i.getId(), i.getValue(), player.getInventory(), player, folk);
 			if (newItem == null)
-			{
-				_log.warning("Error withdrawing a warehouse object for " + player.getName() + " (newitem == null)");
 				return;
-			}
 			
 			if (newItem.getCount() > i.getValue())
 				playerIU.addModifiedItem(newItem);

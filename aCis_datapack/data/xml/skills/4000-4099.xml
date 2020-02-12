@@ -103,7 +103,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="fireRes" val="#res" order="0x40" />
+			<addMul stat="fireRes" val="#res" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4010" levels="5" name="Resist Water">
@@ -112,7 +112,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="waterRes" val="#res" order="0x40" />
+			<addMul stat="waterRes" val="#res" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4011" levels="5" name="Resist Wind">
@@ -121,7 +121,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="windRes" val="#res" order="0x40" />
+			<addMul stat="windRes" val="#res" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4012" levels="5" name="Resist Earth">
@@ -130,7 +130,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="earthRes" val="#res" order="0x40" />
+			<addMul stat="earthRes" val="#res" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4013" levels="1" name="Resistance To Fire, Vulnerable To Water">
@@ -138,8 +138,8 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="fireRes" val="10" order="0x40" />
-			<sub stat="waterRes" val="10" order="0x40" />
+			<addMul stat="fireRes" val="10" order="0x40" />
+			<subDiv stat="waterRes" val="10" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4014" levels="1" name="Resistance To Water, Vulnerable To Fire">
@@ -147,8 +147,8 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="waterRes" val="10" order="0x40" />
-			<sub stat="fireRes" val="10" order="0x40" />
+			<addMul stat="waterRes" val="10" order="0x40" />
+			<subDiv stat="fireRes" val="10" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4015" levels="1" name="Resistance To Wind, Vulnerable To Earth">
@@ -156,8 +156,8 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="windRes" val="10" order="0x40" />
-			<sub stat="earthRes" val="10" order="0x40" />
+			<addMul stat="windRes" val="10" order="0x40" />
+			<subDiv stat="earthRes" val="10" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4016" levels="1" name="Resistance To Earth, Vulnerable To Wind">
@@ -165,8 +165,8 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />
 		<for>
-			<add stat="earthRes" val="10" order="0x40" />
-			<sub stat="windRes" val="10" order="0x40" />
+			<addMul stat="earthRes" val="10" order="0x40" />
+			<subDiv stat="windRes" val="10" order="0x40" />
 		</for>
 	</skill>
 	<skill id="4017" levels="1" name="Queen Ant Brandish">
@@ -233,7 +233,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<sub stat="fireRes" val="50" order="0x40" />
+			<subDiv stat="fireRes" val="50" order="0x40" />
 			<mul order="0x30" stat="bowWpnVuln" val="0.2" />
 		</for>
 	</skill>
@@ -860,7 +860,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<sub stat="fireRes" val="50" order="0x40" />
+			<subDiv stat="fireRes" val="50" order="0x40" />
 			<mul order="0x30" stat="bowWpnVuln" val="0.2" />
 		</for>
 	</skill>

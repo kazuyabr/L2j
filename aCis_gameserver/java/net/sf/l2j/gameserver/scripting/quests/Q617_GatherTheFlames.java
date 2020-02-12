@@ -6,8 +6,9 @@ import java.util.Map;
 import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -55,7 +56,7 @@ public class Q617_GatherTheFlames extends Quest
 	}
 	
 	// Rewards
-	private static final int REWARD[] =
+	private static final int REWARDS[] =
 	{
 		6881,
 		6883,
@@ -102,7 +103,7 @@ public class Q617_GatherTheFlames extends Quest
 			{
 				htmltext = "31539-07.htm";
 				st.takeItems(TORCH, 1000);
-				st.giveItems(REWARD[Rnd.get(REWARD.length)], 1);
+				st.giveItems(Rnd.get(REWARDS), 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("31539-08.htm"))
@@ -161,13 +162,15 @@ public class Q617_GatherTheFlames extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
 			return null;
 		
-		partyMember.getQuestState(qn).dropItems(TORCH, 1, 0, CHANCES.get(npc.getNpcId()));
+		st.dropItems(TORCH, 1, 0, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}

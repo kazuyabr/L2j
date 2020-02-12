@@ -23,39 +23,21 @@ public class L2DatabaseFactory
 		try
 		{
 			_source = new ComboPooledDataSource();
-			_source.setAutoCommitOnClose(true);
 			
+			_source.setAutoCommitOnClose(true);
 			_source.setInitialPoolSize(10);
 			_source.setMinPoolSize(10);
 			_source.setMaxPoolSize(Math.max(10, Config.DATABASE_MAX_CONNECTIONS));
-			
 			_source.setAcquireRetryAttempts(0); // try to obtain connections indefinitely (0 = never quit)
 			_source.setAcquireRetryDelay(500); // 500 miliseconds wait before try to acquire connection again
 			_source.setCheckoutTimeout(0); // 0 = wait indefinitely for new connection
 			_source.setAcquireIncrement(5); // if pool is exhausted, get 5 more connections at a time
-			// cause there is a "long" delay on acquire connection
-			// so taking more than one connection at once will make connection pooling
-			// more effective.
-			
-			// this "connection_test_table" is automatically created if not already there
-			_source.setAutomaticTestTable("connection_test_table");
 			_source.setTestConnectionOnCheckin(false);
-			
-			// testing OnCheckin used with IdleConnectionTestPeriod is faster than testing on checkout
-			
 			_source.setIdleConnectionTestPeriod(3600); // test idle connection every 60 sec
 			_source.setMaxIdleTime(0); // idle connections never expire
-			
-			// enables statement caching, there is a "semi-bug" in c3p0 0.9.0 but in 0.9.0.2 and later it's fixed
 			_source.setMaxStatementsPerConnection(100);
-			
 			_source.setBreakAfterAcquireFailure(false); // never fail if any way possible
-			// setting this to true will make
-			// c3p0 "crash" and refuse to work
-			// till restart thus making acquire
-			// errors "FATAL" ... we don't want that
-			// it should be possible to recover
-			_source.setDriverClass("com.mysql.jdbc.Driver");
+			_source.setDriverClass("com.mysql.cj.jdbc.Driver");
 			_source.setJdbcUrl(Config.DATABASE_URL);
 			_source.setUser(Config.DATABASE_LOGIN);
 			_source.setPassword(Config.DATABASE_PASSWORD);

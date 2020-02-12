@@ -2,28 +2,33 @@ package net.sf.l2j.loginserver.network.gameserverpackets;
 
 import java.security.GeneralSecurityException;
 import java.security.interfaces.RSAPrivateKey;
-import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.loginserver.network.clientpackets.ClientBasePacket;
 
 public class BlowFishKey extends ClientBasePacket
 {
+	private static final CLogger LOGGER = new CLogger(BlowFishKey.class.getName());
+	
 	byte[] _key;
-	protected static final Logger _log = Logger.getLogger(BlowFishKey.class.getName());
 	
 	public BlowFishKey(byte[] decrypt, RSAPrivateKey privateKey)
 	{
 		super(decrypt);
+		
 		int size = readD();
 		byte[] tempKey = readB(size);
+		
 		try
 		{
-			byte[] tempDecryptKey;
-			Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
+			final Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
 			rsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
-			tempDecryptKey = rsaCipher.doFinal(tempKey);
+			
+			final byte[] tempDecryptKey = rsaCipher.doFinal(tempKey);
+			
 			// there are nulls before the key we must remove them
 			int i = 0;
 			int len = tempDecryptKey.length;
@@ -37,8 +42,7 @@ public class BlowFishKey extends ClientBasePacket
 		}
 		catch (GeneralSecurityException e)
 		{
-			_log.severe("Error While decrypting blowfish key (RSA)");
-			e.printStackTrace();
+			LOGGER.error("Couldn't decrypt blowfish key (RSA)", e);
 		}
 	}
 	

@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.network.serverpackets;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
 import net.sf.l2j.gameserver.model.manor.CropProcure;

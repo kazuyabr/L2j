@@ -1,11 +1,8 @@
 package net.sf.l2j.loginserver.network.clientpackets;
 
-import net.sf.l2j.loginserver.network.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.loginserver.network.serverpackets.LoginFail;
 import net.sf.l2j.loginserver.network.serverpackets.ServerList;
 
-/**
- * Format: ddc d: fist part of session id d: second part of session id c: ?
- */
 public class RequestServerList extends L2LoginClientPacket
 {
 	private int _skey1;
@@ -45,6 +42,6 @@ public class RequestServerList extends L2LoginClientPacket
 		if (getClient().getSessionKey().checkLoginPair(_skey1, _skey2))
 			getClient().sendPacket(new ServerList(getClient()));
 		else
-			getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
+			getClient().close(LoginFail.REASON_ACCESS_FAILED);
 	}
 }

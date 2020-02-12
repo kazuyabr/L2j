@@ -1,32 +1,33 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
+import net.sf.l2j.gameserver.enums.actors.StoreType;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.Player.StoreType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.RecipeShopItemInfo;
 
 public final class RequestRecipeShopMakeInfo extends L2GameClientPacket
 {
-	private int _playerObjectId, _recipeId;
+	private int _objectId;
+	private int _recipeId;
 	
 	@Override
 	protected void readImpl()
 	{
-		_playerObjectId = readD();
+		_objectId = readD();
 		_recipeId = readD();
 	}
 	
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
-		final Player shop = World.getInstance().getPlayer(_playerObjectId);
-		if (shop == null || shop.getStoreType() != StoreType.MANUFACTURE)
+		final Player manufacturer = World.getInstance().getPlayer(_objectId);
+		if (manufacturer == null || manufacturer.getStoreType() != StoreType.MANUFACTURE)
 			return;
 		
-		player.sendPacket(new RecipeShopItemInfo(shop, _recipeId));
+		player.sendPacket(new RecipeShopItemInfo(manufacturer, _recipeId));
 	}
 }

@@ -5,8 +5,9 @@ import java.util.Map;
 
 import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -331,13 +332,15 @@ public class Q234_FatesWhisper extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		QuestState st = checkPlayerCondition(attacker, npc, "cond", "7");
+		final Player player = attacker.getActingPlayer();
+		
+		final QuestState st = checkPlayerCondition(player, npc, "cond", "7");
 		if (st == null)
 			return null;
 		
-		if (attacker.getActiveWeaponItem() != null && attacker.getActiveWeaponItem().getItemId() == PIPETTE_KNIFE && !st.hasQuestItems(RED_PIPETTE_KNIFE))
+		if (player.getActiveWeaponItem() != null && player.getActiveWeaponItem().getItemId() == PIPETTE_KNIFE && !st.hasQuestItems(RED_PIPETTE_KNIFE))
 		{
 			st.playSound(QuestState.SOUND_ITEMGET);
 			st.takeItems(PIPETTE_KNIFE, 1);
@@ -348,7 +351,7 @@ public class Q234_FatesWhisper extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		addSpawn(CHEST_SPAWN.get(npc.getNpcId()), npc, true, 120000, false);
 		

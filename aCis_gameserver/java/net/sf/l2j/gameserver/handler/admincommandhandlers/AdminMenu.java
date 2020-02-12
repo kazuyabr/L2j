@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class AdminMenu implements IAdminCommandHandler
 {
@@ -44,7 +44,7 @@ public class AdminMenu implements IAdminCommandHandler
 		if (player != null)
 		{
 			player.sendMessage("A GM is teleporting you.");
-			player.teleToLocation(x, y, z, 0);
+			player.teleportTo(x, y, z, 0);
 		}
 		showMainPage(activeChar);
 	}

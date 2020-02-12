@@ -3,10 +3,10 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.enums.items.CrystalType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
-import net.sf.l2j.gameserver.model.item.type.CrystalType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public abstract class AbstractRefinePacket extends L2GameClientPacket

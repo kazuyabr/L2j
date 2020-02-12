@@ -4,13 +4,13 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.data.MapRegionTable;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.data.xml.MapRegionData;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.zone.L2ZoneType;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.zone.ZoneType;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 
 public class AdminZone implements IAdminCommandHandler
@@ -39,7 +39,7 @@ public class AdminZone implements IAdminCommandHandler
 				String next = st.nextToken();
 				if (next.equalsIgnoreCase("all"))
 				{
-					for (L2ZoneType zone : ZoneManager.getInstance().getZones(activeChar))
+					for (ZoneType zone : ZoneManager.getInstance().getZones(activeChar))
 						zone.visualizeZone(activeChar.getZ());
 					
 					showHtml(activeChar);
@@ -64,48 +64,40 @@ public class AdminZone implements IAdminCommandHandler
 		return true;
 	}
 	
-	private static void showHtml(Player activeChar)
+	private static void showHtml(Player player)
 	{
-		int x = activeChar.getX();
-		int y = activeChar.getY();
+		int x = player.getX();
+		int y = player.getY();
 		int rx = (x - World.WORLD_X_MIN) / World.TILE_SIZE + World.TILE_X_MIN;
 		int ry = (y - World.WORLD_Y_MIN) / World.TILE_SIZE + World.TILE_Y_MIN;
 		
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile("data/html/admin/zone.htm");
 		
-		html.replace("%MAPREGION%", "[x:" + MapRegionTable.getMapRegionX(x) + " y:" + MapRegionTable.getMapRegionY(y) + "]");
+		html.replace("%MAPREGION%", "[x:" + MapRegionData.getMapRegionX(x) + " y:" + MapRegionData.getMapRegionY(y) + "]");
 		html.replace("%GEOREGION%", rx + "_" + ry);
-		html.replace("%CLOSESTTOWN%", MapRegionTable.getInstance().getClosestTownName(x, y));
-		html.replace("%CURRENTLOC%", x + ", " + y + ", " + activeChar.getZ());
-		
-		html.replace("%PVP%", (activeChar.isInsideZone(ZoneId.PVP) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%PEACE%", (activeChar.isInsideZone(ZoneId.PEACE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%SIEGE%", (activeChar.isInsideZone(ZoneId.SIEGE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%MOTHERTREE%", (activeChar.isInsideZone(ZoneId.MOTHER_TREE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%CLANHALL%", (activeChar.isInsideZone(ZoneId.CLAN_HALL) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%NOLANDING%", (activeChar.isInsideZone(ZoneId.NO_LANDING) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%WATER%", (activeChar.isInsideZone(ZoneId.WATER) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%JAIL%", (activeChar.isInsideZone(ZoneId.JAIL) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%MONSTERTRACK%", (activeChar.isInsideZone(ZoneId.MONSTER_TRACK) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%CASTLE%", (activeChar.isInsideZone(ZoneId.CASTLE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%SWAMP%", (activeChar.isInsideZone(ZoneId.SWAMP) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%NOSUMMONFRIEND%", (activeChar.isInsideZone(ZoneId.NO_SUMMON_FRIEND) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%NOSTORE%", (activeChar.isInsideZone(ZoneId.NO_STORE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%TOWN%", (activeChar.isInsideZone(ZoneId.TOWN) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%HQ%", (activeChar.isInsideZone(ZoneId.HQ) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%DANGERAREA%", (activeChar.isInsideZone(ZoneId.DANGER_AREA) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%CASTONARTIFACT%", (activeChar.isInsideZone(ZoneId.CAST_ON_ARTIFACT) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-		html.replace("%NORESTART%", (activeChar.isInsideZone(ZoneId.NO_RESTART) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+		html.replace("%CLOSESTTOWN%", MapRegionData.getInstance().getClosestTownName(x, y));
+		html.replace("%CURRENTLOC%", x + ", " + y + ", " + player.getZ());
 		
 		final StringBuilder sb = new StringBuilder(100);
-		for (L2ZoneType zone : World.getInstance().getRegion(x, y).getZones())
+		
+		for (ZoneId zone : ZoneId.VALUES)
 		{
-			if (zone.isCharacterInZone(activeChar))
+			if (player.isInsideZone(zone))
+				StringUtil.append(sb, zone, "<br1>");
+		}
+		html.replace("%ZONES%", sb.toString());
+		
+		// Reset the StringBuilder for another use.
+		sb.setLength(0);
+		
+		for (ZoneType zone : World.getInstance().getRegion(x, y).getZones())
+		{
+			if (zone.isCharacterInZone(player))
 				StringUtil.append(sb, zone.getId(), " ");
 		}
 		html.replace("%ZLIST%", sb.toString());
-		activeChar.sendPacket(html);
+		player.sendPacket(html);
 	}
 	
 	@Override

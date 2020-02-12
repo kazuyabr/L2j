@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.network.serverpackets;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.location.Location;
 
@@ -19,6 +19,7 @@ public class PartyMemberPosition extends L2GameServerPacket
 	public void reuse(Party party)
 	{
 		_locations.clear();
+		
 		for (Player member : party.getMembers())
 			_locations.put(member.getObjectId(), new Location(member.getX(), member.getY(), member.getZ()));
 	}
@@ -28,14 +29,11 @@ public class PartyMemberPosition extends L2GameServerPacket
 	{
 		writeC(0xa7);
 		writeD(_locations.size());
+		
 		for (Map.Entry<Integer, Location> entry : _locations.entrySet())
 		{
-			final Location loc = entry.getValue();
-			
 			writeD(entry.getKey());
-			writeD(loc.getX());
-			writeD(loc.getY());
-			writeD(loc.getZ());
+			writeLoc(entry.getValue());
 		}
 	}
 }

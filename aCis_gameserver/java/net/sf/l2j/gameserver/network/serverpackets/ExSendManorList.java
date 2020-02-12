@@ -1,9 +1,5 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-/**
- * Format : (h) d [dS]
- * @author l3x
- */
 public class ExSendManorList extends L2GameServerPacket
 {
 	public static final ExSendManorList STATIC_PACKET = new ExSendManorList();
@@ -12,7 +8,7 @@ public class ExSendManorList extends L2GameServerPacket
 	{
 	}
 	
-	private static final String[] _manorList =
+	private static final String[] MANORS =
 	{
 		"gludio",
 		"dion",
@@ -30,11 +26,11 @@ public class ExSendManorList extends L2GameServerPacket
 	{
 		writeC(0xFE);
 		writeH(0x1B);
-		writeD(_manorList.length);
-		for (int i = 0; i < _manorList.length; i++)
+		writeD(MANORS.length);
+		for (int i = 0; i < MANORS.length; i++)
 		{
 			writeD(i + 1);
-			writeS(_manorList[i]);
+			writeS(MANORS[i]);
 		}
 	}
 }

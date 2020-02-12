@@ -5,13 +5,13 @@ import java.util.Map;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.clientpackets.Say2;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 public class PolymorphingOnAttack extends L2AttackableAIScript
@@ -143,11 +143,11 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(MOBSPAWNS.keySet(), EventType.ON_ATTACK);
+		addEventIds(MOBSPAWNS.keySet(), ScriptEventType.ON_ATTACK);
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		if (npc.isVisible() && !npc.isDead())
 		{
@@ -163,11 +163,11 @@ public class PolymorphingOnAttack extends L2AttackableAIScript
 					}
 					npc.deleteMe();
 					
-					Attackable newNpc = (Attackable) addSpawn(tmp[0], npc.getX(), npc.getY(), npc.getZ() + 10, npc.getHeading(), false, 0, true);
-					attack(newNpc, ((isPet) ? attacker.getPet() : attacker));
+					Attackable newNpc = (Attackable) addSpawn(tmp[0], npc, false, 0, true);
+					attack(newNpc, attacker);
 				}
 			}
 		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 }

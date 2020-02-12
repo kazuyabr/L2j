@@ -1,11 +1,11 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.CharSelectInfoPackage;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.CharSelectSlot;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.FloodProtectors;
 import net.sf.l2j.gameserver.network.FloodProtectors.Action;
-import net.sf.l2j.gameserver.network.L2GameClient;
-import net.sf.l2j.gameserver.network.L2GameClient.GameClientState;
+import net.sf.l2j.gameserver.network.GameClient;
+import net.sf.l2j.gameserver.network.GameClient.GameClientState;
 import net.sf.l2j.gameserver.network.serverpackets.CharSelected;
 import net.sf.l2j.gameserver.network.serverpackets.SSQInfo;
 
@@ -35,7 +35,7 @@ public class CharacterSelected extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final L2GameClient client = getClient();
+		final GameClient client = getClient();
 		if (!FloodProtectors.performAction(client, Action.CHARACTER_SELECT))
 			return;
 		
@@ -45,9 +45,9 @@ public class CharacterSelected extends L2GameClientPacket
 			try
 			{
 				// should always be null but if not then this is repeated packet and nothing should be done here
-				if (client.getActiveChar() == null)
+				if (client.getPlayer() == null)
 				{
-					final CharSelectInfoPackage info = client.getCharSelection(_charSlot);
+					final CharSelectSlot info = client.getCharSelectSlot(_charSlot);
 					if (info == null || info.getAccessLevel() < 0)
 						return;
 					
@@ -57,12 +57,12 @@ public class CharacterSelected extends L2GameClientPacket
 						return;
 					
 					cha.setClient(client);
-					client.setActiveChar(cha);
+					client.setPlayer(cha);
 					cha.setOnlineStatus(true, true);
 					
 					sendPacket(SSQInfo.sendSky());
 					
-					client.setState(GameClientState.IN_GAME);
+					client.setState(GameClientState.ENTERING);
 					
 					sendPacket(new CharSelected(cha, client.getSessionId().playOkID1));
 				}

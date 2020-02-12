@@ -61,7 +61,6 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<set name="isMagic" val="true"/>
-		<set name="isDemonicSkill" val="true"/>
 		<for>
 			<mul stat="maxCp" val="#maxCp" order="0x30"/>
 			<mul stat="pAtk" val="#pAtk" order="0x30"/>
@@ -371,7 +370,6 @@
 		<set name="skillType" val="BUFF"/>
 		<set name="operateType" val="OP_PASSIVE"/>
 		<set name="isMagic" val="true"/>
-		<set name="isDemonicSkill" val="true"/>
 		<for>
 			<mul stat="maxCp" val="#maxCp" order="0x30"/>
 			<mul stat="pAtk" val="#pAtk" order="0x30"/>
@@ -393,7 +391,6 @@
 		<set name="hitTime" val="2000" />
 		<set name="reuseDelay" val="60000" />
 		<set name="skillRadius" val="200" />
-		<set name="isDemonicSkill" val="true" />
 	</skill>
 	<skill id="3631" levels="1" name="Void Flow">
 		<set name="target" val="TARGET_ONE" />
@@ -405,7 +402,6 @@
 		<set name="reuseDelay" val="60000" />
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
-		<set name="isDemonicSkill" val="true" />
 	</skill>
 	<skill id="3632" levels="1" name="Clan Gate">
 		<set name="target" val="TARGET_SELF" />

@@ -7,11 +7,11 @@ import java.util.Map;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.ItemTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
-import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
 import net.sf.l2j.gameserver.model.actor.instance.ManorManagerNpc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.kind.Item;
@@ -60,7 +60,7 @@ public class RequestBuySeed extends L2GameClientPacket
 		if (!FloodProtectors.performAction(getClient(), Action.MANOR))
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -84,8 +84,8 @@ public class RequestBuySeed extends L2GameClientPacket
 			return;
 		}
 		
-		final Npc manager = player.getCurrentFolkNPC();
-		if (!(manager instanceof ManorManagerNpc) || !manager.canInteract(player) || manager.getCastle() != castle)
+		final Folk folk = player.getCurrentFolk();
+		if (!(folk instanceof ManorManagerNpc) || !folk.canInteract(player) || folk.getCastle() != castle)
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
@@ -159,7 +159,7 @@ public class RequestBuySeed extends L2GameClientPacket
 			}
 			
 			// Add item to player's inventory
-			player.addItem("Buy", i.getId(), i.getValue(), manager, true);
+			player.addItem("Buy", i.getId(), i.getValue(), folk, true);
 		}
 		
 		// Adding to treasury for Manor Castle

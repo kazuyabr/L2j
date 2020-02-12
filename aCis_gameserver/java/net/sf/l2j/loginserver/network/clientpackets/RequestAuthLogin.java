@@ -2,8 +2,6 @@ package net.sf.l2j.loginserver.network.clientpackets;
 
 import java.net.InetAddress;
 import java.security.GeneralSecurityException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 
@@ -19,14 +17,12 @@ import net.sf.l2j.loginserver.network.LoginClient.LoginClientState;
 import net.sf.l2j.loginserver.network.SessionKey;
 import net.sf.l2j.loginserver.network.serverpackets.AccountKicked;
 import net.sf.l2j.loginserver.network.serverpackets.AccountKicked.AccountKickedReason;
-import net.sf.l2j.loginserver.network.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.loginserver.network.serverpackets.LoginFail;
 import net.sf.l2j.loginserver.network.serverpackets.LoginOk;
 import net.sf.l2j.loginserver.network.serverpackets.ServerList;
 
 public class RequestAuthLogin extends L2LoginClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestAuthLogin.class.getName());
-	
 	private final byte[] _raw = new byte[128];
 	
 	private String _user;
@@ -72,7 +68,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		}
 		catch (GeneralSecurityException e)
 		{
-			_log.log(Level.INFO, "", e);
+			LOGGER.error("Failed to generate a cipher.", e);
 			return;
 		}
 		
@@ -87,7 +83,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "", e);
+			LOGGER.error("Failed to decrypt user/password.", e);
 			return;
 		}
 		
@@ -96,7 +92,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		final AccountInfo info = LoginController.getInstance().retrieveAccountInfo(clientAddr, _user, _password);
 		if (info == null)
 		{
-			client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);
+			client.close(LoginFail.REASON_USER_OR_PASS_WRONG);
 			return;
 		}
 		
@@ -111,7 +107,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 				break;
 			
 			case INVALID_PASSWORD:
-				client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);
+				client.close(LoginFail.REASON_USER_OR_PASS_WRONG);
 				break;
 			
 			case ACCOUNT_BANNED:
@@ -122,17 +118,17 @@ public class RequestAuthLogin extends L2LoginClientPacket
 				final LoginClient oldClient = LoginController.getInstance().getAuthedClient(info.getLogin());
 				if (oldClient != null)
 				{
-					oldClient.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+					oldClient.close(LoginFail.REASON_ACCOUNT_IN_USE);
 					LoginController.getInstance().removeAuthedLoginClient(info.getLogin());
 				}
-				client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+				client.close(LoginFail.REASON_ACCOUNT_IN_USE);
 				break;
 			
 			case ALREADY_ON_GS:
 				final GameServerInfo gsi = LoginController.getInstance().getAccountOnGameServer(info.getLogin());
 				if (gsi != null)
 				{
-					client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+					client.close(LoginFail.REASON_ACCOUNT_IN_USE);
 					
 					if (gsi.isAuthed())
 						gsi.getGameServerThread().kickPlayer(info.getLogin());

@@ -1,18 +1,14 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-/**
- * Format: ch Sd
- * @author KenM
- */
 public class ExDuelAskStart extends L2GameServerPacket
 {
-	private final String _requestorName;
-	private final int _partyDuel;
+	private final String _requestor;
+	private final int _isPartyDuel;
 	
-	public ExDuelAskStart(String requestor, int partyDuel)
+	public ExDuelAskStart(String requestor, boolean isPartyDuel)
 	{
-		_requestorName = requestor;
-		_partyDuel = partyDuel;
+		_requestor = requestor;
+		_isPartyDuel = isPartyDuel ? 1 : 0;
 	}
 	
 	@Override
@@ -21,7 +17,7 @@ public class ExDuelAskStart extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x4b);
 		
-		writeS(_requestorName);
-		writeD(_partyDuel);
+		writeS(_requestor);
+		writeD(_isPartyDuel);
 	}
 }

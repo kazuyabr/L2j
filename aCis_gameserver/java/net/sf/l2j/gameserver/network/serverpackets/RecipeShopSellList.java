@@ -1,12 +1,15 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.L2ManufactureItem;
-import net.sf.l2j.gameserver.model.L2ManufactureList;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import java.util.List;
+
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.craft.ManufactureItem;
+import net.sf.l2j.gameserver.model.craft.ManufactureList;
 
 public class RecipeShopSellList extends L2GameServerPacket
 {
-	private final Player _buyer, _manufacturer;
+	private final Player _buyer;
+	private final Player _manufacturer;
 	
 	public RecipeShopSellList(Player buyer, Player manufacturer)
 	{
@@ -17,21 +20,23 @@ public class RecipeShopSellList extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		final L2ManufactureList createList = _manufacturer.getCreateList();
+		final ManufactureList createList = _manufacturer.getCreateList();
 		if (createList != null)
 		{
 			writeC(0xd9);
 			writeD(_manufacturer.getObjectId());
-			writeD((int) _manufacturer.getCurrentMp());// Creator's MP
-			writeD(_manufacturer.getMaxMp());// Creator's MP
-			writeD(_buyer.getAdena());// Buyer Adena
-			writeD(createList.size());
+			writeD((int) _manufacturer.getCurrentMp());
+			writeD(_manufacturer.getMaxMp());
+			writeD(_buyer.getAdena());
 			
-			for (L2ManufactureItem item : createList.getList())
+			final List<ManufactureItem> list = createList.getList();
+			writeD(list.size());
+			
+			for (ManufactureItem item : list)
 			{
-				writeD(item.getRecipeId());
+				writeD(item.getId());
 				writeD(0x00); // unknown
-				writeD(item.getCost());
+				writeD(item.getValue());
 			}
 		}
 	}

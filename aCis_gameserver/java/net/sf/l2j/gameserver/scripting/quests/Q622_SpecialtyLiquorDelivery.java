@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.scripting.quests;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -27,7 +27,7 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 	// Rewards
 	private static final int ADENA = 57;
 	private static final int HASTE_POTION = 1062;
-	private static final int[] RECIPES =
+	private static final int[] REWARDS =
 	{
 		6847,
 		6849,
@@ -103,7 +103,7 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 		else if (event.equalsIgnoreCase("31267-02.htm"))
 		{
 			if (Rnd.get(5) < 1)
-				st.giveItems(RECIPES[Rnd.get(RECIPES.length)], 1);
+				st.giveItems(Rnd.get(REWARDS), 1);
 			else
 			{
 				st.rewardItems(ADENA, 18800);

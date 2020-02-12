@@ -5,19 +5,21 @@ import java.util.List;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
+import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.clientpackets.Say2;
 import net.sf.l2j.gameserver.network.serverpackets.NpcSay;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 /**
@@ -72,7 +74,7 @@ public class Benom extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(BENOM, EventType.ON_AGGRO, EventType.ON_SPELL_FINISHED, EventType.ON_ATTACK, EventType.ON_KILL);
+		addEventIds(BENOM, ScriptEventType.ON_AGGRO, ScriptEventType.ON_SPELL_FINISHED, ScriptEventType.ON_ATTACK, ScriptEventType.ON_KILL);
 	}
 	
 	@Override
@@ -81,12 +83,12 @@ public class Benom extends L2AttackableAIScript
 		switch (npc.getNpcId())
 		{
 			case TELEPORT_CUBE:
-				talker.teleToLocation(TeleportType.TOWN);
+				talker.teleportTo(TeleportType.TOWN);
 				break;
 			
 			case DUNGEON_KEEPER:
 				if (_isPrisonOpened)
-					talker.teleToLocation(12589, -49044, -3008, 0);
+					talker.teleportTo(12589, -49044, -3008, 0);
 				else
 					return HtmCache.getInstance().getHtm("data/html/doormen/35506-2.htm");
 				break;
@@ -109,7 +111,7 @@ public class Benom extends L2AttackableAIScript
 			case "tower_check":
 				if (_siege.getControlTowerCount() < 2)
 				{
-					npc.teleToLocation(THRONE_LOC, 0);
+					npc.teleportTo(THRONE_LOC, 0);
 					_siege.getCastle().getSiegeZone().broadcastPacket(new NpcSay(0, Say2.ALL, DUNGEON_KEEPER, "Oh no! The defenses have failed. It is too dangerous to remain inside the castle. Flee! Every man for himself!"));
 					
 					cancelQuestTimer("tower_check", npc, null);
@@ -119,7 +121,7 @@ public class Benom extends L2AttackableAIScript
 			
 			case "raid_check":
 				if (!npc.isInsideZone(ZoneId.SIEGE) && !npc.isTeleporting())
-					npc.teleToLocation(THRONE_LOC, 0);
+					npc.teleportTo(THRONE_LOC, 0);
 				break;
 		}
 		return event;
@@ -208,36 +210,39 @@ public class Benom extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		if (Rnd.get(100) <= 25)
+		if (attacker instanceof Playable)
 		{
-			npc.setTarget(attacker);
-			npc.doCast(SkillTable.getInstance().getInfo(4995, 1));
+			if (Rnd.get(100) <= 25)
+			{
+				npc.setTarget(attacker);
+				npc.doCast(SkillTable.getInstance().getInfo(4995, 1));
+			}
+			else if (!npc.isCastingNow())
+			{
+				if ((npc.getCurrentHp() < (npc.getMaxHp() / 3)) && Rnd.get(500) < 1)
+				{
+					npc.setTarget(attacker);
+					npc.doCast(SkillTable.getInstance().getInfo(4996, 1));
+				}
+				else if (!npc.isInsideRadius(attacker, 300, true, false) && Rnd.get(100) < 1)
+				{
+					npc.setTarget(attacker);
+					npc.doCast(SkillTable.getInstance().getInfo(4993, 1));
+				}
+				else if (Rnd.get(100) < 1)
+				{
+					npc.setTarget(attacker);
+					npc.doCast(SkillTable.getInstance().getInfo(4994, 1));
+				}
+			}
 		}
-		else if (!npc.isCastingNow())
-		{
-			if ((npc.getCurrentHp() < (npc.getMaxHp() / 3)) && Rnd.get(500) < 1)
-			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4996, 1));
-			}
-			else if (!npc.isInsideRadius(attacker, 300, true, false) && Rnd.get(100) < 1)
-			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4993, 1));
-			}
-			else if (Rnd.get(100) < 1)
-			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4994, 1));
-			}
-		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		npc.broadcastNpcSay("It's not over yet... It won't be... over... like this... Never...");
 		cancelQuestTimer("raid_check", npc, null);
@@ -256,7 +261,7 @@ public class Benom extends L2AttackableAIScript
 		if (player != null)
 		{
 			final SpawnLocation loc = Rnd.get(TARGET_TELEPORTS);
-			player.teleToLocation(loc, loc.getHeading());
+			player.teleportTo(loc, loc.getHeading());
 		}
 	}
 }

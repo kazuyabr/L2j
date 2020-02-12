@@ -3,10 +3,10 @@ package net.sf.l2j.gameserver.scripting.scripts.custom;
 import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.data.SpawnTable;
-import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.data.sql.SpawnTable;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -215,7 +215,7 @@ public class NpcLocationInfo extends Quest
 			
 			if (ArraysUtil.contains(RADARS, npcId))
 			{
-				for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
+				for (L2Spawn spawn : SpawnTable.getInstance().getSpawns())
 				{
 					if (npcId == spawn.getNpcId())
 					{

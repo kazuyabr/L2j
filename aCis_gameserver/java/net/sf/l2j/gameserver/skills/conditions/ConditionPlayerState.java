@@ -1,26 +1,12 @@
 package net.sf.l2j.gameserver.skills.conditions;
 
+import net.sf.l2j.gameserver.enums.skills.PlayerState;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.skills.Env;
 
-/**
- * @author mkizub
- */
 public class ConditionPlayerState extends Condition
 {
-	public enum PlayerState
-	{
-		RESTING,
-		MOVING,
-		RUNNING,
-		RIDING,
-		FLYING,
-		BEHIND,
-		FRONT,
-		OLYMPIAD
-	}
-	
 	private final PlayerState _check;
 	private final boolean _required;
 	

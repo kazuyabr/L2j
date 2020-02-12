@@ -1,11 +1,11 @@
 package net.sf.l2j.gameserver.model.actor.stat;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.skills.Calculator;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.skills.Stats;
 
 public class CreatureStat
 {
@@ -219,7 +219,7 @@ public class CreatureStat
 	public int getMDef(Creature target, L2Skill skill)
 	{
 		// Calculate modifiers Magic Attack
-		return (int) calcStat(Stats.MAGIC_DEFENCE, _activeChar.getTemplate().getBaseMDef() * ((_activeChar.isRaid()) ? Config.RAID_DEFENCE_MULTIPLIER : 1), target, skill);
+		return (int) calcStat(Stats.MAGIC_DEFENCE, _activeChar.getTemplate().getBaseMDef() * ((_activeChar.isRaidRelated()) ? Config.RAID_DEFENCE_MULTIPLIER : 1), target, skill);
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class CreatureStat
 	 */
 	public int getPDef(Creature target)
 	{
-		return (int) calcStat(Stats.POWER_DEFENCE, _activeChar.getTemplate().getBasePDef() * ((_activeChar.isRaid()) ? Config.RAID_DEFENCE_MULTIPLIER : 1), target, null);
+		return (int) calcStat(Stats.POWER_DEFENCE, _activeChar.getTemplate().getBasePDef() * ((_activeChar.isRaidRelated()) ? Config.RAID_DEFENCE_MULTIPLIER : 1), target, null);
 	}
 	
 	/**

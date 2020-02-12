@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class AdminRideWyvern implements IAdminCommandHandler
 {
@@ -53,10 +53,10 @@ public class AdminRideWyvern implements IAdminCommandHandler
 			// If code reached that place, it means _petRideId has been filled.
 			if (activeChar.isMounted())
 				activeChar.dismount();
-			else if (activeChar.getPet() != null)
-				activeChar.getPet().unSummon(activeChar);
+			else if (activeChar.getSummon() != null)
+				activeChar.getSummon().unSummon(activeChar);
 			
-			activeChar.mount(_petRideId, 0, false);
+			activeChar.mount(_petRideId, 0);
 		}
 		else if (command.equals("admin_unride"))
 			activeChar.dismount();

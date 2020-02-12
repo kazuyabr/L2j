@@ -370,7 +370,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<effect name="Buff" time="14400" val="0" stackOrder="1" stackType="public_slot" />
+			<effect name="Buff" time="14400" abnormal="changetexture" val="0" stackOrder="1" stackType="public_slot" />
 		</for>
 	</skill>
 	<skill id="4224" levels="1" name="Face Chance: Day to Night">
@@ -380,7 +380,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<effect name="Buff" time="10" val="0" stackOrder="2" stackType="public_slot" />
+			<effect name="Buff" time="10" val="0" stackOrder="1" stackType="public_slot" />
 		</for>
 	</skill>
 	<skill id="4225" levels="5" name="Resist Shock">
@@ -609,7 +609,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<effect name="Buff" time="10" val="0" stackOrder="12" stackType="hp_regen_up" />
+			<effect name="Buff" time="10" val="0" stackOrder="11" stackType="hp_regen_up" />
 		</for>
 	</skill>
 	<skill id="4243" levels="1" name="Venomous Poison">
@@ -1178,7 +1178,6 @@
 		<set name="castRange" val="700" />
 		<set name="effectRange" val="1200" />
 		<set name="mpConsume" val="400" />
-		<set name="isFlyingSkill" val="true" />
 		<cond msgId="113" addName="1">
 			<player flying="true" />
 		</cond>

@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.network.FloodProtectors;
@@ -34,7 +34,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		if (!FloodProtectors.performAction(getClient(), Action.DROP_ITEM))
 			return;
 		
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null || activeChar.isDead())
 			return;
 		

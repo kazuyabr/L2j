@@ -3,11 +3,10 @@ package net.sf.l2j.gameserver.scripting.scripts.ai.group;
 import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 /**
@@ -50,22 +49,22 @@ public final class PlainsOfDion extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player player, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		if (npc.isScriptValue(0))
 		{
-			npc.broadcastNpcSay(MONSTERS_MSG[Rnd.get(5)].replace("$s1", player.getName()));
+			npc.broadcastNpcSay(Rnd.get(MONSTERS_MSG).replace("$s1", attacker.getName()));
 			
 			for (Monster obj : npc.getKnownTypeInRadius(Monster.class, 300))
 			{
-				if (!obj.isAttackingNow() && !obj.isDead() && ArraysUtil.contains(MONSTERS, obj.getNpcId()) && GeoEngine.getInstance().canSeeTarget(npc, obj))
+				if (!obj.isAttackingNow() && !obj.isDead() && ArraysUtil.contains(MONSTERS, obj.getNpcId()))
 				{
-					attack(obj, player);
-					obj.broadcastNpcSay(MONSTERS_ASSIST_MSG[Rnd.get(3)]);
+					attack(obj, attacker);
+					obj.broadcastNpcSay(Rnd.get(MONSTERS_ASSIST_MSG));
 				}
 			}
 			npc.setScriptValue(1);
 		}
-		return super.onAttack(npc, player, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 }

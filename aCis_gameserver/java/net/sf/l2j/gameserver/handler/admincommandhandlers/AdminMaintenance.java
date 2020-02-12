@@ -1,5 +1,6 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import net.sf.l2j.commons.network.StatusType;
 import net.sf.l2j.commons.util.SysUtil;
 
 import net.sf.l2j.Config;
@@ -7,10 +8,9 @@ import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.Shutdown;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
-import net.sf.l2j.loginserver.network.gameserverpackets.ServerStatus;
 
 public class AdminMaintenance implements IAdminCommandHandler
 {
@@ -60,7 +60,7 @@ public class AdminMaintenance implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_server_gm_only"))
 		{
-			LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_GM_ONLY);
+			LoginServerThread.getInstance().setServerStatus(StatusType.GM_ONLY);
 			Config.SERVER_GMONLY = true;
 			
 			activeChar.sendMessage("Server is now setted as GMonly.");
@@ -68,7 +68,7 @@ public class AdminMaintenance implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_server_all"))
 		{
-			LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_AUTO);
+			LoginServerThread.getInstance().setServerStatus(StatusType.AUTO);
 			Config.SERVER_GMONLY = false;
 			
 			activeChar.sendMessage("Server isn't setted as GMonly anymore.");
@@ -99,7 +99,7 @@ public class AdminMaintenance implements IAdminCommandHandler
 		html.replace("%count%", World.getInstance().getPlayers().size());
 		html.replace("%used%", SysUtil.getUsedMemory());
 		html.replace("%server_name%", LoginServerThread.getInstance().getServerName());
-		html.replace("%status%", LoginServerThread.getInstance().getStatusString());
+		html.replace("%status%", LoginServerThread.getInstance().getServerStatus().getName());
 		html.replace("%max_players%", LoginServerThread.getInstance().getMaxPlayers());
 		html.replace("%time%", GameTimeTaskManager.getInstance().getGameTimeFormated());
 		activeChar.sendPacket(html);

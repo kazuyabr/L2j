@@ -2,9 +2,6 @@ package net.sf.l2j.gameserver.geoengine.geodata;
 
 import net.sf.l2j.gameserver.model.World;
 
-/**
- * @author Hasha
- */
 public final class GeoStructure
 {
 	// cells

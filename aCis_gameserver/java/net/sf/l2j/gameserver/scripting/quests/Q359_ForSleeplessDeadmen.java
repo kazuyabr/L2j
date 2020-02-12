@@ -5,8 +5,9 @@ import java.util.Map;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -23,7 +24,7 @@ public class Q359_ForSleeplessDeadmen extends Quest
 	private static final int DOOM_ARCHER = 21008;
 	
 	// Reward
-	private static final int REWARD[] =
+	private static final int REWARDS[] =
 	{
 		6341,
 		6342,
@@ -71,7 +72,7 @@ public class Q359_ForSleeplessDeadmen extends Quest
 		}
 		else if (event.equalsIgnoreCase("30857-10.htm"))
 		{
-			st.giveItems(REWARD[Rnd.get(REWARD.length)], 4);
+			st.giveItems(Rnd.get(REWARDS), 4);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
@@ -113,9 +114,11 @@ public class Q359_ForSleeplessDeadmen extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerCondition(player, npc, "cond", "1");
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerCondition(player, npc, "cond", "1");
 		if (st == null)
 			return null;
 		

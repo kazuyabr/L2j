@@ -4,16 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.FriendList;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * format cdd
- */
 public final class RequestAnswerFriendInvite extends L2GameClientPacket
 {
+	private static final String ADD_FRIEND = "INSERT INTO character_friends (char_id, friend_id) VALUES (?,?), (?,?)";
+	
 	private int _response;
 	
 	@Override
@@ -25,7 +24,7 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -35,33 +34,32 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 		
 		if (_response == 1)
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			requestor.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
+			
+			// Player added to your friendlist
+			requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS).addCharName(player));
+			requestor.getFriendList().add(player.getObjectId());
+			
+			// has joined as friend.
+			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND).addCharName(requestor));
+			player.getFriendList().add(requestor.getObjectId());
+			
+			// update friendLists *heavy method*
+			requestor.sendPacket(new FriendList(requestor));
+			player.sendPacket(new FriendList(player));
+			
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(ADD_FRIEND))
 			{
-				PreparedStatement statement = con.prepareStatement("INSERT INTO character_friends (char_id, friend_id) VALUES (?,?), (?,?)");
-				statement.setInt(1, requestor.getObjectId());
-				statement.setInt(2, player.getObjectId());
-				statement.setInt(3, player.getObjectId());
-				statement.setInt(4, requestor.getObjectId());
-				statement.execute();
-				statement.close();
-				
-				requestor.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
-				
-				// Player added to your friendlist
-				requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS).addCharName(player));
-				requestor.getFriendList().add(player.getObjectId());
-				
-				// has joined as friend.
-				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND).addCharName(requestor));
-				player.getFriendList().add(requestor.getObjectId());
-				
-				// update friendLists *heavy method*
-				requestor.sendPacket(new FriendList(requestor));
-				player.sendPacket(new FriendList(player));
+				ps.setInt(1, requestor.getObjectId());
+				ps.setInt(2, player.getObjectId());
+				ps.setInt(3, player.getObjectId());
+				ps.setInt(4, requestor.getObjectId());
+				ps.execute();
 			}
 			catch (Exception e)
 			{
-				_log.warning("could not add friend objectid: " + e);
+				LOGGER.error("Couldn't add friendId {} for {}.", e, player.getObjectId(), requestor.toString());
 			}
 		}
 		else

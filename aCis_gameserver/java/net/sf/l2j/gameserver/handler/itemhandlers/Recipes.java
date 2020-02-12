@@ -1,13 +1,16 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
-import net.sf.l2j.gameserver.data.RecipeTable;
+import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.xml.RecipeData;
+import net.sf.l2j.gameserver.enums.actors.StoreType;
 import net.sf.l2j.gameserver.handler.IItemHandler;
+import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.Player.StoreType;
-import net.sf.l2j.gameserver.model.item.RecipeList;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.item.Recipe;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.network.serverpackets.RecipeBookItemList;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public class Recipes implements IItemHandler
@@ -18,63 +21,63 @@ public class Recipes implements IItemHandler
 		if (!(playable instanceof Player))
 			return;
 		
-		final Player activeChar = (Player) playable;
+		final Player player = (Player) playable;
 		
-		if (activeChar.isCrafting())
+		if (!Config.IS_CRAFTING_ENABLED)
 		{
-			activeChar.sendPacket(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
+			player.sendMessage("Crafting is disabled, you cannot register this recipe.");
 			return;
 		}
 		
-		final RecipeList rp = RecipeTable.getInstance().getRecipeByItemId(item.getItemId());
-		if (rp == null)
-			return;
-		
-		if (activeChar.hasRecipeList(rp.getId()))
+		if (player.isCrafting())
 		{
-			activeChar.sendPacket(SystemMessageId.RECIPE_ALREADY_REGISTERED);
+			player.sendPacket(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
 			return;
 		}
 		
-		if (rp.isDwarvenRecipe())
+		final Recipe recipe = RecipeData.getInstance().getRecipeByItemId(item.getItemId());
+		if (recipe == null)
+			return;
+		
+		if (player.hasRecipeList(recipe.getId()))
 		{
-			if (activeChar.hasDwarvenCraft())
+			player.sendPacket(SystemMessageId.RECIPE_ALREADY_REGISTERED);
+			return;
+		}
+		
+		if (recipe.isDwarven())
+		{
+			if (!player.hasDwarvenCraft())
+				player.sendPacket(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT);
+			else if (player.getStoreType() == StoreType.MANUFACTURE)
+				player.sendPacket(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
+			else if (recipe.getLevel() > player.getSkillLevel(L2Skill.SKILL_CREATE_DWARVEN))
+				player.sendPacket(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
+			else if (player.getDwarvenRecipeBook().size() >= player.getDwarfRecipeLimit())
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.UP_TO_S1_RECIPES_CAN_REGISTER).addNumber(player.getDwarfRecipeLimit()));
+			else if (player.destroyItem("Consume", item.getObjectId(), 1, null, false))
 			{
-				if (activeChar.getStoreType() == StoreType.MANUFACTURE)
-					activeChar.sendPacket(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
-				else if (rp.getLevel() > activeChar.getDwarvenCraft())
-					activeChar.sendPacket(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
-				else if (activeChar.getDwarvenRecipeBook().size() >= activeChar.getDwarfRecipeLimit())
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.UP_TO_S1_RECIPES_CAN_REGISTER).addNumber(activeChar.getDwarfRecipeLimit()));
-				else
-				{
-					activeChar.registerDwarvenRecipeList(rp);
-					activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED).addItemName(item));
-				}
+				player.registerDwarvenRecipeList(recipe);
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED).addItemName(item));
+				player.sendPacket(new RecipeBookItemList(player, true));
 			}
-			else
-				activeChar.sendPacket(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT);
 		}
 		else
 		{
-			if (activeChar.hasCommonCraft())
+			if (!player.hasCommonCraft())
+				player.sendPacket(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT);
+			else if (player.getStoreType() == StoreType.MANUFACTURE)
+				player.sendPacket(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
+			else if (recipe.getLevel() > player.getSkillLevel(L2Skill.SKILL_CREATE_COMMON))
+				player.sendPacket(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
+			else if (player.getCommonRecipeBook().size() >= player.getCommonRecipeLimit())
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.UP_TO_S1_RECIPES_CAN_REGISTER).addNumber(player.getCommonRecipeLimit()));
+			else if (player.destroyItem("Consume", item.getObjectId(), 1, null, false))
 			{
-				if (activeChar.getStoreType() == StoreType.MANUFACTURE)
-					activeChar.sendPacket(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
-				else if (rp.getLevel() > activeChar.getCommonCraft())
-					activeChar.sendPacket(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
-				else if (activeChar.getCommonRecipeBook().size() >= activeChar.getCommonRecipeLimit())
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.UP_TO_S1_RECIPES_CAN_REGISTER).addNumber(activeChar.getCommonRecipeLimit()));
-				else
-				{
-					activeChar.registerCommonRecipeList(rp);
-					activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED).addItemName(item));
-				}
+				player.registerCommonRecipeList(recipe);
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED).addItemName(item));
+				player.sendPacket(new RecipeBookItemList(player, false));
 			}
-			else
-				activeChar.sendPacket(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT);
 		}
 	}
 }

@@ -2,13 +2,14 @@ package net.sf.l2j.gameserver.network.gameserverpackets;
 
 import java.security.GeneralSecurityException;
 import java.security.interfaces.RSAPublicKey;
-import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 
+import net.sf.l2j.commons.logging.CLogger;
+
 public class BlowFishKey extends GameServerBasePacket
 {
-	private static Logger _log = Logger.getLogger(BlowFishKey.class.getName());
+	private static final CLogger LOGGER = new CLogger(BlowFishKey.class.getName());
 	
 	public BlowFishKey(byte[] blowfishKey, RSAPublicKey publicKey)
 	{
@@ -25,8 +26,7 @@ public class BlowFishKey extends GameServerBasePacket
 		}
 		catch (GeneralSecurityException e)
 		{
-			_log.severe("Error While encrypting blowfish key for transmision (Crypt error)");
-			e.printStackTrace();
+			LOGGER.error("Error while encrypting blowfish key for transmission.", e);
 		}
 	}
 	

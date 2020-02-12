@@ -1,17 +1,14 @@
 package net.sf.l2j.gameserver.scripting;
 
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class QuestTimer
 {
-	protected static final Logger _log = Logger.getLogger(QuestTimer.class.getName());
-	
 	protected final Quest _quest;
 	protected final String _name;
 	protected final Npc _npc;

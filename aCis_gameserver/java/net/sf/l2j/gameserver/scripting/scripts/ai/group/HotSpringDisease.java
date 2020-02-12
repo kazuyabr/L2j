@@ -5,7 +5,7 @@ import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 public class HotSpringDisease extends L2AttackableAIScript

@@ -1,41 +1,42 @@
 package net.sf.l2j.gameserver.skills;
 
-import java.util.logging.Logger;
-
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.ClanHallManager;
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.SiegeSide;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Cubic;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.model.clanhall.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Siege;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
-import net.sf.l2j.gameserver.model.zone.type.L2MotherTreeZone;
+import net.sf.l2j.gameserver.model.pledge.Clan;
+import net.sf.l2j.gameserver.model.zone.type.MotherTreeZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.effects.EffectTemplate;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public final class Formulas
 {
-	protected static final Logger _log = Logger.getLogger(Formulas.class.getName());
+	protected static final CLogger LOGGER = new CLogger(Formulas.class.getName());
 	
 	private static final int HP_REGENERATE_PERIOD = 3000; // 3 secs
 	
@@ -223,7 +224,7 @@ public final class Formulas
 	public static final double calcHpRegen(Creature cha)
 	{
 		double init = cha.getTemplate().getBaseHpReg();
-		double hpRegenMultiplier = cha.isRaid() ? Config.RAID_HP_REGEN_MULTIPLIER : Config.HP_REGEN_MULTIPLIER;
+		double hpRegenMultiplier = (cha.isRaidRelated()) ? Config.RAID_HP_REGEN_MULTIPLIER : Config.HP_REGEN_MULTIPLIER;
 		double hpRegenBonus = 0;
 		
 		if (cha.isChampion())
@@ -237,17 +238,17 @@ public final class Formulas
 			init += (player.getLevel() > 10) ? ((player.getLevel() - 1) / 10.0) : 0.5;
 			
 			// SevenSigns Festival modifier
-			if (SevenSignsFestival.getInstance().isFestivalInProgress() && player.isFestivalParticipant())
+			if (FestivalOfDarknessManager.getInstance().isFestivalInProgress() && player.isFestivalParticipant())
 				hpRegenMultiplier *= calcFestivalRegenModifier(player);
 			else if (calcSiegeRegenModifer(player))
 				hpRegenMultiplier *= 1.5;
 			
 			if (player.isInsideZone(ZoneId.CLAN_HALL) && player.getClan() != null)
 			{
-				int clanHallIndex = player.getClan().getHideoutId();
+				int clanHallIndex = player.getClan().getClanHallId();
 				if (clanHallIndex > 0)
 				{
-					ClanHall clansHall = ClanHallManager.getInstance().getClanHallById(clanHallIndex);
+					ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex);
 					if (clansHall != null)
 						if (clansHall.getFunction(ClanHall.FUNC_RESTORE_HP) != null)
 							hpRegenMultiplier *= 1 + clansHall.getFunction(ClanHall.FUNC_RESTORE_HP).getLvl() / 100;
@@ -257,7 +258,7 @@ public final class Formulas
 			// Mother Tree effect is calculated at last
 			if (player.isInsideZone(ZoneId.MOTHER_TREE))
 			{
-				L2MotherTreeZone zone = ZoneManager.getInstance().getZone(player, L2MotherTreeZone.class);
+				MotherTreeZone zone = ZoneManager.getInstance().getZone(player, MotherTreeZone.class);
 				int hpBonus = zone == null ? 0 : zone.getHpRegenBonus();
 				hpRegenBonus += hpBonus;
 			}
@@ -286,7 +287,7 @@ public final class Formulas
 	public static final double calcMpRegen(Creature cha)
 	{
 		double init = cha.getTemplate().getBaseMpReg();
-		double mpRegenMultiplier = cha.isRaid() ? Config.RAID_MP_REGEN_MULTIPLIER : Config.MP_REGEN_MULTIPLIER;
+		double mpRegenMultiplier = (cha.isRaidRelated()) ? Config.RAID_MP_REGEN_MULTIPLIER : Config.MP_REGEN_MULTIPLIER;
 		double mpRegenBonus = 0;
 		
 		if (cha instanceof Player)
@@ -297,23 +298,23 @@ public final class Formulas
 			init += 0.3 * ((player.getLevel() - 1) / 10.0);
 			
 			// SevenSigns Festival modifier
-			if (SevenSignsFestival.getInstance().isFestivalInProgress() && player.isFestivalParticipant())
+			if (FestivalOfDarknessManager.getInstance().isFestivalInProgress() && player.isFestivalParticipant())
 				mpRegenMultiplier *= calcFestivalRegenModifier(player);
 			
 			// Mother Tree effect is calculated at last
 			if (player.isInsideZone(ZoneId.MOTHER_TREE))
 			{
-				L2MotherTreeZone zone = ZoneManager.getInstance().getZone(player, L2MotherTreeZone.class);
+				MotherTreeZone zone = ZoneManager.getInstance().getZone(player, MotherTreeZone.class);
 				int mpBonus = zone == null ? 0 : zone.getMpRegenBonus();
 				mpRegenBonus += mpBonus;
 			}
 			
 			if (player.isInsideZone(ZoneId.CLAN_HALL) && player.getClan() != null)
 			{
-				int clanHallIndex = player.getClan().getHideoutId();
+				int clanHallIndex = player.getClan().getClanHallId();
 				if (clanHallIndex > 0)
 				{
-					ClanHall clansHall = ClanHallManager.getInstance().getClanHallById(clanHallIndex);
+					ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex);
 					if (clansHall != null)
 						if (clansHall.getFunction(ClanHall.FUNC_RESTORE_MP) != null)
 							mpRegenMultiplier *= 1 + clansHall.getFunction(ClanHall.FUNC_RESTORE_MP).getLvl() / 100;
@@ -364,46 +365,51 @@ public final class Formulas
 		return player.calcStat(Stats.REGENERATE_CP_RATE, init, null, null) * cpRegenMultiplier;
 	}
 	
-	public static final double calcFestivalRegenModifier(Player activeChar)
+	public static final double calcFestivalRegenModifier(Player player)
 	{
-		final int[] festivalInfo = SevenSignsFestival.getInstance().getFestivalForPlayer(activeChar);
-		final CabalType oracle = CabalType.VALUES[festivalInfo[0]];
+		final int[] festivalInfo = FestivalOfDarknessManager.getInstance().getFestivalForPlayer(player);
 		final int festivalId = festivalInfo[1];
-		int[] festivalCenter;
 		
 		// If the player isn't found in the festival, leave the regen rate as it is.
 		if (festivalId < 0)
-			return 0;
+			return 1.;
+		
+		int[] festivalCenter;
 		
 		// Retrieve the X and Y coords for the center of the festival arena the player is in.
+		final CabalType oracle = CabalType.VALUES[festivalInfo[0]];
 		if (oracle == CabalType.DAWN)
-			festivalCenter = SevenSignsFestival.FESTIVAL_DAWN_PLAYER_SPAWNS[festivalId];
+			festivalCenter = FestivalOfDarknessManager.FESTIVAL_DAWN_PLAYER_SPAWNS[festivalId];
 		else
-			festivalCenter = SevenSignsFestival.FESTIVAL_DUSK_PLAYER_SPAWNS[festivalId];
+			festivalCenter = FestivalOfDarknessManager.FESTIVAL_DUSK_PLAYER_SPAWNS[festivalId];
 		
 		// Check the distance between the player and the player spawn point, in the center of the arena.
-		double distToCenter = activeChar.getPlanDistanceSq(festivalCenter[0], festivalCenter[1]);
+		double distToCenter = player.getPlanDistanceSq(festivalCenter[0], festivalCenter[1]);
 		
 		if (Config.DEVELOPER)
-			_log.info("Distance: " + distToCenter + ", RegenMulti: " + (distToCenter * 2.5) / 50);
+			LOGGER.info("calcFestivalRegenModifier() distance: {}, RegenMulti: {}.", distToCenter, String.format("%1.2f", 1.0 - (distToCenter * 0.0005)));
 		
 		return 1.0 - (distToCenter * 0.0005); // Maximum Decreased Regen of ~ -65%;
 	}
 	
 	/**
-	 * @param activeChar the player to test on.
+	 * @param player the player to test on.
 	 * @return true if the player is near one of his clan HQ (+50% regen boost).
 	 */
-	public static final boolean calcSiegeRegenModifer(Player activeChar)
+	public static final boolean calcSiegeRegenModifer(Player player)
 	{
-		if (activeChar == null || activeChar.getClan() == null)
+		if (player == null)
 			return false;
 		
-		final Siege siege = CastleManager.getInstance().getSiege(activeChar);
-		if (siege == null || !siege.checkSide(activeChar.getClan(), SiegeSide.ATTACKER))
+		final Clan clan = player.getClan();
+		if (clan == null)
 			return false;
 		
-		return MathUtil.checkIfInRange(200, activeChar, activeChar.getClan().getFlag(), true);
+		final Siege siege = CastleManager.getInstance().getActiveSiege(player);
+		if (siege == null || !siege.checkSide(clan, SiegeSide.ATTACKER))
+			return false;
+		
+		return MathUtil.checkIfInRange(200, player, clan.getFlag(), true);
 	}
 	
 	/**
@@ -441,7 +447,9 @@ public final class Formulas
 				power *= skill.getSSBoost();
 		}
 		
-		damage += attacker.calcStat(Stats.CRITICAL_DAMAGE, (damage + power), target, skill);
+		damage += power;
+		damage *= attacker.calcStat(Stats.CRITICAL_DAMAGE, 1, target, skill);
+		damage *= ((attacker.calcStat(Stats.CRITICAL_DAMAGE_POS, 1, target, skill) - 1) / 2 + 1);
 		damage += attacker.calcStat(Stats.CRITICAL_DAMAGE_ADD, 0, target, skill) * 6.5;
 		damage *= target.calcStat(Stats.CRIT_VULN, 1, target, skill);
 		
@@ -482,8 +490,7 @@ public final class Formulas
 		switch (shld)
 		{
 			case SHIELD_DEFENSE_SUCCEED:
-				if (!Config.ALT_GAME_SHIELD_BLOCKS)
-					defence += target.getShldDef();
+				defence += target.getShldDef();
 				break;
 			
 			case SHIELD_DEFENSE_PERFECT_BLOCK: // perfect block
@@ -557,7 +564,7 @@ public final class Formulas
 		if (crit)
 		{
 			// Finally retail like formula
-			damage = 2 * attacker.calcStat(Stats.CRITICAL_DAMAGE, 1, target, skill) * target.calcStat(Stats.CRIT_VULN, 1, target, null) * (70 * damage / defence);
+			damage = 2 * attacker.calcStat(Stats.CRITICAL_DAMAGE, 1, target, skill) * attacker.calcStat(Stats.CRITICAL_DAMAGE_POS, 1, target, skill) * target.calcStat(Stats.CRIT_VULN, 1, target, null) * (70 * damage / defence);
 			// Crit dmg add is almost useless in normal hits...
 			damage += (attacker.calcStat(Stats.CRITICAL_DAMAGE_ADD, 0, target, skill) * 70 / defence);
 		}
@@ -570,13 +577,6 @@ public final class Formulas
 		// Weapon random damage ; invalid for CHARGEDAM skills.
 		if (skill == null || skill.getEffectType() != L2SkillType.CHARGEDAM)
 			damage *= attacker.getRandomDamageMultiplier();
-		
-		if (shld > 0 && Config.ALT_GAME_SHIELD_BLOCKS)
-		{
-			damage -= target.getShldDef();
-			if (damage < 0)
-				damage = 0;
-		}
 		
 		if (target instanceof Npc)
 		{
@@ -670,7 +670,7 @@ public final class Formulas
 		double damage = 91 * Math.sqrt(mAtk) / mDef * skill.getPower(attacker);
 		
 		// Failure calculation
-		if (Config.ALT_GAME_MAGICFAILURES && !calcMagicSuccess(attacker, target, skill))
+		if (Config.MAGIC_FAILURES && !calcMagicSuccess(attacker, target, skill))
 		{
 			if (attacker instanceof Player)
 			{
@@ -732,7 +732,7 @@ public final class Formulas
 		Player owner = attacker.getOwner();
 		
 		// Failure calculation
-		if (Config.ALT_GAME_MAGICFAILURES && !calcMagicSuccess(owner, target, skill))
+		if (Config.MAGIC_FAILURES && !calcMagicSuccess(owner, target, skill))
 		{
 			if (calcMagicSuccess(owner, target, skill) && (target.getLevel() - skill.getMagicLevel()) <= 9)
 			{
@@ -776,52 +776,52 @@ public final class Formulas
 	
 	/**
 	 * Calcul value of blow success
-	 * @param activeChar The character delaing the blow.
+	 * @param attacker The character delaing the blow.
 	 * @param target The victim.
 	 * @param chance The base chance of landing a blow.
 	 * @return true if successful, false otherwise
 	 */
-	public static final boolean calcBlow(Creature activeChar, Creature target, int chance)
+	public static final boolean calcBlow(Creature attacker, Creature target, int chance)
 	{
-		return activeChar.calcStat(Stats.BLOW_RATE, chance * (1.0 + (activeChar.getDEX() - 20) / 100), target, null) > Rnd.get(100);
+		return attacker.calcStat(Stats.BLOW_RATE, chance * (1.0 + (attacker.getDEX() - 20) / 100), target, null) > Rnd.get(100);
 	}
 	
 	/**
 	 * Calcul value of lethal chance
-	 * @param activeChar The character delaing the blow.
+	 * @param attacker The character delaing the blow.
 	 * @param target The victim.
 	 * @param baseLethal The base lethal chance of the skill.
 	 * @param magiclvl
 	 * @return
 	 */
-	public static final double calcLethal(Creature activeChar, Creature target, int baseLethal, int magiclvl)
+	public static final double calcLethal(Creature attacker, Creature target, int baseLethal, int magiclvl)
 	{
 		double chance = 0;
 		if (magiclvl > 0)
 		{
-			int delta = ((magiclvl + activeChar.getLevel()) / 2) - 1 - target.getLevel();
+			int delta = ((magiclvl + attacker.getLevel()) / 2) - 1 - target.getLevel();
 			
 			if (delta >= -3)
-				chance = (baseLethal * ((double) activeChar.getLevel() / target.getLevel()));
+				chance = (baseLethal * ((double) attacker.getLevel() / target.getLevel()));
 			else if (delta < -3 && delta >= -9)
 				chance = (-3) * (baseLethal / (delta));
 			else
 				chance = baseLethal / 15;
 		}
 		else
-			chance = (baseLethal * ((double) activeChar.getLevel() / target.getLevel()));
+			chance = (baseLethal * ((double) attacker.getLevel() / target.getLevel()));
 		
-		chance = 10 * activeChar.calcStat(Stats.LETHAL_RATE, chance, target, null);
+		chance = 10 * attacker.calcStat(Stats.LETHAL_RATE, chance, target, null);
 		
 		if (Config.DEVELOPER)
-			_log.info("Current calcLethal: " + chance + " / 1000");
+			LOGGER.info("Current calcLethal: {} / 1000.", chance);
 		
 		return chance;
 	}
 	
-	public static final void calcLethalHit(Creature activeChar, Creature target, L2Skill skill)
+	public static final void calcLethalHit(Creature attacker, Creature target, L2Skill skill)
 	{
-		if (target.isRaid() || target instanceof Door)
+		if (target.isRaidRelated() || target instanceof Door)
 			return;
 		
 		// If one of following IDs is found, return false (Tyrannosaurus x 3, Headquarters)
@@ -838,16 +838,16 @@ public final class Formulas
 		}
 		
 		// Second lethal effect (hp to 1 for npc, cp/hp to 1 for player).
-		if (skill.getLethalChance2() > 0 && Rnd.get(1000) < calcLethal(activeChar, target, skill.getLethalChance2(), skill.getMagicLevel()))
+		if (skill.getLethalChance2() > 0 && Rnd.get(1000) < calcLethal(attacker, target, skill.getLethalChance2(), skill.getMagicLevel()))
 		{
 			if (target instanceof Npc)
-				target.reduceCurrentHp(target.getCurrentHp() - 1, activeChar, skill);
+				target.reduceCurrentHp(target.getCurrentHp() - 1, attacker, skill);
 			else if (target instanceof Player) // If is a active player set his HP and CP to 1
 			{
 				Player player = (Player) target;
 				if (!player.isInvul())
 				{
-					if (!(activeChar instanceof Player && (((Player) activeChar).isGM() && !((Player) activeChar).getAccessLevel().canGiveDamage())))
+					if (!(attacker instanceof Player && (((Player) attacker).isGM() && !((Player) attacker).getAccessLevel().canGiveDamage())))
 					{
 						player.setCurrentHp(1);
 						player.setCurrentCp(1);
@@ -855,33 +855,33 @@ public final class Formulas
 					}
 				}
 			}
-			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
+			attacker.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
 		}
 		// First lethal effect (hp/2 for npc, cp to 1 for player).
-		else if (skill.getLethalChance1() > 0 && Rnd.get(1000) < calcLethal(activeChar, target, skill.getLethalChance1(), skill.getMagicLevel()))
+		else if (skill.getLethalChance1() > 0 && Rnd.get(1000) < calcLethal(attacker, target, skill.getLethalChance1(), skill.getMagicLevel()))
 		{
 			if (target instanceof Npc)
-				target.reduceCurrentHp(target.getCurrentHp() / 2, activeChar, skill);
+				target.reduceCurrentHp(target.getCurrentHp() / 2, attacker, skill);
 			else if (target instanceof Player)
 			{
 				Player player = (Player) target;
 				if (!player.isInvul())
 				{
-					if (!(activeChar instanceof Player && (((Player) activeChar).isGM() && !((Player) activeChar).getAccessLevel().canGiveDamage())))
+					if (!(attacker instanceof Player && (((Player) attacker).isGM() && !((Player) attacker).getAccessLevel().canGiveDamage())))
 					{
 						player.setCurrentCp(1);
 						player.sendPacket(SystemMessageId.LETHAL_STRIKE);
 					}
 				}
 			}
-			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
+			attacker.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
 		}
 	}
 	
 	public static final boolean calcMCrit(int mRate)
 	{
 		if (Config.DEVELOPER)
-			_log.info("Current mCritRate: " + mRate + "/1000");
+			LOGGER.info("Current mCritRate: {} / 1000.", mRate);
 		
 		return mRate > Rnd.get(1000);
 	}
@@ -894,7 +894,7 @@ public final class Formulas
 	public static final void calcCastBreak(Creature target, double dmg)
 	{
 		// Don't go further for invul characters or raid bosses.
-		if (target.isRaid() || target.isInvul())
+		if (target.isRaidRelated() || target.isInvul())
 			return;
 		
 		// Break automatically the skill cast if under attack.
@@ -918,7 +918,7 @@ public final class Formulas
 			rate = 1;
 		
 		if (Config.DEVELOPER)
-			_log.info("calcCastBreak rate: " + (int) rate + "%");
+			LOGGER.info("calcCastBreak rate: {}%.", (int) rate);
 		
 		if (Rnd.get(100) < rate)
 			target.breakCast();
@@ -985,7 +985,7 @@ public final class Formulas
 		chance *= modifier / 100;
 		
 		if (Config.DEVELOPER)
-			_log.info("calcHitMiss rate: " + chance / 10 + "%, modifier : x" + modifier / 100);
+			LOGGER.info("calcHitMiss rate: {}%, modifier : x{}.", chance / 10, +modifier / 100);
 		
 		return Math.max(Math.min(chance, 980), 200) < Rnd.get(1000);
 	}
@@ -1023,7 +1023,7 @@ public final class Formulas
 		if (attacker.getAttackType() == WeaponType.BOW)
 			shldRate *= 1.3;
 		
-		if (shldRate > 0 && 100 - Config.ALT_PERFECT_SHLD_BLOCK < Rnd.get(100))
+		if (shldRate > 0 && 100 - Config.PERFECT_SHIELD_BLOCK_RATE < Rnd.get(100))
 			shldSuccess = SHIELD_DEFENSE_PERFECT_BLOCK;
 		else if (shldRate > Rnd.get(100))
 			shldSuccess = SHIELD_DEFENSE_SUCCEED;
@@ -1048,7 +1048,7 @@ public final class Formulas
 	public static boolean calcMagicAffected(Creature actor, Creature target, L2Skill skill)
 	{
 		L2SkillType type = skill.getSkillType();
-		if (target.isRaid() && !calcRaidAffected(type))
+		if (target.isRaidRelated() && !calcRaidAffected(type))
 			return false;
 		
 		double defence = 0;
@@ -1203,7 +1203,7 @@ public final class Formulas
 		final double rate = Math.max(1, Math.min((baseChance * statModifier * skillModifier * mAtkModifier * lvlModifier), 99));
 		
 		if (Config.DEVELOPER)
-			_log.info("calcEffectSuccess(): Name:" + skill.getName() + " eff.type:" + type.toString() + " power:" + baseChance + " statMod:" + String.format("%1.2f", statModifier) + " skillMod:" + String.format("%1.2f", skillModifier) + " mAtkMod:" + String.format("%1.2f", mAtkModifier) + " lvlMod:" + String.format("%1.2f", lvlModifier) + " total:" + String.format("%1.2f", rate) + "%");
+			LOGGER.info("calcEffectSuccess(): name:{} eff.type:{} power:{} statMod:{} skillMod:{} mAtkMod:{} lvlMod:{} total:{}%.", skill.getName(), type.toString(), baseChance, String.format("%1.2f", statModifier), String.format("%1.2f", skillModifier), String.format("%1.2f", mAtkModifier), String.format("%1.2f", lvlModifier), String.format("%1.2f", rate));
 		
 		return (Rnd.get(100) < rate);
 	}
@@ -1215,7 +1215,7 @@ public final class Formulas
 		
 		final L2SkillType type = skill.getEffectType();
 		
-		if (target.isRaid() && !calcRaidAffected(type))
+		if (target.isRaidRelated() && !calcRaidAffected(type))
 			return false;
 		
 		final double baseChance = skill.getEffectPower();
@@ -1229,7 +1229,7 @@ public final class Formulas
 		final double rate = Math.max(1, Math.min((baseChance * statModifier * skillModifier * mAtkModifier * lvlModifier), 99));
 		
 		if (Config.DEVELOPER)
-			_log.info("calcSkillSuccess(): Name:" + skill.getName() + " type:" + skill.getSkillType().toString() + " power:" + baseChance + " statMod:" + String.format("%1.2f", statModifier) + " skillMod:" + String.format("%1.2f", skillModifier) + " mAtkMod:" + String.format("%1.2f", mAtkModifier) + " lvlMod:" + String.format("%1.2f", lvlModifier) + " total:" + String.format("%1.2f", rate) + "%");
+			LOGGER.info("calcSkillSuccess(): name:{} type:{} power:{} statMod:{} skillMod:{} mAtkMod:{} lvlMod:{} total:{}%.", skill.getName(), skill.getSkillType().toString(), baseChance, String.format("%1.2f", statModifier), String.format("%1.2f", skillModifier), String.format("%1.2f", mAtkModifier), String.format("%1.2f", lvlModifier), String.format("%1.2f", rate));
 		
 		return (Rnd.get(100) < rate);
 	}
@@ -1245,7 +1245,7 @@ public final class Formulas
 		
 		final L2SkillType type = skill.getEffectType();
 		
-		if (target.isRaid() && !calcRaidAffected(type))
+		if (target.isRaidRelated() && !calcRaidAffected(type))
 			return false;
 		
 		final double baseChance = skill.getEffectPower();
@@ -1272,7 +1272,7 @@ public final class Formulas
 		final double rate = Math.max(1, Math.min((baseChance * statModifier * skillModifier * mAtkModifier * lvlModifier), 99));
 		
 		if (Config.DEVELOPER)
-			_log.info("calcCubicSkillSuccess(): Name:" + skill.getName() + " type:" + skill.getSkillType().toString() + " power:" + String.valueOf(baseChance) + " statMod:" + String.format("%1.2f", statModifier) + " skillMod:" + String.format("%1.2f", skillModifier) + " mAtkMod:" + String.format("%1.2f", mAtkModifier) + " lvlMod:" + String.format("%1.2f", lvlModifier) + " total:" + String.format("%1.2f", rate) + "%");
+			LOGGER.info("calcCubicSkillSuccess(): name:{} type:{} power:{} statMod:{} skillMod:{} mAtkMod:{} lvlMod:{} total:{}%.", skill.getName(), skill.getSkillType().toString(), baseChance, String.format("%1.2f", statModifier), String.format("%1.2f", skillModifier), String.format("%1.2f", mAtkModifier), String.format("%1.2f", lvlModifier), String.format("%1.2f", rate));
 		
 		return (Rnd.get(100) < rate);
 	}
@@ -1283,13 +1283,13 @@ public final class Formulas
 		double rate = 100;
 		
 		if (lvlDifference > 0)
-			rate = (Math.pow(1.3, lvlDifference)) * 100;
+			rate = (Math.pow(1.166, lvlDifference)) * 100;
 		
 		if (attacker instanceof Player && ((Player) attacker).getExpertiseWeaponPenalty())
 			rate += 6000;
 		
 		if (Config.DEVELOPER)
-			_log.info("calcMagicSuccess(): Name:" + skill.getName() + " lvlDiff:" + lvlDifference + " fail:" + String.format("%1.2f", rate / 100) + "%");
+			LOGGER.info("calcMagicSuccess(): name:{} lvlDiff:{} fail:{}%.", skill.getName(), lvlDifference, String.format("%1.2f", rate / 100));
 		
 		rate = Math.min(rate, 9900);
 		
@@ -1464,16 +1464,16 @@ public final class Formulas
 	}
 	
 	/**
-	 * @param cha : The character affected.
+	 * @param actor : The character affected.
 	 * @param fallHeight : The height the NPC fallen.
 	 * @return the damage, based on max HPs and falling height.
 	 */
-	public static double calcFallDam(Creature cha, int fallHeight)
+	public static double calcFallDam(Creature actor, int fallHeight)
 	{
 		if (!Config.ENABLE_FALLING_DAMAGE || fallHeight < 0)
 			return 0;
 		
-		return cha.calcStat(Stats.FALL, fallHeight * cha.getMaxHp() / 1000, null, null);
+		return actor.calcStat(Stats.FALL, fallHeight * actor.getMaxHp() / 1000, null, null);
 	}
 	
 	/**
@@ -1506,13 +1506,13 @@ public final class Formulas
 	
 	/**
 	 * Calculates karma lost upon death.
-	 * @param playerLevel : The level of the PKer.
+	 * @param level : The level of the PKer.
 	 * @param exp : The amount of xp earned.
 	 * @return The amount of karma player has lost.
 	 */
-	public static int calculateKarmaLost(int playerLevel, long exp)
+	public static int calculateKarmaLost(int level, long exp)
 	{
-		return (int) (exp / karmaMods[playerLevel] / 15);
+		return (int) (exp / karmaMods[level] / 15);
 	}
 	
 	/**

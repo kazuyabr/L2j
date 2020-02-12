@@ -2,13 +2,13 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.actors.ClassId;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -270,9 +270,11 @@ public class Q223_TestOfTheChampion extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		QuestState st = checkPlayerState(attacker, npc, STATE_STARTED);
+		final Player player = attacker.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
@@ -281,16 +283,14 @@ public class Q223_TestOfTheChampion extends Quest
 			case HARPY: // Possibility to spawn an HARPY _MATRIARCH.
 				if (st.getInt("cond") == 6 && Rnd.nextBoolean() && !npc.isScriptValue(1))
 				{
-					final Creature originalKiller = isPet ? attacker.getPet() : attacker;
-					
 					// Spawn one or two matriarchs.
 					for (int i = 1; i < ((Rnd.get(10) < 7) ? 2 : 3); i++)
 					{
 						final Attackable collector = (Attackable) addSpawn(HARPY_MATRIARCH, npc, true, 0, false);
 						
 						collector.setRunning();
-						collector.addDamageHate(originalKiller, 0, 999);
-						collector.getAI().setIntention(CtrlIntention.ATTACK, originalKiller);
+						collector.addDamageHate(attacker, 0, 999);
+						collector.getAI().setIntention(IntentionType.ATTACK, attacker);
 					}
 					npc.setScriptValue(1);
 				}
@@ -299,16 +299,14 @@ public class Q223_TestOfTheChampion extends Quest
 			case ROAD_SCAVENGER: // Possibility to spawn a Road Collector.
 				if (st.getInt("cond") == 10 && Rnd.nextBoolean() && !npc.isScriptValue(1))
 				{
-					final Creature originalKiller = isPet ? attacker.getPet() : attacker;
-					
 					// Spawn one or two collectors.
 					for (int i = 1; i < ((Rnd.get(10) < 7) ? 2 : 3); i++)
 					{
 						final Attackable collector = (Attackable) addSpawn(ROAD_COLLECTOR, npc, true, 0, false);
 						
 						collector.setRunning();
-						collector.addDamageHate(originalKiller, 0, 999);
-						collector.getAI().setIntention(CtrlIntention.ATTACK, originalKiller);
+						collector.addDamageHate(attacker, 0, 999);
+						collector.getAI().setIntention(IntentionType.ATTACK, attacker);
 					}
 					npc.setScriptValue(1);
 				}
@@ -319,9 +317,11 @@ public class Q223_TestOfTheChampion extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		

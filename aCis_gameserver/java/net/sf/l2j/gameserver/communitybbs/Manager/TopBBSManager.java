@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.communitybbs.Manager;
 
 import java.util.StringTokenizer;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class TopBBSManager extends BaseBBSManager
 {
@@ -10,27 +10,20 @@ public class TopBBSManager extends BaseBBSManager
 	{
 	}
 	
-	public static TopBBSManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
 	@Override
-	public void parseCmd(String command, Player activeChar)
+	public void parseCmd(String command, Player player)
 	{
 		if (command.equals("_bbshome"))
-		{
-			loadStaticHtm("index.htm", activeChar);
-		}
+			loadStaticHtm("index.htm", player);
 		else if (command.startsWith("_bbshome;"))
 		{
-			StringTokenizer st = new StringTokenizer(command, ";");
+			final StringTokenizer st = new StringTokenizer(command, ";");
 			st.nextToken();
 			
-			loadStaticHtm(st.nextToken(), activeChar);
+			loadStaticHtm(st.nextToken(), player);
 		}
 		else
-			super.parseCmd(command, activeChar);
+			super.parseCmd(command, player);
 	}
 	
 	@Override
@@ -39,8 +32,13 @@ public class TopBBSManager extends BaseBBSManager
 		return "top/";
 	}
 	
+	public static TopBBSManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
 	private static class SingletonHolder
 	{
-		protected static final TopBBSManager _instance = new TopBBSManager();
+		protected static final TopBBSManager INSTANCE = new TopBBSManager();
 	}
 }

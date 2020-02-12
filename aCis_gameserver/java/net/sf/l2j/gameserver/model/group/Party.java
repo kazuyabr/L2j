@@ -11,22 +11,23 @@ import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.data.ItemTable;
-import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
-import net.sf.l2j.gameserver.instancemanager.DuelManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.model.BlockList;
-import net.sf.l2j.gameserver.model.RewardInfo;
+import net.sf.l2j.gameserver.data.manager.DimensionalRiftManager;
+import net.sf.l2j.gameserver.data.manager.DuelManager;
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
+import net.sf.l2j.gameserver.enums.LootRule;
+import net.sf.l2j.gameserver.enums.MessageType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
-import net.sf.l2j.gameserver.model.entity.DimensionalRift;
+import net.sf.l2j.gameserver.model.actor.npc.RewardInfo;
+import net.sf.l2j.gameserver.model.actor.player.BlockList;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoom;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoomList;
+import net.sf.l2j.gameserver.model.rift.DimensionalRift;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.network.serverpackets.ExCloseMPCC;
@@ -41,37 +42,6 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public class Party extends AbstractGroup
 {
-	public enum MessageType
-	{
-		EXPELLED,
-		LEFT,
-		NONE,
-		DISCONNECTED
-	}
-	
-	public enum LootRule
-	{
-		ITEM_LOOTER(SystemMessageId.LOOTING_FINDERS_KEEPERS),
-		ITEM_RANDOM(SystemMessageId.LOOTING_RANDOM),
-		ITEM_RANDOM_SPOIL(SystemMessageId.LOOTING_RANDOM_INCLUDE_SPOIL),
-		ITEM_ORDER(SystemMessageId.LOOTING_BY_TURN),
-		ITEM_ORDER_SPOIL(SystemMessageId.LOOTING_BY_TURN_INCLUDE_SPOIL);
-		
-		private final SystemMessageId _smId;
-		
-		private LootRule(SystemMessageId smId)
-		{
-			_smId = smId;
-		}
-		
-		public SystemMessageId getMessageId()
-		{
-			return _smId;
-		}
-		
-		public static final LootRule VALUES[] = values();
-	}
-	
 	private static final double[] BONUS_EXP_SP =
 	{
 		1,
@@ -218,7 +188,7 @@ public class Party extends AbstractGroup
 			member.sendPacket(PartySmallWindowDeleteAll.STATIC_PACKET);
 			
 			if (member.isFestivalParticipant())
-				SevenSignsFestival.getInstance().updateParticipants(member, this);
+				FestivalOfDarknessManager.getInstance().updateParticipants(member, this);
 			
 			if (member.getFusionSkill() != null)
 				member.abortCast();
@@ -260,7 +230,7 @@ public class Party extends AbstractGroup
 	/**
 	 * Check if player invitation is expired.
 	 * @return boolean if time is expired.
-	 * @see net.sf.l2j.gameserver.model.actor.instance.Player#isRequestExpired()
+	 * @see net.sf.l2j.gameserver.model.actor.Player#isRequestExpired()
 	 */
 	public boolean isInvitationRequestExpired()
 	{
@@ -443,7 +413,7 @@ public class Party extends AbstractGroup
 			recalculateLevel();
 			
 			if (player.isFestivalParticipant())
-				SevenSignsFestival.getInstance().updateParticipants(player, this);
+				FestivalOfDarknessManager.getInstance().updateParticipants(player, this);
 			
 			if (player.getFusionSkill() != null)
 				player.abortCast();
@@ -539,15 +509,13 @@ public class Party extends AbstractGroup
 		if (item.getItemId() == 57)
 		{
 			distributeAdena(player, item.getCount(), player);
-			ItemTable.getInstance().destroyItem("Party", item, player, null);
+			item.destroyMe("Party", player, null);
 			return;
 		}
 		
 		final Player target = getActualLooter(player, item.getItemId(), false, player);
 		if (target == null)
 			return;
-		
-		target.addItem("Party", item, player, true);
 		
 		// Send messages to other party members about reward.
 		if (item.getCount() > 1)
@@ -556,6 +524,8 @@ public class Party extends AbstractGroup
 			broadcastToPartyMembers(target, SystemMessage.getSystemMessage(SystemMessageId.S1_OBTAINED_S2_S3).addCharName(target).addNumber(item.getEnchantLevel()).addItemName(item));
 		else
 			broadcastToPartyMembers(target, SystemMessage.getSystemMessage(SystemMessageId.S1_OBTAINED_S2).addCharName(target).addItemName(item));
+		
+		target.addItem("Party", item, player, true);
 	}
 	
 	/**
@@ -675,7 +645,8 @@ public class Party extends AbstractGroup
 			for (Player member : rewardedMembers)
 				sqLevelSum += (member.getLevel() * member.getLevel());
 			
-			final int partySize = rewardedMembers.size();
+			// Have to use range 1 to 9, since we -1 it : 0 can't be a good number (would lead to a IOOBE). Since 0 and 1 got same values, it's not a problem.
+			final int partySize = MathUtil.limit(rewardedMembers.size(), 1, 9);
 			
 			for (Player member : rewardedMembers)
 			{
@@ -685,8 +656,11 @@ public class Party extends AbstractGroup
 			}
 		}
 		
-		xpReward *= BONUS_EXP_SP[validMembers.size()] * Config.RATE_PARTY_XP;
-		spReward *= BONUS_EXP_SP[validMembers.size()] * Config.RATE_PARTY_SP;
+		// Since validMembers can also hold CommandChannel members, we have to restrict the value.
+		final double partyRate = BONUS_EXP_SP[Math.min(validMembers.size(), 9)];
+		
+		xpReward *= partyRate * Config.RATE_PARTY_XP;
+		spReward *= partyRate * Config.RATE_PARTY_SP;
 		
 		int sqLevelSum = 0;
 		for (Player member : validMembers)
@@ -702,7 +676,7 @@ public class Party extends AbstractGroup
 			if (validMembers.contains(member))
 			{
 				// The servitor penalty.
-				final float penalty = member.hasServitor() ? ((Servitor) member.getPet()).getExpPenalty() : 0;
+				final float penalty = member.hasServitor() ? ((Servitor) member.getSummon()).getExpPenalty() : 0;
 				
 				final double sqLevel = member.getLevel() * member.getLevel();
 				final double preCalculation = (sqLevel / sqLevelSum) * (1 - penalty);

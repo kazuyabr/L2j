@@ -1,8 +1,5 @@
 package net.sf.l2j.commons.mmocore;
 
-/**
- * @author KenM
- */
 public final class SelectorConfig
 {
 	public int READ_BUFFER_SIZE = 64 * 1024;

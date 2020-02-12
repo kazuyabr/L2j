@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.entity.Hero;
+import net.sf.l2j.gameserver.data.manager.HeroManager;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * Format chS c (id) 0xD0 h (subid) 0x0C S the hero's words :)
@@ -20,13 +20,13 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null || !player.isHero())
 			return;
 		
 		if (_heroWords == null || _heroWords.length() > 300)
 			return;
 		
-		Hero.getInstance().setHeroMessage(player, _heroWords);
+		HeroManager.getInstance().setHeroMessage(player, _heroWords);
 	}
 }

@@ -3,12 +3,12 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
+import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -194,7 +194,7 @@ public class AdminTeleport implements IAdminCommandHandler
 	
 	private static void sendHome(Player player)
 	{
-		player.teleToLocation(TeleportType.TOWN);
+		player.teleportTo(TeleportType.TOWN);
 		player.setIsIn7sDungeon(false);
 		player.sendMessage("A GM sent you at nearest town.");
 	}
@@ -211,8 +211,8 @@ public class AdminTeleport implements IAdminCommandHandler
 			String z1 = st.nextToken();
 			int z = Integer.parseInt(z1);
 			
-			activeChar.getAI().setIntention(CtrlIntention.IDLE);
-			activeChar.teleToLocation(x, y, z, 0);
+			activeChar.getAI().setIntention(IntentionType.IDLE);
+			activeChar.teleportTo(x, y, z, 0);
 			
 			activeChar.sendMessage("You have been teleported to " + Cords + ".");
 		}
@@ -224,8 +224,8 @@ public class AdminTeleport implements IAdminCommandHandler
 	
 	private static void teleportCharacter(Player player, int x, int y, int z)
 	{
-		player.getAI().setIntention(CtrlIntention.IDLE);
-		player.teleToLocation(x, y, z, 0);
+		player.getAI().setIntention(IntentionType.IDLE);
+		player.teleportTo(x, y, z, 0);
 		player.sendMessage("A GM is teleporting you.");
 	}
 	
@@ -239,8 +239,8 @@ public class AdminTeleport implements IAdminCommandHandler
 			int y = target.getY();
 			int z = target.getZ();
 			
-			activeChar.getAI().setIntention(CtrlIntention.IDLE);
-			activeChar.teleToLocation(x, y, z, 0);
+			activeChar.getAI().setIntention(IntentionType.IDLE);
+			activeChar.teleportTo(x, y, z, 0);
 			activeChar.sendMessage("You have teleported to " + target.getName() + ".");
 		}
 	}

@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 
@@ -74,7 +74,7 @@ public final class Chest extends Monster
 				id = 21786;
 		}
 		
-		super.doItemDrop(NpcTable.getInstance().getTemplate(id), lastAttacker);
+		super.doItemDrop(NpcData.getInstance().getTemplate(id), lastAttacker);
 	}
 	
 	@Override

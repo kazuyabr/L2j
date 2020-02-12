@@ -7,21 +7,22 @@ import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.data.NpcTable;
-import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
+import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.RiftInvader;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.scripting.EventType;
+import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 public class L2AttackableAIScript extends Quest
@@ -43,23 +44,23 @@ public class L2AttackableAIScript extends Quest
 	protected void registerNpcs()
 	{
 		// register all mobs here...
-		for (NpcTemplate template : NpcTable.getInstance().getAllNpcs())
+		for (NpcTemplate template : NpcData.getInstance().getAllNpcs())
 		{
 			try
 			{
 				if (Attackable.class.isAssignableFrom(Class.forName("net.sf.l2j.gameserver.model.actor.instance." + template.getType())))
 				{
-					template.addQuestEvent(EventType.ON_ATTACK, this);
-					template.addQuestEvent(EventType.ON_KILL, this);
-					template.addQuestEvent(EventType.ON_SPAWN, this);
-					template.addQuestEvent(EventType.ON_SKILL_SEE, this);
-					template.addQuestEvent(EventType.ON_FACTION_CALL, this);
-					template.addQuestEvent(EventType.ON_AGGRO, this);
+					template.addQuestEvent(ScriptEventType.ON_ATTACK, this);
+					template.addQuestEvent(ScriptEventType.ON_KILL, this);
+					template.addQuestEvent(ScriptEventType.ON_SPAWN, this);
+					template.addQuestEvent(ScriptEventType.ON_SKILL_SEE, this);
+					template.addQuestEvent(ScriptEventType.ON_FACTION_CALL, this);
+					template.addQuestEvent(ScriptEventType.ON_AGGRO, this);
 				}
 			}
-			catch (ClassNotFoundException ex)
+			catch (ClassNotFoundException e)
 			{
-				_log.info("Class not found: " + template.getType());
+				LOGGER.error("An unknown template type {} has been found on {}.", e, template.getType(), toString());
 			}
 		}
 	}
@@ -88,22 +89,22 @@ public class L2AttackableAIScript extends Quest
 		Attackable attackable = (Attackable) npc;
 		int skillAggroPoints = skill.getAggroPoints();
 		
-		if (caster.getPet() != null)
+		if (caster.getSummon() != null)
 		{
-			if (targets.length == 1 && ArraysUtil.contains(targets, caster.getPet()))
+			if (targets.length == 1 && ArraysUtil.contains(targets, caster.getSummon()))
 				skillAggroPoints = 0;
 		}
 		
 		if (skillAggroPoints > 0)
 		{
-			if (attackable.hasAI() && (attackable.getAI().getIntention() == CtrlIntention.ATTACK))
+			if (attackable.hasAI() && (attackable.getAI().getDesire().getIntention() == IntentionType.ATTACK))
 			{
 				WorldObject npcTarget = attackable.getTarget();
 				for (WorldObject skillTarget : targets)
 				{
 					if (npcTarget == skillTarget || npc == skillTarget)
 					{
-						Creature originalCaster = isPet ? caster.getPet() : caster;
+						Creature originalCaster = isPet ? caster.getSummon() : caster;
 						attackable.addDamageHate(originalCaster, 0, (skillAggroPoints * 150) / (attackable.getLevel() + 7));
 					}
 				}
@@ -118,28 +119,22 @@ public class L2AttackableAIScript extends Quest
 		if (attacker == null)
 			return null;
 		
-		if (attacker.isInParty() && attacker.getParty().isInDimensionalRift())
-		{
-			byte riftType = attacker.getParty().getDimensionalRift().getType();
-			byte riftRoom = attacker.getParty().getDimensionalRift().getCurrentRoom();
-			
-			if (caller instanceof RiftInvader && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(npc.getX(), npc.getY(), npc.getZ()))
-				return null;
-		}
+		if (caller instanceof RiftInvader && attacker.isInParty() && attacker.getParty().isInDimensionalRift() && !attacker.getParty().getDimensionalRift().isInCurrentRoomZone(npc))
+			return null;
 		
 		final Attackable attackable = (Attackable) npc;
-		final Creature originalAttackTarget = (isPet ? attacker.getPet() : attacker);
+		final Creature originalAttackTarget = (isPet ? attacker.getSummon() : attacker);
 		
 		// Add the target to the actor _aggroList or update hate if already present
 		attackable.addDamageHate(originalAttackTarget, 0, 1);
 		
 		// Set the actor AI Intention to ATTACK
-		if (attackable.getAI().getIntention() != CtrlIntention.ATTACK)
+		if (attackable.getAI().getDesire().getIntention() != IntentionType.ATTACK)
 		{
 			// Set the Creature movement type to run and send Server->Client packet ChangeMoveType to all others Player
 			attackable.setRunning();
 			
-			attackable.getAI().setIntention(CtrlIntention.ATTACK, originalAttackTarget);
+			attackable.getAI().setIntention(IntentionType.ATTACK, originalAttackTarget);
 		}
 		return null;
 	}
@@ -150,7 +145,7 @@ public class L2AttackableAIScript extends Quest
 		if (player == null)
 			return null;
 		
-		((Attackable) npc).addDamageHate(isPet ? player.getPet() : player, 0, 1);
+		((Attackable) npc).addDamageHate(isPet ? player.getSummon() : player, 0, 1);
 		return null;
 	}
 	
@@ -161,35 +156,29 @@ public class L2AttackableAIScript extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		if (attacker != null && npc instanceof Attackable)
-		{
-			Attackable attackable = (Attackable) npc;
-			Creature originalAttacker = isPet ? attacker.getPet() : attacker;
-			
-			attackable.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, originalAttacker);
-			attackable.addDamageHate(originalAttacker, damage, (damage * 100) / (attackable.getLevel() + 7));
-		}
+		npc.getAI().notifyEvent(AiEventType.ATTACKED, attacker);
+		((Attackable) npc).addDamageHate(attacker, damage, (damage * 100) / (npc.getLevel() + 7));
 		return null;
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		if (npc instanceof Monster)
 		{
 			final Monster mob = (Monster) npc;
-			if (mob.getLeader() != null)
-				mob.getLeader().getMinionList().onMinionDie(mob, -1);
+			final Monster master = mob.getMaster();
+			
+			if (master != null)
+				master.getMinionList().onMinionDie(mob, (master.isRaidBoss()) ? Config.RAID_MINION_RESPAWN_TIMER : (master.getSpawn().getRespawnDelay() * 1000 / 2));
 			
 			if (mob.hasMinions())
-				mob.getMinionList().onMasterDie(false);
+				mob.getMinionList().onMasterDie();
 		}
 		return null;
 	}
-	
-	// TODO: MERGE SCRIPTS
 	
 	/**
 	 * This method selects a random player.<br>
@@ -282,20 +271,85 @@ public class L2AttackableAIScript extends Quest
 	}
 	
 	/**
-	 * Monster runs and attacks the playable.
-	 * @param npc The npc to use.
-	 * @param playable The victim.
-	 * @param aggro The aggro to add, 999 if not given.
+	 * Set an {@link Attackable} intention to ATTACK, and attacks the chosen {@link Creature}.
+	 * @param npc : The Attackable who is attacking the target.
+	 * @param victim : The Creature to attack.
+	 * @param aggro : The aggro to add, 999 if not given.
 	 */
-	public static void attack(Attackable npc, Playable playable, int aggro)
+	protected static void attack(Attackable npc, Creature victim, int aggro)
 	{
 		npc.setIsRunning(true);
-		npc.addDamageHate(playable, 0, (aggro <= 0) ? 999 : aggro);
-		npc.getAI().setIntention(CtrlIntention.ATTACK, playable);
+		npc.addDamageHate(victim, 0, (aggro <= 0) ? 999 : aggro);
+		npc.getAI().setIntention(IntentionType.ATTACK, victim);
 	}
 	
-	public static void attack(Attackable npc, Playable playable)
+	protected static void attack(Attackable npc, Creature victim)
 	{
-		attack(npc, playable, 0);
+		attack(npc, victim, 0);
+	}
+	
+	/**
+	 * Test and cast curses once a {@link Creature} attacks a {@link Npc}.<br>
+	 * <br>
+	 * <font color=red>BEWARE : no checks are made based on Playable. You have to add it on the caller method.</font>
+	 * @param npc : The NPC who casts the skill.
+	 * @param attacker : The Creature to test.
+	 * @param npcId : The npcId who calls Anti Strider debuff (only bosses, normally).
+	 * @return true if the curse must counter the leftover behavior.
+	 */
+	protected static boolean testCursesOnAttack(Npc npc, Creature attacker, int npcId)
+	{
+		if (Config.RAID_DISABLE_CURSE)
+			return false;
+		
+		// Petrification curse.
+		if (attacker.getLevel() - npc.getLevel() > 8)
+		{
+			final L2Skill curse = FrequentSkill.RAID_CURSE2.getSkill();
+			if (attacker.getFirstEffect(curse) == null)
+			{
+				npc.broadcastPacket(new MagicSkillUse(npc, attacker, curse.getId(), curse.getLevel(), 300, 0));
+				curse.getEffects(npc, attacker);
+				
+				((Attackable) npc).stopHating(attacker);
+				return true;
+			}
+		}
+		
+		// Antistrider slow curse.
+		if (npc.getNpcId() == npcId && attacker instanceof Player && ((Player) attacker).isMounted())
+		{
+			final L2Skill curse = FrequentSkill.RAID_ANTI_STRIDER_SLOW.getSkill();
+			if (attacker.getFirstEffect(curse) == null)
+			{
+				npc.broadcastPacket(new MagicSkillUse(npc, attacker, curse.getId(), curse.getLevel(), 300, 0));
+				curse.getEffects(npc, attacker);
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Similar to its mother class, but the Anti Strider Slow debuff is known to be casted by the actual npc.
+	 * @see #testCursesOnAttack(Npc npc, Creature attacker, int npcId)
+	 * @param npc : The NPC who casts the skill.
+	 * @param attacker : The Creature to test.
+	 * @return true if the curse must counter the leftover behavior.
+	 */
+	protected static boolean testCursesOnAttack(Npc npc, Creature attacker)
+	{
+		return testCursesOnAttack(npc, attacker, npc.getNpcId());
+	}
+	
+	/**
+	 * Enforced testCursesOnAttack with third parameter set to -1. We only test RAID_CURSE2, not RAID_ANTI_STRIDER_SLOW.
+	 * @see #testCursesOnAttack(Npc npc, Creature attacker, int npcId)
+	 * @param npc : The NPC who casts the skill.
+	 * @param attacker : The Creature to test.
+	 * @return true if the curse must counter the leftover behavior.
+	 */
+	protected static boolean testCursesOnAggro(Npc npc, Creature attacker)
+	{
+		return testCursesOnAttack(npc, attacker, -1);
 	}
 }

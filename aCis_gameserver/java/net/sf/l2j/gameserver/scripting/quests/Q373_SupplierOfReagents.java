@@ -5,8 +5,9 @@ import java.util.Map;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -379,13 +380,13 @@ public class Q373_SupplierOfReagents extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
-			return null;
+		final Player player = killer.getActingPlayer();
 		
-		QuestState st = partyMember.getQuestState(qn);
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
+			return null;
 		
 		final int[] drop = DROPLIST.get(npc.getNpcId());
 		

@@ -1,8 +1,5 @@
 package net.sf.l2j.gameserver.model.pledge;
 
-/**
- * @author UnAfraid
- */
 public class ClanInfo
 {
 	private final Clan _clan;

@@ -1,13 +1,9 @@
 package net.sf.l2j.loginserver.network.gameserverpackets;
 
-import java.util.logging.Logger;
-
 import net.sf.l2j.loginserver.network.clientpackets.ClientBasePacket;
 
 public class GameServerAuth extends ClientBasePacket
 {
-	protected static Logger _log = Logger.getLogger(GameServerAuth.class.getName());
-	
 	private final byte[] _hexId;
 	private final int _desiredId;
 	private final boolean _hostReserved;
@@ -21,8 +17,8 @@ public class GameServerAuth extends ClientBasePacket
 		super(decrypt);
 		
 		_desiredId = readC();
-		_acceptAlternativeId = (readC() == 0 ? false : true);
-		_hostReserved = (readC() == 0 ? false : true);
+		_acceptAlternativeId = readC() != 0;
+		_hostReserved = readC() != 0;
 		_hostName = readS();
 		_port = readH();
 		_maxPlayers = readD();

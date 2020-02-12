@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.handler.chathandlers;
 
 import net.sf.l2j.gameserver.handler.IChatHandler;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoom;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoomList;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;

@@ -6,13 +6,27 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.network.serverpackets.ExCloseMPCC;
+import net.sf.l2j.gameserver.network.serverpackets.ExMPCCPartyInfoUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.ExOpenMPCC;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 
+/**
+ * Mass events, like sieges or raids require joining several {@link Party}. That's what {@link CommandChannel}s are for in the world of Lineage.<br>
+ * <br>
+ * Using a command channel:
+ * <ul>
+ * <li>A command channel can only be created by a character belonging to a clan level 4 and above. The clan needs to learn the Clan Imperium skill.</li>
+ * <li>It takes at least 2 parties to create a command channel. One of the leaders need to use the /channelinvite command on any member of the other party.</li>
+ * <li>Only the leader of a command channel can accept new parties to the CC.</li>
+ * <li>If the main party is disbanded, the CC is disbanded as well.</li>
+ * <li>If the CC leader is disconnected from the channel, a random player from the main party will become the new leader.</li>
+ * <li>You can change the leader of the CC and the leader of the main party at the same time using the /changepartyleader [Character Name] command or from the Action Window.</li>
+ * </ul>
+ */
 public class CommandChannel extends AbstractGroup
 {
 	private final List<Party> _parties = new CopyOnWriteArrayList<>();
@@ -127,14 +141,17 @@ public class CommandChannel extends AbstractGroup
 	}
 	
 	/**
-	 * Adds a Party to the Command Channel.
-	 * @param party : the party to add.
+	 * Adds a {@link Party} to this {@link CommandChannel}.
+	 * @param party : the Party to add.
 	 */
 	public void addParty(Party party)
 	{
 		// Null party or party is already registered in this command channel.
 		if (party == null || _parties.contains(party))
 			return;
+		
+		// Update the CCinfo for existing players.
+		broadcastPacket(new ExMPCCPartyInfoUpdate(party, 1));
 		
 		_parties.add(party);
 		
@@ -151,9 +168,9 @@ public class CommandChannel extends AbstractGroup
 	}
 	
 	/**
-	 * Removes a Party from the Command Channel.
-	 * @param party : the party to remove. Disband the channel if there was only 2 parties left.
-	 * @return true if the party has been successfully removed from command channel.
+	 * Removes a {@link Party} from this {@link CommandChannel}.
+	 * @param party : the Party to remove. Disband the CommandChannel if there was only 2 parties left.
+	 * @return true if the Party has been successfully removed from CommandChannel.
 	 */
 	public boolean removeParty(Party party)
 	{
@@ -172,12 +189,15 @@ public class CommandChannel extends AbstractGroup
 			party.broadcastPacket(ExCloseMPCC.STATIC_PACKET);
 			
 			recalculateLevel();
+			
+			// Update the CCinfo for existing players.
+			broadcastPacket(new ExMPCCPartyInfoUpdate(party, 0));
 		}
 		return true;
 	}
 	
 	/**
-	 * @return the list of parties registered in this command channel.
+	 * @return the {@link List} of {@link Party} registered in this {@link CommandChannel}.
 	 */
 	public List<Party> getParties()
 	{
@@ -185,7 +205,7 @@ public class CommandChannel extends AbstractGroup
 	}
 	
 	/**
-	 * @param attackable : the attackable to check.
+	 * @param attackable : the {@link Attackable} to check.
 	 * @return true if the members count is reached.
 	 */
 	public boolean meetRaidWarCondition(Attackable attackable)

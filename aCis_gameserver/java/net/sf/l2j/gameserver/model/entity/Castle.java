@@ -4,38 +4,36 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import net.sf.l2j.Config;
+import net.sf.l2j.commons.logging.CLogger;
+
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.enums.SealType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.model.actor.instance.HolyThing;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.item.MercenaryTicket;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.location.TowerSpawnLocation;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
-import net.sf.l2j.gameserver.model.zone.type.L2CastleTeleportZone;
-import net.sf.l2j.gameserver.model.zone.type.L2CastleZone;
-import net.sf.l2j.gameserver.model.zone.type.L2SiegeZone;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
+import net.sf.l2j.gameserver.model.zone.type.CastleTeleportZone;
+import net.sf.l2j.gameserver.model.zone.type.CastleZone;
+import net.sf.l2j.gameserver.model.zone.type.SiegeZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.PledgeShowInfoUpdate;
@@ -43,14 +41,30 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public class Castle
 {
-	protected static final Logger _log = Logger.getLogger(Castle.class.getName());
+	protected static final CLogger LOGGER = new CLogger(Castle.class.getName());
+	
+	private static final String UPDATE_TREASURY = "UPDATE castle SET treasury = ? WHERE id = ?";
+	private static final String UPDATE_CERTIFICATES = "UPDATE castle SET certificates=? WHERE id=?";
+	private static final String UPDATE_TAX = "UPDATE castle SET taxPercent = ? WHERE id = ?";
+	
+	private static final String UPDATE_DOORS = "REPLACE INTO castle_doorupgrade (doorId, hp, castleId) VALUES (?,?,?)";
+	private static final String LOAD_DOORS = "SELECT * FROM castle_doorupgrade WHERE castleId=?";
+	private static final String DELETE_DOOR = "DELETE FROM castle_doorupgrade WHERE castleId=?";
+	
+	private static final String DELETE_OWNER = "UPDATE clan_data SET hasCastle=0 WHERE hasCastle=?";
+	private static final String UPDATE_OWNER = "UPDATE clan_data SET hasCastle=? WHERE clan_id=?";
+	
+	private static final String LOAD_TRAPS = "SELECT * FROM castle_trapupgrade WHERE castleId=?";
+	private static final String UPDATE_TRAP = "REPLACE INTO castle_trapupgrade (castleId, towerIndex, level) values (?,?,?)";
+	private static final String DELETE_TRAP = "DELETE FROM castle_trapupgrade WHERE castleId=?";
+	
+	private static final String UPDATE_ITEMS_LOC = "UPDATE items SET loc='INVENTORY' WHERE item_id IN (?, 6841) AND owner_id=? AND loc='PAPERDOLL'";
 	
 	private final int _castleId;
 	private final String _name;
 	
 	private int _circletId;
 	private int _ownerId;
-	private Clan _formerOwner;
 	
 	private final List<Door> _doors = new ArrayList<>();
 	private final List<MercenaryTicket> _tickets = new ArrayList<>(60);
@@ -71,9 +85,9 @@ public class Castle
 	private double _taxRate;
 	private long _treasury;
 	
-	private L2SiegeZone _siegeZone;
-	private L2CastleZone _castleZone;
-	private L2CastleTeleportZone _teleZone;
+	private SiegeZone _siegeZone;
+	private CastleZone _castleZone;
+	private CastleTeleportZone _teleZone;
 	
 	private int _leftCertificates;
 	
@@ -83,7 +97,7 @@ public class Castle
 		_name = name;
 		
 		// Feed _siegeZone.
-		for (L2SiegeZone zone : ZoneManager.getInstance().getAllZones(L2SiegeZone.class))
+		for (SiegeZone zone : ZoneManager.getInstance().getAllZones(SiegeZone.class))
 		{
 			if (zone.getSiegeObjectId() == _castleId)
 			{
@@ -93,7 +107,7 @@ public class Castle
 		}
 		
 		// Feed _castleZone.
-		for (L2CastleZone zone : ZoneManager.getInstance().getAllZones(L2CastleZone.class))
+		for (CastleZone zone : ZoneManager.getInstance().getAllZones(CastleZone.class))
 		{
 			if (zone.getCastleId() == _castleId)
 			{
@@ -103,7 +117,7 @@ public class Castle
 		}
 		
 		// Feed _teleZone.
-		for (L2CastleTeleportZone zone : ZoneManager.getInstance().getAllZones(L2CastleTeleportZone.class))
+		for (CastleTeleportZone zone : ZoneManager.getInstance().getAllZones(CastleTeleportZone.class))
 		{
 			if (zone.getCastleId() == _castleId)
 			{
@@ -121,7 +135,7 @@ public class Castle
 		setOwner(clan);
 		
 		// "Clan X engraved the ruler" message.
-		getSiege().announceToPlayer(SystemMessage.getSystemMessage(SystemMessageId.CLAN_S1_ENGRAVED_RULER).addString(clan.getName()), true);
+		getSiege().announceToPlayers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_S1_ENGRAVED_RULER).addString(clan.getName()), true);
 	}
 	
 	/**
@@ -186,16 +200,16 @@ public class Castle
 				_treasury += amount;
 		}
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(UPDATE_TREASURY))
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE castle SET treasury = ? WHERE id = ?");
-			statement.setLong(1, _treasury);
-			statement.setInt(2, _castleId);
-			statement.execute();
-			statement.close();
+			ps.setLong(1, _treasury);
+			ps.setInt(2, _castleId);
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
+			LOGGER.error("Couldn't update treasury.", e);
 		}
 		return true;
 	}
@@ -219,17 +233,17 @@ public class Castle
 		return getSiegeZone().isInsideZone(x, y, z);
 	}
 	
-	public L2SiegeZone getSiegeZone()
+	public SiegeZone getSiegeZone()
 	{
 		return _siegeZone;
 	}
 	
-	public L2CastleZone getCastleZone()
+	public CastleZone getCastleZone()
 	{
 		return _castleZone;
 	}
 	
-	public L2CastleTeleportZone getTeleZone()
+	public CastleTeleportZone getTeleZone()
 	{
 		return _teleZone;
 	}
@@ -255,7 +269,8 @@ public class Castle
 		
 		if (save)
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("UPDATE castle SET certificates=? WHERE id=?"))
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(UPDATE_CERTIFICATES))
 			{
 				ps.setInt(1, leftCertificates);
 				ps.setInt(2, _castleId);
@@ -263,7 +278,7 @@ public class Castle
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "setLeftCertificates: " + e.getMessage(), e);
+				LOGGER.error("Couldn't update certificates amount.", e);
 			}
 		}
 	}
@@ -316,10 +331,6 @@ public class Castle
 			Clan oldOwner = ClanTable.getInstance().getClan(_ownerId);
 			if (oldOwner != null)
 			{
-				// Set the former owner.
-				if (_formerOwner == null)
-					_formerOwner = oldOwner;
-				
 				// Dismount the old leader if he was riding a wyvern.
 				Player oldLeader = oldOwner.getLeader().getPlayerInstance();
 				if (oldLeader != null)
@@ -342,33 +353,34 @@ public class Castle
 			getSiege().midVictory();
 			
 			// "There is a new castle Lord" message when the castle change of hands. Message sent for both sides.
-			getSiege().announceToPlayer(SystemMessage.getSystemMessage(SystemMessageId.NEW_CASTLE_LORD), true);
+			getSiege().announceToPlayers(SystemMessage.getSystemMessage(SystemMessageId.NEW_CASTLE_LORD), true);
 		}
 	}
 	
 	/**
 	 * Remove the castle owner. This method is only used by admin command.
-	 * @param clan The clan which is victim of the command.
 	 **/
-	public void removeOwner(Clan clan)
+	public void removeOwner()
 	{
-		if (clan != null)
-		{
-			_formerOwner = clan;
-			
-			clan.setCastle(0);
-			clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
-			
-			// Remove clan from siege registered clans (as owners are automatically added).
-			getSiege().getRegisteredClans().remove(clan);
-		}
+		if (_ownerId <= 0)
+			return;
+		
+		final Clan clan = ClanTable.getInstance().getClan(_ownerId);
+		if (clan == null)
+			return;
+		
+		clan.setCastle(0);
+		clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+		
+		// Remove clan from siege registered clans (as owners are automatically added).
+		getSiege().getRegisteredClans().remove(clan);
 		
 		updateOwnerInDB(null);
 		
 		if (getSiege().isInProgress())
 			getSiege().midVictory();
-		else if (Config.REMOVE_CASTLE_CIRCLETS && _formerOwner != null)
-			removeCirclet(_formerOwner);
+		else
+			checkItemsForClan(clan);
 	}
 	
 	/**
@@ -379,7 +391,7 @@ public class Castle
 	public void setTaxPercent(Player activeChar, int taxPercent)
 	{
 		int maxTax;
-		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+		switch (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE))
 		{
 			case DAWN:
 				maxTax = 25;
@@ -410,16 +422,16 @@ public class Castle
 		
 		if (save)
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(UPDATE_TAX))
 			{
-				PreparedStatement statement = con.prepareStatement("UPDATE castle SET taxPercent = ? WHERE id = ?");
-				statement.setInt(1, taxPercent);
-				statement.setInt(2, _castleId);
-				statement.execute();
-				statement.close();
+				ps.setInt(1, taxPercent);
+				ps.setInt(2, _castleId);
+				ps.executeUpdate();
 			}
 			catch (Exception e)
 			{
+				LOGGER.error("Couldn't update tax amount.", e);
 			}
 		}
 	}
@@ -467,18 +479,17 @@ public class Castle
 		
 		if (db)
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(UPDATE_DOORS))
 			{
-				PreparedStatement statement = con.prepareStatement("REPLACE INTO castle_doorupgrade (doorId, hp, castleId) VALUES (?,?,?)");
-				statement.setInt(1, doorId);
-				statement.setInt(2, hp);
-				statement.setInt(3, _castleId);
-				statement.execute();
-				statement.close();
+				ps.setInt(1, doorId);
+				ps.setInt(2, hp);
+				ps.setInt(3, _castleId);
+				ps.execute();
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Exception: saveDoorUpgrade(int doorId, int hp): " + e.getMessage(), e);
+				LOGGER.error("Couldn't upgrade castle doors.", e);
 			}
 		}
 	}
@@ -488,22 +499,20 @@ public class Castle
 	 */
 	public void loadDoorUpgrade()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(LOAD_DOORS))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_doorupgrade WHERE castleId=?");
-			statement.setInt(1, _castleId);
+			ps.setInt(1, _castleId);
 			
-			ResultSet rs = statement.executeQuery();
-			
-			while (rs.next())
-				upgradeDoor(rs.getInt("doorId"), rs.getInt("hp"), false);
-			
-			rs.close();
-			statement.close();
+			try (ResultSet rs = ps.executeQuery())
+			{
+				while (rs.next())
+					upgradeDoor(rs.getInt("doorId"), rs.getInt("hp"), false);
+			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception: loadDoorUpgrade(): " + e.getMessage(), e);
+			LOGGER.error("Couldn't load door upgrades.", e);
 		}
 	}
 	
@@ -515,16 +524,15 @@ public class Castle
 		for (Door door : _doors)
 			door.getStat().setUpgradeHpRatio(1);
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(DELETE_DOOR))
 		{
-			PreparedStatement statement = con.prepareStatement("DELETE FROM castle_doorupgrade WHERE castleId=?");
-			statement.setInt(1, _castleId);
-			statement.execute();
-			statement.close();
+			ps.setInt(1, _castleId);
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception: removeDoorUpgrade(): " + e.getMessage(), e);
+			LOGGER.error("Couldn't delete door upgrade.", e);
 		}
 	}
 	
@@ -538,29 +546,29 @@ public class Castle
 			CastleManorManager.getInstance().resetManorData(_castleId);
 		}
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		if (clan != null)
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET hasCastle=0 WHERE hasCastle=?");
-			statement.setInt(1, _castleId);
-			statement.execute();
-			statement.close();
+			// Set castle for new owner.
+			clan.setCastle(_castleId);
 			
-			statement = con.prepareStatement("UPDATE clan_data SET hasCastle=? WHERE clan_id=?");
-			statement.setInt(1, _castleId);
-			statement.setInt(2, _ownerId);
-			statement.execute();
-			statement.close();
+			// Announce to clan members.
+			clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan), new PlaySound(1, "Siege_Victory"));
+		}
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(DELETE_OWNER);
+			PreparedStatement ps2 = con.prepareStatement(UPDATE_OWNER))
+		{
+			ps.setInt(1, _castleId);
+			ps.executeUpdate();
 			
-			// Announce to clan memebers
-			if (clan != null)
-			{
-				clan.setCastle(_castleId); // Set castle flag for new owner
-				clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan), new PlaySound(1, "Siege_Victory"));
-			}
+			ps2.setInt(1, _castleId);
+			ps2.setInt(2, _ownerId);
+			ps2.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage(), e);
+			LOGGER.error("Couldn't update castle owner.", e);
 		}
 	}
 	
@@ -647,7 +655,7 @@ public class Castle
 					continue;
 				
 				// Generate templates, feed them with ticket information.
-				final NpcTemplate template = NpcTable.getInstance().getTemplate(ticket.getNpcId());
+				final NpcTemplate template = NpcData.getInstance().getTemplate(ticket.getNpcId());
 				if (template == null)
 					continue;
 				
@@ -661,7 +669,7 @@ public class Castle
 				}
 				catch (Exception e)
 				{
-					_log.warning("Could not spawn Npc " + ticket.getNpcId());
+					LOGGER.error("Couldn't spawn npc ticket {}. ", e, ticket.getNpcId());
 				}
 				
 				// Delete the ticket item.
@@ -706,21 +714,20 @@ public class Castle
 	
 	public void loadTrapUpgrade()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(LOAD_TRAPS))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_trapupgrade WHERE castleId=?");
-			statement.setInt(1, _castleId);
-			ResultSet rs = statement.executeQuery();
+			ps.setInt(1, _castleId);
 			
-			while (rs.next())
-				_flameTowers.get(rs.getInt("towerIndex")).setUpgradeLevel(rs.getInt("level"));
-			
-			rs.close();
-			statement.close();
+			try (ResultSet rs = ps.executeQuery())
+			{
+				while (rs.next())
+					_flameTowers.get(rs.getInt("towerIndex")).setUpgradeLevel(rs.getInt("level"));
+			}
 		}
 		catch (Exception e)
 		{
-			_log.warning("Exception: loadTrapUpgrade(): " + e);
+			LOGGER.error("Couldn't load traps.", e);
 		}
 	}
 	
@@ -810,47 +817,6 @@ public class Castle
 		_treasury = treasury;
 	}
 	
-	/**
-	 * Update clan reputation points over siege end, as following :
-	 * <ul>
-	 * <li>The former clan failed to defend the castle : 1000 points for new owner, -1000 for former clan.</li>
-	 * <li>The former clan successfully defended the castle, ending in a draw : 500 points for former clan.</li>
-	 * <li>No former clan, which means players successfully attacked over NPCs : 1000 points for new owner.</li>
-	 * </ul>
-	 */
-	public void updateClansReputation()
-	{
-		final Clan owner = ClanTable.getInstance().getClan(getOwnerId());
-		if (_formerOwner != null)
-		{
-			// Defenders fail
-			if (_formerOwner != owner)
-			{
-				_formerOwner.takeReputationScore(1000);
-				_formerOwner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_WAS_DEFEATED_IN_SIEGE_AND_LOST_S1_REPUTATION_POINTS).addNumber(1000));
-				
-				// Attackers succeed over defenders
-				if (owner != null)
-				{
-					owner.addReputationScore(1000);
-					owner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS).addNumber(1000));
-				}
-			}
-			// Draw
-			else
-			{
-				_formerOwner.addReputationScore(500);
-				_formerOwner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS).addNumber(500));
-			}
-		}
-		// Attackers win over NPCs
-		else if (owner != null)
-		{
-			owner.addReputationScore(1000);
-			owner.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS).addNumber(1000));
-		}
-	}
-	
 	public List<Integer> getArtifacts()
 	{
 		return _artifacts;
@@ -865,14 +831,6 @@ public class Castle
 	public boolean isGoodArtifact(WorldObject object)
 	{
 		return object instanceof HolyThing && _artifacts.contains(((HolyThing) object).getNpcId());
-	}
-	
-	/**
-	 * @return the initial castle owner. Used to clean crowns && others castles related functions.
-	 */
-	public Clan getInitialCastleOwner()
-	{
-		return _formerOwner;
 	}
 	
 	/**
@@ -895,18 +853,17 @@ public class Castle
 	{
 		if (save)
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(UPDATE_TRAP))
 			{
-				PreparedStatement statement = con.prepareStatement("REPLACE INTO castle_trapupgrade (castleId, towerIndex, level) values (?,?,?)");
-				statement.setInt(1, _castleId);
-				statement.setInt(2, towerIndex);
-				statement.setInt(3, level);
-				statement.execute();
-				statement.close();
+				ps.setInt(1, _castleId);
+				ps.setInt(2, towerIndex);
+				ps.setInt(3, level);
+				ps.execute();
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Exception: setTrapUpgradeLevel(int towerIndex, int level, int castleId): " + e.getMessage(), e);
+				LOGGER.error("Couldn't replace trap upgrade.", e);
 			}
 		}
 		
@@ -923,65 +880,62 @@ public class Castle
 		for (TowerSpawnLocation ts : _flameTowers)
 			ts.setUpgradeLevel(0);
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(DELETE_TRAP))
 		{
-			PreparedStatement statement = con.prepareStatement("DELETE FROM castle_trapupgrade WHERE castleId=?");
-			statement.setInt(1, _castleId);
-			statement.execute();
-			statement.close();
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, "Exception: removeTrapUpgrade(): " + e.getMessage(), e);
-		}
-	}
-	
-	public void removeCirclet(Clan clan)
-	{
-		Arrays.stream(clan.getMembers()).forEach(m -> removeCircletsAndCrown(m));
-	}
-	
-	public void removeCircletsAndCrown(ClanMember member)
-	{
-		if (member == null)
-			return;
-		
-		final Player player = member.getPlayerInstance();
-		
-		if (player != null)
-		{
-			final ItemInstance circlet = player.getInventory().getItemByItemId(_circletId);
-			if (circlet != null)
-			{
-				if (circlet.isEquipped())
-					player.getInventory().unEquipItemInSlot(circlet.getLocationSlot());
-				
-				player.destroyItemByItemId("CastleCircletRemoval", _circletId, 1, player, true);
-			}
-			
-			if (player.isClanLeader())
-			{
-				final ItemInstance crown = player.getInventory().getItemByItemId(6841);
-				if (crown != null)
-				{
-					if (crown.isEquipped())
-						player.getInventory().unEquipItemInSlot(crown.getLocationSlot());
-					
-					player.destroyItemByItemId("CastleCrownRemoval", 6841, 1, player, true);
-				}
-			}
-			return;
-		}
-		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("DELETE FROM items WHERE owner_id = ? AND item_id IN (?, 6841)"))
-		{
-			ps.setInt(1, member.getObjectId());
-			ps.setInt(2, _circletId);
+			ps.setInt(1, _castleId);
 			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Failed to remove castle circlets && crowns for offline player " + member.getName() + ": " + e.getMessage(), e);
+			LOGGER.error("Couldn't delete trap upgrade.", e);
+		}
+	}
+	
+	public void checkItemsForMember(ClanMember member)
+	{
+		final Player player = member.getPlayerInstance();
+		if (player != null)
+			player.checkItemRestriction();
+		else
+		{
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(UPDATE_ITEMS_LOC))
+			{
+				ps.setInt(1, _circletId);
+				ps.setInt(2, member.getObjectId());
+				ps.executeUpdate();
+			}
+			catch (Exception e)
+			{
+				LOGGER.error("Couldn't update items for member.", e);
+			}
+		}
+	}
+	
+	public void checkItemsForClan(Clan clan)
+	{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(UPDATE_ITEMS_LOC))
+		{
+			ps.setInt(1, _circletId);
+			
+			for (ClanMember member : clan.getMembers())
+			{
+				final Player player = member.getPlayerInstance();
+				if (player != null)
+					player.checkItemRestriction();
+				else
+				{
+					ps.setInt(2, member.getObjectId());
+					ps.addBatch();
+				}
+			}
+			ps.executeBatch();
+		}
+		catch (Exception e)
+		{
+			LOGGER.error("Couldn't update items for clan.", e);
 		}
 	}
 }

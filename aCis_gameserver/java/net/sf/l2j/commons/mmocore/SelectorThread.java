@@ -13,11 +13,6 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/**
- * Parts of design based on networkcore from WoodenGil
- * @param <T>
- * @author KenM
- */
 @SuppressWarnings("resource")
 public final class SelectorThread<T extends MMOClient<?>> extends Thread
 {

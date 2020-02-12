@@ -2,11 +2,12 @@ package net.sf.l2j.gameserver.skills.l2skills;
 
 import java.util.logging.Level;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class L2SkillAppearance extends L2Skill
 {

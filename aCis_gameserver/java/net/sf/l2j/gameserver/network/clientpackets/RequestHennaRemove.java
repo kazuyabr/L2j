@@ -1,12 +1,11 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.Henna;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.network.serverpackets.HennaInfo;
+import net.sf.l2j.gameserver.network.serverpackets.UserInfo;
 
-/**
- * format cd
- */
 public final class RequestHennaRemove extends L2GameClientPacket
 {
 	private int _symbolId;
@@ -20,22 +19,30 @@ public final class RequestHennaRemove extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		for (int i = 1; i <= 3; i++)
+		final Henna henna = player.getHennaList().getBySymbolId(_symbolId);
+		if (henna == null)
+			return;
+		
+		if (player.getAdena() < henna.getRemovePrice())
 		{
-			Henna henna = activeChar.getHenna(i);
-			if (henna != null && henna.getSymbolId() == _symbolId)
-			{
-				if (activeChar.getAdena() >= (henna.getPrice() / 5))
-				{
-					activeChar.removeHenna(i);
-					break;
-				}
-				activeChar.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
-			}
+			player.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
+			return;
 		}
+		
+		boolean success = player.getHennaList().remove(henna);
+		if (!success)
+			return;
+		
+		sendPacket(new HennaInfo(player));
+		sendPacket(new UserInfo(player));
+		
+		player.reduceAdena("Henna", henna.getRemovePrice(), player, false);
+		
+		player.addItem("Henna", henna.getDyeId(), Henna.REMOVE_AMOUNT, player, true);
+		player.sendPacket(SystemMessageId.SYMBOL_DELETED);
 	}
 }

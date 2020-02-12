@@ -1,5 +1,7 @@
 package net.sf.l2j.gameserver.model.location;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 /**
  * A datatype used to retain a 3D (x/y/z) point. It got the capability to be set and cleaned.
  */
@@ -23,6 +25,13 @@ public class Location
 		_x = loc.getX();
 		_y = loc.getY();
 		_z = loc.getZ();
+	}
+	
+	public Location(StatsSet loc)
+	{
+		_x = loc.getInteger("x");
+		_y = loc.getInteger("y");
+		_z = loc.getInteger("z");
 	}
 	
 	@Override

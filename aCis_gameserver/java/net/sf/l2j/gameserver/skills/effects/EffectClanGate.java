@@ -1,13 +1,13 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.skills.AbnormalEffect;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.skills.AbnormalEffect;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * @author ZaKaX (Ghost @ L2D)

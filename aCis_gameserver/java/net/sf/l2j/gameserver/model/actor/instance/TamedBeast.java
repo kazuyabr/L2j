@@ -6,11 +6,13 @@ import java.util.concurrent.Future;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.SkillType;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.NpcSay;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 
@@ -49,7 +51,7 @@ public final class TamedBeast extends FeedableBeast
 	
 	private Future<?> _aiTask = null;
 	
-	public TamedBeast(int objectId, NpcTemplate template, Player owner, int foodId, int x, int y, int z)
+	public TamedBeast(int objectId, NpcTemplate template, Player owner, int foodId, Location loc)
 	{
 		super(objectId, template);
 		
@@ -66,7 +68,7 @@ public final class TamedBeast extends FeedableBeast
 		// Generate AI task.
 		_aiTask = ThreadPool.scheduleAtFixedRate(new AiTask(), TASK_INTERVAL, TASK_INTERVAL);
 		
-		spawnMe(x, y, z);
+		spawnMe(loc);
 	}
 	
 	@Override
@@ -198,11 +200,11 @@ public final class TamedBeast extends FeedableBeast
 	protected void sitCastAndFollow(L2Skill skill, Creature target)
 	{
 		stopMove(null);
-		getAI().setIntention(CtrlIntention.IDLE);
+		getAI().setIntention(IntentionType.IDLE);
 		
 		setTarget(target);
 		doCast(skill);
-		getAI().setIntention(CtrlIntention.FOLLOW, _owner);
+		getAI().setIntention(IntentionType.FOLLOW, _owner);
 	}
 	
 	private class AiTask implements Runnable
@@ -275,7 +277,7 @@ public final class TamedBeast extends FeedableBeast
 			if (totalBuffsOnOwner < 2 && owner.getFirstEffect(buffToGive) == null)
 				sitCastAndFollow(buffToGive, owner);
 			else
-				getAI().setIntention(CtrlIntention.FOLLOW, owner);
+				getAI().setIntention(IntentionType.FOLLOW, owner);
 		}
 	}
 }

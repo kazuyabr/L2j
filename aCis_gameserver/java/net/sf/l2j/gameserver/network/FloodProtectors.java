@@ -41,7 +41,7 @@ public final class FloodProtectors
 	 * @param action : The action to track.
 	 * @return True if the action is possible, False otherwise.
 	 */
-	public static boolean performAction(L2GameClient client, Action action)
+	public static boolean performAction(GameClient client, Action action)
 	{
 		final int reuseDelay = action.getReuseDelay();
 		if (reuseDelay == 0)

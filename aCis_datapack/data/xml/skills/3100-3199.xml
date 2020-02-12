@@ -354,7 +354,7 @@
 		<set name="reuseDelay" val="180000" />
 		<set name="staticReuse" val="true" />
 		<set name="hitTime" val="1500" />
-		<set name="skillType" val="HEAL_PERCENT" />
+		<set name="skillType" val="HEAL_STATIC" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="staticHitTime" val="true" />
 		<for>
@@ -486,7 +486,7 @@
 	<skill id="3132" levels="10" name="Item Skill: Might">
 		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
 		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
-		<table name="#pAtk"> 23.64 27.96 32.76 37.98 43.62 49.62 55.86 62.28 68.88 79.74 </table>
+		<table name="#pAtk"> 1.01 1.02 1.03 1.04 1.05 1.06 1.07 1.08 1.09 1.10 </table>
 		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="mpInitialConsume" val="#mpInitialConsume" />
@@ -500,14 +500,14 @@
 		<set name="staticHitTime" val="true" />
 		<for>
 			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="abnormal_item">
-				<add order="0x40" stat="pAtk" val="#pAtk" />
+				<mul order="0x30" stat="pAtk" val="#pAtk" />
 			</effect>
 		</for>
 	</skill>
 	<skill id="3133" levels="10" name="Item Skill: Empower">
 		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
 		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
-		<table name="#mAtk"> 15.9 18.65 21.6 24.9 28.4 32.15 36.05 40.1 44.2 50.95 </table>
+		<table name="#mAtk"> 1.02 1.04 1.06 1.08 1.10 1.12 1.14 1.16 1.18 1.20 </table>
 		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="mpInitialConsume" val="#mpInitialConsume" />
@@ -521,7 +521,7 @@
 		<set name="staticHitTime" val="true" />
 		<for>
 			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="abnormal_item">
-				<add order="0x40" stat="mAtk" val="#mAtk" />
+				<mul order="0x30" stat="mAtk" val="#mAtk" />
 			</effect>
 		</for>
 	</skill>
@@ -529,6 +529,7 @@
 		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
 		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
 		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
+		<table name="#pvpBonus"> 1.01 1.02 1.03 1.04 1.05 1.06 1.07 1.08 1.09 1.10 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="mpInitialConsume" val="#mpInitialConsume" />
 		<set name="mpConsume" val="#mpConsume" />
@@ -541,15 +542,15 @@
 		<set name="staticHitTime" val="true" />
 		<for>
 			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="abnormal_item">
-				<mul order="0x30" stat="pvpPhysDmg" val="1.05" />
-				<mul order="0x30" stat="pvpPhysSkillsDmg" val="1.05" />
+				<mul order="0x30" stat="pvpPhysDmg" val="#pvpBonus" />
+				<mul order="0x30" stat="pvpPhysSkillsDmg" val="#pvpBonus" />
 			</effect>
 		</for>
 	</skill>
 	<skill id="3135" levels="10" name="Item Skill: Shield">
 		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
 		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
-		<table name="#pDef"> 30.2 33.72 37.4 41.28 45.32 49.52 53.88 58.32 62.88 70.6 </table>
+		<table name="#pDef"> 1.01 1.02 1.03 1.04 1.05 1.06 1.07 1.08 1.09 1.10 </table>
 		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="mpInitialConsume" val="#mpInitialConsume" />
@@ -563,14 +564,14 @@
 		<set name="staticHitTime" val="true" />
 		<for>
 			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="abnormal_item">
-				<add order="0x40" stat="pDef" val="#pDef" />
+				<mul order="0x30" stat="pDef" val="#pDef" />
 			</effect>
 		</for>
 	</skill>
 	<skill id="3136" levels="10" name="Item Skill: Magic Barrier">
 		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
 		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
-		<table name="#mDef"> 37 40 44 48 52 56 61 65 70 77 </table>
+		<table name="#mDef"> 1.02 1.04 1.06 1.08 1.10 1.12 1.14 1.16 1.18 1.20 </table>
 		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="mpInitialConsume" val="#mpInitialConsume" />
@@ -584,7 +585,7 @@
 		<set name="staticHitTime" val="true" />
 		<for>
 			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="abnormal_item">
-				<add order="0x40" stat="mDef" val="#mDef" />
+				<mul order="0x30" stat="mDef" val="#mDef" />
 			</effect>
 		</for>
 	</skill>
@@ -592,6 +593,7 @@
 		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
 		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
 		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
+		<table name="#pvpWeakness"> 0.99 0.98 0.97 0.96 0.95 0.94 0.93 0.92 0.91 0.90 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="power" val="80" />
 		<set name="mpInitialConsume" val="#mpInitialConsume" />
@@ -609,8 +611,8 @@
 		<set name="staticHitTime" val="true" />
 		<for>
 			<effect name="Debuff" time="60" val="0" stackOrder="1" stackType="pvp_dmg_down">
-				<mul order="0x30" stat="pvpPhysDmg" val="0.95" />
-				<mul order="0x30" stat="pvpPhysSkillsDmg" val="0.95" />
+				<mul order="0x30" stat="pvpPhysDmg" val="#pvpWeakness" />
+				<mul order="0x30" stat="pvpPhysSkillsDmg" val="#pvpWeakness" />
 			</effect>
 		</for>
 	</skill>
@@ -701,7 +703,7 @@
 	<skill id="3142" levels="10" name="Item Skill: Wild Magic">
 		<table name="#mpInitialConsume"> 10 11 11 12 13 13 14 15 16 17 </table>
 		<table name="#mpConsume"> 38 42 44 47 51 52 55 58 61 65 </table>
-		<table name="#mCritRate"> 1 1 1 2 2 2 3 3 3 4 </table>
+		<table name="#mCritRate"> 0.01 0.01 0.01 0.02 0.02 0.02 0.03 0.03 0.03 0.04 </table>
 		<table name="#magicLvl"> 46 49 52 55 58 61 64 67 70 75 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="mpInitialConsume" val="#mpInitialConsume" />
@@ -715,7 +717,7 @@
 		<set name="staticHitTime" val="true" />
 		<for>
 			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="abnormal_item">
-				<basemul order="0x30" stat="mCritRate" val="#mCritRate" />
+				<basemul order="0x10" stat="mCritRate" val="#mCritRate" />
 			</effect>
 		</for>
 	</skill>
@@ -994,7 +996,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<for>
-			<effect name="Invincible" time="10" val="0" special="invincible" stackOrder="1" stackType="abnormal_item" />
+			<effect name="Invincible" time="10" val="0" special="invincible" stackOrder="1" stackType="invincibility" />
 		</for>
 	</skill>
 	<skill id="3159" levels="3" name="Item Skill: Stealth">
@@ -1613,7 +1615,7 @@
 		<set name="isDebuff" val="true" />
 		<set name="staticHitTime" val="true" />
 		<for>
-			<effect name="Stun" time="30" val="0" stackOrder="1" stackType="stun" />
+			<effect name="Stun" time="9" val="0" stackOrder="1" stackType="stun" />
 		</for>
 	</skill>
 	<skill id="3190" levels="10" name="Item Skill: Hold">

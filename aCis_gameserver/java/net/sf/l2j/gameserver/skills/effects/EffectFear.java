@@ -1,16 +1,16 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectFlag;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Folk;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeFlag;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeSummon;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectFlag;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * Implementation of the Fear Effect
@@ -82,7 +82,7 @@ public class EffectFear extends L2Effect
 		final int posX = victimX + (((victimX > getEffector().getX()) ? 1 : -1) * FEAR_RANGE);
 		final int posY = victimY + (((victimY > getEffector().getY()) ? 1 : -1) * FEAR_RANGE);
 		
-		getEffected().getAI().setIntention(CtrlIntention.MOVE_TO, GeoEngine.getInstance().canMoveToTargetLoc(victimX, victimY, victimZ, posX, posY, victimZ));
+		getEffected().getAI().setIntention(IntentionType.MOVE_TO, GeoEngine.getInstance().canMoveToTargetLoc(victimX, victimY, victimZ, posX, posY, victimZ));
 		return true;
 	}
 	

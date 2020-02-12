@@ -5,10 +5,11 @@ import java.util.List;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.data.CharTemplateTable;
 import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.xml.PlayerData;
+import net.sf.l2j.gameserver.enums.actors.ClassId;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -71,7 +72,7 @@ public final class ClassMaster extends Folk
 			{
 				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile("data/html/classmaster/ok.htm");
-				html.replace("%name%", CharTemplateTable.getInstance().getClassNameById(val));
+				html.replace("%name%", PlayerData.getInstance().getClassNameById(val));
 				player.sendPacket(html);
 			}
 		}
@@ -93,10 +94,7 @@ public final class ClassMaster extends Folk
 			}
 		}
 		else if (command.startsWith("learn_skills"))
-		{
-			player.giveAvailableSkills();
-			player.sendSkillList();
-		}
+			player.rewardSkills();
 		else
 			super.onBypassFeedback(player, command);
 	}
@@ -163,13 +161,13 @@ public final class ClassMaster extends Folk
 							continue;
 						
 						if (validateClassId(currentClassId, cid))
-							StringUtil.append(menu, "<a action=\"bypass -h npc_%objectId%_change_class ", cid.getId(), "\">", CharTemplateTable.getInstance().getClassNameById(cid.getId()), "</a><br>");
+							StringUtil.append(menu, "<a action=\"bypass -h npc_%objectId%_change_class ", cid.getId(), "\">", PlayerData.getInstance().getClassNameById(cid.getId()), "</a><br>");
 					}
 					
 					if (menu.length() > 0)
 					{
 						html.setFile("data/html/classmaster/template.htm");
-						html.replace("%name%", CharTemplateTable.getInstance().getClassNameById(currentClassId.getId()));
+						html.replace("%name%", PlayerData.getInstance().getClassNameById(currentClassId.getId()));
 						html.replace("%menu%", menu.toString());
 					}
 					else
@@ -210,7 +208,7 @@ public final class ClassMaster extends Folk
 		// Weight/Inventory check
 		if (!Config.CLASS_MASTER_SETTINGS.getRewardItems(newJobLevel).isEmpty())
 		{
-			if (player.getWeightPenalty() >= 3)
+			if (player.getWeightPenalty() > 2)
 			{
 				player.sendPacket(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT);
 				return false;

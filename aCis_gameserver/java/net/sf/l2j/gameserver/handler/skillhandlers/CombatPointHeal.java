@@ -1,14 +1,15 @@
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class CombatPointHeal implements ISkillHandler
 {
@@ -20,9 +21,7 @@ public class CombatPointHeal implements ISkillHandler
 	@Override
 	public void useSkill(Creature actChar, L2Skill skill, WorldObject[] targets)
 	{
-		// check for other effects
-		ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(L2SkillType.BUFF);
-		
+		final ISkillHandler handler = SkillHandler.getInstance().getHandler(L2SkillType.BUFF);
 		if (handler != null)
 			handler.useSkill(actChar, skill, targets);
 		
@@ -40,12 +39,19 @@ public class CombatPointHeal implements ISkillHandler
 			if ((target.getCurrentCp() + cp) >= target.getMaxCp())
 				cp = target.getMaxCp() - target.getCurrentCp();
 			
-			target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_CP_WILL_BE_RESTORED).addNumber((int) cp));
 			target.setCurrentCp(cp + target.getCurrentCp());
 			
 			StatusUpdate sump = new StatusUpdate(target);
 			sump.addAttribute(StatusUpdate.CUR_CP, (int) target.getCurrentCp());
 			target.sendPacket(sump);
+			
+			if (target instanceof Player)
+			{
+				if (actChar instanceof Player && actChar != target)
+					target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S2_CP_WILL_BE_RESTORED_BY_S1).addCharName(actChar).addNumber((int) cp));
+				else
+					target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_CP_WILL_BE_RESTORED).addNumber((int) cp));
+			}
 		}
 	}
 	

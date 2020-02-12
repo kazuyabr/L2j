@@ -1,10 +1,11 @@
 package net.sf.l2j.gameserver.model.multisell;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * A datatype which is part of multisell system. It is either the "result" or the "required part" of a multisell action.

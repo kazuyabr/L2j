@@ -2,7 +2,7 @@ package net.sf.l2j.loginserver.network.clientpackets;
 
 import net.sf.l2j.loginserver.network.LoginClient.LoginClientState;
 import net.sf.l2j.loginserver.network.serverpackets.GGAuth;
-import net.sf.l2j.loginserver.network.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.loginserver.network.serverpackets.LoginFail;
 
 public class AuthGameGuard extends L2LoginClientPacket
 {
@@ -61,6 +61,6 @@ public class AuthGameGuard extends L2LoginClientPacket
 			getClient().sendPacket(new GGAuth(getClient().getSessionId()));
 		}
 		else
-			getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
+			getClient().close(LoginFail.REASON_ACCESS_FAILED);
 	}
 }

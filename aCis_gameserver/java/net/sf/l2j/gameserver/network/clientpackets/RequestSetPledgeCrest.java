@@ -1,9 +1,9 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.cache.CrestCache;
-import net.sf.l2j.gameserver.cache.CrestCache.CrestType;
+import net.sf.l2j.gameserver.data.cache.CrestCache;
+import net.sf.l2j.gameserver.data.cache.CrestCache.CrestType;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
@@ -29,39 +29,39 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 		if (_length < 0 || _length > 256)
 			return;
 		
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		final Clan clan = activeChar.getClan();
+		final Clan clan = player.getClan();
 		if (clan == null)
 			return;
 		
 		if (clan.getDissolvingExpiryTime() > System.currentTimeMillis())
 		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_SET_CREST_WHILE_DISSOLUTION_IN_PROGRESS);
+			player.sendPacket(SystemMessageId.CANNOT_SET_CREST_WHILE_DISSOLUTION_IN_PROGRESS);
 			return;
 		}
 		
-		if ((activeChar.getClanPrivileges() & Clan.CP_CL_REGISTER_CREST) != Clan.CP_CL_REGISTER_CREST)
+		if ((player.getClanPrivileges() & Clan.CP_CL_REGISTER_CREST) != Clan.CP_CL_REGISTER_CREST)
 		{
-			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
 		}
 		
-		if (_length == 0)
+		if (_length == 0 || _data.length == 0)
 		{
 			if (clan.getCrestId() != 0)
 			{
 				clan.changeClanCrest(0);
-				activeChar.sendPacket(SystemMessageId.CLAN_CREST_HAS_BEEN_DELETED);
+				player.sendPacket(SystemMessageId.CLAN_CREST_HAS_BEEN_DELETED);
 			}
 		}
 		else
 		{
 			if (clan.getLevel() < 3)
 			{
-				activeChar.sendPacket(SystemMessageId.CLAN_LVL_3_NEEDED_TO_SET_CREST);
+				player.sendPacket(SystemMessageId.CLAN_LVL_3_NEEDED_TO_SET_CREST);
 				return;
 			}
 			
@@ -69,7 +69,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 			if (CrestCache.getInstance().saveCrest(CrestType.PLEDGE, crestId, _data))
 			{
 				clan.changeClanCrest(crestId);
-				activeChar.sendPacket(SystemMessageId.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED);
+				player.sendPacket(SystemMessageId.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED);
 			}
 		}
 	}

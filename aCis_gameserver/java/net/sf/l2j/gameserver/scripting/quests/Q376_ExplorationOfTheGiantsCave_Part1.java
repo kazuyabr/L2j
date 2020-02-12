@@ -2,8 +2,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -167,23 +168,21 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		// Drop parchment to anyone
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
-			return null;
+		final Player player = killer.getActingPlayer();
 		
-		QuestState st = partyMember.getQuestState(qn);
+		// Drop parchment to anyone
+		QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
+			return null;
 		
 		st.dropItems(PARCHMENT, 1, 0, 20000);
 		
 		// Drop mysterious book to person who still need it
-		partyMember = getRandomPartyMember(player, npc, "condBook", "1");
-		if (partyMember == null)
+		st = getRandomPartyMember(player, npc, "condBook", "1");
+		if (st == null)
 			return null;
-		
-		st = partyMember.getQuestState(qn);
 		
 		if (st.dropItems(MYSTERIOUS_BOOK, 1, 1, 1000))
 			st.unset("condBook");
@@ -219,7 +218,7 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 				for (int book : BOOKS[type])
 					st.takeItems(book, 1);
 				
-				st.giveItems(RECIPES[type][Rnd.get(RECIPES[type].length)], 1);
+				st.giveItems(Rnd.get(RECIPES[type]), 1);
 				return "31147-04.htm";
 			}
 		}

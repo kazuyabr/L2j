@@ -9,9 +9,9 @@ import java.io.LineNumberReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import net.sf.l2j.commons.lang.StringUtil;
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.mmocore.SelectorConfig;
 import net.sf.l2j.commons.mmocore.SelectorThread;
 
@@ -22,7 +22,7 @@ import net.sf.l2j.loginserver.network.LoginPacketHandler;
 
 public class LoginServer
 {
-	private static final Logger _log = Logger.getLogger(LoginServer.class.getName());
+	private static final CLogger LOGGER = new CLogger(LoginServer.class.getName());
 	
 	public static final int PROTOCOL_REV = 0x0102;
 	
@@ -58,8 +58,10 @@ public class LoginServer
 		L2DatabaseFactory.getInstance();
 		
 		StringUtil.printSection("LoginController");
-		LoginController.load();
-		GameServerTable.getInstance();
+		LoginController.getInstance();
+		
+		StringUtil.printSection("GameServerManager");
+		GameServerManager.getInstance();
 		
 		StringUtil.printSection("Ban List");
 		loadBanFile();
@@ -74,8 +76,7 @@ public class LoginServer
 			}
 			catch (UnknownHostException uhe)
 			{
-				_log.severe("WARNING: The LoginServer bind address is invalid, using all available IPs. Reason: " + uhe.getMessage());
-				uhe.printStackTrace();
+				LOGGER.error("The LoginServer bind address is invalid, using all available IPs.", uhe);
 			}
 		}
 		
@@ -93,8 +94,7 @@ public class LoginServer
 		}
 		catch (IOException ioe)
 		{
-			_log.severe("FATAL: Failed to open selector. Reason: " + ioe.getMessage());
-			ioe.printStackTrace();
+			LOGGER.error("Failed to open selector.", ioe);
 			
 			System.exit(1);
 		}
@@ -103,12 +103,12 @@ public class LoginServer
 		{
 			_gameServerListener = new GameServerListener();
 			_gameServerListener.start();
-			_log.info("Listening for gameservers on " + Config.GAME_SERVER_LOGIN_HOST + ":" + Config.GAME_SERVER_LOGIN_PORT);
+			
+			LOGGER.info("Listening for gameservers on {}:{}.", Config.GAME_SERVER_LOGIN_HOST, Config.GAME_SERVER_LOGIN_PORT);
 		}
 		catch (IOException ioe)
 		{
-			_log.severe("FATAL: Failed to start the gameserver listener. Reason: " + ioe.getMessage());
-			ioe.printStackTrace();
+			LOGGER.error("Failed to start the gameserver listener.", ioe);
 			
 			System.exit(1);
 		}
@@ -119,13 +119,12 @@ public class LoginServer
 		}
 		catch (IOException ioe)
 		{
-			_log.severe("FATAL: Failed to open server socket. Reason: " + ioe.getMessage());
-			ioe.printStackTrace();
+			LOGGER.error("Failed to open server socket.", ioe);
 			
 			System.exit(1);
 		}
 		_selectorThread.start();
-		_log.info("Loginserver ready on " + (bindAddress == null ? "*" : bindAddress.getHostAddress()) + ":" + Config.PORT_LOGIN);
+		LOGGER.info("Loginserver ready on {}:{}.", (bindAddress == null) ? "*" : bindAddress.getHostAddress(), Config.PORT_LOGIN);
 		
 		StringUtil.printSection("Waiting for gameserver answer");
 	}
@@ -174,7 +173,7 @@ public class LoginServer
 							}
 							catch (NumberFormatException e)
 							{
-								_log.warning("Skipped: Incorrect ban duration (" + parts[1] + "). Line: " + reader.getLineNumber());
+								LOGGER.error("Incorrect ban duration ({}). Line: {}.", parts[1], reader.getLineNumber());
 								continue;
 							}
 						}
@@ -185,20 +184,19 @@ public class LoginServer
 						}
 						catch (UnknownHostException e)
 						{
-							_log.warning("Skipped: Invalid address (" + parts[0] + "). Line: " + reader.getLineNumber());
+							LOGGER.error("Invalid address ({}). Line: {}.", parts[0], reader.getLineNumber());
 						}
 					}
 				}
 			}
 			catch (IOException e)
 			{
-				_log.warning("Error while reading banned_ips.properties. Details: " + e.getMessage());
-				e.printStackTrace();
+				LOGGER.error("Error while reading banned_ips.properties.", e);
 			}
-			_log.info("Loaded " + LoginController.getInstance().getBannedIps().size() + " banned IP(s).");
+			LOGGER.info("Loaded {} banned IP(s).", LoginController.getInstance().getBannedIps().size());
 		}
 		else
-			_log.warning("banned_ips.properties is missing. Ban listing is skipped.");
+			LOGGER.warn("banned_ips.properties is missing. Ban listing is skipped.");
 	}
 	
 	public void shutdown(boolean restart)

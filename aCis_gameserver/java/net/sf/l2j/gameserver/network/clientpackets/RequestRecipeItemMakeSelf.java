@@ -1,19 +1,22 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.data.RecipeTable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.Player.StoreType;
+import net.sf.l2j.gameserver.data.xml.RecipeData;
+import net.sf.l2j.gameserver.enums.actors.StoreType;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.craft.RecipeItemMaker;
+import net.sf.l2j.gameserver.model.item.Recipe;
 import net.sf.l2j.gameserver.network.FloodProtectors;
 import net.sf.l2j.gameserver.network.FloodProtectors.Action;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 {
-	private int _id;
+	private int _recipeId;
 	
 	@Override
 	protected void readImpl()
 	{
-		_id = readD();
+		_recipeId = readD();
 	}
 	
 	@Override
@@ -22,13 +25,36 @@ public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 		if (!FloodProtectors.performAction(getClient(), Action.MANUFACTURE))
 			return;
 		
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		if (activeChar.getStoreType() == StoreType.MANUFACTURE || activeChar.isCrafting())
+		if (player.getStoreType() == StoreType.MANUFACTURE || player.isCrafting())
 			return;
 		
-		RecipeTable.getInstance().requestMakeItem(activeChar, _id);
+		if (player.isInDuel() || player.isInCombat())
+		{
+			player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
+			return;
+		}
+		
+		final Recipe recipe = RecipeData.getInstance().getRecipeList(_recipeId);
+		if (recipe == null)
+			return;
+		
+		if (recipe.isDwarven())
+		{
+			if (!player.getDwarvenRecipeBook().contains(recipe))
+				return;
+		}
+		else
+		{
+			if (!player.getCommonRecipeBook().contains(recipe))
+				return;
+		}
+		
+		final RecipeItemMaker maker = new RecipeItemMaker(player, recipe, player);
+		if (maker._isValid)
+			maker.run();
 	}
 }

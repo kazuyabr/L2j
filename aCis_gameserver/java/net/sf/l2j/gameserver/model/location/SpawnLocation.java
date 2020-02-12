@@ -52,6 +52,11 @@ public class SpawnLocation extends Location
 		return _heading;
 	}
 	
+	public void setHeading(int heading)
+	{
+		_heading = heading;
+	}
+	
 	public void set(int x, int y, int z, int heading)
 	{
 		super.set(x, y, z);

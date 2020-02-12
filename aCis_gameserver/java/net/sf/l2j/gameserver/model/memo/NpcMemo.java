@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.model.memo;
 
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 /**
  * A basic implementation of {@link AbstractMemo} used for NPC. There is no restore/save options, it is mostly used for dynamic content.

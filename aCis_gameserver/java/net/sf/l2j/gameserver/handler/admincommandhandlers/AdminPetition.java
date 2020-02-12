@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import net.sf.l2j.gameserver.data.manager.PetitionManager;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.PetitionManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
@@ -67,7 +67,7 @@ public class AdminPetition implements IAdminCommandHandler
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PETITION_UNDER_PROCESS));
 				return false;
 			}
-			PetitionManager.getInstance().clearPendingPetitions();
+			PetitionManager.getInstance().getPendingPetitions().clear();
 		}
 		return true;
 	}

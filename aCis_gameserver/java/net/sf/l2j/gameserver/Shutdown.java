@@ -1,43 +1,40 @@
 package net.sf.l2j.gameserver;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.lang.StringUtil;
+import net.sf.l2j.commons.logging.CLogger;
+import net.sf.l2j.commons.network.StatusType;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.data.BufferTable;
+import net.sf.l2j.gameserver.data.manager.BufferManager;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.data.manager.CoupleManager;
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
+import net.sf.l2j.gameserver.data.manager.FishingChampionshipManager;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
+import net.sf.l2j.gameserver.data.manager.HeroManager;
+import net.sf.l2j.gameserver.data.manager.RaidBossManager;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.data.sql.ServerMemoTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
-import net.sf.l2j.gameserver.instancemanager.CoupleManager;
-import net.sf.l2j.gameserver.instancemanager.FishingChampionshipManager;
-import net.sf.l2j.gameserver.instancemanager.FourSepulchersManager;
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.entity.Hero;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
-import net.sf.l2j.gameserver.network.L2GameClient;
+import net.sf.l2j.gameserver.network.GameClient;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.gameserverpackets.ServerStatus;
 import net.sf.l2j.gameserver.network.serverpackets.ServerClose;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.taskmanager.ItemsOnGroundTaskManager;
-import net.sf.l2j.gameserver.taskmanager.MovementTaskManager;
-import net.sf.l2j.gameserver.util.Broadcast;
 
 /**
  * This class provides functions for shutting down and restarting the server. It closes all client connections and saves data.
  */
 public class Shutdown extends Thread
 {
-	private static Logger _log = Logger.getLogger(Shutdown.class.getName());
+	private static final CLogger LOGGER = new CLogger(Shutdown.class.getName());
+	
 	private static Shutdown _counterInstance = null;
 	
 	private int _secondsShut;
@@ -55,65 +52,37 @@ public class Shutdown extends Thread
 		"aborting"
 	};
 	
-	private static void SendServerQuit(int seconds)
-	{
-		SystemMessage sysm = SystemMessage.getSystemMessage(SystemMessageId.THE_SERVER_WILL_BE_COMING_DOWN_IN_S1_SECONDS);
-		sysm.addNumber(seconds);
-		Broadcast.toAllOnlinePlayers(sysm);
-	}
-	
-	/**
-	 * Default constucter is only used internal to create the shutdown-hook instance
-	 */
 	protected Shutdown()
 	{
 		_secondsShut = -1;
 		_shutdownMode = SIGTERM;
 	}
 	
-	/**
-	 * This creates a countdown instance of Shutdown.
-	 * @param seconds how many seconds until shutdown
-	 * @param restart true is the server shall restart after shutdown
-	 */
 	public Shutdown(int seconds, boolean restart)
 	{
-		if (seconds < 0)
-			seconds = 0;
-		
-		_secondsShut = seconds;
-		
-		if (restart)
-			_shutdownMode = GM_RESTART;
-		else
-			_shutdownMode = GM_SHUTDOWN;
+		_secondsShut = Math.max(0, seconds);
+		_shutdownMode = (restart) ? GM_RESTART : GM_SHUTDOWN;
 	}
 	
 	/**
-	 * this function is called, when a new thread starts if this thread is the thread of getInstance, then this is the shutdown hook and we save all data and disconnect all clients. after this thread ends, the server will completely exit if this is not the thread of getInstance, then this is a
-	 * countdown thread. we start the countdown, and when we finished it, and it was not aborted, we tell the shutdown-hook why we call exit, and then call exit when the exit status of the server is 1, startServer.sh / startServer.bat will restart the server.
+	 * This function is called, when a new thread starts if this thread is the thread of getInstance, then this is the shutdown hook and we save all data and disconnect all clients.<br>
+	 * <br>
+	 * After this thread ends, the server will completely exit if this is not the thread of getInstance, then this is a countdown thread.<br>
+	 * <br>
+	 * We start the countdown, and when we finished it, and it was not aborted, we tell the shutdown-hook why we call exit, and then call exit when the exit status of the server is 1, startServer.sh / startServer.bat will restart the server.
 	 */
 	@Override
 	public void run()
 	{
-		if (this == SingletonHolder._instance)
+		if (this == SingletonHolder.INSTANCE)
 		{
 			StringUtil.printSection("Under " + MODE_TEXT[_shutdownMode] + " process");
 			
 			// disconnect players
 			try
 			{
-				disconnectAllCharacters();
-				_log.info("All players have been disconnected.");
-			}
-			catch (Throwable t)
-			{
-			}
-			
-			// ensure all services are stopped
-			try
-			{
-				MovementTaskManager.getInstance().interrupt();
+				disconnectAllPlayers();
+				LOGGER.info("All players have been disconnected.");
 			}
 			catch (Throwable t)
 			{
@@ -131,58 +100,55 @@ public class Shutdown extends Thread
 			}
 			
 			// Seven Signs data is now saved along with Festival data.
-			if (!SevenSigns.getInstance().isSealValidationPeriod())
-				SevenSignsFestival.getInstance().saveFestivalData(false);
+			if (!SevenSignsManager.getInstance().isSealValidationPeriod())
+				FestivalOfDarknessManager.getInstance().saveFestivalData(false);
 			
 			// Save Seven Signs data && status.
-			SevenSigns.getInstance().saveSevenSignsData();
-			SevenSigns.getInstance().saveSevenSignsStatus();
-			_log.info("Seven Signs Festival, general data && status have been saved.");
-			
-			// Four Sepulchers, stop any working task.
-			FourSepulchersManager.getInstance().stop();
+			SevenSignsManager.getInstance().saveSevenSignsData();
+			SevenSignsManager.getInstance().saveSevenSignsStatus();
+			LOGGER.info("Seven Signs Festival, general data && status have been saved.");
 			
 			// Save zones (grandbosses status)
 			ZoneManager.getInstance().save();
 			
 			// Save raidbosses status
-			RaidBossSpawnManager.getInstance().cleanUp();
-			_log.info("Raid Bosses data has been saved.");
+			RaidBossManager.getInstance().cleanUp(true);
+			LOGGER.info("Raid Bosses data has been saved.");
 			
 			// Save grandbosses status
 			GrandBossManager.getInstance().cleanUp();
-			_log.info("World Bosses data has been saved.");
+			LOGGER.info("World Bosses data has been saved.");
 			
 			// Save olympiads
 			Olympiad.getInstance().saveOlympiadStatus();
-			_log.info("Olympiad data has been saved.");
+			LOGGER.info("Olympiad data has been saved.");
 			
 			// Save Hero data
-			Hero.getInstance().shutdown();
-			_log.info("Hero data has been saved.");
+			HeroManager.getInstance().shutdown();
+			LOGGER.info("Hero data has been saved.");
 			
 			// Save all manor data
 			CastleManorManager.getInstance().storeMe();
-			_log.info("Manors data has been saved.");
+			LOGGER.info("Manors data has been saved.");
 			
 			// Save Fishing tournament data
 			FishingChampionshipManager.getInstance().shutdown();
-			_log.info("Fishing Championship data has been saved.");
+			LOGGER.info("Fishing Championship data has been saved.");
 			
 			// Schemes save.
-			BufferTable.getInstance().saveSchemes();
-			_log.info("BufferTable data has been saved.");
+			BufferManager.getInstance().saveSchemes();
+			LOGGER.info("BufferTable data has been saved.");
 			
 			// Couples save.
 			if (Config.ALLOW_WEDDING)
 			{
 				CoupleManager.getInstance().save();
-				_log.info("CoupleManager data has been saved.");
+				LOGGER.info("CoupleManager data has been saved.");
 			}
 			
 			// Save server memos.
 			ServerMemoTable.getInstance().storeMe();
-			_log.info("ServerMemo data has been saved.");
+			LOGGER.info("ServerMemo data has been saved.");
 			
 			// Save items on ground before closing
 			ItemsOnGroundTaskManager.getInstance().save();
@@ -211,27 +177,23 @@ public class Shutdown extends Thread
 			{
 			}
 			
-			// server will quit, when this function ends.
-			if (SingletonHolder._instance._shutdownMode == GM_RESTART)
-				Runtime.getRuntime().halt(2);
-			else
-				Runtime.getRuntime().halt(0);
+			Runtime.getRuntime().halt((SingletonHolder.INSTANCE._shutdownMode == GM_RESTART) ? 2 : 0);
 		}
 		else
 		{
-			// shutdown: send warnings and then call exit to start shutdown sequence
 			countdown();
 			
 			switch (_shutdownMode)
 			{
 				case GM_SHUTDOWN:
-					SingletonHolder._instance.setMode(GM_SHUTDOWN);
-					SingletonHolder._instance.run();
+					SingletonHolder.INSTANCE.setMode(GM_SHUTDOWN);
+					SingletonHolder.INSTANCE.run();
 					System.exit(0);
 					break;
+				
 				case GM_RESTART:
-					SingletonHolder._instance.setMode(GM_RESTART);
-					SingletonHolder._instance.run();
+					SingletonHolder.INSTANCE.setMode(GM_RESTART);
+					SingletonHolder.INSTANCE.run();
 					System.exit(2);
 					break;
 			}
@@ -239,24 +201,20 @@ public class Shutdown extends Thread
 	}
 	
 	/**
-	 * This functions starts a shutdown countdown.<br>
-	 * A choice must be made between activeChar or ghostEntity.
-	 * @param activeChar GM who issued the shutdown command
-	 * @param ghostEntity the entity who issued the shutdown command
-	 * @param seconds seconds until shutdown
-	 * @param restart true if the server will restart after shutdown
+	 * This functions starts a shutdown countdown.
+	 * @param player : The {@link Player} who issued the shutdown command.
+	 * @param ghostEntity : The entity who issued the shutdown command.
+	 * @param seconds : The number of seconds until shutdown.
+	 * @param restart : If true, the server will restart after shutdown.
 	 */
-	public void startShutdown(Player activeChar, String ghostEntity, int seconds, boolean restart)
+	public void startShutdown(Player player, String ghostEntity, int seconds, boolean restart)
 	{
-		if (restart)
-			_shutdownMode = GM_RESTART;
-		else
-			_shutdownMode = GM_SHUTDOWN;
+		_shutdownMode = (restart) ? GM_RESTART : GM_SHUTDOWN;
 		
-		if (activeChar != null)
-			_log.warning("GM: " + activeChar.getName() + " (" + activeChar.getObjectId() + ") issued shutdown command, " + MODE_TEXT[_shutdownMode] + " in " + seconds + " seconds.");
+		if (player != null)
+			LOGGER.info("GM: {} issued {} process in {} seconds.", player.toString(), MODE_TEXT[_shutdownMode], seconds);
 		else if (!ghostEntity.isEmpty())
-			_log.warning("Entity: " + ghostEntity + " issued shutdown command, " + MODE_TEXT[_shutdownMode] + " in " + seconds + " seconds.");
+			LOGGER.info("Entity: {} issued {} process in {} seconds.", ghostEntity, MODE_TEXT[_shutdownMode], seconds);
 		
 		if (_shutdownMode > 0)
 		{
@@ -280,12 +238,12 @@ public class Shutdown extends Thread
 				case 1:
 					break;
 				default:
-					SendServerQuit(seconds);
+					sendServerQuit(seconds);
 			}
 		}
 		
 		if (_counterInstance != null)
-			_counterInstance._abort();
+			_counterInstance.setMode(ABORT);
 		
 		// the main instance should only run for shutdown hook, so we start a new instance
 		_counterInstance = new Shutdown(seconds, restart);
@@ -293,23 +251,23 @@ public class Shutdown extends Thread
 	}
 	
 	/**
-	 * This function aborts a running countdown
-	 * @param activeChar GM who issued the abort command
+	 * This function aborts a running countdown.
+	 * @param player : The {@link Player} who issued the abort process.
 	 */
-	public void abort(Player activeChar)
+	public void abort(Player player)
 	{
 		if (_counterInstance != null)
 		{
-			_log.warning("GM: " + activeChar.getName() + " (" + activeChar.getObjectId() + ") issued shutdown abort, " + MODE_TEXT[_shutdownMode] + " has been stopped.");
-			_counterInstance._abort();
+			LOGGER.info("GM: {} aborted {} process.", player.toString(), MODE_TEXT[_shutdownMode]);
+			_counterInstance.setMode(ABORT);
 			
-			Broadcast.announceToOnlinePlayers("Server aborts " + MODE_TEXT[_shutdownMode] + " and continues normal operation.");
+			World.announceToOnlinePlayers("Server aborted " + MODE_TEXT[_shutdownMode] + " process and continues normal operation.");
 		}
 	}
 	
 	/**
-	 * set the shutdown mode
-	 * @param mode what mode shall be set
+	 * Set the shutdown mode.
+	 * @param mode : what mode shall be set.
 	 */
 	private void setMode(int mode)
 	{
@@ -317,15 +275,7 @@ public class Shutdown extends Thread
 	}
 	
 	/**
-	 * set shutdown mode to ABORT
-	 */
-	private void _abort()
-	{
-		_shutdownMode = ABORT;
-	}
-	
-	/**
-	 * this counts the countdown and reports it to all players countdown is aborted if mode changes to ABORT
+	 * Report the current countdown to all players. Flag the server as "down" when reaching 60sec. Rehabilitate the server status if ABORT {@link ServerStatus} is seen.
 	 */
 	private void countdown()
 	{
@@ -333,72 +283,44 @@ public class Shutdown extends Thread
 		{
 			while (_secondsShut > 0)
 			{
+				// Rehabilitate previous server status if shutdown is aborted.
+				if (_shutdownMode == ABORT)
+				{
+					if (LoginServerThread.getInstance().getServerStatus() == StatusType.DOWN)
+						LoginServerThread.getInstance().setServerStatus((Config.SERVER_GMONLY) ? StatusType.GM_ONLY : StatusType.AUTO);
+					
+					break;
+				}
+				
 				switch (_secondsShut)
 				{
 					case 540:
-						SendServerQuit(540);
-						break;
 					case 480:
-						SendServerQuit(480);
-						break;
 					case 420:
-						SendServerQuit(420);
-						break;
 					case 360:
-						SendServerQuit(360);
-						break;
 					case 300:
-						SendServerQuit(300);
-						break;
 					case 240:
-						SendServerQuit(240);
-						break;
 					case 180:
-						SendServerQuit(180);
-						break;
 					case 120:
-						SendServerQuit(120);
-						break;
 					case 60:
-						// avoids new players from logging in
-						LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_DOWN);
-						SendServerQuit(60);
-						break;
 					case 30:
-						SendServerQuit(30);
-						break;
 					case 10:
-						SendServerQuit(10);
-						break;
 					case 5:
-						SendServerQuit(5);
-						break;
 					case 4:
-						SendServerQuit(4);
-						break;
 					case 3:
-						SendServerQuit(3);
-						break;
 					case 2:
-						SendServerQuit(2);
-						break;
 					case 1:
-						SendServerQuit(1);
+						sendServerQuit(_secondsShut);
 						break;
 				}
+				
+				// avoids new players from logging in
+				if (_secondsShut <= 60 && LoginServerThread.getInstance().getServerStatus() != StatusType.DOWN)
+					LoginServerThread.getInstance().setServerStatus(StatusType.DOWN);
 				
 				_secondsShut--;
 				
 				Thread.sleep(1000);
-				
-				if (_shutdownMode == ABORT)
-				{
-					// Rehabilitate previous server status if shutdown is aborted.
-					if (LoginServerThread.getInstance().getServerStatus() == ServerStatus.STATUS_DOWN)
-						LoginServerThread.getInstance().setServerStatus((Config.SERVER_GMONLY) ? ServerStatus.STATUS_GM_ONLY : ServerStatus.STATUS_AUTO);
-					
-					break;
-				}
 			}
 		}
 		catch (InterruptedException e)
@@ -406,42 +328,37 @@ public class Shutdown extends Thread
 		}
 	}
 	
-	/**
-	 * Disconnects all clients from the server
-	 */
-	private static void disconnectAllCharacters()
+	private static void sendServerQuit(int seconds)
 	{
-		for (Player player : World.getInstance().getPlayers())
-		{
-			try
-			{
-				L2GameClient client = player.getClient();
-				if (client != null && !client.isDetached())
-				{
-					client.close(ServerClose.STATIC_PACKET);
-					client.setActiveChar(null);
-					player.setClient(null);
-				}
-				player.deleteMe();
-			}
-			catch (Throwable t)
-			{
-				_log.log(Level.WARNING, "Failed to logout chararacter: " + player, t);
-			}
-		}
+		World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.THE_SERVER_WILL_BE_COMING_DOWN_IN_S1_SECONDS).addNumber(seconds));
 	}
 	
 	/**
-	 * get the shutdown-hook instance the shutdown-hook instance is created by the first call of this function, but it has to be registrered externaly.
-	 * @return instance of Shutdown, to be used as shutdown hook
+	 * Disconnect all {@link Player}s from the server.
 	 */
+	private static void disconnectAllPlayers()
+	{
+		for (Player player : World.getInstance().getPlayers())
+		{
+			final GameClient client = player.getClient();
+			if (client != null && !client.isDetached())
+			{
+				client.close(ServerClose.STATIC_PACKET);
+				client.setPlayer(null);
+				
+				player.setClient(null);
+			}
+			player.deleteMe();
+		}
+	}
+	
 	public static Shutdown getInstance()
 	{
-		return SingletonHolder._instance;
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final Shutdown _instance = new Shutdown();
+		protected static final Shutdown INSTANCE = new Shutdown();
 	}
 }

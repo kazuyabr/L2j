@@ -1,23 +1,22 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Skill;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores spellbook / skillId relation.<br>
  * TODO Could be possibly moved back on skillTrees.
  */
-public class SpellbookData extends XMLDocument
+public class SpellbookData implements IXmlReader
 {
 	private final Map<Integer, Integer> _books = new HashMap<>();
 	
@@ -27,26 +26,20 @@ public class SpellbookData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/spellbooks.xml");
-		LOG.info("Loaded " + _books.size() + " spellbooks.");
+		parseFile("./data/xml/spellbooks.xml");
+		LOGGER.info("Loaded {} spellbooks.", _books.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "book", bookNode ->
 		{
-			if (!"book".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			final NamedNodeMap attrs = o.getAttributes();
-			_books.put(Integer.valueOf(attrs.getNamedItem("skillId").getNodeValue()), Integer.valueOf(attrs.getNamedItem("itemId").getNodeValue()));
-		}
+			final NamedNodeMap attrs = bookNode.getAttributes();
+			_books.put(parseInteger(attrs, "skillId"), parseInteger(attrs, "itemId"));
+		}));
 	}
 	
 	public int getBookForSkill(int skillId, int level)

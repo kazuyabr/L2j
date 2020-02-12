@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExAutoSoulShot;
@@ -21,7 +21,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -39,7 +39,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 					// Attempt to charge first shot on activation
 					if (_itemId == 6645 || _itemId == 6646 || _itemId == 6647)
 					{
-						if (activeChar.getPet() != null)
+						if (activeChar.getSummon() != null)
 						{
 							// Cannot activate bss automation during Olympiad.
 							if (_itemId == 6647 && activeChar.isInOlympiadMode())
@@ -50,7 +50,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 							
 							if (_itemId == 6645)
 							{
-								if (activeChar.getPet().getSoulShotsPerHit() > item.getCount())
+								if (activeChar.getSummon().getSoulShotsPerHit() > item.getCount())
 								{
 									activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_SOULSHOTS_FOR_PET);
 									return;
@@ -58,7 +58,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 							}
 							else
 							{
-								if (activeChar.getPet().getSpiritShotsPerHit() > item.getCount())
+								if (activeChar.getSummon().getSpiritShotsPerHit() > item.getCount())
 								{
 									activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_SPIRITSHOTS_FOR_PET);
 									return;
@@ -70,7 +70,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 							activeChar.sendPacket(new ExAutoSoulShot(_itemId, _type));
 							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO).addItemName(_itemId));
 							activeChar.rechargeShots(true, true);
-							activeChar.getPet().rechargeShots(true, true);
+							activeChar.getSummon().rechargeShots(true, true);
 						}
 						else
 							activeChar.sendPacket(SystemMessageId.NO_SERVITOR_CANNOT_AUTOMATE_USE);
@@ -89,7 +89,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 						activeChar.sendPacket(new ExAutoSoulShot(_itemId, _type));
 						
 						// start the auto soulshot use
-						if (activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem() && item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType())
+						if (activeChar.getActiveWeaponInstance() != null && item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType())
 							activeChar.rechargeShots(true, true);
 						else
 						{

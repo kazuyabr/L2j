@@ -1,31 +1,28 @@
 package net.sf.l2j.gameserver.scripting.scripts.ai.individual;
 
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
-import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class Orfen extends L2AttackableAIScript
 {
-	private static final L2BossZone ORFEN_LAIR = ZoneManager.getInstance().getZoneById(110013, L2BossZone.class);
-	
 	private static final SpawnLocation[] ORFEN_LOCATION =
 	{
 		new SpawnLocation(43728, 17220, -4342, 0),
@@ -138,7 +135,7 @@ public class Orfen extends L2AttackableAIScript
 				goTo(npc, ORFEN_LOCATION[_currentIndex]);
 			}
 			// Orfen already ported once and is lured out of her lair ; teleport her back.
-			else if (_isTeleported && !ORFEN_LAIR.isInsideZone(npc))
+			else if (_isTeleported && !npc.isInsideZone(ZoneId.SWAMP))
 				goTo(npc, ORFEN_LOCATION[0]);
 		}
 		return super.onAdvEvent(event, npc, player);
@@ -147,11 +144,11 @@ public class Orfen extends L2AttackableAIScript
 	@Override
 	public String onSkillSee(Npc npc, Player caster, L2Skill skill, WorldObject[] targets, boolean isPet)
 	{
-		Creature originalCaster = isPet ? caster.getPet() : caster;
+		Creature originalCaster = isPet ? caster.getSummon() : caster;
 		if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
 		{
-			npc.broadcastNpcSay(ORFEN_CHAT[Rnd.get(4)].replace("$s1", caster.getName()));
-			originalCaster.teleToLocation(npc.getX(), npc.getY(), npc.getZ(), 0);
+			npc.broadcastNpcSay(Rnd.get(ORFEN_CHAT).replace("$s1", caster.getName()));
+			originalCaster.teleportTo(npc.getX(), npc.getY(), npc.getZ(), 0);
 			npc.setTarget(originalCaster);
 			npc.doCast(SkillTable.getInstance().getInfo(4064, 1));
 		}
@@ -179,7 +176,7 @@ public class Orfen extends L2AttackableAIScript
 			
 			if (callerId != RIBA_IREN && (caller.getCurrentHp() / caller.getMaxHp() < 0.5) && Rnd.get(10) < chance)
 			{
-				npc.getAI().setIntention(CtrlIntention.IDLE, null, null);
+				npc.getAI().setIntention(IntentionType.IDLE, null, null);
 				npc.setTarget(caller);
 				npc.doCast(SkillTable.getInstance().getInfo(4516, 1));
 			}
@@ -188,40 +185,44 @@ public class Orfen extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		if (npc.getNpcId() == ORFEN)
+		final Player player = attacker.getActingPlayer();
+		if (player != null)
 		{
-			// update a variable with the last action against Orfen.
-			_lastAttackTime = System.currentTimeMillis();
-			
-			if (!_isTeleported && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2))
+			if (npc.getNpcId() == ORFEN)
 			{
-				_isTeleported = true;
-				goTo(npc, ORFEN_LOCATION[0]);
+				// update a variable with the last action against Orfen.
+				_lastAttackTime = System.currentTimeMillis();
+				
+				if (!_isTeleported && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2))
+				{
+					_isTeleported = true;
+					goTo(npc, ORFEN_LOCATION[0]);
+				}
+				else if (npc.isInsideRadius(player, 1000, false, false) && !npc.isInsideRadius(player, 300, false, false) && Rnd.get(10) == 0)
+				{
+					npc.broadcastNpcSay(ORFEN_CHAT[Rnd.get(3)].replace("$s1", player.getName()));
+					player.teleportTo(npc.getX(), npc.getY(), npc.getZ(), 0);
+					npc.setTarget(player);
+					npc.doCast(SkillTable.getInstance().getInfo(4064, 1));
+				}
 			}
-			else if (npc.isInsideRadius(attacker, 1000, false, false) && !npc.isInsideRadius(attacker, 300, false, false) && Rnd.get(10) == 0)
+			// RIBA_IREN case, as it's the only other registered.
+			else
 			{
-				npc.broadcastNpcSay(ORFEN_CHAT[Rnd.get(3)].replace("$s1", attacker.getName()));
-				attacker.teleToLocation(npc.getX(), npc.getY(), npc.getZ(), 0);
-				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4064, 1));
+				if (!npc.isCastingNow() && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2.0))
+				{
+					npc.setTarget(player);
+					npc.doCast(SkillTable.getInstance().getInfo(4516, 1));
+				}
 			}
 		}
-		// RIBA_IREN case, as it's the only other registered.
-		else
-		{
-			if (!npc.isCastingNow() && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2.0))
-			{
-				npc.setTarget(attacker);
-				npc.doCast(SkillTable.getInstance().getInfo(4516, 1));
-			}
-		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		npc.broadcastPacket(new PlaySound(1, "BS02_D", npc));
 		GrandBossManager.getInstance().setBossStatus(ORFEN, DEAD);
@@ -237,7 +238,7 @@ public class Orfen extends L2AttackableAIScript
 		GrandBossManager.getInstance().setStatsSet(ORFEN, info);
 		
 		cancelQuestTimer("check_orfen_pos", npc, null);
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 	
 	/**
@@ -249,16 +250,16 @@ public class Orfen extends L2AttackableAIScript
 	private static void goTo(Npc npc, SpawnLocation index)
 	{
 		((Attackable) npc).getAggroList().clear();
-		npc.getAI().setIntention(CtrlIntention.IDLE, null, null);
+		npc.getAI().setIntention(IntentionType.IDLE, null, null);
 		
 		// Edit the spawn location in case server crashes.
 		L2Spawn spawn = npc.getSpawn();
 		spawn.setLoc(index);
 		
 		if (index.getX() == 43728) // Hack !
-			npc.teleToLocation(index.getX(), index.getY(), index.getZ(), 0);
+			npc.teleportTo(index.getX(), index.getY(), index.getZ(), 0);
 		else
-			npc.getAI().setIntention(CtrlIntention.MOVE_TO, new Location(index.getX(), index.getY(), index.getZ()));
+			npc.getAI().setIntention(IntentionType.MOVE_TO, new Location(index.getX(), index.getY(), index.getZ()));
 	}
 	
 	private void spawnBoss(GrandBoss npc)

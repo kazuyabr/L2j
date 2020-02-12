@@ -1,23 +1,22 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.actor.instance.StaticObject;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads, stores and spawns {@link StaticObject}s.
  */
-public class StaticObjectData extends XMLDocument
+public class StaticObjectData implements IXmlReader
 {
 	private final Map<Integer, StaticObject> _objects = new HashMap<>();
 	
@@ -27,42 +26,25 @@ public class StaticObjectData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/staticObjects.xml");
-		LOG.info("Loaded " + _objects.size() + " static objects.");
+		parseFile("./data/xml/staticObjects.xml");
+		LOGGER.info("Loaded {} static objects.", _objects.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "object", objectNode ->
 		{
-			if (!"object".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			// Parse and feed content.
-			parseAndFeed(o.getAttributes(), set);
-			
-			// Create and spawn the StaticObject instance.
+			final StatsSet set = parseAttributes(objectNode);
 			final StaticObject obj = new StaticObject(IdFactory.getInstance().getNextId());
 			obj.setStaticObjectId(set.getInteger("id"));
 			obj.setType(set.getInteger("type"));
 			obj.setMap(set.getString("texture"), set.getInteger("mapX"), set.getInteger("mapY"));
 			obj.spawnMe(set.getInteger("x"), set.getInteger("y"), set.getInteger("z"));
-			
-			// Feed the map with new data.
 			_objects.put(obj.getObjectId(), obj);
-			
-			// Clear the StatsSet.
-			set.clear();
-		}
+		}));
 	}
 	
 	public Collection<StaticObject> getStaticObjects()

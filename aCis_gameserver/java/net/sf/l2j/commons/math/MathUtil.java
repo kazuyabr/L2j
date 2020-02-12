@@ -42,7 +42,7 @@ public class MathUtil
 	
 	public static final double convertHeadingToDegree(int clientHeading)
 	{
-		return clientHeading / 182.044444444;
+		return clientHeading / 182.04444444444444444444444444444;
 	}
 	
 	public static final int convertDegreeToClientHeading(double degree)
@@ -50,7 +50,7 @@ public class MathUtil
 		if (degree < 0)
 			degree = 360 + degree;
 		
-		return (int) (degree * 182.044444444);
+		return (int) (degree * 182.04444444444444444444444444444);
 	}
 	
 	public static final int calculateHeadingFrom(WorldObject obj1, WorldObject obj2)
@@ -64,7 +64,7 @@ public class MathUtil
 		if (angleTarget < 0)
 			angleTarget = 360 + angleTarget;
 		
-		return (int) (angleTarget * 182.044444444);
+		return (int) (angleTarget * 182.04444444444444444444444444444);
 	}
 	
 	public static final int calculateHeadingFrom(double dx, double dy)
@@ -73,10 +73,10 @@ public class MathUtil
 		if (angleTarget < 0)
 			angleTarget = 360 + angleTarget;
 		
-		return (int) (angleTarget * 182.044444444);
+		return (int) (angleTarget * 182.04444444444444444444444444444);
 	}
 	
-	public static double calculateDistance(int x1, int y1, int z1, int x2, int y2)
+	public static double calculateDistance(int x1, int y1, int x2, int y2)
 	{
 		return calculateDistance(x1, y1, 0, x2, y2, 0, false);
 	}

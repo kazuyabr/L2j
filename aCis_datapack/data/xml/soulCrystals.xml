@@ -155,7 +155,7 @@
 		<npc id="25319" chanceStage="75" chanceBreak="0" skill="false" absorbType="FULL_PARTY" levelList="12"/><!-- Ember -->
 		<npc id="25328" chanceStage="35" chanceBreak="0" skill="false" absorbType="PARTY_ONE_RANDOM" levelList="10;11"/><!-- Eilhalder von Hellmann -->
 		<npc id="25337" chanceStage="75" chanceBreak="0" skill="false" absorbType="PARTY_ONE_RANDOM" levelList="10;11"/><!-- Anakazel -->
-		<npc id="25338" chanceStage="75" chanceBreak="0" skill="false" absorbType="PARTY_ONE_RANDOM" levelList="12"/><!-- Anakazel -->
+		<npc id="25338" chanceStage="75" chanceBreak="0" skill="false" absorbType="FULL_PARTY" levelList="12"/><!-- Anakazel -->
 		<npc id="25453" chanceStage="35" chanceBreak="0" skill="false" absorbType="PARTY_ONE_RANDOM" levelList="10;11"/><!-- Meanas Anor -->
 		<npc id="29020" chanceStage="100" chanceBreak="0" skill="false" absorbType="FULL_PARTY" levelList="10;11"/><!-- Baium -->
 		<npc id="29022" chanceStage="100" chanceBreak="0" skill="false" absorbType="FULL_PARTY" levelList="10;11"/><!-- Zaken -->

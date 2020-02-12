@@ -2,19 +2,19 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.manor.Seed;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.scripting.QuestState;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class Sow implements ISkillHandler
 {
@@ -63,7 +63,7 @@ public class Sow implements ISkillHandler
 		else
 			party.broadcastMessage(smId);
 		
-		target.getAI().setIntention(CtrlIntention.IDLE);
+		target.getAI().setIntention(IntentionType.IDLE);
 	}
 	
 	private static boolean calcSuccess(Creature activeChar, Creature target, Seed seed)

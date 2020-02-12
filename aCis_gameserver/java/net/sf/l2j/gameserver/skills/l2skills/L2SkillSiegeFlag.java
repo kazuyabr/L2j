@@ -1,19 +1,20 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.enums.SiegeSide;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeFlag;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.entity.Siege;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillSiegeFlag extends L2Skill
 {
@@ -62,8 +63,7 @@ public class L2SkillSiegeFlag extends L2Skill
 		// Spawn a new flag.
 		final SiegeFlag flag = new SiegeFlag(player, IdFactory.getInstance().getNextId(), new NpcTemplate(npcDat));
 		flag.setCurrentHp(flag.getMaxHp());
-		flag.setHeading(player.getHeading());
-		flag.spawnMe(player.getX(), player.getY(), player.getZ() + 50);
+		flag.spawnMe(player.getPosition());
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class L2SkillSiegeFlag extends L2Skill
 	 */
 	public static boolean checkIfOkToPlaceFlag(Player player, boolean isCheckOnly)
 	{
-		final Siege siege = CastleManager.getInstance().getSiege(player);
+		final Siege siege = CastleManager.getInstance().getActiveSiege(player);
 		
 		SystemMessage sm;
 		if (siege == null || !siege.checkSide(player.getClan(), SiegeSide.ATTACKER))

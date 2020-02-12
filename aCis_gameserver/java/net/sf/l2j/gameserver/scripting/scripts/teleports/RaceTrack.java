@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -44,13 +44,13 @@ public class RaceTrack extends Quest
 		
 		if (RETURN_LOCATIONS.containsKey(npc.getNpcId()))
 		{
-			player.teleToLocation(12661, 181687, -3560, 0);
+			player.teleportTo(12661, 181687, -3560, 0);
 			st.setState(STATE_STARTED);
 			st.set("id", Integer.toString(npc.getNpcId()));
 		}
 		else if (st.isStarted() && npc.getNpcId() == RACE_MANAGER)
 		{
-			player.teleToLocation(RETURN_LOCATIONS.get(st.getInt("id")), 0);
+			player.teleportTo(RETURN_LOCATIONS.get(st.getInt("id")), 0);
 			st.exitQuest(true);
 		}
 		

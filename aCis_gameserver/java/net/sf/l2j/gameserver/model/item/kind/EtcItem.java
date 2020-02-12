@@ -1,8 +1,9 @@
 package net.sf.l2j.gameserver.model.item.kind;
 
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * This class is dedicated to the management of EtcItem.

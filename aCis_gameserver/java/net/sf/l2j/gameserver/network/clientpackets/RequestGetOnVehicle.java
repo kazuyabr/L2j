@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.instancemanager.BoatManager;
-import net.sf.l2j.gameserver.model.actor.Vehicle;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.manager.BoatManager;
+import net.sf.l2j.gameserver.model.actor.Boat;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.GetOnVehicle;
 
@@ -25,11 +25,11 @@ public final class RequestGetOnVehicle extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
-		Vehicle boat;
+		Boat boat;
 		if (activeChar.isInBoat())
 		{
 			boat = activeChar.getBoat();
@@ -49,8 +49,8 @@ public final class RequestGetOnVehicle extends L2GameClientPacket
 			}
 		}
 		
-		activeChar.getVehiclePosition().set(_x, _y, _z, activeChar.getHeading());
-		activeChar.setVehicle(boat);
+		activeChar.getBoatPosition().set(_x, _y, _z, activeChar.getHeading());
+		activeChar.setBoat(boat);
 		activeChar.broadcastPacket(new GetOnVehicle(activeChar.getObjectId(), boat.getObjectId(), _x, _y, _z));
 		
 		activeChar.setXYZ(boat.getX(), boat.getY(), boat.getZ());

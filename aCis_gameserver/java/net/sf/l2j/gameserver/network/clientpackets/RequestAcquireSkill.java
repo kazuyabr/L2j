@@ -2,20 +2,18 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.xml.SkillTreeData;
 import net.sf.l2j.gameserver.data.xml.SpellbookData;
-import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
-import net.sf.l2j.gameserver.model.L2ShortCut;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2SkillLearn;
-import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Fisherman;
 import net.sf.l2j.gameserver.model.actor.instance.Folk;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.VillageMaster;
+import net.sf.l2j.gameserver.model.holder.skillnode.ClanSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.FishingSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.GeneralSkillNode;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExStorageMaxCount;
-import net.sf.l2j.gameserver.network.serverpackets.ShortCutRegister;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public class RequestAcquireSkill extends L2GameClientPacket
@@ -40,17 +38,13 @@ public class RequestAcquireSkill extends L2GameClientPacket
 			return;
 		
 		// Incorrect player, return.
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
 		// Incorrect npc, return.
-		final Npc trainer = activeChar.getCurrentFolkNPC();
-		if (trainer == null)
-			return;
-		
-		// Distance check for player <-> npc.
-		if (!activeChar.isInsideRadius(trainer, Npc.INTERACTION_DISTANCE, false, false) && !activeChar.isGM())
+		final Folk folk = player.getCurrentFolk();
+		if (folk == null || !folk.canInteract(player))
 			return;
 		
 		// Skill doesn't exist, return.
@@ -58,179 +52,115 @@ public class RequestAcquireSkill extends L2GameClientPacket
 		if (skill == null)
 			return;
 		
-		// Set learn class.
-		activeChar.setSkillLearningClassId(activeChar.getClassId());
-		
-		boolean exists = false;
-		
-		// Types.
 		switch (_skillType)
 		{
-			case 0: // General skills.
+			// General skills.
+			case 0:
 				// Player already has such skill with same or higher level.
-				int skillLvl = activeChar.getSkillLevel(_skillId);
+				int skillLvl = player.getSkillLevel(_skillId);
 				if (skillLvl >= _skillLevel)
 					return;
 				
 				// Requested skill must be 1 level higher than existing skill.
-				if (Math.max(skillLvl, 0) + 1 != _skillLevel)
+				if (skillLvl != _skillLevel - 1)
 					return;
 				
-				int spCost = 0;
-				
-				// Find skill information.
-				for (L2SkillLearn sl : SkillTreeTable.getInstance().getAvailableSkills(activeChar, activeChar.getSkillLearningClassId()))
-				{
-					// Skill found.
-					if (sl.getId() == _skillId && sl.getLevel() == _skillLevel)
-					{
-						exists = true;
-						spCost = sl.getSpCost();
-						break;
-					}
-				}
-				
-				// No skill found, return.
-				if (!exists)
+				// Search if the asked skill exists on player template.
+				final GeneralSkillNode gsn = player.getTemplate().findSkill(_skillId, _skillLevel);
+				if (gsn == null)
 					return;
 				
 				// Not enought SP.
-				if (activeChar.getSp() < spCost)
+				if (player.getSp() < gsn.getCorrectedCost())
 				{
-					activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
-					Folk.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
+					player.sendPacket(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
+					folk.showSkillList(player);
 					return;
 				}
 				
 				// Get spellbook and try to consume it.
-				int spbId = SpellbookData.getInstance().getBookForSkill(_skillId, _skillLevel);
-				if (spbId > 0)
+				final int bookId = SpellbookData.getInstance().getBookForSkill(_skillId, _skillLevel);
+				if (bookId > 0 && !player.destroyItemByItemId("SkillLearn", bookId, 1, folk, true))
 				{
-					if (!activeChar.destroyItemByItemId("SkillLearn", spbId, 1, trainer, true))
-					{
-						activeChar.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
-						Folk.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
-						return;
-					}
+					player.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
+					folk.showSkillList(player);
+					return;
 				}
 				
 				// Consume SP.
-				activeChar.removeExpAndSp(0, spCost);
+				player.removeExpAndSp(0, gsn.getCorrectedCost());
 				
 				// Add skill new skill.
-				activeChar.addSkill(skill, true);
-				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEARNED_SKILL_S1).addSkillName(skill));
+				player.addSkill(skill, true, true);
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEARNED_SKILL_S1).addSkillName(skill));
 				
 				// Update player and return.
-				updateShortCuts(activeChar);
-				activeChar.sendSkillList();
-				Folk.showSkillList(activeChar, trainer, activeChar.getSkillLearningClassId());
+				player.sendSkillList();
+				folk.showSkillList(player);
 				break;
 			
-			case 1: // Common skills.
-				skillLvl = activeChar.getSkillLevel(_skillId);
+			// Common skills.
+			case 1:
+				// Player already has such skill with same or higher level.
+				skillLvl = player.getSkillLevel(_skillId);
 				if (skillLvl >= _skillLevel)
 					return;
 				
-				if (Math.max(skillLvl, 0) + 1 != _skillLevel)
+				// Requested skill must be 1 level higher than existing skill.
+				if (skillLvl != _skillLevel - 1)
 					return;
 				
-				int costId = 0;
-				int costCount = 0;
-				
-				for (L2SkillLearn sl : SkillTreeTable.getInstance().getAvailableFishingDwarvenCraftSkills(activeChar))
-				{
-					if (sl.getId() == _skillId && sl.getLevel() == _skillLevel)
-					{
-						exists = true;
-						costId = sl.getIdCost();
-						costCount = sl.getCostCount();
-						break;
-					}
-				}
-				
-				if (!exists)
+				final FishingSkillNode fsn = SkillTreeData.getInstance().getFishingSkillFor(player, _skillId, _skillLevel);
+				if (fsn == null)
 					return;
 				
-				if (!activeChar.destroyItemByItemId("Consume", costId, costCount, trainer, true))
+				if (!player.destroyItemByItemId("Consume", fsn.getItemId(), fsn.getItemCount(), folk, true))
 				{
-					activeChar.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
-					Fisherman.showFishSkillList(activeChar);
+					player.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
+					Fisherman.showFishSkillList(player);
 					return;
 				}
 				
-				activeChar.addSkill(skill, true);
-				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEARNED_SKILL_S1).addSkillName(skill));
+				player.addSkill(skill, true, true);
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEARNED_SKILL_S1).addSkillName(skill));
 				
 				if (_skillId >= 1368 && _skillId <= 1372)
-					activeChar.sendPacket(new ExStorageMaxCount(activeChar));
+					player.sendPacket(new ExStorageMaxCount(player));
 				
-				updateShortCuts(activeChar);
-				activeChar.sendSkillList();
-				Fisherman.showFishSkillList(activeChar);
+				player.sendSkillList();
+				Fisherman.showFishSkillList(player);
 				break;
 			
-			case 2: // Pledge skills.
-				if (!activeChar.isClanLeader())
+			// Pledge skills.
+			case 2:
+				if (!player.isClanLeader())
 					return;
 				
-				int itemId = 0;
-				int repCost = 0;
-				
-				for (L2PledgeSkillLearn psl : SkillTreeTable.getInstance().getAvailablePledgeSkills(activeChar))
-				{
-					if (psl.getId() == _skillId && psl.getLevel() == _skillLevel)
-					{
-						exists = true;
-						itemId = psl.getItemId();
-						repCost = psl.getRepCost();
-						break;
-					}
-				}
-				
-				if (!exists)
+				final ClanSkillNode csn = SkillTreeData.getInstance().getClanSkillFor(player, _skillId, _skillLevel);
+				if (csn == null)
 					return;
 				
-				if (activeChar.getClan().getReputationScore() < repCost)
+				if (player.getClan().getReputationScore() < csn.getCost())
 				{
-					activeChar.sendPacket(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
-					VillageMaster.showPledgeSkillList(activeChar);
+					player.sendPacket(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
+					VillageMaster.showPledgeSkillList(player);
 					return;
 				}
 				
-				if (Config.LIFE_CRYSTAL_NEEDED)
+				if (Config.LIFE_CRYSTAL_NEEDED && !player.destroyItemByItemId("Consume", csn.getItemId(), 1, folk, true))
 				{
-					if (!activeChar.destroyItemByItemId("Consume", itemId, 1, trainer, true))
-					{
-						activeChar.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
-						VillageMaster.showPledgeSkillList(activeChar);
-						return;
-					}
+					player.sendPacket(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL);
+					VillageMaster.showPledgeSkillList(player);
+					return;
 				}
 				
-				activeChar.getClan().takeReputationScore(repCost);
-				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP).addNumber(repCost));
+				player.getClan().takeReputationScore(csn.getCost());
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP).addNumber(csn.getCost()));
 				
-				activeChar.getClan().addNewSkill(skill);
+				player.getClan().addNewSkill(skill);
 				
-				VillageMaster.showPledgeSkillList(activeChar);
+				VillageMaster.showPledgeSkillList(player);
 				return;
-		}
-	}
-	
-	private void updateShortCuts(Player player)
-	{
-		if (_skillLevel > 1)
-		{
-			for (L2ShortCut sc : player.getAllShortCuts())
-			{
-				if (sc.getId() == _skillId && sc.getType() == L2ShortCut.TYPE_SKILL)
-				{
-					L2ShortCut newsc = new L2ShortCut(sc.getSlot(), sc.getPage(), L2ShortCut.TYPE_SKILL, _skillId, _skillLevel, 1);
-					player.sendPacket(new ShortCutRegister(newsc));
-					player.registerShortCut(newsc);
-				}
-			}
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
 
 public class SSQInfo extends L2GameServerPacket
 {
@@ -14,9 +14,9 @@ public class SSQInfo extends L2GameServerPacket
 	
 	public static SSQInfo sendSky()
 	{
-		if (SevenSigns.getInstance().isSealValidationPeriod())
+		if (SevenSignsManager.getInstance().isSealValidationPeriod())
 		{
-			final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+			final CabalType winningCabal = SevenSignsManager.getInstance().getCabalHighestScore();
 			if (winningCabal == CabalType.DAWN)
 				return DAWN_SKY_PACKET;
 			

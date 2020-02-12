@@ -5,12 +5,14 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.manager.ClanHallManager;
 import net.sf.l2j.gameserver.data.xml.TeleportLocationData;
-import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.entity.ClanHall;
-import net.sf.l2j.gameserver.model.entity.ClanHall.ClanHallFunction;
+import net.sf.l2j.gameserver.model.clanhall.ClanHall;
+import net.sf.l2j.gameserver.model.clanhall.ClanHallFunction;
 import net.sf.l2j.gameserver.model.location.TeleportLocation;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -19,7 +21,6 @@ import net.sf.l2j.gameserver.network.serverpackets.ClanHallDecoration;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.WarehouseDepositList;
 import net.sf.l2j.gameserver.network.serverpackets.WarehouseWithdrawList;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class ClanHallManagerNpc extends Merchant
 {
@@ -51,11 +52,21 @@ public class ClanHallManagerNpc extends Merchant
 	private static final String curtains = "[<a action=\"bypass -h npc_%objectId%_manage deco edit_curtains 1\">Level 1</a>][<a action=\"bypass -h npc_%objectId%_manage deco edit_curtains 2\">Level 2</a>]";
 	private static final String fixtures = "[<a action=\"bypass -h npc_%objectId%_manage deco edit_fixtures 1\">Level 1</a>][<a action=\"bypass -h npc_%objectId%_manage deco edit_fixtures 2\">Level 2</a>]";
 	
-	private int _clanHallId = -1;
+	private ClanHall _clanHall;
 	
 	public ClanHallManagerNpc(int objectId, NpcTemplate template)
 	{
 		super(objectId, template);
+	}
+	
+	@Override
+	public void onSpawn()
+	{
+		_clanHall = ClanHallManager.getInstance().getNearestClanHall(getX(), getY(), 500);
+		if (_clanHall == null)
+			LOGGER.warn("Couldn't find the nearest ClanHall for {}.", toString());
+		
+		super.onSpawn();
 	}
 	
 	@Override
@@ -88,7 +99,7 @@ public class ClanHallManagerNpc extends Merchant
 						html.setFile("data/html/clanHallManager/banish-list.htm");
 					else if (val.equalsIgnoreCase("banish"))
 					{
-						getClanHall().banishForeigners();
+						_clanHall.banishForeigners();
 						html.setFile("data/html/clanHallManager/banish.htm");
 					}
 				}
@@ -105,8 +116,8 @@ public class ClanHallManagerNpc extends Merchant
 				if ((player.getClanPrivileges() & Clan.CP_CL_VIEW_WAREHOUSE) == Clan.CP_CL_VIEW_WAREHOUSE)
 				{
 					html.setFile("data/html/clanHallManager/vault.htm");
-					html.replace("%rent%", getClanHall().getLease());
-					html.replace("%date%", new SimpleDateFormat("dd-MM-yyyy HH:mm").format(getClanHall().getPaidUntil()));
+					html.replace("%rent%", _clanHall.getLease());
+					html.replace("%date%", new SimpleDateFormat("dd-MM-yyyy HH:mm").format(_clanHall.getPaidUntil()));
 				}
 				else
 					html.setFile("data/html/clanHallManager/not_authorized.htm");
@@ -122,12 +133,12 @@ public class ClanHallManagerNpc extends Merchant
 				{
 					if (val.equalsIgnoreCase("open"))
 					{
-						getClanHall().openCloseDoors(true);
+						_clanHall.openCloseDoors(true);
 						html.setFile("data/html/clanHallManager/door-open.htm");
 					}
 					else if (val.equalsIgnoreCase("close"))
 					{
-						getClanHall().openCloseDoors(false);
+						_clanHall.openCloseDoors(false);
 						html.setFile("data/html/clanHallManager/door-close.htm");
 					}
 					else
@@ -145,11 +156,11 @@ public class ClanHallManagerNpc extends Merchant
 				{
 					final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 					
-					final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_TELEPORT);
+					final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_TELEPORT);
 					if (chf == null)
 						html.setFile("data/html/clanHallManager/chamberlain-nac.htm");
 					else
-						html.setFile("data/html/clanHallManager/tele" + getClanHall().getLocation() + chf.getLvl() + ".htm");
+						html.setFile("data/html/clanHallManager/tele" + _clanHall.getLocation() + chf.getLvl() + ".htm");
 					
 					html.replace("%objectId%", getObjectId());
 					player.sendPacket(html);
@@ -159,7 +170,7 @@ public class ClanHallManagerNpc extends Merchant
 					if (!st.hasMoreTokens())
 						return;
 					
-					final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE);
+					final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_ITEM_CREATE);
 					if (chf == null)
 					{
 						final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -175,7 +186,7 @@ public class ClanHallManagerNpc extends Merchant
 				{
 					final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 					
-					final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_SUPPORT);
+					final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_SUPPORT);
 					if (chf == null)
 						html.setFile("data/html/clanHallManager/chamberlain-nac.htm");
 					else
@@ -193,19 +204,19 @@ public class ClanHallManagerNpc extends Merchant
 					final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 					html.setFile("data/html/clanHallManager/functions.htm");
 					
-					final ClanHallFunction chfExp = getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP);
+					final ClanHallFunction chfExp = _clanHall.getFunction(ClanHall.FUNC_RESTORE_EXP);
 					if (chfExp != null)
 						html.replace("%xp_regen%", chfExp.getLvl());
 					else
 						html.replace("%xp_regen%", "0");
 					
-					final ClanHallFunction chfHp = getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP);
+					final ClanHallFunction chfHp = _clanHall.getFunction(ClanHall.FUNC_RESTORE_HP);
 					if (chfHp != null)
 						html.replace("%hp_regen%", chfHp.getLvl());
 					else
 						html.replace("%hp_regen%", "0");
 					
-					final ClanHallFunction chfMp = getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP);
+					final ClanHallFunction chfMp = _clanHall.getFunction(ClanHall.FUNC_RESTORE_MP);
 					if (chfMp != null)
 						html.replace("%mp_regen%", chfMp.getLvl());
 					else
@@ -224,7 +235,7 @@ public class ClanHallManagerNpc extends Merchant
 					{
 						if (st.hasMoreTokens())
 						{
-							if (getClanHall().getOwnerId() == 0)
+							if (_clanHall.getOwnerId() == 0)
 								return;
 							
 							val = st.nextToken();
@@ -414,7 +425,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_RESTORE_HP);
 								if (chf != null && chf.getLvl() == percent)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -487,7 +498,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_RESTORE_HP, percent, fee, Config.CH_HPREG_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_RESTORE_HP, percent, fee, Config.CH_HPREG_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -502,7 +513,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_RESTORE_MP);
 								if (chf != null && chf.getLvl() == percent)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -543,7 +554,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_RESTORE_MP, percent, fee, Config.CH_MPREG_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_RESTORE_MP, percent, fee, Config.CH_MPREG_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -558,7 +569,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_RESTORE_EXP);
 								if (chf != null && chf.getLvl() == percent)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -607,7 +618,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_RESTORE_EXP, percent, fee, Config.CH_EXPREG_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_RESTORE_EXP, percent, fee, Config.CH_EXPREG_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -621,10 +632,10 @@ public class ClanHallManagerNpc extends Merchant
 							final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 							html.setFile("data/html/clanHallManager/edit_recovery.htm");
 							
-							final int grade = getClanHall().getGrade();
+							final int grade = _clanHall.getGrade();
 							
 							// Restore HP function.
-							final ClanHallFunction chfHp = getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP);
+							final ClanHallFunction chfHp = _clanHall.getFunction(ClanHall.FUNC_RESTORE_HP);
 							if (chfHp != null)
 							{
 								html.replace("%hp_recovery%", chfHp.getLvl() + "%</font> (<font color=\"FFAABB\">" + chfHp.getLease() + "</font> adenas / " + (Config.CH_HPREG_FEE_RATIO / 86400000) + " day)");
@@ -675,7 +686,7 @@ public class ClanHallManagerNpc extends Merchant
 							}
 							
 							// Restore exp function.
-							final ClanHallFunction chfExp = getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP);
+							final ClanHallFunction chfExp = _clanHall.getFunction(ClanHall.FUNC_RESTORE_EXP);
 							if (chfExp != null)
 							{
 								html.replace("%exp_recovery%", chfExp.getLvl() + "%</font> (<font color=\"FFAABB\">" + chfExp.getLease() + "</font> adenas / " + (Config.CH_EXPREG_FEE_RATIO / 86400000) + " day)");
@@ -726,7 +737,7 @@ public class ClanHallManagerNpc extends Merchant
 							}
 							
 							// Restore MP function.
-							final ClanHallFunction chfMp = getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP);
+							final ClanHallFunction chfMp = _clanHall.getFunction(ClanHall.FUNC_RESTORE_MP);
 							if (chfMp != null)
 							{
 								html.replace("%mp_recovery%", chfMp.getLvl() + "%</font> (<font color=\"FFAABB\">" + chfMp.getLease() + "</font> adenas / " + (Config.CH_MPREG_FEE_RATIO / 86400000) + " day)");
@@ -783,7 +794,7 @@ public class ClanHallManagerNpc extends Merchant
 					{
 						if (st.hasMoreTokens())
 						{
-							if (getClanHall().getOwnerId() == 0)
+							if (_clanHall.getOwnerId() == 0)
 								return;
 							
 							val = st.nextToken();
@@ -920,7 +931,7 @@ public class ClanHallManagerNpc extends Merchant
 							}
 							else if (val.equalsIgnoreCase("item"))
 							{
-								if (getClanHall().getOwnerId() == 0)
+								if (_clanHall.getOwnerId() == 0)
 									return;
 								
 								val = st.nextToken();
@@ -928,7 +939,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_ITEM_CREATE);
 								if (chf != null && chf.getLvl() == lvl)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -961,7 +972,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_ITEM_CREATE, lvl, fee, Config.CH_ITEM_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_ITEM_CREATE, lvl, fee, Config.CH_ITEM_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -976,7 +987,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_TELEPORT);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_TELEPORT);
 								if (chf != null && chf.getLvl() == lvl)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -1005,7 +1016,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_TELEPORT, lvl, fee, Config.CH_TELE_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_TELEPORT, lvl, fee, Config.CH_TELE_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -1020,7 +1031,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_SUPPORT);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_SUPPORT);
 								if (chf != null && chf.getLvl() == lvl)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -1073,7 +1084,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_SUPPORT, lvl, fee, Config.CH_SUPPORT_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_SUPPORT, lvl, fee, Config.CH_SUPPORT_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -1087,7 +1098,7 @@ public class ClanHallManagerNpc extends Merchant
 							final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 							html.setFile("data/html/clanHallManager/edit_other.htm");
 							
-							final ClanHallFunction chfTel = getClanHall().getFunction(ClanHall.FUNC_TELEPORT);
+							final ClanHallFunction chfTel = _clanHall.getFunction(ClanHall.FUNC_TELEPORT);
 							if (chfTel != null)
 							{
 								html.replace("%tele%", "- Stage " + chfTel.getLvl() + "</font> (<font color=\"FFAABB\">" + chfTel.getLease() + "</font> adenas / " + (Config.CH_TELE_FEE_RATIO / 86400000) + " day)");
@@ -1101,9 +1112,9 @@ public class ClanHallManagerNpc extends Merchant
 								html.replace("%change_tele%", tele);
 							}
 							
-							final int grade = getClanHall().getGrade();
+							final int grade = _clanHall.getGrade();
 							
-							final ClanHallFunction chfSup = getClanHall().getFunction(ClanHall.FUNC_SUPPORT);
+							final ClanHallFunction chfSup = _clanHall.getFunction(ClanHall.FUNC_SUPPORT);
 							if (chfSup != null)
 							{
 								html.replace("%support%", "- Stage " + chfSup.getLvl() + "</font> (<font color=\"FFAABB\">" + chfSup.getLease() + "</font> adenas / " + (Config.CH_SUPPORT_FEE_RATIO / 86400000) + " day)");
@@ -1153,7 +1164,7 @@ public class ClanHallManagerNpc extends Merchant
 								}
 							}
 							
-							final ClanHallFunction chfCreate = getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE);
+							final ClanHallFunction chfCreate = _clanHall.getFunction(ClanHall.FUNC_ITEM_CREATE);
 							if (chfCreate != null)
 							{
 								html.replace("%item%", "- Stage " + chfCreate.getLvl() + "</font> (<font color=\"FFAABB\">" + chfCreate.getLease() + "</font> adenas / " + (Config.CH_ITEM_FEE_RATIO / 86400000) + " day)");
@@ -1174,7 +1185,7 @@ public class ClanHallManagerNpc extends Merchant
 					{
 						if (st.hasMoreTokens())
 						{
-							if (getClanHall().getOwnerId() == 0)
+							if (_clanHall.getOwnerId() == 0)
 								return;
 							
 							val = st.nextToken();
@@ -1253,7 +1264,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_DECO_CURTAINS);
 								if (chf != null && chf.getLvl() == lvl)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -1282,7 +1293,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_DECO_CURTAINS, lvl, fee, Config.CH_CURTAIN_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_DECO_CURTAINS, lvl, fee, Config.CH_CURTAIN_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -1297,7 +1308,7 @@ public class ClanHallManagerNpc extends Merchant
 								
 								final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 								
-								final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM);
+								final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM);
 								if (chf != null && chf.getLvl() == lvl)
 								{
 									html.setFile("data/html/clanHallManager/functions-used.htm");
@@ -1326,7 +1337,7 @@ public class ClanHallManagerNpc extends Merchant
 										break;
 								}
 								
-								if (!getClanHall().updateFunctions(player, ClanHall.FUNC_DECO_FRONTPLATEFORM, lvl, fee, Config.CH_FRONT_FEE_RATIO, (chf == null)))
+								if (!_clanHall.updateFunctions(player, ClanHall.FUNC_DECO_FRONTPLATEFORM, lvl, fee, Config.CH_FRONT_FEE_RATIO))
 									html.setFile("data/html/clanHallManager/low_adena.htm");
 								else
 									revalidateDeco(player);
@@ -1340,7 +1351,7 @@ public class ClanHallManagerNpc extends Merchant
 							final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 							html.setFile("data/html/clanHallManager/deco.htm");
 							
-							final ClanHallFunction chfCurtains = getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS);
+							final ClanHallFunction chfCurtains = _clanHall.getFunction(ClanHall.FUNC_DECO_CURTAINS);
 							if (chfCurtains != null)
 							{
 								html.replace("%curtain%", "- Stage " + chfCurtains.getLvl() + "</font> (<font color=\"FFAABB\">" + chfCurtains.getLease() + "</font> adenas / " + (Config.CH_CURTAIN_FEE_RATIO / 86400000) + " day)");
@@ -1354,7 +1365,7 @@ public class ClanHallManagerNpc extends Merchant
 								html.replace("%change_curtain%", curtains);
 							}
 							
-							final ClanHallFunction chfPlateform = getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM);
+							final ClanHallFunction chfPlateform = _clanHall.getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM);
 							if (chfPlateform != null)
 							{
 								html.replace("%fixture%", "- Stage " + chfPlateform.getLvl() + "</font> (<font color=\"FFAABB\">" + chfPlateform.getLease() + "</font> adenas / " + (Config.CH_FRONT_FEE_RATIO / 86400000) + " day)");
@@ -1391,7 +1402,7 @@ public class ClanHallManagerNpc extends Merchant
 			}
 			else if (actualCommand.equalsIgnoreCase("support"))
 			{
-				final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_SUPPORT);
+				final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_SUPPORT);
 				if (chf == null || chf.getLvl() == 0)
 					return;
 				
@@ -1448,12 +1459,12 @@ public class ClanHallManagerNpc extends Merchant
 			}
 			else if (actualCommand.equalsIgnoreCase("support_back"))
 			{
-				final ClanHallFunction chf = getClanHall().getFunction(ClanHall.FUNC_SUPPORT);
+				final ClanHallFunction chf = _clanHall.getFunction(ClanHall.FUNC_SUPPORT);
 				if (chf == null || chf.getLvl() == 0)
 					return;
 				
 				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-				html.setFile("data/html/clanHallManager/support" + getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLvl() + ".htm");
+				html.setFile("data/html/clanHallManager/support" + _clanHall.getFunction(ClanHall.FUNC_SUPPORT).getLvl() + ".htm");
 				html.replace("%mp%", (int) getStatus().getCurrentMp());
 				html.replace("%objectId%", getObjectId());
 				player.sendPacket(html);
@@ -1461,13 +1472,8 @@ public class ClanHallManagerNpc extends Merchant
 			else if (actualCommand.equalsIgnoreCase("goto"))
 			{
 				final TeleportLocation list = TeleportLocationData.getInstance().getTeleportLocation(Integer.parseInt(val));
-				if (list != null)
-				{
-					if (player.reduceAdena("Teleport", list.getPrice(), this, true))
-						player.teleToLocation(list, 0);
-				}
-				else
-					_log.warning("No teleport destination with id:" + val);
+				if (list != null && player.reduceAdena("Teleport", list.getPrice(), this, true))
+					player.teleportTo(list, 0);
 				
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 			}
@@ -1526,12 +1532,12 @@ public class ClanHallManagerNpc extends Merchant
 	
 	protected int validateCondition(Player player)
 	{
-		if (getClanHall() == null)
+		if (_clanHall == null)
 			return COND_ALL_FALSE;
 		
 		if (player.getClan() != null)
 		{
-			if (getClanHall().getOwnerId() == player.getClanId())
+			if (_clanHall.getOwnerId() == player.getClanId())
 				return COND_OWNER;
 			
 			return COND_OWNER_FALSE;
@@ -1539,30 +1545,8 @@ public class ClanHallManagerNpc extends Merchant
 		return COND_ALL_FALSE;
 	}
 	
-	/**
-	 * @return the L2ClanHall this L2Npc belongs to.
-	 */
-	public final ClanHall getClanHall()
+	private void revalidateDeco(Player player)
 	{
-		if (_clanHallId < 0)
-		{
-			ClanHall temp = ClanHallManager.getInstance().getNearbyClanHall(getX(), getY(), 500);
-			
-			if (temp != null)
-				_clanHallId = temp.getId();
-			
-			if (_clanHallId < 0)
-				return null;
-		}
-		return ClanHallManager.getInstance().getClanHallById(_clanHallId);
-	}
-	
-	private static void revalidateDeco(Player player)
-	{
-		ClanHall ch = ClanHallManager.getInstance().getClanHallByOwner(player.getClan());
-		if (ch == null)
-			return;
-		
-		player.sendPacket(new ClanHallDecoration(ch));
+		_clanHall.getZone().broadcastPacket(new ClanHallDecoration(_clanHall));
 	}
 }

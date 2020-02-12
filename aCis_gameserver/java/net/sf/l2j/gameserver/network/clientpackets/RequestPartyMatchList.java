@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoom;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoomList;
@@ -32,8 +32,8 @@ public class RequestPartyMatchList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
 		if (_roomid > 0)
@@ -41,7 +41,6 @@ public class RequestPartyMatchList extends L2GameClientPacket
 			PartyMatchRoom room = PartyMatchRoomList.getInstance().getRoom(_roomid);
 			if (room != null)
 			{
-				_log.info("PartyMatchRoom #" + room.getId() + " changed by " + activeChar.getName());
 				room.setMaxMembers(_membersmax);
 				room.setMinLvl(_lvlmin);
 				room.setMaxLvl(_lvlmax);
@@ -60,37 +59,35 @@ public class RequestPartyMatchList extends L2GameClientPacket
 		}
 		else
 		{
-			int maxid = PartyMatchRoomList.getInstance().getMaxId();
+			int maxId = PartyMatchRoomList.getInstance().getMaxId();
 			
-			PartyMatchRoom room = new PartyMatchRoom(maxid, _roomtitle, _loot, _lvlmin, _lvlmax, _membersmax, activeChar);
-			
-			_log.info("PartyMatchRoom #" + maxid + " created by " + activeChar.getName());
+			PartyMatchRoom room = new PartyMatchRoom(maxId, _roomtitle, _loot, _lvlmin, _lvlmax, _membersmax, player);
 			
 			// Remove from waiting list, and add to current room
-			PartyMatchWaitingList.getInstance().removePlayer(activeChar);
-			PartyMatchRoomList.getInstance().addPartyMatchRoom(maxid, room);
+			PartyMatchWaitingList.getInstance().removePlayer(player);
+			PartyMatchRoomList.getInstance().addPartyMatchRoom(maxId, room);
 			
-			final Party party = activeChar.getParty();
+			final Party party = player.getParty();
 			if (party != null)
 			{
 				for (Player member : party.getMembers())
 				{
-					if (member == activeChar)
+					if (member == player)
 						continue;
 					
-					member.setPartyRoom(maxid);
+					member.setPartyRoom(maxId);
 					
 					room.addMember(member);
 				}
 			}
 			
-			activeChar.sendPacket(new PartyMatchDetail(room));
-			activeChar.sendPacket(new ExPartyRoomMember(room, 1));
+			player.sendPacket(new PartyMatchDetail(room));
+			player.sendPacket(new ExPartyRoomMember(room, 1));
 			
-			activeChar.sendPacket(SystemMessageId.PARTY_ROOM_CREATED);
+			player.sendPacket(SystemMessageId.PARTY_ROOM_CREATED);
 			
-			activeChar.setPartyRoom(maxid);
-			activeChar.broadcastUserInfo();
+			player.setPartyRoom(maxId);
+			player.broadcastUserInfo();
 		}
 	}
 }

@@ -2,11 +2,11 @@ package net.sf.l2j.gameserver.handler.usercommandhandlers;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.enums.SiegeSide;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;

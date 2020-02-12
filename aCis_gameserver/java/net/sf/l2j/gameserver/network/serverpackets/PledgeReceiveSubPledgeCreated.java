@@ -1,11 +1,8 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import net.sf.l2j.gameserver.model.pledge.Clan;
-import net.sf.l2j.gameserver.model.pledge.Clan.SubPledge;
+import net.sf.l2j.gameserver.model.pledge.SubPledge;
 
-/**
- * @author -Wooden-
- */
 public class PledgeReceiveSubPledgeCreated extends L2GameServerPacket
 {
 	private final SubPledge _subPledge;

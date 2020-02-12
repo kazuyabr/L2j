@@ -2,20 +2,18 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
-import net.sf.l2j.gameserver.model.L2ManufactureItem;
-import net.sf.l2j.gameserver.model.L2ManufactureList;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.item.RecipeList;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.craft.ManufactureItem;
+import net.sf.l2j.gameserver.model.item.Recipe;
 
-/**
- * dd d(dd) d(ddd)
- */
 public class RecipeShopManageList extends L2GameServerPacket
 {
 	private final Player _seller;
 	private final boolean _isDwarven;
-	private Collection<RecipeList> _recipes;
+	
+	private Collection<Recipe> _recipes;
 	
 	public RecipeShopManageList(Player seller, boolean isDwarven)
 	{
@@ -30,11 +28,11 @@ public class RecipeShopManageList extends L2GameServerPacket
 		// clean previous recipes
 		if (seller.getCreateList() != null)
 		{
-			final Iterator<L2ManufactureItem> it = seller.getCreateList().getList().iterator();
+			final Iterator<ManufactureItem> it = seller.getCreateList().getList().iterator();
 			while (it.hasNext())
 			{
-				L2ManufactureItem item = it.next();
-				if (item.isDwarven() != _isDwarven || !seller.hasRecipeList(item.getRecipeId()))
+				ManufactureItem item = it.next();
+				if (item.isDwarven() != _isDwarven || !seller.hasRecipeList(item.getId()))
 					it.remove();
 			}
 		}
@@ -55,7 +53,7 @@ public class RecipeShopManageList extends L2GameServerPacket
 			writeD(_recipes.size());// number of items in recipe book
 			
 			int i = 0;
-			for (RecipeList recipe : _recipes)
+			for (Recipe recipe : _recipes)
 			{
 				writeD(recipe.getId());
 				writeD(++i);
@@ -66,14 +64,14 @@ public class RecipeShopManageList extends L2GameServerPacket
 			writeD(0);
 		else
 		{
-			L2ManufactureList list = _seller.getCreateList();
+			final List<ManufactureItem> list = _seller.getCreateList().getList();
 			writeD(list.size());
 			
-			for (L2ManufactureItem item : list.getList())
+			for (ManufactureItem item : list)
 			{
-				writeD(item.getRecipeId());
+				writeD(item.getId());
 				writeD(0x00);
-				writeD(item.getCost());
+				writeD(item.getValue());
 			}
 		}
 	}

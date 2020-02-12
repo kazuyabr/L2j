@@ -4,18 +4,12 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.AuctionManager;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.location.TowerSpawnLocation;
-import net.sf.l2j.gameserver.model.pledge.Clan;
-import net.sf.l2j.gameserver.model.zone.type.L2ClanHallZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SiegeInfo;
@@ -39,56 +33,46 @@ public class AdminSiege implements IAdminCommandHandler
 		"admin_startsiege",
 		"admin_setcastle",
 		"admin_removecastle",
-		"admin_clanhall",
-		"admin_clanhallset",
-		"admin_clanhalldel",
-		"admin_clanhallopendoors",
-		"admin_clanhallclosedoors",
-		"admin_clanhallteleportself",
 		"admin_reset_certificates"
 	};
 	
 	@Override
 	public boolean useAdminCommand(String command, Player activeChar)
 	{
-		StringTokenizer st = new StringTokenizer(command, " ");
-		command = st.nextToken(); // Get actual command
-		
-		// Get castle
-		Castle castle = null;
-		ClanHall clanhall = null;
-		
-		if (command.startsWith("admin_clanhall"))
-			clanhall = ClanHallManager.getInstance().getClanHallById(Integer.parseInt(st.nextToken()));
-		else if (st.hasMoreTokens())
-			castle = CastleManager.getInstance().getCastleByName(st.nextToken());
-		
-		if (clanhall == null && (castle == null || castle.getCastleId() < 0))
+		try
 		{
-			showCastleSelectPage(activeChar);
-			return true;
-		}
-		
-		WorldObject target = activeChar.getTarget();
-		Player player = null;
-		if (target instanceof Player)
-			player = (Player) target;
-		
-		if (castle != null)
-		{
+			StringTokenizer st = new StringTokenizer(command, " ");
+			command = st.nextToken(); // Get actual command
+			
+			// Get castle
+			Castle castle = null;
+			if (st.hasMoreTokens())
+				castle = CastleManager.getInstance().getCastleByName(st.nextToken());
+			
+			if (castle == null)
+			{
+				showCastleSelectPage(activeChar);
+				return true;
+			}
+			
+			WorldObject target = activeChar.getTarget();
+			Player targetPlayer = null;
+			if (target instanceof Player)
+				targetPlayer = (Player) target;
+			
 			if (command.equalsIgnoreCase("admin_add_attacker"))
 			{
-				if (player == null)
+				if (targetPlayer == null)
 					activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 				else
-					castle.getSiege().registerAttacker(player);
+					castle.getSiege().registerAttacker(targetPlayer);
 			}
 			else if (command.equalsIgnoreCase("admin_add_defender"))
 			{
-				if (player == null)
+				if (targetPlayer == null)
 					activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 				else
-					castle.getSiege().registerDefender(player);
+					castle.getSiege().registerDefender(targetPlayer);
 			}
 			else if (command.equalsIgnoreCase("admin_clear_siege_list"))
 			{
@@ -109,20 +93,19 @@ public class AdminSiege implements IAdminCommandHandler
 			}
 			else if (command.equalsIgnoreCase("admin_setcastle"))
 			{
-				if (player == null || player.getClan() == null)
+				if (targetPlayer == null || targetPlayer.getClan() == null)
 					activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
-				else if (player.getClan().hasCastle())
-					activeChar.sendMessage(player.getName() + "'s clan already owns a castle.");
+				else if (targetPlayer.getClan().hasCastle())
+					activeChar.sendMessage(targetPlayer.getName() + "'s clan already owns a castle.");
 				else
-					castle.setOwner(player.getClan());
+					castle.setOwner(targetPlayer.getClan());
 			}
 			else if (command.equalsIgnoreCase("admin_removecastle"))
 			{
-				Clan clan = ClanTable.getInstance().getClan(castle.getOwnerId());
-				if (clan != null)
-					castle.removeOwner(clan);
+				if (castle.getOwnerId() > 0)
+					castle.removeOwner();
 				else
-					activeChar.sendMessage("Unable to remove castle for this clan.");
+					activeChar.sendMessage("This castle does not have an owner.");
 			}
 			else if (command.equalsIgnoreCase("admin_spawn_doors"))
 			{
@@ -172,61 +155,14 @@ public class AdminSiege implements IAdminCommandHandler
 			
 			activeChar.sendPacket(html);
 		}
-		else if (clanhall != null)
+		catch (Exception e)
 		{
-			if (command.equalsIgnoreCase("admin_clanhallset"))
-			{
-				if (player == null || player.getClan() == null)
-					activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
-				else if (!ClanHallManager.getInstance().isFree(clanhall.getId()))
-					activeChar.sendMessage("This ClanHall isn't free!");
-				else if (!player.getClan().hasHideout())
-				{
-					ClanHallManager.getInstance().setOwner(clanhall.getId(), player.getClan());
-					if (AuctionManager.getInstance().getAuction(clanhall.getId()) != null)
-						AuctionManager.getInstance().getAuction(clanhall.getId()).deleteAuctionFromDB();
-				}
-				else
-					activeChar.sendMessage("You have already a ClanHall!");
-			}
-			else if (command.equalsIgnoreCase("admin_clanhalldel"))
-			{
-				if (!ClanHallManager.getInstance().isFree(clanhall.getId()))
-				{
-					ClanHallManager.getInstance().setFree(clanhall.getId());
-					AuctionManager.getInstance().initNPC(clanhall.getId());
-				}
-				else
-					activeChar.sendMessage("This ClanHall is already Free!");
-			}
-			else if (command.equalsIgnoreCase("admin_clanhallopendoors"))
-			{
-				clanhall.openCloseDoors(true);
-			}
-			else if (command.equalsIgnoreCase("admin_clanhallclosedoors"))
-			{
-				clanhall.openCloseDoors(false);
-			}
-			else if (command.equalsIgnoreCase("admin_clanhallteleportself"))
-			{
-				L2ClanHallZone zone = clanhall.getZone();
-				if (zone != null)
-					activeChar.teleToLocation(zone.getSpawnLoc(), 0);
-			}
 			
-			final Clan owner = ClanTable.getInstance().getClan(clanhall.getOwnerId());
-			
-			final NpcHtmlMessage html = new NpcHtmlMessage(0);
-			html.setFile("data/html/admin/clanhall.htm");
-			html.replace("%clanhallName%", clanhall.getName());
-			html.replace("%clanhallId%", clanhall.getId());
-			html.replace("%clanhallOwner%", (owner == null) ? "None" : owner.getName());
-			activeChar.sendPacket(html);
 		}
 		return true;
 	}
 	
-	private static void showCastleSelectPage(Player activeChar)
+	private static void showCastleSelectPage(Player player)
 	{
 		int i = 0;
 		
@@ -249,47 +185,7 @@ public class AdminSiege implements IAdminCommandHandler
 			}
 		}
 		html.replace("%castles%", sb.toString());
-		
-		// Cleanup sb.
-		sb.setLength(0);
-		i = 0;
-		
-		for (ClanHall clanhall : ClanHallManager.getInstance().getClanHalls().values())
-		{
-			if (clanhall != null)
-			{
-				StringUtil.append(sb, "<td fixwidth=134><a action=\"bypass -h admin_clanhall ", clanhall.getId(), "\">", clanhall.getName(), "</a></td>");
-				i++;
-			}
-			
-			if (i > 1)
-			{
-				sb.append("</tr><tr>");
-				i = 0;
-			}
-		}
-		html.replace("%clanhalls%", sb.toString());
-		
-		// Cleanup sb.
-		sb.setLength(0);
-		i = 0;
-		
-		for (ClanHall clanhall : ClanHallManager.getInstance().getFreeClanHalls().values())
-		{
-			if (clanhall != null)
-			{
-				StringUtil.append(sb, "<td fixwidth=134><a action=\"bypass -h admin_clanhall ", clanhall.getId(), "\">", clanhall.getName(), "</a></td>");
-				i++;
-			}
-			
-			if (i > 1)
-			{
-				sb.append("</tr><tr>");
-				i = 0;
-			}
-		}
-		html.replace("%freeclanhalls%", sb.toString());
-		activeChar.sendPacket(html);
+		player.sendPacket(html);
 	}
 	
 	@Override

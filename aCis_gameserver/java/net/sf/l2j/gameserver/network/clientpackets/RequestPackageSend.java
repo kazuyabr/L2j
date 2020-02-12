@@ -5,7 +5,8 @@ import java.util.List;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.ItemContainer;
@@ -46,7 +47,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 		if (_items == null || _items.isEmpty() || !Config.ALLOW_FREIGHT)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -61,8 +62,8 @@ public final class RequestPackageSend extends L2GameClientPacket
 		if (warehouse == null)
 			return;
 		
-		final Npc manager = player.getCurrentFolkNPC();
-		if ((manager == null || !player.isInsideRadius(manager, Npc.INTERACTION_DISTANCE, false, false)) && !player.isGM())
+		final Folk folk = player.getCurrentFolk();
+		if ((folk == null || !player.isInsideRadius(folk, Npc.INTERACTION_DISTANCE, false, false)) && !player.isGM())
 			return;
 		
 		if (warehouse instanceof PcFreight && !player.getAccessLevel().allowTransaction())
@@ -90,8 +91,6 @@ public final class RequestPackageSend extends L2GameClientPacket
 			{
 				i.setId(0);
 				i.setValue(0);
-				
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (validity check)");
 				continue;
 			}
 			
@@ -116,7 +115,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 		}
 		
 		// Check if enough adena and charge the fee
-		if (currentAdena < fee || !player.reduceAdena("Warehouse", fee, player.getCurrentFolkNPC(), false))
+		if (currentAdena < fee || !player.reduceAdena("Warehouse", fee, player.getCurrentFolk(), false))
 		{
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			return;
@@ -134,21 +133,12 @@ public final class RequestPackageSend extends L2GameClientPacket
 				continue;
 			
 			ItemInstance oldItem = player.getInventory().getItemByObjectId(objectId);
-			if (oldItem == null)
-			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (olditem == null)");
-				continue;
-			}
-			
-			if (oldItem.isHeroItem())
+			if (oldItem == null || oldItem.isHeroItem())
 				continue;
 			
-			ItemInstance newItem = player.getInventory().transferItem("Warehouse", objectId, count, warehouse, player, player.getCurrentFolkNPC());
+			ItemInstance newItem = player.getInventory().transferItem("Warehouse", objectId, count, warehouse, player, player.getCurrentFolk());
 			if (newItem == null)
-			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (newitem == null)");
 				continue;
-			}
 			
 			if (oldItem.getCount() > 0 && oldItem != newItem)
 				playerIU.addModifiedItem(oldItem);

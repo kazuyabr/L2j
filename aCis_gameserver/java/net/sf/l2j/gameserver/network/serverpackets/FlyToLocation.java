@@ -1,23 +1,14 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
+import net.sf.l2j.gameserver.enums.skills.FlyType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 
-/**
- * @author KenM
- */
 public final class FlyToLocation extends L2GameServerPacket
 {
 	private final int _destX, _destY, _destZ;
 	private final int _chaObjId, _chaX, _chaY, _chaZ;
 	private final FlyType _type;
-	
-	public enum FlyType
-	{
-		THROW_UP,
-		THROW_HORIZONTAL,
-		DUMMY; // no effect
-	}
 	
 	public FlyToLocation(Creature cha, int destX, int destY, int destZ, FlyType type)
 	{

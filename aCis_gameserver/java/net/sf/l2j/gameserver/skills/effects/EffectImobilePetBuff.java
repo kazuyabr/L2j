@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * @author demonia

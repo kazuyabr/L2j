@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.skills.AbnormalEffect;
+import net.sf.l2j.gameserver.enums.skills.L2EffectFlag;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.skills.AbnormalEffect;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectFlag;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 public class EffectPetrification extends L2Effect
 {
@@ -32,7 +32,7 @@ public class EffectPetrification extends L2Effect
 	public void onExit()
 	{
 		getEffected().stopAbnormalEffect(AbnormalEffect.HOLD_2);
-		getEffected().stopParalyze(false);
+		getEffected().stopParalyze();
 		getEffected().setIsInvul(false);
 	}
 	

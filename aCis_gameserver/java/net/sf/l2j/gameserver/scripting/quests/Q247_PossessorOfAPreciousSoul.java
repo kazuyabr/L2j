@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -45,7 +45,7 @@ public class Q247_PossessorOfAPreciousSoul extends Quest
 		else if (event.equalsIgnoreCase("31740-05.htm"))
 		{
 			st.set("cond", "2");
-			player.teleToLocation(143209, 43968, -3038, 0);
+			player.teleportTo(143209, 43968, -3038, 0);
 		}
 		// Lady of the lake
 		else if (event.equalsIgnoreCase("31745-05.htm"))

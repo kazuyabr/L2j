@@ -856,9 +856,9 @@
 		</for>
 	</skill>
 	<skill id="176" levels="3" name="Frenzy">
-		<table name="#swordbluntpole"> 1 1.5 2 </table>
-		<table name="#twohand"> 1.5 2 3 </table>
-		<table name="#all"> 1.15 1.20 1.25 </table>
+		<table name="#bowfist"> 1.3 1.4 1.5 </table>
+		<table name="#swordbluntpole"> 2 2.5 3 </table>
+		<table name="#twohandbonus"> 1.2 1.25 1.34 </table>
 		<table name="#accCombat"> 2 4 6 </table>
 		<table name="#mpConsume"> 14 21 25 </table>
 		<table name="#stackOrder"> 1 2 3 </table>
@@ -875,11 +875,13 @@
 		</cond>
 		<for>
 			<effect name="Buff" time="90" val="0" stackOrder="#stackOrder" stackType="pinch">
-				<mul order="0x30" stat="pAtk" val="#all" />
+				<mul order="0x30" stat="pAtk" val="#bowfist">
+					<using kind="BOW,DUALFIST" />
+				</mul>
 				<mul order="0x30" stat="pAtk" val="#swordbluntpole">
 					<using kind="SWORD,BIGSWORD,BLUNT,BIGBLUNT,POLE" />
 				</mul>
-				<mul order="0x30" stat="pAtk" val="#twohand">
+				<mul order="0x30" stat="pAtk" val="#twohandbonus">
 					<using kind="BIGSWORD,BIGBLUNT" />
 				</mul>
 				<add order="0x40" stat="accCombat" val="#accCombat">

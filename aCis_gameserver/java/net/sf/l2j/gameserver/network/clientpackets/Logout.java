@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
@@ -17,7 +17,7 @@ public final class Logout extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -41,7 +41,7 @@ public final class Logout extends L2GameClientPacket
 			return;
 		}
 		
-		if (player.isFestivalParticipant() && SevenSignsFestival.getInstance().isFestivalInitialized())
+		if (player.isFestivalParticipant() && FestivalOfDarknessManager.getInstance().isFestivalInitialized())
 		{
 			player.sendPacket(SystemMessageId.NO_LOGOUT_HERE);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -49,6 +49,6 @@ public final class Logout extends L2GameClientPacket
 		}
 		
 		player.removeFromBossZone();
-		player.logout();
+		player.logout(true);
 	}
 }

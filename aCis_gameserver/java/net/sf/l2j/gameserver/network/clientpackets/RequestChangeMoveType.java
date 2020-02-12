@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public final class RequestChangeMoveType extends L2GameClientPacket
 {
@@ -16,7 +16,7 @@ public final class RequestChangeMoveType extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// Get player.
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		

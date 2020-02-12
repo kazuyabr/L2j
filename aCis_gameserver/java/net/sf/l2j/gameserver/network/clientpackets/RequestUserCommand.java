@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.handler.UserCommandHandler;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class RequestUserCommand extends L2GameClientPacket
 {
@@ -17,12 +17,12 @@ public class RequestUserCommand extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
-		final IUserCommandHandler handler = UserCommandHandler.getInstance().getUserCommandHandler(_command);
+		final IUserCommandHandler handler = UserCommandHandler.getInstance().getHandler(_command);
 		if (handler != null)
-			handler.useUserCommand(_command, getClient().getActiveChar());
+			handler.useUserCommand(_command, getClient().getPlayer());
 	}
 }

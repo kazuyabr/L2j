@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
 
 public class ValidateLocationInVehicle extends L2GameServerPacket
@@ -13,7 +13,7 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
 	{
 		_objectId = player.getObjectId();
 		_boatId = player.getBoat().getObjectId();
-		_loc = player.getVehiclePosition();
+		_loc = player.getBoatPosition();
 	}
 	
 	@Override

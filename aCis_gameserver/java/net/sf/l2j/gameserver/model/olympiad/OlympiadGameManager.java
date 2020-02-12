@@ -2,50 +2,32 @@ package net.sf.l2j.gameserver.model.olympiad;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.zone.type.L2OlympiadStadiumZone;
+import net.sf.l2j.commons.logging.CLogger;
 
-/**
- * @author GodKratos, DS
- */
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.zone.type.OlympiadStadiumZone;
+
 public class OlympiadGameManager implements Runnable
 {
-	private static final Logger _log = Logger.getLogger(OlympiadGameManager.class.getName());
+	private static final CLogger LOGGER = new CLogger(OlympiadGameManager.class.getName());
 	
 	private volatile boolean _battleStarted = false;
 	private final OlympiadGameTask[] _tasks;
 	
 	protected OlympiadGameManager()
 	{
-		final Collection<L2OlympiadStadiumZone> zones = ZoneManager.getInstance().getAllZones(L2OlympiadStadiumZone.class);
+		final Collection<OlympiadStadiumZone> zones = ZoneManager.getInstance().getAllZones(OlympiadStadiumZone.class);
 		if (zones == null || zones.isEmpty())
 			throw new Error("No olympiad stadium zones defined !");
 		
 		_tasks = new OlympiadGameTask[zones.size()];
 		int i = 0;
-		for (L2OlympiadStadiumZone zone : zones)
+		for (OlympiadStadiumZone zone : zones)
 			_tasks[i++] = new OlympiadGameTask(zone);
 		
-		_log.log(Level.INFO, "Olympiad: Loaded " + _tasks.length + " stadiums.");
-	}
-	
-	public static final OlympiadGameManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
-	protected final boolean isBattleStarted()
-	{
-		return _battleStarted;
-	}
-	
-	protected final void startBattle()
-	{
-		_battleStarted = true;
+		LOGGER.info("Loaded {} stadiums.", _tasks.length);
 	}
 	
 	@Override
@@ -54,7 +36,7 @@ public class OlympiadGameManager implements Runnable
 		if (Olympiad.getInstance().isOlympiadEnd())
 			return;
 		
-		if (Olympiad.getInstance().inCompPeriod())
+		if (Olympiad.getInstance().isInCompPeriod())
 		{
 			OlympiadGameTask task;
 			AbstractOlympiadGame newGame;
@@ -113,9 +95,19 @@ public class OlympiadGameManager implements Runnable
 			{
 				OlympiadManager.getInstance().clearRegistered();
 				_battleStarted = false;
-				_log.log(Level.INFO, "Olympiad: All current games finished.");
+				LOGGER.info("All current Olympiad games finished.");
 			}
 		}
+	}
+	
+	protected final boolean isBattleStarted()
+	{
+		return _battleStarted;
+	}
+	
+	protected final void startBattle()
+	{
+		_battleStarted = true;
 	}
 	
 	public final boolean isAllTasksFinished()
@@ -160,8 +152,13 @@ public class OlympiadGameManager implements Runnable
 			game.addDamage(player, damage);
 	}
 	
+	public static final OlympiadGameManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
 	private static class SingletonHolder
 	{
-		protected static final OlympiadGameManager _instance = new OlympiadGameManager();
+		protected static final OlympiadGameManager INSTANCE = new OlympiadGameManager();
 	}
 }

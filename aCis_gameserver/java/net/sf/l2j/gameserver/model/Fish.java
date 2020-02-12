@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.model;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * A datatype used to retain a fish information.

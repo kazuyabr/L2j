@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -85,7 +85,7 @@ public class Q021_HiddenTruth extends Quest
 		}
 		else if (event.equalsIgnoreCase("1"))
 		{
-			_page.getAI().setIntention(CtrlIntention.MOVE_TO, PAGE_LOCS[0]);
+			_page.getAI().setIntention(IntentionType.MOVE_TO, PAGE_LOCS[0]);
 			_page.broadcastNpcSay("Follow me...");
 			
 			startQuestTimer("2", 5000, _page, player, false);
@@ -93,14 +93,14 @@ public class Q021_HiddenTruth extends Quest
 		}
 		else if (event.equalsIgnoreCase("2"))
 		{
-			_page.getAI().setIntention(CtrlIntention.MOVE_TO, PAGE_LOCS[1]);
+			_page.getAI().setIntention(IntentionType.MOVE_TO, PAGE_LOCS[1]);
 			
 			startQuestTimer("3", 12000, _page, player, false);
 			return null;
 		}
 		else if (event.equalsIgnoreCase("3"))
 		{
-			_page.getAI().setIntention(CtrlIntention.MOVE_TO, PAGE_LOCS[2]);
+			_page.getAI().setIntention(IntentionType.MOVE_TO, PAGE_LOCS[2]);
 			
 			startQuestTimer("4", 18000, _page, player, false);
 			return null;

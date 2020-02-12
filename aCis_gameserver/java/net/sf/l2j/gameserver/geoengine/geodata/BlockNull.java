@@ -2,9 +2,6 @@ package net.sf.l2j.gameserver.geoengine.geodata;
 
 import java.io.BufferedOutputStream;
 
-/**
- * @author Hasha
- */
 public class BlockNull extends ABlock
 {
 	private byte _nswe;

@@ -1,13 +1,10 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.cache.CrestCache;
-import net.sf.l2j.gameserver.cache.CrestCache.CrestType;
+import net.sf.l2j.gameserver.data.cache.CrestCache;
+import net.sf.l2j.gameserver.data.cache.CrestCache.CrestType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ExPledgeCrestLarge;
 
-/**
- * Fomat : chd
- * @author -Wooden-
- */
 public final class RequestExPledgeCrestLarge extends L2GameClientPacket
 {
 	private int _crestId;
@@ -21,8 +18,14 @@ public final class RequestExPledgeCrestLarge extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		byte[] data = CrestCache.getInstance().getCrest(CrestType.PLEDGE_LARGE, _crestId);
-		if (data != null)
-			sendPacket(new ExPledgeCrestLarge(_crestId, data));
+		final Player player = getClient().getPlayer();
+		if (player == null)
+			return;
+		
+		final byte[] data = CrestCache.getInstance().getCrest(CrestType.PLEDGE_LARGE, _crestId);
+		if (data == null)
+			return;
+		
+		player.sendPacket(new ExPledgeCrestLarge(_crestId, data));
 	}
 }

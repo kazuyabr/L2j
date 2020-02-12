@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.BlockList;
+import net.sf.l2j.gameserver.enums.LootRule;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.player.BlockList;
 import net.sf.l2j.gameserver.model.group.Party;
-import net.sf.l2j.gameserver.model.group.Party.LootRule;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.AskJoinParty;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -24,7 +24,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player requestor = getClient().getActiveChar();
+		final Player requestor = getClient().getPlayer();
 		if (requestor == null)
 			return;
 		

@@ -1,40 +1,40 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.xml.HennaData;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.Henna;
 
 public class HennaEquipList extends L2GameServerPacket
 {
-	private final Player _player;
-	private final List<Henna> _hennaEquipList;
+	private final int _adena;
+	private final int _maxHennas;
+	private final List<Henna> _availableHennas;
 	
-	public HennaEquipList(Player player, List<Henna> hennaEquipList)
+	public HennaEquipList(Player player)
 	{
-		_player = player;
-		_hennaEquipList = hennaEquipList;
+		_adena = player.getAdena();
+		_maxHennas = player.getHennaList().getMaxSize();
+		_availableHennas = HennaData.getInstance().getHennas().stream().filter(h -> h.canBeUsedBy(player) && player.getInventory().getItemByItemId(h.getDyeId()) != null).collect(Collectors.toList());
 	}
 	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xe2);
-		writeD(_player.getAdena());
-		writeD(3);
-		writeD(_hennaEquipList.size());
+		writeD(_adena);
+		writeD(_maxHennas);
+		writeD(_availableHennas.size());
 		
-		for (Henna temp : _hennaEquipList)
+		for (Henna temp : _availableHennas)
 		{
-			// Player must have at least one dye in inventory to be able to see the henna that can be applied with it.
-			if ((_player.getInventory().getItemByItemId(temp.getDyeId())) != null)
-			{
-				writeD(temp.getSymbolId()); // symbolid
-				writeD(temp.getDyeId()); // itemid of dye
-				writeD(Henna.getRequiredDyeAmount()); // amount of dyes required
-				writeD(temp.getPrice()); // amount of adenas required
-				writeD(1); // meet the requirement or not
-			}
+			writeD(temp.getSymbolId());
+			writeD(temp.getDyeId());
+			writeD(Henna.DRAW_AMOUNT);
+			writeD(temp.getDrawPrice());
+			writeD(1);
 		}
 	}
 }

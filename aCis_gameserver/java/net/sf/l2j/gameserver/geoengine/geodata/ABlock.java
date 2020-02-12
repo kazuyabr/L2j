@@ -3,9 +3,6 @@ package net.sf.l2j.gameserver.geoengine.geodata;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 
-/**
- * @author Hasha
- */
 public abstract class ABlock
 {
 	/**

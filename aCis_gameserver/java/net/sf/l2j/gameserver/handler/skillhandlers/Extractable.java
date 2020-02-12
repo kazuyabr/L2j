@@ -2,16 +2,16 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2ExtractableProductItem;
 import net.sf.l2j.gameserver.model.L2ExtractableSkill;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class Extractable implements ISkillHandler
 {
@@ -30,7 +30,7 @@ public class Extractable implements ISkillHandler
 		final L2ExtractableSkill exItem = skill.getExtractableSkill();
 		if (exItem == null || exItem.getProductItemsArray().isEmpty())
 		{
-			_log.warning("Missing informations for extractable skill id: " + skill.getId() + ".");
+			LOGGER.warn("Missing informations for extractable skill id: {}.", skill.getId());
 			return;
 		}
 		

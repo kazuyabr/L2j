@@ -1,17 +1,14 @@
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.scripting.QuestState;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
-/**
- * @author _drunk_
- */
 public class DrainSoul implements ISkillHandler
 {
 	private static final String qn = "Q350_EnhanceYourWeapon";
@@ -36,11 +33,11 @@ public class DrainSoul implements ISkillHandler
 		
 		// Get target.
 		WorldObject target = targets[0];
-		if (target == null || !(target instanceof Attackable))
+		if (target == null || !(target instanceof Monster))
 			return;
 		
 		// Check monster.
-		final Attackable mob = (Attackable) target;
+		final Monster mob = (Monster) target;
 		if (mob.isDead())
 			return;
 		

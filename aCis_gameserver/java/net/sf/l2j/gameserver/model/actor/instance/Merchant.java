@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.cache.HtmCache;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
 import net.sf.l2j.gameserver.data.manager.BuyListManager;
 import net.sf.l2j.gameserver.data.xml.MultisellData;
+import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.buylist.NpcBuyList;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
@@ -16,8 +18,9 @@ import net.sf.l2j.gameserver.network.serverpackets.SellList;
 import net.sf.l2j.gameserver.network.serverpackets.ShopPreviewList;
 
 /**
- * Merchant type, it got buy/sell methods && bypasses.<br>
- * It is used as extends for classes such as Fisherman, CastleChamberlain, etc.
+ * An instance type extending {@link Folk}, used for merchant (regular and multisell). It got buy/sell methods.<br>
+ * <br>
+ * It is used as mother class for few children, such as {@link Fisherman}.
  */
 public class Merchant extends Folk
 {
@@ -39,29 +42,13 @@ public class Merchant extends Folk
 		return "data/html/merchant/" + filename + ".htm";
 	}
 	
-	private final void showWearWindow(Player player, int val)
-	{
-		final NpcBuyList buyList = BuyListManager.getInstance().getBuyList(val);
-		if (buyList == null || !buyList.isNpcAllowed(getNpcId()))
-			return;
-		
-		player.tempInventoryDisable();
-		player.sendPacket(new ShopPreviewList(buyList, player.getAdena(), player.getExpertiseIndex()));
-	}
-	
-	protected final void showBuyWindow(Player player, int val)
-	{
-		final NpcBuyList buyList = BuyListManager.getInstance().getBuyList(val);
-		if (buyList == null || !buyList.isNpcAllowed(getNpcId()))
-			return;
-		
-		player.tempInventoryDisable();
-		player.sendPacket(new BuyList(buyList, player.getAdena(), (getCastle() != null) ? getCastle().getTaxRate() : 0));
-	}
-	
 	@Override
 	public void onBypassFeedback(Player player, String command)
 	{
+		// Generic PK check. Send back the HTM if found and cancel current action.
+		if (!Config.KARMA_PLAYER_CAN_SHOP && player.getKarma() > 0 && showPkDenyChatWindow(player, "merchant"))
+			return;
+		
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
 		
@@ -140,5 +127,35 @@ public class Merchant extends Folk
 		}
 		else
 			super.onBypassFeedback(player, command);
+	}
+	
+	@Override
+	public void showChatWindow(Player player, int val)
+	{
+		// Generic PK check. Send back the HTM if found and cancel current action.
+		if (!Config.KARMA_PLAYER_CAN_SHOP && player.getKarma() > 0 && showPkDenyChatWindow(player, "merchant"))
+			return;
+		
+		showChatWindow(player, getHtmlPath(getNpcId(), val));
+	}
+	
+	private final void showWearWindow(Player player, int val)
+	{
+		final NpcBuyList buyList = BuyListManager.getInstance().getBuyList(val);
+		if (buyList == null || !buyList.isNpcAllowed(getNpcId()))
+			return;
+		
+		player.tempInventoryDisable();
+		player.sendPacket(new ShopPreviewList(buyList, player.getAdena(), player.getSkillLevel(L2Skill.SKILL_EXPERTISE)));
+	}
+	
+	protected final void showBuyWindow(Player player, int val)
+	{
+		final NpcBuyList buyList = BuyListManager.getInstance().getBuyList(val);
+		if (buyList == null || !buyList.isNpcAllowed(getNpcId()))
+			return;
+		
+		player.tempInventoryDisable();
+		player.sendPacket(new BuyList(buyList, player.getAdena(), (getCastle() != null) ? getCastle().getTaxRate() : 0));
 	}
 }

@@ -1,25 +1,25 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.model.AccessLevel;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and handles following concepts :
@@ -29,13 +29,11 @@ import org.w3c.dom.Node;
  * <li>GM list holds GM {@link Player}s used by /gmlist. It also stores the hidden state.</li>
  * </ul>
  */
-public final class AdminData extends XMLDocument
+public final class AdminData implements IXmlReader
 {
-	private final Map<Integer, AccessLevel> _accessLevels = new HashMap<>();
+	private final TreeMap<Integer, AccessLevel> _accessLevels = new TreeMap<>();
 	private final Map<String, Integer> _adminCommandAccessRights = new HashMap<>();
 	private final Map<Player, Boolean> _gmList = new ConcurrentHashMap<>();
-	
-	private int _highestLevel = 0;
 	
 	protected AdminData()
 	{
@@ -43,51 +41,31 @@ public final class AdminData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/accessLevels.xml");
-		LOG.info("Loaded " + _accessLevels.size() + " access levels.");
+		parseFile("./data/xml/accessLevels.xml");
+		LOGGER.info("Loaded {} access levels.", _accessLevels.size());
 		
-		loadDocument("./data/xml/adminCommands.xml");
-		LOG.info("Loaded " + _adminCommandAccessRights.size() + " admin command rights.");
+		parseFile("./data/xml/adminCommands.xml");
+		LOGGER.info("Loaded {} admin command rights.", _adminCommandAccessRights.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode ->
 		{
-			// Parse and feed access levels.
-			if ("access".equalsIgnoreCase(o.getNodeName()))
+			forEach(listNode, "access", accessNode ->
 			{
-				// Parse and feed content.
-				parseAndFeed(o.getAttributes(), set);
-				
-				// Feed the map with new data.
+				final StatsSet set = parseAttributes(accessNode);
 				_accessLevels.put(set.getInteger("level"), new AccessLevel(set));
-				
-				// Clear the StatsSet.
-				set.clear();
-			}
-			// Parse and feed admin rights.
-			else if ("aCar".equalsIgnoreCase(o.getNodeName()))
+			});
+			forEach(listNode, "aCar", aCarNode ->
 			{
-				// Parse and feed content.
-				parseAndFeed(o.getAttributes(), set);
-				
-				// Feed the map with new data.
+				final StatsSet set = parseAttributes(aCarNode);
 				_adminCommandAccessRights.put(set.getString("name"), set.getInteger("accessLevel"));
-				
-				// Clear the StatsSet.
-				set.clear();
-			}
-		}
+			});
+		});
 	}
 	
 	public void reload()
@@ -104,18 +82,15 @@ public final class AdminData extends XMLDocument
 	 */
 	public AccessLevel getAccessLevel(int level)
 	{
-		if (level < 0)
-			return _accessLevels.get(-1);
-		
-		return _accessLevels.get(level);
+		return _accessLevels.get((level < 0) ? -1 : level);
 	}
 	
 	/**
-	 * @return the master {@link AccessLevel}. It is always the AccessLevel with the highest level.
+	 * @return the master {@link AccessLevel} level. It is always the AccessLevel with the highest level.
 	 */
-	public AccessLevel getMasterAccessLevel()
+	public int getMasterAccessLevel()
 	{
-		return _accessLevels.get(_highestLevel);
+		return (_accessLevels.isEmpty()) ? 0 : _accessLevels.lastKey();
 	}
 	
 	/**
@@ -137,7 +112,7 @@ public final class AdminData extends XMLDocument
 		final Integer level = _adminCommandAccessRights.get(command);
 		if (level == null)
 		{
-			LOG.severe("No rights defined for admin command " + command + " !");
+			LOGGER.warn("No rights defined for admin command '{}'.", command);
 			return false;
 		}
 		

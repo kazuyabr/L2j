@@ -7560,7 +7560,7 @@
 		</skills>
 	</npc>
 	<npc id="27254" name="Unknown Stopper" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -7596,7 +7596,7 @@
 		</skills>
 	</npc>
 	<npc id="27255" name="Unknown Stopper" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -7632,7 +7632,7 @@
 		</skills>
 	</npc>
 	<npc id="27256" name="Unknown Stopper" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -7850,7 +7850,7 @@
 		</skills>
 	</npc>
 	<npc id="27262" name="Death Lord Hallate" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -7886,7 +7886,7 @@
 		</skills>
 	</npc>
 	<npc id="27263" name="Death Lord Hallate" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -7922,7 +7922,7 @@
 		</skills>
 	</npc>
 	<npc id="27264" name="Death Lord Hallate" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -7958,7 +7958,7 @@
 		</skills>
 	</npc>
 	<npc id="27265" name="Lich King Icarus" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="205"/>
@@ -8257,7 +8257,7 @@
 		</skills>
 	</npc>
 	<npc id="27273" name="Assassin Pezel" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="28.5"/>
 		<set name="rHand" val="242"/>
@@ -8293,7 +8293,7 @@
 		</skills>
 	</npc>
 	<npc id="27274" name="Fallen Angel Tanakia" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="286"/>
@@ -8329,7 +8329,7 @@
 		</skills>
 	</npc>
 	<npc id="27275" name="Fallen Angel Tanakia" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="286"/>
@@ -8365,7 +8365,7 @@
 		</skills>
 	</npc>
 	<npc id="27276" name="Fallen Angel Tanakia" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="286"/>
@@ -8401,7 +8401,7 @@
 		</skills>
 	</npc>
 	<npc id="27277" name="Fallen Angel Tanakia" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="286"/>
@@ -8437,7 +8437,7 @@
 		</skills>
 	</npc>
 	<npc id="27278" name="Shadow of Beleth" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="205"/>
@@ -8473,7 +8473,7 @@
 		</skills>
 	</npc>
 	<npc id="27279" name="Cursed Kesadein" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -8509,7 +8509,7 @@
 		</skills>
 	</npc>
 	<npc id="27280" name="Fallen Angel Narcissus" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="25"/>
 		<set name="height" val="90"/>
 		<set name="rHand" val="0"/>
@@ -8545,7 +8545,7 @@
 		</skills>
 	</npc>
 	<npc id="27281" name="Fallen Angel Metellus" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="25"/>
 		<set name="height" val="90"/>
 		<set name="rHand" val="0"/>
@@ -8581,7 +8581,7 @@
 		</skills>
 	</npc>
 	<npc id="27282" name="Dark Angel Othiel" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="97"/>
@@ -8617,7 +8617,7 @@
 		</skills>
 	</npc>
 	<npc id="27283" name="Grandpapa Askalius" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="45"/>
 		<set name="height" val="72"/>
 		<set name="rHand" val="0"/>
@@ -8653,7 +8653,7 @@
 		</skills>
 	</npc>
 	<npc id="27284" name="Flame Evil Spirit Azira" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -8689,7 +8689,7 @@
 		</skills>
 	</npc>
 	<npc id="27285" name="Lizard's Totem Sharuhi" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="46"/>
 		<set name="rHand" val="72"/>
@@ -9366,7 +9366,7 @@
 		</skills>
 	</npc>
 	<npc id="27302" name="Monument Defender Azrael" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="97"/>
@@ -9402,7 +9402,7 @@
 		</skills>
 	</npc>
 	<npc id="27303" name="Monument Defender Azrael" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="97"/>
@@ -9438,7 +9438,7 @@
 		</skills>
 	</npc>
 	<npc id="27304" name="Monument Defender Azrael" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="97"/>
@@ -9474,7 +9474,7 @@
 		</skills>
 	</npc>
 	<npc id="27305" name="Monument Defender Azrael" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="97"/>
@@ -9510,7 +9510,7 @@
 		</skills>
 	</npc>
 	<npc id="27306" name="Monument Defender Azrael" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="97"/>
@@ -9546,7 +9546,7 @@
 		</skills>
 	</npc>
 	<npc id="27307" name="Monument Defender Azrael" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="97"/>
@@ -9582,7 +9582,7 @@
 		</skills>
 	</npc>
 	<npc id="27308" name="Assassin Frost" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="229"/>
@@ -9618,7 +9618,7 @@
 		</skills>
 	</npc>
 	<npc id="27309" name="Minervia Van Hacken" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="6"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="229"/>
@@ -9654,7 +9654,7 @@
 		</skills>
 	</npc>
 	<npc id="27310" name="Kitanis Van Hacken" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="7.5"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -9690,7 +9690,7 @@
 		</skills>
 	</npc>
 	<npc id="27311" name="Judgment Hound Dog Kelvas" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="35"/>
 		<set name="rHand" val="0"/>
@@ -9726,7 +9726,7 @@
 		</skills>
 	</npc>
 	<npc id="27312" name="Mysterious Servitor" title="Quest Monster">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="0"/>

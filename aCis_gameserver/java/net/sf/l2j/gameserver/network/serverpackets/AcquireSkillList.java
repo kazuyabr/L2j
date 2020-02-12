@@ -3,47 +3,22 @@ package net.sf.l2j.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.l2j.gameserver.enums.skills.AcquireSkillType;
+import net.sf.l2j.gameserver.model.holder.skillnode.ClanSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.FishingSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.GeneralSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.SkillNode;
+
 public final class AcquireSkillList extends L2GameServerPacket
 {
-	public enum SkillType
-	{
-		Usual,
-		Fishing,
-		Clan
-	}
+	private List<? extends SkillNode> _skills;
 	
-	private List<Skill> _skills;
-	private final SkillType _skillType;
+	private final AcquireSkillType _skillType;
 	
-	private static class Skill
-	{
-		public int id;
-		public int nextLevel;
-		public int maxLevel;
-		public int spCost;
-		public int requirements;
-		
-		public Skill(int pId, int pNextLevel, int pMaxLevel, int pSpCost, int pRequirements)
-		{
-			id = pId;
-			nextLevel = pNextLevel;
-			maxLevel = pMaxLevel;
-			spCost = pSpCost;
-			requirements = pRequirements;
-		}
-	}
-	
-	public AcquireSkillList(SkillType type)
+	public AcquireSkillList(AcquireSkillType type, List<? extends SkillNode> skills)
 	{
 		_skillType = type;
-	}
-	
-	public void addSkill(int id, int nextLevel, int maxLevel, int spCost, int requirements)
-	{
-		if (_skills == null)
-			_skills = new ArrayList<>();
-		
-		_skills.add(new Skill(id, nextLevel, maxLevel, spCost, requirements));
+		_skills = new ArrayList<>(skills);
 	}
 	
 	@Override
@@ -53,13 +28,40 @@ public final class AcquireSkillList extends L2GameServerPacket
 		writeD(_skillType.ordinal());
 		writeD(_skills.size());
 		
-		for (Skill temp : _skills)
+		switch (_skillType)
 		{
-			writeD(temp.id);
-			writeD(temp.nextLevel);
-			writeD(temp.maxLevel);
-			writeD(temp.spCost);
-			writeD(temp.requirements);
+			case USUAL:
+				_skills.stream().map(GeneralSkillNode.class::cast).forEach(gsn ->
+				{
+					writeD(gsn.getId());
+					writeD(gsn.getValue());
+					writeD(gsn.getValue());
+					writeD(gsn.getCorrectedCost());
+					writeD(0);
+				});
+				break;
+			
+			case FISHING:
+				_skills.stream().map(FishingSkillNode.class::cast).forEach(gsn ->
+				{
+					writeD(gsn.getId());
+					writeD(gsn.getValue());
+					writeD(gsn.getValue());
+					writeD(0);
+					writeD(1);
+				});
+				break;
+			
+			case CLAN:
+				_skills.stream().map(ClanSkillNode.class::cast).forEach(gsn ->
+				{
+					writeD(gsn.getId());
+					writeD(gsn.getValue());
+					writeD(gsn.getValue());
+					writeD(gsn.getCost());
+					writeD(0);
+				});
+				break;
 		}
 	}
 }

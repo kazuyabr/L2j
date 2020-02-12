@@ -1,7 +1,10 @@
 package net.sf.l2j.gameserver.model.actor.template;
 
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
 
+/**
+ * The generic datatype used by any character template. It holds basic informations, such as base stats (STR, CON, DEX,...) and extended stats (power attack, magic attack, hp/mp regen, collision values).
+ */
 public class CreatureTemplate
 {
 	private final int _baseSTR;

@@ -1,11 +1,11 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.L2ManufactureItem;
-import net.sf.l2j.gameserver.model.L2ManufactureList;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.Player.StoreType;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.actors.StoreType;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.craft.ManufactureItem;
+import net.sf.l2j.gameserver.model.craft.ManufactureList;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.RecipeShopMsg;
@@ -35,7 +35,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -56,13 +56,13 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 			player.forceStandUp();
 		else
 		{
-			L2ManufactureList createList = new L2ManufactureList();
+			ManufactureList createList = new ManufactureList();
 			
 			for (int x = 0; x < _count; x++)
 			{
 				int recipeID = _items[x * 2 + 0];
 				int cost = _items[x * 2 + 1];
-				createList.add(new L2ManufactureItem(recipeID, cost));
+				createList.add(new ManufactureItem(recipeID, cost));
 			}
 			createList.setStoreName(player.getCreateList() != null ? player.getCreateList().getStoreName() : "");
 			player.setCreateList(createList);

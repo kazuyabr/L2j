@@ -5,10 +5,10 @@ import java.util.List;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.ItemTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
-import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
 import net.sf.l2j.gameserver.model.actor.instance.ManorManagerNpc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
@@ -54,7 +54,7 @@ public class RequestProcureCropList extends L2GameClientPacket
 		if (_items == null)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -65,14 +65,14 @@ public class RequestProcureCropList extends L2GameClientPacket
 			return;
 		}
 		
-		final Npc manager = player.getCurrentFolkNPC();
-		if (!(manager instanceof ManorManagerNpc) || !manager.canInteract(player))
+		final Folk folk = player.getCurrentFolk();
+		if (!(folk instanceof ManorManagerNpc) || !folk.canInteract(player))
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		final int castleId = manager.getCastle().getCastleId();
+		final int castleId = folk.getCastle().getCastleId();
 		
 		// Calculate summary values
 		int slots = 0;
@@ -139,10 +139,10 @@ public class RequestProcureCropList extends L2GameClientPacket
 			}
 			
 			final CropProcure cp = i.getCropProcure();
-			if (!cp.decreaseAmount(i.getValue()) || (fee > 0 && !player.reduceAdena("Manor", fee, manager, true)) || !player.destroyItem("Manor", i.getObjectId(), i.getValue(), manager, true))
+			if (!cp.decreaseAmount(i.getValue()) || (fee > 0 && !player.reduceAdena("Manor", fee, folk, true)) || !player.destroyItem("Manor", i.getObjectId(), i.getValue(), folk, true))
 				continue;
 			
-			player.addItem("Manor", i.getRewardId(), rewardItemCount, manager, true);
+			player.addItem("Manor", i.getRewardId(), rewardItemCount, folk, true);
 		}
 	}
 	

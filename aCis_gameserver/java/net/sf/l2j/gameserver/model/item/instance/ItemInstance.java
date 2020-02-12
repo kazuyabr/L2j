@@ -3,7 +3,6 @@ package net.sf.l2j.gameserver.model.item.instance;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,22 +15,24 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
+import net.sf.l2j.gameserver.enums.items.ItemType;
+import net.sf.l2j.gameserver.enums.items.ShotType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Augmentation;
-import net.sf.l2j.gameserver.model.ShotType;
+import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.item.MercenaryTicket;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
 import net.sf.l2j.gameserver.model.item.kind.EtcItem;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
-import net.sf.l2j.gameserver.model.item.type.ItemType;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -50,6 +51,16 @@ import net.sf.l2j.gameserver.taskmanager.ItemsOnGroundTaskManager;
 public final class ItemInstance extends WorldObject implements Runnable, Comparable<ItemInstance>
 {
 	private static final Logger ITEM_LOG = Logger.getLogger("item");
+	
+	private static final String DELETE_AUGMENTATION = "DELETE FROM augmentations WHERE item_id = ?";
+	private static final String RESTORE_AUGMENTATION = "SELECT attributes,skill_id,skill_level FROM augmentations WHERE item_id=?";
+	private static final String UPDATE_AUGMENTATION = "REPLACE INTO augmentations VALUES(?,?,?,?)";
+	
+	private static final String UPDATE_ITEM = "UPDATE items SET owner_id=?,count=?,loc=?,loc_data=?,enchant_level=?,custom_type1=?,custom_type2=?,mana_left=?,time=? WHERE object_id = ?";
+	private static final String INSERT_ITEM = "INSERT INTO items (owner_id,item_id,count,loc,loc_data,enchant_level,object_id,custom_type1,custom_type2,mana_left,time) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String DELETE_ITEM = "DELETE FROM items WHERE object_id=?";
+	
+	private static final String DELETE_PET_ITEM = "DELETE FROM pets WHERE item_obj_id=?";
 	
 	public static enum ItemState
 	{
@@ -565,7 +576,7 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 		return ((!isEquipped()) // Not equipped
 			&& (getItem().getType2() != Item.TYPE2_QUEST) // Not Quest Item
 			&& (getItem().getType2() != Item.TYPE2_MONEY || getItem().getType1() != Item.TYPE1_SHIELD_ARMOR) // not money, not shield
-			&& (player.getPet() == null || getObjectId() != player.getPet().getControlItemId()) // Not Control item of currently summoned pet
+			&& (player.getSummon() == null || getObjectId() != player.getSummon().getControlItemId()) // Not Control item of currently summoned pet
 			&& (player.getActiveEnchantItem() != this) // Not momentarily used enchant scroll
 			&& (allowAdena || getItemId() != 57) // Not adena
 			&& (player.getCurrentSkill().getSkill() == null || player.getCurrentSkill().getSkill().getItemConsumeId() != getItemId()) && (!player.isCastingSimultaneouslyNow() || player.getLastSimultaneousSkillCast() == null || player.getLastSimultaneousSkillCast().getItemConsumeId() != getItemId()) && (allowNonTradable || isTradable()));
@@ -611,7 +622,7 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 			}
 		}
 		
-		player.getAI().setIntention(CtrlIntention.PICK_UP, this);
+		player.getAI().setIntention(IntentionType.PICK_UP, this);
 	}
 	
 	@Override
@@ -680,7 +691,7 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 			return false;
 		
 		_augmentation = augmentation;
-		updateItemAttributes(null);
+		updateItemAttributes();
 		return true;
 	}
 	
@@ -694,75 +705,70 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 		
 		_augmentation = null;
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(DELETE_AUGMENTATION))
 		{
-			PreparedStatement statement = con.prepareStatement("DELETE FROM augmentations WHERE item_id = ?");
-			statement.setInt(1, getObjectId());
-			statement.executeUpdate();
-			statement.close();
+			ps.setInt(1, getObjectId());
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not remove augmentation for item: " + this + " from DB: ", e);
+			LOGGER.error("Couldn't remove augmentation for {}.", e, toString());
 		}
 	}
 	
 	private void restoreAttributes()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(RESTORE_AUGMENTATION))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT attributes,skill_id,skill_level FROM augmentations WHERE item_id=?");
-			statement.setInt(1, getObjectId());
-			ResultSet rs = statement.executeQuery();
-			if (rs.next())
+			ps.setInt(1, getObjectId());
+			
+			try (ResultSet rs = ps.executeQuery())
 			{
-				int aug_attributes = rs.getInt(1);
-				int aug_skillId = rs.getInt(2);
-				int aug_skillLevel = rs.getInt(3);
-				if (aug_attributes != -1 && aug_skillId != -1 && aug_skillLevel != -1)
+				if (rs.next())
 					_augmentation = new L2Augmentation(rs.getInt("attributes"), rs.getInt("skill_id"), rs.getInt("skill_level"));
 			}
-			rs.close();
-			statement.close();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not restore augmentation data for item " + this + " from DB: " + e.getMessage(), e);
+			LOGGER.error("Couldn't restore augmentation for {}.", e, toString());
 		}
 	}
 	
-	private void updateItemAttributes(Connection pooledCon)
+	private void updateItemAttributes()
 	{
-		try (Connection con = pooledCon == null ? L2DatabaseFactory.getInstance().getConnection() : pooledCon)
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(UPDATE_AUGMENTATION))
 		{
-			PreparedStatement statement = con.prepareStatement("REPLACE INTO augmentations VALUES(?,?,?,?)");
-			statement.setInt(1, getObjectId());
+			ps.setInt(1, getObjectId());
+			
 			if (_augmentation == null)
 			{
-				statement.setInt(2, -1);
-				statement.setInt(3, -1);
-				statement.setInt(4, -1);
+				ps.setInt(2, -1);
+				ps.setInt(3, -1);
+				ps.setInt(4, -1);
 			}
 			else
 			{
-				statement.setInt(2, _augmentation.getAttributes());
+				ps.setInt(2, _augmentation.getAttributes());
+				
 				if (_augmentation.getSkill() == null)
 				{
-					statement.setInt(3, 0);
-					statement.setInt(4, 0);
+					ps.setInt(3, 0);
+					ps.setInt(4, 0);
 				}
 				else
 				{
-					statement.setInt(3, _augmentation.getSkill().getId());
-					statement.setInt(4, _augmentation.getSkill().getLevel());
+					ps.setInt(3, _augmentation.getSkill().getId());
+					ps.setInt(4, _augmentation.getSkill().getLevel());
 				}
 			}
-			statement.executeUpdate();
-			statement.close();
+			ps.executeUpdate();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not update attributes for item: " + this + " from DB: ", e);
+			LOGGER.error("Couldn't update attributes for {}.", e, toString());
 		}
 	}
 	
@@ -863,43 +869,41 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 	public static ItemInstance restoreFromDb(int ownerId, ResultSet rs)
 	{
 		ItemInstance inst = null;
-		int objectId, item_id, loc_data, enchant_level, custom_type1, custom_type2, manaLeft, count;
+		int objectId, itemId, slot, enchant, type1, type2, manaLeft, count;
 		long time;
 		ItemLocation loc;
+		
 		try
 		{
 			objectId = rs.getInt(1);
-			item_id = rs.getInt("item_id");
+			itemId = rs.getInt("item_id");
 			count = rs.getInt("count");
 			loc = ItemLocation.valueOf(rs.getString("loc"));
-			loc_data = rs.getInt("loc_data");
-			enchant_level = rs.getInt("enchant_level");
-			custom_type1 = rs.getInt("custom_type1");
-			custom_type2 = rs.getInt("custom_type2");
+			slot = rs.getInt("loc_data");
+			enchant = rs.getInt("enchant_level");
+			type1 = rs.getInt("custom_type1");
+			type2 = rs.getInt("custom_type2");
 			manaLeft = rs.getInt("mana_left");
 			time = rs.getLong("time");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not restore an item owned by " + ownerId + " from DB:", e);
+			LOGGER.error("Couldn't restore an item owned by {}.", e, ownerId);
 			return null;
 		}
 		
-		Item item = ItemTable.getInstance().getTemplate(item_id);
+		final Item item = ItemTable.getInstance().getTemplate(itemId);
 		if (item == null)
-		{
-			_log.severe("Item item_id=" + item_id + " not known, object_id=" + objectId);
 			return null;
-		}
 		
 		inst = new ItemInstance(objectId, item);
 		inst._ownerId = ownerId;
 		inst.setCount(count);
-		inst._enchantLevel = enchant_level;
-		inst._type1 = custom_type1;
-		inst._type2 = custom_type2;
+		inst._enchantLevel = enchant;
+		inst._type1 = type1;
+		inst._type2 = type2;
 		inst._loc = loc;
-		inst._locData = loc_data;
+		inst._locData = slot;
 		inst._existsInDb = true;
 		inst._storedInDb = true;
 		
@@ -1007,27 +1011,27 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 		if (_storedInDb)
 			return;
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(UPDATE_ITEM))
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE items SET owner_id=?,count=?,loc=?,loc_data=?,enchant_level=?,custom_type1=?,custom_type2=?,mana_left=?,time=? WHERE object_id = ?");
-			statement.setInt(1, _ownerId);
-			statement.setInt(2, getCount());
-			statement.setString(3, _loc.name());
-			statement.setInt(4, _locData);
-			statement.setInt(5, getEnchantLevel());
-			statement.setInt(6, getCustomType1());
-			statement.setInt(7, getCustomType2());
-			statement.setInt(8, _mana);
-			statement.setLong(9, getTime());
-			statement.setInt(10, getObjectId());
-			statement.executeUpdate();
+			ps.setInt(1, _ownerId);
+			ps.setInt(2, getCount());
+			ps.setString(3, _loc.name());
+			ps.setInt(4, _locData);
+			ps.setInt(5, getEnchantLevel());
+			ps.setInt(6, getCustomType1());
+			ps.setInt(7, getCustomType2());
+			ps.setInt(8, _mana);
+			ps.setLong(9, getTime());
+			ps.setInt(10, getObjectId());
+			ps.executeUpdate();
+			
 			_existsInDb = true;
 			_storedInDb = true;
-			statement.close();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not update item " + this + " in DB: Reason: " + e.getMessage(), e);
+			LOGGER.error("Couldn't update {}. ", e, toString());
 		}
 	}
 	
@@ -1038,32 +1042,31 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 	{
 		assert !_existsInDb && getObjectId() != 0;
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(INSERT_ITEM))
 		{
-			PreparedStatement statement = con.prepareStatement("INSERT INTO items (owner_id,item_id,count,loc,loc_data,enchant_level,object_id,custom_type1,custom_type2,mana_left,time) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-			statement.setInt(1, _ownerId);
-			statement.setInt(2, _itemId);
-			statement.setInt(3, getCount());
-			statement.setString(4, _loc.name());
-			statement.setInt(5, _locData);
-			statement.setInt(6, getEnchantLevel());
-			statement.setInt(7, getObjectId());
-			statement.setInt(8, _type1);
-			statement.setInt(9, _type2);
-			statement.setInt(10, _mana);
-			statement.setLong(11, getTime());
+			ps.setInt(1, _ownerId);
+			ps.setInt(2, _itemId);
+			ps.setInt(3, getCount());
+			ps.setString(4, _loc.name());
+			ps.setInt(5, _locData);
+			ps.setInt(6, getEnchantLevel());
+			ps.setInt(7, getObjectId());
+			ps.setInt(8, _type1);
+			ps.setInt(9, _type2);
+			ps.setInt(10, _mana);
+			ps.setLong(11, getTime());
+			ps.executeUpdate();
 			
-			statement.executeUpdate();
 			_existsInDb = true;
 			_storedInDb = true;
-			statement.close();
 			
 			if (_augmentation != null)
-				updateItemAttributes(con);
+				updateItemAttributes();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not insert item " + this + " into DB: Reason: " + e.getMessage(), e);
+			LOGGER.error("Couldn't insert {}.", e, toString());
 		}
 	}
 	
@@ -1076,21 +1079,24 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE object_id=?");
-			statement.setInt(1, getObjectId());
-			statement.executeUpdate();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_ITEM))
+			{
+				ps.setInt(1, getObjectId());
+				ps.executeUpdate();
+			}
+			
+			try (PreparedStatement ps = con.prepareStatement(DELETE_AUGMENTATION))
+			{
+				ps.setInt(1, getObjectId());
+				ps.executeUpdate();
+			}
+			
 			_existsInDb = false;
 			_storedInDb = false;
-			statement.close();
-			
-			statement = con.prepareStatement("DELETE FROM augmentations WHERE item_id = ?");
-			statement.setInt(1, getObjectId());
-			statement.executeUpdate();
-			statement.close();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not delete item " + this + " in DB: " + e.getMessage(), e);
+			LOGGER.error("Couldn't delete {}.", e, toString());
 		}
 	}
 	
@@ -1100,7 +1106,7 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 	@Override
 	public String toString()
 	{
-		return "" + _item;
+		return "(" + getObjectId() + ") " + getName();
 	}
 	
 	public synchronized boolean hasDropProtection()
@@ -1212,6 +1218,87 @@ public final class ItemInstance extends WorldObject implements Runnable, Compara
 		ItemsOnGroundTaskManager.getInstance().remove(this);
 		
 		super.decayMe();
+	}
+	
+	/**
+	 * Create an {@link ItemInstance} corresponding to the itemId and count, add it to the server and logs the activity.
+	 * @param itemId : The itemId of the item to be created.
+	 * @param count : The quantity of items to be created for stackable items.
+	 * @param actor : The {@link Player} requesting the item creation.
+	 * @param reference : The {@link WorldObject} referencing current action like NPC selling item or previous item in transformation.
+	 * @return a new ItemInstance corresponding to the itemId and count.
+	 */
+	public static ItemInstance create(int itemId, int count, Player actor, WorldObject reference)
+	{
+		// Create and Init the ItemInstance corresponding to the Item Identifier
+		ItemInstance item = new ItemInstance(IdFactory.getInstance().getNextId(), itemId);
+		
+		// Add the ItemInstance object to _objects of World.
+		World.getInstance().addObject(item);
+		
+		// Set Item parameters
+		if (item.isStackable() && count > 1)
+			item.setCount(count);
+		
+		if (Config.LOG_ITEMS)
+		{
+			final LogRecord record = new LogRecord(Level.INFO, "CREATE");
+			record.setLoggerName("item");
+			record.setParameters(new Object[]
+			{
+				actor,
+				item,
+				reference
+			});
+			ITEM_LOG.log(record);
+		}
+		
+		return item;
+	}
+	
+	/**
+	 * Destroys this {@link ItemInstance} from server, and release its objectId.
+	 * @param process : The identifier of process triggering this action (used by logs).
+	 * @param actor : The {@link Player} requesting the item destruction.
+	 * @param reference : The {@link WorldObject} referencing current action like NPC selling item or previous item in transformation.
+	 */
+	public void destroyMe(String process, Player actor, WorldObject reference)
+	{
+		setCount(0);
+		setOwnerId(0);
+		setLocation(ItemLocation.VOID);
+		setLastChange(ItemState.REMOVED);
+		
+		World.getInstance().removeObject(this);
+		IdFactory.getInstance().releaseId(getObjectId());
+		
+		if (Config.LOG_ITEMS)
+		{
+			final LogRecord record = new LogRecord(Level.INFO, "DELETE:" + process);
+			record.setLoggerName("item");
+			record.setParameters(new Object[]
+			{
+				actor,
+				this,
+				reference
+			});
+			ITEM_LOG.log(record);
+		}
+		
+		// if it's a pet control item, delete the pet as well
+		if (getItemType() == EtcItemType.PET_COLLAR)
+		{
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(DELETE_PET_ITEM))
+			{
+				ps.setInt(1, getObjectId());
+				ps.execute();
+			}
+			catch (Exception e)
+			{
+				LOGGER.error("Couldn't delete {}.", e, toString());
+			}
+		}
 	}
 	
 	public void setDropperObjectId(int id)

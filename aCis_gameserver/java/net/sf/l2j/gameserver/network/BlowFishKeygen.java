@@ -48,6 +48,6 @@ public class BlowFishKeygen
 	 */
 	public static byte[] getRandomKey()
 	{
-		return CRYPT_KEYS[Rnd.get(CRYPT_KEYS_SIZE)];
+		return Rnd.get(CRYPT_KEYS);
 	}
 }

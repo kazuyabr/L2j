@@ -3,8 +3,8 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import java.nio.BufferUnderflowException;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -41,7 +41,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		{
 			if (Config.L2WALKER_PROTECTION)
 			{
-				final Player player = getClient().getActiveChar();
+				final Player player = getClient().getPlayer();
 				if (player != null)
 					player.logout(false);
 			}
@@ -51,7 +51,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -83,7 +83,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 				activeChar.setTeleMode(0);
 			
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			activeChar.teleToLocation(_targetX, _targetY, _targetZ, 0);
+			activeChar.teleportTo(_targetX, _targetY, _targetZ, 0);
 			return;
 		}
 		
@@ -95,6 +95,6 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		activeChar.getAI().setIntention(CtrlIntention.MOVE_TO, new Location(_targetX, _targetY, _targetZ));
+		activeChar.getAI().setIntention(IntentionType.MOVE_TO, new Location(_targetX, _targetY, _targetZ));
 	}
 }

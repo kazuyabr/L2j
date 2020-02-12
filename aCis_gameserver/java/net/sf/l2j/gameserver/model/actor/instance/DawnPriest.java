@@ -1,8 +1,9 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.SealType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -28,22 +29,22 @@ public class DawnPriest extends SignsPriest
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
-		String filename = SevenSigns.SEVEN_SIGNS_HTML_PATH;
+		String filename = SevenSignsManager.SEVEN_SIGNS_HTML_PATH;
 		
-		final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+		final CabalType winningCabal = SevenSignsManager.getInstance().getCabalHighestScore();
 		
-		switch (SevenSigns.getInstance().getPlayerCabal(player.getObjectId()))
+		switch (SevenSignsManager.getInstance().getPlayerCabal(player.getObjectId()))
 		{
 			case DAWN:
-				if (SevenSigns.getInstance().isCompResultsPeriod())
+				if (SevenSignsManager.getInstance().isCompResultsPeriod())
 					filename += "dawn_priest_5.htm";
-				else if (SevenSigns.getInstance().isRecruitingPeriod())
+				else if (SevenSignsManager.getInstance().isRecruitingPeriod())
 					filename += "dawn_priest_6.htm";
-				else if (SevenSigns.getInstance().isSealValidationPeriod())
+				else if (SevenSignsManager.getInstance().isSealValidationPeriod())
 				{
 					if (winningCabal == CabalType.DAWN)
 					{
-						if (winningCabal != SevenSigns.getInstance().getSealOwner(SealType.GNOSIS))
+						if (winningCabal != SevenSignsManager.getInstance().getSealOwner(SealType.GNOSIS))
 							filename += "dawn_priest_2c.htm";
 						else
 							filename += "dawn_priest_2a.htm";
@@ -58,18 +59,18 @@ public class DawnPriest extends SignsPriest
 				break;
 			
 			case DUSK:
-				if (SevenSigns.getInstance().isSealValidationPeriod())
+				if (SevenSignsManager.getInstance().isSealValidationPeriod())
 					filename += "dawn_priest_3a.htm";
 				else
 					filename += "dawn_priest_3b.htm";
 				break;
 			
 			default:
-				if (SevenSigns.getInstance().isCompResultsPeriod())
+				if (SevenSignsManager.getInstance().isCompResultsPeriod())
 					filename += "dawn_priest_5.htm";
-				else if (SevenSigns.getInstance().isRecruitingPeriod())
+				else if (SevenSignsManager.getInstance().isRecruitingPeriod())
 					filename += "dawn_priest_6.htm";
-				else if (SevenSigns.getInstance().isSealValidationPeriod())
+				else if (SevenSignsManager.getInstance().isSealValidationPeriod())
 				{
 					if (winningCabal == CabalType.DAWN)
 						filename += "dawn_priest_4.htm";

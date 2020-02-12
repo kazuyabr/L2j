@@ -1,12 +1,8 @@
 package net.sf.l2j.gameserver.handler.usercommandhandlers;
 
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
-/**
- * Support for /dismount command.
- * @author Micht
- */
 public class DisMount implements IUserCommandHandler
 {
 	private static final int[] COMMAND_IDS =

@@ -1,16 +1,16 @@
 package net.sf.l2j.gameserver.scripting.scripts.ai.group;
 
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
+import net.sf.l2j.gameserver.enums.actors.Sex;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.Sex;
-import net.sf.l2j.gameserver.scripting.EventType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 /**
  * This script holds MoS monsters behavior. If they see you with an equipped weapon, they will speak and attack you.
@@ -40,8 +40,8 @@ public class Monastery extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(BROTHERS_SEEKERS_MONKS, EventType.ON_AGGRO, EventType.ON_SPAWN, EventType.ON_SPELL_FINISHED);
-		addEventIds(GUARDIANS_BEHOLDERS, EventType.ON_SKILL_SEE);
+		addEventIds(BROTHERS_SEEKERS_MONKS, ScriptEventType.ON_AGGRO, ScriptEventType.ON_SPAWN, ScriptEventType.ON_SPELL_FINISHED);
+		addEventIds(GUARDIANS_BEHOLDERS, ScriptEventType.ON_SKILL_SEE);
 	}
 	
 	@Override

@@ -4,11 +4,12 @@ import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
 import net.sf.l2j.gameserver.data.xml.SoulCrystalData;
-import net.sf.l2j.gameserver.model.AbsorbInfo;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
+import net.sf.l2j.gameserver.model.actor.npc.AbsorbInfo;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.soulcrystal.LevelingInfo;
 import net.sf.l2j.gameserver.model.soulcrystal.SoulCrystal;
@@ -115,10 +116,10 @@ public class Q350_EnhanceYourWeapon extends Quest
 			return null;
 		
 		// No target, or target isn't an L2Attackable.
-		if (target == null || !(target instanceof Attackable))
+		if (target == null || !(target instanceof Monster))
 			return null;
 		
-		final Attackable mob = ((Attackable) target);
+		final Monster mob = ((Monster) target);
 		
 		// Mob is dead or not registered in _npcInfos.
 		if (mob.isDead() || !SoulCrystalData.getInstance().getLevelingInfos().containsKey(mob.getNpcId()))
@@ -131,34 +132,37 @@ public class Q350_EnhanceYourWeapon extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
+		final Player player = killer.getActingPlayer();
+		if (player == null)
+			return null;
+		
 		// Retrieve individual mob informations.
 		final LevelingInfo npcInfo = SoulCrystalData.getInstance().getLevelingInfos().get(npc.getNpcId());
 		if (npcInfo == null)
 			return null;
 		
 		final int chance = Rnd.get(1000);
+		final Monster mob = (Monster) npc;
 		
 		// Handle npc leveling info type.
 		switch (npcInfo.getAbsorbCrystalType())
 		{
 			case FULL_PARTY:
-				final Attackable mob = (Attackable) npc;
-				
-				for (Player player : getPartyMembersState(killer, npc, Quest.STATE_STARTED))
-					tryToStageCrystal(player, mob, npcInfo, chance);
+				for (QuestState st : getPartyMembersState(player, npc, Quest.STATE_STARTED))
+					tryToStageCrystal(st.getPlayer(), mob, npcInfo, chance);
 				break;
 			
 			case PARTY_ONE_RANDOM:
-				final Player player = getRandomPartyMemberState(killer, npc, Quest.STATE_STARTED);
-				if (player != null)
-					tryToStageCrystal(player, (Attackable) npc, npcInfo, chance);
+				final QuestState st = getRandomPartyMemberState(player, npc, Quest.STATE_STARTED);
+				if (st != null)
+					tryToStageCrystal(st.getPlayer(), mob, npcInfo, chance);
 				break;
 			
 			case LAST_HIT:
-				if (checkPlayerState(killer, npc, Quest.STATE_STARTED) != null)
-					tryToStageCrystal(killer, (Attackable) npc, npcInfo, chance);
+				if (checkPlayerState(player, npc, Quest.STATE_STARTED) != null)
+					tryToStageCrystal(player, mob, npcInfo, chance);
 				break;
 		}
 		
@@ -172,7 +176,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 	 * @param npcInfo : The mob's leveling informations.
 	 * @param chance : Input variable used to determine keep/stage/break of the crystal.
 	 */
-	private static void tryToStageCrystal(Player player, Attackable mob, LevelingInfo npcInfo, int chance)
+	private static void tryToStageCrystal(Player player, Monster mob, LevelingInfo npcInfo, int chance)
 	{
 		SoulCrystal crystalData = null;
 		ItemInstance crystalItem = null;

@@ -5,23 +5,22 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MonitorInfo;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.Shutdown;
-import net.sf.l2j.gameserver.util.Broadcast;
+import net.sf.l2j.gameserver.model.World;
 
 /**
  * Thread to check for deadlocked threads.
- * @author -Nemesiss- L2M
  */
 public class DeadLockDetector extends Thread
 {
-	private static Logger _log = Logger.getLogger(DeadLockDetector.class.getName());
+	private static final CLogger LOGGER = new CLogger(DeadLockDetector.class.getName());
 	
 	/** Interval to check for deadlocked threads */
-	private static final int _sleepTime = Config.DEADLOCK_CHECK_INTERVAL * 1000;
+	private static final int SLEEP_TIME = Config.DEADLOCK_CHECK_INTERVAL * 1000;
 	
 	private final ThreadMXBean tmx;
 	
@@ -83,19 +82,19 @@ public class DeadLockDetector extends Thread
 							info.append("\n");
 						}
 					}
-					_log.warning(info.toString());
+					LOGGER.warn(info.toString());
 					
 					if (Config.RESTART_ON_DEADLOCK)
 					{
-						Broadcast.announceToOnlinePlayers("Server has stability issues - restarting now.");
+						World.announceToOnlinePlayers("Server has stability issues - restarting now.");
 						Shutdown.getInstance().startShutdown(null, "DeadLockDetector - Auto Restart", 60, true);
 					}
 				}
-				Thread.sleep(_sleepTime);
+				Thread.sleep(SLEEP_TIME);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "DeadLockDetector: ", e);
+				LOGGER.warn("The DeadLockDetector encountered a problem.", e);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.model.soulcrystal;
 
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
 
 /**
  * This class stores Soul Crystal leveling infos related to items, notably:

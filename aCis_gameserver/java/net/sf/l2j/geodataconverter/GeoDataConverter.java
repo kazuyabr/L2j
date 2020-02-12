@@ -11,11 +11,11 @@ import java.util.Scanner;
 import net.sf.l2j.commons.config.ExProperties;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.GeoType;
 import net.sf.l2j.gameserver.geoengine.geodata.ABlock;
 import net.sf.l2j.gameserver.geoengine.geodata.BlockComplex;
 import net.sf.l2j.gameserver.geoengine.geodata.BlockFlat;
 import net.sf.l2j.gameserver.geoengine.geodata.BlockMultilayer;
-import net.sf.l2j.gameserver.geoengine.geodata.GeoFormat;
 import net.sf.l2j.gameserver.geoengine.geodata.GeoStructure;
 import net.sf.l2j.gameserver.model.World;
 
@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.model.World;
  */
 public final class GeoDataConverter
 {
-	private static GeoFormat _format;
+	private static GeoType _format;
 	private static ABlock[][] _blocks;
 	
 	public static void main(String[] args)
@@ -49,7 +49,7 @@ public final class GeoDataConverter
 		if (type.equalsIgnoreCase("E"))
 			System.exit(0);
 		
-		_format = type.equalsIgnoreCase("J") ? GeoFormat.L2J : GeoFormat.L2OFF;
+		_format = type.equalsIgnoreCase("J") ? GeoType.L2J : GeoType.L2OFF;
 		
 		// start conversion
 		System.out.println("GeoDataConverter: Converting all " + _format.toString() + " according to listing in \"geoengine.properties\" config file.");
@@ -85,7 +85,7 @@ public final class GeoDataConverter
 					}
 					
 					// save geodata
-					final String output = String.format(GeoFormat.L2D.getFilename(), rx, ry);
+					final String output = String.format(GeoType.L2D.getFilename(), rx, ry);
 					if (!saveGeoBlocks(output))
 					{
 						System.out.println("GeoDataConverter: Unable to save " + output + " region file.");
@@ -111,13 +111,14 @@ public final class GeoDataConverter
 	private static final boolean loadGeoBlocks(String filename)
 	{
 		// region file is load-able, try to load it
-		try (RandomAccessFile raf = new RandomAccessFile(Config.GEODATA_PATH + filename, "r"); FileChannel fc = raf.getChannel())
+		try (RandomAccessFile raf = new RandomAccessFile(Config.GEODATA_PATH + filename, "r");
+			FileChannel fc = raf.getChannel())
 		{
 			MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size()).load();
 			buffer.order(ByteOrder.LITTLE_ENDIAN);
 			
 			// load 18B header for L2off geodata (1st and 2nd byte...region X and Y)
-			if (_format == GeoFormat.L2OFF)
+			if (_format == GeoType.L2OFF)
 			{
 				for (int i = 0; i < 18; i++)
 					buffer.get();
@@ -128,7 +129,7 @@ public final class GeoDataConverter
 			{
 				for (int iy = 0; iy < GeoStructure.REGION_BLOCKS_Y; iy++)
 				{
-					if (_format == GeoFormat.L2J)
+					if (_format == GeoType.L2J)
 					{
 						// get block type
 						final byte type = buffer.get();
@@ -256,19 +257,19 @@ public final class GeoDataConverter
 		byte nsweE = getNsweBelow(x + 1, y, height);
 		
 		// north-west
-		if (((nswe & GeoStructure.CELL_FLAG_N) != 0 && (nsweN & GeoStructure.CELL_FLAG_W) != 0) || ((nswe & GeoStructure.CELL_FLAG_W) != 0 && (nsweW & GeoStructure.CELL_FLAG_N) != 0))
+		if (((nswe & GeoStructure.CELL_FLAG_N) != 0 && (nsweN & GeoStructure.CELL_FLAG_W) != 0) && ((nswe & GeoStructure.CELL_FLAG_W) != 0 && (nsweW & GeoStructure.CELL_FLAG_N) != 0))
 			nswe |= GeoStructure.CELL_FLAG_NW;
 		
 		// north-east
-		if (((nswe & GeoStructure.CELL_FLAG_N) != 0 && (nsweN & GeoStructure.CELL_FLAG_E) != 0) || ((nswe & GeoStructure.CELL_FLAG_E) != 0 && (nsweE & GeoStructure.CELL_FLAG_N) != 0))
+		if (((nswe & GeoStructure.CELL_FLAG_N) != 0 && (nsweN & GeoStructure.CELL_FLAG_E) != 0) && ((nswe & GeoStructure.CELL_FLAG_E) != 0 && (nsweE & GeoStructure.CELL_FLAG_N) != 0))
 			nswe |= GeoStructure.CELL_FLAG_NE;
 		
 		// south-west
-		if (((nswe & GeoStructure.CELL_FLAG_S) != 0 && (nsweS & GeoStructure.CELL_FLAG_W) != 0) || ((nswe & GeoStructure.CELL_FLAG_W) != 0 && (nsweW & GeoStructure.CELL_FLAG_S) != 0))
+		if (((nswe & GeoStructure.CELL_FLAG_S) != 0 && (nsweS & GeoStructure.CELL_FLAG_W) != 0) && ((nswe & GeoStructure.CELL_FLAG_W) != 0 && (nsweW & GeoStructure.CELL_FLAG_S) != 0))
 			nswe |= GeoStructure.CELL_FLAG_SW;
 		
 		// south-east
-		if (((nswe & GeoStructure.CELL_FLAG_S) != 0 && (nsweS & GeoStructure.CELL_FLAG_E) != 0) || ((nswe & GeoStructure.CELL_FLAG_E) != 0 && (nsweE & GeoStructure.CELL_FLAG_S) != 0))
+		if (((nswe & GeoStructure.CELL_FLAG_S) != 0 && (nsweS & GeoStructure.CELL_FLAG_E) != 0) && ((nswe & GeoStructure.CELL_FLAG_E) != 0 && (nsweE & GeoStructure.CELL_FLAG_S) != 0))
 			nswe |= GeoStructure.CELL_FLAG_SE;
 		
 		return nswe;

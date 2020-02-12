@@ -3,8 +3,8 @@ package net.sf.l2j.gameserver.model.actor.ai.type;
 import java.util.List;
 
 import net.sf.l2j.gameserver.data.xml.WalkerRouteData;
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.actor.instance.Walker;
 import net.sf.l2j.gameserver.model.location.WalkerLocation;
 import net.sf.l2j.gameserver.taskmanager.WalkerTaskManager;
@@ -12,7 +12,7 @@ import net.sf.l2j.gameserver.taskmanager.WalkerTaskManager;
 /**
  * This AI is used by {@link Walker}s.<br>
  * <br>
- * We use basic functionalities of AI, notably {@link CtrlIntention} MOVE_TO and onEvtArrived() to motion it.<br>
+ * We use basic functionalities of AI, notably {@link IntentionType} MOVE_TO and onEvtArrived() to motion it.<br>
  * It retains a List of {@link WalkerLocation}s which, together, creates a route, and we save the current node index to find the next WalkerLocation. Once the path is complete, we return to index 0.<br>
  * <br>
  * It is associated to a global task named {@link WalkerTaskManager} to handle individual WalkerLocation delays.
@@ -29,7 +29,7 @@ public class WalkerAI extends CreatureAI
 		
 		_route = WalkerRouteData.getInstance().getWalkerRoute(getActor().getNpcId());
 		if (!_route.isEmpty())
-			setIntention(CtrlIntention.MOVE_TO, _route.get(_index));
+			setIntention(IntentionType.MOVE_TO, _route.get(_index));
 	}
 	
 	@Override
@@ -74,6 +74,6 @@ public class WalkerAI extends CreatureAI
 		else
 			getActor().setWalking();
 		
-		setIntention(CtrlIntention.MOVE_TO, node);
+		setIntention(IntentionType.MOVE_TO, node);
 	}
 }

@@ -4,10 +4,10 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
+import net.sf.l2j.gameserver.data.manager.CursedWeaponManager;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.CursedWeapon;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -19,7 +19,6 @@ import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
  * <li>cw_remove : removes a cursed weapon from the world - item id or name must be provided.</li>
  * <li>cw_add : adds a cursed weapon into the world - item id or name must be provided. Current target will be the owner.</li>
  * <li>cw_goto : teleports GM to the specified cursed weapon (item or player position).</li>
- * <li>cw_reload : reloads instance manager.</li>
  * </ul>
  * >
  */
@@ -45,7 +44,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 			if (!command.contains("menu"))
 			{
 				activeChar.sendMessage("====== Cursed Weapons: ======");
-				for (CursedWeapon cw : CursedWeaponsManager.getInstance().getCursedWeapons())
+				for (CursedWeapon cw : CursedWeaponManager.getInstance().getCursedWeapons())
 				{
 					activeChar.sendMessage(cw.getName() + " (" + cw.getItemId() + ")");
 					if (cw.isActive())
@@ -84,7 +83,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 			else
 			{
 				final StringBuilder sb = new StringBuilder(2000);
-				for (CursedWeapon cw : CursedWeaponsManager.getInstance().getCursedWeapons())
+				for (CursedWeapon cw : CursedWeaponManager.getInstance().getCursedWeapons())
 				{
 					StringUtil.append(sb, "<table width=280><tr><td>Name:</td><td>", cw.getName(), "</td></tr>");
 					
@@ -131,7 +130,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 				else
 				{
 					parameter = parameter.replace('_', ' ');
-					for (CursedWeapon cwp : CursedWeaponsManager.getInstance().getCursedWeapons())
+					for (CursedWeapon cwp : CursedWeaponManager.getInstance().getCursedWeapons())
 					{
 						if (cwp.getName().toLowerCase().contains(parameter.toLowerCase()))
 						{
@@ -141,7 +140,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 					}
 				}
 				
-				final CursedWeapon cw = CursedWeaponsManager.getInstance().getCursedWeapon(id);
+				final CursedWeapon cw = CursedWeaponManager.getInstance().getCursedWeapon(id);
 				if (cw == null)
 				{
 					activeChar.sendMessage("Unknown cursed weapon ID.");

@@ -6,9 +6,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
-/**
- * @author Hasha
- */
+import net.sf.l2j.gameserver.enums.GeoType;
+
 public class BlockMultilayer extends ABlock
 {
 	private static final int MAX_LAYERS = Byte.MAX_VALUE;
@@ -48,13 +47,13 @@ public class BlockMultilayer extends ABlock
 	 * @param bb : Input byte buffer.
 	 * @param format : GeoFormat specifying format of loaded data.
 	 */
-	public BlockMultilayer(ByteBuffer bb, GeoFormat format)
+	public BlockMultilayer(ByteBuffer bb, GeoType format)
 	{
 		// move buffer pointer to end of MultilayerBlock
 		for (int cell = 0; cell < GeoStructure.BLOCK_CELLS; cell++)
 		{
 			// get layer count for this cell
-			final byte layers = format != GeoFormat.L2OFF ? bb.get() : (byte) bb.getShort();
+			final byte layers = format != GeoType.L2OFF ? bb.get() : (byte) bb.getShort();
 			
 			if (layers <= 0 || layers > MAX_LAYERS)
 				throw new RuntimeException("Invalid layer count for MultilayerBlock");
@@ -65,7 +64,7 @@ public class BlockMultilayer extends ABlock
 			// loop over layers
 			for (byte layer = 0; layer < layers; layer++)
 			{
-				if (format != GeoFormat.L2D)
+				if (format != GeoType.L2D)
 				{
 					// get data
 					short data = bb.getShort();

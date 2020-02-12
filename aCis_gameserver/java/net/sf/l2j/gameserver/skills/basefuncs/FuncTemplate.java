@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
 
 /**

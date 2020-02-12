@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if ! [ -d ./log/ ]; then
+	mkdir log
+fi
+
 err=1
 until [ $err == 0 ]; 
 do

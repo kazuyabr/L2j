@@ -2,10 +2,6 @@ package net.sf.l2j.commons.mmocore;
 
 import java.nio.ByteBuffer;
 
-/**
- * @author KenM
- * @param <T>
- */
 public abstract class MMOClient<T extends MMOConnection<?>>
 {
 	private final T _con;

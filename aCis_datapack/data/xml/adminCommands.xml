@@ -35,19 +35,19 @@
 	<aCar name="admin_delbk" accessLevel="7"/>
 
 	<!-- BUFF -->
+	<aCar name="admin_buff" accessLevel="7"/>
 	<aCar name="admin_getbuffs" accessLevel="7"/>
 	<aCar name="admin_stopbuff" accessLevel="7"/>
 	<aCar name="admin_stopallbuffs" accessLevel="7"/>
 	<aCar name="admin_areacancel" accessLevel="7"/>
 	<aCar name="admin_removereuse" accessLevel="7"/>
 
-	<!-- CACHE -->
-	<aCar name="admin_reload_cache_path" accessLevel="7"/>
-	<aCar name="admin_reload_cache_file" accessLevel="7"/>
-
 	<!-- CAMERA -->
 	<aCar name="admin_camera" accessLevel="7"/>
 	<aCar name="admin_cameramode" accessLevel="7"/>
+	
+	<!-- CLANHALL -->
+	<aCar name="admin_ch" accessLevel="7"/>
 
 	<!-- CREATE ITEM -->
 	<aCar name="admin_itemcreate" accessLevel="7"/>
@@ -78,6 +78,7 @@
 	<aCar name="admin_current_player" accessLevel="7"/>
 	<aCar name="admin_setkarma" accessLevel="7"/>
 	<aCar name="admin_character_info" accessLevel="7"/>
+	<aCar name="admin_debug" accessLevel="7"/>
 	<aCar name="admin_show_characters" accessLevel="7"/>
 	<aCar name="admin_find_character" accessLevel="7"/>
 	<aCar name="admin_find_ip" accessLevel="7"/>
@@ -103,6 +104,7 @@
 
 	<!-- EDIT NPC -->
 	<aCar name="admin_show_droplist" accessLevel="7"/>
+	<aCar name="admin_show_minion" accessLevel="7"/>
 	<aCar name="admin_show_scripts" accessLevel="7"/>
 	<aCar name="admin_show_shop" accessLevel="7"/>
 	<aCar name="admin_show_shoplist" accessLevel="7"/>
@@ -110,6 +112,8 @@
 
 	<!-- EFFECTS -->
 	<aCar name="admin_hide" accessLevel="7"/>
+	<aCar name="admin_invul" accessLevel="7"/>
+	<aCar name="admin_undying" accessLevel="7"/>
 	<aCar name="admin_earthquake" accessLevel="7"/>
 	<aCar name="admin_earthquake_menu" accessLevel="7"/>
 	<aCar name="admin_gmspeed" accessLevel="7"/>
@@ -178,10 +182,6 @@
 
 	<!-- HELP PAGE -->
 	<aCar name="admin_help" accessLevel="7"/>
-
-	<!-- INVUL -->
-	<aCar name="admin_invul" accessLevel="7"/>
-	<aCar name="admin_setinvul" accessLevel="7"/>
 
 	<!-- KICK -->
 	<aCar name="admin_character_disconnect" accessLevel="7"/>
@@ -282,12 +282,6 @@
 	<!-- <aCar name="admin_setsiegetime" accessLevel="7"/> -->
 	<aCar name="admin_setcastle" accessLevel="7"/>
 	<aCar name="admin_removecastle" accessLevel="7"/>
-	<aCar name="admin_clanhall" accessLevel="7"/>
-	<aCar name="admin_clanhallset" accessLevel="7"/>
-	<aCar name="admin_clanhalldel" accessLevel="7"/>
-	<aCar name="admin_clanhallopendoors" accessLevel="7"/>
-	<aCar name="admin_clanhallclosedoors" accessLevel="7"/>
-	<aCar name="admin_clanhallteleportself" accessLevel="7"/>
 	<aCar name="admin_reset_certificates" accessLevel="7"/>
 
 	<!-- SKILL -->

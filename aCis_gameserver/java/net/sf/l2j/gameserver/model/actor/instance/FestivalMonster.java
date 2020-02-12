@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 
 /**
@@ -56,14 +57,14 @@ public class FestivalMonster extends Monster
 	 * Add a blood offering item to the leader of the party.
 	 */
 	@Override
-	public void doItemDrop(Creature attacker)
+	public void doItemDrop(NpcTemplate template, Creature attacker)
 	{
 		final Player player = attacker.getActingPlayer();
 		if (player == null || !player.isInParty())
 			return;
 		
-		player.getParty().getLeader().addItem("Sign", SevenSignsFestival.FESTIVAL_OFFERING_ID, _bonusMultiplier, attacker, true);
+		player.getParty().getLeader().addItem("Sign", FestivalOfDarknessManager.FESTIVAL_OFFERING_ID, _bonusMultiplier, attacker, true);
 		
-		super.doItemDrop(attacker);
+		super.doItemDrop(template, attacker);
 	}
 }

@@ -5,9 +5,10 @@ import java.util.concurrent.ScheduledFuture;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.MoveToPawn;
@@ -33,9 +34,13 @@ public class TownPet extends Folk
 		else
 		{
 			if (!canInteract(player))
-				player.getAI().setIntention(CtrlIntention.INTERACT, this);
+				player.getAI().setIntention(IntentionType.INTERACT, this);
 			else
 			{
+				// Stop moving if we're already in interact range.
+				if (player.isMoving() || player.isInCombat())
+					player.getAI().setIntention(IntentionType.IDLE);
+				
 				// Rotate the player to face the instance
 				player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 				
@@ -64,7 +69,7 @@ public class TownPet extends Folk
 			if (getSpawn() == null)
 				return;
 			
-			getAI().setIntention(CtrlIntention.MOVE_TO, GeoEngine.getInstance().canMoveToTargetLoc(getX(), getY(), getZ(), getSpawn().getLocX() + Rnd.get(-75, 75), getSpawn().getLocY() + Rnd.get(-75, 75), getZ()));
+			getAI().setIntention(IntentionType.MOVE_TO, GeoEngine.getInstance().canMoveToTargetLoc(getX(), getY(), getZ(), getSpawn().getLocX() + Rnd.get(-75, 75), getSpawn().getLocY() + Rnd.get(-75, 75), getZ()));
 		}
 	}
 }

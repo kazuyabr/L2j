@@ -2,29 +2,27 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.instancemanager.RaidBossPointsManager;
+import net.sf.l2j.gameserver.data.manager.HeroManager;
+import net.sf.l2j.gameserver.data.manager.RaidPointManager;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 /**
- * This class manages all Grand Bosses.
+ * This class manages all {@link GrandBoss}es.<br>
+ * <br>
+ * Those npcs inherit from {@link Monster}. Since a script is generally associated to it, {@link GrandBoss#returnHome} returns false to avoid misbehavior. No random walking is allowed.
  */
 public final class GrandBoss extends Monster
 {
-	/**
-	 * Constructor for L2GrandBossInstance. This represent all grandbosses.
-	 * @param objectId ID of the instance
-	 * @param template L2NpcTemplate of the instance
-	 */
 	public GrandBoss(int objectId, NpcTemplate template)
 	{
 		super(objectId, template);
-		setIsRaid(true);
+		setRaid(true);
 	}
 	
 	@Override
@@ -51,16 +49,16 @@ public final class GrandBoss extends Monster
 			{
 				for (Player member : party.getMembers())
 				{
-					RaidBossPointsManager.getInstance().addPoints(member, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
+					RaidPointManager.getInstance().addPoints(member, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
 					if (member.isNoble())
-						Hero.getInstance().setRBkilled(member.getObjectId(), getNpcId());
+						HeroManager.getInstance().setRBkilled(member.getObjectId(), getNpcId());
 				}
 			}
 			else
 			{
-				RaidBossPointsManager.getInstance().addPoints(player, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
+				RaidPointManager.getInstance().addPoints(player, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
 				if (player.isNoble())
-					Hero.getInstance().setRBkilled(player.getObjectId(), getNpcId());
+					HeroManager.getInstance().setRBkilled(player.getObjectId(), getNpcId());
 			}
 		}
 		
@@ -68,7 +66,7 @@ public final class GrandBoss extends Monster
 	}
 	
 	@Override
-	public boolean returnHome(boolean cleanAggro)
+	public boolean returnHome()
 	{
 		return false;
 	}

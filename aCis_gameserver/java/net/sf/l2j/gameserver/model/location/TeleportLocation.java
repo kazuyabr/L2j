@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.model.location;
 
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
 
 /**
  * A datatype extending {@link Location}, used to retain a single Gatekeeper teleport location.

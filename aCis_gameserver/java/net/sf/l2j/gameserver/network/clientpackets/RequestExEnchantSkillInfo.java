@@ -2,18 +2,13 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.data.SkillTreeTable;
-import net.sf.l2j.gameserver.model.L2EnchantSkillData;
-import net.sf.l2j.gameserver.model.L2EnchantSkillLearn;
+import net.sf.l2j.gameserver.data.xml.SkillTreeData;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
+import net.sf.l2j.gameserver.model.holder.skillnode.EnchantSkillNode;
 import net.sf.l2j.gameserver.network.serverpackets.ExEnchantSkillInfo;
 
-/**
- * Format chdd c: (id) 0xD0 h: (subid) 0x06 d: skill id d: skill lvl
- * @author -Wooden-
- */
 public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 {
 	private int _skillId;
@@ -32,52 +27,35 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 		if (_skillId <= 0 || _skillLevel <= 0)
 			return;
 		
-		Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		if (activeChar.getClassId().level() < 3 || activeChar.getLevel() < 76)
+		if (player.getClassId().level() < 3 || player.getLevel() < 76)
 			return;
 		
-		final Npc trainer = activeChar.getCurrentFolkNPC();
-		if (trainer == null)
+		final Folk folk = player.getCurrentFolk();
+		if (folk == null || !folk.canInteract(player))
 			return;
 		
-		if (!activeChar.isInsideRadius(trainer, Npc.INTERACTION_DISTANCE, false, false) && !activeChar.isGM())
-			return;
-		
-		if (activeChar.getSkillLevel(_skillId) >= _skillLevel)
+		if (player.getSkillLevel(_skillId) >= _skillLevel)
 			return;
 		
 		final L2Skill skill = SkillTable.getInstance().getInfo(_skillId, _skillLevel);
 		if (skill == null)
 			return;
 		
-		if (!trainer.getTemplate().canTeach(activeChar.getClassId()))
+		if (!folk.getTemplate().canTeach(player.getClassId()))
 			return;
 		
-		// Try to find enchant skill.
-		for (L2EnchantSkillLearn esl : SkillTreeTable.getInstance().getAvailableEnchantSkills(activeChar))
-		{
-			if (esl == null)
-				continue;
-			
-			if (esl.getId() == _skillId && esl.getLevel() == _skillLevel)
-			{
-				L2EnchantSkillData data = SkillTreeTable.getInstance().getEnchantSkillData(esl.getEnchant());
-				// Enchant skill or enchant data not found.
-				if (data == null)
-					return;
-				
-				// Send ExEnchantSkillInfo packet.
-				ExEnchantSkillInfo esi = new ExEnchantSkillInfo(_skillId, _skillLevel, data.getCostSp(), data.getCostExp(), data.getRate(activeChar.getLevel()));
-				if (Config.ES_SP_BOOK_NEEDED)
-					if (data.getItemId() != 0 && data.getItemCount() != 0)
-						esi.addRequirement(4, data.getItemId(), data.getItemCount(), 0);
-				sendPacket(esi);
-				
-				break;
-			}
-		}
+		final EnchantSkillNode esn = SkillTreeData.getInstance().getEnchantSkillFor(player, _skillId, _skillLevel);
+		if (esn == null)
+			return;
+		
+		final ExEnchantSkillInfo esi = new ExEnchantSkillInfo(_skillId, _skillLevel, esn.getSp(), esn.getExp(), esn.getEnchantRate(player.getLevel()));
+		if (Config.ES_SP_BOOK_NEEDED && esn.getItem() != null)
+			esi.addRequirement(4, esn.getItem().getId(), esn.getItem().getValue(), 0);
+		
+		sendPacket(esi);
 	}
 }

@@ -1,10 +1,12 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.data.xml.HennaData;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.Henna;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.network.serverpackets.HennaInfo;
+import net.sf.l2j.gameserver.network.serverpackets.UserInfo;
 
 public final class RequestHennaEquip extends L2GameClientPacket
 {
@@ -19,43 +21,49 @@ public final class RequestHennaEquip extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
 		final Henna henna = HennaData.getInstance().getHenna(_symbolId);
 		if (henna == null)
 			return;
 		
-		if (!henna.canBeUsedBy(activeChar))
+		if (!henna.canBeUsedBy(player))
 		{
-			activeChar.sendPacket(SystemMessageId.CANT_DRAW_SYMBOL);
+			player.sendPacket(SystemMessageId.CANT_DRAW_SYMBOL);
 			return;
 		}
 		
-		if (activeChar.getHennaEmptySlots() == 0)
+		if (player.getHennaList().isFull())
 		{
-			activeChar.sendPacket(SystemMessageId.SYMBOLS_FULL);
+			player.sendPacket(SystemMessageId.SYMBOLS_FULL);
 			return;
 		}
 		
-		final ItemInstance ownedDyes = activeChar.getInventory().getItemByItemId(henna.getDyeId());
+		final ItemInstance ownedDyes = player.getInventory().getItemByItemId(henna.getDyeId());
 		final int count = (ownedDyes == null) ? 0 : ownedDyes.getCount();
 		
-		if (count < Henna.getRequiredDyeAmount())
+		if (count < Henna.DRAW_AMOUNT)
 		{
-			activeChar.sendPacket(SystemMessageId.CANT_DRAW_SYMBOL);
+			player.sendPacket(SystemMessageId.CANT_DRAW_SYMBOL);
 			return;
 		}
 		
 		// reduceAdena sends a message.
-		if (!activeChar.reduceAdena("Henna", henna.getPrice(), activeChar.getCurrentFolkNPC(), true))
+		if (!player.reduceAdena("Henna", henna.getDrawPrice(), player.getCurrentFolk(), true))
 			return;
 		
 		// destroyItemByItemId sends a message.
-		if (!activeChar.destroyItemByItemId("Henna", henna.getDyeId(), Henna.getRequiredDyeAmount(), activeChar, true))
+		if (!player.destroyItemByItemId("Henna", henna.getDyeId(), Henna.DRAW_AMOUNT, player, true))
 			return;
 		
-		activeChar.addHenna(henna);
+		final boolean success = player.getHennaList().add(henna);
+		if (success)
+		{
+			player.sendPacket(new HennaInfo(player));
+			player.sendPacket(new UserInfo(player));
+			player.sendPacket(SystemMessageId.SYMBOL_ADDED);
+		}
 	}
 }

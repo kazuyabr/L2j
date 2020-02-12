@@ -8,11 +8,12 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.clientpackets.Say2;
@@ -69,14 +70,18 @@ public class CabalBuffer extends Folk
 			player.setTarget(this);
 		else
 		{
-			// Calculate the distance between the Player and the L2Npc
+			// Calculate the distance between the Player and the Npc.
 			if (!canInteract(player))
 			{
 				// Notify the Player AI with INTERACT
-				player.getAI().setIntention(CtrlIntention.INTERACT, this);
+				player.getAI().setIntention(IntentionType.INTERACT, this);
 			}
 			else
 			{
+				// Stop moving if we're already in interact range.
+				if (player.isMoving() || player.isInCombat())
+					player.getAI().setIntention(IntentionType.IDLE);
+				
 				// Rotate the player to face the instance
 				player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 				
@@ -113,7 +118,7 @@ public class CabalBuffer extends Folk
 			boolean isBuffAWinner = false;
 			boolean isBuffALoser = false;
 			
-			final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+			final CabalType winningCabal = SevenSignsManager.getInstance().getCabalHighestScore();
 			
 			// Defines which cabal is the loser.
 			CabalType losingCabal = CabalType.NORMAL;
@@ -133,16 +138,16 @@ public class CabalBuffer extends Folk
 				else
 					playersList.add(player);
 				
-				final CabalType playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
+				final CabalType playerCabal = SevenSignsManager.getInstance().getPlayerCabal(player.getObjectId());
 				if (playerCabal == CabalType.NORMAL)
 					continue;
 				
-				if (!isBuffAWinner && playerCabal == winningCabal && _caster.getNpcId() == SevenSigns.ORATOR_NPC_ID)
+				if (!isBuffAWinner && playerCabal == winningCabal && _caster.getNpcId() == SevenSignsManager.ORATOR_NPC_ID)
 				{
 					isBuffAWinner = true;
 					handleCast(player, (!player.isMageClass() ? 4364 : 4365));
 				}
-				else if (!isBuffALoser && playerCabal == losingCabal && _caster.getNpcId() == SevenSigns.PREACHER_NPC_ID)
+				else if (!isBuffALoser && playerCabal == losingCabal && _caster.getNpcId() == SevenSignsManager.PREACHER_NPC_ID)
 				{
 					isBuffALoser = true;
 					handleCast(player, (!player.isMageClass() ? 4361 : 4362));
@@ -169,7 +174,7 @@ public class CabalBuffer extends Folk
 					{
 						for (Player nearbyPlayer : playersList)
 						{
-							if (SevenSigns.getInstance().getPlayerCabal(nearbyPlayer.getObjectId()) == winningCabal)
+							if (SevenSignsManager.getInstance().getPlayerCabal(nearbyPlayer.getObjectId()) == winningCabal)
 							{
 								text = text.replaceAll("%player_cabal_winner%", nearbyPlayer.getName());
 								break;
@@ -180,7 +185,7 @@ public class CabalBuffer extends Folk
 					{
 						for (Player nearbyPlayer : playersList)
 						{
-							if (SevenSigns.getInstance().getPlayerCabal(nearbyPlayer.getObjectId()) == losingCabal)
+							if (SevenSignsManager.getInstance().getPlayerCabal(nearbyPlayer.getObjectId()) == losingCabal)
 							{
 								text = text.replaceAll("%player_cabal_loser%", nearbyPlayer.getName());
 								break;

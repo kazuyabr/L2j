@@ -5,9 +5,10 @@ import java.util.concurrent.ScheduledFuture;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 
 /**
@@ -30,7 +31,8 @@ public class ChristmasTree extends Folk
 			if (recoveryAura == null)
 				return;
 			
-			_aiTask = ThreadPool.scheduleAtFixedRate(() -> {
+			_aiTask = ThreadPool.scheduleAtFixedRate(() ->
+			{
 				for (Player player : getKnownTypeInRadius(Player.class, 200))
 				{
 					if (player.getFirstEffect(recoveryAura) == null)

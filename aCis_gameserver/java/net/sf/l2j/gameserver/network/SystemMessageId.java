@@ -3,17 +3,15 @@ package net.sf.l2j.gameserver.network;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * @author Noctarius & Nille02 & crion ^ Forsaiken
- */
 public final class SystemMessageId
 {
-	private static final Logger _log = Logger.getLogger(SystemMessageId.class.getName());
+	private static final CLogger LOGGER = new CLogger(SystemMessageId.class.getName());
+	
 	public static final SystemMessageId[] EMPTY_ARRAY = new SystemMessageId[0];
 	
 	/**
@@ -3958,7 +3956,7 @@ public final class SystemMessageId
 	 * ID: 707<br>
 	 * Message: You cannot teleport to a village that is in a siege.
 	 */
-	public static final SystemMessageId NO_PORT_THAT_IS_IN_SIGE;
+	public static final SystemMessageId CANNOT_PORT_VILLAGE_IN_SIEGE;
 	
 	/**
 	 * ID: 708<br>
@@ -12459,7 +12457,7 @@ public final class SystemMessageId
 		GM_S1 = new SystemMessageId(704);
 		CANNOT_EXCLUDE_SELF = new SystemMessageId(705);
 		ONLY_64_NAMES_ON_EXCLUDE_LIST = new SystemMessageId(706);
-		NO_PORT_THAT_IS_IN_SIGE = new SystemMessageId(707);
+		CANNOT_PORT_VILLAGE_IN_SIEGE = new SystemMessageId(707);
 		YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CASTLE_WAREHOUSE = new SystemMessageId(708);
 		YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE = new SystemMessageId(709);
 		ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE = new SystemMessageId(710);
@@ -13790,9 +13788,9 @@ public final class SystemMessageId
 					maxId = Math.max(maxId, smId.getId());
 					smIds.add(smId);
 				}
-				catch (final Exception e)
+				catch (Exception e)
 				{
-					_log.log(Level.WARNING, "SystemMessageId: Failed field access for '" + field.getName() + "'", e);
+					LOGGER.error("Failed to access field for '{}'.", e, field.getName());
 				}
 			}
 		}

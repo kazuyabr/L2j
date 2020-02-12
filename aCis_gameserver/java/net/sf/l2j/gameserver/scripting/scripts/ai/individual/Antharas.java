@@ -5,27 +5,30 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
+import net.sf.l2j.gameserver.model.zone.type.BossZone;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.network.serverpackets.SpecialCamera;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * That AI is heavily based on Valakas/Baium scripts.<br>
@@ -33,7 +36,7 @@ import net.sf.l2j.gameserver.templates.StatsSet;
  */
 public class Antharas extends L2AttackableAIScript
 {
-	private static final L2BossZone ANTHARAS_LAIR = ZoneManager.getInstance().getZoneById(110001, L2BossZone.class);
+	private static final BossZone ANTHARAS_LAIR = ZoneManager.getInstance().getZoneById(110001, BossZone.class);
 	
 	private static final int[] ANTHARAS_IDS =
 	{
@@ -107,7 +110,7 @@ public class Antharas extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(ANTHARAS_IDS, EventType.ON_ATTACK, EventType.ON_SPAWN);
+		addEventIds(ANTHARAS_IDS, ScriptEventType.ON_ATTACK, ScriptEventType.ON_SPAWN);
 		addKillId(29066, 29067, 29068, 29069, 29070, 29071, 29072, 29073, 29074, 29075, 29076);
 	}
 	
@@ -180,7 +183,7 @@ public class Antharas extends L2AttackableAIScript
 				
 				final int npcId = isBehemoth ? 29069 : Rnd.get(29070, 29076);
 				final Npc dragon = addSpawn(npcId, npc.getX() + Rnd.get(-200, 200), npc.getY() + Rnd.get(-200, 200), npc.getZ(), 0, false, 0, true);
-				((Attackable) dragon).setIsRaidMinion(true);
+				((Monster) dragon).setMinion(true);
 				
 				_monsters.add(dragon);
 				
@@ -249,28 +252,25 @@ public class Antharas extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		if (npc.isInvul())
 			return null;
 		
-		// Debuff strider-mounted players.
-		if (attacker.getMountType() == 1)
+		if (attacker instanceof Playable)
 		{
-			final L2Skill debuff = SkillTable.getInstance().getInfo(4258, 1);
-			if (attacker.getFirstEffect(debuff) == null)
-			{
-				npc.setTarget(attacker);
-				npc.doCast(debuff);
-			}
+			// Curses
+			if (testCursesOnAttack(npc, attacker))
+				return null;
+			
+			// Refresh timer on every hit.
+			_timeTracker = System.currentTimeMillis();
 		}
-		_timeTracker = System.currentTimeMillis();
-		
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		if (npc.getNpcId() == _antharasId)
 		{
@@ -299,7 +299,7 @@ public class Antharas extends L2AttackableAIScript
 			_monsters.remove(npc);
 		}
 		
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 	
 	private void callSkillAI(Npc npc)
@@ -324,7 +324,7 @@ public class Antharas extends L2AttackableAIScript
 				int posY = y + Rnd.get(-1400, 1400);
 				
 				if (GeoEngine.getInstance().canMoveToTarget(x, y, z, posX, posY, z))
-					npc.getAI().setIntention(CtrlIntention.MOVE_TO, new Location(posX, posY, z));
+					npc.getAI().setIntention(IntentionType.MOVE_TO, new Location(posX, posY, z));
 			}
 			return;
 		}
@@ -334,12 +334,12 @@ public class Antharas extends L2AttackableAIScript
 		// Cast the skill or follow the target.
 		if (MathUtil.checkIfInRange((skill.getCastRange() < 600) ? 600 : skill.getCastRange(), npc, _actualVictim, true))
 		{
-			npc.getAI().setIntention(CtrlIntention.IDLE);
+			npc.getAI().setIntention(IntentionType.IDLE);
 			npc.setTarget(_actualVictim);
 			npc.doCast(skill);
 		}
 		else
-			npc.getAI().setIntention(CtrlIntention.FOLLOW, _actualVictim, null);
+			npc.getAI().setIntention(IntentionType.FOLLOW, _actualVictim, null);
 	}
 	
 	/**

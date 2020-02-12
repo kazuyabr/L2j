@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.scripting.scripts.village_master;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 public class Clan extends Quest
@@ -31,8 +31,8 @@ public class Clan extends Quest
 				if (!player.isClanLeader())
 					return "9000-05-no.htm";
 				
-			case "9000-06a.htm":
 			case "9000-07.htm":
+			case "9000-08.htm":
 			case "9000-12a.htm":
 			case "9000-13a.htm":
 			case "9000-13b.htm":

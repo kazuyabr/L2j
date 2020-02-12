@@ -1,15 +1,14 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
-import java.util.logging.Level;
-
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
-import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager.StatusEnum;
+import net.sf.l2j.gameserver.data.manager.RaidBossManager;
+import net.sf.l2j.gameserver.enums.BossStatus;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.RaidBoss;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.spawn.BossSpawn;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -28,7 +27,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	private static final int UNFINISHED_SUMMON_CRYSTAL = 7192;
 	private static final int SUMMON_CRYSTAL = 7193;
 	private static final int ESSENCE_OF_DAIMON = 7194;
-	private static final int REWARD_DYE[] =
+	private static final int REWARDS[] =
 	{
 		4595,
 		4596,
@@ -57,12 +56,8 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 		addAttackId(DAIMON_THE_WHITE_EYED);
 		addKillId(DAIMON_THE_WHITE_EYED);
 		
-		switch (RaidBossSpawnManager.getInstance().getRaidBossStatusId(DAIMON_THE_WHITE_EYED))
+		switch (RaidBossManager.getInstance().getStatus(DAIMON_THE_WHITE_EYED))
 		{
-			case UNDEFINED:
-				_log.log(Level.WARNING, qn + ": can not find spawned L2RaidBoss id=" + DAIMON_THE_WHITE_EYED);
-				break;
-			
 			case ALIVE:
 				spawnNpc();
 			case DEAD:
@@ -77,9 +72,10 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 		// global quest timer has player==null -> cannot get QuestState
 		if (event.equals("check"))
 		{
-			RaidBoss raid = RaidBossSpawnManager.getInstance().getBosses().get(DAIMON_THE_WHITE_EYED);
-			if (raid != null && raid.getRaidStatus() == StatusEnum.ALIVE)
+			final BossSpawn bs = RaidBossManager.getInstance().getBossSpawn(DAIMON_THE_WHITE_EYED);
+			if (bs != null && bs.getStatus() == BossStatus.ALIVE)
 			{
+				final Npc raid = bs.getBoss();
 				if (_status >= 0 && _status-- == 0)
 					despawnRaid(raid);
 				
@@ -113,7 +109,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 			if (st.hasQuestItems(ESSENCE_OF_DAIMON))
 			{
 				st.takeItems(ESSENCE_OF_DAIMON, 1);
-				st.rewardItems(REWARD_DYE[Rnd.get(REWARD_DYE.length)], 5);
+				st.rewardItems(Rnd.get(REWARDS), 5);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
 			}
@@ -191,21 +187,27 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		_status = IDLE_INTERVAL;
+		final Player player = attacker.getActingPlayer();
+		if (player != null)
+			_status = IDLE_INTERVAL;
+		
 		return null;
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		for (Player partyMember : getPartyMembers(player, npc, "cond", "2"))
+		final Player player = killer.getActingPlayer();
+		if (player != null)
 		{
-			QuestState st = partyMember.getQuestState(qn);
-			st.set("cond", "3");
-			st.playSound(QuestState.SOUND_MIDDLE);
-			st.giveItems(ESSENCE_OF_DAIMON, 1);
+			for (QuestState st : getPartyMembers(player, npc, "cond", "2"))
+			{
+				st.set("cond", "3");
+				st.playSound(QuestState.SOUND_MIDDLE);
+				st.giveItems(ESSENCE_OF_DAIMON, 1);
+			}
 		}
 		
 		// despawn raid (reset info)
@@ -230,14 +232,16 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	
 	private boolean spawnRaid()
 	{
-		RaidBoss raid = RaidBossSpawnManager.getInstance().getBosses().get(DAIMON_THE_WHITE_EYED);
-		if (raid != null && raid.getRaidStatus() == StatusEnum.ALIVE)
+		final BossSpawn bs = RaidBossManager.getInstance().getBossSpawn(DAIMON_THE_WHITE_EYED);
+		if (bs != null && bs.getStatus() == BossStatus.ALIVE)
 		{
-			// set temporarily spawn location (to provide correct behavior of L2RaidBossInstance.checkAndReturnToSpawn())
+			final Npc raid = bs.getBoss();
+			
+			// set temporarily spawn location (to provide correct behavior of checkAndReturnToSpawn())
 			raid.getSpawn().setLoc(185900, -44000, -3160, Rnd.get(65536));
 			
 			// teleport raid from secret place
-			raid.teleToLocation(185900, -44000, -3160, 100);
+			raid.teleportTo(185900, -44000, -3160, 100);
 			raid.broadcastNpcSay("Who called me?");
 			
 			// set raid status
@@ -256,7 +260,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 		
 		// teleport raid back to secret place
 		if (!raid.isDead())
-			raid.teleToLocation(-106500, -252700, -15542, 0);
+			raid.teleportTo(-106500, -252700, -15542, 0);
 		
 		// reset raid status
 		_status = -1;

@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.tradelist.TradeItem;
 import net.sf.l2j.gameserver.model.tradelist.TradeList;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -11,6 +11,7 @@ import net.sf.l2j.gameserver.network.serverpackets.TradeOwnAdd;
 
 public final class AddTradeItem extends L2GameClientPacket
 {
+	@SuppressWarnings("unused")
 	private int _tradeId;
 	private int _objectId;
 	private int _count;
@@ -30,24 +31,17 @@ public final class AddTradeItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
 		final TradeList trade = player.getActiveTradeList();
 		if (trade == null)
-		{
-			_log.warning("Character: " + player.getName() + " requested item:" + _objectId + " add without active tradelist:" + _tradeId);
 			return;
-		}
 		
 		final Player partner = trade.getPartner();
 		if (partner == null || World.getInstance().getPlayer(partner.getObjectId()) == null || partner.getActiveTradeList() == null)
 		{
-			// Trade partner not found, cancel trade
-			if (partner != null)
-				_log.warning(player.getName() + " requested invalid trade object: " + _objectId);
-			
 			player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			player.cancelActiveTrade();
 			return;

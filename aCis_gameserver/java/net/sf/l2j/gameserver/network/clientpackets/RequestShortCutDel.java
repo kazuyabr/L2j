@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public final class RequestShortCutDel extends L2GameClientPacket
 {
@@ -18,13 +18,13 @@ public final class RequestShortCutDel extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		if (_page > 9 || _page < 0)
+		if (_page < 0 || _page > 9)
 			return;
 		
-		activeChar.deleteShortCut(_slot, _page);
+		player.getShortcutList().deleteShortcut(_slot, _page);
 	}
 }

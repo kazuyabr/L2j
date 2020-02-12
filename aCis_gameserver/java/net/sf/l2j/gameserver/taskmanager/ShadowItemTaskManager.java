@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.listeners.OnEquipListener;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -17,7 +17,6 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Updates the timer and removes the {@link ItemInstance} as a shadow item.
- * @author Hasha
  */
 public class ShadowItemTaskManager implements Runnable, OnEquipListener
 {
@@ -25,49 +24,10 @@ public class ShadowItemTaskManager implements Runnable, OnEquipListener
 	
 	private final Map<ItemInstance, Player> _shadowItems = new ConcurrentHashMap<>();
 	
-	public static final ShadowItemTaskManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
 	protected ShadowItemTaskManager()
 	{
 		// Run task each second.
 		ThreadPool.scheduleAtFixedRate(this, 1000, 1000);
-	}
-	
-	@Override
-	public final void onEquip(int slot, ItemInstance item, Playable playable)
-	{
-		// Must be a shadow item.
-		if (!item.isShadowItem())
-			return;
-		
-		// Must be a player.
-		if (!(playable instanceof Player))
-			return;
-		
-		_shadowItems.put(item, (Player) playable);
-	}
-	
-	@Override
-	public final void onUnequip(int slot, ItemInstance item, Playable actor)
-	{
-		// Must be a shadow item.
-		if (!item.isShadowItem())
-			return;
-		
-		_shadowItems.remove(item);
-	}
-	
-	public final void remove(Player player)
-	{
-		// List is empty, skip.
-		if (_shadowItems.isEmpty())
-			return;
-		
-		// Remove ALL associated items.
-		_shadowItems.values().removeAll(Collections.singleton(player));
 	}
 	
 	@Override
@@ -122,8 +82,47 @@ public class ShadowItemTaskManager implements Runnable, OnEquipListener
 		}
 	}
 	
+	@Override
+	public final void onEquip(int slot, ItemInstance item, Playable playable)
+	{
+		// Must be a shadow item.
+		if (!item.isShadowItem())
+			return;
+		
+		// Must be a player.
+		if (!(playable instanceof Player))
+			return;
+		
+		_shadowItems.put(item, (Player) playable);
+	}
+	
+	@Override
+	public final void onUnequip(int slot, ItemInstance item, Playable actor)
+	{
+		// Must be a shadow item.
+		if (!item.isShadowItem())
+			return;
+		
+		_shadowItems.remove(item);
+	}
+	
+	public final void remove(Player player)
+	{
+		// List is empty, skip.
+		if (_shadowItems.isEmpty())
+			return;
+		
+		// Remove ALL associated items.
+		_shadowItems.values().removeAll(Collections.singleton(player));
+	}
+	
+	public static final ShadowItemTaskManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
 	private static class SingletonHolder
 	{
-		protected static final ShadowItemTaskManager _instance = new ShadowItemTaskManager();
+		protected static final ShadowItemTaskManager INSTANCE = new ShadowItemTaskManager();
 	}
 }

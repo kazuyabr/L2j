@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.gameserver.enums.actors.ClassId;
+import net.sf.l2j.gameserver.enums.actors.ClassRace;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.base.ClassId;
-import net.sf.l2j.gameserver.model.base.ClassRace;
 
 public final class VillageMasterDwarf extends VillageMaster
 {

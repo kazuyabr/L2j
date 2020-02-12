@@ -1,13 +1,19 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.gameserver.data.manager.ClanHallManager;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
-import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.model.clanhall.ClanHall;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 
+/**
+ * An instance type extending {@link Doorman}, used by clan hall doorman. The clan hall is linked during NPC spawn, based on distance.<br>
+ * <br>
+ * isOwnerClan() checks if the user is part of clan owning the clan hall.
+ */
 public class ClanHallDoorman extends Doorman
 {
 	private ClanHall _clanHall;
@@ -52,6 +58,12 @@ public class ClanHallDoorman extends Doorman
 	}
 	
 	@Override
+	public void showChatWindow(Player player, int val)
+	{
+		showChatWindow(player);
+	}
+	
+	@Override
 	protected final void openDoors(Player player, String command)
 	{
 		_clanHall.openCloseDoors(true);
@@ -82,7 +94,10 @@ public class ClanHallDoorman extends Doorman
 	@Override
 	public void onSpawn()
 	{
-		_clanHall = ClanHallManager.getInstance().getNearbyClanHall(getX(), getY(), 500);
+		_clanHall = ClanHallManager.getInstance().getNearestClanHall(getX(), getY(), 500);
+		if (_clanHall == null)
+			LOGGER.warn("Couldn't find the nearest ClanHall for {}.", toString());
+		
 		super.onSpawn();
 	}
 }

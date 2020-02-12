@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import net.sf.l2j.gameserver.data.manager.MovieMakerManager;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.MovieMakerManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * @author KKnD

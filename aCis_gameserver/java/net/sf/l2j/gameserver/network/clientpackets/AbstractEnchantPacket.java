@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.items.CrystalType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.item.kind.Weapon;
-import net.sf.l2j.gameserver.model.item.type.CrystalType;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
 
 public abstract class AbstractEnchantPacket extends L2GameClientPacket
 {

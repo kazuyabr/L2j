@@ -4,15 +4,18 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SkillCoolTime;
+import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminBuffs implements IAdminCommandHandler
 {
@@ -20,6 +23,7 @@ public class AdminBuffs implements IAdminCommandHandler
 	
 	private static final String[] ADMIN_COMMANDS =
 	{
+		"admin_buff",
 		"admin_getbuffs",
 		"admin_stopbuff",
 		"admin_stopallbuffs",
@@ -30,7 +34,41 @@ public class AdminBuffs implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, Player activeChar)
 	{
-		if (command.startsWith("admin_getbuffs"))
+		if (command.startsWith("admin_buff"))
+		{
+			try
+			{
+				StringTokenizer st = new StringTokenizer(command, " ");
+				st.nextToken();
+				
+				Creature target = null;
+				if (activeChar.getTarget() instanceof Creature)
+					target = (Creature) activeChar.getTarget();
+				
+				if (target == null)
+					target = activeChar;
+				
+				int skillId = Integer.parseInt(st.nextToken());
+				int skillLvl = Integer.parseInt(st.nextToken());
+				
+				final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
+				if (skill == null)
+				{
+					activeChar.sendMessage("Usage: //buff <skillId> <skillLvl>");
+					return false;
+				}
+				
+				skill.getEffects(activeChar, target);
+				target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(skill));
+				return true;
+			}
+			catch (Exception e)
+			{
+				activeChar.sendMessage("Usage: //buff <skillId> <skillLvl>");
+				return false;
+			}
+		}
+		else if (command.startsWith("admin_getbuffs"))
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");
 			st.nextToken();
@@ -78,7 +116,6 @@ public class AdminBuffs implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				activeChar.sendMessage("Failed removing effect: " + e.getMessage());
 				activeChar.sendMessage("Usage: //stopbuff <objectId> <skillId>");
 				return false;
 			}
@@ -95,7 +132,6 @@ public class AdminBuffs implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				activeChar.sendMessage("Failed removing all effects: " + e.getMessage());
 				activeChar.sendMessage("Usage: //stopallbuffs <objectId>");
 				return false;
 			}

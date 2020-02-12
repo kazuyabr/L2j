@@ -4,8 +4,8 @@ import net.sf.l2j.commons.util.ArraysUtil;
 
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PetItemList;
@@ -34,11 +34,11 @@ public final class RequestPetUseItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null || !activeChar.hasPet())
 			return;
 		
-		final Pet pet = (Pet) activeChar.getPet();
+		final Pet pet = (Pet) activeChar.getSummon();
 		
 		final ItemInstance item = pet.getInventory().getItemByObjectId(_objectId);
 		if (item == null)
@@ -86,7 +86,7 @@ public final class RequestPetUseItem extends L2GameClientPacket
 		}
 		
 		// If pet food check is successful or if the item got an handler, use that item.
-		final IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getEtcItem());
+		final IItemHandler handler = ItemHandler.getInstance().getHandler(item.getEtcItem());
 		if (handler != null)
 		{
 			handler.useItem(pet, item, false);

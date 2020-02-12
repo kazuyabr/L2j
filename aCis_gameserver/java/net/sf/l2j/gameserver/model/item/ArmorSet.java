@@ -1,9 +1,10 @@
 package net.sf.l2j.gameserver.model.item;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public final class ArmorSet
 {

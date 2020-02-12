@@ -3,10 +3,10 @@ package net.sf.l2j.gameserver.scripting.scripts.village_master;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.l2j.gameserver.enums.actors.ClassId;
+import net.sf.l2j.gameserver.enums.actors.ClassRace;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassId;
-import net.sf.l2j.gameserver.model.base.ClassRace;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.HennaInfo;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;

@@ -4,8 +4,8 @@ import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Chest;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -44,7 +44,7 @@ public class Keys implements IItemHandler
 		final IntIntHolder[] skills = item.getEtcItem().getSkills();
 		if (skills == null)
 		{
-			_log.info(item.getName() + " does not have registered any skill for handler.");
+			LOGGER.warn("{} doesn't have any registered skill for handler.", item.getName());
 			return;
 		}
 		

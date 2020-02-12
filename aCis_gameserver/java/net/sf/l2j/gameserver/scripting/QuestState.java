@@ -4,15 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.DropData;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
@@ -28,12 +27,9 @@ import net.sf.l2j.gameserver.network.serverpackets.TutorialEnableClientEvent;
 import net.sf.l2j.gameserver.network.serverpackets.TutorialShowHtml;
 import net.sf.l2j.gameserver.network.serverpackets.TutorialShowQuestionMark;
 
-/**
- * @author Luis Arias
- */
 public final class QuestState
 {
-	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
+	protected static final CLogger LOGGER = new CLogger(QuestState.class.getName());
 	
 	public static final String SOUND_ACCEPT = "ItemSound.quest_accept";
 	public static final String SOUND_ITEMGET = "ItemSound.quest_itemget";
@@ -188,22 +184,16 @@ public final class QuestState
 				takeItems(itemId, -1);
 		}
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement((repeatable) ? QUEST_DELETE : QUEST_COMPLETE))
 		{
-			PreparedStatement statement;
-			if (repeatable)
-				statement = con.prepareStatement(QUEST_DELETE);
-			else
-				statement = con.prepareStatement(QUEST_COMPLETE);
-			
-			statement.setInt(1, _player.getObjectId());
-			statement.setString(2, _quest.getName());
-			statement.executeUpdate();
-			statement.close();
+			ps.setInt(1, _player.getObjectId());
+			ps.setString(2, _quest.getName());
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not delete char quest:", e);
+			LOGGER.error("Couldn't delete quest.", e);
 		}
 	}
 	
@@ -233,7 +223,7 @@ public final class QuestState
 		if (var == null || var.isEmpty() || value == null || value.isEmpty())
 			return;
 		
-		// FastMap.put() returns previous value associated with specified key, or null if there was no mapping for key.
+		// Returns previous value associated with specified key, or null if there was no mapping for key.
 		String old = _vars.put(var, value);
 		
 		setQuestVarInDb(var, value);
@@ -255,7 +245,7 @@ public final class QuestState
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, _player.getName() + ", " + _quest.getName() + " cond [" + value + "] is not an integer. Value stored, but no packet was sent: " + e.getMessage(), e);
+				LOGGER.error("{}, {} cond [{}] is not an integer. Value stored, but no packet was sent.", e, _player.getName(), _quest.getName(), value);
 			}
 		}
 	}
@@ -402,7 +392,7 @@ public final class QuestState
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.FINER, _player.getName() + ": variable " + var + " isn't an integer: " + value + " ! " + e.getMessage(), e);
+			LOGGER.error("{}: variable {} isn't an integer: {}.", e, _player.getName(), var, value);
 		}
 		
 		return value;
@@ -415,19 +405,18 @@ public final class QuestState
 	 */
 	private void setQuestVarInDb(String var, String value)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(QUEST_SET_VAR))
 		{
-			PreparedStatement statement = con.prepareStatement(QUEST_SET_VAR);
-			statement.setInt(1, _player.getObjectId());
-			statement.setString(2, _quest.getName());
-			statement.setString(3, var);
-			statement.setString(4, value);
-			statement.executeUpdate();
-			statement.close();
+			ps.setInt(1, _player.getObjectId());
+			ps.setString(2, _quest.getName());
+			ps.setString(3, var);
+			ps.setString(4, value);
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not insert char quest:", e);
+			LOGGER.error("Couldn't insert quest.", e);
 		}
 	}
 	
@@ -437,18 +426,17 @@ public final class QuestState
 	 */
 	private void removeQuestVarInDb(String var)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(QUEST_DEL_VAR))
 		{
-			PreparedStatement statement = con.prepareStatement(QUEST_DEL_VAR);
-			statement.setInt(1, _player.getObjectId());
-			statement.setString(2, _quest.getName());
-			statement.setString(3, var);
-			statement.executeUpdate();
-			statement.close();
+			ps.setInt(1, _player.getObjectId());
+			ps.setString(2, _quest.getName());
+			ps.setString(3, var);
+			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not delete char quest:", e);
+			LOGGER.error("Couldn't delete quest.", e);
 		}
 	}
 	
@@ -792,11 +780,11 @@ public final class QuestState
 				
 				// Send sound.
 				sendSound = true;
-				
-				// Illimited needed count or current count being inferior to needed count means the state isn't reached.
-				if (neededCount <= 0 || ((currentCount + amount) < neededCount))
-					reached = false;
 			}
+			
+			// Illimited needed count or current count being inferior to needed count means the state isn't reached.
+			if (neededCount <= 0 || ((currentCount + amount) < neededCount))
+				reached = false;
 		}
 		
 		// Play the sound.
@@ -834,17 +822,17 @@ public final class QuestState
 	
 	public void addRadar(int x, int y, int z)
 	{
-		_player.getRadar().addMarker(x, y, z);
+		_player.getRadarList().addMarker(x, y, z);
 	}
 	
 	public void removeRadar(int x, int y, int z)
 	{
-		_player.getRadar().removeMarker(x, y, z);
+		_player.getRadarList().removeMarker(x, y, z);
 	}
 	
 	public void clearRadar()
 	{
-		_player.getRadar().removeAllMarkers();
+		_player.getRadarList().removeAllMarkers();
 	}
 	
 	// END STUFF THAT WILL PROBABLY BE CHANGED

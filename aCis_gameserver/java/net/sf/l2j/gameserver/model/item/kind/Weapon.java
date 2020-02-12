@@ -5,24 +5,24 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
+import net.sf.l2j.gameserver.enums.ScriptEventType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
 import net.sf.l2j.gameserver.skills.conditions.ConditionGameChance;
-import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 /**
  * This class is dedicated to the management of weapons.
@@ -344,7 +344,7 @@ public final class Weapon extends Item
 			return Collections.emptyList();
 		
 		// Get the skill handler corresponding to the skill type
-		ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(_skillsOnCast.getSkill().getSkillType());
+		ISkillHandler handler = SkillHandler.getInstance().getHandler(_skillsOnCast.getSkill().getSkillType());
 		
 		Creature[] targets = new Creature[1];
 		targets[0] = target;
@@ -361,9 +361,9 @@ public final class Weapon extends Item
 			// Mobs in range 1000 see spell
 			for (Npc npcMob : caster.getKnownTypeInRadius(Npc.class, 1000))
 			{
-				List<Quest> quests = npcMob.getTemplate().getEventQuests(EventType.ON_SKILL_SEE);
-				if (quests != null)
-					for (Quest quest : quests)
+				final List<Quest> scripts = npcMob.getTemplate().getEventQuests(ScriptEventType.ON_SKILL_SEE);
+				if (scripts != null)
+					for (Quest quest : scripts)
 						quest.notifySkillSee(npcMob, (Player) caster, _skillsOnCast.getSkill(), targets, false);
 			}
 		}

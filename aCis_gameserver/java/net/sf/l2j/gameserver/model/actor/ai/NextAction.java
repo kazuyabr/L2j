@@ -1,5 +1,8 @@
 package net.sf.l2j.gameserver.model.actor.ai;
 
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.IntentionType;
+
 /**
  * Class for AI action after some event.
  * @author Yaroslav
@@ -7,10 +10,10 @@ package net.sf.l2j.gameserver.model.actor.ai;
 public class NextAction
 {
 	/** After which CtrlEvent is this action supposed to run. */
-	private final CtrlEvent _event;
+	private final AiEventType _event;
 	
-	/** What is the intention of the action, e.g. if AI gets this CtrlIntention set, NextAction is canceled. */
-	private final CtrlIntention _intention;
+	/** What is the intention of the action, e.g. if AI gets this IntentionType set, NextAction is canceled. */
+	private final IntentionType _intention;
 	
 	/** Wrapper for NextAction content. */
 	private final Runnable _runnable;
@@ -18,10 +21,10 @@ public class NextAction
 	/**
 	 * Single constructor.
 	 * @param event : After which the NextAction is triggered.
-	 * @param intention : CtrlIntention of the action.
+	 * @param intention : IntentionType of the action.
 	 * @param runnable :
 	 */
-	public NextAction(CtrlEvent event, CtrlIntention intention, Runnable runnable)
+	public NextAction(AiEventType event, IntentionType intention, Runnable runnable)
 	{
 		_event = event;
 		_intention = intention;
@@ -31,7 +34,7 @@ public class NextAction
 	/**
 	 * @return the _event
 	 */
-	public CtrlEvent getEvent()
+	public AiEventType getEvent()
 	{
 		return _event;
 	}
@@ -39,7 +42,7 @@ public class NextAction
 	/**
 	 * @return the _intention
 	 */
-	public CtrlIntention getIntention()
+	public IntentionType getIntention()
 	{
 		return _intention;
 	}

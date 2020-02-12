@@ -3,21 +3,17 @@ package net.sf.l2j.gameserver.model.actor.status;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.stat.CreatureStat;
 import net.sf.l2j.gameserver.skills.Formulas;
 
 public class CreatureStatus
 {
-	protected static final Logger _log = Logger.getLogger(CreatureStatus.class.getName());
-	
 	private final Creature _activeChar;
 	
 	private final Set<Creature> _statusListener = ConcurrentHashMap.newKeySet();
@@ -149,7 +145,7 @@ public class CreatureStatus
 			final int period = Formulas.getRegeneratePeriod(getActiveChar());
 			
 			// Create the HP/MP/CP regeneration task.
-			_regTask = ThreadPool.scheduleAtFixedRate(new RegenTask(), period, period);
+			_regTask = ThreadPool.scheduleAtFixedRate(() -> doRegeneration(), period, period);
 		}
 	}
 	
@@ -286,23 +282,6 @@ public class CreatureStatus
 		
 		// Send the StatusUpdate packet.
 		getActiveChar().broadcastStatusUpdate();
-	}
-	
-	/** Task of HP/MP regeneration */
-	class RegenTask implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			try
-			{
-				doRegeneration();
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "", e);
-			}
-		}
 	}
 	
 	public Creature getActiveChar()

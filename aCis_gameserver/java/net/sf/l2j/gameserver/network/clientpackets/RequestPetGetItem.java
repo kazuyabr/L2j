@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 
 public final class RequestPetGetItem extends L2GameClientPacket
@@ -20,7 +20,7 @@ public final class RequestPetGetItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null || !activeChar.hasPet())
 			return;
 		
@@ -28,13 +28,13 @@ public final class RequestPetGetItem extends L2GameClientPacket
 		if (item == null)
 			return;
 		
-		final Pet pet = (Pet) activeChar.getPet();
+		final Pet pet = (Pet) activeChar.getSummon();
 		if (pet.isDead() || pet.isOutOfControl())
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		pet.getAI().setIntention(CtrlIntention.PICK_UP, item);
+		pet.getAI().setIntention(IntentionType.PICK_UP, item);
 	}
 }

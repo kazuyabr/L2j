@@ -48039,7 +48039,7 @@
 		</drops>
 	</npc>
 	<npc id="20965" name="Chimera Piece" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="72"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
@@ -48308,7 +48308,7 @@
 		</drops>
 	</npc>
 	<npc id="20969" name="Giant's Shadow" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="44"/>
 		<set name="rHand" val="4028"/>

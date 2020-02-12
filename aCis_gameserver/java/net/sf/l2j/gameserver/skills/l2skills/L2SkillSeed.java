@@ -1,12 +1,13 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.skills.effects.EffectSeed;
-import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 public class L2SkillSeed extends L2Skill
 {

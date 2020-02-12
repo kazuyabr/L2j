@@ -10,12 +10,21 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.actors.ClassRace;
+import net.sf.l2j.gameserver.enums.items.ArmorType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
+import net.sf.l2j.gameserver.enums.skills.AbnormalEffect;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
+import net.sf.l2j.gameserver.enums.skills.PlayerState;
+import net.sf.l2j.gameserver.enums.skills.Stats;
+import net.sf.l2j.gameserver.enums.skills.StatsType;
 import net.sf.l2j.gameserver.model.ChanceCondition;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.base.ClassRace;
 import net.sf.l2j.gameserver.model.item.kind.Item;
-import net.sf.l2j.gameserver.model.item.type.ArmorType;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.skills.basefuncs.FuncTemplate;
 import net.sf.l2j.gameserver.skills.basefuncs.Lambda;
 import net.sf.l2j.gameserver.skills.basefuncs.LambdaCalc;
@@ -44,7 +53,6 @@ import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerPledgeClass;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerRace;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerSex;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerState;
-import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerState.PlayerState;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerWeight;
 import net.sf.l2j.gameserver.skills.conditions.ConditionSkillStats;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetActiveSkillId;
@@ -54,17 +62,11 @@ import net.sf.l2j.gameserver.skills.conditions.ConditionTargetRaceId;
 import net.sf.l2j.gameserver.skills.conditions.ConditionUsingItemType;
 import net.sf.l2j.gameserver.skills.effects.EffectChanceSkillTrigger;
 import net.sf.l2j.gameserver.skills.effects.EffectTemplate;
-import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
-import net.sf.l2j.gameserver.xmlfactory.XMLDocumentFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-/**
- * @author mkizub
- */
 abstract class DocumentBase
 {
 	static Logger _log = Logger.getLogger(DocumentBase.class.getName());
@@ -80,25 +82,20 @@ abstract class DocumentBase
 	
 	public Document parse()
 	{
-		Document doc;
+		Document doc = null;
 		try
 		{
-			doc = XMLDocumentFactory.getInstance().loadDocument(_file);
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.SEVERE, "Error loading file " + _file, e);
-			return null;
-		}
-		
-		try
-		{
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			factory.setValidating(false);
+			factory.setIgnoringComments(true);
+			
+			doc = factory.newDocumentBuilder().parse(_file);
+			
 			parseDocument(doc);
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error in file " + _file, e);
-			return null;
+			_log.log(Level.SEVERE, "Error loading file " + _file, e);
 		}
 		return doc;
 	}
@@ -745,13 +742,13 @@ abstract class DocumentBase
 			else if (val.charAt(0) == '$')
 			{
 				if (val.equalsIgnoreCase("$player_level"))
-					return new LambdaStats(LambdaStats.StatsType.PLAYER_LEVEL);
+					return new LambdaStats(StatsType.PLAYER_LEVEL);
 				if (val.equalsIgnoreCase("$target_level"))
-					return new LambdaStats(LambdaStats.StatsType.TARGET_LEVEL);
+					return new LambdaStats(StatsType.TARGET_LEVEL);
 				if (val.equalsIgnoreCase("$player_max_hp"))
-					return new LambdaStats(LambdaStats.StatsType.PLAYER_MAX_HP);
+					return new LambdaStats(StatsType.PLAYER_MAX_HP);
 				if (val.equalsIgnoreCase("$player_max_mp"))
-					return new LambdaStats(LambdaStats.StatsType.PLAYER_MAX_MP);
+					return new LambdaStats(StatsType.PLAYER_MAX_MP);
 				// try to find value out of item fields
 				StatsSet set = getStatsSet();
 				String field = set.getString(val.substring(1));

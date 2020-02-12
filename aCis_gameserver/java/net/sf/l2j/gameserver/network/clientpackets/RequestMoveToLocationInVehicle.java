@@ -1,9 +1,9 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.instancemanager.BoatManager;
-import net.sf.l2j.gameserver.model.actor.Vehicle;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
+import net.sf.l2j.gameserver.data.manager.BoatManager;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
+import net.sf.l2j.gameserver.model.actor.Boat;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.MoveToLocationInVehicle;
@@ -34,7 +34,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -56,14 +56,14 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 			return;
 		}
 		
-		if (activeChar.getPet() != null)
+		if (activeChar.getSummon() != null)
 		{
 			activeChar.sendPacket(SystemMessageId.RELEASE_PET_ON_BOAT);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		final Vehicle boat;
+		final Boat boat;
 		if (activeChar.isInBoat())
 		{
 			boat = activeChar.getBoat();
@@ -81,10 +81,10 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
-			activeChar.setVehicle(boat);
+			activeChar.setBoat(boat);
 		}
 		
-		activeChar.getVehiclePosition().set(_targetX, _targetY, _targetZ);
+		activeChar.getBoatPosition().set(_targetX, _targetY, _targetZ);
 		activeChar.broadcastPacket(new MoveToLocationInVehicle(activeChar, _targetX, _targetY, _targetZ, _originX, _originY, _originZ));
 	}
 }

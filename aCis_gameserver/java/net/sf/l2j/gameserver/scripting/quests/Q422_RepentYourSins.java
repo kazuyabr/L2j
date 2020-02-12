@@ -2,9 +2,10 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -120,10 +121,10 @@ public class Q422_RepentYourSins extends Quest
 		}
 		else if (event.equalsIgnoreCase("Pk"))
 		{
-			final Summon pet = player.getPet();
+			final Summon summon = player.getSummon();
 			
 			// If Sin Eater is currently summoned, show a warning.
-			if (pet != null && pet.getNpcId() == 12564)
+			if (summon != null && summon.getNpcId() == 12564)
 				htmltext = "30981-16.htm";
 			// If Sin Eater level is bigger than registered level, decrease PK counter by 1-10.
 			else if (findSinEaterLvl(player) > st.getInt("level"))
@@ -343,9 +344,11 @@ public class Q422_RepentYourSins extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		

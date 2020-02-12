@@ -4,26 +4,28 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
-import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
+import net.sf.l2j.gameserver.model.zone.type.BossZone;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.network.serverpackets.SpecialCamera;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class Sailren extends L2AttackableAIScript
 {
-	private static final L2BossZone SAILREN_LAIR = ZoneManager.getInstance().getZoneById(110015, L2BossZone.class);
+	private static final BossZone SAILREN_LAIR = ZoneManager.getInstance().getZoneById(110011, BossZone.class);
 	
 	public static final int SAILREN = 29065;
 	
@@ -43,7 +45,7 @@ public class Sailren extends L2AttackableAIScript
 	private static final SpawnLocation SAILREN_LOC = new SpawnLocation(27549, -6638, -2008, 0);
 	
 	private final List<Npc> _mobs = new CopyOnWriteArrayList<>();
-	private static long _lastAttackTime = 0;
+	private static long _timeTracker = 0;
 	
 	public Sailren()
 	{
@@ -94,12 +96,12 @@ public class Sailren extends L2AttackableAIScript
 	{
 		if (event.equalsIgnoreCase("beginning"))
 		{
-			_lastAttackTime = 0;
+			_timeTracker = 0;
 			
 			for (int i = 0; i < 3; i++)
 			{
 				final Npc temp = addSpawn(VELOCIRAPTOR, SAILREN_LOC, true, 0, false);
-				temp.getAI().setIntention(CtrlIntention.ACTIVE);
+				temp.getAI().setIntention(IntentionType.ACTIVE);
 				temp.setRunning();
 				_mobs.add(temp);
 			}
@@ -155,7 +157,7 @@ public class Sailren extends L2AttackableAIScript
 		else if (event.equalsIgnoreCase("inactivity"))
 		{
 			// 10 minutes without any attack activity leads to a reset.
-			if ((System.currentTimeMillis() - _lastAttackTime) >= INTERVAL_CHECK)
+			if ((System.currentTimeMillis() - _timeTracker) >= INTERVAL_CHECK)
 			{
 				// Set it dormant.
 				GrandBossManager.getInstance().setBossStatus(SAILREN, DORMANT);
@@ -186,10 +188,14 @@ public class Sailren extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		if (!_mobs.contains(npc) || !SAILREN_LAIR.getAllowedPlayers().contains(killer.getObjectId()))
-			return null;
+		if (killer instanceof Playable)
+		{
+			final Player player = killer.getActingPlayer();
+			if (player == null || !_mobs.contains(npc) || !SAILREN_LAIR.getAllowedPlayers().contains(player.getObjectId()))
+				return null;
+		}
 		
 		switch (npc.getNpcId())
 		{
@@ -199,7 +205,7 @@ public class Sailren extends L2AttackableAIScript
 				{
 					final Npc temp = addSpawn(PTEROSAUR, SAILREN_LOC, false, 0, false);
 					temp.setRunning();
-					temp.getAI().setIntention(CtrlIntention.ATTACK, killer);
+					temp.getAI().setIntention(IntentionType.ATTACK, killer);
 					_mobs.add(temp);
 				}
 				break;
@@ -210,7 +216,7 @@ public class Sailren extends L2AttackableAIScript
 				{
 					final Npc temp = addSpawn(TREX, SAILREN_LOC, false, 0, false);
 					temp.setRunning();
-					temp.getAI().setIntention(CtrlIntention.ATTACK, killer);
+					temp.getAI().setIntention(IntentionType.ATTACK, killer);
 					temp.broadcastNpcSay("?");
 					_mobs.add(temp);
 				}
@@ -219,7 +225,7 @@ public class Sailren extends L2AttackableAIScript
 			case TREX:
 				// Trex is dead, wait 5min and spawn Sailren.
 				if (_mobs.remove(npc))
-					startQuestTimer("spawn", Config.WAIT_TIME_SAILREN, npc, killer, false);
+					startQuestTimer("spawn", Config.WAIT_TIME_SAILREN, npc, null, false);
 				break;
 			
 			case SAILREN:
@@ -248,18 +254,25 @@ public class Sailren extends L2AttackableAIScript
 				break;
 		}
 		
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		if (!_mobs.contains(npc) || !SAILREN_LAIR.getAllowedPlayers().contains(attacker.getObjectId()))
-			return null;
-		
-		// Actualize _timeTracker.
-		_lastAttackTime = System.currentTimeMillis();
-		
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		if (attacker instanceof Playable)
+		{
+			final Player player = attacker.getActingPlayer();
+			if (player == null || !_mobs.contains(npc) || !SAILREN_LAIR.getAllowedPlayers().contains(player.getObjectId()))
+				return null;
+			
+			// Curses
+			if (testCursesOnAttack(npc, attacker, SAILREN))
+				return null;
+			
+			// Refresh timer on every hit.
+			_timeTracker = System.currentTimeMillis();
+		}
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 }

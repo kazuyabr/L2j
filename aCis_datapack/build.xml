@@ -37,7 +37,7 @@
 		</sync>
 		<sync todir="${build.login}">
 			<fileset dir="${build.game}/data">
-				<include name="servername.xml" />
+				<include name="serverNames.xml" />
 			</fileset>
 		</sync>
 	</target>

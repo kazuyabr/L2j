@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.model.itemcontainer;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemLocation;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 

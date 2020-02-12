@@ -11,7 +11,7 @@ import net.sf.l2j.commons.mmocore.MMOConnection;
 import net.sf.l2j.commons.mmocore.ReceivablePacket;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.network.L2GameClient.GameClientState;
+import net.sf.l2j.gameserver.network.GameClient.GameClientState;
 import net.sf.l2j.gameserver.network.clientpackets.*;
 
 /**
@@ -20,19 +20,19 @@ import net.sf.l2j.gameserver.network.clientpackets.*;
  * Note : If for a given exception a packet needs to be handled on more then one state, then it should be added to all these states.
  * @author KenM
  */
-public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, IClientFactory<L2GameClient>, IMMOExecutor<L2GameClient>
+public final class L2GamePacketHandler implements IPacketHandler<GameClient>, IClientFactory<GameClient>, IMMOExecutor<GameClient>
 {
 	private static final Logger _log = Logger.getLogger(L2GamePacketHandler.class.getName());
 	
 	@Override
-	public ReceivablePacket<L2GameClient> handlePacket(ByteBuffer buf, L2GameClient client)
+	public ReceivablePacket<GameClient> handlePacket(ByteBuffer buf, GameClient client)
 	{
 		if (client.dropPacket())
 			return null;
 		
 		int opcode = buf.get() & 0xFF;
 		
-		ReceivablePacket<L2GameClient> msg = null;
+		ReceivablePacket<GameClient> msg = null;
 		GameClientState state = client.getState();
 		
 		switch (state)
@@ -51,6 +51,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						break;
 				}
 				break;
+			
 			case AUTHED:
 				switch (opcode)
 				{
@@ -80,6 +81,43 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						break;
 				}
 				break;
+			
+			case ENTERING:
+				switch (opcode)
+				{
+					case 0x03:
+						msg = new EnterWorld();
+						break;
+					
+					case 0xd0:
+						int id2 = -1;
+						if (buf.remaining() >= 2)
+						{
+							id2 = buf.getShort() & 0xffff;
+						}
+						else
+						{
+							_log.warning("Client: " + client.toString() + " sent a 0xd0 without the second opcode.");
+							break;
+						}
+						
+						switch (id2)
+						{
+							case 8:
+								msg = new RequestManorList();
+								break;
+							default:
+								printDebugDoubleOpcode(opcode, id2, buf, state, client);
+								break;
+						}
+						break;
+					
+					default:
+						printDebug(opcode, buf, state, client);
+						break;
+				}
+				break;
+			
 			case IN_GAME:
 				switch (opcode)
 				{
@@ -89,9 +127,6 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					// case 0x02:
 					// // Say ... not used any more ??
 					// break;
-					case 0x03:
-						msg = new EnterWorld();
-						break;
 					case 0x04:
 						msg = new Action();
 						break;
@@ -486,9 +521,6 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					// break;
 					case 0x9d:
 						// RequestSkillCoolTime
-						/*
-						 * if (Config.DEBUG) _log.info("Request Skill Cool Time .. ignored"); msg = null;
-						 */
 						break;
 					case 0x9e:
 						msg = new RequestPackageSendableItemList();
@@ -799,7 +831,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		return msg;
 	}
 	
-	private static void printDebug(int opcode, ByteBuffer buf, GameClientState state, L2GameClient client)
+	private static void printDebug(int opcode, ByteBuffer buf, GameClientState state, GameClient client)
 	{
 		client.onUnknownPacket();
 		if (!Config.PACKET_HANDLER_DEBUG)
@@ -812,7 +844,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		_log.warning(HexUtil.printData(array, size));
 	}
 	
-	private static void printDebugDoubleOpcode(int opcode, int id2, ByteBuffer buf, GameClientState state, L2GameClient client)
+	private static void printDebugDoubleOpcode(int opcode, int id2, ByteBuffer buf, GameClientState state, GameClient client)
 	{
 		client.onUnknownPacket();
 		if (!Config.PACKET_HANDLER_DEBUG)
@@ -827,13 +859,13 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 	
 	// impl
 	@Override
-	public L2GameClient create(MMOConnection<L2GameClient> con)
+	public GameClient create(MMOConnection<GameClient> con)
 	{
-		return new L2GameClient(con);
+		return new GameClient(con);
 	}
 	
 	@Override
-	public void execute(ReceivablePacket<L2GameClient> rp)
+	public void execute(ReceivablePacket<GameClient> rp)
 	{
 		rp.getClient().execute(rp);
 	}

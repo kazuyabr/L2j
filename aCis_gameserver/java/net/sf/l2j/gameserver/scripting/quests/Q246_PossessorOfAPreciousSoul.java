@@ -2,8 +2,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -170,17 +171,18 @@ public class Q246_PossessorOfAPreciousSoul extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
+		final Player player = killer.getActingPlayer();
 		final int npcId = npc.getNpcId();
+		
 		if (npcId == BARAKIEL)
 		{
-			for (Player plr : getPartyMembers(player, npc, "cond", "4"))
+			for (QuestState st : getPartyMembers(player, npc, "cond", "4"))
 			{
-				if (!plr.isSubClassActive())
+				if (!st.getPlayer().isSubClassActive())
 					continue;
 				
-				QuestState st = plr.getQuestState(qn);
 				if (!st.hasQuestItems(RAIN_SONG))
 				{
 					st.set("cond", "5");

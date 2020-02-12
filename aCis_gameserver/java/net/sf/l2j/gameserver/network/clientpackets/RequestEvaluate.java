@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.network.serverpackets.UserInfo;
@@ -19,56 +19,55 @@ public final class RequestEvaluate extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
 		final Player target = World.getInstance().getPlayer(_targetId);
 		if (target == null)
 		{
-			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
+			player.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return;
 		}
 		
-		// Exploit
-		if (activeChar.getTarget() != target)
+		if (player.getTarget() != target)
 			return;
 		
-		if (activeChar.getLevel() < 10)
+		if (player.equals(target))
 		{
-			activeChar.sendPacket(SystemMessageId.ONLY_LEVEL_SUP_10_CAN_RECOMMEND);
-			return;
-		}
-		
-		if (activeChar.getRecomLeft() <= 0)
-		{
-			activeChar.sendPacket(SystemMessageId.NO_MORE_RECOMMENDATIONS_TO_HAVE);
+			player.sendPacket(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
 			return;
 		}
 		
-		if (activeChar.equals(target))
+		if (player.getLevel() < 10)
 		{
-			activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
+			player.sendPacket(SystemMessageId.ONLY_LEVEL_SUP_10_CAN_RECOMMEND);
+			return;
+		}
+		
+		if (player.getRecomLeft() <= 0)
+		{
+			player.sendPacket(SystemMessageId.NO_MORE_RECOMMENDATIONS_TO_HAVE);
 			return;
 		}
 		
 		if (target.getRecomHave() >= 255)
 		{
-			activeChar.sendPacket(SystemMessageId.YOUR_TARGET_NO_LONGER_RECEIVE_A_RECOMMENDATION);
+			player.sendPacket(SystemMessageId.YOUR_TARGET_NO_LONGER_RECEIVE_A_RECOMMENDATION);
 			return;
 		}
 		
-		if (!activeChar.canRecom(target))
+		if (!player.canRecom(target))
 		{
-			activeChar.sendPacket(SystemMessageId.THAT_CHARACTER_IS_RECOMMENDED);
+			player.sendPacket(SystemMessageId.THAT_CHARACTER_IS_RECOMMENDED);
 			return;
 		}
 		
-		activeChar.giveRecom(target);
-		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_RECOMMENDED_S1_YOU_HAVE_S2_RECOMMENDATIONS_LEFT).addCharName(target).addNumber(activeChar.getRecomLeft()));
-		target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_RECOMMENDED_BY_S1).addCharName(activeChar));
+		player.giveRecom(target);
+		player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_RECOMMENDED_S1_YOU_HAVE_S2_RECOMMENDATIONS_LEFT).addCharName(target).addNumber(player.getRecomLeft()));
+		player.sendPacket(new UserInfo(player));
 		
-		activeChar.sendPacket(new UserInfo(activeChar));
+		target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_RECOMMENDED_BY_S1).addCharName(player));
 		target.broadcastUserInfo();
 	}
 }

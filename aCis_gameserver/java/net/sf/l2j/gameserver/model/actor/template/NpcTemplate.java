@@ -5,19 +5,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.data.xml.HerbDropData;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
+import net.sf.l2j.gameserver.enums.actors.ClassId;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.MinionData;
-import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.item.DropCategory;
 import net.sf.l2j.gameserver.model.item.DropData;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.Quest;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class NpcTemplate extends CreatureTemplate
 {
@@ -29,7 +28,8 @@ public class NpcTemplate extends CreatureTemplate
 		PASSIVE,
 		LONG_RANGE,
 		SHORT_RANGE,
-		SUICIDE
+		SUICIDE,
+		TELEPORT
 	}
 	
 	public static enum AIType
@@ -71,8 +71,6 @@ public class NpcTemplate extends CreatureTemplate
 		public static final Race[] VALUES = values();
 	}
 	
-	protected static final Logger _log = Logger.getLogger(NpcTemplate.class.getName());
-	
 	private final int _npcId;
 	private final int _idTemplate;
 	private final String _type;
@@ -111,7 +109,7 @@ public class NpcTemplate extends CreatureTemplate
 	private List<ClassId> _teachInfo;
 	
 	private final Map<SkillType, List<L2Skill>> _skills = new HashMap<>();
-	private final Map<EventType, List<Quest>> _questEvents = new HashMap<>();
+	private final Map<ScriptEventType, List<Quest>> _questEvents = new HashMap<>();
 	
 	private Castle _castle;
 	
@@ -134,13 +132,7 @@ public class NpcTemplate extends CreatureTemplate
 		_lHand = set.getInteger("lHand", 0);
 		_enchantEffect = set.getInteger("enchant", 0);
 		_corpseTime = set.getInteger("corpseTime", 7);
-		
 		_dropHerbGroup = set.getInteger("dropHerbGroup", 0);
-		if (_dropHerbGroup > 0 && HerbDropData.getInstance().getHerbDroplist(_dropHerbGroup) == null)
-		{
-			_log.warning("Missing dropHerbGroup information for npcId: " + _npcId + ", dropHerbGroup: " + _dropHerbGroup);
-			_dropHerbGroup = 0;
-		}
 		
 		if (set.containsKey("raceId"))
 			setRace(set.getInteger("raceId"));
@@ -206,13 +198,12 @@ public class NpcTemplate extends CreatureTemplate
 	}
 	
 	/**
-	 * Checks types, ignore case.
-	 * @param t the type to check.
-	 * @return true if the type are the same, false otherwise.
+	 * @param type : the type to check.
+	 * @return true if the instance type written as {@link String} is the same as this {@link NpcTemplate}, or false otherwise.
 	 */
-	public boolean isType(String t)
+	public boolean isType(String type)
 	{
-		return _type.equalsIgnoreCase(t);
+		return _type.equalsIgnoreCase(type);
 	}
 	
 	public String getName()
@@ -349,21 +340,21 @@ public class NpcTemplate extends CreatureTemplate
 		return _isSeedable;
 	}
 	
-	/**
-	 * @return the list of all possible UNCATEGORIZED drops of this L2NpcTemplate.
-	 */
-	public List<DropCategory> getDropData()
-	{
-		return _categories;
-	}
-	
 	public Castle getCastle()
 	{
 		return _castle;
 	}
 	
 	/**
-	 * @return the list of all possible item drops of this L2NpcTemplate. (ie full drops and part drops, mats, miscellaneous & UNCATEGORIZED)
+	 * @return the {@link List} of all possible UNCATEGORIZED {@link DropData}s of this {@link NpcTemplate}.
+	 */
+	public List<DropCategory> getDropData()
+	{
+		return _categories;
+	}
+	
+	/**
+	 * @return the {@link List} of all possible {@link DropData}s of this {@link NpcTemplate} (ie full drops and part drops, mats, miscellaneous & UNCATEGORIZED).
 	 */
 	public List<DropData> getAllDropData()
 	{
@@ -375,9 +366,9 @@ public class NpcTemplate extends CreatureTemplate
 	}
 	
 	/**
-	 * Add a drop to a given category. If the category does not exist, create it.
-	 * @param drop
-	 * @param categoryType
+	 * Add a {@link DropData} to a given category. If the category does not exist, create it.
+	 * @param drop : The DropData to add.
+	 * @param categoryType : The category type we refer.
 	 */
 	public void addDropData(DropData drop, int categoryType)
 	{
@@ -404,28 +395,43 @@ public class NpcTemplate extends CreatureTemplate
 	}
 	
 	/**
-	 * @return the list of all Minions that must be spawn with the L2Npc using this L2NpcTemplate.
+	 * @return the {@link List} of all {@link MinionData}.
 	 */
 	public List<MinionData> getMinionData()
 	{
 		return _minions;
 	}
 	
+	/**
+	 * @param classId : The ClassId to check.
+	 * @return true if _teachInfo exists and if it contains the {@link ClassId} set as parameter, or false otherwise.
+	 */
 	public boolean canTeach(ClassId classId)
 	{
 		return _teachInfo != null && _teachInfo.contains((classId.level() == 3) ? classId.getParent() : classId);
 	}
 	
+	/**
+	 * @return the {@link Map} holding the {@link List} of {@link L2Skill}s.
+	 */
 	public Map<SkillType, List<L2Skill>> getSkills()
 	{
 		return _skills;
 	}
 	
+	/**
+	 * @param type : The SkillType to test.
+	 * @return the {@link List} of {@link L2Skill}s based on a given {@link SkillType}.
+	 */
 	public List<L2Skill> getSkills(SkillType type)
 	{
 		return _skills.getOrDefault(type, Collections.emptyList());
 	}
 	
+	/**
+	 * Distribute {@link L2Skill}s amongst the different {@link SkillType}s. Categories are used for easier management of AI.
+	 * @param skills : The initial List of L2Skill to distribute.
+	 */
 	public void addSkills(List<L2Skill> skills)
 	{
 		for (L2Skill skill : skills)
@@ -444,6 +450,11 @@ public class NpcTemplate extends CreatureTemplate
 			
 			switch (skill.getSkillType())
 			{
+				case GET_PLAYER:
+				case INSTANT_JUMP:
+					addSkill(SkillType.TELEPORT, skill);
+					continue;
+				
 				case BUFF:
 				case CONT:
 				case REFLECT:
@@ -487,8 +498,6 @@ public class NpcTemplate extends CreatureTemplate
 				case DEATHLINK:
 				case MANADAM:
 				case CPDAMPERCENT:
-				case GET_PLAYER:
-				case INSTANT_JUMP:
 				case AGGDAMAGE:
 					addSkill((skill.getCastRange() > 150) ? SkillType.LONG_RANGE : SkillType.SHORT_RANGE, skill);
 					continue;
@@ -497,7 +506,14 @@ public class NpcTemplate extends CreatureTemplate
 		}
 	}
 	
-	public void addSkill(SkillType type, L2Skill skill)
+	/**
+	 * Submethod of {@link #addSkills(List)}. Add a {@link L2Skill} to the given {@link SkillType} {@link List}.<br>
+	 * <br>
+	 * Create the category if it's not existing.
+	 * @param type : The SkillType to test.
+	 * @param skill : The L2Skill to add.
+	 */
+	private void addSkill(SkillType type, L2Skill skill)
 	{
 		List<L2Skill> list = _skills.get(type);
 		if (list == null)
@@ -511,17 +527,31 @@ public class NpcTemplate extends CreatureTemplate
 			list.add(skill);
 	}
 	
-	public Map<EventType, List<Quest>> getEventQuests()
+	/**
+	 * @return the {@link Map} of {@link Quest}s {@link List} categorized by {@link ScriptEventType}.
+	 */
+	public Map<ScriptEventType, List<Quest>> getEventQuests()
 	{
 		return _questEvents;
 	}
 	
-	public List<Quest> getEventQuests(EventType EventType)
+	/**
+	 * @param type : The ScriptEventType to refer.
+	 * @return the {@link List} of {@link Quest}s associated to a {@link ScriptEventType}.
+	 */
+	public List<Quest> getEventQuests(ScriptEventType type)
 	{
-		return _questEvents.get(EventType);
+		return _questEvents.get(type);
 	}
 	
-	public void addQuestEvent(EventType type, Quest quest)
+	/**
+	 * Add a {@link Quest} to the given {@link ScriptEventType} {@link List}.<br>
+	 * <br>
+	 * Create the category if it's not existing.
+	 * @param type : The ScriptEventType to test.
+	 * @param quest : The Quest to add.
+	 */
+	public void addQuestEvent(ScriptEventType type, Quest quest)
 	{
 		List<Quest> list = _questEvents.get(type);
 		if (list == null)
@@ -537,8 +567,6 @@ public class NpcTemplate extends CreatureTemplate
 			
 			if (type.isMultipleRegistrationAllowed() || list.isEmpty())
 				list.add(quest);
-			else
-				_log.warning("Quest event not allow multiple quest registrations. Skipped addition of EventType \"" + type + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
 		}
 	}
 }

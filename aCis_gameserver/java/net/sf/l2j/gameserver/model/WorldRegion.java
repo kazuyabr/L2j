@@ -7,23 +7,23 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.model.zone.L2ZoneType;
-import net.sf.l2j.gameserver.model.zone.type.L2DerbyTrackZone;
-import net.sf.l2j.gameserver.model.zone.type.L2PeaceZone;
-import net.sf.l2j.gameserver.model.zone.type.L2TownZone;
+import net.sf.l2j.gameserver.model.zone.ZoneType;
+import net.sf.l2j.gameserver.model.zone.type.DerbyTrackZone;
+import net.sf.l2j.gameserver.model.zone.type.PeaceZone;
+import net.sf.l2j.gameserver.model.zone.type.TownZone;
 
 public final class WorldRegion
 {
 	private final Map<Integer, WorldObject> _objects = new ConcurrentHashMap<>();
 	
 	private final List<WorldRegion> _surroundingRegions = new ArrayList<>();
-	private final List<L2ZoneType> _zones = new ArrayList<>();
+	private final List<ZoneType> _zones = new ArrayList<>();
 	
 	private final int _tileX;
 	private final int _tileY;
@@ -58,17 +58,17 @@ public final class WorldRegion
 		return _surroundingRegions;
 	}
 	
-	public List<L2ZoneType> getZones()
+	public List<ZoneType> getZones()
 	{
 		return _zones;
 	}
 	
-	public void addZone(L2ZoneType zone)
+	public void addZone(ZoneType zone)
 	{
 		_zones.add(zone);
 	}
 	
-	public void removeZone(L2ZoneType zone)
+	public void removeZone(ZoneType zone)
 	{
 		_zones.remove(zone);
 	}
@@ -89,7 +89,7 @@ public final class WorldRegion
 	
 	public boolean containsZone(int zoneId)
 	{
-		for (L2ZoneType z : _zones)
+		for (ZoneType z : _zones)
 		{
 			if (z.getId() == zoneId)
 				return true;
@@ -105,9 +105,9 @@ public final class WorldRegion
 		final int left = loc.getX() + range;
 		final int right = loc.getX() - range;
 		
-		for (L2ZoneType e : _zones)
+		for (ZoneType e : _zones)
 		{
-			if ((e instanceof L2TownZone && ((L2TownZone) e).isPeaceZone()) || e instanceof L2DerbyTrackZone || e instanceof L2PeaceZone)
+			if ((e instanceof TownZone && ((TownZone) e).isPeaceZone()) || e instanceof DerbyTrackZone || e instanceof PeaceZone)
 			{
 				if (e.isInsideZone(loc.getX(), up, loc.getZ()))
 					return false;
@@ -126,16 +126,6 @@ public final class WorldRegion
 			}
 		}
 		return true;
-	}
-	
-	public void onDeath(Creature character)
-	{
-		_zones.stream().filter(z -> z.isCharacterInZone(character)).forEach(z -> z.onDieInside(character));
-	}
-	
-	public void onRevive(Creature character)
-	{
-		_zones.stream().filter(z -> z.isCharacterInZone(character)).forEach(z -> z.onReviveInside(character));
 	}
 	
 	public boolean isActive()
@@ -196,7 +186,7 @@ public final class WorldRegion
 					// stop the ai tasks
 					if (mob.hasAI())
 					{
-						mob.getAI().setIntention(CtrlIntention.IDLE);
+						mob.getAI().setIntention(IntentionType.IDLE);
 						mob.getAI().stopAITask();
 					}
 				}

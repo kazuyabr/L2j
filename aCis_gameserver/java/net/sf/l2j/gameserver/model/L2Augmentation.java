@@ -5,10 +5,10 @@ import java.util.List;
 import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.xml.AugmentationData;
 import net.sf.l2j.gameserver.data.xml.AugmentationData.AugStat;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SkillCoolTime;
-import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.skills.basefuncs.FuncAdd;
 import net.sf.l2j.gameserver.skills.basefuncs.LambdaConst;
 
@@ -112,7 +112,7 @@ public final class L2Augmentation
 		// add the skill if any
 		if (_skill != null)
 		{
-			player.addSkill(_skill);
+			player.addSkill(_skill, false);
 			if (_skill.isActive())
 			{
 				if (player.getReuseTimeStamp().containsKey(_skill.getReuseHashCode()))
@@ -142,11 +142,7 @@ public final class L2Augmentation
 		// remove the skill if any
 		if (_skill != null)
 		{
-			if (_skill.isPassive())
-				player.removeSkill(_skill, false, true);
-			else
-				player.removeSkill(_skill, false, false);
-			
+			player.removeSkill(_skill.getId(), false, _skill.isPassive() || _skill.isToggle());
 			player.sendSkillList();
 		}
 	}

@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameTask;
@@ -18,7 +18,7 @@ public final class RequestOlympiadMatchList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null || !activeChar.isInObserverMode())
 			return;
 		

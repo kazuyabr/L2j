@@ -1,11 +1,11 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.enums.SiegeSide;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.entity.Siege;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
 public class Die extends L2GameServerPacket
@@ -31,8 +31,8 @@ public class Die extends L2GameServerPacket
 			_clan = player.getClan();
 			
 		}
-		else if (cha instanceof Attackable)
-			_sweepable = ((Attackable) cha).isSpoiled();
+		else if (cha instanceof Monster)
+			_sweepable = ((Monster) cha).isSpoiled();
 	}
 	
 	@Override
@@ -49,11 +49,11 @@ public class Die extends L2GameServerPacket
 		{
 			SiegeSide side = null;
 			
-			final Siege siege = CastleManager.getInstance().getSiege(_activeChar);
+			final Siege siege = CastleManager.getInstance().getActiveSiege(_activeChar);
 			if (siege != null)
 				side = siege.getSide(_clan);
 			
-			writeD((_clan.hasHideout()) ? 0x01 : 0x00); // to clanhall
+			writeD((_clan.hasClanHall()) ? 0x01 : 0x00); // to clanhall
 			writeD((_clan.hasCastle() || side == SiegeSide.OWNER || side == SiegeSide.DEFENDER) ? 0x01 : 0x00); // to castle
 			writeD((side == SiegeSide.ATTACKER && _clan.getFlag() != null) ? 0x01 : 0x00); // to siege HQ
 		}

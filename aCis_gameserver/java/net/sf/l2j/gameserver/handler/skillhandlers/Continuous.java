@@ -1,25 +1,25 @@
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.manager.DuelManager;
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.items.ShotType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
-import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.ClanHallManagerNpc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class Continuous implements ISkillHandler
 {
@@ -97,7 +97,7 @@ public class Continuous implements ISkillHandler
 			}
 			
 			// Target under debuff immunity.
-			if (skill.isDebuff() && target.getFirstEffect(L2EffectType.BLOCK_DEBUFF) != null)
+			if (skill.isOffensive() && target.getFirstEffect(L2EffectType.BLOCK_DEBUFF) != null)
 				continue;
 			
 			boolean acted = true;
@@ -129,11 +129,11 @@ public class Continuous implements ISkillHandler
 				if (skill.getSkillType() == L2SkillType.AGGDEBUFF)
 				{
 					if (target instanceof Attackable)
-						target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) skill.getPower());
+						target.getAI().notifyEvent(AiEventType.AGGRESSION, activeChar, (int) skill.getPower());
 					else if (target instanceof Playable)
 					{
 						if (target.getTarget() == activeChar)
-							target.getAI().setIntention(CtrlIntention.ATTACK, activeChar);
+							target.getAI().setIntention(IntentionType.ATTACK, activeChar);
 						else
 							target.setTarget(activeChar);
 					}

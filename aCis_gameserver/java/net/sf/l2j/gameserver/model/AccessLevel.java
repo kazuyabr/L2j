@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.model;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.data.xml.AdminData;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * A datatype used to retain access level informations, such as isGM() and multiple allowed actions (experience gain, allow transactions/peace attack/damage dealing/...).

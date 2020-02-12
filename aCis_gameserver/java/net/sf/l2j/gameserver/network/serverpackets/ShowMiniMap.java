@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
 
 public class ShowMiniMap extends L2GameServerPacket
 {
@@ -18,6 +18,6 @@ public class ShowMiniMap extends L2GameServerPacket
 	{
 		writeC(0x9d);
 		writeD(_mapId);
-		writeD(SevenSigns.getInstance().getCurrentPeriod().ordinal());
+		writeD(SevenSignsManager.getInstance().getCurrentPeriod().ordinal());
 	}
 }

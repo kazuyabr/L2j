@@ -1,15 +1,12 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.L2ShortCut;
+import net.sf.l2j.gameserver.model.Shortcut;
 
-/**
- * format dd d/dd/d d
- */
 public class ShortCutRegister extends L2GameServerPacket
 {
-	private final L2ShortCut _shortcut;
+	private final Shortcut _shortcut;
 	
-	public ShortCutRegister(L2ShortCut shortcut)
+	public ShortCutRegister(Shortcut shortcut)
 	{
 		_shortcut = shortcut;
 	}
@@ -19,21 +16,23 @@ public class ShortCutRegister extends L2GameServerPacket
 	{
 		writeC(0x44);
 		
-		writeD(_shortcut.getType());
-		writeD(_shortcut.getSlot() + _shortcut.getPage() * 12); // C4 Client
+		writeD(_shortcut.getType().ordinal());
+		writeD(_shortcut.getSlot() + _shortcut.getPage() * 12);
 		switch (_shortcut.getType())
 		{
-			case L2ShortCut.TYPE_ITEM: // 1
+			case ITEM:
 				writeD(_shortcut.getId());
 				writeD(_shortcut.getCharacterType());
 				writeD(_shortcut.getSharedReuseGroup());
 				break;
-			case L2ShortCut.TYPE_SKILL: // 2
+			
+			case SKILL:
 				writeD(_shortcut.getId());
 				writeD(_shortcut.getLevel());
-				writeC(0x00); // C5
+				writeC(0x00);
 				writeD(_shortcut.getCharacterType());
 				break;
+			
 			default:
 				writeD(_shortcut.getId());
 				writeD(_shortcut.getCharacterType());

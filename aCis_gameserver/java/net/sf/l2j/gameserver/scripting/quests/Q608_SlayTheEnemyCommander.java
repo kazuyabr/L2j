@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -92,14 +93,14 @@ public class Q608_SlayTheEnemyCommander extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		for (Player partyMember : getPartyMembers(player, npc, "cond", "1"))
+		final Player player = killer.getActingPlayer();
+		if (player != null)
 		{
-			if (partyMember.getAllianceWithVarkaKetra() >= 4)
+			for (QuestState st : getPartyMembers(player, npc, "cond", "1"))
 			{
-				QuestState st = partyMember.getQuestState(qn);
-				if (st.hasQuestItems(KETRA_ALLIANCE_4))
+				if (st.getPlayer().getAllianceWithVarkaKetra() >= 4 && st.hasQuestItems(KETRA_ALLIANCE_4))
 				{
 					st.set("cond", "2");
 					st.playSound(QuestState.SOUND_MIDDLE);
@@ -107,7 +108,6 @@ public class Q608_SlayTheEnemyCommander extends Quest
 				}
 			}
 		}
-		
 		return null;
 	}
 }

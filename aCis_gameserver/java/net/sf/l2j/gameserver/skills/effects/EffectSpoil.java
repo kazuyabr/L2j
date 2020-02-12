@@ -1,14 +1,14 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * This is the Effect support for spoil, originally done by _drunk_
@@ -51,7 +51,7 @@ public class EffectSpoil extends L2Effect
 			target.setSpoilerId(getEffector().getObjectId());
 			getEffector().sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SPOIL_SUCCESS));
 		}
-		target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, getEffector());
+		target.getAI().notifyEvent(AiEventType.ATTACKED, getEffector());
 		return true;
 	}
 	

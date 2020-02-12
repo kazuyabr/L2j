@@ -1,12 +1,12 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import net.sf.l2j.gameserver.data.SpawnTable;
+import net.sf.l2j.gameserver.data.manager.RaidBossManager;
+import net.sf.l2j.gameserver.data.sql.SpawnTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
-import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
@@ -46,8 +46,8 @@ public class AdminDelete implements IAdminCommandHandler
 			{
 				spawn.setRespawnState(false);
 				
-				if (RaidBossSpawnManager.getInstance().isDefined(spawn.getNpcId()))
-					RaidBossSpawnManager.getInstance().deleteSpawn(spawn, true);
+				if (RaidBossManager.getInstance().getBossSpawn(spawn.getNpcId()) != null)
+					RaidBossManager.getInstance().deleteSpawn(spawn);
 				else
 					SpawnTable.getInstance().deleteSpawn(spawn, true);
 			}

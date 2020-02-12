@@ -2,9 +2,11 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.actors.ClassId;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -322,9 +324,11 @@ public class Q216_TrialOfTheGuildsman extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
@@ -370,7 +374,7 @@ public class Q216_TrialOfTheGuildsman extends Quest
 				if (st.hasQuestItems(PINTER_INSTRUCTIONS))
 				{
 					// Different cases if player is a wannabe BH or WS.
-					if (st.dropItemsAlways(AMBER_BEAD, (player.getClassId() == ClassId.SCAVENGER && npc.getSpoilerId() == player.getObjectId()) ? 10 : 5, 70))
+					if (st.dropItemsAlways(AMBER_BEAD, (player.getClassId() == ClassId.SCAVENGER && ((Monster) npc).getSpoilerId() == player.getObjectId()) ? 10 : 5, 70))
 						if (player.getClassId() == ClassId.ARTISAN && Rnd.nextBoolean())
 							st.giveItems(AMBER_LUMP, 1);
 				}

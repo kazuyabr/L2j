@@ -2,30 +2,15 @@ package net.sf.l2j.loginserver.network.serverpackets;
 
 public final class PlayFail extends L2LoginServerPacket
 {
-	public static enum PlayFailReason
-	{
-		REASON_SYSTEM_ERROR(0x01),
-		REASON_USER_OR_PASS_WRONG(0x02),
-		REASON3(0x03),
-		REASON4(0x04),
-		REASON_TOO_MANY_PLAYERS(0x0f);
-		
-		private final int _code;
-		
-		PlayFailReason(int code)
-		{
-			_code = code;
-		}
-		
-		public final int getCode()
-		{
-			return _code;
-		}
-	}
+	public static final PlayFail REASON_SYSTEM_ERROR = new PlayFail(0x01);
+	public static final PlayFail REASON_USER_OR_PASS_WRONG = new PlayFail(0x02);
+	public static final PlayFail REASON3 = new PlayFail(0x03);
+	public static final PlayFail REASON4 = new PlayFail(0x04);
+	public static final PlayFail REASON_TOO_MANY_PLAYERS = new PlayFail(0x0f);
 	
-	private final PlayFailReason _reason;
+	private final int _reason;
 	
-	public PlayFail(PlayFailReason reason)
+	private PlayFail(int reason)
 	{
 		_reason = reason;
 	}
@@ -34,6 +19,6 @@ public final class PlayFail extends L2LoginServerPacket
 	protected void write()
 	{
 		writeC(0x06);
-		writeC(_reason.getCode());
+		writeC(_reason);
 	}
 }

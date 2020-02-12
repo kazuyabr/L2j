@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import net.sf.l2j.gameserver.data.DoorTable;
+import net.sf.l2j.gameserver.data.xml.DoorData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
@@ -33,14 +33,14 @@ public class AdminDoorControl implements IAdminCommandHandler
 		{
 			if (command.equals("admin_openall"))
 			{
-				for (Door door : DoorTable.getInstance().getDoors())
+				for (Door door : DoorData.getInstance().getDoors())
 					door.openMe();
 			}
 			else
 			{
 				try
 				{
-					final Door door = DoorTable.getInstance().getDoor(Integer.parseInt(command.substring(11)));
+					final Door door = DoorData.getInstance().getDoor(Integer.parseInt(command.substring(11)));
 					if (door != null)
 						door.openMe();
 					else
@@ -61,14 +61,14 @@ public class AdminDoorControl implements IAdminCommandHandler
 		{
 			if (command.equals("admin_closeall"))
 			{
-				for (Door door : DoorTable.getInstance().getDoors())
+				for (Door door : DoorData.getInstance().getDoors())
 					door.closeMe();
 			}
 			else
 			{
 				try
 				{
-					final Door door = DoorTable.getInstance().getDoor(Integer.parseInt(command.substring(12)));
+					final Door door = DoorData.getInstance().getDoor(Integer.parseInt(command.substring(12)));
 					if (door != null)
 						door.closeMe();
 					else

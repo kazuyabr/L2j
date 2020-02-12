@@ -1,15 +1,16 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
-import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.EffectPoint;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public final class L2SkillSignet extends L2Skill
 {
@@ -29,29 +30,18 @@ public final class L2SkillSignet extends L2Skill
 		if (caster.isAlikeDead())
 			return;
 		
-		NpcTemplate template = NpcTable.getInstance().getTemplate(_effectNpcId);
+		NpcTemplate template = NpcData.getInstance().getTemplate(_effectNpcId);
 		EffectPoint effectPoint = new EffectPoint(IdFactory.getInstance().getNextId(), template, caster);
 		effectPoint.setCurrentHp(effectPoint.getMaxHp());
 		effectPoint.setCurrentMp(effectPoint.getMaxMp());
 		
-		int x = caster.getX();
-		int y = caster.getY();
-		int z = caster.getZ();
-		
+		Location worldPosition = null;
 		if (caster instanceof Player && getTargetType() == L2Skill.SkillTargetType.TARGET_GROUND)
-		{
-			Location wordPosition = ((Player) caster).getCurrentSkillWorldPosition();
-			
-			if (wordPosition != null)
-			{
-				x = wordPosition.getX();
-				y = wordPosition.getY();
-				z = wordPosition.getZ();
-			}
-		}
+			worldPosition = ((Player) caster).getCurrentSkillWorldPosition();
+		
 		getEffects(caster, effectPoint);
 		
 		effectPoint.setIsInvul(true);
-		effectPoint.spawnMe(x, y, z);
+		effectPoint.spawnMe((worldPosition != null) ? worldPosition : caster.getPosition());
 	}
 }

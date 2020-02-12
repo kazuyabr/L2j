@@ -1,19 +1,23 @@
 package net.sf.l2j.gameserver.model.item;
 
 import net.sf.l2j.commons.util.ArraysUtil;
+import net.sf.l2j.commons.util.StatsSet;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * A datatype used to retain Henna infos. Hennas are called "dye" ingame, and enhance {@link Player} stats for a fee.<br>
+ * <br>
  * You can draw up to 3 hennas (depending about your current class rank), but accumulated boni for a stat can't be higher than +5. There is no limit in reduction.
  */
 public final class Henna
 {
+	public static final int DRAW_AMOUNT = 10;
+	public static final int REMOVE_AMOUNT = 5;
+	
 	private final int _symbolId;
 	private final int _dyeId;
-	private final int _price;
+	private final int _drawPrice;
 	private final int _INT;
 	private final int _STR;
 	private final int _CON;
@@ -26,13 +30,13 @@ public final class Henna
 	{
 		_symbolId = set.getInteger("symbolId");
 		_dyeId = set.getInteger("dyeId");
-		_price = set.getInteger("price");
-		_INT = set.getInteger("INT");
-		_STR = set.getInteger("STR");
-		_CON = set.getInteger("CON");
-		_MEN = set.getInteger("MEN");
-		_DEX = set.getInteger("DEX");
-		_WIT = set.getInteger("WIT");
+		_drawPrice = set.getInteger("price", 0);
+		_INT = set.getInteger("INT", 0);
+		_STR = set.getInteger("STR", 0);
+		_CON = set.getInteger("CON", 0);
+		_MEN = set.getInteger("MEN", 0);
+		_DEX = set.getInteger("DEX", 0);
+		_WIT = set.getInteger("WIT", 0);
 		_classes = set.getIntegerArray("classes");
 	}
 	
@@ -46,14 +50,14 @@ public final class Henna
 		return _dyeId;
 	}
 	
-	public int getPrice()
+	public int getDrawPrice()
 	{
-		return _price;
+		return _drawPrice;
 	}
 	
-	public static final int getRequiredDyeAmount()
+	public int getRemovePrice()
 	{
-		return 10;
+		return _drawPrice / 5;
 	}
 	
 	public int getINT()

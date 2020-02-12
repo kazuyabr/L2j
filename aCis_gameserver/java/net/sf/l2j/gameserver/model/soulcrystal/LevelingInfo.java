@@ -1,6 +1,8 @@
 package net.sf.l2j.gameserver.model.soulcrystal;
 
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.items.AbsorbCrystalType;
 
 /**
  * This class stores Soul Crystal leveling infos related to NPCs, notably:
@@ -14,13 +16,6 @@ import net.sf.l2j.gameserver.templates.StatsSet;
  */
 public final class LevelingInfo
 {
-	public enum AbsorbCrystalType
-	{
-		LAST_HIT,
-		FULL_PARTY,
-		PARTY_ONE_RANDOM
-	}
-	
 	private final AbsorbCrystalType _absorbCrystalType;
 	private final boolean _skillRequired;
 	private final int _chanceStage;

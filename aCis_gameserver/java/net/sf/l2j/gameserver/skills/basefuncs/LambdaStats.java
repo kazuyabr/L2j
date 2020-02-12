@@ -1,20 +1,10 @@
 package net.sf.l2j.gameserver.skills.basefuncs;
 
+import net.sf.l2j.gameserver.enums.skills.StatsType;
 import net.sf.l2j.gameserver.skills.Env;
 
-/**
- * @author mkizub
- */
 public final class LambdaStats extends Lambda
 {
-	public enum StatsType
-	{
-		PLAYER_LEVEL,
-		TARGET_LEVEL,
-		PLAYER_MAX_HP,
-		PLAYER_MAX_MP
-	}
-	
 	private final StatsType _stat;
 	
 	public LambdaStats(StatsType stat)

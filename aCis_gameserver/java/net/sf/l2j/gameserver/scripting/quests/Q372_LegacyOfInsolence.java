@@ -2,8 +2,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -369,10 +370,12 @@ public class Q372_LegacyOfInsolence extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
 			return null;
 		
 		final int npcId = npc.getNpcId();
@@ -381,7 +384,7 @@ public class Q372_LegacyOfInsolence extends Quest
 		{
 			if (MONSTERS_DROPS[0][i] == npcId)
 			{
-				partyMember.getQuestState(qn).dropItems(MONSTERS_DROPS[1][i], 1, 0, MONSTERS_DROPS[2][i]);
+				st.dropItems(MONSTERS_DROPS[1][i], 1, 0, MONSTERS_DROPS[2][i]);
 				break;
 			}
 		}

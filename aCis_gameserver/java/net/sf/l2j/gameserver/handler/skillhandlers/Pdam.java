@@ -2,20 +2,21 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import java.util.List;
 
+import net.sf.l2j.gameserver.enums.items.ShotType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class Pdam implements ISkillHandler
 {
@@ -61,7 +62,7 @@ public class Pdam implements ISkillHandler
 				continue;
 			}
 			
-			final byte shld = Formulas.calcShldUse(activeChar, target, null);
+			final byte shld = Formulas.calcShldUse(activeChar, target, skill);
 			
 			// PDAM critical chance not affected by buffs, only by STR. Only some skills are meant to crit.
 			boolean crit = false;
@@ -78,7 +79,7 @@ public class Pdam implements ISkillHandler
 				
 			final byte reflect = Formulas.calcSkillReflect(target, skill);
 			
-			if (skill.hasEffects())
+			if (skill.hasEffects() && target.getFirstEffect(L2EffectType.BLOCK_DEBUFF) == null)
 			{
 				List<L2Effect> effects;
 				if ((reflect & Formulas.SKILL_REFLECT_SUCCEED) != 0)
@@ -134,7 +135,7 @@ public class Pdam implements ISkillHandler
 		}
 		
 		if (skill.isSuicideAttack())
-			activeChar.doDie(null);
+			activeChar.doDie(activeChar);
 		
 		activeChar.setChargedShot(ShotType.SOULSHOT, skill.isStaticReuse());
 	}

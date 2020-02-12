@@ -3,8 +3,8 @@ package net.sf.l2j.gameserver.model.partymatching;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.gameserver.data.MapRegionTable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.xml.MapRegionData;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExManagePartyRoomMember;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -25,7 +25,7 @@ public class PartyMatchRoom
 		_id = id;
 		_title = title;
 		_loot = loot;
-		_location = MapRegionTable.getInstance().getClosestLocation(owner.getX(), owner.getY());
+		_location = MapRegionData.getInstance().getClosestLocation(owner.getX(), owner.getY());
 		_minlvl = minlvl;
 		_maxlvl = maxlvl;
 		_maxmem = maxmem;

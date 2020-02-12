@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.handler;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.skillhandlers.BalanceLife;
 import net.sf.l2j.gameserver.handler.skillhandlers.Blow;
 import net.sf.l2j.gameserver.handler.skillhandlers.Cancel;
@@ -34,70 +35,69 @@ import net.sf.l2j.gameserver.handler.skillhandlers.SummonFriend;
 import net.sf.l2j.gameserver.handler.skillhandlers.Sweep;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.handler.skillhandlers.Unlock;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class SkillHandler
 {
-	private final Map<Integer, ISkillHandler> _datatable = new HashMap<>();
-	
-	public static SkillHandler getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private final Map<Integer, ISkillHandler> _entries = new HashMap<>();
 	
 	protected SkillHandler()
 	{
-		registerSkillHandler(new BalanceLife());
-		registerSkillHandler(new Blow());
-		registerSkillHandler(new Cancel());
-		registerSkillHandler(new CombatPointHeal());
-		registerSkillHandler(new Continuous());
-		registerSkillHandler(new CpDamPercent());
-		registerSkillHandler(new Craft());
-		registerSkillHandler(new Disablers());
-		registerSkillHandler(new DrainSoul());
-		registerSkillHandler(new Dummy());
-		registerSkillHandler(new Extractable());
-		registerSkillHandler(new Fishing());
-		registerSkillHandler(new FishingSkill());
-		registerSkillHandler(new GetPlayer());
-		registerSkillHandler(new GiveSp());
-		registerSkillHandler(new Harvest());
-		registerSkillHandler(new Heal());
-		registerSkillHandler(new HealPercent());
-		registerSkillHandler(new InstantJump());
-		registerSkillHandler(new Manadam());
-		registerSkillHandler(new ManaHeal());
-		registerSkillHandler(new Mdam());
-		registerSkillHandler(new Pdam());
-		registerSkillHandler(new Resurrect());
-		registerSkillHandler(new Sow());
-		registerSkillHandler(new Spoil());
-		registerSkillHandler(new StrSiegeAssault());
-		registerSkillHandler(new SummonFriend());
-		registerSkillHandler(new Sweep());
-		registerSkillHandler(new TakeCastle());
-		registerSkillHandler(new Unlock());
+		registerHandler(new BalanceLife());
+		registerHandler(new Blow());
+		registerHandler(new Cancel());
+		registerHandler(new CombatPointHeal());
+		registerHandler(new Continuous());
+		registerHandler(new CpDamPercent());
+		registerHandler(new Craft());
+		registerHandler(new Disablers());
+		registerHandler(new DrainSoul());
+		registerHandler(new Dummy());
+		registerHandler(new Extractable());
+		registerHandler(new Fishing());
+		registerHandler(new FishingSkill());
+		registerHandler(new GetPlayer());
+		registerHandler(new GiveSp());
+		registerHandler(new Harvest());
+		registerHandler(new Heal());
+		registerHandler(new HealPercent());
+		registerHandler(new InstantJump());
+		registerHandler(new Manadam());
+		registerHandler(new ManaHeal());
+		registerHandler(new Mdam());
+		registerHandler(new Pdam());
+		registerHandler(new Resurrect());
+		registerHandler(new Sow());
+		registerHandler(new Spoil());
+		registerHandler(new StrSiegeAssault());
+		registerHandler(new SummonFriend());
+		registerHandler(new Sweep());
+		registerHandler(new TakeCastle());
+		registerHandler(new Unlock());
 	}
 	
-	public void registerSkillHandler(ISkillHandler handler)
+	private void registerHandler(ISkillHandler handler)
 	{
 		for (L2SkillType t : handler.getSkillIds())
-			_datatable.put(t.ordinal(), handler);
+			_entries.put(t.ordinal(), handler);
 	}
 	
-	public ISkillHandler getSkillHandler(L2SkillType skillType)
+	public ISkillHandler getHandler(L2SkillType skillType)
 	{
-		return _datatable.get(skillType.ordinal());
+		return _entries.get(skillType.ordinal());
 	}
 	
 	public int size()
 	{
-		return _datatable.size();
+		return _entries.size();
+	}
+	
+	public static SkillHandler getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final SkillHandler _instance = new SkillHandler();
+		protected static final SkillHandler INSTANCE = new SkillHandler();
 	}
 }

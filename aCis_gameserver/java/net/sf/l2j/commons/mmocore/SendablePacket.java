@@ -1,9 +1,7 @@
 package net.sf.l2j.commons.mmocore;
 
-/**
- * @author KenM
- * @param <T>
- */
+import net.sf.l2j.gameserver.model.location.Location;
+
 public abstract class SendablePacket<T extends MMOClient<?>> extends AbstractPacket<T>
 {
 	protected final void putInt(final int value)
@@ -63,6 +61,13 @@ public abstract class SendablePacket<T extends MMOClient<?>> extends AbstractPac
 		}
 		
 		_buf.putChar('\000');
+	}
+	
+	protected final void writeLoc(final Location loc)
+	{
+		_buf.putInt(loc.getX());
+		_buf.putInt(loc.getY());
+		_buf.putInt(loc.getZ());
 	}
 	
 	protected abstract void write();

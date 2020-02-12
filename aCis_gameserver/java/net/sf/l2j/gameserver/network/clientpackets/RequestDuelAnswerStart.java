@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.instancemanager.DuelManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.manager.DuelManager;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.group.CommandChannel;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -9,23 +9,21 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestDuelAnswerStart extends L2GameClientPacket
 {
-	private int _partyDuel;
-	@SuppressWarnings("unused")
-	private int _unk1;
-	private int _response;
+	private boolean _isPartyDuel;
+	private boolean _duelAccepted;
 	
 	@Override
 	protected void readImpl()
 	{
-		_partyDuel = readD();
-		_unk1 = readD();
-		_response = readD();
+		_isPartyDuel = readD() == 1;
+		readD(); // Skipping this DWORD. Always zero.
+		_duelAccepted = readD() == 1;
 	}
 	
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -36,7 +34,7 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 		activeChar.setActiveRequester(null);
 		requestor.onTransactionResponse();
 		
-		if (_response == 1)
+		if (_duelAccepted)
 		{
 			// Check if duel is possible.
 			if (!requestor.canDuel())
@@ -58,7 +56,7 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 				return;
 			}
 			
-			if (_partyDuel == 1)
+			if (_isPartyDuel)
 			{
 				// Player must be a party leader, the target can't be of the same party.
 				final Party requestorParty = requestor.getParty();
@@ -124,11 +122,11 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 				requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_ACCEPTED_YOUR_CHALLENGE_TO_A_DUEL_THE_DUEL_WILL_BEGIN_IN_A_FEW_MOMENTS).addCharName(activeChar));
 			}
 			
-			DuelManager.getInstance().addDuel(requestor, activeChar, _partyDuel);
+			DuelManager.getInstance().addDuel(requestor, activeChar, _isPartyDuel);
 		}
 		else
 		{
-			if (_partyDuel == 1)
+			if (_isPartyDuel)
 				requestor.sendPacket(SystemMessageId.THE_OPPOSING_PARTY_HAS_DECLINED_YOUR_CHALLENGE_TO_A_DUEL);
 			else
 				requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_DECLINED_YOUR_CHALLENGE_TO_A_DUEL).addCharName(activeChar));

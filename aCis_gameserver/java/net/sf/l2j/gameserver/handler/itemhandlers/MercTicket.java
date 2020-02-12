@@ -1,11 +1,11 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.SealType;
 import net.sf.l2j.gameserver.handler.IItemHandler;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.item.MercenaryTicket;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
@@ -64,14 +64,14 @@ public class MercTicket implements IItemHandler
 		}
 		
 		// Seal validation check.
-		if (!SevenSigns.getInstance().isSealValidationPeriod())
+		if (!SevenSignsManager.getInstance().isSealValidationPeriod())
 		{
 			activeChar.sendPacket(SystemMessageId.THIS_MERCENARY_CANNOT_BE_POSITIONED_ANYMORE);
 			return;
 		}
 		
 		// Seal of Strife owner check.
-		if (!ticket.isSsqType(SevenSigns.getInstance().getSealOwner(SealType.STRIFE)))
+		if (!ticket.isSsqType(SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE)))
 		{
 			activeChar.sendPacket(SystemMessageId.THIS_MERCENARY_CANNOT_BE_POSITIONED_ANYMORE);
 			return;

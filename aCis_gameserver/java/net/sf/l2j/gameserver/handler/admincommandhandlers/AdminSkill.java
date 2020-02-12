@@ -12,7 +12,7 @@ import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -111,7 +111,7 @@ public class AdminSkill implements IAdminCommandHandler
 				Player player = (Player) activeChar.getTarget();
 				
 				for (L2Skill skill : player.getSkills().values())
-					player.removeSkill(skill);
+					player.removeSkill(skill.getId(), true);
 				
 				activeChar.sendMessage("You removed all skills from " + player.getName() + ".");
 				if (player != activeChar)
@@ -181,9 +181,8 @@ public class AdminSkill implements IAdminCommandHandler
 			return;
 		}
 		
-		// Notify player and admin
-		activeChar.sendMessage("You gave " + player.giveAvailableSkills() + " skills to " + player.getName() + ".");
-		player.sendSkillList();
+		player.rewardSkills();
+		activeChar.sendMessage("You gave all available skills to " + player.getName() + ".");
 	}
 	
 	private static void removeSkillsPage(Player activeChar, int page)
@@ -268,10 +267,10 @@ public class AdminSkill implements IAdminCommandHandler
 			ADMIN_SKILLS.addAll(activeChar.getSkills().values());
 			
 			for (L2Skill skill : ADMIN_SKILLS)
-				activeChar.removeSkill(skill);
+				activeChar.removeSkill(skill.getId(), false);
 			
 			for (L2Skill skill : player.getSkills().values())
-				activeChar.addSkill(skill, true);
+				activeChar.addSkill(skill, false, true);
 			
 			activeChar.sendMessage("You ninjaed " + player.getName() + "'s skills list.");
 			activeChar.sendSkillList();
@@ -285,10 +284,10 @@ public class AdminSkill implements IAdminCommandHandler
 		else
 		{
 			for (L2Skill skill : activeChar.getSkills().values())
-				activeChar.removeSkill(skill);
+				activeChar.removeSkill(skill.getId(), false);
 			
 			for (L2Skill skill : ADMIN_SKILLS)
-				activeChar.addSkill(skill, true);
+				activeChar.addSkill(skill, false, true);
 			
 			activeChar.sendMessage("All your skills have been returned back.");
 			activeChar.sendSkillList();
@@ -333,7 +332,7 @@ public class AdminSkill implements IAdminCommandHandler
 			{
 				String name = skill.getName();
 				
-				player.addSkill(skill, true);
+				player.addSkill(skill, true, true);
 				player.sendMessage("Admin gave you the skill " + name + ".");
 				if (player != activeChar)
 					activeChar.sendMessage("You gave the skill " + name + " to " + player.getName() + ".");
@@ -360,20 +359,17 @@ public class AdminSkill implements IAdminCommandHandler
 			return;
 		}
 		
-		L2Skill skill = SkillTable.getInstance().getInfo(idval, player.getSkillLevel(idval));
-		if (skill != null)
+		final L2Skill skill = player.removeSkill(idval, true);
+		if (skill == null)
+			activeChar.sendMessage("Error: there is no such skill.");
+		else
 		{
-			String skillname = skill.getName();
-			
-			player.removeSkill(skill);
-			activeChar.sendMessage("You removed the skill " + skillname + " from " + player.getName() + ".");
+			activeChar.sendMessage("You removed the skill " + skill.getName() + " from " + player.getName() + ".");
 			if (player != activeChar)
-				player.sendMessage("Admin removed the skill " + skillname + " from your skills list.");
+				player.sendMessage("Admin removed the skill " + skill.getName() + " from your skills list.");
 			
 			player.sendSkillList();
 		}
-		else
-			activeChar.sendMessage("Error: there is no such skill.");
 		
 		removeSkillsPage(activeChar, 1);
 	}

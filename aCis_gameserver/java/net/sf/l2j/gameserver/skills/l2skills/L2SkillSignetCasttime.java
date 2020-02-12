@@ -1,9 +1,10 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public final class L2SkillSignetCasttime extends L2Skill
 {

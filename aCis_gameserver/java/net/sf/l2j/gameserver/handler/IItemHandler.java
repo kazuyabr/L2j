@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.handler;
 
-import java.util.logging.Logger;
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.gameserver.model.actor.Playable;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
@@ -10,7 +10,7 @@ import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
  */
 public interface IItemHandler
 {
-	public static Logger _log = Logger.getLogger(IItemHandler.class.getName());
+	public static final CLogger LOGGER = new CLogger(IItemHandler.class.getName());
 	
 	/**
 	 * Launch task associated to the item.

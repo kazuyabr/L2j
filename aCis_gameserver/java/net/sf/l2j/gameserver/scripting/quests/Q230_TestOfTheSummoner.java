@@ -6,13 +6,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.enums.actors.ClassId;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -673,9 +673,11 @@ public class Q230_TestOfTheSummoner extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
@@ -839,15 +841,18 @@ public class Q230_TestOfTheSummoner extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		QuestState st = checkPlayerState(attacker, npc, STATE_STARTED);
+		final Player player = attacker.getActingPlayer();
+		
+		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
 		st.addNotifyOfDeath();
 		
 		final int npcId = npc.getNpcId();
+		final boolean isPet = attacker instanceof Summon;
 		
 		switch (npcId)
 		{
@@ -859,13 +864,13 @@ public class Q230_TestOfTheSummoner extends Quest
 					st.takeItems(CRYSTAL_OF_PROGRESS_1, -1);
 					st.giveItems(CRYSTAL_OF_INPROGRESS_1, 1);
 					npc.broadcastNpcSay("Whhiisshh!");
-					_duelsInProgress.put(npcId, new ProgressDuelMob(attacker, attacker.getPet()));
+					_duelsInProgress.put(npcId, new ProgressDuelMob(player, attacker.getSummon()));
 				}
 				else if (st.getInt("Almors") == 3 && _duelsInProgress.containsKey(npcId))
 				{
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
 					// check if the attacker is the same pet as the one that attacked before.
-					if (!isPet || attacker.getPet() != duel.getPet()) // if a foul occured find the player who had the duel in progress and give a foul crystal
+					if (!isPet || attacker.getSummon() != duel.getPet()) // if a foul occured find the player who had the duel in progress and give a foul crystal
 					{
 						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
@@ -894,12 +899,12 @@ public class Q230_TestOfTheSummoner extends Quest
 					st.takeItems(CRYSTAL_OF_PROGRESS_2, -1);
 					st.giveItems(CRYSTAL_OF_INPROGRESS_2, 1);
 					npc.broadcastNpcSay("START DUEL");
-					_duelsInProgress.put(npcId, new ProgressDuelMob(attacker, attacker.getPet()));
+					_duelsInProgress.put(npcId, new ProgressDuelMob(player, attacker.getSummon()));
 				}
 				else if (st.getInt("Camoniell") == 3 && _duelsInProgress.containsKey(npcId))
 				{
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
-					if (!isPet || attacker.getPet() != duel.getPet())
+					if (!isPet || attacker.getSummon() != duel.getPet())
 					{
 						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
@@ -928,12 +933,12 @@ public class Q230_TestOfTheSummoner extends Quest
 					st.takeItems(CRYSTAL_OF_PROGRESS_3, -1);
 					st.giveItems(CRYSTAL_OF_INPROGRESS_3, 1);
 					npc.broadcastNpcSay("So shall we start?!");
-					_duelsInProgress.put(npcId, new ProgressDuelMob(attacker, attacker.getPet()));
+					_duelsInProgress.put(npcId, new ProgressDuelMob(player, attacker.getSummon()));
 				}
 				else if (st.getInt("Belthus") == 3 && _duelsInProgress.containsKey(npcId))
 				{
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
-					if (!isPet || attacker.getPet() != duel.getPet())
+					if (!isPet || attacker.getSummon() != duel.getPet())
 					{
 						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
@@ -962,12 +967,12 @@ public class Q230_TestOfTheSummoner extends Quest
 					st.takeItems(CRYSTAL_OF_PROGRESS_4, -1);
 					st.giveItems(CRYSTAL_OF_INPROGRESS_4, 1);
 					npc.broadcastNpcSay("Whish! Fight!");
-					_duelsInProgress.put(npcId, new ProgressDuelMob(attacker, attacker.getPet()));
+					_duelsInProgress.put(npcId, new ProgressDuelMob(player, attacker.getSummon()));
 				}
 				else if (st.getInt("Basilla") == 3 && _duelsInProgress.containsKey(npcId))
 				{
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
-					if (!isPet || attacker.getPet() != duel.getPet())
+					if (!isPet || attacker.getSummon() != duel.getPet())
 					{
 						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
@@ -996,12 +1001,12 @@ public class Q230_TestOfTheSummoner extends Quest
 					st.takeItems(CRYSTAL_OF_PROGRESS_5, -1);
 					st.giveItems(CRYSTAL_OF_INPROGRESS_5, 1);
 					npc.broadcastNpcSay("START DUEL");
-					_duelsInProgress.put(npcId, new ProgressDuelMob(attacker, attacker.getPet()));
+					_duelsInProgress.put(npcId, new ProgressDuelMob(player, attacker.getSummon()));
 				}
 				else if (st.getInt("Celestiel") == 3 && _duelsInProgress.containsKey(npcId))
 				{
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
-					if (!isPet || attacker.getPet() != duel.getPet())
+					if (!isPet || attacker.getSummon() != duel.getPet())
 					{
 						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)
@@ -1030,12 +1035,12 @@ public class Q230_TestOfTheSummoner extends Quest
 					st.takeItems(CRYSTAL_OF_PROGRESS_6, -1);
 					st.giveItems(CRYSTAL_OF_INPROGRESS_6, 1);
 					npc.broadcastNpcSay("I'll walk all over you!");
-					_duelsInProgress.put(npcId, new ProgressDuelMob(attacker, attacker.getPet()));
+					_duelsInProgress.put(npcId, new ProgressDuelMob(player, attacker.getSummon()));
 				}
 				else if (st.getInt("Brynthea") == 3 && _duelsInProgress.containsKey(npcId))
 				{
 					ProgressDuelMob duel = _duelsInProgress.get(npcId);
-					if (!isPet || attacker.getPet() != duel.getPet())
+					if (!isPet || attacker.getSummon() != duel.getPet())
 					{
 						Player foulPlayer = duel.getAttacker();
 						if (foulPlayer != null)

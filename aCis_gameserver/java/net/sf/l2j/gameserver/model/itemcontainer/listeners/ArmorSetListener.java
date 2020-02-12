@@ -4,9 +4,10 @@ import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.xml.ArmorSetData;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.ArmorSet;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
+import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 
 public class ArmorSetListener implements OnEquipListener
@@ -25,6 +26,13 @@ public class ArmorSetListener implements OnEquipListener
 			return;
 		
 		final Player player = (Player) actor;
+		
+		// Formal Wear skills refresh. Don't bother going farther.
+		if (item.getItem().getBodyPart() == Item.SLOT_ALLDRESS)
+		{
+			player.sendSkillList();
+			return;
+		}
 		
 		// Checks if player is wearing a chest item
 		final ItemInstance chestItem = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
@@ -93,6 +101,13 @@ public class ArmorSetListener implements OnEquipListener
 	{
 		final Player player = (Player) actor;
 		
+		// Formal Wear skills refresh. Don't bother going farther.
+		if (item.getItem().getBodyPart() == Item.SLOT_ALLDRESS)
+		{
+			player.sendSkillList();
+			return;
+		}
+		
 		boolean remove = false;
 		int removeSkillId1 = 0; // set skill
 		int removeSkillId2 = 0; // shield skill
@@ -137,27 +152,16 @@ public class ArmorSetListener implements OnEquipListener
 		{
 			if (removeSkillId1 != 0)
 			{
-				L2Skill skill = SkillTable.getInstance().getInfo(removeSkillId1, 1);
-				if (skill != null)
-				{
-					player.removeSkill(SkillTable.getInstance().getInfo(3006, 1));
-					player.removeSkill(skill);
-				}
+				player.removeSkill(3006, false);
+				player.removeSkill(removeSkillId1, false);
 			}
 			
 			if (removeSkillId2 != 0)
-			{
-				L2Skill skill = SkillTable.getInstance().getInfo(removeSkillId2, 1);
-				if (skill != null)
-					player.removeSkill(skill);
-			}
+				player.removeSkill(removeSkillId2, false);
 			
 			if (removeSkillId3 != 0)
-			{
-				L2Skill skill = SkillTable.getInstance().getInfo(removeSkillId3, 1);
-				if (skill != null)
-					player.removeSkill(skill);
-			}
+				player.removeSkill(removeSkillId3, false);
+			
 			player.sendSkillList();
 		}
 	}

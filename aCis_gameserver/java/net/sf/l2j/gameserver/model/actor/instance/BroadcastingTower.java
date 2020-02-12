@@ -2,13 +2,16 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ItemList;
 
 /**
- * @author NightMarez
+ * An instance type extending {@link Folk}, used by Broadcasting Towers.<br>
+ * <br>
+ * Those NPCs allow {@link Player}s to spectate areas (sieges, olympiads).
  */
 public final class BroadcastingTower extends Folk
 {
@@ -30,7 +33,7 @@ public final class BroadcastingTower extends Folk
 			final int y = Integer.parseInt(st.nextToken());
 			final int z = Integer.parseInt(st.nextToken());
 			
-			if (command.startsWith("observeSiege") && CastleManager.getInstance().getSiege(x, y, z) == null)
+			if (command.startsWith("observeSiege") && CastleManager.getInstance().getActiveSiege(x, y, z) == null)
 			{
 				player.sendPacket(SystemMessageId.ONLY_VIEW_SIEGE);
 				return;

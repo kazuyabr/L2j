@@ -1,9 +1,9 @@
 package net.sf.l2j.gameserver.model.actor.status;
 
+import net.sf.l2j.gameserver.enums.AiEventType;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 import net.sf.l2j.gameserver.model.entity.Duel.DuelState;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -46,7 +46,7 @@ public class SummonStatus extends PlayableStatus
 			if (!isDOT && owner != null)
 				owner.sendPacket(SystemMessage.getSystemMessage((getActiveChar() instanceof Servitor) ? SystemMessageId.SUMMON_RECEIVED_DAMAGE_S2_BY_S1 : SystemMessageId.PET_RECEIVED_S2_DAMAGE_BY_S1).addCharName(attacker).addNumber((int) value));
 			
-			getActiveChar().getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, attacker);
+			getActiveChar().getAI().notifyEvent(AiEventType.ATTACKED, attacker);
 		}
 	}
 	

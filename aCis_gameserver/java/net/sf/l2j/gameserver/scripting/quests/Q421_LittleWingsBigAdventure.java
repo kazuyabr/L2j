@@ -3,14 +3,15 @@ package net.sf.l2j.gameserver.scripting.quests;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Pet;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -81,13 +82,13 @@ public class Q421_LittleWingsBigAdventure extends Quest
 		}
 		else if (event.equalsIgnoreCase("30747-02.htm"))
 		{
-			final Summon summon = player.getPet();
+			final Summon summon = player.getSummon();
 			if (summon != null)
 				htmltext = (summon.getControlItemId() == st.getInt("summonOid")) ? "30747-04.htm" : "30747-03.htm";
 		}
 		else if (event.equalsIgnoreCase("30747-05.htm"))
 		{
-			final Summon summon = player.getPet();
+			final Summon summon = player.getSummon();
 			if (summon == null || summon.getControlItemId() != st.getInt("summonOid"))
 				htmltext = "30747-06.htm";
 			else
@@ -150,7 +151,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 						}
 						else if (id == 2)
 						{
-							final Summon summon = player.getPet();
+							final Summon summon = player.getSummon();
 							htmltext = (summon != null) ? ((summon.getControlItemId() == st.getInt("summonOid")) ? "30747-04.htm" : "30747-03.htm") : "30747-02.htm";
 						}
 						else if (id == 3) // Explanation is done, leaves are already given.
@@ -159,7 +160,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 							htmltext = "30747-11.htm";
 						else if (id == 63) // Did all trees, no more leaves.
 						{
-							final Summon summon = player.getPet();
+							final Summon summon = player.getSummon();
 							if (summon == null)
 								return "30747-12.htm";
 							
@@ -171,7 +172,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 						}
 						else if (id == 100) // Spoke with the Fairy.
 						{
-							final Summon summon = player.getPet();
+							final Summon summon = player.getSummon();
 							if (summon != null && summon.getControlItemId() == st.getInt("summonOid"))
 								return "30747-15.htm";
 							
@@ -207,7 +208,7 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		// Minions scream no matter current quest state.
 		if (((Monster) npc).hasMinions())
@@ -219,16 +220,17 @@ public class Q421_LittleWingsBigAdventure extends Quest
 			}
 		}
 		
-		// Condition required : 2.
-		QuestState st = checkPlayerCondition(attacker, npc, "cond", "2");
-		if (st == null)
-			return null;
-		
-		// A pet was the attacker, and the objectId is the good one.
-		if (isPet && attacker.getPet().getControlItemId() == st.getInt("summonOid"))
+		if (attacker instanceof Pet)
 		{
-			// Random luck is reached and you still have some leaves ; go further.
-			if (Rnd.get(100) < 1 && st.hasQuestItems(FAIRY_LEAF))
+			final Player player = attacker.getActingPlayer();
+			
+			// Condition required : 2.
+			final QuestState st = checkPlayerCondition(player, npc, "cond", "2");
+			if (st == null)
+				return null;
+			
+			// A pet was the attacker, and the objectId is the good one - random luck is reached and you still have some leaves ; go further.
+			if (((Pet) attacker).getControlItemId() == st.getInt("summonOid") && Rnd.get(100) < 1 && st.hasQuestItems(FAIRY_LEAF))
 			{
 				final int idMask = (int) Math.pow(2, (npc.getNpcId() - 27182) - 1);
 				final int iCond = st.getInt("iCond");
@@ -252,24 +254,18 @@ public class Q421_LittleWingsBigAdventure extends Quest
 				}
 			}
 		}
-		
 		return null;
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		final Creature originalKiller = isPet ? killer.getPet() : killer;
-		
 		// Tree curses the killer.
 		if (Rnd.get(100) < 30)
 		{
-			if (originalKiller != null)
-			{
-				final L2Skill skill = SkillTable.getInstance().getInfo(4243, 1);
-				if (skill != null && originalKiller.getFirstEffect(skill) == null)
-					skill.getEffects(npc, originalKiller);
-			}
+			final L2Skill skill = SkillTable.getInstance().getInfo(4243, 1);
+			if (skill != null && killer.getFirstEffect(skill) == null)
+				skill.getEffects(npc, killer);
 		}
 		
 		// Spawn 20 ghosts, attacking the killer.
@@ -278,8 +274,8 @@ public class Q421_LittleWingsBigAdventure extends Quest
 			final Attackable newNpc = (Attackable) addSpawn(27189, npc, true, 300000, false);
 			
 			newNpc.setRunning();
-			newNpc.addDamageHate(originalKiller, 0, 999);
-			newNpc.getAI().setIntention(CtrlIntention.ATTACK, originalKiller);
+			newNpc.addDamageHate(killer, 0, 999);
+			newNpc.getAI().setIntention(IntentionType.ATTACK, killer);
 		}
 		
 		return null;

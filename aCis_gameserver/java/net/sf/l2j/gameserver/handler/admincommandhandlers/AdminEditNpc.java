@@ -2,28 +2,32 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.gameserver.data.ItemTable;
-import net.sf.l2j.gameserver.data.NpcTable;
 import net.sf.l2j.gameserver.data.manager.BuyListManager;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Merchant;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.SkillType;
 import net.sf.l2j.gameserver.model.buylist.NpcBuyList;
 import net.sf.l2j.gameserver.model.buylist.Product;
 import net.sf.l2j.gameserver.model.item.DropCategory;
 import net.sf.l2j.gameserver.model.item.DropData;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.Quest;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class AdminEditNpc implements IAdminCommandHandler
 {
@@ -32,6 +36,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_show_droplist",
+		"admin_show_minion",
 		"admin_show_scripts",
 		"admin_show_shop",
 		"admin_show_shoplist",
@@ -44,7 +49,48 @@ public class AdminEditNpc implements IAdminCommandHandler
 		final StringTokenizer st = new StringTokenizer(command, " ");
 		st.nextToken();
 		
-		if (command.startsWith("admin_show_shoplist"))
+		if (command.startsWith("admin_show_minion"))
+		{
+			// You need to target a Monster.
+			final WorldObject target = activeChar.getTarget();
+			if (!(target instanceof Monster))
+			{
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+				return false;
+			}
+			
+			final Monster monster = (Monster) target;
+			
+			// Load static Htm.
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
+			html.setFile("data/html/admin/minion.htm");
+			html.replace("%target%", target.getName());
+			
+			final StringBuilder sb = new StringBuilder();
+			
+			// Monster is a minion, deliver boss state.
+			final Monster master = monster.getMaster();
+			if (master != null)
+			{
+				html.replace("%type%", "minion");
+				StringUtil.append(sb, "<tr><td>", master.getNpcId(), "</td><td>", master.getName(), " (", ((master.isDead()) ? "Dead" : "Alive"), ")</td></tr>");
+			}
+			// Monster is a master, find back minions informations.
+			else if (monster.hasMinions())
+			{
+				html.replace("%type%", "master");
+				
+				for (Entry<Monster, Boolean> data : monster.getMinionList().getMinions().entrySet())
+					StringUtil.append(sb, "<tr><td>", data.getKey().getNpcId(), "</td><td>", data.getKey().toString(), " (", ((data.getValue()) ? "Alive" : "Dead"), ")</td></tr>");
+			}
+			// Monster isn't anything.
+			else
+				html.replace("%type%", "regular monster");
+			
+			html.replace("%minion%", sb.toString());
+			activeChar.sendPacket(html);
+		}
+		else if (command.startsWith("admin_show_shoplist"))
 		{
 			try
 			{
@@ -116,7 +162,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		
 		final StringBuilder sb = new StringBuilder(500);
-		StringUtil.append(sb, "<html><body><center><font color=\"LEVEL\">", NpcTable.getInstance().getTemplate(buyList.getNpcId()).getName(), " (", buyList.getNpcId(), ") buylist id: ", buyList.getListId(), "</font></center><br><table width=\"100%\"><tr><td width=200>Item</td><td width=80>Price</td></tr>");
+		StringUtil.append(sb, "<html><body><center><font color=\"LEVEL\">", NpcData.getInstance().getTemplate(buyList.getNpcId()).getName(), " (", buyList.getNpcId(), ") buylist id: ", buyList.getListId(), "</font></center><br><table width=\"100%\"><tr><td width=200>Item</td><td width=80>Price</td></tr>");
 		
 		for (Product product : buyList.getProducts())
 			StringUtil.append(sb, "<tr><td>", product.getItem().getName(), "</td><td>", product.getPrice(), "</td></tr>");
@@ -162,7 +208,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	
 	private static void showNpcDropList(Player activeChar, int npcId, int page)
 	{
-		final NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
+		final NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
 		{
 			activeChar.sendMessage("Npc template is unknown for id: " + npcId + ".");
@@ -243,7 +289,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	
 	private static void showNpcSkillList(Player activeChar, int npcId)
 	{
-		final NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
+		final NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
 		{
 			activeChar.sendMessage("Npc template is unknown for id: " + npcId + ".");
@@ -282,7 +328,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	
 	private static void showScriptsList(Player activeChar, int npcId)
 	{
-		final NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
+		final NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
 		{
 			activeChar.sendMessage("Npc template is unknown for id: " + npcId + ".");
@@ -294,10 +340,10 @@ public class AdminEditNpc implements IAdminCommandHandler
 		
 		if (!npcData.getEventQuests().isEmpty())
 		{
-			EventType type = null; // Used to see if we moved of type.
+			ScriptEventType type = null; // Used to see if we moved of type.
 			
 			// For any type of EventType
-			for (Map.Entry<EventType, List<Quest>> entry : npcData.getEventQuests().entrySet())
+			for (Map.Entry<ScriptEventType, List<Quest>> entry : npcData.getEventQuests().entrySet())
 			{
 				if (type != entry.getKey())
 				{

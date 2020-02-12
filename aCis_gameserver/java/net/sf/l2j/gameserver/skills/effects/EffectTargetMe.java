@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * @author -Nemesiss-
@@ -29,11 +29,12 @@ public class EffectTargetMe extends L2Effect
 		if (getEffected() instanceof Player)
 		{
 			// add an INTENTION_ATTACK, but only if victim got attacker as target
-			if ((getEffected().getAI() == null || getEffected().getAI().getNextIntention() == null) && getEffected().getTarget() == getEffector())
-				getEffected().getAI().setIntention(CtrlIntention.ATTACK, getEffector());
-			
+			if (getEffected().getTarget() == getEffector())
+				getEffected().getAI().setIntention(IntentionType.ATTACK, getEffector());
 			// target the agressor
-			getEffected().setTarget(getEffector());
+			else
+				getEffected().setTarget(getEffector());
+			
 			return true;
 		}
 		return false;

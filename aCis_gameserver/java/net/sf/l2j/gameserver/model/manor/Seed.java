@@ -1,9 +1,10 @@
 package net.sf.l2j.gameserver.model.manor;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.model.item.kind.Item;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public final class Seed
 {

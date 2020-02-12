@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.entity.ClanHall;
-import net.sf.l2j.gameserver.model.entity.ClanHall.ClanHallFunction;
+import net.sf.l2j.gameserver.model.clanhall.ClanHall;
+import net.sf.l2j.gameserver.model.clanhall.ClanHallFunction;
 
 /**
  * @author Steuf

@@ -1,13 +1,9 @@
 package net.sf.l2j.gameserver.model.actor.ai.type;
 
-import net.sf.l2j.commons.concurrent.ThreadPool;
-
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
-import net.sf.l2j.gameserver.model.actor.instance.SiegeGuard;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
 
@@ -59,19 +55,8 @@ public class DoorAI extends CreatureAI
 	}
 	
 	@Override
-	protected void onIntentionInteract(WorldObject object)
-	{
-	}
-	
-	@Override
-	protected void onEvtThink()
-	{
-	}
-	
-	@Override
 	protected void onEvtAttacked(Creature attacker)
 	{
-		ThreadPool.execute(new onEventAttackedDoorTask((Door) _actor, attacker));
 	}
 	
 	@Override
@@ -117,27 +102,5 @@ public class DoorAI extends CreatureAI
 	@Override
 	protected void onEvtDead()
 	{
-	}
-	
-	private class onEventAttackedDoorTask implements Runnable
-	{
-		private final Door _door;
-		private final Creature _attacker;
-		
-		public onEventAttackedDoorTask(Door door, Creature attacker)
-		{
-			_door = door;
-			_attacker = attacker;
-		}
-		
-		@Override
-		public void run()
-		{
-			for (SiegeGuard guard : _door.getKnownType(SiegeGuard.class))
-			{
-				if (_actor.isInsideRadius(guard, guard.getTemplate().getClanRange(), false, true) && Math.abs(_attacker.getZ() - guard.getZ()) < 200)
-					guard.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attacker, 15);
-			}
-		}
 	}
 }

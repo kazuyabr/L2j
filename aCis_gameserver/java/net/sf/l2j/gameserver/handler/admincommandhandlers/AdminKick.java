@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public class AdminKick implements IAdminCommandHandler
 {
@@ -32,7 +32,7 @@ public class AdminKick implements IAdminCommandHandler
 				Player plyr = World.getInstance().getPlayer(player);
 				if (plyr != null)
 				{
-					plyr.logout();
+					plyr.logout(false);
 					activeChar.sendMessage(plyr.getName() + " have been kicked from server.");
 				}
 			}
@@ -48,7 +48,7 @@ public class AdminKick implements IAdminCommandHandler
 					continue;
 				
 				counter++;
-				player.logout();
+				player.logout(false);
 			}
 			activeChar.sendMessage("A total of " + counter + " players have been kicked.");
 		}
@@ -70,7 +70,7 @@ public class AdminKick implements IAdminCommandHandler
 		else
 		{
 			activeChar.sendMessage(player.getName() + " have been kicked from server.");
-			player.logout();
+			player.logout(false);
 		}
 	}
 	

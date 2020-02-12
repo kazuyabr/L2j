@@ -1,11 +1,11 @@
 package net.sf.l2j.gameserver.model.actor.stat;
 
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.base.Experience;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
-import net.sf.l2j.gameserver.model.zone.type.L2SwampZone;
-import net.sf.l2j.gameserver.skills.Stats;
+import net.sf.l2j.gameserver.model.actor.player.Experience;
+import net.sf.l2j.gameserver.model.zone.type.SwampZone;
 
 public class PlayableStat extends CreatureStat
 {
@@ -112,8 +112,7 @@ public class PlayableStat extends CreatureStat
 		if (!levelIncreased)
 			return false;
 		
-		getActiveChar().getStatus().setCurrentHp(getActiveChar().getStat().getMaxHp());
-		getActiveChar().getStatus().setCurrentMp(getActiveChar().getStat().getMaxMp());
+		getActiveChar().getStatus().setCurrentHpMp(getMaxHp(), getMaxMp());
 		
 		return true;
 	}
@@ -158,7 +157,7 @@ public class PlayableStat extends CreatureStat
 		// apply zone modifier before final calculation
 		if (getActiveChar().isInsideZone(ZoneId.SWAMP))
 		{
-			final L2SwampZone zone = ZoneManager.getInstance().getZone(getActiveChar(), L2SwampZone.class);
+			final SwampZone zone = ZoneManager.getInstance().getZone(getActiveChar(), SwampZone.class);
 			if (zone != null)
 				baseValue *= (100 + zone.getMoveBonus()) / 100.0;
 		}

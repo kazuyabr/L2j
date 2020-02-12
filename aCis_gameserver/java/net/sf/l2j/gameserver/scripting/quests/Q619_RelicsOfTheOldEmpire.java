@@ -2,8 +2,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -12,14 +13,14 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 	private static final String qn = "Q619_RelicsOfTheOldEmpire";
 	
 	// NPC
-	private static int GHOST_OF_ADVENTURER = 31538;
+	private static final int GHOST_OF_ADVENTURER = 31538;
 	
 	// Items
-	private static int RELICS = 7254;
-	private static int ENTRANCE = 7075;
+	private static final int RELICS = 7254;
+	private static final int ENTRANCE = 7075;
 	
 	// Rewards ; all S grade weapons recipe (60%)
-	private static int[] RCP_REWARDS = new int[]
+	private static final int[] REWARDS = new int[]
 	{
 		6881,
 		6883,
@@ -74,7 +75,7 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 			{
 				htmltext = "31538-09.htm";
 				st.takeItems(RELICS, 1000);
-				st.giveItems(RCP_REWARDS[Rnd.get(RCP_REWARDS.length)], 1);
+				st.giveItems(Rnd.get(REWARDS), 1);
 			}
 			else
 				htmltext = "31538-06.htm";
@@ -115,13 +116,13 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
-			return null;
+		final Player player = killer.getActingPlayer();
 		
-		QuestState st = partyMember.getQuestState(qn);
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
+			return null;
 		
 		st.dropItemsAlways(RELICS, 1, 0);
 		st.dropItems(ENTRANCE, 1, 0, 50000);

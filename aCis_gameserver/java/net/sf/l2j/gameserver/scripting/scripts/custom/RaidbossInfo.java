@@ -5,11 +5,11 @@ import java.util.Map;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.data.SpawnTable;
-import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.data.sql.SpawnTable;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -112,7 +112,7 @@ public class RaidbossInfo extends Quest
 		}
 		
 		// Add all Raid Bosses locations.
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns())
 		{
 			if (spawn.getTemplate().isType(BOSS_CLASS_TYPE))
 				RADARS.put(spawn.getNpcId(), spawn.getLoc());

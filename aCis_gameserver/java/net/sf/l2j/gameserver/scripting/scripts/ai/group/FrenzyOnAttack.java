@@ -4,8 +4,8 @@ import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 /**
@@ -43,7 +43,7 @@ public class FrenzyOnAttack extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		// The only requirements are HPs < 25% and not already under the buff. It's not 100% aswell.
 		if (npc.getCurrentHp() / npc.getMaxHp() < 0.25 && npc.getFirstEffect(ULTIMATE_BUFF) == null && Rnd.get(10) == 0)
@@ -52,6 +52,6 @@ public class FrenzyOnAttack extends L2AttackableAIScript
 			npc.setTarget(npc);
 			npc.doCast(ULTIMATE_BUFF);
 		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 }

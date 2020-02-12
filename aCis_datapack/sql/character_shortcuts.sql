@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS character_shortcuts (
-  char_obj_id decimal(11) NOT NULL default 0,
-  slot decimal(3) NOT NULL default 0,
-  page decimal(3) NOT NULL default 0,
-  type decimal(3),
-  shortcut_id decimal(16),
-  level varchar(4),
-  `class_index` int(1) NOT NULL default '0',
-  PRIMARY KEY (char_obj_id,slot,page,`class_index`),
-  KEY `shortcut_id` (`shortcut_id`)
+  `char_obj_id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `slot` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  `page` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  `type` VARCHAR(6) NOT NULL DEFAULT 'NONE',
+  `id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `level` SMALLINT SIGNED NOT NULL DEFAULT 0,
+  `class_index` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`char_obj_id`,`slot`,`page`,`class_index`),
+  KEY `id` (`id`)
 );

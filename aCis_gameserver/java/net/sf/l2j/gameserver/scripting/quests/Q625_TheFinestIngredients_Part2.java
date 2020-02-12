@@ -1,15 +1,14 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
-import java.util.logging.Level;
-
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
-import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager.StatusEnum;
+import net.sf.l2j.gameserver.data.manager.RaidBossManager;
+import net.sf.l2j.gameserver.enums.BossStatus;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.RaidBoss;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.spawn.BossSpawn;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -28,7 +27,7 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	private static final int SOY_SAUCE_JAR = 7205;
 	private static final int FOOD_FOR_BUMBALUMP = 7209;
 	private static final int SPECIAL_YETI_MEAT = 7210;
-	private static final int REWARD_DYE[] =
+	private static final int REWARDS[] =
 	{
 		4589,
 		4590,
@@ -57,12 +56,8 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 		addAttackId(ICICLE_EMPEROR_BUMBALUMP);
 		addKillId(ICICLE_EMPEROR_BUMBALUMP);
 		
-		switch (RaidBossSpawnManager.getInstance().getRaidBossStatusId(ICICLE_EMPEROR_BUMBALUMP))
+		switch (RaidBossManager.getInstance().getStatus(ICICLE_EMPEROR_BUMBALUMP))
 		{
-			case UNDEFINED:
-				_log.log(Level.WARNING, qn + ": can not find spawned L2RaidBoss id=" + ICICLE_EMPEROR_BUMBALUMP);
-				break;
-			
 			case ALIVE:
 				spawnNpc();
 			case DEAD:
@@ -77,9 +72,11 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 		// global quest timer has player==null -> cannot get QuestState
 		if (event.equals("check"))
 		{
-			RaidBoss raid = RaidBossSpawnManager.getInstance().getBosses().get(ICICLE_EMPEROR_BUMBALUMP);
-			if (raid != null && raid.getRaidStatus() == StatusEnum.ALIVE)
+			final BossSpawn bs = RaidBossManager.getInstance().getBossSpawn(ICICLE_EMPEROR_BUMBALUMP);
+			if (bs != null && bs.getStatus() == BossStatus.ALIVE)
 			{
+				final Npc raid = bs.getBoss();
+				
 				if (_status >= 0 && _status-- == 0)
 					despawnRaid(raid);
 				
@@ -113,7 +110,7 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 			if (st.hasQuestItems(SPECIAL_YETI_MEAT))
 			{
 				st.takeItems(SPECIAL_YETI_MEAT, 1);
-				st.rewardItems(REWARD_DYE[Rnd.get(REWARD_DYE.length)], 5);
+				st.rewardItems(Rnd.get(REWARDS), 5);
 				st.playSound(QuestState.SOUND_FINISH);
 				st.exitQuest(true);
 			}
@@ -185,22 +182,27 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		_status = IDLE_INTERVAL;
+		final Player player = attacker.getActingPlayer();
+		if (player != null)
+			_status = IDLE_INTERVAL;
+		
 		return null;
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		for (Player partyMember : getPartyMembers(player, npc, "cond", "2"))
+		final Player player = killer.getActingPlayer();
+		if (player != null)
 		{
-			QuestState st = partyMember.getQuestState(qn);
-			
-			st.set("cond", "3");
-			st.playSound(QuestState.SOUND_MIDDLE);
-			st.giveItems(SPECIAL_YETI_MEAT, 1);
+			for (QuestState st : getPartyMembers(player, npc, "cond", "2"))
+			{
+				st.set("cond", "3");
+				st.playSound(QuestState.SOUND_MIDDLE);
+				st.giveItems(SPECIAL_YETI_MEAT, 1);
+			}
 		}
 		
 		npc.broadcastNpcSay("Oooh!");
@@ -227,14 +229,16 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	
 	private boolean spawnRaid()
 	{
-		RaidBoss raid = RaidBossSpawnManager.getInstance().getBosses().get(ICICLE_EMPEROR_BUMBALUMP);
-		if (raid != null && raid.getRaidStatus() == StatusEnum.ALIVE)
+		final BossSpawn bs = RaidBossManager.getInstance().getBossSpawn(ICICLE_EMPEROR_BUMBALUMP);
+		if (bs != null && bs.getStatus() == BossStatus.ALIVE)
 		{
-			// set temporarily spawn location (to provide correct behavior of L2RaidBossInstance.checkAndReturnToSpawn())
+			final Npc raid = bs.getBoss();
+			
+			// set temporarily spawn location (to provide correct behavior of checkAndReturnToSpawn())
 			raid.getSpawn().setLoc(157117, -121939, -2397, Rnd.get(65536));
 			
 			// teleport raid from secret place
-			raid.teleToLocation(157117, -121939, -2397, 100);
+			raid.teleportTo(157117, -121939, -2397, 100);
 			raid.broadcastNpcSay("I smell something delicious...");
 			
 			// set raid status
@@ -253,7 +257,7 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 		
 		// teleport raid back to secret place
 		if (!raid.isDead())
-			raid.teleToLocation(-104700, -252700, -15542, 0);
+			raid.teleportTo(-104700, -252700, -15542, 0);
 		
 		// reset raid status
 		_status = -1;

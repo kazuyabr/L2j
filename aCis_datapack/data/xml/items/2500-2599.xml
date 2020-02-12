@@ -148,7 +148,7 @@
 	</item>
 	<item id="2507" type="Weapon" name="Lizardspear">
 		<set name="default_action" val="equip" />
-		<set name="weapon_type" val="DAGGER" />
+		<set name="weapon_type" val="BOW" />
 		<set name="bodypart" val="rhand" />
 		<set name="random_damage" val="5" />
 		<set name="attack_range" val="40" />

@@ -5,7 +5,7 @@ import net.sf.l2j.gameserver.data.xml.ArmorSetData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.ArmorSet;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
@@ -132,7 +132,7 @@ public class AdminEnchant implements IAdminCommandHandler
 						final L2Skill enchant4Skill = ((Weapon) it).getEnchant4Skill();
 						if (enchant4Skill != null)
 						{
-							player.removeSkill(enchant4Skill, false);
+							player.removeSkill(enchant4Skill.getId(), false);
 							player.sendSkillList();
 						}
 					}
@@ -163,12 +163,8 @@ public class AdminEnchant implements IAdminCommandHandler
 								final int skillId = armorSet.getEnchant6skillId();
 								if (skillId > 0)
 								{
-									final L2Skill skill = SkillTable.getInstance().getInfo(skillId, 1);
-									if (skill != null)
-									{
-										player.removeSkill(skill, false);
-										player.sendSkillList();
-									}
+									player.removeSkill(skillId, false);
+									player.sendSkillList();
 								}
 							}
 						}

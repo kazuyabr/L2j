@@ -3,17 +3,18 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.items.ActionType;
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
-import net.sf.l2j.gameserver.model.item.type.ActionType;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ItemList;
@@ -21,30 +22,11 @@ import net.sf.l2j.gameserver.network.serverpackets.PetItemList;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public final class UseItem extends L2GameClientPacket
 {
 	private int _objectId;
 	private boolean _ctrlPressed;
-	
-	public static class WeaponEquipTask implements Runnable
-	{
-		ItemInstance _item;
-		Player _activeChar;
-		
-		public WeaponEquipTask(ItemInstance it, Player character)
-		{
-			_item = it;
-			_activeChar = character;
-		}
-		
-		@Override
-		public void run()
-		{
-			_activeChar.useEquippableItem(_item, false);
-		}
-	}
 	
 	@Override
 	protected void readImpl()
@@ -56,7 +38,7 @@ public final class UseItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -117,7 +99,7 @@ public final class UseItem extends L2GameClientPacket
 				return;
 			}
 			
-			final Pet pet = ((Pet) activeChar.getPet());
+			final Pet pet = ((Pet) activeChar.getSummon());
 			
 			if (!pet.canWear(item.getItem()))
 			{
@@ -200,7 +182,14 @@ public final class UseItem extends L2GameClientPacket
 				return;
 			
 			if (activeChar.isAttackingNow())
-				ThreadPool.schedule(new WeaponEquipTask(item, activeChar), (activeChar.getAttackEndTime() - System.currentTimeMillis()));
+				ThreadPool.schedule(() ->
+				{
+					final ItemInstance itemToTest = activeChar.getInventory().getItemByObjectId(_objectId);
+					if (itemToTest == null)
+						return;
+					
+					activeChar.useEquippableItem(itemToTest, false);
+				}, activeChar.getAttackEndTime() - System.currentTimeMillis());
 			else
 				activeChar.useEquippableItem(item, true);
 		}
@@ -218,7 +207,7 @@ public final class UseItem extends L2GameClientPacket
 				return;
 			}
 			
-			final IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getEtcItem());
+			final IItemHandler handler = ItemHandler.getInstance().getHandler(item.getEtcItem());
 			if (handler != null)
 				handler.useItem(activeChar, item, _ctrlPressed);
 			

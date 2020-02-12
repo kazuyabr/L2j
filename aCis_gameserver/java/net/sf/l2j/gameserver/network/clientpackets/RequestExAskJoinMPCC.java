@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.group.CommandChannel;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.pledge.Clan;
@@ -22,7 +22,7 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player requestor = getClient().getActiveChar();
+		final Player requestor = getClient().getPlayer();
 		if (requestor == null)
 			return;
 		

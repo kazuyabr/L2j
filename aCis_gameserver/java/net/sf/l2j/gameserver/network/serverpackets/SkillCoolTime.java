@@ -3,12 +3,12 @@ package net.sf.l2j.gameserver.network.serverpackets;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.Player.TimeStamp;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.holder.Timestamp;
 
 public class SkillCoolTime extends L2GameServerPacket
 {
-	public List<TimeStamp> _reuseTimeStamps;
+	public List<Timestamp> _reuseTimeStamps;
 	
 	public SkillCoolTime(Player cha)
 	{
@@ -20,10 +20,10 @@ public class SkillCoolTime extends L2GameServerPacket
 	{
 		writeC(0xc1);
 		writeD(_reuseTimeStamps.size()); // list size
-		for (TimeStamp ts : _reuseTimeStamps)
+		for (Timestamp ts : _reuseTimeStamps)
 		{
-			writeD(ts.getSkillId());
-			writeD(ts.getSkillLvl());
+			writeD(ts.getId());
+			writeD(ts.getValue());
 			writeD((int) ts.getReuse() / 1000);
 			writeD((int) ts.getRemaining() / 1000);
 		}

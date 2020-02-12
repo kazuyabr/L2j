@@ -2,16 +2,16 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.actor.instance.Chest;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class Unlock implements ISkillHandler
 {
@@ -50,12 +50,12 @@ public class Unlock implements ISkillHandler
 			if (chestUnlock(skill, chest))
 			{
 				chest.setSpecialDrop();
-				chest.doDie(null);
+				chest.doDie(chest);
 			}
 			else
 			{
 				chest.addDamageHate(activeChar, 0, 999);
-				chest.getAI().setIntention(CtrlIntention.ATTACK, activeChar);
+				chest.getAI().setIntention(IntentionType.ATTACK, activeChar);
 			}
 		}
 		else

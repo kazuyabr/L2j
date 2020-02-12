@@ -8,8 +8,8 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminAnnouncements;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBan;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBookmark;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBuffs;
-import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCache;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCamera;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminClanHall;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCreateItem;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCursedWeapons;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminDelete;
@@ -24,7 +24,6 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminGm;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminGmChat;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminHeal;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminHelpPage;
-import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminInvul;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminKick;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminKnownlist;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminLevel;
@@ -50,84 +49,83 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminZone;
 
 public class AdminCommandHandler
 {
-	private final Map<Integer, IAdminCommandHandler> _datatable = new HashMap<>();
-	
-	public static AdminCommandHandler getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private final Map<Integer, IAdminCommandHandler> _entries = new HashMap<>();
 	
 	protected AdminCommandHandler()
 	{
-		registerAdminCommandHandler(new AdminAdmin());
-		registerAdminCommandHandler(new AdminAnnouncements());
-		registerAdminCommandHandler(new AdminBan());
-		registerAdminCommandHandler(new AdminBookmark());
-		registerAdminCommandHandler(new AdminBuffs());
-		registerAdminCommandHandler(new AdminCache());
-		registerAdminCommandHandler(new AdminCamera());
-		registerAdminCommandHandler(new AdminCreateItem());
-		registerAdminCommandHandler(new AdminCursedWeapons());
-		registerAdminCommandHandler(new AdminDelete());
-		registerAdminCommandHandler(new AdminDoorControl());
-		registerAdminCommandHandler(new AdminEditChar());
-		registerAdminCommandHandler(new AdminEditNpc());
-		registerAdminCommandHandler(new AdminEffects());
-		registerAdminCommandHandler(new AdminEnchant());
-		registerAdminCommandHandler(new AdminExpSp());
-		registerAdminCommandHandler(new AdminGeoEngine());
-		registerAdminCommandHandler(new AdminGm());
-		registerAdminCommandHandler(new AdminGmChat());
-		registerAdminCommandHandler(new AdminHeal());
-		registerAdminCommandHandler(new AdminHelpPage());
-		registerAdminCommandHandler(new AdminInvul());
-		registerAdminCommandHandler(new AdminKick());
-		registerAdminCommandHandler(new AdminKnownlist());
-		registerAdminCommandHandler(new AdminLevel());
-		registerAdminCommandHandler(new AdminMaintenance());
-		registerAdminCommandHandler(new AdminMammon());
-		registerAdminCommandHandler(new AdminManor());
-		registerAdminCommandHandler(new AdminMenu());
-		registerAdminCommandHandler(new AdminMovieMaker());
-		registerAdminCommandHandler(new AdminOlympiad());
-		registerAdminCommandHandler(new AdminPetition());
-		registerAdminCommandHandler(new AdminPForge());
-		registerAdminCommandHandler(new AdminPledge());
-		registerAdminCommandHandler(new AdminPolymorph());
-		registerAdminCommandHandler(new AdminRes());
-		registerAdminCommandHandler(new AdminRideWyvern());
-		registerAdminCommandHandler(new AdminShop());
-		registerAdminCommandHandler(new AdminSiege());
-		registerAdminCommandHandler(new AdminSkill());
-		registerAdminCommandHandler(new AdminSpawn());
-		registerAdminCommandHandler(new AdminTarget());
-		registerAdminCommandHandler(new AdminTeleport());
-		registerAdminCommandHandler(new AdminZone());
+		registerHandler(new AdminAdmin());
+		registerHandler(new AdminAnnouncements());
+		registerHandler(new AdminBan());
+		registerHandler(new AdminBookmark());
+		registerHandler(new AdminBuffs());
+		registerHandler(new AdminCamera());
+		registerHandler(new AdminClanHall());
+		registerHandler(new AdminCreateItem());
+		registerHandler(new AdminCursedWeapons());
+		registerHandler(new AdminDelete());
+		registerHandler(new AdminDoorControl());
+		registerHandler(new AdminEditChar());
+		registerHandler(new AdminEditNpc());
+		registerHandler(new AdminEffects());
+		registerHandler(new AdminEnchant());
+		registerHandler(new AdminExpSp());
+		registerHandler(new AdminGeoEngine());
+		registerHandler(new AdminGm());
+		registerHandler(new AdminGmChat());
+		registerHandler(new AdminHeal());
+		registerHandler(new AdminHelpPage());
+		registerHandler(new AdminKick());
+		registerHandler(new AdminKnownlist());
+		registerHandler(new AdminLevel());
+		registerHandler(new AdminMaintenance());
+		registerHandler(new AdminMammon());
+		registerHandler(new AdminManor());
+		registerHandler(new AdminMenu());
+		registerHandler(new AdminMovieMaker());
+		registerHandler(new AdminOlympiad());
+		registerHandler(new AdminPetition());
+		registerHandler(new AdminPForge());
+		registerHandler(new AdminPledge());
+		registerHandler(new AdminPolymorph());
+		registerHandler(new AdminRes());
+		registerHandler(new AdminRideWyvern());
+		registerHandler(new AdminShop());
+		registerHandler(new AdminSiege());
+		registerHandler(new AdminSkill());
+		registerHandler(new AdminSpawn());
+		registerHandler(new AdminTarget());
+		registerHandler(new AdminTeleport());
+		registerHandler(new AdminZone());
 	}
 	
-	public void registerAdminCommandHandler(IAdminCommandHandler handler)
+	private void registerHandler(IAdminCommandHandler handler)
 	{
 		for (String id : handler.getAdminCommandList())
-			_datatable.put(id.hashCode(), handler);
+			_entries.put(id.hashCode(), handler);
 	}
 	
-	public IAdminCommandHandler getAdminCommandHandler(String adminCommand)
+	public IAdminCommandHandler getHandler(String adminCommand)
 	{
 		String command = adminCommand;
 		
 		if (adminCommand.indexOf(" ") != -1)
 			command = adminCommand.substring(0, adminCommand.indexOf(" "));
 		
-		return _datatable.get(command.hashCode());
+		return _entries.get(command.hashCode());
 	}
 	
 	public int size()
 	{
-		return _datatable.size();
+		return _entries.size();
+	}
+	
+	public static AdminCommandHandler getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final AdminCommandHandler _instance = new AdminCommandHandler();
+		protected static final AdminCommandHandler INSTANCE = new AdminCommandHandler();
 	}
 }

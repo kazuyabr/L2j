@@ -1,22 +1,23 @@
 package net.sf.l2j.gameserver.skills.funcs;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.enums.actors.HennaType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.skills.basefuncs.Func;
 
 public class FuncHennaINT extends Func
 {
-	static final FuncHennaINT _fh_instance = new FuncHennaINT();
+	private static final HennaType STAT = HennaType.INT;
+	private static final FuncHennaINT INSTANCE = new FuncHennaINT();
 	
 	public static Func getInstance()
 	{
-		return _fh_instance;
+		return INSTANCE;
 	}
 	
 	private FuncHennaINT()
 	{
-		super(Stats.STAT_INT, 0x10, null, null);
+		super(STAT.getStats(), 0x10, null, null);
 	}
 	
 	@Override
@@ -24,6 +25,6 @@ public class FuncHennaINT extends Func
 	{
 		final Player player = env.getPlayer();
 		if (player != null)
-			env.addValue(player.getHennaStatINT());
+			env.addValue(player.getHennaList().getStat(STAT));
 	}
 }

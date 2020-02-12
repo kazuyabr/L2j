@@ -97,10 +97,10 @@
 				<drop itemid="57" min="120000" max="150000" chance="1000000"/>
 			</category>
 		</drops>
-		<minions>
-			<minion id="29003" min="5" max="5"/>
-			<minion id="29005" min="7" max="7"/>
-		</minions>
+		<minions> 
+			<minion id="29003" min="3" max="3"/> 
+			<minion id="29005" min="4" max="4"/> 
+		</minions> 
 	</npc>
 	<npc id="29002" name="Queen Ant Larva" title="">
 		<set name="level" val="38"/>
@@ -136,9 +136,6 @@
 			<skill id="4045" level="1"/>
 			<skill id="4416" level="12"/>
 		</skills>
-		<minions>
-			<minion id="29003" min="2" max="2"/>
-		</minions>
 	</npc>
 	<npc id="29003" name="Nurse Ant" title="">
 		<set name="level" val="35"/>
@@ -1031,7 +1028,7 @@
 		</drops>
 	</npc>
 	<npc id="29020" name="Baium" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="78"/>
 		<set name="radius" val="65"/>
 		<set name="height" val="174"/>
 		<set name="rHand" val="0"/>
@@ -1670,7 +1667,7 @@
 		</drops>
 	</npc>
 	<npc id="29029" name="Lavasaurus Pustbon" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
@@ -1706,7 +1703,7 @@
 		</skills>
 	</npc>
 	<npc id="29030" name="Fenril Hound Kerinne" title="Family of Valakas">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="0"/>
@@ -1755,7 +1752,7 @@
 		</minions>
 	</npc>
 	<npc id="29031" name="Kerinne's Ifrit" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -1792,7 +1789,7 @@
 		</skills>
 	</npc>
 	<npc id="29032" name="Kerinne's Golem" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="45"/>
 		<set name="rHand" val="0"/>
@@ -1827,7 +1824,7 @@
 		</skills>
 	</npc>
 	<npc id="29033" name="Fenril Hound Freki" title="Family of Valakas">
-		<set name="level" val="84"/>
+		<set name="level" val="82"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="0"/>
@@ -1876,7 +1873,7 @@
 		</minions>
 	</npc>
 	<npc id="29034" name="Freki's Ifrit" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -1913,7 +1910,7 @@
 		</skills>
 	</npc>
 	<npc id="29035" name="Freki's Golem" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="45"/>
 		<set name="rHand" val="0"/>
@@ -1948,7 +1945,7 @@
 		</skills>
 	</npc>
 	<npc id="29036" name="Fenril Hound Uruz" title="Family of Valakas">
-		<set name="level" val="84"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="0"/>
@@ -2047,7 +2044,7 @@
 		</minions>
 	</npc>
 	<npc id="29038" name="Kinaz's Ifrit" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -2084,7 +2081,7 @@
 		</skills>
 	</npc>
 	<npc id="29039" name="Kinaz's Ifrit" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -2121,7 +2118,7 @@
 		</skills>
 	</npc>
 	<npc id="29040" name="Wings of Flame Ixion" title="Gatekeeper of Valakas">
-		<set name="level" val="84"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="29"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -2175,7 +2172,7 @@
 		</minions>
 	</npc>
 	<npc id="29041" name="Inferno Golem" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="45"/>
 		<set name="rHand" val="0"/>
@@ -2211,7 +2208,7 @@
 		</skills>
 	</npc>
 	<npc id="29042" name="Inferno Golem" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="45"/>
 		<set name="rHand" val="0"/>
@@ -2246,7 +2243,7 @@
 		</skills>
 	</npc>
 	<npc id="29043" name="Howling Ifrit" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -2283,7 +2280,7 @@
 		</skills>
 	</npc>
 	<npc id="29044" name="Howling Ifrit" title="">
-		<set name="level" val="84"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -2355,7 +2352,7 @@
 		</skills>
 	</npc>
 	<npc id="29046" name="Scarlet van Halisha" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="45"/>
 		<set name="height" val="90.7"/>
 		<set name="rHand" val="8204"/>
@@ -2390,7 +2387,7 @@
 		</skills>
 	</npc>
 	<npc id="29047" name="Scarlet van Halisha" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="92"/>
 		<set name="height" val="112.8"/>
 		<set name="rHand" val="8222"/>
@@ -2568,7 +2565,7 @@
 		</drops>
 	</npc>
 	<npc id="29048" name="Evil Spirit" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="40"/>
 		<set name="height" val="100"/>
 		<set name="rHand" val="0"/>
@@ -2603,7 +2600,7 @@
 		</skills>
 	</npc>
 	<npc id="29049" name="Evil Spirit" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="40"/>
 		<set name="height" val="100"/>
 		<set name="rHand" val="0"/>
@@ -2714,7 +2711,7 @@
 		</skills>
 	</npc>
 	<npc id="29052" name="Follower Dummy" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="99"/>
 		<set name="radius" val="1"/>
 		<set name="height" val="35"/>
 		<set name="rHand" val="0"/>
@@ -2750,7 +2747,7 @@
 		</skills>
 	</npc>
 	<npc id="29053" name="Follower Dummy" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="99"/>
 		<set name="radius" val="1"/>
 		<set name="height" val="58"/>
 		<set name="rHand" val="0"/>
@@ -2837,7 +2834,7 @@
 		</drops>
 	</npc>
 	<npc id="29055" name="Teleportation Cubic" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="93"/>
 		<set name="radius" val="40"/>
 		<set name="height" val="80"/>
 		<set name="rHand" val="0"/>
@@ -3120,7 +3117,7 @@
 		</skills>
 	</npc>
 	<npc id="29062" name="Andreas Van Halter" title="Seer of Pagan">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="21.3"/>
 		<set name="rHand" val="0"/>
@@ -3176,7 +3173,7 @@
 		</drops>
 	</npc>
 	<npc id="29063" name="Andreas' Acolyte" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="0"/>
@@ -3218,7 +3215,7 @@
 		</drops>
 	</npc>
 	<npc id="29064" name="Andreas' Acolyte" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="0"/>
@@ -3261,7 +3258,7 @@
 		</drops>
 	</npc>
 	<npc id="29065" name="Sailren" title="Sealed Evil Power">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="100"/>
 		<set name="height" val="82.1"/>
 		<set name="rHand" val="0"/>
@@ -3920,7 +3917,7 @@
 		</drops>
 	</npc>
 	<npc id="29069" name="Behemoth Dragon" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="78"/>
 		<set name="radius" val="63"/>
 		<set name="height" val="54"/>
 		<set name="rHand" val="0"/>
@@ -4004,7 +4001,7 @@
 		</drops>
 	</npc>
 	<npc id="29070" name="Dragon Bomber" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="78"/>
 		<set name="radius" val="37"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="0"/>
@@ -4208,7 +4205,7 @@
 		</skills>
 	</npc>
 	<npc id="29076" name="Dragon Bomber" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="78"/>
 		<set name="radius" val="42"/>
 		<set name="height" val="34.5"/>
 		<set name="rHand" val="0"/>
@@ -4242,7 +4239,7 @@
 		</skills>
 	</npc>
 	<npc id="29095" name="Gordon" title="Knight of Destruction">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="43"/>
 		<set name="height" val="46.6"/>
 		<set name="rHand" val="0"/>
@@ -4300,7 +4297,7 @@
 		</drops>
 	</npc>
 	<npc id="29096" name="Anais" title="Lord of Splendor">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="16"/>
 		<set name="height" val="41.8"/>
 		<set name="rHand" val="0"/>
@@ -4356,7 +4353,7 @@
 		</drops>
 	</npc>
 	<npc id="29097" name="Splendor Disciple" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="47"/>
 		<set name="rHand" val="0"/>
@@ -4398,7 +4395,7 @@
 		</drops>
 	</npc>
 	<npc id="29098" name="Splendor Worshiper" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="47"/>
 		<set name="rHand" val="0"/>

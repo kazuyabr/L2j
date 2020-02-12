@@ -44,7 +44,7 @@ public class MultiSellList extends L2GameServerPacket
 		{
 			Entry ent = _list.getEntries().get(_index++);
 			
-			writeD(ent.getId());
+			writeD(_index);
 			writeD(0x00); // C6
 			writeD(0x00); // C6
 			writeC(ent.isStackable() ? 1 : 0);

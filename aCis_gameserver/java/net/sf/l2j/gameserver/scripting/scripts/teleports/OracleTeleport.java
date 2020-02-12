@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.scripting.scripts.teleports;
 import net.sf.l2j.commons.util.ArraysUtil;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -249,14 +249,14 @@ public class OracleTeleport extends Quest
 			if (ArraysUtil.contains(TEMPLE_PRIEST, npcId) && st.getState() == STATE_STARTED)
 			{
 				Location loc = RETURN_LOCS[st.getInt("id")];
-				player.teleToLocation(loc.getX(), loc.getY(), loc.getZ(), 0);
+				player.teleportTo(loc.getX(), loc.getY(), loc.getZ(), 0);
 				player.setIsIn7sDungeon(false);
 				st.exitQuest(true);
 			}
 			else if (ArraysUtil.contains(RIFT_POSTERS, npcId) && st.getState() == STATE_STARTED)
 			{
 				Location loc = RETURN_LOCS[st.getInt("id")];
-				player.teleToLocation(loc.getX(), loc.getY(), loc.getZ(), 0);
+				player.teleportTo(loc.getX(), loc.getY(), loc.getZ(), 0);
 				htmltext = "rift_back.htm";
 				st.exitQuest(true);
 			}
@@ -266,12 +266,12 @@ public class OracleTeleport extends Quest
 			int id = st.getInt("id");
 			if (ArraysUtil.contains(TOWN_DAWN, id))
 			{
-				player.teleToLocation(-80157, 111344, -4901, 0);
+				player.teleportTo(-80157, 111344, -4901, 0);
 				player.setIsIn7sDungeon(true);
 			}
 			else if (ArraysUtil.contains(TOWN_DUSK, id))
 			{
-				player.teleToLocation(-81261, 86531, -5157, 0);
+				player.teleportTo(-81261, 86531, -5157, 0);
 				player.setIsIn7sDungeon(true);
 			}
 			else
@@ -280,7 +280,7 @@ public class OracleTeleport extends Quest
 		else if (event.equalsIgnoreCase("Dimensional"))
 		{
 			htmltext = "oracle.htm";
-			player.teleToLocation(-114755, -179466, -6752, 0);
+			player.teleportTo(-114755, -179466, -6752, 0);
 		}
 		else if (event.equalsIgnoreCase("5.htm"))
 		{
@@ -298,7 +298,7 @@ public class OracleTeleport extends Quest
 			
 			st.set("id", Integer.toString(i));
 			st.setState(STATE_STARTED);
-			player.teleToLocation(-114755, -179466, -6752, 0);
+			player.teleportTo(-114755, -179466, -6752, 0);
 		}
 		else if (event.equalsIgnoreCase("6.htm"))
 		{
@@ -333,7 +333,7 @@ public class OracleTeleport extends Quest
 			st.setState(STATE_STARTED);
 			st.playSound(QuestState.SOUND_ACCEPT);
 			htmltext = "ziggurat_rift.htm";
-			player.teleToLocation(-114755, -179466, -6752, 0);
+			player.teleportTo(-114755, -179466, -6752, 0);
 		}
 		
 		return htmltext;
@@ -361,7 +361,7 @@ public class OracleTeleport extends Quest
 			
 			st.set("id", Integer.toString(i));
 			st.playSound(QuestState.SOUND_ACCEPT);
-			player.teleToLocation(-80157, 111344, -4901, 0);
+			player.teleportTo(-80157, 111344, -4901, 0);
 			player.setIsIn7sDungeon(true);
 		}
 		
@@ -379,7 +379,7 @@ public class OracleTeleport extends Quest
 			
 			st.set("id", Integer.toString(i));
 			st.playSound(QuestState.SOUND_ACCEPT);
-			player.teleToLocation(-81261, 86531, -5157, 0);
+			player.teleportTo(-81261, 86531, -5157, 0);
 			player.setIsIn7sDungeon(true);
 		}
 		else if (npcId >= 31494 && npcId <= 31507)

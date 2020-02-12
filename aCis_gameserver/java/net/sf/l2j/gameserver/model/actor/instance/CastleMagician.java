@@ -1,12 +1,13 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * @author Kerberos | ZaKaX
@@ -80,7 +81,7 @@ public class CastleMagician extends Folk
 					if (!validateGateCondition(clanLeader, player))
 						return;
 					
-					player.teleToLocation(clanLeader.getX(), clanLeader.getY(), clanLeader.getZ(), 0);
+					player.teleportTo(clanLeader.getX(), clanLeader.getY(), clanLeader.getZ(), 0);
 					return;
 				}
 				String filename = "data/html/castlemagician/magician-nogate.htm";
@@ -115,10 +116,10 @@ public class CastleMagician extends Folk
 		
 		if (player.isIn7sDungeon())
 		{
-			final CabalType targetCabal = SevenSigns.getInstance().getPlayerCabal(clanLeader.getObjectId());
-			if (SevenSigns.getInstance().isSealValidationPeriod())
+			final CabalType targetCabal = SevenSignsManager.getInstance().getPlayerCabal(clanLeader.getObjectId());
+			if (SevenSignsManager.getInstance().isSealValidationPeriod())
 			{
-				if (targetCabal != SevenSigns.getInstance().getCabalHighestScore())
+				if (targetCabal != SevenSignsManager.getInstance().getCabalHighestScore())
 				{
 					player.sendMessage("Couldn't teleport to clan leader. The requirements was not meet.");
 					return false;

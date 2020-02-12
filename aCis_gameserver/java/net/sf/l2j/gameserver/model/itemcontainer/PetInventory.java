@@ -2,11 +2,11 @@ package net.sf.l2j.gameserver.model.itemcontainer;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemLocation;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
 
 public class PetInventory extends Inventory
 {

@@ -3,18 +3,24 @@ package net.sf.l2j.gameserver.model;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.data.PlayerNameTable;
-import net.sf.l2j.gameserver.data.SpawnTable;
+import net.sf.l2j.commons.logging.CLogger;
+
+import net.sf.l2j.gameserver.data.sql.PlayerInfoTable;
+import net.sf.l2j.gameserver.data.sql.SpawnTable;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.location.Location;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
+import net.sf.l2j.gameserver.model.zone.ZoneType;
+import net.sf.l2j.gameserver.network.clientpackets.Say2;
+import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
+import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 
 public final class World
 {
-	private static Logger _log = Logger.getLogger(World.class.getName());
+	private static final CLogger LOGGER = new CLogger(World.class.getName());
 	
 	// Geodata min/max tiles
 	public static final int TILE_X_MIN = 16;
@@ -30,7 +36,7 @@ public final class World
 	public static final int WORLD_Y_MAX = (TILE_Y_MAX - 17) * TILE_SIZE;
 	
 	// Regions and offsets
-	private static final int REGION_SIZE = 4096;
+	private static final int REGION_SIZE = 2048;
 	private static final int REGIONS_X = (WORLD_X_MAX - WORLD_X_MIN) / REGION_SIZE;
 	private static final int REGIONS_Y = (WORLD_Y_MAX - WORLD_Y_MIN) / REGION_SIZE;
 	private static final int REGION_X_OFFSET = Math.abs(WORLD_X_MIN / REGION_SIZE);
@@ -64,7 +70,7 @@ public final class World
 				}
 			}
 		}
-		_log.info("World: WorldRegion grid (" + REGIONS_X + " by " + REGIONS_Y + ") is now set up.");
+		LOGGER.info("World grid ({} by {}) is now set up.", REGIONS_X, REGIONS_Y);
 	}
 	
 	public void addObject(WorldObject object)
@@ -104,7 +110,7 @@ public final class World
 	
 	public Player getPlayer(String name)
 	{
-		return _players.get(PlayerNameTable.getInstance().getPlayerObjectId(name));
+		return _players.get(PlayerInfoTable.getInstance().getPlayerObjectId(name));
 	}
 	
 	public Player getPlayer(int objectId)
@@ -112,9 +118,9 @@ public final class World
 		return _players.get(objectId);
 	}
 	
-	public Pet addPet(int ownerId, Pet pet)
+	public void addPet(int ownerId, Pet pet)
 	{
-		return _pets.putIfAbsent(ownerId, pet);
+		_pets.putIfAbsent(ownerId, pet);
 	}
 	
 	public void removePet(int ownerId)
@@ -138,17 +144,41 @@ public final class World
 	}
 	
 	/**
-	 * @param point position of the object.
-	 * @return the current WorldRegion of the object according to its position (x,y).
+	 * @param loc : The Location to check.
+	 * @return a {@link WorldRegion} based on a {@link Location}.
 	 */
-	public WorldRegion getRegion(Location point)
+	public WorldRegion getRegion(Location loc)
 	{
-		return getRegion(point.getX(), point.getY());
+		return getRegion(loc.getX(), loc.getY());
 	}
 	
+	/**
+	 * @param x : The X point to check.
+	 * @param y : The Y point to check.
+	 * @return a {@link WorldRegion} based on X/Y coordinates.
+	 */
 	public WorldRegion getRegion(int x, int y)
 	{
 		return _worldRegions[(x - WORLD_X_MIN) / REGION_SIZE][(y - WORLD_Y_MIN) / REGION_SIZE];
+	}
+	
+	/**
+	 * BEWARE : This method is kinda expensive, avoid to use it.
+	 * @param zone : The ZoneType to check.
+	 * @return the first encountered {@link WorldRegion} based on a {@link ZoneType}.
+	 */
+	public WorldRegion getRegion(ZoneType zone)
+	{
+		for (int i = 0; i <= REGIONS_X; i++)
+		{
+			for (int j = 0; j <= REGIONS_Y; j++)
+			{
+				final WorldRegion region = _worldRegions[i][j];
+				if (region.containsZone(zone.getId()))
+					return region;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -174,7 +204,7 @@ public final class World
 	 */
 	public void deleteVisibleNpcSpawns()
 	{
-		_log.info("Deleting all visible NPCs.");
+		LOGGER.info("Deleting all visible NPCs.");
 		for (int i = 0; i <= REGIONS_X; i++)
 		{
 			for (int j = 0; j <= REGIONS_Y; j++)
@@ -195,16 +225,39 @@ public final class World
 				}
 			}
 		}
-		_log.info("All visibles NPCs are now deleted.");
+		LOGGER.info("All visibles NPCs are now deleted.");
+	}
+	
+	/**
+	 * Send a packet to all online {@link Player}s present in the {@link World}.
+	 * @param packet : The packet to send.
+	 */
+	public static void toAllOnlinePlayers(L2GameServerPacket packet)
+	{
+		for (Player player : World.getInstance().getPlayers())
+		{
+			if (player.isOnline())
+				player.sendPacket(packet);
+		}
+	}
+	
+	public static void announceToOnlinePlayers(String text)
+	{
+		toAllOnlinePlayers(new CreatureSay(0, Say2.ANNOUNCEMENT, "", text));
+	}
+	
+	public static void announceToOnlinePlayers(String text, boolean critical)
+	{
+		toAllOnlinePlayers(new CreatureSay(0, (critical) ? Say2.CRITICAL_ANNOUNCE : Say2.ANNOUNCEMENT, "", text));
 	}
 	
 	public static World getInstance()
 	{
-		return SingletonHolder._instance;
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final World _instance = new World();
+		protected static final World INSTANCE = new World();
 	}
 }

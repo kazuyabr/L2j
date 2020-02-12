@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
@@ -19,7 +19,7 @@ public final class RequestLinkHtml extends L2GameClientPacket
 	@Override
 	public void runImpl()
 	{
-		final Player actor = getClient().getActiveChar();
+		final Player actor = getClient().getPlayer();
 		if (actor == null)
 			return;
 		

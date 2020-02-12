@@ -6,7 +6,7 @@ import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.xml.ArmorSetData;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.ArmorSet;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
@@ -33,7 +33,7 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null || _objectId == 0)
 			return;
 		
@@ -183,7 +183,7 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 						final L2Skill enchant4Skill = ((Weapon) it).getEnchant4Skill();
 						if (enchant4Skill != null)
 						{
-							activeChar.removeSkill(enchant4Skill, false);
+							activeChar.removeSkill(enchant4Skill.getId(), false);
 							activeChar.sendSkillList();
 						}
 					}
@@ -200,12 +200,8 @@ public final class RequestEnchantItem extends AbstractEnchantPacket
 								final int skillId = armorSet.getEnchant6skillId();
 								if (skillId > 0)
 								{
-									final L2Skill skill = SkillTable.getInstance().getInfo(skillId, 1);
-									if (skill != null)
-									{
-										activeChar.removeSkill(skill, false);
-										activeChar.sendSkillList();
-									}
+									activeChar.removeSkill(skillId, false);
+									activeChar.sendSkillList();
 								}
 							}
 						}

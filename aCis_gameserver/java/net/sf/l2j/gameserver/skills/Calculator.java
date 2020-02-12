@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.skills.basefuncs.Func;
 
 /**

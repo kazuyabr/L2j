@@ -1,15 +1,18 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.random.Rnd;
 
-import net.sf.l2j.gameserver.data.DoorTable;
-import net.sf.l2j.gameserver.instancemanager.FourSepulchersManager;
+import net.sf.l2j.gameserver.data.manager.FourSepulchersManager;
+import net.sf.l2j.gameserver.data.xml.DoorData;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
+import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
@@ -18,64 +21,16 @@ import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.network.serverpackets.MoveToPawn;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 public class SepulcherNpc extends Folk
 {
-	protected Future<?> _closeTask = null;
-	protected Future<?> _spawnNextMysteriousBoxTask = null;
-	protected Future<?> _spawnMonsterTask = null;
-	
 	private static final String HTML_FILE_PATH = "data/html/sepulchers/";
 	private static final int HALLS_KEY = 7260;
 	
 	public SepulcherNpc(int objectId, NpcTemplate template)
 	{
 		super(objectId, template);
-		
-		setShowSummonAnimation(true);
-		
-		if (_closeTask != null)
-			_closeTask.cancel(true);
-		
-		if (_spawnNextMysteriousBoxTask != null)
-			_spawnNextMysteriousBoxTask.cancel(true);
-		
-		if (_spawnMonsterTask != null)
-			_spawnMonsterTask.cancel(true);
-		
-		_closeTask = null;
-		_spawnNextMysteriousBoxTask = null;
-		_spawnMonsterTask = null;
-	}
-	
-	@Override
-	public void onSpawn()
-	{
-		super.onSpawn();
-		setShowSummonAnimation(false);
-	}
-	
-	@Override
-	public void deleteMe()
-	{
-		if (_closeTask != null)
-		{
-			_closeTask.cancel(true);
-			_closeTask = null;
-		}
-		if (_spawnNextMysteriousBoxTask != null)
-		{
-			_spawnNextMysteriousBoxTask.cancel(true);
-			_spawnNextMysteriousBoxTask = null;
-		}
-		if (_spawnMonsterTask != null)
-		{
-			_spawnMonsterTask.cancel(true);
-			_spawnMonsterTask = null;
-		}
-		super.deleteMe();
 	}
 	
 	@Override
@@ -86,31 +41,20 @@ public class SepulcherNpc extends Folk
 			player.setTarget(this);
 		else
 		{
-			// Check if the player is attackable (without a forced attack) and isn't dead
-			if (isAutoAttackable(player) && !isAlikeDead())
-			{
-				// Check the height difference, this max heigth difference might need some tweaking
-				if (Math.abs(player.getZ() - getZ()) < 400)
-				{
-					// Set the Player Intention to ATTACK
-					player.getAI().setIntention(CtrlIntention.ATTACK, this);
-				}
-				else
-				{
-					// Send ActionFailed (target is out of attack range) to the Player player
-					player.sendPacket(ActionFailed.STATIC_PACKET);
-				}
-			}
+			// Check if the player is attackable (without a forced attack)
+			if (isAutoAttackable(player))
+				player.getAI().setIntention(IntentionType.ATTACK, this);
 			else if (!isAutoAttackable(player))
 			{
-				// Calculate the distance between the Player and the L2NpcInstance
+				// Calculate the distance between the Player and this instance.
 				if (!canInteract(player))
-				{
-					// Notify the Player AI with INTERACT
-					player.getAI().setIntention(CtrlIntention.INTERACT, this);
-				}
+					player.getAI().setIntention(IntentionType.INTERACT, this);
 				else
 				{
+					// Stop moving if we're already in interact range.
+					if (player.isMoving() || player.isInCombat())
+						player.getAI().setIntention(IntentionType.IDLE);
+					
 					// Rotate the player to face the instance
 					player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 					
@@ -123,8 +67,42 @@ public class SepulcherNpc extends Folk
 					doAction(player);
 				}
 			}
-			// Send a Server->Client ActionFailed to the Player in order to avoid that the client wait another packet
-			player.sendPacket(ActionFailed.STATIC_PACKET);
+		}
+	}
+	
+	@Override
+	public void onActionShift(Player player)
+	{
+		// Check if the Player is a GM ; send him NPC infos if true.
+		if (player.isGM())
+			sendNpcInfos(player);
+		
+		if (player.getTarget() != this)
+			player.setTarget(this);
+		else
+		{
+			if (isAutoAttackable(player))
+			{
+				if (player.isInsideRadius(this, player.getPhysicalAttackRange(), false, false) && GeoEngine.getInstance().canSeeTarget(player, this))
+					player.getAI().setIntention(IntentionType.ATTACK, this);
+				else
+					player.sendPacket(ActionFailed.STATIC_PACKET);
+			}
+			else if (canInteract(player))
+			{
+				// Rotate the player to face the instance
+				player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
+				
+				// Send ActionFailed to the player in order to avoid he stucks
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+				
+				if (hasRandomAnimation())
+					onRandomAnimation(Rnd.get(8));
+				
+				doAction(player);
+			}
+			else
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 	
@@ -158,11 +136,14 @@ public class SepulcherNpc extends Folk
 			case 31485:
 			case 31486:
 			case 31487:
-				setIsInvul(false);
-				reduceCurrentHp(getMaxHp() + 1, player, null);
-				if (_spawnMonsterTask != null)
-					_spawnMonsterTask.cancel(true);
-				_spawnMonsterTask = ThreadPool.schedule(new SpawnMonster(getNpcId()), 3500);
+				// Time limit is reached. You can't open anymore Mysterious boxes after the 49th minute.
+				if (Calendar.getInstance().get(Calendar.MINUTE) >= 50)
+				{
+					broadcastNpcSay("You can start at the scheduled time.");
+					return;
+				}
+				FourSepulchersManager.getInstance().spawnMonster(getNpcId());
+				deleteMe();
 				break;
 			
 			case 31455:
@@ -178,22 +159,23 @@ public class SepulcherNpc extends Folk
 			case 31465:
 			case 31466:
 			case 31467:
-				setIsInvul(false);
-				reduceCurrentHp(getMaxHp() + 1, player, null);
 				if (player.isInParty() && !player.getParty().isLeader(player))
 					player = player.getParty().getLeader();
+				
 				player.addItem("Quest", HALLS_KEY, 1, player, true);
+				
+				deleteMe();
 				break;
 			
 			default:
 			{
-				List<Quest> qlsa = getTemplate().getEventQuests(EventType.QUEST_START);
-				if (qlsa != null && !qlsa.isEmpty())
+				List<Quest> scripts = getTemplate().getEventQuests(ScriptEventType.QUEST_START);
+				if (scripts != null && !scripts.isEmpty())
 					player.setLastQuestNpcObject(getObjectId());
 				
-				List<Quest> qlst = getTemplate().getEventQuests(EventType.ON_FIRST_TALK);
-				if (qlst != null && qlst.size() == 1)
-					qlst.get(0).notifyFirstTalk(this, player);
+				scripts = getTemplate().getEventQuests(ScriptEventType.ON_FIRST_TALK);
+				if (scripts != null && scripts.size() == 1)
+					scripts.get(0).notifyFirstTalk(this, player);
 				else
 					showChatWindow(player);
 			}
@@ -214,34 +196,9 @@ public class SepulcherNpc extends Folk
 	}
 	
 	@Override
-	public void showChatWindow(Player player, int val)
-	{
-		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-		html.setFile(getHtmlPath(getNpcId(), val));
-		html.replace("%objectId%", getObjectId());
-		player.sendPacket(html);
-		player.sendPacket(ActionFailed.STATIC_PACKET);
-	}
-	
-	@Override
 	public void onBypassFeedback(Player player, String command)
 	{
-		if (command.startsWith("Chat"))
-		{
-			int val = 0;
-			try
-			{
-				val = Integer.parseInt(command.substring(5));
-			}
-			catch (IndexOutOfBoundsException ioobe)
-			{
-			}
-			catch (NumberFormatException nfe)
-			{
-			}
-			showChatWindow(player, val);
-		}
-		else if (command.startsWith("open_gate"))
+		if (command.startsWith("open_gate"))
 		{
 			final ItemInstance hallsKey = player.getInventory().getItemByItemId(HALLS_KEY);
 			if (hallsKey == null)
@@ -281,19 +238,19 @@ public class SepulcherNpc extends Folk
 	
 	public void openNextDoor(int npcId)
 	{
-		int doorId = FourSepulchersManager.getInstance().getHallGateKeepers().get(npcId);
-		DoorTable _doorTable = DoorTable.getInstance();
-		_doorTable.getDoor(doorId).openMe();
+		final int doorId = FourSepulchersManager.getInstance().getHallGateKeepers().get(npcId);
+		final Door door = DoorData.getInstance().getDoor(doorId);
 		
-		if (_closeTask != null)
-			_closeTask.cancel(true);
+		// Open the door.
+		door.openMe();
 		
-		_closeTask = ThreadPool.schedule(new CloseNextDoor(doorId), 10000);
+		// Schedule the automatic door close.
+		ThreadPool.schedule(() -> door.closeMe(), 10000);
 		
-		if (_spawnNextMysteriousBoxTask != null)
-			_spawnNextMysteriousBoxTask.cancel(true);
+		// Spawn the next mysterious box.
+		FourSepulchersManager.getInstance().spawnMysteriousBox(npcId);
 		
-		_spawnNextMysteriousBoxTask = ThreadPool.schedule(new SpawnNextMysteriousBox(npcId), 0);
+		sayInShout("The monsters have spawned!");
 	}
 	
 	public void sayInShout(String msg)
@@ -312,60 +269,5 @@ public class SepulcherNpc extends Folk
 		html.setFile("data/html/sepulchers/" + file);
 		html.replace("%npcname%", getName());
 		player.sendPacket(html);
-	}
-	
-	private static class CloseNextDoor implements Runnable
-	{
-		private final int _doorId;
-		
-		public CloseNextDoor(int doorId)
-		{
-			_doorId = doorId;
-		}
-		
-		@Override
-		public void run()
-		{
-			try
-			{
-				DoorTable.getInstance().getDoor(_doorId).closeMe();
-			}
-			catch (Exception e)
-			{
-				_log.warning(e.getMessage());
-			}
-		}
-	}
-	
-	private static class SpawnNextMysteriousBox implements Runnable
-	{
-		private final int _npcId;
-		
-		public SpawnNextMysteriousBox(int npcId)
-		{
-			_npcId = npcId;
-		}
-		
-		@Override
-		public void run()
-		{
-			FourSepulchersManager.getInstance().spawnMysteriousBox(_npcId);
-		}
-	}
-	
-	private static class SpawnMonster implements Runnable
-	{
-		private final int _npcId;
-		
-		public SpawnMonster(int npcId)
-		{
-			_npcId = npcId;
-		}
-		
-		@Override
-		public void run()
-		{
-			FourSepulchersManager.getInstance().spawnMonster(_npcId);
-		}
 	}
 }

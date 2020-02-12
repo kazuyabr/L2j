@@ -3,18 +3,19 @@ package net.sf.l2j.gameserver.skills.effects;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.items.ShotType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
 import net.sf.l2j.gameserver.model.actor.instance.EffectPoint;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -22,7 +23,6 @@ import net.sf.l2j.gameserver.network.serverpackets.MagicSkillLaunched;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillSignetCasttime;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 public class EffectSignetMDam extends L2Effect
 {
@@ -44,7 +44,7 @@ public class EffectSignetMDam extends L2Effect
 	{
 		NpcTemplate template;
 		if (getSkill() instanceof L2SkillSignetCasttime)
-			template = NpcTable.getInstance().getTemplate(((L2SkillSignetCasttime) getSkill())._effectNpcId);
+			template = NpcData.getInstance().getTemplate(((L2SkillSignetCasttime) getSkill())._effectNpcId);
 		else
 			return false;
 		
@@ -52,23 +52,12 @@ public class EffectSignetMDam extends L2Effect
 		effectPoint.setCurrentHp(effectPoint.getMaxHp());
 		effectPoint.setCurrentMp(effectPoint.getMaxMp());
 		
-		int x = getEffector().getX();
-		int y = getEffector().getY();
-		int z = getEffector().getZ();
-		
+		Location worldPosition = null;
 		if (getEffector() instanceof Player && getSkill().getTargetType() == L2Skill.SkillTargetType.TARGET_GROUND)
-		{
-			Location wordPosition = ((Player) getEffector()).getCurrentSkillWorldPosition();
-			
-			if (wordPosition != null)
-			{
-				x = wordPosition.getX();
-				y = wordPosition.getY();
-				z = wordPosition.getZ();
-			}
-		}
+			worldPosition = ((Player) getEffector()).getCurrentSkillWorldPosition();
+		
 		effectPoint.setIsInvul(true);
-		effectPoint.spawnMe(x, y, z);
+		effectPoint.spawnMe((worldPosition != null) ? worldPosition : getEffector().getPosition());
 		
 		_actor = effectPoint;
 		return true;
@@ -142,7 +131,7 @@ public class EffectSignetMDam extends L2Effect
 					caster.sendDamageMessage(target, mdam, mcrit, false, false);
 					target.reduceCurrentHp(mdam, caster, getSkill());
 				}
-				target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, caster);
+				target.getAI().notifyEvent(AiEventType.ATTACKED, caster);
 			}
 		}
 		return true;

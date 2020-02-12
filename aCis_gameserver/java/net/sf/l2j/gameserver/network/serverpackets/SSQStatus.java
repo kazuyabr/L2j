@@ -2,13 +2,14 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.Map.Entry;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival.FestivalType;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.FestivalType;
+import net.sf.l2j.gameserver.enums.SealType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class SSQStatus extends L2GameServerPacket
 {
@@ -24,14 +25,14 @@ public class SSQStatus extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
-		final int totalDawnMembers = SevenSigns.getInstance().getTotalMembers(CabalType.DAWN);
-		final int totalDuskMembers = SevenSigns.getInstance().getTotalMembers(CabalType.DUSK);
+		final CabalType winningCabal = SevenSignsManager.getInstance().getCabalHighestScore();
+		final int totalDawnMembers = SevenSignsManager.getInstance().getTotalMembers(CabalType.DAWN);
+		final int totalDuskMembers = SevenSignsManager.getInstance().getTotalMembers(CabalType.DUSK);
 		
 		writeC(0xf5);
 		
 		writeC(_page);
-		writeC(SevenSigns.getInstance().getCurrentPeriod().ordinal());
+		writeC(SevenSignsManager.getInstance().getCurrentPeriod().ordinal());
 		
 		int dawnPercent = 0;
 		int duskPercent = 0;
@@ -40,9 +41,9 @@ public class SSQStatus extends L2GameServerPacket
 		{
 			case 1:
 				// [ddd cc dd ddd c ddd c]
-				writeD(SevenSigns.getInstance().getCurrentCycle());
+				writeD(SevenSignsManager.getInstance().getCurrentCycle());
 				
-				switch (SevenSigns.getInstance().getCurrentPeriod())
+				switch (SevenSignsManager.getInstance().getCurrentPeriod())
 				{
 					case RECRUITING:
 						writeD(SystemMessageId.INITIAL_PERIOD.getId());
@@ -65,17 +66,17 @@ public class SSQStatus extends L2GameServerPacket
 						break;
 				}
 				
-				writeC(SevenSigns.getInstance().getPlayerCabal(_objectId).ordinal());
-				writeC(SevenSigns.getInstance().getPlayerSeal(_objectId).ordinal());
+				writeC(SevenSignsManager.getInstance().getPlayerCabal(_objectId).ordinal());
+				writeC(SevenSignsManager.getInstance().getPlayerSeal(_objectId).ordinal());
 				
-				writeD(SevenSigns.getInstance().getPlayerStoneContrib(_objectId)); // Seal Stones Turned-In
-				writeD(SevenSigns.getInstance().getPlayerAdenaCollect(_objectId)); // Ancient Adena to Collect
+				writeD(SevenSignsManager.getInstance().getPlayerStoneContrib(_objectId)); // Seal Stones Turned-In
+				writeD(SevenSignsManager.getInstance().getPlayerAdenaCollect(_objectId)); // Ancient Adena to Collect
 				
-				double dawnStoneScore = SevenSigns.getInstance().getCurrentStoneScore(CabalType.DAWN);
-				int dawnFestivalScore = SevenSigns.getInstance().getCurrentFestivalScore(CabalType.DAWN);
+				double dawnStoneScore = SevenSignsManager.getInstance().getCurrentStoneScore(CabalType.DAWN);
+				int dawnFestivalScore = SevenSignsManager.getInstance().getCurrentFestivalScore(CabalType.DAWN);
 				
-				double duskStoneScore = SevenSigns.getInstance().getCurrentStoneScore(CabalType.DUSK);
-				int duskFestivalScore = SevenSigns.getInstance().getCurrentFestivalScore(CabalType.DUSK);
+				double duskStoneScore = SevenSignsManager.getInstance().getCurrentStoneScore(CabalType.DUSK);
+				int duskFestivalScore = SevenSignsManager.getInstance().getCurrentFestivalScore(CabalType.DUSK);
 				
 				double totalStoneScore = duskStoneScore + dawnStoneScore;
 				
@@ -91,8 +92,8 @@ public class SSQStatus extends L2GameServerPacket
 					dawnStoneScoreProp = Math.round(((float) dawnStoneScore / (float) totalStoneScore) * 500);
 				}
 				
-				int duskTotalScore = SevenSigns.getInstance().getCurrentScore(CabalType.DUSK);
-				int dawnTotalScore = SevenSigns.getInstance().getCurrentScore(CabalType.DAWN);
+				int duskTotalScore = SevenSignsManager.getInstance().getCurrentScore(CabalType.DUSK);
+				int dawnTotalScore = SevenSignsManager.getInstance().getCurrentScore(CabalType.DAWN);
 				
 				int totalOverallScore = duskTotalScore + dawnTotalScore;
 				
@@ -129,13 +130,13 @@ public class SSQStatus extends L2GameServerPacket
 					writeC(festivalId + 1); // Current client-side festival ID
 					writeD(level.getMaxScore());
 					
-					int duskScore = SevenSignsFestival.getInstance().getHighestScore(CabalType.DUSK, festivalId);
-					int dawnScore = SevenSignsFestival.getInstance().getHighestScore(CabalType.DAWN, festivalId);
+					int duskScore = FestivalOfDarknessManager.getInstance().getHighestScore(CabalType.DUSK, festivalId);
+					int dawnScore = FestivalOfDarknessManager.getInstance().getHighestScore(CabalType.DAWN, festivalId);
 					
 					// Dusk Score \\
 					writeD(duskScore);
 					
-					StatsSet highScoreData = SevenSignsFestival.getInstance().getHighestScoreData(CabalType.DUSK, festivalId);
+					StatsSet highScoreData = FestivalOfDarknessManager.getInstance().getHighestScoreData(CabalType.DUSK, festivalId);
 					String[] partyMembers = highScoreData.getString("members").split(",");
 					
 					if (partyMembers != null)
@@ -153,7 +154,7 @@ public class SSQStatus extends L2GameServerPacket
 					// Dawn Score \\
 					writeD(dawnScore);
 					
-					highScoreData = SevenSignsFestival.getInstance().getHighestScoreData(CabalType.DAWN, festivalId);
+					highScoreData = FestivalOfDarknessManager.getInstance().getHighestScoreData(CabalType.DAWN, festivalId);
 					partyMembers = highScoreData.getString("members").split(",");
 					
 					if (partyMembers != null)
@@ -175,13 +176,13 @@ public class SSQStatus extends L2GameServerPacket
 				writeC(35); // Minimum limit for winning cabal to claim a seal
 				writeC(3); // Total number of seals
 				
-				for (Entry<SealType, CabalType> entry : SevenSigns.getInstance().getSealOwners().entrySet())
+				for (Entry<SealType, CabalType> entry : SevenSignsManager.getInstance().getSealOwners().entrySet())
 				{
 					final SealType seal = entry.getKey();
 					final CabalType sealOwner = entry.getValue();
 					
-					int dawnProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DAWN);
-					int duskProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DUSK);
+					int dawnProportion = SevenSignsManager.getInstance().getSealProportion(seal, CabalType.DAWN);
+					int duskProportion = SevenSignsManager.getInstance().getSealProportion(seal, CabalType.DUSK);
 					
 					writeC(seal.ordinal());
 					writeC(sealOwner.ordinal());
@@ -219,13 +220,13 @@ public class SSQStatus extends L2GameServerPacket
 				writeC(winningCabal.ordinal()); // Overall predicted winner
 				writeC(3); // Total number of seals
 				
-				for (Entry<SealType, CabalType> entry : SevenSigns.getInstance().getSealOwners().entrySet())
+				for (Entry<SealType, CabalType> entry : SevenSignsManager.getInstance().getSealOwners().entrySet())
 				{
 					final SealType seal = entry.getKey();
 					final CabalType sealOwner = entry.getValue();
 					
-					final int dawnProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DAWN);
-					final int duskProportion = SevenSigns.getInstance().getSealProportion(seal, CabalType.DUSK);
+					final int dawnProportion = SevenSignsManager.getInstance().getSealProportion(seal, CabalType.DAWN);
+					final int duskProportion = SevenSignsManager.getInstance().getSealProportion(seal, CabalType.DUSK);
 					
 					dawnPercent = Math.round((dawnProportion / (totalDawnMembers == 0 ? 1 : (float) totalDawnMembers)) * 100);
 					duskPercent = Math.round((duskProportion / (totalDuskMembers == 0 ? 1 : (float) totalDuskMembers)) * 100);

@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.network.serverpackets.ExShowSlideshowKamael;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.network.serverpackets.ExPlayScene;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -100,7 +100,7 @@ public class Q127_KamaelAWindowToTheFuture extends Quest
 		{
 			st.set("cond", "8");
 			st.playSound(QuestState.SOUND_MIDDLE);
-			player.sendPacket(ExShowSlideshowKamael.STATIC_PACKET);
+			player.sendPacket(ExPlayScene.STATIC_PACKET);
 			return null;
 		}
 		else if (event.equalsIgnoreCase("30756-05.htm"))

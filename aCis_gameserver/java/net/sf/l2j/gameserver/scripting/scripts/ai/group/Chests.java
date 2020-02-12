@@ -4,12 +4,13 @@ import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Chest;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 public class Chests extends L2AttackableAIScript
@@ -91,7 +92,7 @@ public class Chests extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(NPC_IDS, EventType.ON_ATTACK, EventType.ON_SKILL_SEE);
+		addEventIds(NPC_IDS, ScriptEventType.ON_ATTACK, ScriptEventType.ON_SKILL_SEE);
 	}
 	
 	@Override
@@ -143,14 +144,14 @@ public class Chests extends L2AttackableAIScript
 				}
 				// Mimic behavior : attack the caster.
 				else
-					attack(chest, ((isPet) ? caster.getPet() : caster));
+					attack(chest, ((isPet) ? caster.getSummon() : caster));
 			}
 		}
 		return super.onSkillSee(npc, caster, skill, targets, isPet);
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
 		if (npc instanceof Chest)
 		{
@@ -164,11 +165,8 @@ public class Chests extends L2AttackableAIScript
 				// If it was a box, cast a suicide type skill.
 				if (Rnd.get(100) < 40)
 					chest.doCast(SkillTable.getInstance().getInfo(4143, Math.min(10, Math.round(npc.getLevel() / 10))));
-				// Mimic behavior : attack the caster.
-				else
-					attack(chest, ((isPet) ? attacker.getPet() : attacker), ((damage * 100) / (chest.getLevel() + 7)));
 			}
 		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 }

@@ -1,17 +1,16 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.model.soulcrystal.LevelingInfo;
 import net.sf.l2j.gameserver.model.soulcrystal.SoulCrystal;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores following Soul Crystal infos :
@@ -20,7 +19,7 @@ import org.w3c.dom.Node;
  * <li>{@link LevelingInfo} infos related to NPCs (such as absorb type, chances of fail/success, if the item cast needs to be done and the list of allowed crystal levels).</li>
  * </ul>
  */
-public class SoulCrystalData extends XMLDocument
+public class SoulCrystalData implements IXmlReader
 {
 	private final Map<Integer, SoulCrystal> _soulCrystals = new HashMap<>();
 	private final Map<Integer, LevelingInfo> _levelingInfos = new HashMap<>();
@@ -31,58 +30,28 @@ public class SoulCrystalData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/soulCrystals.xml");
-		LOG.info("Loaded " + _soulCrystals.size() + " Soul Crystals data and " + _levelingInfos.size() + " NPCs data.");
+		parseFile("./data/xml/soulCrystals.xml");
+		LOGGER.info("Loaded {} Soul Crystals data and {} NPCs data.", _soulCrystals.size(), _levelingInfos.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode ->
 		{
-			if ("crystals".equalsIgnoreCase(o.getNodeName()))
+			forEach(listNode, "crystals", crystalsNode -> forEach(crystalsNode, "crystal", crystalNode ->
 			{
-				for (Node d = o.getFirstChild(); d != null; d = d.getNextSibling())
-				{
-					if (!"crystal".equalsIgnoreCase(d.getNodeName()))
-						continue;
-					
-					// Parse and feed content.
-					parseAndFeed(d.getAttributes(), set);
-					
-					// Feed the map with new data.
-					_soulCrystals.put(set.getInteger("initial"), new SoulCrystal(set));
-					
-					// Clear the StatsSet.
-					set.clear();
-				}
-			}
-			else if ("npcs".equalsIgnoreCase(o.getNodeName()))
+				final StatsSet set = parseAttributes(crystalNode);
+				_soulCrystals.put(set.getInteger("initial"), new SoulCrystal(set));
+			}));
+			forEach(listNode, "npcs", npcsNode -> forEach(npcsNode, "npc", npcNode ->
 			{
-				for (Node d = o.getFirstChild(); d != null; d = d.getNextSibling())
-				{
-					if (!"npc".equalsIgnoreCase(d.getNodeName()))
-						continue;
-					
-					// Parse and feed content.
-					parseAndFeed(d.getAttributes(), set);
-					
-					// Feed the map with new data.
-					_levelingInfos.put(set.getInteger("id"), new LevelingInfo(set));
-					
-					// Clear the StatsSet.
-					set.clear();
-				}
-			}
-		}
+				final StatsSet set = parseAttributes(npcNode);
+				_levelingInfos.put(set.getInteger("id"), new LevelingInfo(set));
+			}));
+		});
 	}
 	
 	public final Map<Integer, SoulCrystal> getSoulCrystals()

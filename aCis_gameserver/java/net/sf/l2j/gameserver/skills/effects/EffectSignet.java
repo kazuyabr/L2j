@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
@@ -14,7 +15,6 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillSignet;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillSignetCasttime;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * @authors Forsaiken, Sami

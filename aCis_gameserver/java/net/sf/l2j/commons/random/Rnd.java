@@ -96,15 +96,22 @@ public final class Rnd
 	
 	/**
 	 * Returns a randomly selected element taken from the given array.
+	 * @param array an array.
+	 * @return a randomly selected element.
+	 */
+	public static final int get(int[] array)
+	{
+		return array[get(array.length)];
+	}
+	
+	/**
+	 * Returns a randomly selected element taken from the given array.
 	 * @param <T> type of array elements.
 	 * @param array an array.
 	 * @return a randomly selected element.
 	 */
 	public static final <T> T get(T[] array)
 	{
-		if (array == null || array.length == 0)
-			return null;
-		
 		return array[get(array.length)];
 	}
 }

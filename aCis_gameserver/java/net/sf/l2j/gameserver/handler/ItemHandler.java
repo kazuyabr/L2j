@@ -33,63 +33,63 @@ import net.sf.l2j.gameserver.model.item.kind.EtcItem;
 
 public class ItemHandler
 {
-	private final Map<Integer, IItemHandler> _datatable = new HashMap<>();
-	
-	public static ItemHandler getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private final Map<Integer, IItemHandler> _entries = new HashMap<>();
 	
 	protected ItemHandler()
 	{
-		registerItemHandler(new BeastSoulShot());
-		registerItemHandler(new BeastSpice());
-		registerItemHandler(new BeastSpiritShot());
-		registerItemHandler(new BlessedSpiritShot());
-		registerItemHandler(new Book());
-		registerItemHandler(new Calculator());
-		registerItemHandler(new Elixir());
-		registerItemHandler(new EnchantScrolls());
-		registerItemHandler(new FishShots());
-		registerItemHandler(new Harvester());
-		registerItemHandler(new ItemSkills());
-		registerItemHandler(new Keys());
-		registerItemHandler(new Maps());
-		registerItemHandler(new MercTicket());
-		registerItemHandler(new PaganKeys());
-		registerItemHandler(new PetFood());
-		registerItemHandler(new Recipes());
-		registerItemHandler(new RollingDice());
-		registerItemHandler(new ScrollOfResurrection());
-		registerItemHandler(new SeedHandler());
-		registerItemHandler(new SevenSignsRecord());
-		registerItemHandler(new SoulShots());
-		registerItemHandler(new SpecialXMas());
-		registerItemHandler(new SoulCrystals());
-		registerItemHandler(new SpiritShot());
-		registerItemHandler(new SummonItems());
+		registerHandler(new BeastSoulShot());
+		registerHandler(new BeastSpice());
+		registerHandler(new BeastSpiritShot());
+		registerHandler(new BlessedSpiritShot());
+		registerHandler(new Book());
+		registerHandler(new Calculator());
+		registerHandler(new Elixir());
+		registerHandler(new EnchantScrolls());
+		registerHandler(new FishShots());
+		registerHandler(new Harvester());
+		registerHandler(new ItemSkills());
+		registerHandler(new Keys());
+		registerHandler(new Maps());
+		registerHandler(new MercTicket());
+		registerHandler(new PaganKeys());
+		registerHandler(new PetFood());
+		registerHandler(new Recipes());
+		registerHandler(new RollingDice());
+		registerHandler(new ScrollOfResurrection());
+		registerHandler(new SeedHandler());
+		registerHandler(new SevenSignsRecord());
+		registerHandler(new SoulShots());
+		registerHandler(new SpecialXMas());
+		registerHandler(new SoulCrystals());
+		registerHandler(new SpiritShot());
+		registerHandler(new SummonItems());
 	}
 	
-	public void registerItemHandler(IItemHandler handler)
+	private void registerHandler(IItemHandler handler)
 	{
-		_datatable.put(handler.getClass().getSimpleName().intern().hashCode(), handler);
+		_entries.put(handler.getClass().getSimpleName().intern().hashCode(), handler);
 	}
 	
-	public IItemHandler getItemHandler(EtcItem item)
+	public IItemHandler getHandler(EtcItem item)
 	{
 		if (item == null || item.getHandlerName() == null)
 			return null;
 		
-		return _datatable.get(item.getHandlerName().hashCode());
+		return _entries.get(item.getHandlerName().hashCode());
 	}
 	
 	public int size()
 	{
-		return _datatable.size();
+		return _entries.size();
+	}
+	
+	public static ItemHandler getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final ItemHandler _instance = new ItemHandler();
+		protected static final ItemHandler INSTANCE = new ItemHandler();
 	}
 }

@@ -2,7 +2,8 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.entity.Duel.DuelState;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 
@@ -11,7 +12,7 @@ public final class Action extends L2GameClientPacket
 	private int _objectId;
 	@SuppressWarnings("unused")
 	private int _originX, _originY, _originZ;
-	private int _actionId;
+	private boolean _isShiftAction;
 	
 	@Override
 	protected void readImpl()
@@ -20,52 +21,48 @@ public final class Action extends L2GameClientPacket
 		_originX = readD();
 		_originY = readD();
 		_originZ = readD();
-		_actionId = readC();
+		_isShiftAction = readC() != 0;
 	}
 	
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		if (activeChar.isInObserverMode())
+		if (player.isInObserverMode())
 		{
-			activeChar.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
-		if (activeChar.getActiveRequester() != null || activeChar.isOutOfControl())
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			player.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		final WorldObject obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : World.getInstance().getObject(_objectId);
-		if (obj == null)
+		if (player.getActiveRequester() != null)
 		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		switch (_actionId)
+		final WorldObject target = (player.getTargetId() == _objectId) ? player.getTarget() : World.getInstance().getObject(_objectId);
+		if (target == null)
 		{
-			case 0:
-				obj.onAction(activeChar);
-				break;
-			
-			case 1:
-				obj.onActionShift(activeChar);
-				break;
-			
-			default:
-				// Invalid action detected (probably client cheating), log this
-				_log.warning(activeChar.getName() + " requested invalid action: " + _actionId);
-				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-				break;
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
 		}
+		
+		final Player targetPlayer = target.getActingPlayer();
+		if (targetPlayer != null && targetPlayer.getDuelState() == DuelState.DEAD)
+		{
+			player.sendPacket(SystemMessageId.OTHER_PARTY_IS_FROZEN);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		if (_isShiftAction)
+			target.onActionShift(player);
+		else
+			target.onAction(player);
 	}
 	
 	@Override

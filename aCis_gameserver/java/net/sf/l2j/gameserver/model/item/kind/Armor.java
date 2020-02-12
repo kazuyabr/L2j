@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.model.item.kind;
 
-import net.sf.l2j.gameserver.model.item.type.ArmorType;
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.items.ArmorType;
 
 /**
  * This class is dedicated to the management of armors.

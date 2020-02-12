@@ -2,29 +2,27 @@ package net.sf.l2j.gameserver.model.olympiad;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.enums.OlympiadType;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.model.zone.type.L2OlympiadStadiumZone;
+import net.sf.l2j.gameserver.model.zone.type.OlympiadStadiumZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExOlympiadUserInfo;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * @author GodKratos, Pere, DS
- */
 abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 {
+	private static final String INSERT_RESULT = "INSERT INTO olympiad_fights (charOneId, charTwoId, charOneClass, charTwoClass, winner, start, time, classed) values(?,?,?,?,?,?,?,?)";
+	
 	protected int _damageP1 = 0;
 	protected int _damageP2 = 0;
 	
@@ -38,8 +36,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		_playerOne = opponents[0];
 		_playerTwo = opponents[1];
 		
-		_playerOne.player.setOlympiadGameId(id);
-		_playerTwo.player.setOlympiadGameId(id);
+		_playerOne.getPlayer().setOlympiadGameId(id);
+		_playerTwo.getPlayer().setOlympiadGameId(id);
 	}
 	
 	protected static final Participant[] createListOfParticipants(List<Integer> list)
@@ -75,63 +73,48 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	}
 	
 	@Override
-	public final boolean containsParticipant(int playerId)
+	public final boolean containsParticipant(int objectId)
 	{
-		return _playerOne.objectId == playerId || _playerTwo.objectId == playerId;
+		return _playerOne.getObjectId() == objectId || _playerTwo.getObjectId() == objectId;
 	}
 	
 	@Override
-	/**
-	 * Sends olympiad info to the new spectator.
-	 */
 	public final void sendOlympiadInfo(Creature player)
 	{
-		player.sendPacket(new ExOlympiadUserInfo(_playerOne.player));
-		_playerOne.player.updateEffectIcons();
-		player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player));
-		_playerTwo.player.updateEffectIcons();
+		player.sendPacket(new ExOlympiadUserInfo(_playerOne.getPlayer()));
+		_playerOne.getPlayer().updateEffectIcons();
+		player.sendPacket(new ExOlympiadUserInfo(_playerTwo.getPlayer()));
+		_playerTwo.getPlayer().updateEffectIcons();
 	}
 	
 	@Override
-	/**
-	 * Broadcasts olympiad info to participants and spectators on battle start.
-	 */
-	public final void broadcastOlympiadInfo(L2OlympiadStadiumZone stadium)
+	public final void broadcastOlympiadInfo(OlympiadStadiumZone stadium)
 	{
-		stadium.broadcastPacket(new ExOlympiadUserInfo(_playerOne.player));
-		_playerOne.player.updateEffectIcons();
-		stadium.broadcastPacket(new ExOlympiadUserInfo(_playerTwo.player));
-		_playerTwo.player.updateEffectIcons();
+		stadium.broadcastPacket(new ExOlympiadUserInfo(_playerOne.getPlayer()));
+		_playerOne.getPlayer().updateEffectIcons();
+		stadium.broadcastPacket(new ExOlympiadUserInfo(_playerTwo.getPlayer()));
+		_playerTwo.getPlayer().updateEffectIcons();
 	}
 	
 	@Override
-	/**
-	 * Broadcasts packet to participants only.
-	 */
 	protected final void broadcastPacket(L2GameServerPacket packet)
 	{
 		_playerOne.updatePlayer();
-		if (_playerOne.player != null)
-			_playerOne.player.sendPacket(packet);
+		if (_playerOne.getPlayer() != null)
+			_playerOne.getPlayer().sendPacket(packet);
 		
 		_playerTwo.updatePlayer();
-		if (_playerTwo.player != null)
-			_playerTwo.player.sendPacket(packet);
+		if (_playerTwo.getPlayer() != null)
+			_playerTwo.getPlayer().sendPacket(packet);
 	}
 	
 	@Override
 	protected final boolean portPlayersToArena(List<Location> spawns)
 	{
 		boolean result = true;
-		try
-		{
-			result &= portPlayerToArena(_playerOne, spawns.get(0), _stadiumID);
-			result &= portPlayerToArena(_playerTwo, spawns.get(1), _stadiumID);
-		}
-		catch (Exception e)
-		{
-			return false;
-		}
+		result &= portPlayerToArena(_playerOne, spawns.get(0), _stadiumId);
+		result &= portPlayerToArena(_playerTwo, spawns.get(1), _stadiumId);
+		
 		return result;
 	}
 	
@@ -141,8 +124,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		if (_aborted)
 			return;
 		
-		removals(_playerOne.player, true);
-		removals(_playerTwo.player, true);
+		removals(_playerOne.getPlayer(), true);
+		removals(_playerTwo.getPlayer(), true);
 	}
 	
 	@Override
@@ -151,8 +134,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		if (_aborted)
 			return;
 		
-		buffPlayer(_playerOne.player);
-		buffPlayer(_playerTwo.player);
+		buffPlayer(_playerOne.getPlayer());
+		buffPlayer(_playerTwo.getPlayer());
 	}
 	
 	@Override
@@ -161,8 +144,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		if (_aborted)
 			return;
 		
-		healPlayer(_playerOne.player);
-		healPlayer(_playerTwo.player);
+		healPlayer(_playerOne.getPlayer());
+		healPlayer(_playerTwo.getPlayer());
 	}
 	
 	@Override
@@ -171,59 +154,61 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		if (!super.makeCompetitionStart())
 			return false;
 		
-		if (_playerOne.player == null || _playerTwo.player == null)
+		if (_playerOne.getPlayer() == null || _playerTwo.getPlayer() == null)
 			return false;
 		
-		_playerOne.player.setOlympiadStart(true);
-		_playerTwo.player.setOlympiadStart(true);
+		_playerOne.getPlayer().setOlympiadStart(true);
+		_playerTwo.getPlayer().setOlympiadStart(true);
 		return true;
 	}
 	
 	@Override
 	protected final void cleanEffects()
 	{
-		if (_playerOne.player != null && !_playerOne.defaulted && !_playerOne.disconnected && _playerOne.player.getOlympiadGameId() == _stadiumID)
-			cleanEffects(_playerOne.player);
+		if (_playerOne.getPlayer() != null && !_playerOne.isDefecting() && !_playerOne.isDisconnected() && _playerOne.getPlayer().getOlympiadGameId() == _stadiumId)
+			cleanEffects(_playerOne.getPlayer());
 		
-		if (_playerTwo.player != null && !_playerTwo.defaulted && !_playerTwo.disconnected && _playerTwo.player.getOlympiadGameId() == _stadiumID)
-			cleanEffects(_playerTwo.player);
+		if (_playerTwo.getPlayer() != null && !_playerTwo.isDefecting() && !_playerTwo.isDisconnected() && _playerTwo.getPlayer().getOlympiadGameId() == _stadiumId)
+			cleanEffects(_playerTwo.getPlayer());
 	}
 	
 	@Override
 	protected final void portPlayersBack()
 	{
-		if (_playerOne.player != null && !_playerOne.defaulted && !_playerOne.disconnected)
-			portPlayerBack(_playerOne.player);
-		if (_playerTwo.player != null && !_playerTwo.defaulted && !_playerTwo.disconnected)
-			portPlayerBack(_playerTwo.player);
+		if (_playerOne.getPlayer() != null && !_playerOne.isDefecting() && !_playerOne.isDisconnected())
+			portPlayerBack(_playerOne.getPlayer());
+		
+		if (_playerTwo.getPlayer() != null && !_playerTwo.isDefecting() && !_playerTwo.isDisconnected())
+			portPlayerBack(_playerTwo.getPlayer());
 	}
 	
 	@Override
 	protected final void playersStatusBack()
 	{
-		if (_playerOne.player != null && !_playerOne.defaulted && !_playerOne.disconnected && _playerOne.player.getOlympiadGameId() == _stadiumID)
-			playerStatusBack(_playerOne.player);
+		if (_playerOne.getPlayer() != null && !_playerOne.isDefecting() && !_playerOne.isDisconnected() && _playerOne.getPlayer().getOlympiadGameId() == _stadiumId)
+			playerStatusBack(_playerOne.getPlayer());
 		
-		if (_playerTwo.player != null && !_playerTwo.defaulted && !_playerTwo.disconnected && _playerTwo.player.getOlympiadGameId() == _stadiumID)
-			playerStatusBack(_playerTwo.player);
+		if (_playerTwo.getPlayer() != null && !_playerTwo.isDefecting() && !_playerTwo.isDisconnected() && _playerTwo.getPlayer().getOlympiadGameId() == _stadiumId)
+			playerStatusBack(_playerTwo.getPlayer());
 	}
 	
 	@Override
 	protected final void clearPlayers()
 	{
-		_playerOne.player = null;
+		_playerOne.setPlayer(null);
 		_playerOne = null;
-		_playerTwo.player = null;
+		
+		_playerTwo.setPlayer(null);
 		_playerTwo = null;
 	}
 	
 	@Override
 	protected final void handleDisconnect(Player player)
 	{
-		if (player.getObjectId() == _playerOne.objectId)
-			_playerOne.disconnected = true;
-		else if (player.getObjectId() == _playerTwo.objectId)
-			_playerTwo.disconnected = true;
+		if (player.getObjectId() == _playerOne.getObjectId())
+			_playerOne.setDisconnection(true);
+		else if (player.getObjectId() == _playerTwo.getObjectId())
+			_playerTwo.setDisconnection(true);
 	}
 	
 	@Override
@@ -232,10 +217,10 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		if (_aborted)
 			return false;
 		
-		if (_playerOne.player == null || _playerOne.disconnected)
+		if (_playerOne.getPlayer() == null || _playerOne.isDisconnected())
 			return false;
 		
-		if (_playerTwo.player == null || _playerTwo.disconnected)
+		if (_playerTwo.getPlayer() == null || _playerTwo.isDisconnected())
 			return false;
 		
 		return true;
@@ -250,8 +235,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		boolean playerOneLost = true;
 		try
 		{
-			if (_playerOne.player.getOlympiadGameId() == _stadiumID)
-				playerOneLost = _playerOne.player.isDead();
+			if (_playerOne.getPlayer().getOlympiadGameId() == _stadiumId)
+				playerOneLost = _playerOne.getPlayer().isDead();
 		}
 		catch (Exception e)
 		{
@@ -261,8 +246,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		boolean playerTwoLost = true;
 		try
 		{
-			if (_playerTwo.player.getOlympiadGameId() == _stadiumID)
-				playerTwoLost = _playerTwo.player.isDead();
+			if (_playerTwo.getPlayer().getOlympiadGameId() == _stadiumId)
+				playerTwoLost = _playerTwo.getPlayer().isDead();
 		}
 		catch (Exception e)
 		{
@@ -273,16 +258,16 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	}
 	
 	@Override
-	protected void validateWinner(L2OlympiadStadiumZone stadium)
+	protected void validateWinner(OlympiadStadiumZone stadium)
 	{
 		if (_aborted)
 			return;
 		
-		final boolean _pOneCrash = (_playerOne.player == null || _playerOne.disconnected);
-		final boolean _pTwoCrash = (_playerTwo.player == null || _playerTwo.disconnected);
+		final boolean _pOneCrash = (_playerOne.getPlayer() == null || _playerOne.isDisconnected());
+		final boolean _pTwoCrash = (_playerTwo.getPlayer() == null || _playerTwo.isDisconnected());
 		
-		final int playerOnePoints = _playerOne.stats.getInteger(POINTS);
-		final int playerTwoPoints = _playerTwo.stats.getInteger(POINTS);
+		final int playerOnePoints = _playerOne.getStats().getInteger(POINTS);
+		final int playerTwoPoints = _playerTwo.getStats().getInteger(POINTS);
 		
 		int pointDiff = Math.min(playerOnePoints, playerTwoPoints) / getDivider();
 		if (pointDiff <= 0)
@@ -292,184 +277,148 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		
 		int points;
 		
-		// Check for if a player defaulted before battle started
-		if (_playerOne.defaulted || _playerTwo.defaulted)
+		// Check for if a player defected before battle started.
+		if (_playerOne.isDefecting() || _playerTwo.isDefecting())
 		{
-			try
+			if (_playerOne.isDefecting())
 			{
-				if (_playerOne.defaulted)
-				{
-					try
-					{
-						points = Math.min(playerOnePoints / 3, Config.ALT_OLY_MAX_POINTS);
-						removePointsFromParticipant(_playerOne, points);
-					}
-					catch (Exception e)
-					{
-						_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
-					}
-				}
-				
-				if (_playerTwo.defaulted)
-				{
-					try
-					{
-						points = Math.min(playerTwoPoints / 3, Config.ALT_OLY_MAX_POINTS);
-						removePointsFromParticipant(_playerTwo, points);
-					}
-					catch (Exception e)
-					{
-						_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
-					}
-				}
-				return;
+				points = Math.min(playerOnePoints / 3, Config.ALT_OLY_MAX_POINTS);
+				removePointsFromParticipant(_playerOne, points);
 			}
-			catch (Exception e)
+			
+			if (_playerTwo.isDefecting())
 			{
-				_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
-				return;
+				points = Math.min(playerTwoPoints / 3, Config.ALT_OLY_MAX_POINTS);
+				removePointsFromParticipant(_playerTwo, points);
 			}
+			return;
 		}
 		
 		// Create results for players if a player crashed
 		if (_pOneCrash || _pTwoCrash)
 		{
-			try
+			if (_pTwoCrash && !_pOneCrash)
 			{
-				if (_pTwoCrash && !_pOneCrash)
-				{
-					stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerOne.name));
-					
-					_playerOne.updateStat(COMP_WON, 1);
-					addPointsToParticipant(_playerOne, pointDiff);
-					
-					_playerTwo.updateStat(COMP_LOST, 1);
-					removePointsFromParticipant(_playerTwo, pointDiff);
-					
-					rewardParticipant(_playerOne.player, getReward());
-				}
-				else if (_pOneCrash && !_pTwoCrash)
-				{
-					stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerTwo.name));
-					
-					_playerTwo.updateStat(COMP_WON, 1);
-					addPointsToParticipant(_playerTwo, pointDiff);
-					
-					_playerOne.updateStat(COMP_LOST, 1);
-					removePointsFromParticipant(_playerOne, pointDiff);
-					
-					rewardParticipant(_playerTwo.player, getReward());
-				}
-				else if (_pOneCrash && _pTwoCrash)
-				{
-					stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE));
-					
-					_playerOne.updateStat(COMP_LOST, 1);
-					removePointsFromParticipant(_playerOne, pointDiff);
-					
-					_playerTwo.updateStat(COMP_LOST, 1);
-					removePointsFromParticipant(_playerTwo, pointDiff);
-				}
-				
-				_playerOne.updateStat(COMP_DONE, 1);
-				_playerTwo.updateStat(COMP_DONE, 1);
-				
-				return;
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
-				return;
-			}
-		}
-		
-		try
-		{
-			// Calculate Fight time
-			long _fightTime = (System.currentTimeMillis() - _startTime);
-			
-			double playerOneHp = 0;
-			if (_playerOne.player != null && !_playerOne.player.isDead())
-			{
-				playerOneHp = _playerOne.player.getCurrentHp() + _playerOne.player.getCurrentCp();
-				if (playerOneHp < 0.5)
-					playerOneHp = 0;
-			}
-			
-			double playerTwoHp = 0;
-			if (_playerTwo.player != null && !_playerTwo.player.isDead())
-			{
-				playerTwoHp = _playerTwo.player.getCurrentHp() + _playerTwo.player.getCurrentCp();
-				if (playerTwoHp < 0.5)
-					playerTwoHp = 0;
-			}
-			
-			// if players crashed, search if they've relogged
-			_playerOne.updatePlayer();
-			_playerTwo.updatePlayer();
-			
-			if ((_playerOne.player == null || !_playerOne.player.isOnline()) && (_playerTwo.player == null || !_playerTwo.player.isOnline()))
-			{
-				_playerOne.updateStat(COMP_DRAWN, 1);
-				_playerTwo.updateStat(COMP_DRAWN, 1);
-				stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE));
-			}
-			else if (_playerTwo.player == null || !_playerTwo.player.isOnline() || (playerTwoHp == 0 && playerOneHp != 0) || (_damageP1 > _damageP2 && playerTwoHp != 0 && playerOneHp != 0))
-			{
-				stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerOne.name));
+				stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerOne.getName()));
 				
 				_playerOne.updateStat(COMP_WON, 1);
-				_playerTwo.updateStat(COMP_LOST, 1);
-				
 				addPointsToParticipant(_playerOne, pointDiff);
+				
+				_playerTwo.updateStat(COMP_LOST, 1);
 				removePointsFromParticipant(_playerTwo, pointDiff);
 				
-				// Save Fight Result
-				saveResults(_playerOne, _playerTwo, 1, _startTime, _fightTime, getType());
-				rewardParticipant(_playerOne.player, getReward());
+				rewardParticipant(_playerOne.getPlayer(), getReward());
 			}
-			else if (_playerOne.player == null || !_playerOne.player.isOnline() || (playerOneHp == 0 && playerTwoHp != 0) || (_damageP2 > _damageP1 && playerOneHp != 0 && playerTwoHp != 0))
+			else if (_pOneCrash && !_pTwoCrash)
 			{
-				stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerTwo.name));
+				stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerTwo.getName()));
 				
 				_playerTwo.updateStat(COMP_WON, 1);
-				_playerOne.updateStat(COMP_LOST, 1);
-				
 				addPointsToParticipant(_playerTwo, pointDiff);
+				
+				_playerOne.updateStat(COMP_LOST, 1);
 				removePointsFromParticipant(_playerOne, pointDiff);
 				
-				// Save Fight Result
-				saveResults(_playerOne, _playerTwo, 2, _startTime, _fightTime, getType());
-				rewardParticipant(_playerTwo.player, getReward());
+				rewardParticipant(_playerTwo.getPlayer(), getReward());
 			}
-			else
+			else if (_pOneCrash && _pTwoCrash)
 			{
-				// Save Fight Result
-				saveResults(_playerOne, _playerTwo, 0, _startTime, _fightTime, getType());
-				
 				stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE));
 				
-				removePointsFromParticipant(_playerOne, Math.min(playerOnePoints / getDivider(), Config.ALT_OLY_MAX_POINTS));
-				removePointsFromParticipant(_playerTwo, Math.min(playerTwoPoints / getDivider(), Config.ALT_OLY_MAX_POINTS));
+				_playerOne.updateStat(COMP_LOST, 1);
+				removePointsFromParticipant(_playerOne, pointDiff);
+				
+				_playerTwo.updateStat(COMP_LOST, 1);
+				removePointsFromParticipant(_playerTwo, pointDiff);
 			}
 			
 			_playerOne.updateStat(COMP_DONE, 1);
 			_playerTwo.updateStat(COMP_DONE, 1);
+			
+			return;
 		}
-		catch (Exception e)
+		
+		// Calculate Fight time
+		long _fightTime = (System.currentTimeMillis() - _startTime);
+		
+		double playerOneHp = 0;
+		if (_playerOne.getPlayer() != null && !_playerOne.getPlayer().isDead())
 		{
-			_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
+			playerOneHp = _playerOne.getPlayer().getCurrentHp() + _playerOne.getPlayer().getCurrentCp();
+			if (playerOneHp < 0.5)
+				playerOneHp = 0;
 		}
+		
+		double playerTwoHp = 0;
+		if (_playerTwo.getPlayer() != null && !_playerTwo.getPlayer().isDead())
+		{
+			playerTwoHp = _playerTwo.getPlayer().getCurrentHp() + _playerTwo.getPlayer().getCurrentCp();
+			if (playerTwoHp < 0.5)
+				playerTwoHp = 0;
+		}
+		
+		// if players crashed, search if they've relogged
+		_playerOne.updatePlayer();
+		_playerTwo.updatePlayer();
+		
+		if ((_playerOne.getPlayer() == null || !_playerOne.getPlayer().isOnline()) && (_playerTwo.getPlayer() == null || !_playerTwo.getPlayer().isOnline()))
+		{
+			_playerOne.updateStat(COMP_DRAWN, 1);
+			_playerTwo.updateStat(COMP_DRAWN, 1);
+			stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE));
+		}
+		else if (_playerTwo.getPlayer() == null || !_playerTwo.getPlayer().isOnline() || (playerTwoHp == 0 && playerOneHp != 0) || (_damageP1 > _damageP2 && playerTwoHp != 0 && playerOneHp != 0))
+		{
+			stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerOne.getName()));
+			
+			_playerOne.updateStat(COMP_WON, 1);
+			_playerTwo.updateStat(COMP_LOST, 1);
+			
+			addPointsToParticipant(_playerOne, pointDiff);
+			removePointsFromParticipant(_playerTwo, pointDiff);
+			
+			// Save Fight Result
+			saveResults(_playerOne, _playerTwo, 1, _startTime, _fightTime, getType());
+			rewardParticipant(_playerOne.getPlayer(), getReward());
+		}
+		else if (_playerOne.getPlayer() == null || !_playerOne.getPlayer().isOnline() || (playerOneHp == 0 && playerTwoHp != 0) || (_damageP2 > _damageP1 && playerOneHp != 0 && playerTwoHp != 0))
+		{
+			stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME).addString(_playerTwo.getName()));
+			
+			_playerTwo.updateStat(COMP_WON, 1);
+			_playerOne.updateStat(COMP_LOST, 1);
+			
+			addPointsToParticipant(_playerTwo, pointDiff);
+			removePointsFromParticipant(_playerOne, pointDiff);
+			
+			// Save Fight Result
+			saveResults(_playerOne, _playerTwo, 2, _startTime, _fightTime, getType());
+			rewardParticipant(_playerTwo.getPlayer(), getReward());
+		}
+		else
+		{
+			// Save Fight Result
+			saveResults(_playerOne, _playerTwo, 0, _startTime, _fightTime, getType());
+			
+			stadium.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE));
+			
+			removePointsFromParticipant(_playerOne, Math.min(playerOnePoints / getDivider(), Config.ALT_OLY_MAX_POINTS));
+			removePointsFromParticipant(_playerTwo, Math.min(playerTwoPoints / getDivider(), Config.ALT_OLY_MAX_POINTS));
+		}
+		
+		_playerOne.updateStat(COMP_DONE, 1);
+		_playerTwo.updateStat(COMP_DONE, 1);
 	}
 	
 	@Override
 	protected final void addDamage(Player player, int damage)
 	{
-		if (_playerOne.player == null || _playerTwo.player == null)
+		if (_playerOne.getPlayer() == null || _playerTwo.getPlayer() == null)
 			return;
-		if (player == _playerOne.player)
+		
+		if (player == _playerOne.getPlayer())
 			_damageP1 += damage;
-		else if (player == _playerTwo.player)
+		else if (player == _playerTwo.getPlayer())
 			_damageP2 += damage;
 	}
 	
@@ -478,35 +427,34 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	{
 		return new String[]
 		{
-			_playerOne.name,
-			_playerTwo.name
+			_playerOne.getName(),
+			_playerTwo.getName()
 		};
 	}
 	
 	@Override
-	public boolean checkDefaulted()
+	public boolean checkDefection()
 	{
-		SystemMessage reason;
 		_playerOne.updatePlayer();
 		_playerTwo.updatePlayer();
 		
-		reason = checkDefaulted(_playerOne.player);
+		SystemMessage reason = checkDefection(_playerOne.getPlayer());
 		if (reason != null)
 		{
-			_playerOne.defaulted = true;
-			if (_playerTwo.player != null)
-				_playerTwo.player.sendPacket(reason);
+			_playerOne.setDefection(true);
+			if (_playerTwo.getPlayer() != null)
+				_playerTwo.getPlayer().sendPacket(reason);
 		}
 		
-		reason = checkDefaulted(_playerTwo.player);
+		reason = checkDefection(_playerTwo.getPlayer());
 		if (reason != null)
 		{
-			_playerTwo.defaulted = true;
-			if (_playerOne.player != null)
-				_playerOne.player.sendPacket(reason);
+			_playerTwo.setDefection(true);
+			if (_playerOne.getPlayer() != null)
+				_playerOne.getPlayer().sendPacket(reason);
 		}
 		
-		return _playerOne.defaulted || _playerTwo.defaulted;
+		return _playerOne.isDefecting() || _playerTwo.isDefecting();
 	}
 	
 	@Override
@@ -516,26 +464,24 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		_damageP2 = 0;
 	}
 	
-	protected static final void saveResults(Participant one, Participant two, int _winner, long _startTime, long _fightTime, CompetitionType type)
+	protected static final void saveResults(Participant one, Participant two, int _winner, long _startTime, long _fightTime, OlympiadType type)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(INSERT_RESULT))
 		{
-			PreparedStatement statement = con.prepareStatement("INSERT INTO olympiad_fights (charOneId, charTwoId, charOneClass, charTwoClass, winner, start, time, classed) values(?,?,?,?,?,?,?,?)");
-			statement.setInt(1, one.objectId);
-			statement.setInt(2, two.objectId);
-			statement.setInt(3, one.baseClass);
-			statement.setInt(4, two.baseClass);
-			statement.setInt(5, _winner);
-			statement.setLong(6, _startTime);
-			statement.setLong(7, _fightTime);
-			statement.setInt(8, (type == CompetitionType.CLASSED ? 1 : 0));
-			statement.execute();
-			statement.close();
+			ps.setInt(1, one.getObjectId());
+			ps.setInt(2, two.getObjectId());
+			ps.setInt(3, one.getBaseClass());
+			ps.setInt(4, two.getBaseClass());
+			ps.setInt(5, _winner);
+			ps.setLong(6, _startTime);
+			ps.setLong(7, _fightTime);
+			ps.setInt(8, (type == OlympiadType.CLASSED ? 1 : 0));
+			ps.execute();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			if (_log.isLoggable(Level.SEVERE))
-				_log.log(Level.SEVERE, "SQL exception while saving olympiad fight.", e);
+			LOGGER.error("Couldn't save Olympiad results.", e);
 		}
 	}
 }

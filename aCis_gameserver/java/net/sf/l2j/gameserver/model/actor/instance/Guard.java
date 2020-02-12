@@ -4,14 +4,15 @@ import java.util.List;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.MoveToPawn;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 /**
@@ -19,7 +20,7 @@ import net.sf.l2j.gameserver.scripting.Quest;
  * It inherits all methods from L2Attackable and adds some more such as:
  * <ul>
  * <li>tracking PK</li>
- * <li>aggressive L2MonsterInstance.</li>
+ * <li>aggressive Monster.</li>
  * </ul>
  */
 public final class Guard extends Attackable
@@ -62,14 +63,18 @@ public final class Guard extends Attackable
 			player.setTarget(this);
 		else
 		{
-			// Calculate the distance between the Player and the L2Npc
+			// Calculate the distance between the Player and the Npc.
 			if (!canInteract(player))
 			{
 				// Set the Player Intention to INTERACT
-				player.getAI().setIntention(CtrlIntention.INTERACT, this);
+				player.getAI().setIntention(IntentionType.INTERACT, this);
 			}
 			else
 			{
+				// Stop moving if we're already in interact range.
+				if (player.isMoving() || player.isInCombat())
+					player.getAI().setIntention(IntentionType.IDLE);
+				
 				// Rotate the player to face the instance
 				player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 				
@@ -95,13 +100,13 @@ public final class Guard extends Attackable
 				if (hasRandomAnimation())
 					onRandomAnimation(Rnd.get(8));
 				
-				List<Quest> qlsa = getTemplate().getEventQuests(EventType.QUEST_START);
-				if (qlsa != null && !qlsa.isEmpty())
+				List<Quest> scripts = getTemplate().getEventQuests(ScriptEventType.QUEST_START);
+				if (scripts != null && !scripts.isEmpty())
 					player.setLastQuestNpcObject(getObjectId());
 				
-				List<Quest> qlst = getTemplate().getEventQuests(EventType.ON_FIRST_TALK);
-				if (qlst != null && qlst.size() == 1)
-					qlst.get(0).notifyFirstTalk(this, player);
+				scripts = getTemplate().getEventQuests(ScriptEventType.ON_FIRST_TALK);
+				if (scripts != null && scripts.size() == 1)
+					scripts.get(0).notifyFirstTalk(this, player);
 				else
 					showChatWindow(player);
 			}

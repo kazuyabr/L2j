@@ -3,16 +3,16 @@ package net.sf.l2j.gameserver.scripting.scripts.ai.group;
 import net.sf.l2j.commons.util.ArraysUtil;
 
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.data.SpawnTable;
-import net.sf.l2j.gameserver.geoengine.GeoEngine;
+import net.sf.l2j.gameserver.data.sql.SpawnTable;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.scripting.EventType;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 /**
@@ -48,7 +48,7 @@ public class PrimevalIsle extends L2AttackableAIScript
 	{
 		super("ai/group");
 		
-		for (L2Spawn npc : SpawnTable.getInstance().getSpawnTable())
+		for (L2Spawn npc : SpawnTable.getInstance().getSpawns())
 			if (ArraysUtil.contains(MOBIDS, npc.getNpcId()) && npc.getNpc() != null && npc.getNpc() instanceof Attackable)
 				((Attackable) npc.getNpc()).seeThroughSilentMove(true);
 	}
@@ -56,7 +56,7 @@ public class PrimevalIsle extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(SPRIGANTS, EventType.ON_AGGRO, EventType.ON_KILL);
+		addEventIds(SPRIGANTS, ScriptEventType.ON_AGGRO, ScriptEventType.ON_KILL);
 		addAttackId(ANCIENT_EGG);
 		addSpawnId(MOBIDS);
 	}
@@ -107,20 +107,17 @@ public class PrimevalIsle extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		if (getQuestTimer("skill", npc, null) != null)
 			cancelQuestTimer("skill", npc, null);
 		
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		// Retrieve the attacker.
-		final Playable originalAttacker = (isPet ? attacker.getPet() : attacker);
-		
 		// Make all mobs found in a radius 2k aggressive towards attacker.
 		for (Attackable called : attacker.getKnownTypeInRadius(Attackable.class, 2000))
 		{
@@ -129,9 +126,9 @@ public class PrimevalIsle extends L2AttackableAIScript
 				continue;
 			
 			// Check if the Attackable can help the actor.
-			final CtrlIntention calledIntention = called.getAI().getIntention();
-			if ((calledIntention == CtrlIntention.IDLE || calledIntention == CtrlIntention.ACTIVE || (calledIntention == CtrlIntention.MOVE_TO && !called.isRunning())) && GeoEngine.getInstance().canSeeTarget(originalAttacker, called))
-				attack(called, originalAttacker, 1);
+			final IntentionType calledIntention = called.getAI().getDesire().getIntention();
+			if ((calledIntention == IntentionType.IDLE || calledIntention == IntentionType.ACTIVE || (calledIntention == IntentionType.MOVE_TO && !called.isRunning())))
+				attack(called, attacker, 1);
 		}
 		
 		return null;

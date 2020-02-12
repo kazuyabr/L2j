@@ -2,8 +2,8 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.zone.L2ZoneType;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.zone.ZoneType;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -89,7 +89,7 @@ public class Q636_TruthBeyondTheGate extends Quest
 	}
 	
 	@Override
-	public final String onEnterZone(Creature character, L2ZoneType zone)
+	public final String onEnterZone(Creature character, ZoneType zone)
 	{
 		// QuestState already null on enter because quest is finished
 		if (character instanceof Player)

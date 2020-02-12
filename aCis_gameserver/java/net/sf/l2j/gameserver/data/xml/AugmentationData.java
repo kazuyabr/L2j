@@ -1,25 +1,24 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.L2Augmentation;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.network.clientpackets.AbstractRefinePacket;
-import net.sf.l2j.gameserver.skills.Stats;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores :
@@ -29,7 +28,7 @@ import org.w3c.dom.Node;
  * </ul>
  * It is also used to generate new {@link L2Augmentation}, based on stored content.
  */
-public class AugmentationData extends XMLDocument
+public class AugmentationData implements IXmlReader
 {
 	// stats
 	private static final int STAT_START = 1;
@@ -98,121 +97,74 @@ public class AugmentationData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/augmentation");
-		LOG.info("Loaded " + _augStats.size() + " sets of augmentation stats.");
+		parseFile("./data/xml/augmentation");
+		LOGGER.info("Loaded {} sets of augmentation stats.", _augStats.size());
 		
-		int blue = 0, purple = 0, red = 0;
-		for (int i = 0; i < 10; i++)
-		{
-			blue += _blueSkills.get(i).size();
-			purple += _purpleSkills.get(i).size();
-			red += _redSkills.get(i).size();
-		}
-		LOG.info("Loaded " + blue + " blue, " + purple + " purple and " + red + " red Life-Stone skills.");
+		final int blue = _blueSkills.stream().mapToInt(List::size).sum();
+		final int purple = _purpleSkills.stream().mapToInt(List::size).sum();
+		final int red = _redSkills.stream().mapToInt(List::size).sum();
+		LOGGER.info("Loaded {} blue, {} purple and {} red Life-Stone skills.", blue, purple, red);
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode ->
 		{
-			// Load the skillmap
-			if ("augmentation".equalsIgnoreCase(o.getNodeName()))
+			forEach(listNode, "augmentation", augmentationNode ->
 			{
-				NamedNodeMap attrs = o.getAttributes();
-				int skillId = 0, augmentationId = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
-				int skillLvL = 0;
-				String type = "blue";
+				final StatsSet set = parseAttributes(augmentationNode);
+				final int augmentationId = set.getInteger("id");
+				final int k = (augmentationId - BLUE_START) / SKILLS_BLOCKSIZE;
 				
-				for (Node d = o.getFirstChild(); d != null; d = d.getNextSibling())
+				switch (set.getString("type"))
 				{
-					if ("skillId".equalsIgnoreCase(d.getNodeName()))
-					{
-						attrs = d.getAttributes();
-						skillId = Integer.parseInt(attrs.getNamedItem("val").getNodeValue());
-					}
-					else if ("skillLevel".equalsIgnoreCase(d.getNodeName()))
-					{
-						attrs = d.getAttributes();
-						skillLvL = Integer.parseInt(attrs.getNamedItem("val").getNodeValue());
-					}
-					else if ("type".equalsIgnoreCase(d.getNodeName()))
-					{
-						attrs = d.getAttributes();
-						type = attrs.getNamedItem("val").getNodeValue();
-					}
+					case "blue":
+						_blueSkills.get(k).add(augmentationId);
+						break;
+					
+					case "purple":
+						_purpleSkills.get(k).add(augmentationId);
+						break;
+					
+					case "red":
+						_redSkills.get(k).add(augmentationId);
+						break;
 				}
-				
-				if (skillId == 0 || skillLvL == 0)
-					continue;
-				
-				int k = (augmentationId - BLUE_START) / SKILLS_BLOCKSIZE;
-				
-				if ("blue".equalsIgnoreCase(type))
-					_blueSkills.get(k).add(augmentationId);
-				else if ("purple".equalsIgnoreCase(type))
-					_purpleSkills.get(k).add(augmentationId);
-				else
-					_redSkills.get(k).add(augmentationId);
-				
-				_allSkills.put(augmentationId, new IntIntHolder(skillId, skillLvL));
-			}
-			else if ("set".equalsIgnoreCase(o.getNodeName()))
+				_allSkills.put(augmentationId, new IntIntHolder(set.getInteger("skillId"), set.getInteger("skillLevel")));
+			});
+			forEach(listNode, "set", setNode ->
 			{
-				NamedNodeMap attrs = o.getAttributes();
-				int order = Integer.parseInt(attrs.getNamedItem("order").getNodeValue());
-				
-				// Retrieve _augStats line to feed it.
+				final int order = parseInteger(setNode.getAttributes(), "order");
 				final List<AugmentationStat> statList = _augStats.get(order);
-				
-				for (Node d = o.getFirstChild(); d != null; d = d.getNextSibling())
+				forEach(setNode, "stat", statNode ->
 				{
-					if ("stat".equalsIgnoreCase(d.getNodeName()))
+					final String statName = parseString(statNode.getAttributes(), "name");
+					final List<Float> soloValues = new ArrayList<>();
+					final List<Float> combinedValues = new ArrayList<>();
+					forEach(statNode, "table", tableNode ->
 					{
-						attrs = d.getAttributes();
-						String statName = attrs.getNamedItem("name").getNodeValue();
-						float soloValues[] = null, combinedValues[] = null;
-						
-						for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-						{
-							if ("table".equalsIgnoreCase(e.getNodeName()))
-							{
-								attrs = e.getAttributes();
-								String tableName = attrs.getNamedItem("name").getNodeValue();
-								
-								StringTokenizer data = new StringTokenizer(e.getFirstChild().getNodeValue());
-								List<Float> array = new ArrayList<>();
-								while (data.hasMoreTokens())
-									array.add(Float.parseFloat(data.nextToken()));
-								
-								if ("#soloValues".equalsIgnoreCase(tableName))
-								{
-									soloValues = new float[array.size()];
-									int x = 0;
-									for (float value : array)
-										soloValues[x++] = value;
-								}
-								else
-								{
-									combinedValues = new float[array.size()];
-									int x = 0;
-									for (float value : array)
-										combinedValues[x++] = value;
-								}
-							}
-						}
-						
-						// store this stat ; as the List is now not fed, we have to generate nested List if not already existing.
-						statList.add(new AugmentationStat(Stats.valueOfXml(statName), soloValues, combinedValues));
-					}
-				}
-			}
-		}
+						final String tableName = parseString(tableNode.getAttributes(), "name");
+						final StringTokenizer data = new StringTokenizer(tableNode.getFirstChild().getNodeValue());
+						if ("#soloValues".equalsIgnoreCase(tableName))
+							while (data.hasMoreTokens())
+								soloValues.add(Float.parseFloat(data.nextToken()));
+						else
+							while (data.hasMoreTokens())
+								combinedValues.add(Float.parseFloat(data.nextToken()));
+					});
+					final float soloValuesArr[] = new float[soloValues.size()];
+					for (int i = 0; i < soloValuesArr.length; i++)
+						soloValuesArr[i] = soloValues.get(i);
+					final float combinedValuesArr[] = new float[combinedValues.size()];
+					for (int i = 0; i < combinedValuesArr.length; i++)
+						combinedValuesArr[i] = combinedValues.get(i);
+					statList.add(new AugmentationStat(Stats.valueOfXml(statName), soloValuesArr, combinedValuesArr));
+				});
+			});
+		});
 	}
 	
 	public L2Augmentation generateRandomAugmentation(int lifeStoneLevel, int lifeStoneGrade)

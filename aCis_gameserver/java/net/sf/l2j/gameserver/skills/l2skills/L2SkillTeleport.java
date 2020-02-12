@@ -1,17 +1,17 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
-import net.sf.l2j.gameserver.data.MapRegionTable;
-import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.data.xml.MapRegionData;
+import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.items.ShotType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
-import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class L2SkillTeleport extends L2Skill
 {
@@ -39,7 +39,7 @@ public class L2SkillTeleport extends L2Skill
 		if (activeChar instanceof Player)
 		{
 			// Check invalid states.
-			if (activeChar.isAfraid() || ((Player) activeChar).isInOlympiadMode() || ZoneManager.getInstance().getZone(activeChar, L2BossZone.class) != null)
+			if (activeChar.isAfraid() || ((Player) activeChar).isInOlympiadMode() || activeChar.isInsideZone(ZoneId.BOSS))
 				return;
 		}
 		
@@ -65,7 +65,7 @@ public class L2SkillTeleport extends L2Skill
 					if (targetChar.isInOlympiadMode())
 						continue;
 					
-					if (ZoneManager.getInstance().getZone(targetChar, L2BossZone.class) != null)
+					if (targetChar.isInsideZone(ZoneId.BOSS))
 						continue;
 				}
 			}
@@ -82,11 +82,11 @@ public class L2SkillTeleport extends L2Skill
 			else
 			{
 				if (_recallType.equalsIgnoreCase("Castle"))
-					loc = MapRegionTable.getInstance().getLocationToTeleport(target, TeleportType.CASTLE);
+					loc = MapRegionData.getInstance().getLocationToTeleport(target, TeleportType.CASTLE);
 				else if (_recallType.equalsIgnoreCase("ClanHall"))
-					loc = MapRegionTable.getInstance().getLocationToTeleport(target, TeleportType.CLAN_HALL);
+					loc = MapRegionData.getInstance().getLocationToTeleport(target, TeleportType.CLAN_HALL);
 				else
-					loc = MapRegionTable.getInstance().getLocationToTeleport(target, TeleportType.TOWN);
+					loc = MapRegionData.getInstance().getLocationToTeleport(target, TeleportType.TOWN);
 			}
 			
 			if (loc != null)
@@ -94,7 +94,7 @@ public class L2SkillTeleport extends L2Skill
 				if (target instanceof Player)
 					((Player) target).setIsIn7sDungeon(false);
 				
-				target.teleToLocation(loc, 20);
+				target.teleportTo(loc, 20);
 			}
 		}
 		

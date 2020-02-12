@@ -17,15 +17,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
+import net.sf.l2j.commons.logging.CLogger;
+import net.sf.l2j.commons.network.AttributeType;
+import net.sf.l2j.commons.network.StatusType;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.FailReason;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.network.L2GameClient;
-import net.sf.l2j.gameserver.network.L2GameClient.GameClientState;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.network.GameClient;
+import net.sf.l2j.gameserver.network.GameClient.GameClientState;
 import net.sf.l2j.gameserver.network.gameserverpackets.AuthRequest;
 import net.sf.l2j.gameserver.network.gameserverpackets.BlowFishKey;
 import net.sf.l2j.gameserver.network.gameserverpackets.ChangeAccessLevel;
@@ -40,17 +43,16 @@ import net.sf.l2j.gameserver.network.loginserverpackets.KickPlayer;
 import net.sf.l2j.gameserver.network.loginserverpackets.LoginServerFail;
 import net.sf.l2j.gameserver.network.loginserverpackets.PlayerAuthResponse;
 import net.sf.l2j.gameserver.network.serverpackets.AuthLoginFail;
-import net.sf.l2j.gameserver.network.serverpackets.AuthLoginFail.FailReason;
 import net.sf.l2j.gameserver.network.serverpackets.CharSelectInfo;
 import net.sf.l2j.loginserver.crypt.NewCrypt;
 
 public class LoginServerThread extends Thread
 {
-	protected static final Logger _log = Logger.getLogger(LoginServerThread.class.getName());
+	protected static final CLogger LOGGER = new CLogger(LoginServerThread.class.getName());
 	
 	private static final int REVISION = 0x0102;
 	
-	private final Map<String, L2GameClient> _clients = new ConcurrentHashMap<>();
+	private final Map<String, GameClient> _clients = new ConcurrentHashMap<>();
 	
 	private int _serverId;
 	private String _serverName;
@@ -67,7 +69,7 @@ public class LoginServerThread extends Thread
 	
 	private int _requestId;
 	private int _maxPlayers;
-	private int _status;
+	private StatusType _status = StatusType.AUTO;
 	
 	protected LoginServerThread()
 	{
@@ -93,7 +95,7 @@ public class LoginServerThread extends Thread
 			try
 			{
 				// Connection
-				_log.info("Connecting to login on " + Config.GAME_SERVER_LOGIN_HOST + ":" + Config.GAME_SERVER_LOGIN_PORT);
+				LOGGER.info("Connecting to login on {}:{}.", Config.GAME_SERVER_LOGIN_HOST, Config.GAME_SERVER_LOGIN_PORT);
 				
 				_loginSocket = new Socket(Config.GAME_SERVER_LOGIN_HOST, Config.GAME_SERVER_LOGIN_PORT);
 				_in = _loginSocket.getInputStream();
@@ -127,7 +129,7 @@ public class LoginServerThread extends Thread
 					
 					if (receivedBytes != length - 2)
 					{
-						_log.warning("Incomplete Packet is sent to the server, closing connection.");
+						LOGGER.warn("Incomplete packet is sent to the server, closing connection.");
 						break;
 					}
 					
@@ -137,7 +139,7 @@ public class LoginServerThread extends Thread
 					// Verify the checksum.
 					if (!NewCrypt.verifyChecksum(decrypt))
 					{
-						_log.warning("Incorrect packet checksum, ignoring packet.");
+						LOGGER.warn("Incorrect packet checksum, ignoring packet.");
 						break;
 					}
 					
@@ -149,7 +151,7 @@ public class LoginServerThread extends Thread
 							
 							if (init.getRevision() != REVISION)
 							{
-								_log.warning("Revision mismatch between LS and GS.");
+								LOGGER.warn("Revision mismatch between LS and GS.");
 								break;
 							}
 							
@@ -163,7 +165,7 @@ public class LoginServerThread extends Thread
 							}
 							catch (GeneralSecurityException e)
 							{
-								_log.warning("Troubles while init the public key sent by login.");
+								LOGGER.error("Troubles while init the public key sent by login.");
 								break;
 							}
 							
@@ -179,7 +181,7 @@ public class LoginServerThread extends Thread
 						case 0x01:
 							// login will close the connection here
 							final LoginServerFail lsf = new LoginServerFail(decrypt);
-							_log.info("Registeration Failed: " + lsf.getReasonString());
+							LOGGER.info("LoginServer registration failed: {}.", lsf.getReasonString());
 							break;
 						
 						case 0x02:
@@ -189,15 +191,15 @@ public class LoginServerThread extends Thread
 							_serverName = aresp.getServerName();
 							
 							Config.saveHexid(_serverId, new BigInteger(_hexId).toString(16));
-							_log.info("Registered as server: [" + _serverId + "] " + _serverName);
+							LOGGER.info("Registered as server: [{}] {}.", _serverId, _serverName);
 							
 							final ServerStatus ss = new ServerStatus();
-							ss.addAttribute(ServerStatus.STATUS, (Config.SERVER_GMONLY) ? ServerStatus.STATUS_GM_ONLY : ServerStatus.STATUS_AUTO);
-							ss.addAttribute(ServerStatus.CLOCK, Config.SERVER_LIST_CLOCK);
-							ss.addAttribute(ServerStatus.BRACKETS, Config.SERVER_LIST_BRACKET);
-							ss.addAttribute(ServerStatus.AGE_LIMIT, Config.SERVER_LIST_AGE);
-							ss.addAttribute(ServerStatus.TEST_SERVER, Config.SERVER_LIST_TESTSERVER);
-							ss.addAttribute(ServerStatus.PVP_SERVER, Config.SERVER_LIST_PVPSERVER);
+							ss.addAttribute(AttributeType.STATUS, (Config.SERVER_GMONLY) ? StatusType.GM_ONLY.getId() : StatusType.AUTO.getId());
+							ss.addAttribute(AttributeType.CLOCK, Config.SERVER_LIST_CLOCK);
+							ss.addAttribute(AttributeType.BRACKETS, Config.SERVER_LIST_BRACKET);
+							ss.addAttribute(AttributeType.AGE_LIMIT, Config.SERVER_LIST_AGE);
+							ss.addAttribute(AttributeType.TEST_SERVER, Config.SERVER_LIST_TESTSERVER);
+							ss.addAttribute(AttributeType.PVP_SERVER, Config.SERVER_LIST_PVPSERVER);
 							sendPacket(ss);
 							
 							final Collection<Player> players = World.getInstance().getPlayers();
@@ -214,7 +216,7 @@ public class LoginServerThread extends Thread
 						case 0x03:
 							final PlayerAuthResponse par = new PlayerAuthResponse(decrypt);
 							
-							final L2GameClient client = _clients.get(par.getAccount());
+							final GameClient client = _clients.get(par.getAccount());
 							if (client != null)
 							{
 								if (par.isAuthed())
@@ -244,7 +246,7 @@ public class LoginServerThread extends Thread
 			}
 			catch (IOException e)
 			{
-				_log.info("No connection found with loginserver, next try in 10 seconds.");
+				LOGGER.error("No connection found with loginserver, next try in 10 seconds.");
 			}
 			finally
 			{
@@ -282,7 +284,7 @@ public class LoginServerThread extends Thread
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while sending logout packet to login.");
+			LOGGER.error("Error while sending logout packet to login.");
 		}
 		finally
 		{
@@ -290,9 +292,9 @@ public class LoginServerThread extends Thread
 		}
 	}
 	
-	public void addClient(String account, L2GameClient client)
+	public void addClient(String account, GameClient client)
 	{
-		final L2GameClient existingClient = _clients.putIfAbsent(account, client);
+		final GameClient existingClient = _clients.putIfAbsent(account, client);
 		if (existingClient == null)
 		{
 			try
@@ -301,7 +303,7 @@ public class LoginServerThread extends Thread
 			}
 			catch (IOException e)
 			{
-				_log.warning("Error while sending player auth request.");
+				LOGGER.error("Error while sending player auth request.");
 			}
 		}
 		else
@@ -324,7 +326,7 @@ public class LoginServerThread extends Thread
 	
 	public void kickPlayer(String account)
 	{
-		final L2GameClient client = _clients.get(account);
+		final GameClient client = _clients.get(account);
 		if (client != null)
 			client.closeNow();
 	}
@@ -355,7 +357,7 @@ public class LoginServerThread extends Thread
 	
 	public void setMaxPlayer(int maxPlayers)
 	{
-		sendServerStatus(ServerStatus.MAX_PLAYERS, maxPlayers);
+		sendServerStatus(AttributeType.MAX_PLAYERS, maxPlayers);
 		
 		_maxPlayers = maxPlayers;
 	}
@@ -365,12 +367,12 @@ public class LoginServerThread extends Thread
 		return _maxPlayers;
 	}
 	
-	public void sendServerStatus(int id, int value)
+	public void sendServerStatus(AttributeType type, int value)
 	{
 		try
 		{
 			final ServerStatus ss = new ServerStatus();
-			ss.addAttribute(id, value);
+			ss.addAttribute(type, value);
 			
 			sendPacket(ss);
 		}
@@ -379,24 +381,20 @@ public class LoginServerThread extends Thread
 		}
 	}
 	
-	public String getStatusString()
-	{
-		return ServerStatus.STATUS_STRING[_status];
-	}
-	
 	public String getServerName()
 	{
 		return _serverName;
 	}
 	
-	public int getServerStatus()
+	public StatusType getServerStatus()
 	{
 		return _status;
 	}
 	
-	public void setServerStatus(int status)
+	public void setServerStatus(StatusType status)
 	{
-		sendServerStatus(ServerStatus.STATUS, status);
+		sendServerStatus(AttributeType.STATUS, status.getId());
+		
 		_status = status;
 	}
 	

@@ -1,18 +1,19 @@
 package net.sf.l2j.gameserver.scripting.scripts.ai.individual;
 
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.network.serverpackets.SpecialCamera;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * Dr. Chaos is a boss @ Pavel's Ruins. Some things to know :
@@ -137,7 +138,7 @@ public class DrChaos extends L2AttackableAIScript
 		else if (event.equalsIgnoreCase("4"))
 		{
 			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1, -150, 10, 3500, 5000, 0, 0, 1, 0));
-			npc.getAI().setIntention(CtrlIntention.MOVE_TO, new Location(95928, -110671, -3340));
+			npc.getAI().setIntention(IntentionType.MOVE_TO, new Location(95928, -110671, -3340));
 		}
 		else if (event.equalsIgnoreCase("5"))
 		{
@@ -219,7 +220,7 @@ public class DrChaos extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		cancelQuestTimer("golem_despawn", npc, null);
 		npc.broadcastNpcSay("Urggh! You will pay dearly for this insult.");
@@ -265,7 +266,7 @@ public class DrChaos extends L2AttackableAIScript
 		cancelQuestTimer("paranoia_activity", npc, null);
 		
 		// Makes the NPC moves near the Strange Box speaking.
-		npc.getAI().setIntention(CtrlIntention.MOVE_TO, new Location(96323, -110914, -3328));
+		npc.getAI().setIntention(IntentionType.MOVE_TO, new Location(96323, -110914, -3328));
 		npc.broadcastNpcSay("Fools! Why haven't you fled yet? Prepare to learn a lesson!");
 		
 		// Delayed animation timers.

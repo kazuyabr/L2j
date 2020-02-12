@@ -3,9 +3,6 @@ package net.sf.l2j.gameserver.geoengine.geodata;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.location.Location;
 
-/**
- * @author Hasha
- */
 public class GeoLocation extends Location
 {
 	private byte _nswe;

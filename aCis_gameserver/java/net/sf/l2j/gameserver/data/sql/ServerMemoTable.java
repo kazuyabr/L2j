@@ -3,10 +3,8 @@ package net.sf.l2j.gameserver.data.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.memo.AbstractMemo;
@@ -17,7 +15,7 @@ import net.sf.l2j.gameserver.model.memo.AbstractMemo;
 @SuppressWarnings("serial")
 public class ServerMemoTable extends AbstractMemo
 {
-	private static final Logger LOG = Logger.getLogger(ServerMemoTable.class.getName());
+	private static final CLogger LOGGER = new CLogger(ServerMemoTable.class.getName());
 	
 	private static final String SELECT_QUERY = "SELECT * FROM server_memo";
 	private static final String DELETE_QUERY = "DELETE FROM server_memo";
@@ -32,27 +30,23 @@ public class ServerMemoTable extends AbstractMemo
 	public boolean restoreMe()
 	{
 		// Restore previous variables.
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(SELECT_QUERY);
+			ResultSet rs = ps.executeQuery())
 		{
-			Statement st = con.createStatement();
-			
-			ResultSet rset = st.executeQuery(SELECT_QUERY);
-			while (rset.next())
-				set(rset.getString("var"), rset.getString("value"));
-			
-			rset.close();
-			st.close();
+			while (rs.next())
+				set(rs.getString("var"), rs.getString("value"));
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			LOG.log(Level.SEVERE, "Couldn't restore server variables.", e);
+			LOGGER.error("Couldn't restore server variables.", e);
 			return false;
 		}
 		finally
 		{
 			compareAndSetChanges(true, false);
 		}
-		LOG.info("Loaded " + size() + " server variables.");
+		LOGGER.info("Loaded {} server variables.", size());
 		return true;
 	}
 	
@@ -66,31 +60,33 @@ public class ServerMemoTable extends AbstractMemo
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Clear previous entries.
-			Statement del = con.createStatement();
-			del.execute(DELETE_QUERY);
-			del.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_QUERY))
+			{
+				ps.executeUpdate();
+			}
 			
 			// Insert all variables.
-			PreparedStatement st = con.prepareStatement(INSERT_QUERY);
-			for (Entry<String, Object> entry : entrySet())
+			try (PreparedStatement ps = con.prepareStatement(INSERT_QUERY))
 			{
-				st.setString(1, entry.getKey());
-				st.setString(2, String.valueOf(entry.getValue()));
-				st.addBatch();
+				for (Entry<String, Object> entry : entrySet())
+				{
+					ps.setString(1, entry.getKey());
+					ps.setString(2, String.valueOf(entry.getValue()));
+					ps.addBatch();
+				}
+				ps.executeBatch();
 			}
-			st.executeBatch();
-			st.close();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			LOG.log(Level.SEVERE, "Couldn't save server variables to database.", e);
+			LOGGER.error("Couldn't save server variables to database.", e);
 			return false;
 		}
 		finally
 		{
 			compareAndSetChanges(true, false);
 		}
-		LOG.info("Stored " + size() + " server variables.");
+		LOGGER.info("Stored {} server variables.", size());
 		return true;
 	}
 	

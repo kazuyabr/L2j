@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * This class handles following admin commands:
@@ -25,56 +25,38 @@ public class AdminGm implements IAdminCommandHandler
 	{
 		if (command.startsWith("admin_gm"))
 		{
-			if (activeChar.isGM())
+			StringTokenizer st = new StringTokenizer(command, " ");
+			st.nextToken();
+			
+			int numberOfMinutes = 1;
+			if (st.hasMoreTokens())
 			{
-				StringTokenizer st = new StringTokenizer(command, " ");
-				st.nextToken();
-				
-				int numberOfMinutes = 1;
-				if (st.hasMoreTokens())
+				try
 				{
-					try
-					{
-						numberOfMinutes = Integer.parseInt(st.nextToken());
-					}
-					catch (Exception e)
-					{
-						activeChar.sendMessage("Invalid timer setted for //gm ; default time is used.");
-					}
+					numberOfMinutes = Integer.parseInt(st.nextToken());
 				}
-				
-				// We keep the previous level to rehabilitate it later.
-				final int previousAccessLevel = activeChar.getAccessLevel().getLevel();
-				
-				activeChar.setAccessLevel(0);
-				activeChar.sendMessage("You no longer have GM status, but will be rehabilitated after " + numberOfMinutes + " minutes.");
-				
-				ThreadPool.schedule(new GiveBackAccess(activeChar, previousAccessLevel), numberOfMinutes * 60000);
+				catch (Exception e)
+				{
+					activeChar.sendMessage("Invalid timer setted for //gm ; default time is used.");
+				}
 			}
+			
+			// We keep the previous level to rehabilitate it later.
+			final int previousAccessLevel = activeChar.getAccessLevel().getLevel();
+			
+			activeChar.setAccessLevel(0);
+			activeChar.sendMessage("You no longer have GM status, but will be rehabilitated after " + numberOfMinutes + " minutes.");
+			
+			ThreadPool.schedule(() ->
+			{
+				if (!activeChar.isOnline())
+					return;
+				
+				activeChar.setAccessLevel(previousAccessLevel);
+				activeChar.sendMessage("Your previous access level has been rehabilitated.");
+			}, numberOfMinutes * 60000);
 		}
 		return true;
-	}
-	
-	private class GiveBackAccess implements Runnable
-	{
-		private final Player _activeChar;
-		private final int _previousAccessLevel;
-		
-		public GiveBackAccess(Player activeChar, int previousAccessLevel)
-		{
-			_activeChar = activeChar;
-			_previousAccessLevel = previousAccessLevel;
-		}
-		
-		@Override
-		public void run()
-		{
-			if (!_activeChar.isOnline())
-				return;
-			
-			_activeChar.setAccessLevel(_previousAccessLevel);
-			_activeChar.sendMessage("Your previous access level has been rehabilitated.");
-		}
 	}
 	
 	@Override

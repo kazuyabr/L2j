@@ -22,7 +22,7 @@ public class PackageSendableList extends L2GameServerPacket
 	{
 		writeC(0xC3);
 		writeD(_playerObjId);
-		writeD(getClient().getActiveChar().getAdena());
+		writeD(getClient().getPlayer().getAdena());
 		writeD(_items.length);
 		
 		for (ItemInstance temp : _items)

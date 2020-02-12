@@ -5,24 +5,26 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.loginserver.GameServerTable;
+import net.sf.l2j.commons.network.StatusType;
+
+import net.sf.l2j.loginserver.GameServerManager;
 import net.sf.l2j.loginserver.model.GameServerInfo;
 import net.sf.l2j.loginserver.model.ServerData;
 import net.sf.l2j.loginserver.network.LoginClient;
-import net.sf.l2j.loginserver.network.gameserverpackets.ServerStatus;
 
 public final class ServerList extends L2LoginServerPacket
 {
 	private final List<ServerData> _servers = new ArrayList<>();
+	
 	private final int _lastServer;
 	
 	public ServerList(LoginClient client)
 	{
 		_lastServer = client.getLastServer();
 		
-		for (GameServerInfo gsi : GameServerTable.getInstance().getRegisteredGameServers().values())
+		for (GameServerInfo gsi : GameServerManager.getInstance().getRegisteredGameServers().values())
 		{
-			final int status = (gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) ? gsi.getStatus() : (client.getAccessLevel() > 0) ? gsi.getStatus() : ServerStatus.STATUS_DOWN;
+			final StatusType status = (client.getAccessLevel() < 0 || (gsi.getStatus() == StatusType.GM_ONLY && client.getAccessLevel() <= 0)) ? StatusType.DOWN : gsi.getStatus();
 			final String hostName = gsi.getHostName();
 			
 			_servers.add(new ServerData(status, hostName, gsi));
@@ -62,7 +64,7 @@ public final class ServerList extends L2LoginServerPacket
 			writeC(server.isPvp() ? 0x01 : 0x00);
 			writeH(server.getCurrentPlayers());
 			writeH(server.getMaxPlayers());
-			writeC(server.getStatus() == ServerStatus.STATUS_DOWN ? 0x00 : 0x01);
+			writeC(server.getStatus() == StatusType.DOWN ? 0x00 : 0x01);
 			
 			int bits = 0;
 			if (server.isTestServer())

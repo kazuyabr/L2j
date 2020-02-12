@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -70,7 +70,7 @@ public class NewbieTravelToken extends Quest
 			if (st.getQuestItemsCount(TOKEN) != 0)
 			{
 				st.takeItems(TOKEN, 1);
-				st.getPlayer().teleToLocation(x, y, z, 0);
+				st.getPlayer().teleportTo(x, y, z, 0);
 			}
 			else
 				return "notoken.htm";

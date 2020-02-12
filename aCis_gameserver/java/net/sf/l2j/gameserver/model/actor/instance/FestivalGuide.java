@@ -3,22 +3,24 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.util.Calendar;
 import java.util.List;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival.FestivalType;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.FestivalType;
+import net.sf.l2j.gameserver.enums.MessageType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.group.Party;
-import net.sf.l2j.gameserver.model.group.Party.MessageType;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.zone.type.L2PeaceZone;
+import net.sf.l2j.gameserver.model.zone.type.PeaceZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public final class FestivalGuide extends Folk
 {
@@ -147,14 +149,14 @@ public final class FestivalGuide extends Folk
 			{
 				case 1: // Become a Participant
 					// Check if the festival period is active, if not then don't allow registration.
-					if (SevenSigns.getInstance().isSealValidationPeriod())
+					if (SevenSignsManager.getInstance().isSealValidationPeriod())
 					{
 						showChatWindow(player, 2, "a", false);
 						return;
 					}
 					
 					// Check if a festival is in progress, then don't allow registration yet.
-					if (SevenSignsFestival.getInstance().isFestivalInitialized())
+					if (FestivalOfDarknessManager.getInstance().isFestivalInitialized())
 					{
 						player.sendMessage("You cannot sign up while a festival is in progress.");
 						return;
@@ -191,7 +193,7 @@ public final class FestivalGuide extends Folk
 					// Check to see if the player has already signed up, if they are then update the participant list providing all the required criteria has been met.
 					if (player.isFestivalParticipant())
 					{
-						SevenSignsFestival.getInstance().setParticipants(_festivalOracle, festivalIndex, playerParty);
+						FestivalOfDarknessManager.getInstance().setParticipants(_festivalOracle, festivalIndex, playerParty);
 						showChatWindow(player, 2, "f", false);
 						return;
 					}
@@ -204,13 +206,13 @@ public final class FestivalGuide extends Folk
 					
 					switch (stoneType)
 					{
-						case SevenSigns.SEAL_STONE_BLUE_ID:
+						case SevenSignsManager.SEAL_STONE_BLUE_ID:
 							stonesNeeded = _blueStonesNeeded;
 							break;
-						case SevenSigns.SEAL_STONE_GREEN_ID:
+						case SevenSignsManager.SEAL_STONE_GREEN_ID:
 							stonesNeeded = _greenStonesNeeded;
 							break;
-						case SevenSigns.SEAL_STONE_RED_ID:
+						case SevenSignsManager.SEAL_STONE_RED_ID:
 							stonesNeeded = _redStonesNeeded;
 							break;
 					}
@@ -218,21 +220,21 @@ public final class FestivalGuide extends Folk
 					if (!player.destroyItemByItemId("SevenSigns", stoneType, stonesNeeded, this, true))
 						return;
 					
-					SevenSignsFestival.getInstance().setParticipants(_festivalOracle, festivalIndex, playerParty);
-					SevenSignsFestival.getInstance().addAccumulatedBonus(festivalIndex, stoneType, stonesNeeded);
+					FestivalOfDarknessManager.getInstance().setParticipants(_festivalOracle, festivalIndex, playerParty);
+					FestivalOfDarknessManager.getInstance().addAccumulatedBonus(festivalIndex, stoneType, stonesNeeded);
 					
 					showChatWindow(player, 2, "e", false);
 					break;
 				case 3: // Score Registration
 					// Check if the festival period is active, if not then don't register the score.
-					if (SevenSigns.getInstance().isSealValidationPeriod())
+					if (SevenSignsManager.getInstance().isSealValidationPeriod())
 					{
 						showChatWindow(player, 3, "a", false);
 						return;
 					}
 					
 					// Check if a festival is in progress, if it is don't register the score.
-					if (SevenSignsFestival.getInstance().isFestivalInProgress())
+					if (FestivalOfDarknessManager.getInstance().isFestivalInProgress())
 					{
 						player.sendMessage("You cannot register a score while a festival is in progress.");
 						return;
@@ -245,7 +247,7 @@ public final class FestivalGuide extends Folk
 						return;
 					}
 					
-					final List<Integer> prevParticipants = SevenSignsFestival.getInstance().getPreviousParticipants(_festivalOracle, festivalIndex);
+					final List<Integer> prevParticipants = FestivalOfDarknessManager.getInstance().getPreviousParticipants(_festivalOracle, festivalIndex);
 					
 					// Check if there are any past participants.
 					if ((prevParticipants == null) || prevParticipants.isEmpty() || !prevParticipants.contains(player.getObjectId()))
@@ -261,7 +263,7 @@ public final class FestivalGuide extends Folk
 						return;
 					}
 					
-					final ItemInstance bloodOfferings = player.getInventory().getItemByItemId(SevenSignsFestival.FESTIVAL_OFFERING_ID);
+					final ItemInstance bloodOfferings = player.getInventory().getItemByItemId(FestivalOfDarknessManager.FESTIVAL_OFFERING_ID);
 					
 					// Check if the player collected any blood offerings during the festival.
 					if (bloodOfferings == null)
@@ -270,11 +272,11 @@ public final class FestivalGuide extends Folk
 						return;
 					}
 					
-					final int offeringScore = bloodOfferings.getCount() * SevenSignsFestival.FESTIVAL_OFFERING_VALUE;
+					final int offeringScore = bloodOfferings.getCount() * FestivalOfDarknessManager.FESTIVAL_OFFERING_VALUE;
 					if (!player.destroyItem("SevenSigns", bloodOfferings, this, false))
 						return;
 					
-					final boolean isHighestScore = SevenSignsFestival.getInstance().setFinalScore(player, _festivalOracle, _festivalType, offeringScore);
+					final boolean isHighestScore = FestivalOfDarknessManager.getInstance().setFinalScore(player, _festivalOracle, _festivalType, offeringScore);
 					
 					// Send message that the contribution score has increased.
 					player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CONTRIB_SCORE_INCREASED_S1).addNumber(offeringScore));
@@ -287,9 +289,9 @@ public final class FestivalGuide extends Folk
 				case 4: // Current High Scores
 					final StringBuilder sb = new StringBuilder("<html><body>Festival Guide:<br>These are the top scores of the week, for the ");
 					
-					final StatsSet dawnData = SevenSignsFestival.getInstance().getHighestScoreData(CabalType.DAWN, festivalIndex);
-					final StatsSet duskData = SevenSignsFestival.getInstance().getHighestScoreData(CabalType.DUSK, festivalIndex);
-					final StatsSet overallData = SevenSignsFestival.getInstance().getOverallHighestScoreData(festivalIndex);
+					final StatsSet dawnData = FestivalOfDarknessManager.getInstance().getHighestScoreData(CabalType.DAWN, festivalIndex);
+					final StatsSet duskData = FestivalOfDarknessManager.getInstance().getHighestScoreData(CabalType.DUSK, festivalIndex);
+					final StatsSet overallData = FestivalOfDarknessManager.getInstance().getOverallHighestScoreData(festivalIndex);
 					
 					final int dawnScore = dawnData.getInteger("score");
 					final int duskScore = duskData.getInteger("score");
@@ -329,7 +331,7 @@ public final class FestivalGuide extends Folk
 					if (playerParty == null)
 						return;
 					
-					if (!SevenSignsFestival.getInstance().isFestivalInProgress())
+					if (!FestivalOfDarknessManager.getInstance().isFestivalInProgress())
 						return;
 					
 					if (!playerParty.isLeader(player))
@@ -338,7 +340,7 @@ public final class FestivalGuide extends Folk
 						break;
 					}
 					
-					if (SevenSignsFestival.getInstance().increaseChallenge(_festivalOracle, festivalIndex))
+					if (FestivalOfDarknessManager.getInstance().increaseChallenge(_festivalOracle, festivalIndex))
 						showChatWindow(player, 8, "b", false);
 					else
 						showChatWindow(player, 8, "c", false);
@@ -354,22 +356,22 @@ public final class FestivalGuide extends Folk
 					
 					if (isLeader)
 					{
-						SevenSignsFestival.getInstance().updateParticipants(player, null);
+						FestivalOfDarknessManager.getInstance().updateParticipants(player, null);
 					}
 					else
 					{
-						SevenSignsFestival.getInstance().updateParticipants(player, playerParty);
+						FestivalOfDarknessManager.getInstance().updateParticipants(player, playerParty);
 						playerParty.removePartyMember(player, MessageType.EXPELLED);
 					}
 					break;
 				case 0: // Distribute Accumulated Bonus
-					if (!SevenSigns.getInstance().isSealValidationPeriod())
+					if (!SevenSignsManager.getInstance().isSealValidationPeriod())
 					{
 						player.sendMessage("Bonuses cannot be paid during the competition period.");
 						return;
 					}
 					
-					if (SevenSignsFestival.getInstance().distribAccumulatedBonus(player) > 0)
+					if (FestivalOfDarknessManager.getInstance().distribAccumulatedBonus(player) > 0)
 						showChatWindow(player, 0, "a", false);
 					else
 						showChatWindow(player, 0, "b", false);
@@ -389,7 +391,7 @@ public final class FestivalGuide extends Folk
 	@Override
 	public void showChatWindow(Player player, int val)
 	{
-		String filename = SevenSigns.SEVEN_SIGNS_HTML_PATH;
+		String filename = SevenSignsManager.SEVEN_SIGNS_HTML_PATH;
 		
 		switch (getTemplate().getNpcId())
 		{
@@ -426,7 +428,7 @@ public final class FestivalGuide extends Folk
 		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(filename);
 		html.replace("%objectId%", getObjectId());
-		html.replace("%festivalMins%", SevenSignsFestival.getInstance().getTimeToNextFestivalStr());
+		html.replace("%festivalMins%", FestivalOfDarknessManager.getInstance().getTimeToNextFestivalStr());
 		player.sendPacket(html);
 		
 		// Send ActionFailed to the player in order to avoid he stucks
@@ -436,10 +438,10 @@ public final class FestivalGuide extends Folk
 	private void showChatWindow(Player player, int val, String suffix, boolean isDescription)
 	{
 		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-		html.setFile(SevenSigns.SEVEN_SIGNS_HTML_PATH + "festival/" + ((isDescription) ? "desc_" : "festival_") + ((suffix != null) ? val + suffix : val) + ".htm");
+		html.setFile(SevenSignsManager.SEVEN_SIGNS_HTML_PATH + "festival/" + ((isDescription) ? "desc_" : "festival_") + ((suffix != null) ? val + suffix : val) + ".htm");
 		html.replace("%objectId%", getObjectId());
 		html.replace("%festivalType%", _festivalType.getName());
-		html.replace("%cycleMins%", SevenSignsFestival.getInstance().getMinsToNextCycle());
+		html.replace("%cycleMins%", FestivalOfDarknessManager.getInstance().getMinsToNextCycle());
 		if (!isDescription && "2b".equals(val + suffix))
 			html.replace("%minFestivalPartyMembers%", Config.ALT_FESTIVAL_MIN_PLAYER);
 		
@@ -467,8 +469,8 @@ public final class FestivalGuide extends Folk
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < 5; i++)
 		{
-			final int dawnScore = SevenSignsFestival.getInstance().getHighestScore(CabalType.DAWN, i);
-			final int duskScore = SevenSignsFestival.getInstance().getHighestScore(CabalType.DUSK, i);
+			final int dawnScore = FestivalOfDarknessManager.getInstance().getHighestScore(CabalType.DAWN, i);
+			final int duskScore = FestivalOfDarknessManager.getInstance().getHighestScore(CabalType.DUSK, i);
 			
 			String winningCabal = "Children of Dusk";
 			if (dawnScore > duskScore)
@@ -486,7 +488,7 @@ public final class FestivalGuide extends Folk
 	{
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < 5; i++)
-			sb.append("<tr><td align=\"center\" width=\"150\">" + FestivalType.VALUES[i].getName() + "</td><td align=\"center\" width=\"150\">" + SevenSignsFestival.getInstance().getAccumulatedBonus(i) + "</td></tr>");
+			sb.append("<tr><td align=\"center\" width=\"150\">" + FestivalType.VALUES[i].getName() + "</td><td align=\"center\" width=\"150\">" + FestivalOfDarknessManager.getInstance().getAccumulatedBonus(i) + "</td></tr>");
 		
 		return sb.toString();
 	}
@@ -506,10 +508,10 @@ public final class FestivalGuide extends Folk
 	{
 		super.onSpawn();
 		
-		L2PeaceZone zone = ZoneManager.getInstance().getZone(this, L2PeaceZone.class);
+		PeaceZone zone = ZoneManager.getInstance().getZone(this, PeaceZone.class);
 		
 		// Festival Witches are spawned inside festival, out of peace zone -> skip them
 		if (zone != null)
-			SevenSignsFestival.getInstance().addPeaceZone(zone, _festivalOracle == CabalType.DAWN);
+			FestivalOfDarknessManager.getInstance().addPeaceZone(zone, _festivalOracle == CabalType.DAWN);
 	}
 }

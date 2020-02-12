@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.GetOffVehicle;
 import net.sf.l2j.gameserver.network.serverpackets.StopMoveInVehicle;
@@ -24,7 +24,7 @@ public final class RequestGetOffVehicle extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -35,7 +35,7 @@ public final class RequestGetOffVehicle extends L2GameClientPacket
 		}
 		
 		activeChar.broadcastPacket(new StopMoveInVehicle(activeChar, _boatId));
-		activeChar.setVehicle(null);
+		activeChar.setBoat(null);
 		sendPacket(ActionFailed.STATIC_PACKET);
 		activeChar.broadcastPacket(new GetOffVehicle(activeChar.getObjectId(), _boatId, _x, _y, _z));
 		activeChar.setXYZ(_x, _y, _z + 50);

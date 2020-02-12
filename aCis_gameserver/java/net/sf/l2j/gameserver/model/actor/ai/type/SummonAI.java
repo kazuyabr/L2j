@@ -2,13 +2,14 @@ package net.sf.l2j.gameserver.model.actor.ai.type;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
 
 public class SummonAI extends PlayableAI
 {
@@ -36,7 +37,7 @@ public class SummonAI extends PlayableAI
 	{
 		Summon summon = (Summon) _actor;
 		if (_startFollow)
-			setIntention(CtrlIntention.FOLLOW, summon.getOwner());
+			setIntention(IntentionType.FOLLOW, summon.getOwner());
 		else
 			super.onIntentionActive();
 	}
@@ -73,7 +74,7 @@ public class SummonAI extends PlayableAI
 		
 		clientStopMoving(null);
 		((Summon) _actor).setFollowStatus(false);
-		setIntention(CtrlIntention.IDLE);
+		setIntention(IntentionType.IDLE);
 		
 		_startFollow = val;
 		_actor.doCast(_skill);
@@ -88,7 +89,7 @@ public class SummonAI extends PlayableAI
 		if (maybeMoveToPawn(target, 36))
 			return;
 		
-		setIntention(CtrlIntention.IDLE);
+		setIntention(IntentionType.IDLE);
 		((Summon) _actor).doPickupItem(target);
 	}
 	
@@ -101,7 +102,7 @@ public class SummonAI extends PlayableAI
 		if (maybeMoveToPawn(target, 36))
 			return;
 		
-		setIntention(CtrlIntention.IDLE);
+		setIntention(IntentionType.IDLE);
 	}
 	
 	@Override
@@ -113,7 +114,7 @@ public class SummonAI extends PlayableAI
 		_thinking = true;
 		try
 		{
-			switch (getIntention())
+			switch (_desire.getIntention())
 			{
 				case ATTACK:
 					thinkAttack();
@@ -142,7 +143,7 @@ public class SummonAI extends PlayableAI
 			((Summon) _actor).setFollowStatus(_startFollow);
 		else
 		{
-			setIntention(CtrlIntention.ATTACK, _lastAttack);
+			setIntention(IntentionType.ATTACK, _lastAttack);
 			_lastAttack = null;
 		}
 	}
@@ -163,16 +164,22 @@ public class SummonAI extends PlayableAI
 		avoidAttack(attacker);
 	}
 	
+	@Override
+	public void startAttackStance()
+	{
+		_actor.getActingPlayer().getAI().startAttackStance();
+	}
+	
 	private void avoidAttack(Creature attacker)
 	{
 		final Player owner = ((Summon) _actor).getOwner();
 		
 		// Must have a owner, the attacker can't be the owner and the owner must be in a short radius. The owner must be under attack stance (the summon CAN'T be under attack stance with current writing style).
-		if (owner == null || owner == attacker || !owner.isInsideRadius(_actor, 2 * AVOID_RADIUS, true, false) || !owner.getAI().isAutoAttacking())
+		if (owner == null || owner == attacker || !owner.isInsideRadius(_actor, 2 * AVOID_RADIUS, true, false) || !AttackStanceTaskManager.getInstance().isInAttackStance(owner))
 			return;
 		
 		// Current summon intention must be ACTIVE or FOLLOW type.
-		if (getIntention() != CtrlIntention.ACTIVE && getIntention() != CtrlIntention.FOLLOW)
+		if (_desire.getIntention() != IntentionType.ACTIVE && _desire.getIntention() != IntentionType.FOLLOW)
 			return;
 		
 		// Summon mustn't be under movement, must be alive and not be movement disabled.
@@ -194,7 +201,7 @@ public class SummonAI extends PlayableAI
 	public void notifyFollowStatusChange()
 	{
 		_startFollow = !_startFollow;
-		switch (getIntention())
+		switch (_desire.getIntention())
 		{
 			case ACTIVE:
 			case FOLLOW:
@@ -213,7 +220,7 @@ public class SummonAI extends PlayableAI
 	@Override
 	protected void onIntentionCast(L2Skill skill, WorldObject target)
 	{
-		if (getIntention() == CtrlIntention.ATTACK)
+		if (_desire.getIntention() == IntentionType.ATTACK)
 			_lastAttack = (Creature) getTarget();
 		else
 			_lastAttack = null;

@@ -5,21 +5,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import net.sf.l2j.Config;
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.enums.items.ActionType;
+import net.sf.l2j.gameserver.enums.items.ArmorType;
+import net.sf.l2j.gameserver.enums.items.CrystalType;
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
+import net.sf.l2j.gameserver.enums.items.ItemType;
+import net.sf.l2j.gameserver.enums.items.MaterialType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.item.type.ActionType;
-import net.sf.l2j.gameserver.model.item.type.ArmorType;
-import net.sf.l2j.gameserver.model.item.type.CrystalType;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
-import net.sf.l2j.gameserver.model.item.type.ItemType;
-import net.sf.l2j.gameserver.model.item.type.MaterialType;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.scripting.Quest;
@@ -27,7 +28,6 @@ import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.basefuncs.Func;
 import net.sf.l2j.gameserver.skills.basefuncs.FuncTemplate;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * This class contains all informations concerning the item (weapon, armor, etc). Mother class of :
@@ -355,7 +355,7 @@ public abstract class Item
 	 */
 	public final int getReferencePrice()
 	{
-		return (isConsumable() ? (int) (_referencePrice * Config.RATE_CONSUMABLE_COST) : _referencePrice);
+		return _referencePrice;
 	}
 	
 	/**

@@ -1,10 +1,11 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.actors.StoreType;
 import net.sf.l2j.gameserver.model.ItemRequest;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.actor.instance.Player.StoreType;
+import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.tradelist.TradeList;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
@@ -46,27 +47,27 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		Player player = getClient().getActiveChar();
-		if (player == null)
-			return;
-		
 		if (_items == null)
 			return;
 		
-		Player storePlayer = World.getInstance().getPlayer(_storePlayerId);
-		if (storePlayer == null)
-			return;
-		
-		if (!player.isInsideRadius(storePlayer, 150, true, false))
-			return;
-		
-		if (storePlayer.getStoreType() != StoreType.BUY)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
 		if (player.isCursedWeaponEquipped())
 			return;
 		
-		TradeList storeList = storePlayer.getBuyList();
+		final Player storePlayer = World.getInstance().getPlayer(_storePlayerId);
+		if (storePlayer == null)
+			return;
+		
+		if (!player.isInsideRadius(storePlayer, Npc.INTERACTION_DISTANCE, true, false))
+			return;
+		
+		if (storePlayer.getStoreType() != StoreType.BUY)
+			return;
+		
+		final TradeList storeList = storePlayer.getBuyList();
 		if (storeList == null)
 			return;
 		
@@ -77,10 +78,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 		}
 		
 		if (!storeList.privateStoreSell(player, _items))
-		{
-			_log.warning("PrivateStore sell has failed due to invalid list or request. Player: " + player.getName() + ", Private store of: " + storePlayer.getName());
 			return;
-		}
 		
 		if (storeList.getItems().isEmpty())
 		{

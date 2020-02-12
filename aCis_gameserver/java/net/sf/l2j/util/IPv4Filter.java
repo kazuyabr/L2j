@@ -1,96 +1,58 @@
 package net.sf.l2j.util;
 
-import java.net.InetAddress;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.mmocore.IAcceptFilter;
 
-/**
- * Formatted Forsaiken's IPv4 filter [DrHouse]
- * @author Forsaiken
- */
 public class IPv4Filter implements IAcceptFilter, Runnable
 {
-	private final HashMap<Integer, Flood> _ipFloodMap;
 	private static final long SLEEP_TIME = 5000;
+	
+	private final Map<Integer, FloodHolder> _floods = new ConcurrentHashMap<>();
 	
 	public IPv4Filter()
 	{
-		_ipFloodMap = new HashMap<>();
-		Thread t = new Thread(this);
+		final Thread t = new Thread(this);
 		t.setName(getClass().getSimpleName());
 		t.setDaemon(true);
 		t.start();
 	}
 	
-	/**
-	 * @param ip
-	 * @return
-	 */
-	private static final int hash(byte[] ip)
-	{
-		return ip[0] & 0xFF | ip[1] << 8 & 0xFF00 | ip[2] << 16 & 0xFF0000 | ip[3] << 24 & 0xFF000000;
-	}
-	
-	protected static final class Flood
-	{
-		long lastAccess;
-		int trys;
-		
-		Flood()
-		{
-			lastAccess = System.currentTimeMillis();
-			trys = 0;
-		}
-	}
-	
 	@Override
 	public boolean accept(SocketChannel sc)
 	{
-		InetAddress addr = sc.socket().getInetAddress();
-		int h = hash(addr.getAddress());
+		final int hash = hash(sc.socket().getInetAddress().getAddress());
 		
-		long current = System.currentTimeMillis();
-		Flood f;
-		synchronized (_ipFloodMap)
+		final FloodHolder flood = _floods.get(hash);
+		if (flood != null)
 		{
-			f = _ipFloodMap.get(h);
-		}
-		if (f != null)
-		{
-			if (f.trys == -1)
+			final long currentTime = System.currentTimeMillis();
+			
+			if (flood.tries == -1)
 			{
-				f.lastAccess = current;
+				flood.lastAccess = currentTime;
 				return false;
 			}
 			
-			if (f.lastAccess + 1000 > current)
+			if (flood.lastAccess + 1000 > currentTime)
 			{
-				f.lastAccess = current;
+				flood.lastAccess = currentTime;
 				
-				if (f.trys >= 3)
+				if (flood.tries >= 3)
 				{
-					f.trys = -1;
+					flood.tries = -1;
 					return false;
 				}
 				
-				f.trys++;
+				flood.tries++;
 			}
 			else
-			{
-				f.lastAccess = current;
-			}
+				flood.lastAccess = currentTime;
 		}
 		else
-		{
-			synchronized (_ipFloodMap)
-			{
-				_ipFloodMap.put(h, new Flood());
-			}
-		}
+			_floods.put(hash, new FloodHolder());
 		
 		return true;
 	}
@@ -100,17 +62,9 @@ public class IPv4Filter implements IAcceptFilter, Runnable
 	{
 		while (true)
 		{
-			long reference = System.currentTimeMillis() - (1000 * 300);
-			synchronized (_ipFloodMap)
-			{
-				Iterator<Entry<Integer, Flood>> it = _ipFloodMap.entrySet().iterator();
-				while (it.hasNext())
-				{
-					Flood f = it.next().getValue();
-					if (f.lastAccess < reference)
-						it.remove();
-				}
-			}
+			final long referenceTime = System.currentTimeMillis() - (1000 * 300);
+			
+			_floods.values().removeIf(f -> f.lastAccess < referenceTime);
 			
 			try
 			{
@@ -123,4 +77,14 @@ public class IPv4Filter implements IAcceptFilter, Runnable
 		}
 	}
 	
+	protected final class FloodHolder
+	{
+		protected long lastAccess = System.currentTimeMillis();
+		protected int tries;
+	}
+	
+	private static final int hash(byte[] ip)
+	{
+		return ip[0] & 0xFF | ip[1] << 8 & 0xFF00 | ip[2] << 16 & 0xFF0000 | ip[3] << 24 & 0xFF000000;
+	}
 }

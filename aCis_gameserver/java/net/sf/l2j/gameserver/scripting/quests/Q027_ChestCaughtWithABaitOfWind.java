@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -11,7 +11,7 @@ public class Q027_ChestCaughtWithABaitOfWind extends Quest
 	
 	// NPCs
 	private static final int LANOSCO = 31570;
-	private static final int SHALING = 31442;
+	private static final int SHALING = 31434;
 	
 	// Items
 	private static final int LARGE_BLUE_TREASURE_CHEST = 6500;

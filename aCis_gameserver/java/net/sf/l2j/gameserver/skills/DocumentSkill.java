@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
-import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;

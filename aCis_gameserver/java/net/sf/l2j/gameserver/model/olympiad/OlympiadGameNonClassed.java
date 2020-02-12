@@ -3,10 +3,9 @@ package net.sf.l2j.gameserver.model.olympiad;
 import java.util.List;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.OlympiadType;
+import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 
-/**
- * @author DS
- */
 public class OlympiadGameNonClassed extends OlympiadGameNormal
 {
 	private OlympiadGameNonClassed(int id, Participant[] opponents)
@@ -15,9 +14,9 @@ public class OlympiadGameNonClassed extends OlympiadGameNormal
 	}
 	
 	@Override
-	public final CompetitionType getType()
+	public final OlympiadType getType()
 	{
-		return CompetitionType.NON_CLASSED;
+		return OlympiadType.NON_CLASSED;
 	}
 	
 	@Override
@@ -27,7 +26,7 @@ public class OlympiadGameNonClassed extends OlympiadGameNormal
 	}
 	
 	@Override
-	protected final int[][] getReward()
+	protected final IntIntHolder[] getReward()
 	{
 		return Config.ALT_OLY_NONCLASSED_REWARD;
 	}

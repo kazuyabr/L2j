@@ -3,14 +3,15 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.enums.skills.AbnormalEffect;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.model.actor.instance.Chest;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.Earthquake;
 import net.sf.l2j.gameserver.network.serverpackets.ExRedSky;
@@ -19,10 +20,8 @@ import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SSQInfo;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
-import net.sf.l2j.gameserver.network.serverpackets.StopMove;
 import net.sf.l2j.gameserver.network.serverpackets.SunRise;
 import net.sf.l2j.gameserver.network.serverpackets.SunSet;
-import net.sf.l2j.gameserver.util.Broadcast;
 
 /**
  * This class handles following admin commands:
@@ -45,6 +44,8 @@ public class AdminEffects implements IAdminCommandHandler
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_hide",
+		"admin_invul",
+		"admin_undying",
 		"admin_earthquake",
 		"admin_earthquake_menu",
 		"admin_gmspeed",
@@ -89,6 +90,40 @@ public class AdminEffects implements IAdminCommandHandler
 				activeChar.getAppearance().setVisible();
 				activeChar.broadcastUserInfo();
 			}
+		}
+		else if (command.equals("admin_invul"))
+		{
+			WorldObject object = activeChar.getTarget();
+			if (object == null)
+				object = activeChar;
+			
+			if (!(object instanceof Creature))
+			{
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+				return false;
+			}
+			
+			final Creature target = (Creature) object;
+			target.setIsInvul(!target.isInvul());
+			
+			activeChar.sendMessage(target.getName() + ((target.isInvul()) ? " is now invulnerable." : " is now vulnerable."));
+		}
+		else if (command.equals("admin_undying"))
+		{
+			WorldObject object = activeChar.getTarget();
+			if (object == null)
+				object = activeChar;
+			
+			if (!(object instanceof Creature))
+			{
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+				return false;
+			}
+			
+			final Creature target = (Creature) object;
+			target.setIsMortal(!target.isMortal());
+			
+			activeChar.sendMessage(target.getName() + ((!target.isMortal()) ? " is now immortal." : " is now mortal."));
 		}
 		else if (command.startsWith("admin_earthquake"))
 		{
@@ -137,7 +172,7 @@ public class AdminEffects implements IAdminCommandHandler
 				}
 				
 				if (packet != null)
-					Broadcast.toAllOnlinePlayers(packet);
+					World.toAllOnlinePlayers(packet);
 			}
 			catch (Exception ex)
 			{
@@ -167,48 +202,49 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			for (Player player : activeChar.getKnownType(Player.class))
 			{
-				if (!player.isGM())
-				{
-					player.startAbnormalEffect(0x0800);
-					player.setIsParalyzed(true);
-					player.broadcastPacket(new StopMove(player));
-				}
+				if (player.isGM())
+					continue;
+				
+				player.startAbnormalEffect(AbnormalEffect.HOLD_2);
+				player.setIsParalyzed(true);
+				player.startParalyze();
 			}
 		}
 		else if (command.startsWith("admin_unpara_all"))
 		{
 			for (Player player : activeChar.getKnownType(Player.class))
 			{
-				player.stopAbnormalEffect(0x0800);
+				player.stopAbnormalEffect(AbnormalEffect.HOLD_2);
 				player.setIsParalyzed(false);
 			}
 		}
 		else if (command.startsWith("admin_para"))
 		{
 			final WorldObject target = activeChar.getTarget();
-			if (target instanceof Creature)
+			if (!(target instanceof Creature))
 			{
-				final Creature player = (Creature) target;
-				
-				player.startAbnormalEffect(0x0800);
-				player.setIsParalyzed(true);
-				player.broadcastPacket(new StopMove(player));
-			}
-			else
 				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+				return false;
+			}
+			
+			final Creature creature = (Creature) target;
+			creature.startAbnormalEffect(AbnormalEffect.HOLD_2);
+			creature.setIsParalyzed(true);
+			creature.startParalyze();
 		}
 		else if (command.startsWith("admin_unpara"))
 		{
 			final WorldObject target = activeChar.getTarget();
-			if (target instanceof Creature)
+			if (!(target instanceof Creature))
 			{
-				final Creature player = (Creature) target;
-				
-				player.stopAbnormalEffect(0x0800);
-				player.setIsParalyzed(false);
-			}
-			else
 				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+				return false;
+			}
+			
+			final Creature creature = (Creature) target;
+			creature.stopAbnormalEffect(AbnormalEffect.HOLD_2);
+			creature.setIsParalyzed(false);
+			creature.stopParalyze();
 		}
 		else if (command.startsWith("admin_gmspeed"))
 		{

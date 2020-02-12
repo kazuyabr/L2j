@@ -1,9 +1,5 @@
 package net.sf.l2j.commons.mmocore;
 
-/**
- * @author Forsaiken
- * @param <E>
- */
 public final class NioNetStackList<E>
 {
 	private final NioNetStackNode _start = new NioNetStackNode();

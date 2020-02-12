@@ -2,11 +2,11 @@ package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.SealType;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 public class HuntingGroundsTeleport extends Quest
@@ -63,12 +63,12 @@ public class HuntingGroundsTeleport extends Quest
 	@Override
 	public String onTalk(Npc npc, Player player)
 	{
-		final CabalType playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
+		final CabalType playerCabal = SevenSignsManager.getInstance().getPlayerCabal(player.getObjectId());
 		if (playerCabal == CabalType.NORMAL)
 			return ArraysUtil.contains(DAWN_NPCS, npc.getNpcId()) ? "dawn_tele-no.htm" : "dusk_tele-no.htm";
 		
 		String htmltext = "";
-		final boolean check = SevenSigns.getInstance().isSealValidationPeriod() && playerCabal == SevenSigns.getInstance().getSealOwner(SealType.GNOSIS) && SevenSigns.getInstance().getPlayerSeal(player.getObjectId()) == SealType.GNOSIS;
+		final boolean check = SevenSignsManager.getInstance().isSealValidationPeriod() && playerCabal == SevenSignsManager.getInstance().getSealOwner(SealType.GNOSIS) && SevenSignsManager.getInstance().getPlayerSeal(player.getObjectId()) == SealType.GNOSIS;
 		
 		switch (npc.getNpcId())
 		{

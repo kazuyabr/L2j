@@ -1,9 +1,10 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.SealType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -29,7 +30,7 @@ public class WyvernManagerNpc extends CastleChamberlain
 	@Override
 	public void onBypassFeedback(Player player, String command)
 	{
-		if (player.getCurrentFolkNPC() == null || player.getCurrentFolkNPC().getObjectId() != getObjectId())
+		if (player.getCurrentFolk() == null || player.getCurrentFolk().getObjectId() != getObjectId())
 			return;
 		
 		if (command.startsWith("RideWyvern"))
@@ -38,7 +39,7 @@ public class WyvernManagerNpc extends CastleChamberlain
 			if (player.isClanLeader())
 			{
 				// Verify if Dusk own Seal of Strife (if true, CLs can't mount wyvern).
-				if (SevenSigns.getInstance().getSealOwner(SealType.STRIFE) == CabalType.DUSK)
+				if (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE) == CabalType.DUSK)
 					val = "3";
 				// If player is mounted on a strider
 				else if (player.isMounted() && (player.getMountNpcId() == 12526 || player.getMountNpcId() == 12527 || player.getMountNpcId() == 12528))
@@ -50,7 +51,7 @@ public class WyvernManagerNpc extends CastleChamberlain
 					else if (player.destroyItemByItemId("Wyvern", 1460, Config.WYVERN_REQUIRED_CRYSTALS, player, true))
 					{
 						player.dismount();
-						if (player.mount(12621, 0, true))
+						if (player.mount(12621, 0))
 							val = "4";
 					}
 					else

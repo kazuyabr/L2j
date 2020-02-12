@@ -1,13 +1,14 @@
 package net.sf.l2j.gameserver.scripting.scripts.ai.individual;
 
-import net.sf.l2j.gameserver.data.SpawnTable;
-import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.data.sql.SpawnTable;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.scripting.EventType;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
 
 /**
@@ -92,7 +93,7 @@ public class Gordon extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(GORDON, EventType.ON_KILL, EventType.ON_SPAWN);
+		addEventIds(GORDON, ScriptEventType.ON_KILL, ScriptEventType.ON_SPAWN);
 	}
 	
 	@Override
@@ -101,7 +102,7 @@ public class Gordon extends L2AttackableAIScript
 		if (event.equalsIgnoreCase("ai_loop"))
 		{
 			// Doesn't bother about task AI if the NPC is already fighting.
-			if (npc.getAI().getIntention() == CtrlIntention.ATTACK || npc.getAI().getIntention() == CtrlIntention.CAST)
+			if (npc.getAI().getDesire().getIntention() == IntentionType.ATTACK || npc.getAI().getDesire().getIntention() == IntentionType.CAST)
 				return null;
 			
 			// Check if player have Cursed Weapon and is in radius.
@@ -124,12 +125,12 @@ public class Gordon extends L2AttackableAIScript
 					_currentNode = 0;
 				
 				npc.setWalking();
-				npc.getAI().setIntention(CtrlIntention.MOVE_TO, LOCS[_currentNode]);
+				npc.getAI().setIntention(IntentionType.MOVE_TO, LOCS[_currentNode]);
 			}
 			else if (!npc.isMoving())
 			{
 				npc.setWalking();
-				npc.getAI().setIntention(CtrlIntention.MOVE_TO, LOCS[_currentNode]);
+				npc.getAI().setIntention(IntentionType.MOVE_TO, LOCS[_currentNode]);
 			}
 		}
 		return super.onAdvEvent(event, npc, player);
@@ -148,16 +149,16 @@ public class Gordon extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		cancelQuestTimer("ai_loop", npc, null);
 		
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 	
 	private static Npc findSpawn(int npcId)
 	{
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
+		for (L2Spawn spawn : SpawnTable.getInstance().getSpawns())
 		{
 			if (spawn.getNpcId() == npcId)
 				return spawn.getNpc();

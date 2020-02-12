@@ -1,22 +1,21 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.model.item.ArmorSet;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores {@link ArmorSet}s, the key being the chest item id.
  */
-public class ArmorSetData extends XMLDocument
+public class ArmorSetData implements IXmlReader
 {
 	private final Map<Integer, ArmorSet> _armorSets = new HashMap<>();
 	
@@ -26,35 +25,20 @@ public class ArmorSetData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/armorSets.xml");
-		LOG.info("Loaded " + _armorSets.size() + " armor sets.");
+		parseFile("./data/xml/armorSets.xml");
+		LOGGER.info("Loaded {} armor sets.", _armorSets.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "armorset", armorsetNode ->
 		{
-			if (!"armorset".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			// Parse and feed content.
-			parseAndFeed(o.getAttributes(), set);
-			
-			// Feed the map with new data.
+			final StatsSet set = parseAttributes(armorsetNode);
 			_armorSets.put(set.getInteger("chest"), new ArmorSet(set));
-			
-			// Clear the StatsSet.
-			set.clear();
-		}
+		}));
 	}
 	
 	public ArmorSet getSet(int chestId)

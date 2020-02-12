@@ -1,22 +1,22 @@
 package net.sf.l2j.gameserver.model.actor;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.skills.L2EffectFlag;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
+import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
-import net.sf.l2j.gameserver.model.WorldRegion;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.stat.PlayableStat;
 import net.sf.l2j.gameserver.model.actor.status.PlayableStatus;
 import net.sf.l2j.gameserver.model.actor.template.CreatureTemplate;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.Revive;
 import net.sf.l2j.gameserver.scripting.QuestState;
-import net.sf.l2j.gameserver.templates.skills.L2EffectFlag;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * This class represents all Playable characters in the world.<BR>
@@ -74,7 +74,12 @@ public abstract class Playable extends Creature
 		if (player.getTarget() != this)
 			player.setTarget(this);
 		else
-			player.sendPacket(ActionFailed.STATIC_PACKET);
+		{
+			if (isAutoAttackable(player) && player.isInsideRadius(this, player.getPhysicalAttackRange(), false, false) && GeoEngine.getInstance().canSeeTarget(player, this))
+				player.getAI().setIntention(IntentionType.ATTACK, this);
+			else
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+		}
 	}
 	
 	@Override
@@ -126,11 +131,7 @@ public abstract class Playable extends Creature
 		broadcastStatusUpdate();
 		
 		// Notify Creature AI
-		getAI().notifyEvent(CtrlEvent.EVT_DEAD);
-		
-		final WorldRegion region = getRegion();
-		if (region != null)
-			region.onDeath(this);
+		getAI().notifyEvent(AiEventType.DEAD);
 		
 		// Notify Quest of L2Playable's death
 		final Player actingPlayer = getActingPlayer();
@@ -167,10 +168,6 @@ public abstract class Playable extends Creature
 		
 		// Start broadcast status
 		broadcastPacket(new Revive(this));
-		
-		final WorldRegion region = getRegion();
-		if (region != null)
-			region.onRevive(this);
 	}
 	
 	public boolean checkIfPvP(Playable target)

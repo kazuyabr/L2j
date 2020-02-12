@@ -1,9 +1,5 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-/**
- * Format: (ch) ddd b
- * @author -Wooden-
- */
 public class ExPledgeCrestLarge extends L2GameServerPacket
 {
 	private final int _crestId;
@@ -23,8 +19,13 @@ public class ExPledgeCrestLarge extends L2GameServerPacket
 		
 		writeD(0x00); // ???
 		writeD(_crestId);
-		writeD(_data.length);
 		
-		writeB(_data);
+		if (_data.length > 0)
+		{
+			writeD(_data.length);
+			writeB(_data);
+		}
+		else
+			writeD(0x00);
 	}
 }

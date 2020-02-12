@@ -1,13 +1,14 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.SiegeSide;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.ai.type.CreatureAI;
 import net.sf.l2j.gameserver.model.actor.ai.type.SiegeGuardAI;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.MoveToPawn;
 
@@ -38,14 +39,10 @@ public final class SiegeGuard extends Attackable
 		return ai;
 	}
 	
-	/**
-	 * Return True if a siege is in progress and the Creature attacker isn't a Defender.
-	 * @param attacker The Creature that the L2SiegeGuardInstance try to attack
-	 */
 	@Override
 	public boolean isAutoAttackable(Creature attacker)
 	{
-		// Attackable during siege by all except defenders
+		// Attackable during siege by all, except defenders.
 		return (attacker != null && attacker.getActingPlayer() != null && getCastle() != null && getCastle().getSiege().isInProgress() && !getCastle().getSiege().checkSides(attacker.getActingPlayer().getClan(), SiegeSide.DEFENDER, SiegeSide.OWNER));
 	}
 	
@@ -69,15 +66,19 @@ public final class SiegeGuard extends Attackable
 			if (isAutoAttackable(player))
 			{
 				if (!isAlikeDead() && (Math.abs(player.getZ() - getZ()) < 600)) // this max heigth difference might need some tweaking
-					player.getAI().setIntention(CtrlIntention.ATTACK, this);
+					player.getAI().setIntention(IntentionType.ATTACK, this);
 			}
 			else
 			{
 				// Notify the Player AI with INTERACT
 				if (!canInteract(player))
-					player.getAI().setIntention(CtrlIntention.INTERACT, this);
+					player.getAI().setIntention(IntentionType.INTERACT, this);
 				else
 				{
+					// Stop moving if we're already in interact range.
+					if (player.isMoving() || player.isInCombat())
+						player.getAI().setIntention(IntentionType.IDLE);
+					
 					// Rotate the player to face the instance
 					player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 					
@@ -91,11 +92,19 @@ public final class SiegeGuard extends Attackable
 	@Override
 	public void addDamageHate(Creature attacker, int damage, int aggro)
 	{
-		if (attacker == null)
+		// Can't add friendly Guard as attacker.
+		if (attacker instanceof SiegeGuard)
 			return;
 		
-		if (!(attacker instanceof SiegeGuard))
-			super.addDamageHate(attacker, damage, aggro);
+		super.addDamageHate(attacker, damage, aggro);
+	}
+	
+	@Override
+	public void reduceHate(Creature target, int amount)
+	{
+		stopHating(target);
+		setTarget(null);
+		getAI().setIntention(IntentionType.ACTIVE);
 	}
 	
 	@Override

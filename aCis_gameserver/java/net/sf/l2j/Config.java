@@ -2,7 +2,6 @@ package net.sf.l2j;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -12,21 +11,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import net.sf.l2j.commons.config.ExProperties;
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.math.MathUtil;
 
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 
 /**
  * This class contains global server configuration.<br>
- * It has static final fields initialized from configuration files.<br>
- * @author mkizub
+ * It has static final fields initialized from configuration files.
  */
 public final class Config
 {
-	private static final Logger _log = Logger.getLogger(Config.class.getName());
+	private static final CLogger LOGGER = new CLogger(Config.class.getName());
 	
 	public static final String CLANS_FILE = "./config/clans.properties";
 	public static final String EVENTS_FILE = "./config/events.properties";
@@ -54,7 +52,6 @@ public final class Config
 	public static int ALT_CLAN_MEMBERS_FOR_WAR;
 	public static int ALT_CLAN_WAR_PENALTY_WHEN_ENDED;
 	public static boolean ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH;
-	public static boolean REMOVE_CASTLE_CIRCLETS;
 	
 	/** Manor */
 	public static int ALT_MANOR_REFRESH_TIME;
@@ -135,8 +132,8 @@ public final class Config
 	public static int ALT_OLY_MIN_MATCHES;
 	public static int ALT_OLY_CLASSED;
 	public static int ALT_OLY_NONCLASSED;
-	public static int[][] ALT_OLY_CLASSED_REWARD;
-	public static int[][] ALT_OLY_NONCLASSED_REWARD;
+	public static IntIntHolder[] ALT_OLY_CLASSED_REWARD;
+	public static IntIntHolder[] ALT_OLY_NONCLASSED_REWARD;
 	public static int ALT_OLY_GP_PER_POINT;
 	public static int ALT_OLY_HERO_POINTS;
 	public static int ALT_OLY_RANK1_POINTS;
@@ -164,9 +161,8 @@ public final class Config
 	public static long ALT_FESTIVAL_CHEST_SPAWN;
 	
 	/** Four Sepulchers */
-	public static int FS_TIME_ATTACK;
 	public static int FS_TIME_ENTRY;
-	public static int FS_TIME_WARMUP;
+	public static int FS_TIME_END;
 	public static int FS_PARTY_MEMBER_COUNT;
 	
 	/** dimensional rift */
@@ -212,14 +208,12 @@ public final class Config
 	
 	/** Geodata */
 	public static String GEODATA_PATH;
-	public static int COORD_SYNCHRONIZE;
 	
 	/** Path checking */
 	public static int PART_OF_CHARACTER_HEIGHT;
 	public static int MAX_OBSTACLE_HEIGHT;
 	
 	/** Path finding */
-	public static boolean PATHFINDING;
 	public static String PATHFIND_BUFFERS;
 	public static int BASE_WEIGHT;
 	public static int DIAGONAL_WEIGHT;
@@ -300,12 +294,9 @@ public final class Config
 	public static double RAID_HP_REGEN_MULTIPLIER;
 	public static double RAID_MP_REGEN_MULTIPLIER;
 	public static double RAID_DEFENCE_MULTIPLIER;
-	public static double RAID_MINION_RESPAWN_TIMER;
+	public static int RAID_MINION_RESPAWN_TIMER;
 	
 	public static boolean RAID_DISABLE_CURSE;
-	public static int RAID_CHAOS_TIME;
-	public static int GRAND_CHAOS_TIME;
-	public static int MINION_CHAOS_TIME;
 	
 	/** Grand Boss */
 	public static int SPAWN_INTERVAL_AQ;
@@ -448,18 +439,17 @@ public final class Config
 	
 	/** Skills & Classes **/
 	public static boolean AUTO_LEARN_SKILLS;
-	public static boolean ALT_GAME_MAGICFAILURES;
-	public static boolean ALT_GAME_SHIELD_BLOCKS;
-	public static int ALT_PERFECT_SHLD_BLOCK;
+	public static boolean MAGIC_FAILURES;
+	public static int PERFECT_SHIELD_BLOCK_RATE;
 	public static boolean LIFE_CRYSTAL_NEEDED;
 	public static boolean SP_BOOK_NEEDED;
 	public static boolean ES_SP_BOOK_NEEDED;
 	public static boolean DIVINE_SP_BOOK_NEEDED;
-	public static boolean ALT_GAME_SUBCLASS_WITHOUT_QUESTS;
+	public static boolean SUBCLASS_WITHOUT_QUESTS;
 	
 	/** Buffs */
 	public static boolean STORE_SKILL_COOLTIME;
-	public static int BUFFS_MAX_AMOUNT;
+	public static int MAX_BUFFS_AMOUNT;
 	
 	// --------------------------------------------------
 	// Sieges
@@ -500,8 +490,6 @@ public final class Config
 	/** clients related */
 	public static int DELETE_DAYS;
 	public static int MAXIMUM_ONLINE_USERS;
-	public static int MIN_PROTOCOL_REVISION;
-	public static int MAX_PROTOCOL_REVISION;
 	
 	/** Auto-loot */
 	public static boolean AUTO_LOOT;
@@ -523,7 +511,6 @@ public final class Config
 	public static double RATE_PARTY_XP;
 	public static double RATE_PARTY_SP;
 	public static double RATE_DROP_ADENA;
-	public static double RATE_CONSUMABLE_COST;
 	public static double RATE_DROP_ITEMS;
 	public static double RATE_DROP_ITEMS_BY_RAID;
 	public static double RATE_DROP_SPOIL;
@@ -574,9 +561,9 @@ public final class Config
 	
 	/** Debug & Dev */
 	public static boolean ALT_DEV_NO_SPAWNS;
-	public static boolean DEBUG;
 	public static boolean DEVELOPER;
 	public static boolean PACKET_HANDLER_DEBUG;
+	public static int DEBUG_MOVEMENT;
 	
 	/** Deadlock Detector */
 	public static boolean DEADLOCK_DETECTOR;
@@ -634,8 +621,8 @@ public final class Config
 	public static int MMO_HELPER_BUFFER_COUNT = 20; // default 20
 	
 	/** Client Packets Queue settings */
-	public static int CLIENT_PACKET_QUEUE_SIZE = 14; // default MMO_MAX_READ_PER_PASS + 2
-	public static int CLIENT_PACKET_QUEUE_MAX_BURST_SIZE = 13; // default MMO_MAX_READ_PER_PASS + 1
+	public static int CLIENT_PACKET_QUEUE_SIZE = MMO_MAX_READ_PER_PASS + 2; // default MMO_MAX_READ_PER_PASS + 2
+	public static int CLIENT_PACKET_QUEUE_MAX_BURST_SIZE = MMO_MAX_READ_PER_PASS + 1; // default MMO_MAX_READ_PER_PASS + 1
 	public static int CLIENT_PACKET_QUEUE_MAX_PACKETS_PER_SECOND = 160; // default 160
 	public static int CLIENT_PACKET_QUEUE_MEASURE_INTERVAL = 5; // default 5
 	public static int CLIENT_PACKET_QUEUE_MAX_AVERAGE_PACKETS_PER_SECOND = 80; // default 80
@@ -659,59 +646,11 @@ public final class Config
 		{
 			result.load(new File(filename));
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			_log.warning("Config: Error loading \"" + filename + "\" config.");
+			LOGGER.error("An error occured loading '{}' config.", e, filename);
 		}
 		
-		return result;
-	}
-	
-	/**
-	 * itemId1,itemNumber1;itemId2,itemNumber2... to the int[n][2] = [itemId1][itemNumber1],[itemId2][itemNumber2]...
-	 * @param line
-	 * @return an array consisting of parsed items.
-	 */
-	private static final int[][] parseItemsList(String line)
-	{
-		final String[] propertySplit = line.split(";");
-		if (propertySplit.length == 0)
-			return null;
-		
-		int i = 0;
-		String[] valueSplit;
-		final int[][] result = new int[propertySplit.length][];
-		for (String value : propertySplit)
-		{
-			valueSplit = value.split(",");
-			if (valueSplit.length != 2)
-			{
-				_log.warning("Config: Error parsing entry -> \"" + valueSplit[0] + "\", should be itemId,itemNumber");
-				return null;
-			}
-			
-			result[i] = new int[2];
-			try
-			{
-				result[i][0] = Integer.parseInt(valueSplit[0]);
-			}
-			catch (NumberFormatException e)
-			{
-				_log.warning("Config: Error parsing item ID -> \"" + valueSplit[0] + "\"");
-				return null;
-			}
-			
-			try
-			{
-				result[i][1] = Integer.parseInt(valueSplit[1]);
-			}
-			catch (NumberFormatException e)
-			{
-				_log.warning("Config: Error parsing item amount -> \"" + valueSplit[1] + "\"");
-				return null;
-			}
-			i++;
-		}
 		return result;
 	}
 	
@@ -732,7 +671,6 @@ public final class Config
 		ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED = clans.getProperty("DaysBeforeAcceptNewClanWhenDismissed", 1);
 		ALT_CREATE_ALLY_DAYS_WHEN_DISSOLVED = clans.getProperty("DaysBeforeCreateNewAllyWhenDissolved", 10);
 		ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH = clans.getProperty("AltMembersCanWithdrawFromClanWH", false);
-		REMOVE_CASTLE_CIRCLETS = clans.getProperty("RemoveCastleCirclets", true);
 		
 		ALT_MANOR_REFRESH_TIME = clans.getProperty("AltManorRefreshTime", 20);
 		ALT_MANOR_REFRESH_MIN = clans.getProperty("AltManorRefreshMin", 0);
@@ -814,8 +752,8 @@ public final class Config
 		ALT_OLY_MIN_MATCHES = events.getProperty("AltOlyMinMatchesToBeClassed", 5);
 		ALT_OLY_CLASSED = events.getProperty("AltOlyClassedParticipants", 5);
 		ALT_OLY_NONCLASSED = events.getProperty("AltOlyNonClassedParticipants", 9);
-		ALT_OLY_CLASSED_REWARD = parseItemsList(events.getProperty("AltOlyClassedReward", "6651,50"));
-		ALT_OLY_NONCLASSED_REWARD = parseItemsList(events.getProperty("AltOlyNonClassedReward", "6651,30"));
+		ALT_OLY_CLASSED_REWARD = events.parseIntIntList("AltOlyClassedReward", "6651-50");
+		ALT_OLY_NONCLASSED_REWARD = events.parseIntIntList("AltOlyNonClassedReward", "6651-30");
 		ALT_OLY_GP_PER_POINT = events.getProperty("AltOlyGPPerPoint", 1000);
 		ALT_OLY_HERO_POINTS = events.getProperty("AltOlyHeroPoints", 300);
 		ALT_OLY_RANK1_POINTS = events.getProperty("AltOlyRank1Points", 100);
@@ -825,7 +763,7 @@ public final class Config
 		ALT_OLY_RANK5_POINTS = events.getProperty("AltOlyRank5Points", 30);
 		ALT_OLY_MAX_POINTS = events.getProperty("AltOlyMaxPoints", 10);
 		ALT_OLY_DIVIDER_CLASSED = events.getProperty("AltOlyDividerClassed", 3);
-		ALT_OLY_DIVIDER_NON_CLASSED = events.getProperty("AltOlyDividerNonClassed", 3);
+		ALT_OLY_DIVIDER_NON_CLASSED = events.getProperty("AltOlyDividerNonClassed", 5);
 		ALT_OLY_ANNOUNCE_GAMES = events.getProperty("AltOlyAnnounceGames", true);
 		
 		ALT_GAME_CASTLE_DAWN = events.getProperty("AltCastleForDawn", true);
@@ -841,10 +779,9 @@ public final class Config
 		ALT_FESTIVAL_SECOND_SWARM = events.getProperty("AltFestivalSecondSwarm", 720000);
 		ALT_FESTIVAL_CHEST_SPAWN = events.getProperty("AltFestivalChestSpawn", 900000);
 		
-		FS_TIME_ATTACK = events.getProperty("TimeOfAttack", 50);
-		FS_TIME_ENTRY = events.getProperty("TimeOfEntry", 3);
-		FS_TIME_WARMUP = events.getProperty("TimeOfWarmUp", 2);
-		FS_PARTY_MEMBER_COUNT = MathUtil.limit(events.getProperty("NumberOfNecessaryPartyMembers", 4), 2, 9);
+		FS_TIME_ENTRY = events.getProperty("EntryTime", 55);
+		FS_TIME_END = events.getProperty("EndTime", 50);
+		FS_PARTY_MEMBER_COUNT = MathUtil.limit(events.getProperty("NeededPartyMembers", 4), 2, 9);
 		
 		RIFT_MIN_PARTY_SIZE = events.getProperty("RiftMinPartySize", 2);
 		RIFT_MAX_JUMPS = events.getProperty("MaxRiftJumps", 4);
@@ -887,12 +824,10 @@ public final class Config
 	{
 		final ExProperties geoengine = initProperties(GEOENGINE_FILE);
 		GEODATA_PATH = geoengine.getProperty("GeoDataPath", "./data/geodata/");
-		COORD_SYNCHRONIZE = geoengine.getProperty("CoordSynchronize", -1);
 		
 		PART_OF_CHARACTER_HEIGHT = geoengine.getProperty("PartOfCharacterHeight", 75);
 		MAX_OBSTACLE_HEIGHT = geoengine.getProperty("MaxObstacleHeight", 32);
 		
-		PATHFINDING = geoengine.getProperty("PathFinding", true);
 		PATHFIND_BUFFERS = geoengine.getProperty("PathFindBuffers", "100x6;128x6;192x6;256x4;320x4;384x4;500x2");
 		BASE_WEIGHT = geoengine.getProperty("BaseWeight", 10);
 		DIAGONAL_WEIGHT = geoengine.getProperty("DiagonalWeight", 14);
@@ -933,20 +868,21 @@ public final class Config
 	{
 		try
 		{
-			Properties hexSetting = new Properties();
-			File file = new File(filename);
+			final File file = new File(filename);
 			file.createNewFile();
 			
-			OutputStream out = new FileOutputStream(file);
+			final Properties hexSetting = new Properties();
 			hexSetting.setProperty("ServerID", String.valueOf(serverId));
 			hexSetting.setProperty("HexID", hexId);
-			hexSetting.store(out, "the hexID to auth into login");
-			out.close();
+			
+			try (OutputStream out = new FileOutputStream(file))
+			{
+				hexSetting.store(out, "the hexID to auth into login");
+			}
 		}
 		catch (Exception e)
 		{
-			_log.warning("Config: Failed to save hex ID to \"" + filename + "\" file.");
-			e.printStackTrace();
+			LOGGER.error("Failed to save hex ID to '{}' file.", e, filename);
 		}
 	}
 	
@@ -994,9 +930,6 @@ public final class Config
 		RAID_MINION_RESPAWN_TIMER = npcs.getProperty("RaidMinionRespawnTime", 300000);
 		
 		RAID_DISABLE_CURSE = npcs.getProperty("DisableRaidCurse", false);
-		RAID_CHAOS_TIME = npcs.getProperty("RaidChaosTime", 30);
-		GRAND_CHAOS_TIME = npcs.getProperty("GrandChaosTime", 30);
-		MINION_CHAOS_TIME = npcs.getProperty("MinionChaosTime", 30);
 		
 		SPAWN_INTERVAL_AQ = npcs.getProperty("AntQueenSpawnInterval", 36);
 		RANDOM_SPAWN_TIME_AQ = npcs.getProperty("AntQueenRandomSpawn", 17);
@@ -1143,16 +1076,15 @@ public final class Config
 		ALT_BLACKSMITH_USE_RECIPES = players.getProperty("AltBlacksmithUseRecipes", true);
 		
 		AUTO_LEARN_SKILLS = players.getProperty("AutoLearnSkills", false);
-		ALT_GAME_MAGICFAILURES = players.getProperty("MagicFailures", true);
-		ALT_GAME_SHIELD_BLOCKS = players.getProperty("AltShieldBlocks", false);
-		ALT_PERFECT_SHLD_BLOCK = players.getProperty("AltPerfectShieldBlockRate", 10);
+		MAGIC_FAILURES = players.getProperty("MagicFailures", true);
+		PERFECT_SHIELD_BLOCK_RATE = players.getProperty("PerfectShieldBlockRate", 5);
 		LIFE_CRYSTAL_NEEDED = players.getProperty("LifeCrystalNeeded", true);
 		SP_BOOK_NEEDED = players.getProperty("SpBookNeeded", true);
 		ES_SP_BOOK_NEEDED = players.getProperty("EnchantSkillSpBookNeeded", true);
 		DIVINE_SP_BOOK_NEEDED = players.getProperty("DivineInspirationSpBookNeeded", true);
-		ALT_GAME_SUBCLASS_WITHOUT_QUESTS = players.getProperty("AltSubClassWithoutQuests", false);
+		SUBCLASS_WITHOUT_QUESTS = players.getProperty("SubClassWithoutQuests", false);
 		
-		BUFFS_MAX_AMOUNT = players.getProperty("MaxBuffsAmount", 20);
+		MAX_BUFFS_AMOUNT = players.getProperty("MaxBuffsAmount", 20);
 		STORE_SKILL_COOLTIME = players.getProperty("StoreSkillCooltime", true);
 	}
 	
@@ -1189,7 +1121,7 @@ public final class Config
 		REQUEST_ID = server.getProperty("RequestServerID", 0);
 		ACCEPT_ALTERNATE_ID = server.getProperty("AcceptAlternateID", true);
 		
-		DATABASE_URL = server.getProperty("URL", "jdbc:mysql://localhost/acis");
+		DATABASE_URL = server.getProperty("URL", "jdbc:mysql://localhost/acis?serverTimezone=UTC");
 		DATABASE_LOGIN = server.getProperty("Login", "root");
 		DATABASE_PASSWORD = server.getProperty("Password", "");
 		DATABASE_MAX_CONNECTIONS = server.getProperty("MaximumDbConnections", 10);
@@ -1203,10 +1135,6 @@ public final class Config
 		
 		DELETE_DAYS = server.getProperty("DeleteCharAfterDays", 7);
 		MAXIMUM_ONLINE_USERS = server.getProperty("MaximumOnlineUsers", 100);
-		MIN_PROTOCOL_REVISION = server.getProperty("MinProtocolRevision", 730);
-		MAX_PROTOCOL_REVISION = server.getProperty("MaxProtocolRevision", 746);
-		if (MIN_PROTOCOL_REVISION > MAX_PROTOCOL_REVISION)
-			throw new Error("MinProtocolRevision is bigger than MaxProtocolRevision in server.properties.");
 		
 		AUTO_LOOT = server.getProperty("AutoLoot", false);
 		AUTO_LOOT_HERBS = server.getProperty("AutoLootHerbs", false);
@@ -1234,7 +1162,6 @@ public final class Config
 		RATE_PARTY_XP = server.getProperty("RatePartyXp", 1.);
 		RATE_PARTY_SP = server.getProperty("RatePartySp", 1.);
 		RATE_DROP_ADENA = server.getProperty("RateDropAdena", 1.);
-		RATE_CONSUMABLE_COST = server.getProperty("RateConsumableCost", 1.);
 		RATE_DROP_ITEMS = server.getProperty("RateDropItems", 1.);
 		RATE_DROP_ITEMS_BY_RAID = server.getProperty("RateRaidDropItems", 1.);
 		RATE_DROP_SPOIL = server.getProperty("RateDropSpoil", 1.);
@@ -1278,9 +1205,9 @@ public final class Config
 		ENABLE_FALLING_DAMAGE = server.getProperty("EnableFallingDamage", true);
 		
 		ALT_DEV_NO_SPAWNS = server.getProperty("NoSpawns", false);
-		DEBUG = server.getProperty("Debug", false);
 		DEVELOPER = server.getProperty("Developer", false);
 		PACKET_HANDLER_DEBUG = server.getProperty("PacketHandlerDebug", false);
+		DEBUG_MOVEMENT = server.getProperty("DebugMovement", 0) * 1000;
 		
 		DEADLOCK_DETECTOR = server.getProperty("DeadLockDetector", false);
 		DEADLOCK_CHECK_INTERVAL = server.getProperty("DeadLockCheckInterval", 20);
@@ -1339,7 +1266,7 @@ public final class Config
 		
 		SHOW_LICENCE = server.getProperty("ShowLicence", true);
 		
-		DATABASE_URL = server.getProperty("URL", "jdbc:mysql://localhost/acis");
+		DATABASE_URL = server.getProperty("URL", "jdbc:mysql://localhost/acis?serverTimezone=UTC");
 		DATABASE_LOGIN = server.getProperty("Login", "root");
 		DATABASE_PASSWORD = server.getProperty("Password", "");
 		DATABASE_MAX_CONNECTIONS = server.getProperty("MaximumDbConnections", 10);
@@ -1353,15 +1280,11 @@ public final class Config
 		NORMAL_CONNECTION_TIME = server.getProperty("NormalConnectionTime", 700);
 		FAST_CONNECTION_TIME = server.getProperty("FastConnectionTime", 350);
 		MAX_CONNECTION_PER_IP = server.getProperty("MaxConnectionPerIP", 50);
-		
-		DEBUG = server.getProperty("Debug", false);
-		DEVELOPER = server.getProperty("Developer", false);
-		PACKET_HANDLER_DEBUG = server.getProperty("PacketHandlerDebug", false);
 	}
 	
 	public static final void loadGameServer()
 	{
-		_log.info("Loading gameserver configuration files.");
+		LOGGER.info("Loading gameserver configuration files.");
 		
 		// clans settings
 		loadClans();
@@ -1390,7 +1313,7 @@ public final class Config
 	
 	public static final void loadLoginServer()
 	{
-		_log.info("Loading loginserver configuration files.");
+		LOGGER.info("Loading loginserver configuration files.");
 		
 		// login settings
 		loadLogin();
@@ -1398,7 +1321,7 @@ public final class Config
 	
 	public static final void loadAccountManager()
 	{
-		_log.info("Loading account manager configuration files.");
+		LOGGER.info("Loading account manager configuration files.");
 		
 		// login settings
 		loadLogin();
@@ -1406,7 +1329,7 @@ public final class Config
 	
 	public static final void loadGameServerRegistration()
 	{
-		_log.info("Loading gameserver registration configuration files.");
+		LOGGER.info("Loading gameserver registration configuration files.");
 		
 		// login settings
 		loadLogin();
@@ -1414,7 +1337,7 @@ public final class Config
 	
 	public static final void loadGeodataConverter()
 	{
-		_log.info("Loading geodata converter configuration files.");
+		LOGGER.info("Loading geodata converter configuration files.");
 		
 		// geoengine settings
 		loadGeoengine();

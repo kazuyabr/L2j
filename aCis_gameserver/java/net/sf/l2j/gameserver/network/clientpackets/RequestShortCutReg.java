@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.L2ShortCut;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.enums.ShortcutType;
+import net.sf.l2j.gameserver.model.Shortcut;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ShortCutRegister;
 
 public final class RequestShortCutReg extends L2GameClientPacket
@@ -27,36 +28,38 @@ public final class RequestShortCutReg extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		if (_page > 10 || _page < 0)
+		if (_page < 0 || _page > 10)
 			return;
 		
-		switch (_type)
+		if (_type < 1 || _type > ShortcutType.VALUES.length)
+			return;
+		
+		final ShortcutType type = ShortcutType.VALUES[_type];
+		
+		switch (type)
 		{
-			case 0x01: // item
-			case 0x03: // action
-			case 0x04: // macro
-			case 0x05: // recipe
-			{
-				final L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, -1, _characterType);
-				sendPacket(new ShortCutRegister(sc));
-				activeChar.registerShortCut(sc);
+			case ITEM:
+			case ACTION:
+			case MACRO:
+			case RECIPE:
+				Shortcut shortcut = new Shortcut(_slot, _page, type, _id, -1, _characterType);
+				sendPacket(new ShortCutRegister(shortcut));
+				player.getShortcutList().addShortcut(shortcut);
 				break;
-			}
-			case 0x02: // skill
-			{
-				int level = activeChar.getSkillLevel(_id);
+			
+			case SKILL:
+				final int level = player.getSkillLevel(_id);
 				if (level > 0)
 				{
-					final L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _characterType);
-					sendPacket(new ShortCutRegister(sc));
-					activeChar.registerShortCut(sc);
+					shortcut = new Shortcut(_slot, _page, type, _id, level, _characterType);
+					sendPacket(new ShortCutRegister(shortcut));
+					player.getShortcutList().addShortcut(shortcut);
 				}
 				break;
-			}
 		}
 	}
 }

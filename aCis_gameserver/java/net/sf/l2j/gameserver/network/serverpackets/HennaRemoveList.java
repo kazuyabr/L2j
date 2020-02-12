@@ -1,36 +1,38 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import java.util.List;
+
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.Henna;
 
 public class HennaRemoveList extends L2GameServerPacket
 {
-	private final Player _player;
+	private final int _adena;
+	private final int _emptySlots;
+	private final List<Henna> _hennas;
 	
 	public HennaRemoveList(Player player)
 	{
-		_player = player;
+		_adena = player.getAdena();
+		_emptySlots = player.getHennaList().getEmptySlotsAmount();
+		_hennas = player.getHennaList().getHennas();
 	}
 	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xe5);
-		writeD(_player.getAdena());
-		writeD(_player.getHennaEmptySlots());
-		writeD(Math.abs(_player.getHennaEmptySlots() - 3));
+		writeD(_adena);
+		writeD(_emptySlots);
+		writeD(_hennas.size());
 		
-		for (int i = 1; i <= 3; i++)
+		for (Henna henna : _hennas)
 		{
-			Henna henna = _player.getHenna(i);
-			if (henna != null)
-			{
-				writeD(henna.getSymbolId());
-				writeD(henna.getDyeId());
-				writeD(Henna.getRequiredDyeAmount() / 2);
-				writeD(henna.getPrice() / 5);
-				writeD(0x01);
-			}
+			writeD(henna.getSymbolId());
+			writeD(henna.getDyeId());
+			writeD(Henna.REMOVE_AMOUNT);
+			writeD(henna.getRemovePrice());
+			writeD(0x01);
 		}
 	}
 }

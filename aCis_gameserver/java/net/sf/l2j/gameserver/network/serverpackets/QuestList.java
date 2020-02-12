@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.List;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 

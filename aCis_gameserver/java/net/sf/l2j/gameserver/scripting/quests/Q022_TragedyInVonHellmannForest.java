@@ -1,10 +1,12 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -140,7 +142,7 @@ public class Q022_TragedyInVonHellmannForest extends Quest
 				
 				// Attack player.
 				((Attackable) _soulOfWellInstance).addDamageHate(player, 0, 99999);
-				_soulOfWellInstance.getAI().setIntention(CtrlIntention.ATTACK, player, true);
+				_soulOfWellInstance.getAI().setIntention(IntentionType.ATTACK, player, true);
 			}
 		}
 		else if (event.equalsIgnoreCase("attack_timer"))
@@ -349,25 +351,32 @@ public class Q022_TragedyInVonHellmannForest extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		QuestState st = attacker.getQuestState(qn);
-		if (st == null || !st.isStarted() || isPet)
+		final Player player = attacker.getActingPlayer();
+		
+		final QuestState st = player.getQuestState(qn);
+		if (st == null || !st.isStarted())
 			return null;
 		
-		if (getQuestTimer("attack_timer", null, attacker) != null)
+		if (attacker instanceof Summon)
+			return null;
+		
+		if (getQuestTimer("attack_timer", null, player) != null)
 			return null;
 		
 		if (st.getInt("cond") == 10)
-			startQuestTimer("attack_timer", 20000, null, attacker, false);
+			startQuestTimer("attack_timer", 20000, null, player, false);
 		
 		return null;
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		

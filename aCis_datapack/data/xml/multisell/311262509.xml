@@ -1592,4 +1592,40 @@
 		<production id="8688" count="1"/>
 		<ingredient id="8820" count="1"/>
 	</item>
+	<item>
+		<production id="7894" count="1"/>
+		<ingredient id="8147" count="1"/>
+	</item>
+	<item>
+		<production id="7894" count="1"/>
+		<ingredient id="8148" count="1"/>
+	</item>
+	<item>
+		<production id="7894" count="1"/>
+		<ingredient id="8149" count="1"/>
+	</item>
+	<item>
+		<production id="7895" count="1"/>
+		<ingredient id="8150" count="1"/>
+	</item>
+	<item>
+		<production id="7895" count="1"/>
+		<ingredient id="8151" count="1"/>
+	</item>
+	<item>
+		<production id="7895" count="1"/>
+		<ingredient id="8152" count="1"/>
+	</item>
+	<item>
+		<ingredient id="8135" count="1"/>
+		<production id="7902" count="1"/>
+	</item>	
+	<item>
+		<ingredient id="8136" count="1"/>
+		<production id="7902" count="1"/>
+	</item>
+	<item>
+		<ingredient id="8137" count="1"/>
+		<production id="7902" count="1"/>
+	</item>
 </list>

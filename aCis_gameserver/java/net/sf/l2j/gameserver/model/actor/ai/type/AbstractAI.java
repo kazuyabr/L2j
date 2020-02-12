@@ -1,18 +1,18 @@
 package net.sf.l2j.gameserver.model.actor.ai.type;
 
 import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.ai.Desire;
 import net.sf.l2j.gameserver.model.actor.ai.NextAction;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
 import net.sf.l2j.gameserver.network.serverpackets.AutoAttackStart;
@@ -26,21 +26,16 @@ import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
 
 abstract class AbstractAI
 {
-	protected static final Logger _log = Logger.getLogger(AbstractAI.class.getName());
+	private static final int FOLLOW_INTERVAL = 1000;
+	private static final int ATTACK_FOLLOW_INTERVAL = 500;
 	
-	/** The character that this AI manages */
 	protected final Creature _actor;
-	
-	/** Current long-term intention */
-	protected CtrlIntention _intention = CtrlIntention.IDLE;
-	protected Object _intentionArg0 = null;
-	protected Object _intentionArg1 = null;
+	protected final Desire _desire = new Desire();
 	
 	private NextAction _nextAction;
 	
 	/** Flags about client's state, in order to know which messages to send */
 	protected volatile boolean _clientMoving;
-	protected volatile boolean _clientAutoAttacking;
 	
 	/** Different targets this AI maintains */
 	private WorldObject _target;
@@ -54,28 +49,20 @@ abstract class AbstractAI
 	protected int _clientMovingToPawnOffset;
 	
 	protected Future<?> _followTask = null;
-	private static final int FOLLOW_INTERVAL = 1000;
-	private static final int ATTACK_FOLLOW_INTERVAL = 500;
 	
 	protected AbstractAI(Creature character)
 	{
 		_actor = character;
 	}
 	
-	/**
-	 * @return the user of this AI.
-	 */
 	public Creature getActor()
 	{
 		return _actor;
 	}
 	
-	/**
-	 * @return the current Intention.
-	 */
-	public CtrlIntention getIntention()
+	public Desire getDesire()
 	{
-		return _intention;
+		return _desire;
 	}
 	
 	/**
@@ -91,11 +78,9 @@ abstract class AbstractAI
 	 * @param arg0 The first parameter of the Intention
 	 * @param arg1 The second parameter of the Intention
 	 */
-	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
+	synchronized void changeIntention(IntentionType intention, Object arg0, Object arg1)
 	{
-		_intention = intention;
-		_intentionArg0 = arg0;
-		_intentionArg1 = arg1;
+		_desire.update(intention, arg0, arg1);
 	}
 	
 	/**
@@ -105,7 +90,7 @@ abstract class AbstractAI
 	 * <BR>
 	 * @param intention The new Intention to set to the AI
 	 */
-	public final void setIntention(CtrlIntention intention)
+	public final void setIntention(IntentionType intention)
 	{
 		setIntention(intention, null, null);
 	}
@@ -118,7 +103,7 @@ abstract class AbstractAI
 	 * @param intention The new Intention to set to the AI
 	 * @param arg0 The first parameter of the Intention (optional target)
 	 */
-	public final void setIntention(CtrlIntention intention, Object arg0)
+	public final void setIntention(IntentionType intention, Object arg0)
 	{
 		setIntention(intention, arg0, null);
 	}
@@ -132,10 +117,10 @@ abstract class AbstractAI
 	 * @param arg0 The first parameter of the Intention (optional target)
 	 * @param arg1 The second parameter of the Intention (optional target)
 	 */
-	public final void setIntention(CtrlIntention intention, Object arg0, Object arg1)
+	public final void setIntention(IntentionType intention, Object arg0, Object arg1)
 	{
 		// Stop the follow mode if necessary
-		if (intention != CtrlIntention.FOLLOW && intention != CtrlIntention.ATTACK)
+		if (intention != IntentionType.FOLLOW && intention != IntentionType.ATTACK)
 			stopFollow();
 		
 		// Launch the onIntention method of the CreatureAI corresponding to the new Intention
@@ -182,7 +167,7 @@ abstract class AbstractAI
 	 * <BR>
 	 * @param evt The event whose the AI must be notified
 	 */
-	public final void notifyEvent(CtrlEvent evt)
+	public final void notifyEvent(AiEventType evt)
 	{
 		notifyEvent(evt, null, null);
 	}
@@ -195,7 +180,7 @@ abstract class AbstractAI
 	 * @param evt The event whose the AI must be notified
 	 * @param arg0 The first parameter of the Event (optional target)
 	 */
-	public final void notifyEvent(CtrlEvent evt, Object arg0)
+	public final void notifyEvent(AiEventType evt, Object arg0)
 	{
 		notifyEvent(evt, arg0, null);
 	}
@@ -209,64 +194,64 @@ abstract class AbstractAI
 	 * @param arg0 The first parameter of the Event (optional target)
 	 * @param arg1 The second parameter of the Event (optional target)
 	 */
-	public final void notifyEvent(CtrlEvent evt, Object arg0, Object arg1)
+	public final void notifyEvent(AiEventType evt, Object arg0, Object arg1)
 	{
 		if ((!_actor.isVisible() && !_actor.isTeleporting()) || !_actor.hasAI())
 			return;
 		
 		switch (evt)
 		{
-			case EVT_THINK:
+			case THINK:
 				onEvtThink();
 				break;
-			case EVT_ATTACKED:
+			case ATTACKED:
 				onEvtAttacked((Creature) arg0);
 				break;
-			case EVT_AGGRESSION:
+			case AGGRESSION:
 				onEvtAggression((Creature) arg0, ((Number) arg1).intValue());
 				break;
-			case EVT_STUNNED:
+			case STUNNED:
 				onEvtStunned((Creature) arg0);
 				break;
-			case EVT_PARALYZED:
+			case PARALYZED:
 				onEvtParalyzed((Creature) arg0);
 				break;
-			case EVT_SLEEPING:
+			case SLEEPING:
 				onEvtSleeping((Creature) arg0);
 				break;
-			case EVT_ROOTED:
+			case ROOTED:
 				onEvtRooted((Creature) arg0);
 				break;
-			case EVT_CONFUSED:
+			case CONFUSED:
 				onEvtConfused((Creature) arg0);
 				break;
-			case EVT_MUTED:
+			case MUTED:
 				onEvtMuted((Creature) arg0);
 				break;
-			case EVT_EVADED:
+			case EVADED:
 				onEvtEvaded((Creature) arg0);
 				break;
-			case EVT_READY_TO_ACT:
+			case READY_TO_ACT:
 				if (!_actor.isCastingNow() && !_actor.isCastingSimultaneouslyNow())
 					onEvtReadyToAct();
 				break;
-			case EVT_ARRIVED:
+			case ARRIVED:
 				if (!_actor.isCastingNow() && !_actor.isCastingSimultaneouslyNow())
 					onEvtArrived();
 				break;
-			case EVT_ARRIVED_BLOCKED:
+			case ARRIVED_BLOCKED:
 				onEvtArrivedBlocked((SpawnLocation) arg0);
 				break;
-			case EVT_CANCEL:
+			case CANCEL:
 				onEvtCancel();
 				break;
-			case EVT_DEAD:
+			case DEAD:
 				onEvtDead();
 				break;
-			case EVT_FAKE_DEATH:
+			case FAKE_DEATH:
 				onEvtFakeDeath();
 				break;
-			case EVT_FINISH_CASTING:
+			case FINISH_CASTING:
 				onEvtFinishCasting();
 				break;
 		}
@@ -279,20 +264,50 @@ abstract class AbstractAI
 		}
 	}
 	
+	/**
+	 * Manage the Idle Intention : Stop Attack, Movement and Stand Up the actor.
+	 */
 	protected abstract void onIntentionIdle();
 	
+	/**
+	 * Manage the Active Intention : Stop Attack, Movement and Launch Think Event.
+	 */
 	protected abstract void onIntentionActive();
 	
+	/**
+	 * Manage the Rest Intention. Set the AI Intention to IDLE.
+	 */
 	protected abstract void onIntentionRest();
 	
+	/**
+	 * Manage the Attack Intention : Stop current Attack (if necessary), Start a new Attack and Launch Think Event.
+	 * @param target : The Creature used as target.
+	 */
 	protected abstract void onIntentionAttack(Creature target);
 	
+	/**
+	 * Launch a spell.
+	 * @param skill : The L2Skill to cast.
+	 * @param target : The WorldObject used as target.
+	 */
 	protected abstract void onIntentionCast(L2Skill skill, WorldObject target);
 	
+	/**
+	 * Launch a movement to a {@link Location} if conditions are met.
+	 * @param loc : The Location used as destination.
+	 */
 	protected abstract void onIntentionMoveTo(Location loc);
 	
+	/**
+	 * Follow the {@link Creature} set as parameter if conditions are met.
+	 * @param target : The Creature used as target.
+	 */
 	protected abstract void onIntentionFollow(Creature target);
 	
+	/**
+	 * Manage the PickUp Intention : Set the pick up target and Launch a Move To Pawn Task (offset=20).
+	 * @param item : The WorldObject used as target.
+	 */
 	protected abstract void onIntentionPickUp(WorldObject item);
 	
 	protected abstract void onIntentionInteract(WorldObject object);
@@ -301,34 +316,89 @@ abstract class AbstractAI
 	
 	protected abstract void onEvtAttacked(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the effect Aggro.
+	 * @param target : The Creature used as attacker.
+	 * @param aggro : The amount of aggro.
+	 */
 	protected abstract void onEvtAggression(Creature target, int aggro);
 	
+	/**
+	 * Launch actions corresponding to the effect Stun.
+	 * @param attacker : The Creature used as attacker.
+	 */
 	protected abstract void onEvtStunned(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the effect Paralyze.
+	 * @param attacker : The Creature used as attacker.
+	 */
 	protected abstract void onEvtParalyzed(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the effect Sleep.
+	 * @param attacker : The Creature used as attacker.
+	 */
 	protected abstract void onEvtSleeping(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the effect Rooted.
+	 * @param attacker : The Creature used as attacker.
+	 */
 	protected abstract void onEvtRooted(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the effect Confusion.
+	 * @param attacker : The Creature used as attacker.
+	 */
 	protected abstract void onEvtConfused(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the effect Mute.
+	 * @param attacker : The Creature used as attacker.
+	 */
 	protected abstract void onEvtMuted(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the effect Stun.
+	 * @param attacker : The Creature used as attacker.
+	 */
 	protected abstract void onEvtEvaded(Creature attacker);
 	
+	/**
+	 * Launch actions corresponding to the Event ReadyToAct.
+	 */
 	protected abstract void onEvtReadyToAct();
 	
+	/**
+	 * Launch actions corresponding to the Event Arrived.
+	 */
 	protected abstract void onEvtArrived();
 	
+	/**
+	 * Launch actions corresponding to the Event ArrivedBlocked.
+	 * @param loc : The Location used as destination.
+	 */
 	protected abstract void onEvtArrivedBlocked(SpawnLocation loc);
 	
+	/**
+	 * Launch actions corresponding to the Event Cancel.
+	 */
 	protected abstract void onEvtCancel();
 	
+	/**
+	 * Launch actions corresponding to the death of the actor.
+	 */
 	protected abstract void onEvtDead();
 	
+	/**
+	 * Launch actions corresponding to the effect Fake Death.
+	 */
 	protected abstract void onEvtFakeDeath();
 	
+	/**
+	 * Finalize the casting of a skill. Drop latest intention before the actual CAST.
+	 */
 	protected abstract void onEvtFinishCasting();
 	
 	/**
@@ -357,22 +427,25 @@ abstract class AbstractAI
 			if (offset < 10)
 				offset = 10;
 			
-			// prevent possible extra calls to this function (there is none?), also don't send movetopawn packets too often
-			boolean sendPacket = true;
+			// prevent possible extra calls to this function (there is none?).
 			if (_clientMoving && (_target == pawn))
 			{
 				if (_clientMovingToPawnOffset == offset)
 				{
 					if (System.currentTimeMillis() < _moveToPawnTimeout)
+					{
+						clientActionFailed();
 						return;
-					
-					sendPacket = false;
+					}
 				}
 				else if (_actor.isOnGeodataPath())
 				{
 					// minimum time to calculate new route is 2 seconds
 					if (System.currentTimeMillis() < _moveToPawnTimeout + 1000)
+					{
+						clientActionFailed();
 						return;
+					}
 				}
 			}
 			
@@ -383,7 +456,10 @@ abstract class AbstractAI
 			_moveToPawnTimeout = System.currentTimeMillis() + 1000;
 			
 			if (pawn == null)
+			{
+				clientActionFailed();
 				return;
+			}
 			
 			// Calculate movement data for a move to location action and add the actor to movingObjects of GameTimeController
 			_actor.moveToLocation(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
@@ -402,7 +478,7 @@ abstract class AbstractAI
 					_actor.broadcastPacket(new MoveToLocation(_actor));
 					_clientMovingToPawnOffset = 0;
 				}
-				else if (sendPacket)
+				else
 					_actor.broadcastPacket(new MoveToPawn(_actor, pawn, offset));
 			}
 			else
@@ -476,71 +552,27 @@ abstract class AbstractAI
 		_clientMoving = false;
 	}
 	
-	public boolean isAutoAttacking()
-	{
-		return _clientAutoAttacking;
-	}
-	
-	public void setAutoAttacking(boolean isAutoAttacking)
-	{
-		if (_actor instanceof Summon)
-		{
-			Summon summon = (Summon) _actor;
-			if (summon.getOwner() != null)
-				summon.getOwner().getAI().setAutoAttacking(isAutoAttacking);
-			return;
-		}
-		_clientAutoAttacking = isAutoAttacking;
-	}
-	
 	/**
-	 * Start the actor Auto Attack client side by sending Server->Client packet AutoAttackStart <I>(broadcast)</I>.<BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : Low level function, used by AI subclasses</B></FONT><BR>
-	 * <BR>
+	 * Activate the attack stance on clients, broadcasting {@link AutoAttackStart} packets. Refresh the timer if already on stance.
 	 */
-	public void clientStartAutoAttack()
+	public void startAttackStance()
 	{
-		if (_actor instanceof Summon)
-		{
-			_actor.getActingPlayer().getAI().clientStartAutoAttack();
-			return;
-		}
-		
-		if (!isAutoAttacking())
-		{
-			if (_actor instanceof Player && ((Player) _actor).getPet() != null)
-				((Player) _actor).getPet().broadcastPacket(new AutoAttackStart(((Player) _actor).getPet().getObjectId()));
-			
+		// Initial check ; if the actor wasn't yet registered into AttackStanceTaskManager, broadcast AutoAttackStart packet.
+		if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor))
 			_actor.broadcastPacket(new AutoAttackStart(_actor.getObjectId()));
-			setAutoAttacking(true);
-		}
+		
+		// Set out of the initial if check to be able to refresh the time.
 		AttackStanceTaskManager.getInstance().add(_actor);
 	}
 	
 	/**
-	 * Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop <I>(broadcast)</I>.<BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : Low level function, used by AI subclasses</B></FONT>
+	 * Deactivate the attack stance on clients, broadcasting {@link AutoAttackStop} packet if the actor was indeed registered on {@link AttackStanceTaskManager}.
 	 */
-	public void clientStopAutoAttack()
+	public void stopAttackStance()
 	{
-		if (_actor instanceof Summon)
-		{
-			_actor.getActingPlayer().getAI().clientStopAutoAttack();
-			return;
-		}
-		
-		if (_actor instanceof Player)
-		{
-			if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor) && isAutoAttacking())
-				AttackStanceTaskManager.getInstance().add(_actor);
-		}
-		else if (isAutoAttacking())
-		{
+		// If we successfully remove the actor from AttackStanceTaskManager, we also broadcast AutoAttackStop packet.
+		if (AttackStanceTaskManager.getInstance().remove(_actor))
 			_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
-			setAutoAttacking(false);
-		}
 	}
 	
 	/**
@@ -555,34 +587,34 @@ abstract class AbstractAI
 		_actor.broadcastPacket(new Die(_actor));
 		
 		// Init AI
-		_intention = CtrlIntention.IDLE;
+		_desire.update(IntentionType.IDLE, null, null);
 		_target = null;
 		
 		// Cancel the follow task if necessary
 		stopFollow();
+		
+		// Stop the actor auto-attack
+		stopAttackStance();
 	}
 	
 	/**
-	 * Update the state of this actor client side by sending Server->Client packet MoveToPawn/MoveToLocation and AutoAttackStart to the Player player.<BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : Low level function, used by AI subclasses</B></FONT><BR>
-	 * <BR>
-	 * @param player The L2PcIstance to notify with state of this Creature
+	 * Send the state of this actor to a {@link Player}.
+	 * @param player : The Player to notify with the state of this actor.
 	 */
 	public void describeStateToPlayer(Player player)
 	{
-		if (_clientMoving)
+		if (_desire.getIntention() == IntentionType.MOVE_TO)
 		{
 			if (_clientMovingToPawnOffset != 0 && _followTarget != null)
 				player.sendPacket(new MoveToPawn(_actor, _followTarget, _clientMovingToPawnOffset));
 			else
 				player.sendPacket(new MoveToLocation(_actor));
 		}
+		// else if (getIntention() == CtrlIntention.CAST) TODO
 	}
 	
 	/**
-	 * Create and Launch an AI Follow Task to execute every 1s.<BR>
-	 * <BR>
+	 * Create and Launch an AI Follow Task to execute every 1s.
 	 * @param target The Creature to follow
 	 */
 	public synchronized void startFollow(Creature target)
@@ -691,7 +723,7 @@ abstract class AbstractAI
 				if (_actor instanceof Summon)
 					((Summon) _actor).setFollowStatus(false);
 				
-				setIntention(CtrlIntention.IDLE);
+				setIntention(IntentionType.IDLE);
 				return;
 			}
 			

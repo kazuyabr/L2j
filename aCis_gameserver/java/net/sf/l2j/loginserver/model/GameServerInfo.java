@@ -1,7 +1,9 @@
 package net.sf.l2j.loginserver.model;
 
+import net.sf.l2j.commons.network.StatusType;
+
 import net.sf.l2j.loginserver.GameServerThread;
-import net.sf.l2j.loginserver.network.gameserverpackets.ServerStatus;
+import net.sf.l2j.loginserver.network.LoginClient;
 
 public class GameServerInfo
 {
@@ -10,7 +12,7 @@ public class GameServerInfo
 	private boolean _isAuthed;
 	
 	private GameServerThread _gst;
-	private int _status;
+	private StatusType _status;
 	
 	private String _hostName;
 	private int _port;
@@ -28,7 +30,7 @@ public class GameServerInfo
 		_id = id;
 		_hexId = hexId;
 		_gst = gst;
-		_status = ServerStatus.STATUS_DOWN;
+		_status = StatusType.DOWN;
 	}
 	
 	public GameServerInfo(int id, byte[] hexId)
@@ -71,12 +73,12 @@ public class GameServerInfo
 		_gst = gst;
 	}
 	
-	public int getStatus()
+	public StatusType getStatus()
 	{
 		return _status;
 	}
 	
-	public void setStatus(int status)
+	public void setStatus(StatusType status)
 	{
 		_status = status;
 	}
@@ -166,11 +168,29 @@ public class GameServerInfo
 		setAuthed(false);
 		setPort(0);
 		setGameServerThread(null);
-		setStatus(ServerStatus.STATUS_DOWN);
+		setStatus(StatusType.DOWN);
 	}
 	
 	public int getCurrentPlayerCount()
 	{
 		return (_gst == null) ? 0 : _gst.getPlayerCount();
+	}
+	
+	/**
+	 * @param client : the LoginClient to test.
+	 * @return true if the {@link LoginClient} set as parameter can login.
+	 */
+	public boolean canLogin(LoginClient client)
+	{
+		// DOWN status doesn't allow anyone to logon.
+		if (_status == StatusType.DOWN)
+			return false;
+		
+		// GM_ONLY status or full server only allows superior access levels accounts to login.
+		if (_status == StatusType.GM_ONLY || getCurrentPlayerCount() >= getMaxPlayers())
+			return client.getAccessLevel() > 0;
+		
+		// Otherwise, any positive access level account can login.
+		return client.getAccessLevel() >= 0;
 	}
 }

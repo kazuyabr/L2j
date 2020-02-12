@@ -26,7 +26,7 @@
 	<script path="quests.Q021_HiddenTruth"/>
 	<script path="quests.Q022_TragedyInVonHellmannForest"/>
 	<script path="quests.Q023_LidiasHeart"/>
-<!-- 	<script path="quests.Q024_InhabitantsOfTheForestOfTheDead"/> -->
+	<script path="quests.Q024_InhabitantsOfTheForestOfTheDead"/>
 <!-- 	<script path="quests.Q025_HidingBehindTheTruth"/> -->
 	<script path="quests.Q027_ChestCaughtWithABaitOfWind"/>
 	<script path="quests.Q028_ChestCaughtWithABaitOfIcyAir"/>
@@ -98,7 +98,7 @@
 	<script path="quests.Q112_WalkOfFate"/>
 	<script path="quests.Q113_StatusOfTheBeaconTower"/>
 	<script path="quests.Q114_ResurrectionOfAnOldManager"/>
-<!-- 	<script path="quests.Q115_TheOtherSideOfTruth"/> -->
+ 	<script path="quests.Q115_TheOtherSideOfTruth"/>
 	<script path="quests.Q116_BeyondTheHillsOfWinter"/>
 	<script path="quests.Q117_TheOceanOfDistantStars"/>
  	<script path="quests.Q118_ToLeadAndBeLed"/>
@@ -330,7 +330,7 @@
 	<script path="quests.Q645_GhostsOfBatur"/>
 	<script path="quests.Q646_SignsOfRevolt"/>
 	<script path="quests.Q647_InfluxOfMachines"/>
-<!-- 	<script path="quests.Q648_AnIceMerchantsDream"/> -->
+	<script path="quests.Q648_AnIceMerchantsDream"/>
 	<script path="quests.Q649_ALooterAndARailroadMan"/>
 	<script path="quests.Q650_ABrokenDream"/>
 	<script path="quests.Q651_RunawayYouth"/>
@@ -353,6 +353,8 @@
 	<script path="scripts.ai.group.Chests"/>
 	<script path="scripts.ai.group.FeedableBeasts"/>
 	<script path="scripts.ai.group.FleeingNPCs"/>
+	<script path="scripts.ai.group.ForestOfTheDead"/>
+	<script path="scripts.ai.group.FourSepulchers"/>
 	<script path="scripts.ai.group.FrenzyOnAttack"/>
 	<script path="scripts.ai.group.FrozenLabyrinth"/>
 	<script path="scripts.ai.group.GatekeeperZombies"/>
@@ -362,10 +364,10 @@
 	<script path="scripts.ai.group.PolymorphingAngel"/>
 	<script path="scripts.ai.group.PolymorphingOnAttack"/>
 	<script path="scripts.ai.group.PrimevalIsle"/>
-	<script path="scripts.ai.group.SearchingMaster"/>
 	<script path="scripts.ai.group.SpeakingNPCs"/>
 	<script path="scripts.ai.group.StakatoNest"/>
 	<script path="scripts.ai.group.SummonMinions"/>
+	<script path="scripts.ai.group.SummonPlayer"/>
 
 	<script path="scripts.ai.individual.Antharas"/>
 	<script path="scripts.ai.individual.Baium"/>
@@ -379,7 +381,7 @@
 	<script path="scripts.ai.individual.QueenAnt"/>
 	<script path="scripts.ai.individual.Sailren"/>
 	<script path="scripts.ai.individual.Valakas"/>
-<!-- 	<script path="scripts.ai.individual.Zaken"/> -->
+	<script path="scripts.ai.individual.Zaken"/>
 
 	<!-- Custom -->
 
@@ -423,13 +425,13 @@
 
 	<!-- Tasks -->
 
-	<script path="tasks.ClansLadder" schedule="DAILY" start="00:05:00"/>
-	<script path="tasks.OlympiadSave"/>
-	<script path="tasks.RaidPointsReset" schedule="WEEKLY" start="MON 00:00:00"/>
-	<script path="tasks.Recommendation" schedule="DAILY" start="06:30:00"/>
-<!--	<script path="tasks.ServerRestart" schedule="DAILY" start="04:00:00"/> -->
-<!--	<script path="tasks.ServerShutdown" schedule="DAILY" start="04:00:00"/> -->
-	<script path="tasks.SevenSignsUpdate"/>
+	<script path="tasks.ClanLadderRefresh" schedule="DAILY" start="00:05:00"/>
+	<script path="tasks.ClanLeaderTransfer" schedule="WEEKLY" start="TUE 16:55:00"/>
+	<script path="tasks.RaidPointReset" schedule="MONTHLY_WEEK" start="TUE-1 00:00:00"/>
+	<script path="tasks.RecommendationUpdate" schedule="DAILY" start="13:00:00"/>
+<!--	<script path="tasks.ServerRestart" schedule="WEEKLY" start="TUE 17:00:00"/> -->
+<!--	<script path="tasks.ServerShutdown" schedule="WEEKLY" start="TUE 17:00:00"/> -->
+	<script path="tasks.SevenSignsUpdate" schedule="HOURLY" start="00:00"/>
 
 <!--
 WHAT IS SCHEDULED SCRIPT?

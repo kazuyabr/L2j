@@ -1,7 +1,8 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -172,23 +173,21 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		// Drop tooth or light to anyone.
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
-			return null;
+		final Player player = killer.getActingPlayer();
 		
-		QuestState st = partyMember.getQuestState(qn);
+		// Drop tooth or light to anyone.
+		QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
+			return null;
 		
 		st.dropItems((npc.getNpcId() == CAVE_BEAST) ? CAVE_BEAST_TOOTH : DEATH_WAVE_LIGHT, 1, 65, 500000);
 		
 		// Drop sealed mysterious stone to party member who still need it.
-		partyMember = getRandomPartyMember(player, npc, "condStone", "1");
-		if (partyMember == null)
+		st = getRandomPartyMember(player, npc, "condStone", "1");
+		if (st == null)
 			return null;
-		
-		st = partyMember.getQuestState(qn);
 		
 		if (st.dropItems(SEALED_MYSTERIOUS_STONE, 1, 1, 1000))
 			st.unset("condStone");

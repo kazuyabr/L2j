@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -21,39 +21,36 @@ public final class RequestOustPledgeMember extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		final Clan clan = activeChar.getClan();
+		final Clan clan = player.getClan();
 		if (clan == null)
 		{
-			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
 			return;
 		}
 		
 		final ClanMember member = clan.getClanMember(_target);
 		if (member == null)
+			return;
+		
+		if ((player.getClanPrivileges() & Clan.CP_CL_DISMISS) != Clan.CP_CL_DISMISS)
 		{
-			_log.warning(_target + " is not " + clan.getName() + "'s clan member, dismiss aborted.");
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
 		}
 		
-		if ((activeChar.getClanPrivileges() & Clan.CP_CL_DISMISS) != Clan.CP_CL_DISMISS)
+		if (player.getName().equalsIgnoreCase(_target))
 		{
-			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
-			return;
-		}
-		
-		if (activeChar.getName().equalsIgnoreCase(_target))
-		{
-			activeChar.sendPacket(SystemMessageId.YOU_CANNOT_DISMISS_YOURSELF);
+			player.sendPacket(SystemMessageId.YOU_CANNOT_DISMISS_YOURSELF);
 			return;
 		}
 		
 		if (member.isOnline() && member.getPlayerInstance().isInCombat())
 		{
-			activeChar.sendPacket(SystemMessageId.CLAN_MEMBER_CANNOT_BE_DISMISSED_DURING_COMBAT);
+			player.sendPacket(SystemMessageId.CLAN_MEMBER_CANNOT_BE_DISMISSED_DURING_COMBAT);
 			return;
 		}
 		
@@ -69,8 +66,8 @@ public final class RequestOustPledgeMember extends L2GameClientPacket
 			clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(_target));
 		
 		clan.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_EXPELLED).addString(member.getName()));
-		activeChar.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_IN_EXPELLING_CLAN_MEMBER);
-		activeChar.sendPacket(SystemMessageId.YOU_MUST_WAIT_BEFORE_ACCEPTING_A_NEW_MEMBER);
+		player.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_IN_EXPELLING_CLAN_MEMBER);
+		player.sendPacket(SystemMessageId.YOU_MUST_WAIT_BEFORE_ACCEPTING_A_NEW_MEMBER);
 		
 		if (member.isOnline())
 			member.getPlayerInstance().sendPacket(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED);

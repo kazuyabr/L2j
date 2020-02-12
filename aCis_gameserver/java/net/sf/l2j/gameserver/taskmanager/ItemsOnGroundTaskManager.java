@@ -3,18 +3,17 @@ package net.sf.l2j.gameserver.taskmanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.CursedWeaponManager;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Playable;
@@ -26,7 +25,7 @@ import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
  */
 public final class ItemsOnGroundTaskManager implements Runnable
 {
-	private static final Logger LOGGER = Logger.getLogger(ItemsOnGroundTaskManager.class.getName());
+	private static final CLogger LOGGER = new CLogger(ItemsOnGroundTaskManager.class.getName());
 	
 	private static final String LOAD_ITEMS = "SELECT object_id,item_id,count,enchant_level,x,y,z,time FROM items_on_ground";
 	private static final String DELETE_ITEMS = "DELETE FROM items_on_ground";
@@ -40,7 +39,10 @@ public final class ItemsOnGroundTaskManager implements Runnable
 		ThreadPool.scheduleAtFixedRate(this, 5000, 5000);
 		
 		// Load all items.
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); ResultSet rs = con.createStatement().executeQuery(LOAD_ITEMS))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement st = con.prepareStatement(LOAD_ITEMS);
+			PreparedStatement st2 = con.prepareStatement(DELETE_ITEMS);
+			ResultSet rs = st.executeQuery())
 		{
 			// Get current time.
 			final long time = System.currentTimeMillis();
@@ -74,21 +76,39 @@ public final class ItemsOnGroundTaskManager implements Runnable
 				_items.put(item, (interval == 0) ? 0L : time + interval);
 			}
 			
-			LOGGER.info("ItemsOnGroundTaskManager: Restored " + _items.size() + " items on ground.");
+			// Delete all items from database.
+			st2.execute();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			LOGGER.warning("ItemsOnGroundTaskManager: Error while loading \"items_on_ground\" table: " + e.getMessage());
+			LOGGER.error("Error while loading items on ground data.", e);
 		}
+		LOGGER.info("Restored {} items on ground.", _items.size());
+	}
+	
+	@Override
+	public final void run()
+	{
+		// List is empty, skip.
+		if (_items.isEmpty())
+			return;
 		
-		// Delete all items from database.
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement st = con.prepareStatement(DELETE_ITEMS))
+		// Get current time.
+		final long time = System.currentTimeMillis();
+		
+		// Loop all items.
+		for (Map.Entry<ItemInstance, Long> entry : _items.entrySet())
 		{
-			st.execute();
-		}
-		catch (SQLException e)
-		{
-			LOGGER.warning("ItemsOnGroundTaskManager: Can not empty \"items_on_ground\" table to save new items: " + e.getMessage());
+			// Get and validate destroy time.
+			final long destroyTime = entry.getValue();
+			
+			// Item can't be destroyed or time hasn't passed yet, skip.
+			if (destroyTime == 0 || time < destroyTime)
+				continue;
+			
+			// Destroy item and remove from task.
+			final ItemInstance item = entry.getKey();
+			item.decayMe();
 		}
 	}
 	
@@ -142,43 +162,18 @@ public final class ItemsOnGroundTaskManager implements Runnable
 		_items.remove(item);
 	}
 	
-	@Override
-	public final void run()
-	{
-		// List is empty, skip.
-		if (_items.isEmpty())
-			return;
-		
-		// Get current time.
-		final long time = System.currentTimeMillis();
-		
-		// Loop all items.
-		for (Map.Entry<ItemInstance, Long> entry : _items.entrySet())
-		{
-			// Get and validate destroy time.
-			final long destroyTime = entry.getValue();
-			
-			// Item can't be destroyed or time hasn't passed yet, skip.
-			if (destroyTime == 0 || time < destroyTime)
-				continue;
-			
-			// Destroy item and remove from task.
-			final ItemInstance item = entry.getKey();
-			item.decayMe();
-		}
-	}
-	
 	public final void save()
 	{
 		// List is empty, return.
 		if (_items.isEmpty())
 		{
-			LOGGER.info("ItemsOnGroundTaskManager: List is empty.");
+			LOGGER.info("No items on ground to save.");
 			return;
 		}
 		
 		// Store whole items list to database.
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement st = con.prepareStatement(SAVE_ITEMS))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement st = con.prepareStatement(SAVE_ITEMS))
 		{
 			// Get current time.
 			final long time = System.currentTimeMillis();
@@ -189,7 +184,7 @@ public final class ItemsOnGroundTaskManager implements Runnable
 				final ItemInstance item = entry.getKey();
 				
 				// Cursed Items not saved to ground, prevent double save.
-				if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+				if (CursedWeaponManager.getInstance().isCursed(item.getItemId()))
 					continue;
 				
 				st.setInt(1, item.getObjectId());
@@ -206,13 +201,12 @@ public final class ItemsOnGroundTaskManager implements Runnable
 				st.addBatch();
 			}
 			st.executeBatch();
-			
-			LOGGER.info("ItemsOnGroundTaskManager: Saved " + _items.size() + " items on ground.");
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			LOGGER.warning("ItemsOnGroundTaskManager: Could not save items on ground to \"items_on_ground\" table: " + e.getMessage());
+			LOGGER.error("Couldn't save items on ground.", e);
 		}
+		LOGGER.info("Saved {} items on ground.", _items.size());
 	}
 	
 	public static final ItemsOnGroundTaskManager getInstance()

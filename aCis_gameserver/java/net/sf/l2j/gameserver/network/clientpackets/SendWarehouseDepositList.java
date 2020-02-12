@@ -3,8 +3,8 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import static net.sf.l2j.gameserver.model.itemcontainer.PcInventory.ADENA_ID;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.ItemContainer;
@@ -49,7 +49,7 @@ public final class SendWarehouseDepositList extends L2GameClientPacket
 		if (_items == null)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -72,8 +72,8 @@ public final class SendWarehouseDepositList extends L2GameClientPacket
 		
 		final boolean isPrivate = warehouse instanceof PcWarehouse;
 		
-		final Npc manager = player.getCurrentFolkNPC();
-		if (manager == null || !manager.isWarehouse() || !manager.canInteract(player))
+		final Folk folk = player.getCurrentFolk();
+		if (folk == null || !folk.isWarehouse() || !folk.canInteract(player))
 			return;
 		
 		if (!isPrivate && !player.getAccessLevel().allowTransaction())
@@ -95,10 +95,7 @@ public final class SendWarehouseDepositList extends L2GameClientPacket
 		{
 			ItemInstance item = player.checkItemManipulation(i.getId(), i.getValue());
 			if (item == null)
-			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (validity check)");
 				return;
-			}
 			
 			// Calculate needed adena and slots
 			if (item.getItemId() == ADENA_ID)
@@ -118,7 +115,7 @@ public final class SendWarehouseDepositList extends L2GameClientPacket
 		}
 		
 		// Check if enough adena and charge the fee
-		if (currentAdena < fee || !player.reduceAdena(warehouse.getName(), fee, manager, false))
+		if (currentAdena < fee || !player.reduceAdena(warehouse.getName(), fee, folk, false))
 		{
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			return;
@@ -135,20 +132,14 @@ public final class SendWarehouseDepositList extends L2GameClientPacket
 			// Check validity of requested item
 			ItemInstance oldItem = player.checkItemManipulation(i.getId(), i.getValue());
 			if (oldItem == null)
-			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (olditem == null)");
 				return;
-			}
 			
 			if (!oldItem.isDepositable(isPrivate) || !oldItem.isAvailable(player, true, isPrivate))
 				continue;
 			
-			final ItemInstance newItem = player.getInventory().transferItem(warehouse.getName(), i.getId(), i.getValue(), warehouse, player, manager);
+			final ItemInstance newItem = player.getInventory().transferItem(warehouse.getName(), i.getId(), i.getValue(), warehouse, player, folk);
 			if (newItem == null)
-			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (newitem == null)");
 				continue;
-			}
 			
 			if (oldItem.getCount() > 0 && oldItem != newItem)
 				playerIU.addModifiedItem(oldItem);

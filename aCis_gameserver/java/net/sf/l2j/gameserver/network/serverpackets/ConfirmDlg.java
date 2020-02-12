@@ -148,10 +148,7 @@ public class ConfirmDlg extends L2GameServerPacket
 						break;
 					
 					case TYPE_ZONE_NAME:
-						final Location loc = (Location) data.getObject();
-						writeD(loc.getX());
-						writeD(loc.getY());
-						writeD(loc.getZ());
+						writeLoc((Location) data.getObject());
 						break;
 				}
 			}

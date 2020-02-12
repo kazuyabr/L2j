@@ -2,28 +2,29 @@ package net.sf.l2j.gameserver.data.xml;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.cache.HtmCache;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
 import net.sf.l2j.gameserver.model.Announcement;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.World;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.clientpackets.Say2;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.util.Broadcast;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import org.w3c.dom.NamedNodeMap;
 
 /**
  * This class loads and stores {@link Announcement}s, the key being dynamically generated on loading.<br>
  * As the storage is a XML, the whole XML needs to be regenerated on Announcement addition/deletion.
  */
-public class AnnouncementData extends XMLDocument
+public class AnnouncementData implements IXmlReader
 {
 	private static final String HEADER = "<?xml version='1.0' encoding='utf-8'?> \n<!-- \n@param String message - the message to be announced \n@param Boolean critical - type of announcement (true = critical,false = normal) \n@param Boolean auto - when the announcement will be displayed (true = auto,false = on player login) \n@param Integer initial_delay - time delay for the first announce (used only if auto=true;value in seconds) \n@param Integer delay - time delay for the announces following the first announce (used only if auto=true;value in seconds) \n@param Integer limit - limit of announces (used only if auto=true, 0 = unlimited) \n--> \n";
 	
@@ -35,52 +36,37 @@ public class AnnouncementData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/announcements.xml");
-		LOG.info("Loaded " + _announcements.size() + " announcements.");
+		parseFile("./data/xml/announcements.xml");
+		LOGGER.info("Loaded {} announcements.", _announcements.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		// Used as dynamic id.
-		int id = 0;
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "announcement", announcementNode ->
 		{
-			if (!"announcement".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			final String message = o.getAttributes().getNamedItem("message").getNodeValue();
+			final NamedNodeMap attrs = announcementNode.getAttributes();
+			final String message = parseString(attrs, "message");
 			if (message == null || message.isEmpty())
 			{
-				LOG.warning("The message is empty on an announcement. Ignoring it!");
-				continue;
+				LOGGER.warn("The message is empty on an announcement. Ignoring it.");
+				return;
 			}
 			
-			boolean critical = Boolean.valueOf(o.getAttributes().getNamedItem("critical").getNodeValue());
-			boolean auto = Boolean.valueOf(o.getAttributes().getNamedItem("auto").getNodeValue());
-			
+			final boolean critical = parseBoolean(attrs, "critical", false);
+			final boolean auto = parseBoolean(attrs, "auto", false);
 			if (auto)
 			{
-				int initialDelay = Integer.valueOf(o.getAttributes().getNamedItem("initial_delay").getNodeValue());
-				int delay = Integer.valueOf(o.getAttributes().getNamedItem("delay").getNodeValue());
-				
-				int limit = Integer.valueOf(o.getAttributes().getNamedItem("limit").getNodeValue());
-				if (limit < 0)
-					limit = 0;
-				
-				_announcements.put(id, new Announcement(message, critical, auto, initialDelay, delay, limit));
+				final int initialDelay = parseInteger(attrs, "initial_delay");
+				final int delay = parseInteger(attrs, "delay");
+				final int limit = Math.max(parseInteger(attrs, "limit"), 0);
+				_announcements.put(_announcements.size(), new Announcement(message, critical, auto, initialDelay, delay, limit));
 			}
 			else
-				_announcements.put(id, new Announcement(message, critical));
-			
-			id++;
-		}
+				_announcements.put(_announcements.size(), new Announcement(message, critical));
+		}));
 	}
 	
 	public void reload()
@@ -114,7 +100,7 @@ public class AnnouncementData extends XMLDocument
 	}
 	
 	/**
-	 * Use {@link Broadcast}.announceToOnlinePlayers(String, Boolean) in order to send announcement, wrapped into a ioobe try/catch.
+	 * Use {@link World#announceToOnlinePlayers(String, boolean)} in order to send announcement, wrapped into a ioobe try/catch.
 	 * @param command : The command to handle.
 	 * @param lengthToTrim : The length to trim, in order to send only the message without the command.
 	 * @param critical : Is the message critical or not.
@@ -123,7 +109,7 @@ public class AnnouncementData extends XMLDocument
 	{
 		try
 		{
-			Broadcast.announceToOnlinePlayers(command.substring(lengthToTrim), critical);
+			World.announceToOnlinePlayers(command.substring(lengthToTrim), critical);
 		}
 		catch (StringIndexOutOfBoundsException e)
 		{
@@ -216,7 +202,7 @@ public class AnnouncementData extends XMLDocument
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Error regenerating XML.", e);
 		}
 	}
 	

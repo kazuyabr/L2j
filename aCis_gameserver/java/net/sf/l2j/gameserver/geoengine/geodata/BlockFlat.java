@@ -4,9 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-/**
- * @author Hasha
- */
+import net.sf.l2j.gameserver.enums.GeoType;
+
 public class BlockFlat extends ABlock
 {
 	protected final short _height;
@@ -17,12 +16,12 @@ public class BlockFlat extends ABlock
 	 * @param bb : Input byte buffer.
 	 * @param format : GeoFormat specifying format of loaded data.
 	 */
-	public BlockFlat(ByteBuffer bb, GeoFormat format)
+	public BlockFlat(ByteBuffer bb, GeoType format)
 	{
 		_height = bb.getShort();
-		_nswe = format != GeoFormat.L2D ? 0x0F : (byte) (0xFF);
+		_nswe = format != GeoType.L2D ? 0x0F : (byte) (0xFF);
 		
-		if (format == GeoFormat.L2OFF)
+		if (format == GeoType.L2OFF)
 			bb.getShort();
 	}
 	

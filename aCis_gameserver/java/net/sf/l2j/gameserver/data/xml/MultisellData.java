@@ -1,23 +1,23 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
-import net.sf.l2j.commons.lang.StringUtil;
+import net.sf.l2j.commons.data.xml.IXmlReader;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.multisell.Entry;
 import net.sf.l2j.gameserver.model.multisell.Ingredient;
 import net.sf.l2j.gameserver.model.multisell.ListContainer;
 import net.sf.l2j.gameserver.model.multisell.PreparedListContainer;
 import net.sf.l2j.gameserver.network.serverpackets.MultiSellList;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import org.w3c.dom.NamedNodeMap;
 
 /**
  * This class loads and stores multisell lists under {@link ListContainer}.<br>
@@ -25,7 +25,7 @@ import org.w3c.dom.Node;
  * <br>
  * File name is used as key, under its String hashCode.
  */
-public class MultisellData extends XMLDocument
+public class MultisellData implements IXmlReader
 {
 	public static final int PAGE_SIZE = 40;
 	
@@ -37,83 +37,36 @@ public class MultisellData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/multisell");
-		LOG.info("Loaded " + _entries.size() + " multisell.");
+		parseFile("./data/xml/multisell");
+		LOGGER.info("Loaded {} multisell.", _entries.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		int entryId = 1;
-		
-		final int id = file.getName().replaceAll(".xml", "").hashCode();
+		final int id = path.toFile().getName().replaceAll(".xml", "").hashCode();
 		final ListContainer list = new ListContainer(id);
-		
-		for (Node o = doc.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode ->
 		{
-			if (!"list".equalsIgnoreCase(o.getNodeName()))
-				continue;
+			final NamedNodeMap attrs = listNode.getAttributes();
 			
-			Node att = o.getAttributes().getNamedItem("applyTaxes");
-			list.setApplyTaxes(att != null && Boolean.parseBoolean(att.getNodeValue()));
+			list.setApplyTaxes(parseBoolean(attrs, "applyTaxes", false));
+			list.setMaintainEnchantment(parseBoolean(attrs, "maintainEnchantment", false));
 			
-			att = o.getAttributes().getNamedItem("maintainEnchantment");
-			list.setMaintainEnchantment(att != null && Boolean.parseBoolean(att.getNodeValue()));
-			
-			for (Node d = o.getFirstChild(); d != null; d = d.getNextSibling())
+			forEach(listNode, "item", itemNode ->
 			{
-				if ("item".equalsIgnoreCase(d.getNodeName()))
-				{
-					final Entry entry = new Entry(entryId++);
-					
-					for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-					{
-						if ("ingredient".equalsIgnoreCase(e.getNodeName()))
-						{
-							// Parse and feed content.
-							parseAndFeed(e.getAttributes(), set);
-							
-							// Feed entry with a new ingredient.
-							entry.addIngredient(new Ingredient(set));
-							
-							// Clear the StatsSet.
-							set.clear();
-						}
-						else if ("production".equalsIgnoreCase(e.getNodeName()))
-						{
-							// Parse and feed content.
-							parseAndFeed(e.getAttributes(), set);
-							
-							// Feed entry with a new product.
-							entry.addProduct(new Ingredient(set));
-							
-							// Clear the StatsSet.
-							set.clear();
-						}
-					}
-					
-					list.getEntries().add(entry);
-				}
-				else if ("npcs".equalsIgnoreCase(d.getNodeName()))
-				{
-					for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-					{
-						if ("npc".equalsIgnoreCase(e.getNodeName()))
-						{
-							if (StringUtil.isDigit(e.getTextContent()))
-								list.allowNpc(Integer.parseInt(e.getTextContent()));
-						}
-					}
-				}
-			}
+				final List<Ingredient> ingredients = new ArrayList<>();
+				final List<Ingredient> products = new ArrayList<>();
+				forEach(itemNode, "ingredient", ingredientNode -> ingredients.add(new Ingredient(parseAttributes(ingredientNode))));
+				forEach(itemNode, "production", productionNode -> products.add(new Ingredient(parseAttributes(productionNode))));
+				list.getEntries().add(new Entry(ingredients, products));
+			});
+			forEach(listNode, "npcs", npcsNode -> forEach(npcsNode, "npc", npcNode -> list.allowNpc(Integer.parseInt(npcNode.getTextContent()))));
 			
 			_entries.put(id, list);
-		}
+		});
 	}
 	
 	public void reload()
@@ -154,6 +107,11 @@ public class MultisellData extends XMLDocument
 		while (index < list.getEntries().size());
 		
 		player.setMultiSell(list);
+	}
+	
+	public ListContainer getList(String listName)
+	{
+		return _entries.get(listName.hashCode());
 	}
 	
 	public static MultisellData getInstance()

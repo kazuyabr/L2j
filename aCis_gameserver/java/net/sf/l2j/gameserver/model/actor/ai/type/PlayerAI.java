@@ -1,20 +1,23 @@
 package net.sf.l2j.gameserver.model.actor.ai.type;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.model.actor.ai.Desire;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.StaticObject;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.network.serverpackets.AutoAttackStart;
+import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
 
 public class PlayerAI extends PlayableAI
 {
 	private boolean _thinking; // to prevent recursive thinking
-	private Desire _nextIntention = null;
+	private Desire _nextIntention = new Desire();
 	
 	public PlayerAI(Player player)
 	{
@@ -27,64 +30,42 @@ public class PlayerAI extends PlayableAI
 		_actor.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 	
-	void setNextIntention(CtrlIntention intention, Object arg0, Object arg1)
-	{
-		_nextIntention = new Desire(intention, arg0, arg1);
-	}
-	
 	@Override
 	public Desire getNextIntention()
 	{
 		return _nextIntention;
 	}
 	
-	/**
-	 * Saves the current Intention for this L2PlayerAI if necessary and calls changeIntention in AbstractAI.<BR>
-	 * <BR>
-	 * @param intention The new Intention to set to the AI
-	 * @param arg0 The first parameter of the Intention
-	 * @param arg1 The second parameter of the Intention
-	 */
 	@Override
-	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
+	synchronized void changeIntention(IntentionType intention, Object arg0, Object arg1)
 	{
 		// do nothing unless CAST intention
 		// however, forget interrupted actions when starting to use an offensive skill
-		if (intention != CtrlIntention.CAST || (arg0 != null && ((L2Skill) arg0).isOffensive()))
+		if (intention != IntentionType.CAST || (arg0 != null && ((L2Skill) arg0).isOffensive()))
 		{
-			_nextIntention = null;
+			_nextIntention.reset();
 			super.changeIntention(intention, arg0, arg1);
 			return;
 		}
 		
 		// do nothing if next intention is same as current one.
-		if (intention == _intention && arg0 == _intentionArg0 && arg1 == _intentionArg1)
-		{
-			super.changeIntention(intention, arg0, arg1);
+		if (_desire.equals(intention, arg0, arg1))
 			return;
-		}
 		
 		// save current intention so it can be used after cast
-		setNextIntention(_intention, _intentionArg0, _intentionArg1);
+		_nextIntention.update(_desire);
+		
 		super.changeIntention(intention, arg0, arg1);
 	}
 	
-	/**
-	 * Launch actions corresponding to the Event ReadyToAct.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Launch actions corresponding to the Event Think</li><BR>
-	 * <BR>
-	 */
 	@Override
 	protected void onEvtReadyToAct()
 	{
 		// Launch actions corresponding to the Event Think
-		if (_nextIntention != null)
+		if (!_nextIntention.isBlank())
 		{
 			setIntention(_nextIntention.getIntention(), _nextIntention.getFirstParameter(), _nextIntention.getSecondParameter());
-			_nextIntention = null;
+			_nextIntention.reset();
 		}
 		super.onEvtReadyToAct();
 	}
@@ -92,31 +73,28 @@ public class PlayerAI extends PlayableAI
 	@Override
 	protected void onEvtCancel()
 	{
-		_nextIntention = null;
+		_nextIntention.reset();
 		super.onEvtCancel();
 	}
 	
-	/**
-	 * Finalize the casting of a skill. Drop latest intention before the actual CAST.
-	 */
 	@Override
 	protected void onEvtFinishCasting()
 	{
-		if (getIntention() == CtrlIntention.CAST)
+		if (_desire.getIntention() == IntentionType.CAST)
 		{
-			if (_nextIntention != null && _nextIntention.getIntention() != CtrlIntention.CAST) // previous state shouldn't be casting
+			if (!_nextIntention.isBlank() && _nextIntention.getIntention() != IntentionType.CAST) // previous state shouldn't be casting
 				setIntention(_nextIntention.getIntention(), _nextIntention.getFirstParameter(), _nextIntention.getSecondParameter());
 			else
-				setIntention(CtrlIntention.IDLE);
+				setIntention(IntentionType.IDLE);
 		}
 	}
 	
 	@Override
 	protected void onIntentionRest()
 	{
-		if (getIntention() != CtrlIntention.REST)
+		if (_desire.getIntention() != IntentionType.REST)
 		{
-			changeIntention(CtrlIntention.REST, null, null);
+			changeIntention(IntentionType.REST, null, null);
 			setTarget(null);
 			clientStopMoving(null);
 		}
@@ -125,47 +103,60 @@ public class PlayerAI extends PlayableAI
 	@Override
 	protected void onIntentionActive()
 	{
-		setIntention(CtrlIntention.IDLE);
+		setIntention(IntentionType.IDLE);
 	}
 	
-	/**
-	 * Manage the Move To Intention : Stop current Attack and Launch a Move to Location Task.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> : </B><BR>
-	 * <BR>
-	 * <li>Stop the actor auto-attack server side AND client side by sending Server->Client packet AutoAttackStop (broadcast)</li>
-	 * <li>Set the Intention of this AI to MOVE_TO</li>
-	 * <li>Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet MoveToLocation (broadcast)</li><BR>
-	 * <BR>
-	 */
 	@Override
 	protected void onIntentionMoveTo(Location loc)
 	{
-		if (getIntention() == CtrlIntention.REST)
+		// Deny the action if we are currently resting.
+		if (_desire.getIntention() == IntentionType.REST)
 		{
-			// Cancel action client side by sending Server->Client packet ActionFailed to the Player actor
 			clientActionFailed();
 			return;
 		}
 		
+		// We delay MOVE_TO intention if character is disabled or is currently casting/attacking.
 		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow() || _actor.isAttackingNow())
 		{
 			clientActionFailed();
-			setNextIntention(CtrlIntention.MOVE_TO, loc, null);
+			_nextIntention.update(IntentionType.MOVE_TO, loc, null);
 			return;
 		}
 		
 		// Set the Intention of this AbstractAI to MOVE_TO
-		changeIntention(CtrlIntention.MOVE_TO, loc, null);
-		
-		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
-		clientStopAutoAttack();
-		
-		// Abort the attack of the Creature and send Server->Client ActionFailed packet
-		_actor.abortAttack();
+		changeIntention(IntentionType.MOVE_TO, loc, null);
 		
 		// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet MoveToLocation (broadcast)
 		moveTo(loc.getX(), loc.getY(), loc.getZ());
+	}
+	
+	@Override
+	protected void onIntentionInteract(WorldObject object)
+	{
+		// Deny the action if we are currently resting.
+		if (_desire.getIntention() == IntentionType.REST)
+		{
+			clientActionFailed();
+			return;
+		}
+		
+		// We delay INTERACT intention if character is disabled or is currently casting.
+		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow())
+		{
+			clientActionFailed();
+			_nextIntention.update(IntentionType.INTERACT, object, null);
+			return;
+		}
+		
+		// Set the Intention of this AbstractAI to INTERACT
+		changeIntention(IntentionType.INTERACT, object, null);
+		
+		// Set the AI interact target
+		setTarget(object);
+		
+		// Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
+		moveToPawn(object, 60);
 	}
 	
 	@Override
@@ -177,13 +168,30 @@ public class PlayerAI extends PlayableAI
 		super.clientNotifyDead();
 	}
 	
+	@Override
+	public void startAttackStance()
+	{
+		// Initial check ; if the actor wasn't yet registered into AttackStanceTaskManager, broadcast AutoAttackStart packet. Check if a summon exists, if so, broadcast AutoAttackStart packet for the summon.
+		if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor))
+		{
+			final Summon summon = ((Player) _actor).getSummon();
+			if (summon != null)
+				summon.broadcastPacket(new AutoAttackStart(summon.getObjectId()));
+			
+			_actor.broadcastPacket(new AutoAttackStart(_actor.getObjectId()));
+		}
+		
+		// Set out of the initial if check to be able to refresh the time.
+		AttackStanceTaskManager.getInstance().add(_actor);
+	}
+	
 	private void thinkAttack()
 	{
 		final Creature target = (Creature) getTarget();
 		if (target == null)
 		{
 			setTarget(null);
-			setIntention(CtrlIntention.ACTIVE);
+			setIntention(IntentionType.ACTIVE);
 			return;
 		}
 		
@@ -196,7 +204,7 @@ public class PlayerAI extends PlayableAI
 				target.stopFakeDeath(true);
 			else
 			{
-				setIntention(CtrlIntention.ACTIVE);
+				setIntention(IntentionType.ACTIVE);
 				return;
 			}
 		}
@@ -254,7 +262,7 @@ public class PlayerAI extends PlayableAI
 		if (maybeMoveToPawn(target, 36))
 			return;
 		
-		setIntention(CtrlIntention.IDLE);
+		setIntention(IntentionType.IDLE);
 		_actor.getActingPlayer().doPickupItem(target);
 	}
 	
@@ -273,14 +281,14 @@ public class PlayerAI extends PlayableAI
 		if (!(target instanceof StaticObject))
 			_actor.getActingPlayer().doInteract((Creature) target);
 		
-		setIntention(CtrlIntention.IDLE);
+		setIntention(IntentionType.IDLE);
 	}
 	
 	@Override
 	protected void onEvtThink()
 	{
 		// Check if the actor can't use skills and if a thinking action isn't already in progress
-		if (_thinking && getIntention() != CtrlIntention.CAST) // casting must always continue
+		if (_thinking && _desire.getIntention() != IntentionType.CAST) // casting must always continue
 			return;
 		
 		// Start thinking action
@@ -289,7 +297,7 @@ public class PlayerAI extends PlayableAI
 		try
 		{
 			// Manage AI thoughts
-			switch (getIntention())
+			switch (_desire.getIntention())
 			{
 				case ATTACK:
 					thinkAttack();

@@ -1,27 +1,26 @@
 package net.sf.l2j.gameserver.handler;
 
-import java.util.logging.Logger;
+import net.sf.l2j.commons.logging.CLogger;
 
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public interface ISkillHandler
 {
-	public static Logger _log = Logger.getLogger(ISkillHandler.class.getName());
+	public static final CLogger LOGGER = new CLogger(ISkillHandler.class.getName());
 	
 	/**
-	 * this is the worker method that is called when using a skill.
-	 * @param activeChar The Creature who uses that skill.
-	 * @param skill The skill object itself.
-	 * @param targets Eventual targets.
+	 * The worker method called by a {@link Creature} when using a {@link L2Skill}.
+	 * @param creature : The Creature who uses that L2Skill.
+	 * @param skill : The L2Skill object itself.
+	 * @param targets : The eventual targets.
 	 */
-	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets);
+	public void useSkill(Creature creature, L2Skill skill, WorldObject[] targets);
 	
 	/**
-	 * this method is called at initialization to register all the skill ids automatically
-	 * @return all known itemIds
+	 * @return all known {@link L2SkillType}s.
 	 */
 	public L2SkillType[] getSkillIds();
 }

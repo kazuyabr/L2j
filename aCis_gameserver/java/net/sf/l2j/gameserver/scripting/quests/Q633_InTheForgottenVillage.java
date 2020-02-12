@@ -3,8 +3,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -133,25 +134,24 @@ public class Q633_InTheForgottenVillage extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		int npcId = npc.getNpcId();
+		final Player player = killer.getActingPlayer();
+		final int npcId = npc.getNpcId();
 		
 		if (UNDEADS.containsKey(npcId))
 		{
-			Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-			if (partyMember == null)
+			final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+			if (st == null)
 				return null;
 			
-			partyMember.getQuestState(qn).dropItems(ZOMBIE_LIVER, 1, 0, UNDEADS.get(npcId));
+			st.dropItems(ZOMBIE_LIVER, 1, 0, UNDEADS.get(npcId));
 		}
 		else if (MOBS.containsKey(npcId))
 		{
-			Player partyMember = getRandomPartyMember(player, npc, "1");
-			if (partyMember == null)
+			final QuestState st = getRandomPartyMember(player, npc, "1");
+			if (st == null)
 				return null;
-			
-			QuestState st = partyMember.getQuestState(qn);
 			
 			if (st.dropItems(RIB_BONE, 1, 200, MOBS.get(npcId)))
 				st.set("cond", "2");

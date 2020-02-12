@@ -1,13 +1,14 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.items.ShotType;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillElemental extends L2Skill
 {

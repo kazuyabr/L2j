@@ -5,8 +5,9 @@ import java.util.Map;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -279,23 +280,23 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
 			return null;
 		
 		final int npcId = npc.getNpcId();
 		
 		// Support for Q612.
-		QuestState st = partyMember.getQuestState(qn2);
-		if (st != null && Rnd.nextBoolean() && CHANCES_MOLAR.containsKey(npcId))
+		final QuestState st2 = st.getPlayer().getQuestState(qn2);
+		if (st2 != null && Rnd.nextBoolean() && CHANCES_MOLAR.containsKey(npcId))
 		{
-			st.dropItems(MOLAR_OF_KETRA_ORC, 1, 0, CHANCES_MOLAR.get(npcId));
+			st2.dropItems(MOLAR_OF_KETRA_ORC, 1, 0, CHANCES_MOLAR.get(npcId));
 			return null;
 		}
-		
-		st = partyMember.getQuestState(qn);
 		
 		int cond = st.getInt("cond");
 		if (cond == 6)

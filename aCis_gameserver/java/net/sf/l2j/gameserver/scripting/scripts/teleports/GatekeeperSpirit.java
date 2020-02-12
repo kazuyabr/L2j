@@ -1,10 +1,11 @@
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.SealType;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 /**
@@ -43,9 +44,9 @@ public class GatekeeperSpirit extends Quest
 	@Override
 	public String onFirstTalk(Npc npc, Player player)
 	{
-		final CabalType playerCabal = SevenSigns.getInstance().getPlayerCabal(player.getObjectId());
-		final CabalType sealAvariceOwner = SevenSigns.getInstance().getSealOwner(SealType.AVARICE);
-		final CabalType winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+		final CabalType playerCabal = SevenSignsManager.getInstance().getPlayerCabal(player.getObjectId());
+		final CabalType sealAvariceOwner = SevenSignsManager.getInstance().getSealOwner(SealType.AVARICE);
+		final CabalType winningCabal = SevenSignsManager.getInstance().getCabalHighestScore();
 		
 		if (playerCabal == sealAvariceOwner && playerCabal == winningCabal)
 		{
@@ -64,7 +65,7 @@ public class GatekeeperSpirit extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		switch (npc.getNpcId())
 		{
@@ -76,6 +77,6 @@ public class GatekeeperSpirit extends Quest
 				startQuestTimer("anakim_exit", 10000, null, null, false);
 				break;
 		}
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 }

@@ -2,26 +2,20 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.Collection;
 
-import net.sf.l2j.gameserver.model.item.RecipeList;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.item.Recipe;
 
-/**
- * format d d(dd)
- */
 public class RecipeBookItemList extends L2GameServerPacket
 {
-	private Collection<RecipeList> _recipes;
-	private final boolean _isDwarvenCraft;
+	private Collection<Recipe> _recipes;
+	private final boolean _isDwarven;
 	private final int _maxMp;
 	
-	public RecipeBookItemList(boolean isDwarvenCraft, int maxMp)
+	public RecipeBookItemList(Player player, boolean isDwarven)
 	{
-		_isDwarvenCraft = isDwarvenCraft;
-		_maxMp = maxMp;
-	}
-	
-	public void addRecipes(Collection<RecipeList> recipeBook)
-	{
-		_recipes = recipeBook;
+		_recipes = (isDwarven) ? player.getDwarvenRecipeBook() : player.getCommonRecipeBook();
+		_isDwarven = isDwarven;
+		_maxMp = player.getMaxMp();
 	}
 	
 	@Override
@@ -29,17 +23,17 @@ public class RecipeBookItemList extends L2GameServerPacket
 	{
 		writeC(0xD6);
 		
-		writeD(_isDwarvenCraft ? 0x00 : 0x01); // 0 = Dwarven - 1 = Common
+		writeD((_isDwarven) ? 0x00 : 0x01);
 		writeD(_maxMp);
 		
 		if (_recipes == null)
 			writeD(0);
 		else
 		{
-			writeD(_recipes.size());// number of items in recipe book
+			writeD(_recipes.size());
 			
 			int i = 0;
-			for (RecipeList recipe : _recipes)
+			for (Recipe recipe : _recipes)
 			{
 				writeD(recipe.getId());
 				writeD(++i);

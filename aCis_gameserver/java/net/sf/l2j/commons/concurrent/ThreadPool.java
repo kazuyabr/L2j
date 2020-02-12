@@ -5,7 +5,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.Config;
 
@@ -21,7 +22,7 @@ import net.sf.l2j.Config;
  */
 public final class ThreadPool
 {
-	protected static final Logger LOG = Logger.getLogger(ThreadPool.class.getName());
+	protected static final CLogger LOGGER = new CLogger(ThreadPool.class.getName());
 	
 	private static final long MAX_DELAY = TimeUnit.NANOSECONDS.toMillis(Long.MAX_VALUE - System.nanoTime()) / 2;
 	
@@ -61,20 +62,16 @@ public final class ThreadPool
 			threadPool.prestartAllCoreThreads();
 		
 		// Launch purge task.
-		scheduleAtFixedRate(new Runnable()
+		scheduleAtFixedRate(() ->
 		{
-			@Override
-			public void run()
-			{
-				for (ScheduledThreadPoolExecutor threadPool : _scheduledPools)
-					threadPool.purge();
-				
-				for (ThreadPoolExecutor threadPool : _instantPools)
-					threadPool.purge();
-			}
+			for (ScheduledThreadPoolExecutor threadPool : _scheduledPools)
+				threadPool.purge();
+			
+			for (ThreadPoolExecutor threadPool : _instantPools)
+				threadPool.purge();
 		}, 600000, 600000);
 		
-		LOG.info("ThreadPool: Initialized " + getPoolSize(_scheduledPools) + "/" + getMaximumPoolSize(_scheduledPools) + " scheduled, " + getPoolSize(_instantPools) + "/" + getMaximumPoolSize(_instantPools) + " instant thread(s).");
+		LOGGER.info("Initializing ThreadPool.");
 	}
 	
 	/**
@@ -138,32 +135,32 @@ public final class ThreadPool
 		{
 			final ScheduledThreadPoolExecutor threadPool = _scheduledPools[i];
 			
-			LOG.info("=================================================");
-			LOG.info("Scheduled pool #" + i + ":");
-			LOG.info("\tgetActiveCount: ...... " + threadPool.getActiveCount());
-			LOG.info("\tgetCorePoolSize: ..... " + threadPool.getCorePoolSize());
-			LOG.info("\tgetPoolSize: ......... " + threadPool.getPoolSize());
-			LOG.info("\tgetLargestPoolSize: .. " + threadPool.getLargestPoolSize());
-			LOG.info("\tgetMaximumPoolSize: .. " + threadPool.getMaximumPoolSize());
-			LOG.info("\tgetCompletedTaskCount: " + threadPool.getCompletedTaskCount());
-			LOG.info("\tgetQueuedTaskCount: .. " + threadPool.getQueue().size());
-			LOG.info("\tgetTaskCount: ........ " + threadPool.getTaskCount());
+			LOGGER.info("=================================================");
+			LOGGER.info("Scheduled pool #" + i + ":");
+			LOGGER.info("\tgetActiveCount: ...... " + threadPool.getActiveCount());
+			LOGGER.info("\tgetCorePoolSize: ..... " + threadPool.getCorePoolSize());
+			LOGGER.info("\tgetPoolSize: ......... " + threadPool.getPoolSize());
+			LOGGER.info("\tgetLargestPoolSize: .. " + threadPool.getLargestPoolSize());
+			LOGGER.info("\tgetMaximumPoolSize: .. " + threadPool.getMaximumPoolSize());
+			LOGGER.info("\tgetCompletedTaskCount: " + threadPool.getCompletedTaskCount());
+			LOGGER.info("\tgetQueuedTaskCount: .. " + threadPool.getQueue().size());
+			LOGGER.info("\tgetTaskCount: ........ " + threadPool.getTaskCount());
 		}
 		
 		for (int i = 0; i < _instantPools.length; i++)
 		{
 			final ThreadPoolExecutor threadPool = _instantPools[i];
 			
-			LOG.info("=================================================");
-			LOG.info("Instant pool #" + i + ":");
-			LOG.info("\tgetActiveCount: ...... " + threadPool.getActiveCount());
-			LOG.info("\tgetCorePoolSize: ..... " + threadPool.getCorePoolSize());
-			LOG.info("\tgetPoolSize: ......... " + threadPool.getPoolSize());
-			LOG.info("\tgetLargestPoolSize: .. " + threadPool.getLargestPoolSize());
-			LOG.info("\tgetMaximumPoolSize: .. " + threadPool.getMaximumPoolSize());
-			LOG.info("\tgetCompletedTaskCount: " + threadPool.getCompletedTaskCount());
-			LOG.info("\tgetQueuedTaskCount: .. " + threadPool.getQueue().size());
-			LOG.info("\tgetTaskCount: ........ " + threadPool.getTaskCount());
+			LOGGER.info("=================================================");
+			LOGGER.info("Instant pool #" + i + ":");
+			LOGGER.info("\tgetActiveCount: ...... " + threadPool.getActiveCount());
+			LOGGER.info("\tgetCorePoolSize: ..... " + threadPool.getCorePoolSize());
+			LOGGER.info("\tgetPoolSize: ......... " + threadPool.getPoolSize());
+			LOGGER.info("\tgetLargestPoolSize: .. " + threadPool.getLargestPoolSize());
+			LOGGER.info("\tgetMaximumPoolSize: .. " + threadPool.getMaximumPoolSize());
+			LOGGER.info("\tgetCompletedTaskCount: " + threadPool.getCompletedTaskCount());
+			LOGGER.info("\tgetQueuedTaskCount: .. " + threadPool.getQueue().size());
+			LOGGER.info("\tgetTaskCount: ........ " + threadPool.getTaskCount());
 		}
 	}
 	
@@ -207,34 +204,6 @@ public final class ThreadPool
 		return Math.max(0, Math.min(MAX_DELAY, delay));
 	}
 	
-	/**
-	 * @param threadPools : The pool array to check.
-	 * @return the overall actual pools size.
-	 */
-	private static long getPoolSize(ThreadPoolExecutor[] threadPools)
-	{
-		long result = 0;
-		
-		for (ThreadPoolExecutor threadPool : threadPools)
-			result += threadPool.getPoolSize();
-		
-		return result;
-	}
-	
-	/**
-	 * @param threadPools : The pool array to check.
-	 * @return the overall maximum pools size.
-	 */
-	private static long getMaximumPoolSize(ThreadPoolExecutor[] threadPools)
-	{
-		long result = 0;
-		
-		for (ThreadPoolExecutor threadPool : threadPools)
-			result += threadPool.getMaximumPoolSize();
-		
-		return result;
-	}
-	
 	public static final class TaskWrapper implements Runnable
 	{
 		private final Runnable _runnable;
@@ -253,7 +222,7 @@ public final class ThreadPool
 			}
 			catch (RuntimeException e)
 			{
-				LOG.warning("Exception in a Runnable execution:" + e);
+				LOGGER.error("Exception in a ThreadPool task execution.", e);
 			}
 		}
 	}

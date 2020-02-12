@@ -3,9 +3,8 @@ package net.sf.l2j.gameserver.model.memo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.L2DatabaseFactory;
 
@@ -15,7 +14,7 @@ import net.sf.l2j.L2DatabaseFactory;
 @SuppressWarnings("serial")
 public class PlayerMemo extends AbstractMemo
 {
-	private static final Logger LOG = Logger.getLogger(PlayerMemo.class.getName());
+	private static final CLogger LOGGER = new CLogger(PlayerMemo.class.getName());
 	
 	private static final String SELECT_QUERY = "SELECT * FROM character_memo WHERE charId = ?";
 	private static final String DELETE_QUERY = "DELETE FROM character_memo WHERE charId = ?";
@@ -35,19 +34,20 @@ public class PlayerMemo extends AbstractMemo
 		// Restore previous variables.
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement st = con.prepareStatement(SELECT_QUERY);
-			st.setInt(1, _objectId);
-			
-			ResultSet rset = st.executeQuery();
-			while (rset.next())
-				set(rset.getString("var"), rset.getString("val"));
-			
-			rset.close();
-			st.close();
+			try (PreparedStatement ps = con.prepareStatement(SELECT_QUERY))
+			{
+				ps.setInt(1, _objectId);
+				
+				try (ResultSet rs = ps.executeQuery())
+				{
+					while (rs.next())
+						set(rs.getString("var"), rs.getString("val"));
+				}
+			}
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			LOG.log(Level.SEVERE, "Couldn't restore variables for player id: " + _objectId, e);
+			LOGGER.error("Couldn't restore variables for player id {}.", e, _objectId);
 			return false;
 		}
 		finally
@@ -67,26 +67,28 @@ public class PlayerMemo extends AbstractMemo
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Clear previous entries.
-			PreparedStatement st = con.prepareStatement(DELETE_QUERY);
-			st.setInt(1, _objectId);
-			st.execute();
-			st.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_QUERY))
+			{
+				ps.setInt(1, _objectId);
+				ps.execute();
+			}
 			
 			// Insert all variables.
-			st = con.prepareStatement(INSERT_QUERY);
-			st.setInt(1, _objectId);
-			for (Entry<String, Object> entry : entrySet())
+			try (PreparedStatement ps = con.prepareStatement(INSERT_QUERY))
 			{
-				st.setString(2, entry.getKey());
-				st.setString(3, String.valueOf(entry.getValue()));
-				st.addBatch();
+				ps.setInt(1, _objectId);
+				for (Entry<String, Object> entry : entrySet())
+				{
+					ps.setString(2, entry.getKey());
+					ps.setString(3, String.valueOf(entry.getValue()));
+					ps.addBatch();
+				}
+				ps.executeBatch();
 			}
-			st.executeBatch();
-			st.close();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			LOG.log(Level.SEVERE, "Couldn't update variables for player id: " + _objectId, e);
+			LOGGER.error("Couldn't update variables for player id {}.", e, _objectId);
 			return false;
 		}
 		finally

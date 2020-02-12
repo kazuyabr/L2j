@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
-import net.sf.l2j.gameserver.data.DoorTable;
+import net.sf.l2j.gameserver.data.xml.DoorData;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -24,11 +24,11 @@ public class PaganTeleporters extends Quest
 	public String onAdvEvent(String event, Npc npc, Player player)
 	{
 		if (event.equalsIgnoreCase("Close_Door1"))
-			DoorTable.getInstance().getDoor(19160001).closeMe();
+			DoorData.getInstance().getDoor(19160001).closeMe();
 		else if (event.equalsIgnoreCase("Close_Door2"))
 		{
-			DoorTable.getInstance().getDoor(19160010).closeMe();
-			DoorTable.getInstance().getDoor(19160011).closeMe();
+			DoorData.getInstance().getDoor(19160010).closeMe();
+			DoorData.getInstance().getDoor(19160011).closeMe();
 		}
 		return null;
 	}
@@ -46,7 +46,7 @@ public class PaganTeleporters extends Quest
 			case 32034:
 				if (st.hasQuestItems(VISITOR_MARK) || st.hasQuestItems(PAGAN_MARK))
 				{
-					DoorTable.getInstance().getDoor(19160001).openMe();
+					DoorData.getInstance().getDoor(19160001).openMe();
 					startQuestTimer("Close_Door1", 10000, npc, player, false);
 					htmltext = "FadedMark.htm";
 				}
@@ -58,7 +58,7 @@ public class PaganTeleporters extends Quest
 				break;
 			
 			case 32035:
-				DoorTable.getInstance().getDoor(19160001).openMe();
+				DoorData.getInstance().getDoor(19160001).openMe();
 				startQuestTimer("Close_Door1", 10000, npc, player, false);
 				htmltext = "FadedMark.htm";
 				break;
@@ -68,26 +68,26 @@ public class PaganTeleporters extends Quest
 					htmltext = "32036-1.htm";
 				else
 				{
-					DoorTable.getInstance().getDoor(19160010).openMe();
-					DoorTable.getInstance().getDoor(19160011).openMe();
+					DoorData.getInstance().getDoor(19160010).openMe();
+					DoorData.getInstance().getDoor(19160011).openMe();
 					startQuestTimer("Close_Door2", 10000, npc, player, false);
 					htmltext = "32036-2.htm";
 				}
 				break;
 			
 			case 32037:
-				DoorTable.getInstance().getDoor(19160010).openMe();
-				DoorTable.getInstance().getDoor(19160011).openMe();
+				DoorData.getInstance().getDoor(19160010).openMe();
+				DoorData.getInstance().getDoor(19160011).openMe();
 				startQuestTimer("Close_Door2", 10000, npc, player, false);
 				htmltext = "FadedMark.htm";
 				break;
 			
 			case 32039:
-				player.teleToLocation(-12766, -35840, -10856, 0);
+				player.teleportTo(-12766, -35840, -10856, 0);
 				break;
 			
 			case 32040:
-				player.teleToLocation(34962, -49758, -763, 0);
+				player.teleportTo(34962, -49758, -763, 0);
 				break;
 		}
 		return htmltext;

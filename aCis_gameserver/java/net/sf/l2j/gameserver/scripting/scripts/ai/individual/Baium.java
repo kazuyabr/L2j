@@ -5,28 +5,29 @@ import java.util.List;
 
 import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.ScriptEventType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
-import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
+import net.sf.l2j.gameserver.model.zone.type.BossZone;
 import net.sf.l2j.gameserver.network.serverpackets.Earthquake;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
-import net.sf.l2j.gameserver.scripting.EventType;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * Following animations are handled in that time tempo :
@@ -39,7 +40,7 @@ import net.sf.l2j.gameserver.templates.StatsSet;
  */
 public class Baium extends L2AttackableAIScript
 {
-	private static final L2BossZone BAIUM_LAIR = ZoneManager.getInstance().getZoneById(110002, L2BossZone.class);
+	private static final BossZone BAIUM_LAIR = ZoneManager.getInstance().getZoneById(110002, BossZone.class);
 	
 	private static final int STONE_BAIUM = 29025;
 	private static final int LIVE_BAIUM = 29020;
@@ -61,7 +62,7 @@ public class Baium extends L2AttackableAIScript
 	};
 	
 	private Creature _actualVictim;
-	private long _lastAttackTime = 0;
+	private long _timeTracker = 0;
 	private final List<Npc> _minions = new ArrayList<>(5);
 	
 	public Baium()
@@ -107,7 +108,7 @@ public class Baium extends L2AttackableAIScript
 			baium.setRunning();
 			
 			// start monitoring baium's inactivity
-			_lastAttackTime = System.currentTimeMillis();
+			_timeTracker = System.currentTimeMillis();
 			startQuestTimer("baium_despawn", 60000, baium, null, true);
 			startQuestTimer("skill_range", 2000, baium, null, true);
 			
@@ -115,7 +116,7 @@ public class Baium extends L2AttackableAIScript
 			for (SpawnLocation loc : ANGEL_LOCATION)
 			{
 				Npc angel = addSpawn(ARCHANGEL, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), false, 0, true);
-				((Attackable) angel).setIsRaidMinion(true);
+				((Monster) angel).setMinion(true);
 				angel.setRunning();
 				_minions.add(angel);
 			}
@@ -130,7 +131,7 @@ public class Baium extends L2AttackableAIScript
 	@Override
 	protected void registerNpcs()
 	{
-		addEventIds(LIVE_BAIUM, EventType.ON_ATTACK, EventType.ON_KILL, EventType.ON_SPAWN);
+		addEventIds(LIVE_BAIUM, ScriptEventType.ON_ATTACK, ScriptEventType.ON_KILL, ScriptEventType.ON_SPAWN);
 	}
 	
 	@Override
@@ -154,7 +155,7 @@ public class Baium extends L2AttackableAIScript
 					if (!MathUtil.checkIfInShortRadius(300, player, npc, true))
 					{
 						BAIUM_LAIR.allowPlayerEntry(player, 10);
-						player.teleToLocation(115929, 17349, 10077, 0);
+						player.teleportTo(115929, 17349, 10077, 0);
 					}
 					
 					// 60% to die.
@@ -171,7 +172,7 @@ public class Baium extends L2AttackableAIScript
 				for (SpawnLocation loc : ANGEL_LOCATION)
 				{
 					Npc angel = addSpawn(ARCHANGEL, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), false, 0, true);
-					((Attackable) angel).setIsRaidMinion(true);
+					((Monster) angel).setMinion(true);
 					angel.setRunning();
 					_minions.add(angel);
 				}
@@ -185,7 +186,7 @@ public class Baium extends L2AttackableAIScript
 				npc.setRunning();
 				
 				// Start monitoring baium's inactivity and activate the AI
-				_lastAttackTime = System.currentTimeMillis();
+				_timeTracker = System.currentTimeMillis();
 				
 				startQuestTimer("baium_despawn", 60000, npc, null, true);
 				startQuestTimer("skill_range", 2000, npc, null, true);
@@ -194,7 +195,7 @@ public class Baium extends L2AttackableAIScript
 			// also check if the players are cheating, having pulled Baium outside his zone...
 			else if (event.equalsIgnoreCase("baium_despawn"))
 			{
-				if (_lastAttackTime + 1800000 < System.currentTimeMillis())
+				if (_timeTracker + 1800000 < System.currentTimeMillis())
 				{
 					// despawn the live-baium
 					npc.deleteMe();
@@ -212,13 +213,13 @@ public class Baium extends L2AttackableAIScript
 					BAIUM_LAIR.oustAllPlayers();
 					cancelQuestTimer("baium_despawn", npc, null);
 				}
-				else if ((_lastAttackTime + 300000 < System.currentTimeMillis()) && (npc.getCurrentHp() / npc.getMaxHp() < 0.75))
+				else if ((_timeTracker + 300000 < System.currentTimeMillis()) && (npc.getCurrentHp() / npc.getMaxHp() < 0.75))
 				{
 					npc.setTarget(npc);
 					npc.doCast(SkillTable.getInstance().getInfo(4135, 1));
 				}
 				else if (!BAIUM_LAIR.isInsideZone(npc))
-					npc.teleToLocation(116033, 17447, 10104, 0);
+					npc.teleportTo(116033, 17447, 10104, 0);
 			}
 		}
 		else if (event.equalsIgnoreCase("baium_unlock"))
@@ -258,7 +259,7 @@ public class Baium extends L2AttackableAIScript
 					if (newVictim != null && victim != newVictim)
 					{
 						angel.addDamageHate(newVictim, 0, 10000);
-						angel.getAI().setIntention(CtrlIntention.ATTACK, newVictim);
+						angel.getAI().setIntention(IntentionType.ATTACK, newVictim);
 					}
 				}
 			}
@@ -304,36 +305,25 @@ public class Baium extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		if (!BAIUM_LAIR.isInsideZone(attacker))
-		{
-			attacker.doDie(attacker);
-			return null;
-		}
-		
 		if (npc.isInvul())
 			return null;
 		
-		if (npc.getNpcId() == LIVE_BAIUM)
+		if (attacker instanceof Playable)
 		{
-			if (attacker.getMountType() == 1)
-			{
-				final L2Skill debuff = SkillTable.getInstance().getInfo(4258, 1);
-				if (attacker.getFirstEffect(debuff) == null)
-				{
-					npc.setTarget(attacker);
-					npc.doCast(debuff);
-				}
-			}
-			// update a variable with the last action against baium
-			_lastAttackTime = System.currentTimeMillis();
+			// Curses
+			if (testCursesOnAttack(npc, attacker))
+				return null;
+			
+			// Refresh timer on every hit.
+			_timeTracker = System.currentTimeMillis();
 		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		cancelQuestTimer("baium_despawn", npc, null);
 		npc.broadcastPacket(new PlaySound(1, "BS01_D", npc));
@@ -365,7 +355,7 @@ public class Baium extends L2AttackableAIScript
 		// Clean angels AI
 		cancelQuestTimer("angels_aggro_reconsider", null, null);
 		
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 	
 	/**
@@ -433,12 +423,12 @@ public class Baium extends L2AttackableAIScript
 		// Adapt the skill range, because Baium is fat.
 		if (MathUtil.checkIfInRange((int) (skill.getCastRange() + npc.getCollisionRadius()), npc, _actualVictim, true))
 		{
-			npc.getAI().setIntention(CtrlIntention.IDLE);
+			npc.getAI().setIntention(IntentionType.IDLE);
 			npc.setTarget(skill.getId() == 4135 ? npc : _actualVictim);
 			npc.doCast(skill);
 		}
 		else
-			npc.getAI().setIntention(CtrlIntention.FOLLOW, _actualVictim, null);
+			npc.getAI().setIntention(IntentionType.FOLLOW, _actualVictim, null);
 	}
 	
 	/**

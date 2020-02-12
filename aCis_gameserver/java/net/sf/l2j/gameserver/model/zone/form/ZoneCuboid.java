@@ -1,12 +1,8 @@
 package net.sf.l2j.gameserver.model.zone.form;
 
-import net.sf.l2j.gameserver.model.zone.L2ZoneForm;
+import net.sf.l2j.gameserver.model.zone.ZoneForm;
 
-/**
- * A primitive rectangular zone
- * @author durgus
- */
-public class ZoneCuboid extends L2ZoneForm
+public class ZoneCuboid extends ZoneForm
 {
 	private int _x1, _x2, _y1, _y2, _z1, _z2;
 	
@@ -14,7 +10,9 @@ public class ZoneCuboid extends L2ZoneForm
 	{
 		_x1 = x1;
 		_x2 = x2;
-		if (_x1 > _x2) // switch them if alignment is wrong
+		
+		// switch them if alignment is wrong
+		if (_x1 > _x2)
 		{
 			_x1 = x2;
 			_x2 = x1;
@@ -22,7 +20,9 @@ public class ZoneCuboid extends L2ZoneForm
 		
 		_y1 = y1;
 		_y2 = y2;
-		if (_y1 > _y2) // switch them if alignment is wrong
+		
+		// switch them if alignment is wrong
+		if (_y1 > _y2)
 		{
 			_y1 = y2;
 			_y2 = y1;
@@ -30,7 +30,9 @@ public class ZoneCuboid extends L2ZoneForm
 		
 		_z1 = z1;
 		_z2 = z2;
-		if (_z1 > _z2) // switch them if alignment is wrong
+		
+		// switch them if alignment is wrong
+		if (_z1 > _z2)
 		{
 			_z1 = z2;
 			_z2 = z1;
@@ -42,6 +44,7 @@ public class ZoneCuboid extends L2ZoneForm
 	{
 		if (x < _x1 || x > _x2 || y < _y1 || y > _y2 || z < _z1 || z > _z2)
 			return false;
+		
 		return true;
 	}
 	
@@ -51,40 +54,52 @@ public class ZoneCuboid extends L2ZoneForm
 		// Check if any point inside this rectangle
 		if (isInsideZone(ax1, ay1, (_z2 - 1)))
 			return true;
+		
 		if (isInsideZone(ax1, ay2, (_z2 - 1)))
 			return true;
+		
 		if (isInsideZone(ax2, ay1, (_z2 - 1)))
 			return true;
+		
 		if (isInsideZone(ax2, ay2, (_z2 - 1)))
 			return true;
 		
 		// Check if any point from this rectangle is inside the other one
 		if (_x1 > ax1 && _x1 < ax2 && _y1 > ay1 && _y1 < ay2)
 			return true;
+		
 		if (_x1 > ax1 && _x1 < ax2 && _y2 > ay1 && _y2 < ay2)
 			return true;
+		
 		if (_x2 > ax1 && _x2 < ax2 && _y1 > ay1 && _y1 < ay2)
 			return true;
+		
 		if (_x2 > ax1 && _x2 < ax2 && _y2 > ay1 && _y2 < ay2)
 			return true;
 		
 		// Horizontal lines may intersect vertical lines
 		if (lineSegmentsIntersect(_x1, _y1, _x2, _y1, ax1, ay1, ax1, ay2))
 			return true;
+		
 		if (lineSegmentsIntersect(_x1, _y1, _x2, _y1, ax2, ay1, ax2, ay2))
 			return true;
+		
 		if (lineSegmentsIntersect(_x1, _y2, _x2, _y2, ax1, ay1, ax1, ay2))
 			return true;
+		
 		if (lineSegmentsIntersect(_x1, _y2, _x2, _y2, ax2, ay1, ax2, ay2))
 			return true;
 		
 		// Vertical lines may intersect horizontal lines
 		if (lineSegmentsIntersect(_x1, _y1, _x1, _y2, ax1, ay1, ax2, ay1))
 			return true;
+		
 		if (lineSegmentsIntersect(_x1, _y1, _x1, _y2, ax1, ay2, ax2, ay2))
 			return true;
+		
 		if (lineSegmentsIntersect(_x2, _y1, _x2, _y2, ax1, ay1, ax2, ay1))
 			return true;
+		
 		if (lineSegmentsIntersect(_x2, _y1, _x2, _y2, ax1, ay2, ax2, ay2))
 			return true;
 		
@@ -111,9 +126,6 @@ public class ZoneCuboid extends L2ZoneForm
 		return Math.sqrt(shortestDist);
 	}
 	
-	/*
-	 * getLowZ() / getHighZ() - These two functions were added to cope with the demand of the new fishing algorithms, wich are now able to correctly place the hook in the water, thanks to getHighZ(). getLowZ() was added, considering potential future modifications.
-	 */
 	@Override
 	public int getLowZ()
 	{
@@ -135,6 +147,7 @@ public class ZoneCuboid extends L2ZoneForm
 			dropDebugItem(id, x, _y1, z);
 			dropDebugItem(id, x, _y2, z);
 		}
+		
 		// y1->y2
 		for (int y = _y1; y < _y2; y = y + STEP)
 		{

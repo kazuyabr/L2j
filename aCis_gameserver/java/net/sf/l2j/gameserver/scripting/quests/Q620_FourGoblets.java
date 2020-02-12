@@ -4,9 +4,10 @@ import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
-import net.sf.l2j.gameserver.instancemanager.FourSepulchersManager;
+import net.sf.l2j.gameserver.data.manager.FourSepulchersManager;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -82,7 +83,7 @@ public class Q620_FourGoblets extends Quest
 		}
 		else if (event.equalsIgnoreCase("31452-06.htm"))
 		{
-			player.teleToLocation(169590, -90218, -2914, 0); // Wigoth : Teleport back to Pilgrim's Temple
+			player.teleportTo(169590, -90218, -2914, 0); // Wigoth : Teleport back to Pilgrim's Temple
 		}
 		else if (event.equalsIgnoreCase("31453-13.htm"))
 		{
@@ -132,14 +133,14 @@ public class Q620_FourGoblets extends Quest
 		{
 			if (st.hasQuestItems(ANTIQUE_BROOCH))
 			{
-				player.teleToLocation(178298, -84574, -7216, 0);
+				player.teleportTo(178298, -84574, -7216, 0);
 				return null;
 			}
 			
 			if (st.hasQuestItems(USED_GRAVE_PASS))
 			{
 				st.takeItems(USED_GRAVE_PASS, 1);
-				player.teleToLocation(178298, -84574, -7216, 0);
+				player.teleportTo(178298, -84574, -7216, 0);
 				return null;
 			}
 			htmltext = npc.getNpcId() + "-00.htm";
@@ -149,14 +150,14 @@ public class Q620_FourGoblets extends Quest
 		{
 			if (st.hasQuestItems(ANTIQUE_BROOCH))
 			{
-				player.teleToLocation(186942, -75602, -2834, 0);
+				player.teleportTo(186942, -75602, -2834, 0);
 				return null;
 			}
 			
 			if (st.hasQuestItems(USED_GRAVE_PASS))
 			{
 				st.takeItems(USED_GRAVE_PASS, 1);
-				player.teleToLocation(186942, -75602, -2834, 0);
+				player.teleportTo(186942, -75602, -2834, 0);
 				return null;
 			}
 			htmltext = npc.getNpcId() + "-00.htm";
@@ -250,13 +251,15 @@ public class Q620_FourGoblets extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
 			return null;
 		
-		partyMember.getQuestState(qn).dropItems(SEALED_BOX, 1, 0, 300000);
+		st.dropItems(SEALED_BOX, 1, 0, 300000);
 		return null;
 	}
 	

@@ -8,25 +8,24 @@ import java.util.regex.Pattern;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.data.NpcTable;
-import net.sf.l2j.gameserver.data.SpawnTable;
+import net.sf.l2j.gameserver.data.manager.DayNightManager;
 import net.sf.l2j.gameserver.data.manager.FenceManager;
+import net.sf.l2j.gameserver.data.manager.RaidBossManager;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.data.sql.SpawnTable;
 import net.sf.l2j.gameserver.data.xml.AdminData;
+import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
-import net.sf.l2j.gameserver.instancemanager.DayNightSpawnManager;
-import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Fence;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
+import net.sf.l2j.gameserver.model.spawn.L2Spawn;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.util.Broadcast;
 
 /**
  * This class handles following admin commands:<br>
@@ -73,7 +72,7 @@ public class AdminSpawn implements IAdminCommandHandler
 				else
 				{
 					params[1] = params[1].replace('_', ' ');
-					npcId = NpcTable.getInstance().getTemplateByName(params[1]).getNpcId();
+					npcId = NpcData.getInstance().getTemplateByName(params[1]).getNpcId();
 				}
 			}
 			catch (Exception e)
@@ -94,7 +93,7 @@ public class AdminSpawn implements IAdminCommandHandler
 			int index = 0, x, y, z;
 			String name = "";
 			
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable())
+			for (L2Spawn spawn : SpawnTable.getInstance().getSpawns())
 			{
 				if (npcId == spawn.getNpcId())
 				{
@@ -181,27 +180,33 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_unspawnall"))
 		{
-			Broadcast.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.NPC_SERVER_NOT_OPERATING));
-			RaidBossSpawnManager.getInstance().cleanUp();
-			DayNightSpawnManager.getInstance().cleanUp();
+			World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.NPC_SERVER_NOT_OPERATING));
+			RaidBossManager.getInstance().cleanUp(false);
+			DayNightManager.getInstance().cleanUp();
 			World.getInstance().deleteVisibleNpcSpawns();
 			AdminData.getInstance().broadcastMessageToGMs("NPCs' unspawn is now complete.");
 		}
 		else if (command.startsWith("admin_spawnday"))
-			DayNightSpawnManager.getInstance().spawnDayCreatures();
+		{
+			DayNightManager.getInstance().spawnCreatures(false);
+			AdminData.getInstance().broadcastMessageToGMs("Spawning day creatures spawns.");
+		}
 		else if (command.startsWith("admin_spawnnight"))
-			DayNightSpawnManager.getInstance().spawnNightCreatures();
+		{
+			DayNightManager.getInstance().spawnCreatures(true);
+			AdminData.getInstance().broadcastMessageToGMs("Spawning night creatures spawns.");
+		}
 		else if (command.startsWith("admin_respawnall") || command.startsWith("admin_spawn_reload"))
 		{
 			// make sure all spawns are deleted
-			RaidBossSpawnManager.getInstance().cleanUp();
-			DayNightSpawnManager.getInstance().cleanUp();
+			RaidBossManager.getInstance().cleanUp(false);
+			DayNightManager.getInstance().cleanUp();
 			World.getInstance().deleteVisibleNpcSpawns();
 			// now respawn all
-			NpcTable.getInstance().reloadAllNpc();
-			SpawnTable.getInstance().reloadAll();
-			RaidBossSpawnManager.getInstance().reloadBosses();
-			SevenSigns.getInstance().spawnSevenSignsNPC();
+			NpcData.getInstance().reload();
+			SpawnTable.getInstance().reload();
+			RaidBossManager.getInstance().reload();
+			SevenSignsManager.getInstance().spawnSevenSignsNPC();
 			AdminData.getInstance().broadcastMessageToGMs("NPCs' respawn is now complete.");
 		}
 		else if (command.startsWith("admin_spawnfence"))
@@ -257,7 +262,7 @@ public class AdminSpawn implements IAdminCommandHandler
 			{
 				String cmd = st.nextToken();
 				String id = st.nextToken();
-				int respawnTime = st.hasMoreTokens() ? Integer.parseInt(st.nextToken()) : 0;
+				int respawnTime = st.hasMoreTokens() ? Integer.parseInt(st.nextToken()) : 60;
 				
 				if (cmd.equalsIgnoreCase("admin_spawn_once"))
 					spawn(activeChar, id, respawnTime, false);
@@ -287,12 +292,12 @@ public class AdminSpawn implements IAdminCommandHandler
 		NpcTemplate template;
 		
 		if (monsterId.matches("[0-9]*")) // First parameter was an ID number
-			template = NpcTable.getInstance().getTemplate(Integer.parseInt(monsterId));
+			template = NpcData.getInstance().getTemplate(Integer.parseInt(monsterId));
 		else
 		// First parameter wasn't just numbers, so go by name not ID
 		{
 			monsterId = monsterId.replace('_', ' ');
-			template = NpcTable.getInstance().getTemplateByName(monsterId);
+			template = NpcData.getInstance().getTemplateByName(monsterId);
 		}
 		
 		try
@@ -301,9 +306,9 @@ public class AdminSpawn implements IAdminCommandHandler
 			spawn.setLoc(target.getX(), target.getY(), target.getZ(), activeChar.getHeading());
 			spawn.setRespawnDelay(respawnTime);
 			
-			if (RaidBossSpawnManager.getInstance().getValidTemplate(spawn.getNpcId()) != null)
+			if (template.isType("RaidBoss"))
 			{
-				if (RaidBossSpawnManager.getInstance().isDefined(spawn.getNpcId()))
+				if (RaidBossManager.getInstance().getBossSpawn(spawn.getNpcId()) != null)
 				{
 					activeChar.sendMessage("You cannot spawn another instance of " + template.getName() + ".");
 					return;
@@ -311,11 +316,11 @@ public class AdminSpawn implements IAdminCommandHandler
 				
 				spawn.setRespawnMinDelay(43200);
 				spawn.setRespawnMaxDelay(129600);
-				RaidBossSpawnManager.getInstance().addNewSpawn(spawn, 0, 0, 0, permanent);
+				RaidBossManager.getInstance().addNewSpawn(spawn, 0, 0, 0, permanent);
 			}
 			else
 			{
-				SpawnTable.getInstance().addNewSpawn(spawn, permanent);
+				SpawnTable.getInstance().addSpawn(spawn, permanent);
 				spawn.doSpawn(false);
 				if (permanent)
 					spawn.setRespawnState(true);
@@ -335,7 +340,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	
 	private static void showMonsters(Player activeChar, int level, int from)
 	{
-		final List<NpcTemplate> mobs = NpcTable.getInstance().getTemplates(t -> t.isType("Monster") && t.getLevel() == level);
+		final List<NpcTemplate> mobs = NpcData.getInstance().getTemplates(t -> t.isType("Monster") && t.getLevel() == level);
 		final StringBuilder sb = new StringBuilder(200 + mobs.size() * 100);
 		
 		StringUtil.append(sb, "<html><title>Spawn Monster:</title><body><p> Level : ", level, "<br>Total Npc's : ", mobs.size(), "<br>");
@@ -356,7 +361,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	
 	private static void showNpcs(Player activeChar, String starting, int from)
 	{
-		final List<NpcTemplate> mobs = NpcTable.getInstance().getTemplates(t -> t.isType("Folk") && t.getName().startsWith(starting));
+		final List<NpcTemplate> mobs = NpcData.getInstance().getTemplates(t -> t.isType("Folk") && t.getName().startsWith(starting));
 		final StringBuilder sb = new StringBuilder(200 + mobs.size() * 100);
 		
 		StringUtil.append(sb, "<html><title>Spawn Monster:</title><body><p> There are ", mobs.size(), " Npcs whose name starts with ", starting, ":<br>");

@@ -1,12 +1,8 @@
 package net.sf.l2j.gameserver.handler.usercommandhandlers;
 
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
-/**
- * Support for /mount command.
- * @author Tempy
- */
 public class Mount implements IUserCommandHandler
 {
 	private static final int[] COMMAND_IDS =
@@ -17,7 +13,7 @@ public class Mount implements IUserCommandHandler
 	@Override
 	public boolean useUserCommand(int id, Player activeChar)
 	{
-		return activeChar.mountPlayer(activeChar.getPet());
+		return activeChar.mountPlayer(activeChar.getSummon());
 	}
 	
 	@Override

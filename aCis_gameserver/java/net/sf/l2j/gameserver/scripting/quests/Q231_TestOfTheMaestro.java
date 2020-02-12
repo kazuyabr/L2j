@@ -1,10 +1,11 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.actors.ClassId;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -101,7 +102,7 @@ public class Q231_TestOfTheMaestro extends Quest
 			st.playSound(QuestState.SOUND_ITEMGET);
 			st.takeItems(PAINT_OF_TELEPORT_DEVICE, 1);
 			st.giveItems(BROKEN_TELEPORT_DEVICE, 1);
-			player.teleToLocation(140352, -194133, -3146, 0);
+			player.teleportTo(140352, -194133, -3146, 0);
 			startQuestTimer("spawn_bugbears", 5000, null, player, false);
 		}
 		// LORAIN
@@ -120,15 +121,15 @@ public class Q231_TestOfTheMaestro extends Quest
 		{
 			final Attackable bugbear1 = (Attackable) addSpawn(KING_BUGBEAR, 140333, -194153, -3138, 0, false, 200000, true);
 			bugbear1.addDamageHate(player, 0, 999);
-			bugbear1.getAI().setIntention(CtrlIntention.ATTACK, player);
+			bugbear1.getAI().setIntention(IntentionType.ATTACK, player);
 			
 			final Attackable bugbear2 = (Attackable) addSpawn(KING_BUGBEAR, 140395, -194147, -3146, 0, false, 200000, true);
 			bugbear2.addDamageHate(player, 0, 999);
-			bugbear2.getAI().setIntention(CtrlIntention.ATTACK, player);
+			bugbear2.getAI().setIntention(IntentionType.ATTACK, player);
 			
 			final Attackable bugbear3 = (Attackable) addSpawn(KING_BUGBEAR, 140304, -194082, -3157, 0, false, 200000, true);
 			bugbear3.addDamageHate(player, 0, 999);
-			bugbear3.getAI().setIntention(CtrlIntention.ATTACK, player);
+			bugbear3.getAI().setIntention(IntentionType.ATTACK, player);
 			
 			return null;
 		}
@@ -350,9 +351,11 @@ public class Q231_TestOfTheMaestro extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerCondition(player, npc, "cond", "1");
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerCondition(player, npc, "cond", "1");
 		if (st == null)
 			return null;
 		

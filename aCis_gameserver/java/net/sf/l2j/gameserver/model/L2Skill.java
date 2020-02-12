@@ -8,43 +8,45 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.util.ArraysUtil;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.items.ArmorType;
+import net.sf.l2j.gameserver.enums.items.WeaponType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.model.actor.instance.Chest;
 import net.sf.l2j.gameserver.model.actor.instance.Cubic;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.model.actor.instance.HolyThing;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeFlag;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.kind.Armor;
-import net.sf.l2j.gameserver.model.item.type.ArmorType;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
+import net.sf.l2j.gameserver.model.item.kind.Item;
+import net.sf.l2j.gameserver.model.item.kind.Weapon;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.skills.basefuncs.Func;
 import net.sf.l2j.gameserver.skills.basefuncs.FuncTemplate;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
 import net.sf.l2j.gameserver.skills.effects.EffectTemplate;
 import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
-import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public abstract class L2Skill implements IChanceSkillTrigger
 {
@@ -53,6 +55,8 @@ public abstract class L2Skill implements IChanceSkillTrigger
 	private static final WorldObject[] _emptyTargetList = new WorldObject[0];
 	
 	public static final int SKILL_LUCKY = 194;
+	public static final int SKILL_EXPERTISE = 239;
+	public static final int SKILL_SHADOW_SENSE = 294;
 	public static final int SKILL_CREATE_COMMON = 1320;
 	public static final int SKILL_CREATE_DWARVEN = 172;
 	public static final int SKILL_CRYSTALLIZE = 248;
@@ -178,10 +182,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 	private final boolean _overhit;
 	private final boolean _killByDOT;
 	private final boolean _isSuicideAttack;
-	
-	private final boolean _isDemonicSkill;
-	private final boolean _isFlyingSkill;
-	private final boolean _isStriderSkill;
 	
 	private final boolean _isSiegeSummonSkill;
 	
@@ -326,7 +326,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 		
 		_maxNegatedEffects = set.getInteger("maxNegated", 0);
 		
-		_magicLevel = set.getInteger("magicLvl", SkillTreeTable.getInstance().getMinSkillLevel(_id, _level));
+		_magicLevel = set.getInteger("magicLvl", 0);
 		_levelDepend = set.getInteger("lvlDepend", 0);
 		_ignoreResists = set.getBool("ignoreResists", false);
 		
@@ -367,10 +367,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 		_overhit = set.getBool("overHit", false);
 		_killByDOT = set.getBool("killByDOT", false);
 		_isSuicideAttack = set.getBool("isSuicideAttack", false);
-		
-		_isDemonicSkill = set.getBool("isDemonicSkill", false);
-		_isFlyingSkill = set.getBool("isFlyingSkill", false);
-		_isStriderSkill = set.getBool("isStriderSkill", false);
 		
 		_isSiegeSummonSkill = set.getBool("isSiegeSummonSkill", false);
 		
@@ -419,6 +415,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 		if (!_chanceType.isEmpty())
 			_chanceCondition = ChanceCondition.parse(set);
 		
+		_isDebuff = set.getBool("isDebuff", false);
 		_isOffensive = set.getBool("offensive", isSkillTypeOffensive());
 		_maxCharges = set.getInteger("maxCharges", 0);
 		_numCharges = set.getInteger("numCharges", 0);
@@ -435,7 +432,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 		_sSBoost = set.getFloat("SSBoost", 0.f);
 		_aggroPoints = set.getInteger("aggroPoints", 0);
 		
-		_isDebuff = set.getBool("isDebuff", false);
 		_stayAfterDeath = set.getBool("stayAfterDeath", false);
 		
 		_removedOnAnyActionExceptMove = set.getBool("removedOnAnyActionExceptMove", false);
@@ -512,21 +508,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 	public final boolean isSuicideAttack()
 	{
 		return _isSuicideAttack;
-	}
-	
-	public final boolean isDemonicSkill()
-	{
-		return _isDemonicSkill;
-	}
-	
-	public final boolean isFlyingSkill()
-	{
-		return _isFlyingSkill;
-	}
-	
-	public final boolean isStriderSkill()
-	{
-		return _isStriderSkill;
 	}
 	
 	public final boolean isSiegeSummonSkill()
@@ -1176,17 +1157,20 @@ public abstract class L2Skill implements IChanceSkillTrigger
 	
 	public final boolean getWeaponDependancy(Creature activeChar)
 	{
-		int weaponsAllowed = getWeaponsAllowed();
 		// check to see if skill has a weapon dependency.
+		final int weaponsAllowed = getWeaponsAllowed();
 		if (weaponsAllowed == 0)
 			return true;
 		
 		int mask = 0;
 		
-		if (activeChar.getActiveWeaponItem() != null)
-			mask |= activeChar.getActiveWeaponItem().getItemType().mask();
-		if (activeChar.getSecondaryWeaponItem() != null && activeChar.getSecondaryWeaponItem() instanceof Armor)
-			mask |= ((ArmorType) activeChar.getSecondaryWeaponItem().getItemType()).mask();
+		final Weapon weapon = activeChar.getActiveWeaponItem();
+		if (weapon != null)
+			mask |= weapon.getItemType().mask();
+		
+		final Item shield = activeChar.getSecondaryWeaponItem();
+		if (shield != null && shield instanceof Armor)
+			mask |= ((ArmorType) shield.getItemType()).mask();
 		
 		if ((mask & weaponsAllowed) != 0)
 			return true;
@@ -1310,7 +1294,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 			}
 			case TARGET_PET:
 			{
-				target = activeChar.getPet();
+				target = activeChar.getSummon();
 				if (target != null && !target.isDead())
 					return new Creature[]
 					{
@@ -1321,7 +1305,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 			}
 			case TARGET_SUMMON:
 			{
-				target = activeChar.getPet();
+				target = activeChar.getSummon();
 				if (target != null && !target.isDead() && target instanceof Servitor)
 					return new Creature[]
 					{
@@ -1348,7 +1332,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 			{
 				if (activeChar instanceof Player)
 				{
-					target = activeChar.getPet();
+					target = activeChar.getSummon();
 					if (target != null && target.isDead())
 						return new Creature[]
 						{
@@ -1421,7 +1405,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 			}
 			case TARGET_AREA_SUMMON:
 			{
-				target = activeChar.getPet();
+				target = activeChar.getSummon();
 				if (target == null || !(target instanceof Servitor) || target.isDead())
 					return _emptyTargetList;
 				
@@ -1543,7 +1527,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 				else if (activeChar instanceof Player)
 				{
 					if (addSummon(activeChar, player, radius, false))
-						targetList.add(player.getPet());
+						targetList.add(player.getSummon());
 				}
 				
 				final Party party = activeChar.getParty();
@@ -1559,14 +1543,14 @@ public abstract class L2Skill implements IChanceSkillTrigger
 							targetList.add(partyMember);
 						
 						if (addSummon(activeChar, partyMember, radius, false))
-							targetList.add(partyMember.getPet());
+							targetList.add(partyMember.getSummon());
 					}
 				}
 				return targetList.toArray(new Creature[targetList.size()]);
 			}
 			case TARGET_PARTY_MEMBER:
 			{
-				if (target != null && (target == activeChar || (activeChar.isInParty() && target.isInParty() && activeChar.getParty().getLeaderObjectId() == target.getParty().getLeaderObjectId()) || (activeChar instanceof Player && target instanceof Summon && activeChar.getPet() == target) || (activeChar instanceof Summon && target instanceof Player && activeChar == target.getPet())))
+				if (target != null && (target == activeChar || (activeChar.isInParty() && target.isInParty() && activeChar.getParty().getLeaderObjectId() == target.getParty().getLeaderObjectId()) || (activeChar instanceof Player && target instanceof Summon && activeChar.getSummon() == target) || (activeChar instanceof Summon && target instanceof Player && activeChar == target.getSummon())))
 				{
 					if (!target.isDead())
 					{
@@ -1640,7 +1624,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 				final int radius = _skillRadius;
 				
 				if (addSummon(activeChar, player, radius, false))
-					targetList.add(player.getPet());
+					targetList.add(player.getSummon());
 				
 				if (player.getClan() != null)
 				{
@@ -1661,7 +1645,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 						if (!player.checkPvpSkill(obj, this))
 							continue;
 						
-						final Summon summon = obj.getPet();
+						final Summon summon = obj.getSummon();
 						if (summon != null && !summon.isDead())
 							targetList.add(summon);
 						
@@ -1690,6 +1674,8 @@ public abstract class L2Skill implements IChanceSkillTrigger
 				
 				if (player.getClan() != null)
 				{
+					final boolean isInBossZone = player.isInsideZone(ZoneId.BOSS);
+					
 					for (Player obj : activeChar.getKnownTypeInRadius(Player.class, radius))
 					{
 						if (!obj.isDead())
@@ -1709,6 +1695,10 @@ public abstract class L2Skill implements IChanceSkillTrigger
 						
 						// Siege battlefield resurrect has been made possible for participants
 						if (obj.isInsideZone(ZoneId.SIEGE) && !obj.isInSiege())
+							continue;
+						
+						// Check if both caster and target are in a boss zone.
+						if (isInBossZone != obj.isInsideZone(ZoneId.BOSS))
 							continue;
 						
 						targetList.add(obj);
@@ -1737,7 +1727,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 					final int radius = _skillRadius;
 					
 					if (addSummon(activeChar, player, radius, false))
-						targetList.add(player.getPet());
+						targetList.add(player.getSummon());
 					
 					final Clan clan = player.getClan();
 					if (clan != null)
@@ -1761,7 +1751,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 								continue;
 							
 							if (addSummon(activeChar, obj, radius, false))
-								targetList.add(obj.getPet());
+								targetList.add(obj.getSummon());
 							
 							if (!addCharacter(activeChar, obj, radius, false))
 								continue;
@@ -1862,14 +1852,14 @@ public abstract class L2Skill implements IChanceSkillTrigger
 			}
 			case TARGET_CORPSE_MOB:
 			{
-				if (!(target instanceof Attackable) || !target.isDead())
+				if (!(target instanceof Monster) || !target.isDead())
 				{
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 					return _emptyTargetList;
 				}
 				
 				// Corpse mob only available for half time
-				if (_skillType == L2SkillType.DRAIN && !DecayTaskManager.getInstance().isCorpseActionAllowed((Attackable) target))
+				if (_skillType == L2SkillType.DRAIN && !DecayTaskManager.getInstance().isCorpseActionAllowed((Monster) target))
 				{
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CORPSE_TOO_OLD_SKILL_NOT_USED));
 					return _emptyTargetList;
@@ -1983,7 +1973,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 					final Summon targetSummon = (Summon) target;
 					final Player summonOwner = targetSummon.getActingPlayer();
 					
-					if (activeChar instanceof Player && activeChar.getPet() != targetSummon && !targetSummon.isDead() && (summonOwner.getPvpFlag() != 0 || summonOwner.getKarma() > 0) || (summonOwner.isInsideZone(ZoneId.PVP) && activeChar.isInsideZone(ZoneId.PVP)) || (summonOwner.isInDuel() && ((Player) activeChar).isInDuel() && summonOwner.getDuelId() == ((Player) activeChar).getDuelId()))
+					if (activeChar instanceof Player && activeChar.getSummon() != targetSummon && !targetSummon.isDead() && (summonOwner.getPvpFlag() != 0 || summonOwner.getKarma() > 0) || (summonOwner.isInsideZone(ZoneId.PVP) && activeChar.isInsideZone(ZoneId.PVP)) || (summonOwner.isInDuel() && ((Player) activeChar).isInDuel() && summonOwner.getDuelId() == ((Player) activeChar).getDuelId()))
 						return new Creature[]
 						{
 							targetSummon
@@ -2092,7 +2082,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 	
 	public static final boolean addSummon(Creature caster, Player owner, int radius, boolean isDead)
 	{
-		final Summon summon = owner.getPet();
+		final Summon summon = owner.getSummon();
 		
 		if (summon == null)
 			return false;

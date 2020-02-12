@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.handler.chathandlers;
 
 import net.sf.l2j.gameserver.handler.IChatHandler;
-import net.sf.l2j.gameserver.model.BlockList;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.player.BlockList;
 import net.sf.l2j.gameserver.network.FloodProtectors;
 import net.sf.l2j.gameserver.network.FloodProtectors.Action;
 import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;

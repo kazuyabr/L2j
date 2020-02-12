@@ -1,17 +1,16 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
 import net.sf.l2j.gameserver.model.actor.instance.Door;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 
 public class DoorInfo extends L2GameServerPacket
 {
 	private final Door _door;
-	private final Player _activeChar;
+	private final boolean _showHp;
 	
-	public DoorInfo(Door door, Player activeChar)
+	public DoorInfo(Door door)
 	{
 		_door = door;
-		_activeChar = activeChar;
+		_showHp = door.getCastle() != null && door.getCastle().getSiege().isInProgress();
 	}
 	
 	@Override
@@ -20,7 +19,7 @@ public class DoorInfo extends L2GameServerPacket
 		writeC(0x4c);
 		writeD(_door.getObjectId());
 		writeD(_door.getDoorId());
-		writeD(_door.isAutoAttackable(_activeChar) ? 0 : 1); // ??? (can attack)
+		writeD((_showHp) ? 1 : 0);
 		writeD(1); // ??? (can target)
 		writeD(_door.isOpened() ? 0 : 1);
 		writeD(_door.getMaxHp());

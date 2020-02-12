@@ -5,8 +5,8 @@ import java.util.logging.LogRecord;
 
 import net.sf.l2j.commons.util.ArraysUtil;
 
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
 
 public class ItemFilter implements Filter
 {

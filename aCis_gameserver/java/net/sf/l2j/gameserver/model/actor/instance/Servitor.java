@@ -1,16 +1,16 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.AggroInfo;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
+import net.sf.l2j.gameserver.model.actor.npc.AggroInfo;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.serverpackets.SetSummonRemainTime;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillSummon;
@@ -171,61 +171,6 @@ public class Servitor extends Summon
 		
 	}
 	
-	static class SummonLifetime implements Runnable
-	{
-		private final Player _activeChar;
-		private final Servitor _summon;
-		
-		SummonLifetime(Player activeChar, Servitor newpet)
-		{
-			_activeChar = activeChar;
-			_summon = newpet;
-		}
-		
-		@Override
-		public void run()
-		{
-			try
-			{
-				double oldTimeRemaining = _summon.getTimeRemaining();
-				int maxTime = _summon.getTotalLifeTime();
-				double newTimeRemaining;
-				
-				// if pet is attacking
-				if (_summon.isAttackingNow())
-					_summon.decTimeRemaining(_summon.getTimeLostActive());
-				else
-					_summon.decTimeRemaining(_summon.getTimeLostIdle());
-				
-				newTimeRemaining = _summon.getTimeRemaining();
-				
-				// check if the summon's lifetime has ran out
-				if (newTimeRemaining < 0)
-					_summon.unSummon(_activeChar);
-				else if ((newTimeRemaining <= _summon.getNextItemConsumeTime()) && (oldTimeRemaining > _summon.getNextItemConsumeTime()))
-				{
-					_summon.decNextItemConsumeTime(maxTime / (_summon.getItemConsumeSteps() + 1));
-					
-					// check if owner has enought itemConsume, if requested
-					if (_summon.getItemConsumeCount() > 0 && _summon.getItemConsumeId() != 0 && !_summon.isDead() && !_summon.destroyItemByItemId("Consume", _summon.getItemConsumeId(), _summon.getItemConsumeCount(), _activeChar, true))
-						_summon.unSummon(_activeChar);
-				}
-				
-				// prevent useless packet-sending when the difference isn't visible.
-				if ((_summon.lastShowntimeRemaining - newTimeRemaining) > maxTime / 352)
-				{
-					_activeChar.sendPacket(new SetSummonRemainTime(maxTime, (int) newTimeRemaining));
-					_summon.lastShowntimeRemaining = (int) newTimeRemaining;
-					_summon.updateEffectIcons();
-				}
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error on player [" + _activeChar.getName() + "] summon item consume task.", e);
-			}
-		}
-	}
-	
 	@Override
 	public void unSummon(Player owner)
 	{
@@ -252,5 +197,53 @@ public class Servitor extends Summon
 	@Override
 	public void doPickupItem(WorldObject object)
 	{
+	}
+	
+	private static class SummonLifetime implements Runnable
+	{
+		private final Player _player;
+		private final Servitor _summon;
+		
+		protected SummonLifetime(Player activeChar, Servitor summon)
+		{
+			_player = activeChar;
+			_summon = summon;
+		}
+		
+		@Override
+		public void run()
+		{
+			double oldTimeRemaining = _summon.getTimeRemaining();
+			int maxTime = _summon.getTotalLifeTime();
+			double newTimeRemaining;
+			
+			// if pet is attacking
+			if (_summon.isAttackingNow())
+				_summon.decTimeRemaining(_summon.getTimeLostActive());
+			else
+				_summon.decTimeRemaining(_summon.getTimeLostIdle());
+			
+			newTimeRemaining = _summon.getTimeRemaining();
+			
+			// check if the summon's lifetime has ran out
+			if (newTimeRemaining < 0)
+				_summon.unSummon(_player);
+			else if ((newTimeRemaining <= _summon.getNextItemConsumeTime()) && (oldTimeRemaining > _summon.getNextItemConsumeTime()))
+			{
+				_summon.decNextItemConsumeTime(maxTime / (_summon.getItemConsumeSteps() + 1));
+				
+				// check if owner has enought itemConsume, if requested
+				if (_summon.getItemConsumeCount() > 0 && _summon.getItemConsumeId() != 0 && !_summon.isDead() && !_summon.destroyItemByItemId("Consume", _summon.getItemConsumeId(), _summon.getItemConsumeCount(), _player, true))
+					_summon.unSummon(_player);
+			}
+			
+			// prevent useless packet-sending when the difference isn't visible.
+			if ((_summon.lastShowntimeRemaining - newTimeRemaining) > maxTime / 352)
+			{
+				_player.sendPacket(new SetSummonRemainTime(maxTime, (int) newTimeRemaining));
+				_summon.lastShowntimeRemaining = (int) newTimeRemaining;
+				_summon.updateEffectIcons();
+			}
+		}
 	}
 }

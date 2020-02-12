@@ -1,13 +1,10 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import java.util.logging.Logger;
-
-import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 
@@ -18,7 +15,6 @@ import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
  */
 public class AdminRes implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminRes.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_res",
@@ -87,9 +83,6 @@ public class AdminRes implements IAdminCommandHandler
 			obj = activeChar;
 		
 		doResurrect((Creature) obj);
-		
-		if (Config.DEBUG)
-			_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") resurrected character " + obj.getObjectId());
 	}
 	
 	private static void handleNonPlayerRes(Player activeChar)

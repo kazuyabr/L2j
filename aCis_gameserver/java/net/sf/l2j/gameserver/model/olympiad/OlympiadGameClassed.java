@@ -5,10 +5,9 @@ import java.util.List;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.OlympiadType;
+import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 
-/**
- * @author DS
- */
 public class OlympiadGameClassed extends OlympiadGameNormal
 {
 	private OlympiadGameClassed(int id, Participant[] opponents)
@@ -17,9 +16,9 @@ public class OlympiadGameClassed extends OlympiadGameNormal
 	}
 	
 	@Override
-	public final CompetitionType getType()
+	public final OlympiadType getType()
 	{
-		return CompetitionType.CLASSED;
+		return OlympiadType.CLASSED;
 	}
 	
 	@Override
@@ -29,7 +28,7 @@ public class OlympiadGameClassed extends OlympiadGameNormal
 	}
 	
 	@Override
-	protected final int[][] getReward()
+	protected final IntIntHolder[] getReward()
 	{
 		return Config.ALT_OLY_CLASSED_REWARD;
 	}

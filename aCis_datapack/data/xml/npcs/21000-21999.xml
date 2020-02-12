@@ -9305,7 +9305,7 @@
 		</drops>
 	</npc>
 	<npc id="21164" name="Guardian Spirit of Ancient Holy Ground" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -9374,7 +9374,7 @@
 		</drops>
 	</npc>
 	<npc id="21165" name="Lesser Ancient Warrior" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="0"/>
@@ -10933,7 +10933,7 @@
 		</drops>
 	</npc>
 	<npc id="21186" name="Lilim Court Knight" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="5800"/>
@@ -12485,7 +12485,7 @@
 		</drops>
 	</npc>
 	<npc id="21207" name="Nephilim Commander" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="48"/>
 		<set name="rHand" val="0"/>
@@ -20414,7 +20414,7 @@
 		</drops>
 	</npc>
 	<npc id="21329" name="Ketra Orc Shaman" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="92"/>
@@ -20491,7 +20491,7 @@
 		</drops>
 	</npc>
 	<npc id="21330" name="Grazing Buffalo" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="0"/>
@@ -20561,7 +20561,7 @@
 		</drops>
 	</npc>
 	<npc id="21331" name="Ketra Orc Warrior" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="79"/>
@@ -20633,7 +20633,7 @@
 		</drops>
 	</npc>
 	<npc id="21332" name="Ketra Orc Lieutenant" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="38.5"/>
 		<set name="rHand" val="6719"/>
@@ -20706,7 +20706,7 @@
 		</drops>
 	</npc>
 	<npc id="21333" name="Grazing Windsus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="35"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="0"/>
@@ -20775,7 +20775,7 @@
 		</drops>
 	</npc>
 	<npc id="21334" name="Ketra Orc Medium" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="92"/>
@@ -20842,7 +20842,7 @@
 		</drops>
 	</npc>
 	<npc id="21335" name="Ketra Orc Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="29"/>
 		<set name="rHand" val="79"/>
@@ -20905,7 +20905,7 @@
 		</drops>
 	</npc>
 	<npc id="21336" name="Ketra Orc White Captain" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="28.8"/>
 		<set name="rHand" val="80"/>
@@ -20978,7 +20978,7 @@
 		</drops>
 	</npc>
 	<npc id="21337" name="Grazing Elder Buffalo" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="0"/>
@@ -21044,7 +21044,7 @@
 		</drops>
 	</npc>
 	<npc id="21338" name="Ketra Orc Seer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="213"/>
@@ -21118,7 +21118,7 @@
 		</drops>
 	</npc>
 	<npc id="21339" name="Ketra Orc General" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="46.2"/>
 		<set name="rHand" val="6719"/>
@@ -21189,7 +21189,7 @@
 		</drops>
 	</npc>
 	<npc id="21340" name="Ketra Orc Battalion Commander" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="80"/>
@@ -21259,7 +21259,7 @@
 		</drops>
 	</npc>
 	<npc id="21341" name="Grazing Elder Kookaburra" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="26.4"/>
 		<set name="rHand" val="0"/>
@@ -21328,7 +21328,7 @@
 		</drops>
 	</npc>
 	<npc id="21342" name="Ketra Orc Grand Seer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="213"/>
@@ -21398,7 +21398,7 @@
 		</drops>
 	</npc>
 	<npc id="21343" name="Ketra Commander" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="36"/>
 		<set name="rHand" val="80"/>
@@ -21462,7 +21462,7 @@
 		</drops>
 	</npc>
 	<npc id="21344" name="Ketra Elite Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="80"/>
@@ -21528,7 +21528,7 @@
 		</drops>
 	</npc>
 	<npc id="21345" name="Ketra's Head Shaman" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="210"/>
@@ -21596,7 +21596,7 @@
 		</minions>
 	</npc>
 	<npc id="21346" name="Ketra's Head Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="38.5"/>
 		<set name="rHand" val="6719"/>
@@ -21662,7 +21662,7 @@
 		</drops>
 	</npc>
 	<npc id="21347" name="Ketra Prophet" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="213"/>
@@ -21732,7 +21732,7 @@
 		</minions>
 	</npc>
 	<npc id="21348" name="Prophet's Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="38.5"/>
 		<set name="rHand" val="6719"/>
@@ -21792,7 +21792,7 @@
 		</drops>
 	</npc>
 	<npc id="21349" name="Prophet's Aide" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="210"/>
@@ -22189,7 +22189,7 @@
 		</drops>
 	</npc>
 	<npc id="21355" name="Varka Silenos Shaman" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="39.5"/>
 		<set name="rHand" val="6716"/>
@@ -22255,7 +22255,7 @@
 		</drops>
 	</npc>
 	<npc id="21356" name="Grazing Nepenthes" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="28"/>
 		<set name="height" val="43.5"/>
 		<set name="rHand" val="0"/>
@@ -22323,7 +22323,7 @@
 		</drops>
 	</npc>
 	<npc id="21357" name="Varka Silenos Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="41.5"/>
 		<set name="rHand" val="6716"/>
@@ -22390,7 +22390,7 @@
 		</drops>
 	</npc>
 	<npc id="21358" name="Varka Silenos Warrior" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="16"/>
 		<set name="height" val="41"/>
 		<set name="rHand" val="142"/>
@@ -22461,7 +22461,7 @@
 		</drops>
 	</npc>
 	<npc id="21359" name="Grazing Bandersnatch" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="18"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -22527,7 +22527,7 @@
 		</drops>
 	</npc>
 	<npc id="21360" name="Varka Silenos Medium" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="39.5"/>
 		<set name="rHand" val="6716"/>
@@ -22594,7 +22594,7 @@
 		</drops>
 	</npc>
 	<npc id="21361" name="Varka Silenos Magus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="55.2"/>
 		<set name="rHand" val="6716"/>
@@ -22659,7 +22659,7 @@
 		</drops>
 	</npc>
 	<npc id="21362" name="Varka Silenos Officer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="18"/>
 		<set name="height" val="42.5"/>
 		<set name="rHand" val="2504"/>
@@ -22730,7 +22730,7 @@
 		</drops>
 	</npc>
 	<npc id="21363" name="Grazing Flava" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="18"/>
 		<set name="height" val="34"/>
 		<set name="rHand" val="0"/>
@@ -22802,7 +22802,7 @@
 		</drops>
 	</npc>
 	<npc id="21364" name="Varka Silenos Seer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="39.5"/>
 		<set name="rHand" val="6716"/>
@@ -22876,7 +22876,7 @@
 		</drops>
 	</npc>
 	<npc id="21365" name="Varka Silenos Great Magus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="49.2"/>
 		<set name="rHand" val="2500"/>
@@ -22948,7 +22948,7 @@
 		</drops>
 	</npc>
 	<npc id="21366" name="Varka Silenos General" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="18"/>
 		<set name="height" val="42.5"/>
 		<set name="rHand" val="2500"/>
@@ -23016,7 +23016,7 @@
 		</drops>
 	</npc>
 	<npc id="21367" name="Grazing Elder Antelope" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="34"/>
 		<set name="rHand" val="0"/>
@@ -23082,7 +23082,7 @@
 		</drops>
 	</npc>
 	<npc id="21368" name="Varka Silenos Great Seer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="39.5"/>
 		<set name="rHand" val="6716"/>
@@ -23149,7 +23149,7 @@
 		</drops>
 	</npc>
 	<npc id="21369" name="Varka's Commander" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="51"/>
 		<set name="rHand" val="2500"/>
@@ -23217,7 +23217,7 @@
 		</minions>
 	</npc>
 	<npc id="21370" name="Varka's Elite Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="16"/>
 		<set name="height" val="41"/>
 		<set name="rHand" val="2500"/>
@@ -23284,7 +23284,7 @@
 		</drops>
 	</npc>
 	<npc id="21371" name="Varka's Head Magus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="39.5"/>
 		<set name="rHand" val="6716"/>
@@ -23351,7 +23351,7 @@
 		</minions>
 	</npc>
 	<npc id="21372" name="Varka's Head Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="16"/>
 		<set name="height" val="38"/>
 		<set name="rHand" val="2500"/>
@@ -23418,7 +23418,7 @@
 		</drops>
 	</npc>
 	<npc id="21373" name="Varka's Prophet" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="47.5"/>
 		<set name="rHand" val="6716"/>
@@ -23488,7 +23488,7 @@
 		</minions>
 	</npc>
 	<npc id="21374" name="Prophet Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="16"/>
 		<set name="height" val="41"/>
 		<set name="rHand" val="2500"/>
@@ -23548,7 +23548,7 @@
 		</drops>
 	</npc>
 	<npc id="21375" name="Disciple of Prophet" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="41.5"/>
 		<set name="rHand" val="6716"/>
@@ -23750,7 +23750,7 @@
 		</drops>
 	</npc>
 	<npc id="21378" name="Scarlet Stakato Noble" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="39"/>
 		<set name="rHand" val="235"/>
@@ -23816,7 +23816,7 @@
 		</drops>
 	</npc>
 	<npc id="21379" name="Tepra Scorpion" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="24"/>
 		<set name="height" val="52.8"/>
 		<set name="rHand" val="0"/>
@@ -23887,7 +23887,7 @@
 		</drops>
 	</npc>
 	<npc id="21380" name="Tepra Scarab" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
@@ -23958,7 +23958,7 @@
 		</drops>
 	</npc>
 	<npc id="21381" name="Assassin Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="19"/>
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
@@ -24027,7 +24027,7 @@
 		</drops>
 	</npc>
 	<npc id="21382" name="Mercenary of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="150"/>
@@ -24102,7 +24102,7 @@
 		</drops>
 	</npc>
 	<npc id="21383" name="Knight of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="28.5"/>
 		<set name="rHand" val="946"/>
@@ -24174,7 +24174,7 @@
 		</drops>
 	</npc>
 	<npc id="21384" name="Necromancer of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14.5"/>
 		<set name="height" val="48"/>
 		<set name="rHand" val="0"/>
@@ -24247,7 +24247,7 @@
 		</drops>
 	</npc>
 	<npc id="21385" name="Lavastone Golem" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="0"/>
@@ -24318,7 +24318,7 @@
 		</drops>
 	</npc>
 	<npc id="21386" name="Magma Golem" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="45"/>
 		<set name="rHand" val="0"/>
@@ -24388,7 +24388,7 @@
 		</drops>
 	</npc>
 	<npc id="21387" name="Arimanes of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
@@ -24460,7 +24460,7 @@
 		</drops>
 	</npc>
 	<npc id="21388" name="Iblis of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -24536,7 +24536,7 @@
 		</drops>
 	</npc>
 	<npc id="21389" name="Balrog of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="24"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -24608,7 +24608,7 @@
 		</drops>
 	</npc>
 	<npc id="21390" name="Ashuras of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="49"/>
 		<set name="rHand" val="0"/>
@@ -24681,7 +24681,7 @@
 		</drops>
 	</npc>
 	<npc id="21391" name="Lavasillisk" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="34"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -24752,7 +24752,7 @@
 		</drops>
 	</npc>
 	<npc id="21392" name="Blazing Ifrit" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -24827,7 +24827,7 @@
 		</drops>
 	</npc>
 	<npc id="21393" name="Magma Drake" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="29"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -24896,7 +24896,7 @@
 		</drops>
 	</npc>
 	<npc id="21394" name="Lavasaurus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
@@ -24965,7 +24965,7 @@
 		</drops>
 	</npc>
 	<npc id="21395" name="Elder Lavasaurus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="75"/>
 		<set name="rHand" val="0"/>
@@ -25301,7 +25301,7 @@
 		</drops>
 	</npc>
 	<npc id="21400" name="Hexa Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="25"/>
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
@@ -25360,7 +25360,7 @@
 		</drops>
 	</npc>
 	<npc id="21401" name="Hexa Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="25"/>
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
@@ -25426,7 +25426,7 @@
 		</drops>
 	</npc>
 	<npc id="21402" name="Katraxis" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="24"/>
 		<set name="height" val="52.8"/>
 		<set name="rHand" val="0"/>
@@ -25491,7 +25491,7 @@
 		</drops>
 	</npc>
 	<npc id="21403" name="Katraxis" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="24"/>
 		<set name="height" val="52.8"/>
 		<set name="rHand" val="0"/>
@@ -25555,7 +25555,7 @@
 		</drops>
 	</npc>
 	<npc id="21404" name="Tera Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="25"/>
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
@@ -25626,7 +25626,7 @@
 		</drops>
 	</npc>
 	<npc id="21405" name="Tera Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="25"/>
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
@@ -25692,7 +25692,7 @@
 		</drops>
 	</npc>
 	<npc id="21406" name="Knight of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="150"/>
@@ -25765,7 +25765,7 @@
 		</drops>
 	</npc>
 	<npc id="21407" name="Knight of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="150"/>
@@ -25832,7 +25832,7 @@
 		</drops>
 	</npc>
 	<npc id="21408" name="Royal Guard of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="304"/>
@@ -25902,7 +25902,7 @@
 		</drops>
 	</npc>
 	<npc id="21409" name="Royal Guard of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="304"/>
@@ -25971,7 +25971,7 @@
 		</drops>
 	</npc>
 	<npc id="21410" name="Guardian Scarab" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="26.5"/>
 		<set name="rHand" val="0"/>
@@ -26042,7 +26042,7 @@
 		</drops>
 	</npc>
 	<npc id="21411" name="Guardian Scarab" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="26.5"/>
 		<set name="rHand" val="0"/>
@@ -26106,7 +26106,7 @@
 		</drops>
 	</npc>
 	<npc id="21412" name="Ustralith" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="28"/>
 		<set name="height" val="66"/>
 		<set name="rHand" val="0"/>
@@ -26180,7 +26180,7 @@
 		</drops>
 	</npc>
 	<npc id="21413" name="Ustralith" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="28"/>
 		<set name="height" val="66"/>
 		<set name="rHand" val="0"/>
@@ -26253,7 +26253,7 @@
 		</drops>
 	</npc>
 	<npc id="21414" name="Assassin of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="28.5"/>
 		<set name="rHand" val="946"/>
@@ -26324,7 +26324,7 @@
 		</drops>
 	</npc>
 	<npc id="21415" name="Assassin of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="28.5"/>
 		<set name="rHand" val="946"/>
@@ -26396,7 +26396,7 @@
 		</drops>
 	</npc>
 	<npc id="21416" name="Imperial Commander" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -26466,7 +26466,7 @@
 		</drops>
 	</npc>
 	<npc id="21417" name="Imperial Commander" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -26528,7 +26528,7 @@
 		</drops>
 	</npc>
 	<npc id="21418" name="Imperial Royal Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="142"/>
@@ -26597,7 +26597,7 @@
 		</drops>
 	</npc>
 	<npc id="21419" name="Imperial Royal Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="142"/>
@@ -26664,7 +26664,7 @@
 		</drops>
 	</npc>
 	<npc id="21420" name="Ashuras" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
@@ -26735,7 +26735,7 @@
 		</drops>
 	</npc>
 	<npc id="21421" name="Ashuras" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
@@ -26803,7 +26803,7 @@
 		</drops>
 	</npc>
 	<npc id="21422" name="Dancer of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -26871,7 +26871,7 @@
 		</drops>
 	</npc>
 	<npc id="21423" name="Dancer of Empire" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -26938,7 +26938,7 @@
 		</drops>
 	</npc>
 	<npc id="21424" name="Ashkenas" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
@@ -27011,7 +27011,7 @@
 		</drops>
 	</npc>
 	<npc id="21425" name="Ashkenas" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="0"/>
@@ -27083,7 +27083,7 @@
 		</drops>
 	</npc>
 	<npc id="21426" name="Abraxion" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
@@ -27153,7 +27153,7 @@
 		</drops>
 	</npc>
 	<npc id="21427" name="Abraxion" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
@@ -27220,7 +27220,7 @@
 		</drops>
 	</npc>
 	<npc id="21428" name="Hasturan" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
@@ -27291,7 +27291,7 @@
 		</drops>
 	</npc>
 	<npc id="21429" name="Hasturan" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
@@ -27362,7 +27362,7 @@
 		</drops>
 	</npc>
 	<npc id="21430" name="Arimanes" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
@@ -27438,7 +27438,7 @@
 		</drops>
 	</npc>
 	<npc id="21431" name="Arimanes" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
@@ -27510,7 +27510,7 @@
 		</drops>
 	</npc>
 	<npc id="21432" name="Chakram Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="19"/>
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
@@ -27570,7 +27570,7 @@
 		</drops>
 	</npc>
 	<npc id="21433" name="Jamadar Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="43.6"/>
 		<set name="rHand" val="0"/>
@@ -27632,7 +27632,7 @@
 		</drops>
 	</npc>
 	<npc id="21434" name="Seer of Blood" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="82"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="50"/>
 		<set name="rHand" val="0"/>
@@ -27705,7 +27705,7 @@
 		</minions>
 	</npc>
 	<npc id="21435" name="Guide of Offering" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -27771,7 +27771,7 @@
 		</drops>
 	</npc>
 	<npc id="21436" name="Leader of Offering" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -27835,7 +27835,7 @@
 		</drops>
 	</npc>
 	<npc id="21437" name="Offering Bug" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
@@ -41881,7 +41881,7 @@
 		</drops>
 	</npc>
 	<npc id="21652" name="Scarlet Stakato Noble" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="39"/>
 		<set name="rHand" val="235"/>
@@ -41944,7 +41944,7 @@
 		</drops>
 	</npc>
 	<npc id="21653" name="Assassin Beetle" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="19"/>
 		<set name="height" val="54.5"/>
 		<set name="rHand" val="0"/>
@@ -42009,7 +42009,7 @@
 		</drops>
 	</npc>
 	<npc id="21654" name="Necromancer of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14.5"/>
 		<set name="height" val="48"/>
 		<set name="rHand" val="0"/>
@@ -42079,7 +42079,7 @@
 		</drops>
 	</npc>
 	<npc id="21655" name="Arimanes of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="57.75"/>
 		<set name="rHand" val="6722"/>
@@ -42147,7 +42147,7 @@
 		</drops>
 	</npc>
 	<npc id="21656" name="Ashuras of Destruction" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="49"/>
 		<set name="rHand" val="0"/>
@@ -42218,7 +42218,7 @@
 		</drops>
 	</npc>
 	<npc id="21657" name="Magma Drake" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="29"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -49823,7 +49823,7 @@
 		</drops>
 	</npc>
 	<npc id="21774" name="Messenger Invader Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -49886,7 +49886,7 @@
 		</drops>
 	</npc>
 	<npc id="21775" name="Messenger Invader Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -49954,7 +49954,7 @@
 		</drops>
 	</npc>
 	<npc id="21776" name="Messenger Invader Archer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="289"/>
@@ -50025,7 +50025,7 @@
 		</drops>
 	</npc>
 	<npc id="21777" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -50091,7 +50091,7 @@
 		</drops>
 	</npc>
 	<npc id="21778" name="Messenger Invader Shaman" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -50160,7 +50160,7 @@
 		</drops>
 	</npc>
 	<npc id="21779" name="Messenger Invader Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -50227,7 +50227,7 @@
 		</drops>
 	</npc>
 	<npc id="21780" name="Messenger Invader Magus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -50298,7 +50298,7 @@
 		</drops>
 	</npc>
 	<npc id="21781" name="Messenger Invader Martyrs" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -50365,7 +50365,7 @@
 		</drops>
 	</npc>
 	<npc id="21782" name="Messenger Invader Warrior" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -50433,7 +50433,7 @@
 		</drops>
 	</npc>
 	<npc id="21783" name="Messenger Invader Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -50498,7 +50498,7 @@
 		</drops>
 	</npc>
 	<npc id="21784" name="Messenger Invader Disciple" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -50564,7 +50564,7 @@
 		</drops>
 	</npc>
 	<npc id="21785" name="Messenger Invader Berserker" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -50639,7 +50639,7 @@
 		</drops>
 	</npc>
 	<npc id="21786" name="Messenger Invader Food" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8.5"/>
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
@@ -50700,7 +50700,7 @@
 		</drops>
 	</npc>
 	<npc id="21787" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -50767,7 +50767,7 @@
 		</drops>
 	</npc>
 	<npc id="21788" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -50835,7 +50835,7 @@
 		</drops>
 	</npc>
 	<npc id="21789" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -50899,7 +50899,7 @@
 		</drops>
 	</npc>
 	<npc id="21790" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -50967,7 +50967,7 @@
 		</drops>
 	</npc>
 	<npc id="21791" name="Messenger Invader Warrior" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>
@@ -51035,7 +51035,7 @@
 		</drops>
 	</npc>
 	<npc id="21792" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -51092,7 +51092,7 @@
 		</drops>
 	</npc>
 	<npc id="21793" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -51150,7 +51150,7 @@
 		</drops>
 	</npc>
 	<npc id="21794" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -51217,7 +51217,7 @@
 		</drops>
 	</npc>
 	<npc id="21795" name="Messenger Invader Elite Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="78"/>
@@ -51280,7 +51280,7 @@
 		</drops>
 	</npc>
 	<npc id="21796" name="Messenger Invader Magus" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -52745,7 +52745,7 @@
 		</drops>
 	</npc>
 	<npc id="21821" name="Treasure Chest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="8.5"/>
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
@@ -52803,7 +52803,7 @@
 		</drops>
 	</npc>
 	<npc id="21822" name="Treasure Chest" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="8.5"/>
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>
@@ -52858,7 +52858,7 @@
 		</drops>
 	</npc>
 	<npc id="21823" name="Executor of Sacrificial Offerings" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="134"/>

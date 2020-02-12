@@ -1,22 +1,25 @@
 package net.sf.l2j.gameserver.taskmanager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.instancemanager.DayNightSpawnManager;
+import net.sf.l2j.gameserver.data.manager.DayNightManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.scripting.Quest;
 
 /**
  * Controls game time, informs spawn manager about day/night spawns and players about daytime change. Informs players about their extended activity in game.
- * @author Hasha
  */
 public final class GameTimeTaskManager implements Runnable
 {
@@ -30,16 +33,12 @@ public final class GameTimeTaskManager implements Runnable
 	private static final int TAKE_BREAK_HOURS = 2; // each 2h
 	private static final int TAKE_BREAK_GAME_MINUTES = TAKE_BREAK_HOURS * MINUTES_PER_DAY / HOURS_PER_GAME_DAY; // 2h of real time is 720 game minutes
 	
-	private static final int SHADOW_SENSE = 294;
-	
-	private int _time;
-	protected boolean _night;
 	private final Map<Player, Integer> _players = new ConcurrentHashMap<>();
 	
-	public static final GameTimeTaskManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private List<Quest> _questEvents = Collections.emptyList();
+	
+	private int _time;
+	protected boolean _isNight;
 	
 	protected GameTimeTaskManager()
 	{
@@ -50,10 +49,81 @@ public final class GameTimeTaskManager implements Runnable
 		cal.set(Calendar.MILLISECOND, 0);
 		
 		_time = (int) (System.currentTimeMillis() - cal.getTimeInMillis()) / MILLISECONDS_PER_GAME_MINUTE;
-		_night = isNight();
+		_isNight = isNight();
 		
 		// Run task each 10 seconds.
 		ThreadPool.scheduleAtFixedRate(this, MILLISECONDS_PER_GAME_MINUTE, MILLISECONDS_PER_GAME_MINUTE);
+	}
+	
+	@Override
+	public final void run()
+	{
+		// Tick time.
+		_time++;
+		
+		// Quest listener.
+		for (Quest quest : _questEvents)
+			quest.onGameTime();
+		
+		// Shadow Sense skill, if set then perform day/night info.
+		L2Skill skill = null;
+		
+		// Day/night has changed.
+		if (_isNight != isNight())
+		{
+			// Change day/night.
+			_isNight = !_isNight;
+			
+			// Inform day/night spawn manager.
+			DayNightManager.getInstance().notifyChangeMode();
+			
+			// Set Shadow Sense skill to apply/remove effect from players.
+			skill = SkillTable.getInstance().getInfo(L2Skill.SKILL_SHADOW_SENSE, 1);
+		}
+		
+		// List is empty, skip.
+		if (_players.isEmpty())
+			return;
+		
+		// Loop all players.
+		for (Map.Entry<Player, Integer> entry : _players.entrySet())
+		{
+			// Get player.
+			final Player player = entry.getKey();
+			
+			// Player isn't online, skip.
+			if (!player.isOnline())
+				continue;
+			
+			// Shadow Sense skill is set and player has Shadow Sense skill, activate/deactivate its effect.
+			if (skill != null && player.hasSkill(L2Skill.SKILL_SHADOW_SENSE))
+			{
+				// Remove and add Shadow Sense to activate/deactivate effect.
+				player.removeSkill(L2Skill.SKILL_SHADOW_SENSE, false);
+				player.addSkill(skill, false);
+				
+				// Inform player about effect change.
+				player.sendPacket(SystemMessage.getSystemMessage(_isNight ? SystemMessageId.NIGHT_S1_EFFECT_APPLIES : SystemMessageId.DAY_S1_EFFECT_DISAPPEARS).addSkillName(L2Skill.SKILL_SHADOW_SENSE));
+			}
+			
+			// Activity time has passed already.
+			if (_time >= entry.getValue())
+			{
+				// Inform player about his activity.
+				player.sendPacket(SystemMessageId.PLAYING_FOR_LONG_TIME);
+				
+				// Update activity time.
+				entry.setValue(_time + TAKE_BREAK_GAME_MINUTES);
+			}
+		}
+	}
+	
+	public void addQuestEvent(Quest quest)
+	{
+		if (_questEvents.isEmpty())
+			_questEvents = new ArrayList<>(3);
+		
+		_questEvents.add(quest);
 	}
 	
 	/**
@@ -128,67 +198,13 @@ public final class GameTimeTaskManager implements Runnable
 		_players.remove(player);
 	}
 	
-	@Override
-	public final void run()
+	public static final GameTimeTaskManager getInstance()
 	{
-		// Tick time.
-		_time++;
-		
-		// Shadow Sense skill, if set then perform day/night info.
-		L2Skill skill = null;
-		
-		// Day/night has changed.
-		if (_night != isNight())
-		{
-			// Change day/night.
-			_night = !_night;
-			
-			// Inform day/night spawn manager.
-			DayNightSpawnManager.getInstance().notifyChangeMode();
-			
-			// Set Shadow Sense skill to apply/remove effect from players.
-			skill = SkillTable.getInstance().getInfo(SHADOW_SENSE, 1);
-		}
-		
-		// List is empty, skip.
-		if (_players.isEmpty())
-			return;
-		
-		// Loop all players.
-		for (Map.Entry<Player, Integer> entry : _players.entrySet())
-		{
-			// Get player.
-			final Player player = entry.getKey();
-			
-			// Player isn't online, skip.
-			if (!player.isOnline())
-				continue;
-			
-			// Shadow Sense skill is set and player has Shadow Sense skill, activate/deactivate its effect.
-			if (skill != null && player.getSkillLevel(SHADOW_SENSE) > 0)
-			{
-				// Remove and add Shadow Sense to activate/deactivate effect.
-				player.removeSkill(skill, false);
-				player.addSkill(skill, false);
-				
-				// Inform player about effect change.
-				player.sendPacket(SystemMessage.getSystemMessage(_night ? SystemMessageId.NIGHT_S1_EFFECT_APPLIES : SystemMessageId.DAY_S1_EFFECT_DISAPPEARS).addSkillName(SHADOW_SENSE));
-			}
-			
-			// Activity time has passed already.
-			if (_time >= entry.getValue())
-			{
-				// Inform player about his activity.
-				player.sendPacket(SystemMessageId.PLAYING_FOR_LONG_TIME);
-				
-				// Update activity time.
-				entry.setValue(_time + TAKE_BREAK_GAME_MINUTES);
-			}
-		}
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final GameTimeTaskManager _instance = new GameTimeTaskManager();
+		protected static final GameTimeTaskManager INSTANCE = new GameTimeTaskManager();
 	}
 }

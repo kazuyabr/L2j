@@ -2,13 +2,14 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.xml.SkillTreeData;
 import net.sf.l2j.gameserver.data.xml.SpellbookData;
-import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2SkillLearn;
-import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Folk;
+import net.sf.l2j.gameserver.model.holder.skillnode.ClanSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.FishingSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.GeneralSkillNode;
 import net.sf.l2j.gameserver.network.serverpackets.AcquireSkillInfo;
 
 public class RequestAcquireSkillInfo extends L2GameClientPacket
@@ -28,86 +29,87 @@ public class RequestAcquireSkillInfo extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
+		// Not valid skill data, return.
 		if (_skillId <= 0 || _skillLevel <= 0)
 			return;
 		
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		// Incorrect player, return.
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		final Npc trainer = activeChar.getCurrentFolkNPC();
-		if (trainer == null)
+		// Incorrect npc, return.
+		final Folk folk = player.getCurrentFolk();
+		if (folk == null || !folk.canInteract(player))
 			return;
 		
-		if (!activeChar.isInsideRadius(trainer, Npc.INTERACTION_DISTANCE, false, false) && !activeChar.isGM())
-			return;
-		
+		// Skill doesn't exist, return.
 		final L2Skill skill = SkillTable.getInstance().getInfo(_skillId, _skillLevel);
 		if (skill == null)
 			return;
+		
+		final AcquireSkillInfo asi;
 		
 		switch (_skillType)
 		{
 			// General skills
 			case 0:
-				int skillLvl = activeChar.getSkillLevel(_skillId);
+				// Player already has such skill with same or higher level.
+				int skillLvl = player.getSkillLevel(_skillId);
 				if (skillLvl >= _skillLevel)
 					return;
 				
-				if (Math.max(skillLvl, 0) + 1 != _skillLevel)
+				// Requested skill must be 1 level higher than existing skill.
+				if (skillLvl != _skillLevel - 1)
 					return;
 				
-				if (!trainer.getTemplate().canTeach(activeChar.getSkillLearningClassId()))
+				if (!folk.getTemplate().canTeach(player.getClassId()))
 					return;
 				
-				for (L2SkillLearn sl : SkillTreeTable.getInstance().getAvailableSkills(activeChar, activeChar.getSkillLearningClassId()))
+				// Search if the asked skill exists on player template.
+				final GeneralSkillNode gsn = player.getTemplate().findSkill(_skillId, _skillLevel);
+				if (gsn != null)
 				{
-					if (sl.getId() == _skillId && sl.getLevel() == _skillLevel)
-					{
-						AcquireSkillInfo asi = new AcquireSkillInfo(_skillId, _skillLevel, sl.getSpCost(), 0);
-						int spellbookItemId = SpellbookData.getInstance().getBookForSkill(_skillId, _skillLevel);
-						if (spellbookItemId != 0)
-							asi.addRequirement(99, spellbookItemId, 1, 50);
-						sendPacket(asi);
-						break;
-					}
+					asi = new AcquireSkillInfo(_skillId, _skillLevel, gsn.getCorrectedCost(), 0);
+					final int bookId = SpellbookData.getInstance().getBookForSkill(_skillId, _skillLevel);
+					if (bookId != 0)
+						asi.addRequirement(99, bookId, 1, 50);
+					sendPacket(asi);
 				}
 				break;
+			
 			// Common skills
 			case 1:
-				skillLvl = activeChar.getSkillLevel(_skillId);
+				// Player already has such skill with same or higher level.
+				skillLvl = player.getSkillLevel(_skillId);
 				if (skillLvl >= _skillLevel)
 					return;
 				
-				if (Math.max(skillLvl, 0) + 1 != _skillLevel)
+				// Requested skill must be 1 level higher than existing skill.
+				if (skillLvl != _skillLevel - 1)
 					return;
 				
-				for (L2SkillLearn sl : SkillTreeTable.getInstance().getAvailableFishingDwarvenCraftSkills(activeChar))
+				final FishingSkillNode fsn = SkillTreeData.getInstance().getFishingSkillFor(player, _skillId, _skillLevel);
+				if (fsn != null)
 				{
-					if (sl.getId() == _skillId && sl.getLevel() == _skillLevel)
-					{
-						AcquireSkillInfo asi = new AcquireSkillInfo(_skillId, _skillLevel, sl.getSpCost(), 1);
-						asi.addRequirement(4, sl.getIdCost(), sl.getCostCount(), 0);
-						sendPacket(asi);
-						break;
-					}
+					asi = new AcquireSkillInfo(_skillId, _skillLevel, 0, 1);
+					asi.addRequirement(4, fsn.getItemId(), fsn.getItemCount(), 0);
+					sendPacket(asi);
 				}
 				break;
+			
 			// Pledge skills.
 			case 2:
-				if (!activeChar.isClanLeader())
+				if (!player.isClanLeader())
 					return;
 				
-				for (L2PledgeSkillLearn psl : SkillTreeTable.getInstance().getAvailablePledgeSkills(activeChar))
+				final ClanSkillNode csn = SkillTreeData.getInstance().getClanSkillFor(player, _skillId, _skillLevel);
+				if (csn != null)
 				{
-					if (psl.getId() == _skillId && psl.getLevel() == _skillLevel)
-					{
-						AcquireSkillInfo asi = new AcquireSkillInfo(skill.getId(), skill.getLevel(), psl.getRepCost(), 2);
-						if (Config.LIFE_CRYSTAL_NEEDED && psl.getItemId() != 0)
-							asi.addRequirement(1, psl.getItemId(), 1, 0);
-						sendPacket(asi);
-						break;
-					}
+					asi = new AcquireSkillInfo(skill.getId(), skill.getLevel(), csn.getCost(), 2);
+					if (Config.LIFE_CRYSTAL_NEEDED && csn.getItemId() != 0)
+						asi.addRequirement(1, csn.getItemId(), 1, 0);
+					sendPacket(asi);
 				}
 				break;
 		}

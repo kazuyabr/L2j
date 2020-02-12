@@ -6,12 +6,12 @@ import net.sf.l2j.gameserver.network.serverpackets.CharSelectInfo;
 
 public final class CharacterRestore extends L2GameClientPacket
 {
-	private int _charSlot;
+	private int _slot;
 	
 	@Override
 	protected void readImpl()
 	{
-		_charSlot = readD();
+		_slot = readD();
 	}
 	
 	@Override
@@ -20,16 +20,10 @@ public final class CharacterRestore extends L2GameClientPacket
 		if (!FloodProtectors.performAction(getClient(), Action.CHARACTER_SELECT))
 			return;
 		
-		try
-		{
-			getClient().markRestoredChar(_charSlot);
-		}
-		catch (Exception e)
-		{
-		}
+		getClient().markRestoredChar(_slot);
 		
-		CharSelectInfo cl = new CharSelectInfo(getClient().getAccountName(), getClient().getSessionId().playOkID1, 0);
-		sendPacket(cl);
-		getClient().setCharSelection(cl.getCharInfo());
+		final CharSelectInfo csi = new CharSelectInfo(getClient().getAccountName(), getClient().getSessionId().playOkID1, 0);
+		sendPacket(csi);
+		getClient().setCharSelectSlot(csi.getCharacterSlots());
 	}
 }

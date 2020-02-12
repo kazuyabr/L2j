@@ -4,9 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-/**
- * @author Hasha
- */
+import net.sf.l2j.gameserver.enums.GeoType;
+
 public class BlockComplex extends ABlock
 {
 	protected byte[] _buffer;
@@ -25,7 +24,7 @@ public class BlockComplex extends ABlock
 	 * @param bb : Input byte buffer.
 	 * @param format : GeoFormat specifying format of loaded data.
 	 */
-	public BlockComplex(ByteBuffer bb, GeoFormat format)
+	public BlockComplex(ByteBuffer bb, GeoType format)
 	{
 		// initialize buffer
 		_buffer = new byte[GeoStructure.BLOCK_CELLS * 3];
@@ -33,7 +32,7 @@ public class BlockComplex extends ABlock
 		// load data
 		for (int i = 0; i < GeoStructure.BLOCK_CELLS; i++)
 		{
-			if (format != GeoFormat.L2D)
+			if (format != GeoType.L2D)
 			{
 				// get data
 				short data = bb.getShort();

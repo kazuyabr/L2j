@@ -1,8 +1,5 @@
 package net.sf.l2j.gameserver.geoengine.geodata;
 
-/**
- * @author Hasha
- */
 public interface IGeoObject
 {
 	/**

@@ -3,8 +3,9 @@ package net.sf.l2j.gameserver.scripting.quests;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -114,13 +115,15 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		Player partyMember = getRandomPartyMemberState(player, npc, STATE_STARTED);
-		if (partyMember == null)
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = getRandomPartyMemberState(player, npc, STATE_STARTED);
+		if (st == null)
 			return null;
 		
-		partyMember.getQuestState(qn).dropItems(TALON_OF_STAKATO, 1, 100, CHANCES.get(npc.getNpcId()));
+		st.dropItems(TALON_OF_STAKATO, 1, 100, CHANCES.get(npc.getNpcId()));
 		
 		return null;
 	}

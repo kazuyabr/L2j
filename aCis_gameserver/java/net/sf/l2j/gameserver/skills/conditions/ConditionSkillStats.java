@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.skills.conditions;
 
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.skills.Stats;
 
 /**
  * @author mkizub

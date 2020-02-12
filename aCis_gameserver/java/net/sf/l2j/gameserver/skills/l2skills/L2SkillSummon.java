@@ -1,18 +1,20 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
-import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Cubic;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeSummon;
+import net.sf.l2j.gameserver.model.actor.player.Experience;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillSummon extends L2Skill
 {
@@ -72,14 +74,11 @@ public class L2SkillSummon extends L2Skill
 			
 			if (isCubic())
 			{
+				// Player is always able to cast mass cubic skill
 				if (getTargetType() != L2Skill.SkillTargetType.TARGET_SELF)
-					return true; // Player is always able to cast mass cubic skill
-					
-				int mastery = player.getSkillLevel(SKILL_CUBIC_MASTERY);
-				if (mastery < 0)
-					mastery = 0;
+					return true;
 				
-				if (player.getCubics().size() > mastery)
+				if (player.getCubics().size() > player.getSkillLevel(SKILL_CUBIC_MASTERY))
 				{
 					player.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
 					return false;
@@ -90,7 +89,7 @@ public class L2SkillSummon extends L2Skill
 				if (player.isInObserverMode())
 					return false;
 				
-				if (player.getPet() != null)
+				if (player.getSummon() != null)
 				{
 					player.sendPacket(SystemMessageId.SUMMON_ONLY_ONE);
 					return false;
@@ -129,13 +128,11 @@ public class L2SkillSummon extends L2Skill
 					
 					Player player = ((Player) obj);
 					
-					int mastery = player.getSkillLevel(SKILL_CUBIC_MASTERY);
-					if (mastery < 0)
-						mastery = 0;
+					final int mastery = player.getSkillLevel(SKILL_CUBIC_MASTERY);
 					
+					// Player can have only 1 cubic if they don't own cubic mastery - we should replace old cubic with new one.
 					if (mastery == 0 && !player.getCubics().isEmpty())
 					{
-						// Player can have only 1 cubic - we shuld replace old cubic with new one
 						for (Cubic c : player.getCubics().values())
 						{
 							c.stopAction();
@@ -160,15 +157,11 @@ public class L2SkillSummon extends L2Skill
 					else
 						// given by other player
 						player.addCubic(_npcId, _cubicSkillLevel, getPower(), _activationtime, _activationchance, _summonTotalLifeTime, true);
-				
+					
 					player.broadcastUserInfo();
 				}
 				return;
 			}
-			
-			int mastery = activeChar.getSkillLevel(SKILL_CUBIC_MASTERY);
-			if (mastery < 0)
-				mastery = 0;
 			
 			if (activeChar.getCubics().containsKey(_npcId))
 			{
@@ -178,7 +171,7 @@ public class L2SkillSummon extends L2Skill
 				activeChar.delCubic(_npcId);
 			}
 			
-			if (activeChar.getCubics().size() > mastery)
+			if (activeChar.getCubics().size() > activeChar.getSkillLevel(SKILL_CUBIC_MASTERY))
 			{
 				activeChar.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
 				return;
@@ -189,11 +182,11 @@ public class L2SkillSummon extends L2Skill
 			return;
 		}
 		
-		if (activeChar.getPet() != null || activeChar.isMounted())
+		if (activeChar.getSummon() != null || activeChar.isMounted())
 			return;
 		
 		Servitor summon;
-		NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(_npcId);
+		NpcTemplate summonTemplate = NpcData.getInstance().getTemplate(_npcId);
 		if (summonTemplate == null)
 		{
 			_log.warning("Summon attempt for nonexisting NPC ID: " + _npcId + ", skill ID: " + getId());
@@ -219,11 +212,14 @@ public class L2SkillSummon extends L2Skill
 		
 		summon.setCurrentHp(summon.getMaxHp());
 		summon.setCurrentMp(summon.getMaxMp());
-		summon.setHeading(activeChar.getHeading());
 		summon.setRunning();
-		activeChar.setPet(summon);
+		activeChar.setSummon(summon);
 		
-		summon.spawnMe(activeChar.getX() + 20, activeChar.getY() + 20, activeChar.getZ());
+		final int x = activeChar.getX();
+		final int y = activeChar.getY();
+		final int z = activeChar.getZ();
+		
+		summon.spawnMe(GeoEngine.getInstance().canMoveToTargetLoc(x, y, z, x + 20, y + 20, z), activeChar.getHeading());
 		summon.setFollowStatus(true);
 	}
 	

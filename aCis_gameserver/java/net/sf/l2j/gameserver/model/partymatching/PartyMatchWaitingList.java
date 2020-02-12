@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.model.partymatching;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * @author Gnacik

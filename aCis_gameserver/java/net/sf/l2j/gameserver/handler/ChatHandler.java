@@ -18,47 +18,47 @@ import net.sf.l2j.gameserver.handler.chathandlers.ChatTrade;
 
 public class ChatHandler
 {
-	private final Map<Integer, IChatHandler> _datatable = new HashMap<>();
-	
-	public static ChatHandler getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private final Map<Integer, IChatHandler> _entries = new HashMap<>();
 	
 	protected ChatHandler()
 	{
-		registerChatHandler(new ChatAll());
-		registerChatHandler(new ChatAlliance());
-		registerChatHandler(new ChatClan());
-		registerChatHandler(new ChatHeroVoice());
-		registerChatHandler(new ChatParty());
-		registerChatHandler(new ChatPartyMatchRoom());
-		registerChatHandler(new ChatPartyRoomAll());
-		registerChatHandler(new ChatPartyRoomCommander());
-		registerChatHandler(new ChatPetition());
-		registerChatHandler(new ChatShout());
-		registerChatHandler(new ChatTell());
-		registerChatHandler(new ChatTrade());
+		registerHandler(new ChatAll());
+		registerHandler(new ChatAlliance());
+		registerHandler(new ChatClan());
+		registerHandler(new ChatHeroVoice());
+		registerHandler(new ChatParty());
+		registerHandler(new ChatPartyMatchRoom());
+		registerHandler(new ChatPartyRoomAll());
+		registerHandler(new ChatPartyRoomCommander());
+		registerHandler(new ChatPetition());
+		registerHandler(new ChatShout());
+		registerHandler(new ChatTell());
+		registerHandler(new ChatTrade());
 	}
 	
-	public void registerChatHandler(IChatHandler handler)
+	private void registerHandler(IChatHandler handler)
 	{
 		for (int id : handler.getChatTypeList())
-			_datatable.put(id, handler);
+			_entries.put(id, handler);
 	}
 	
-	public IChatHandler getChatHandler(int chatType)
+	public IChatHandler getHandler(int chatType)
 	{
-		return _datatable.get(chatType);
+		return _entries.get(chatType);
 	}
 	
 	public int size()
 	{
-		return _datatable.size();
+		return _entries.size();
+	}
+	
+	public static ChatHandler getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final ChatHandler _instance = new ChatHandler();
+		protected static final ChatHandler INSTANCE = new ChatHandler();
 	}
 }

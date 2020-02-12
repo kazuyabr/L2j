@@ -4,8 +4,6 @@ import java.util.concurrent.ScheduledFuture;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.util.Broadcast;
-
 /**
  * A datatype used to retain informations for announcements. It notably holds a {@link ScheduledFuture}.
  */
@@ -67,7 +65,7 @@ public class Announcement implements Runnable
 			_task = ThreadPool.schedule(this, _delay * 1000); // self schedule (worker)
 			_tempLimit--;
 		}
-		Broadcast.announceToOnlinePlayers(_message, _critical);
+		World.announceToOnlinePlayers(_message, _critical);
 	}
 	
 	public String getMessage()

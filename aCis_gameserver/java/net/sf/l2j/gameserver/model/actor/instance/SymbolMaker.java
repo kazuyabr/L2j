@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.gameserver.data.xml.HennaData;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.HennaEquipList;
@@ -17,20 +17,16 @@ public class SymbolMaker extends Folk
 	public void onBypassFeedback(Player player, String command)
 	{
 		if (command.equals("Draw"))
-			player.sendPacket(new HennaEquipList(player, HennaData.getInstance().getAvailableHennasFor(player)));
+			player.sendPacket(new HennaEquipList(player));
 		else if (command.equals("RemoveList"))
 		{
-			boolean hasHennas = false;
-			for (int i = 1; i <= 3; i++)
+			if (player.getHennaList().isEmpty())
 			{
-				if (player.getHenna(i) != null)
-					hasHennas = true;
+				player.sendPacket(SystemMessageId.SYMBOL_NOT_FOUND);
+				return;
 			}
 			
-			if (hasHennas)
-				player.sendPacket(new HennaRemoveList(player));
-			else
-				player.sendPacket(SystemMessageId.SYMBOL_NOT_FOUND);
+			player.sendPacket(new HennaRemoveList(player));
 		}
 		else
 			super.onBypassFeedback(player, command);

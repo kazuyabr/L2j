@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -33,7 +33,7 @@ public class TeleportWithCharm extends Quest
 			if (st.getQuestItemsCount(DWARF_GATEKEEPER_TOKEN) >= 1)
 			{
 				st.takeItems(DWARF_GATEKEEPER_TOKEN, 1);
-				player.teleToLocation(-80826, 149775, -3043, 0);
+				player.teleportTo(-80826, 149775, -3043, 0);
 			}
 			else
 				htmltext = "30540-01.htm";
@@ -43,7 +43,7 @@ public class TeleportWithCharm extends Quest
 			if (st.getQuestItemsCount(ORC_GATEKEEPER_CHARM) >= 1)
 			{
 				st.takeItems(ORC_GATEKEEPER_CHARM, 1);
-				player.teleToLocation(-80826, 149775, -3043, 0);
+				player.teleportTo(-80826, 149775, -3043, 0);
 			}
 			else
 				htmltext = "30576-01.htm";

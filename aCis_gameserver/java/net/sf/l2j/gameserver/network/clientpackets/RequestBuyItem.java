@@ -1,13 +1,13 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.cache.HtmCache;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
 import net.sf.l2j.gameserver.data.manager.BuyListManager;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Fisherman;
 import net.sf.l2j.gameserver.model.actor.instance.Merchant;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.buylist.NpcBuyList;
 import net.sf.l2j.gameserver.model.buylist.Product;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
@@ -54,7 +54,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 		if (_items == null)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -145,7 +145,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 		}
 		
 		// Charge buyer and add tax to castle treasury if not owned by npc clan
-		if (subTotal < 0 || !player.reduceAdena("Buy", subTotal, player.getCurrentFolkNPC(), false))
+		if (subTotal < 0 || !player.reduceAdena("Buy", subTotal, player.getCurrentFolk(), false))
 		{
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			return;

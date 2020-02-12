@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 public final class RequestPrivateStoreQuitBuy extends L2GameClientPacket
 {
@@ -12,7 +12,7 @@ public final class RequestPrivateStoreQuitBuy extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		Player player = getClient().getActiveChar();
+		Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		

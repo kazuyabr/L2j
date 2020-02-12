@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import net.sf.l2j.gameserver.data.xml.AnnouncementData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * This class handles following admin commands:

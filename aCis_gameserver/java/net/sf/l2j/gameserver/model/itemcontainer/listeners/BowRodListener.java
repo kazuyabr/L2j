@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.model.itemcontainer.listeners;
 
+import net.sf.l2j.gameserver.enums.items.WeaponType;
 import net.sf.l2j.gameserver.model.actor.Playable;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.item.type.WeaponType;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 
 public class BowRodListener implements OnEquipListener

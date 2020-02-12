@@ -1,29 +1,26 @@
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
+import net.sf.l2j.gameserver.enums.AiEventType;
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.items.ShotType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlEvent;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.actor.ai.type.AttackableAI;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeSummon;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.skills.Stats;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
-/**
- * This Handles Disabler skills
- * @author _drunk_
- */
 public class Disablers implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
@@ -61,6 +58,9 @@ public class Disablers implements ISkillHandler
 			
 			Creature target = (Creature) obj;
 			if (target.isDead() || (target.isInvul() && !target.isParalyzed())) // bypass if target is dead or invul (excluding invul from Petrification)
+				continue;
+			
+			if (skill.isOffensive() && target.getFirstEffect(L2EffectType.BLOCK_DEBUFF) != null)
 				continue;
 			
 			byte shld = Formulas.calcShldUse(activeChar, target, skill);
@@ -155,7 +155,7 @@ public class Disablers implements ISkillHandler
 				
 				case AGGDAMAGE:
 					if (target instanceof Attackable)
-						target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) ((150 * skill.getPower()) / (target.getLevel() + 7)));
+						target.getAI().notifyEvent(AiEventType.AGGRESSION, activeChar, (int) ((150 * skill.getPower()) / (target.getLevel() + 7)));
 					
 					skill.getEffects(activeChar, target, new Env(shld, ss, sps, bsps));
 					break;
@@ -187,7 +187,7 @@ public class Disablers implements ISkillHandler
 							{
 								((AttackableAI) targ.getAI()).setGlobalAggro(-25);
 								targ.getAggroList().clear();
-								targ.getAI().setIntention(CtrlIntention.ACTIVE);
+								targ.getAI().setIntention(IntentionType.ACTIVE);
 								targ.setWalking();
 							}
 						}
@@ -198,13 +198,13 @@ public class Disablers implements ISkillHandler
 						if (activeChar instanceof Player)
 							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill));
 						
-						target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+						target.getAI().notifyEvent(AiEventType.ATTACKED, activeChar);
 					}
 					break;
 				
 				case AGGREMOVE:
 					// these skills needs to be rechecked
-					if (target instanceof Attackable && !target.isRaid())
+					if (target instanceof Attackable && !target.isRaidRelated())
 					{
 						if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, bsps))
 						{
@@ -221,11 +221,11 @@ public class Disablers implements ISkillHandler
 							if (activeChar instanceof Player)
 								activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill));
 							
-							target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+							target.getAI().notifyEvent(AiEventType.ATTACKED, activeChar);
 						}
 					}
 					else
-						target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+						target.getAI().notifyEvent(AiEventType.ATTACKED, activeChar);
 					break;
 				
 				case ERASE:
@@ -233,7 +233,7 @@ public class Disablers implements ISkillHandler
 					if (Formulas.calcSkillSuccess(activeChar, target, skill, shld, bsps) && !(target instanceof SiegeSummon))
 					{
 						final Player summonOwner = ((Summon) target).getOwner();
-						final Summon summonPet = summonOwner.getPet();
+						final Summon summonPet = summonOwner.getSummon();
 						if (summonPet != null)
 						{
 							summonPet.unSummon(summonOwner);

@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.L2FriendSay;
 
@@ -34,7 +34,7 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
 		if (_message == null || _message.isEmpty() || _message.length() > 300)
 			return;
 		
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		

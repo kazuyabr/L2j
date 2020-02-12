@@ -2,18 +2,15 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.List;
 
-import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
-import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.xml.SkillTreeData;
+import net.sf.l2j.gameserver.enums.skills.AcquireSkillType;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.L2EnchantSkillData;
-import net.sf.l2j.gameserver.model.L2EnchantSkillLearn;
-import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.L2SkillLearn;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.status.FolkStatus;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.holder.skillnode.EnchantSkillNode;
+import net.sf.l2j.gameserver.model.holder.skillnode.GeneralSkillNode;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.AcquireSkillList;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -28,18 +25,8 @@ public class Folk extends Npc
 	public Folk(int objectId, NpcTemplate template)
 	{
 		super(objectId, template);
-	}
-	
-	@Override
-	public FolkStatus getStatus()
-	{
-		return (FolkStatus) super.getStatus();
-	}
-	
-	@Override
-	public void initCharStatus()
-	{
-		setStatus(new FolkStatus(this));
+		
+		setIsMortal(false);
 	}
 	
 	@Override
@@ -54,43 +41,28 @@ public class Folk extends Npc
 	/**
 	 * This method displays SkillList to the player.
 	 * @param player The player who requested the method.
-	 * @param npc The L2Npc linked to the request.
-	 * @param classId The classId asked. Used to sort available skill list.
 	 */
-	public static void showSkillList(Player player, Npc npc, ClassId classId)
+	public void showSkillList(Player player)
 	{
-		if (!npc.getTemplate().canTeach(classId))
+		if (!getTemplate().canTeach(player.getClassId()))
 		{
-			final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-			html.setFile("data/html/trainer/" + npc.getTemplate().getNpcId() + "-noskills.htm");
+			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+			html.setFile("data/html/trainer/" + getTemplate().getNpcId() + "-noskills.htm");
 			player.sendPacket(html);
 			return;
 		}
 		
-		AcquireSkillList asl = new AcquireSkillList(AcquireSkillList.SkillType.Usual);
-		boolean empty = true;
-		
-		for (L2SkillLearn sl : SkillTreeTable.getInstance().getAvailableSkills(player, classId))
+		final List<GeneralSkillNode> skills = player.getAvailableSkills();
+		if (skills.isEmpty())
 		{
-			L2Skill sk = SkillTable.getInstance().getInfo(sl.getId(), sl.getLevel());
-			if (sk == null)
-				continue;
-			
-			asl.addSkill(sl.getId(), sl.getLevel(), sl.getLevel(), sl.getSpCost(), 0);
-			empty = false;
-		}
-		
-		if (empty)
-		{
-			int minlevel = SkillTreeTable.getInstance().getMinLevelForNewSkill(player, classId);
-			
+			final int minlevel = player.getRequiredLevelForNextSkill();
 			if (minlevel > 0)
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN_S1).addNumber(minlevel));
 			else
 				player.sendPacket(SystemMessageId.NO_MORE_SKILLS_TO_LEARN);
 		}
 		else
-			player.sendPacket(asl);
+			player.sendPacket(new AcquireSkillList(AcquireSkillType.USUAL, skills));
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
@@ -98,46 +70,27 @@ public class Folk extends Npc
 	/**
 	 * This method displays EnchantSkillList to the player.
 	 * @param player The player who requested the method.
-	 * @param npc The L2Npc linked to the request.
-	 * @param classId The classId asked. Used to sort available enchant skill list.
 	 */
-	public static void showEnchantSkillList(Player player, Npc npc, ClassId classId)
+	public void showEnchantSkillList(Player player)
 	{
-		if (!npc.getTemplate().canTeach(classId))
+		if (!getTemplate().canTeach(player.getClassId()))
 		{
-			final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
-			html.setFile("data/html/trainer/" + npc.getTemplate().getNpcId() + "-noskills.htm");
+			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+			html.setFile("data/html/trainer/" + getTemplate().getNpcId() + "-noskills.htm");
 			player.sendPacket(html);
 			return;
 		}
 		
 		if (player.getClassId().level() < 3)
 		{
-			final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
+			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 			html.setHtml("<html><body> You must have 3rd class change quest completed.</body></html>");
 			player.sendPacket(html);
 			return;
 		}
 		
-		ExEnchantSkillList esl = new ExEnchantSkillList();
-		boolean empty = true;
-		
-		List<L2EnchantSkillLearn> esll = SkillTreeTable.getInstance().getAvailableEnchantSkills(player);
-		for (L2EnchantSkillLearn skill : esll)
-		{
-			L2Skill sk = SkillTable.getInstance().getInfo(skill.getId(), skill.getLevel());
-			if (sk == null)
-				continue;
-			
-			L2EnchantSkillData data = SkillTreeTable.getInstance().getEnchantSkillData(skill.getEnchant());
-			if (data == null)
-				continue;
-			
-			esl.addSkill(skill.getId(), skill.getLevel(), data.getCostSp(), data.getCostExp());
-			empty = false;
-		}
-		
-		if (empty)
+		final List<EnchantSkillNode> skills = SkillTreeData.getInstance().getEnchantSkillsFor(player);
+		if (skills.isEmpty())
 		{
 			player.sendPacket(SystemMessageId.THERE_IS_NO_SKILL_THAT_ENABLES_ENCHANT);
 			
@@ -147,7 +100,7 @@ public class Folk extends Npc
 				player.sendPacket(SystemMessageId.NO_MORE_SKILLS_TO_LEARN);
 		}
 		else
-			player.sendPacket(esl);
+			player.sendPacket(new ExEnchantSkillList(skills));
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
@@ -176,12 +129,9 @@ public class Folk extends Npc
 	public void onBypassFeedback(Player player, String command)
 	{
 		if (command.startsWith("SkillList"))
-		{
-			player.setSkillLearningClassId(player.getClassId());
-			showSkillList(player, this, player.getClassId());
-		}
+			showSkillList(player);
 		else if (command.startsWith("EnchantSkillList"))
-			showEnchantSkillList(player, this, player.getClassId());
+			showEnchantSkillList(player);
 		else if (command.startsWith("GiveBlessing"))
 			giveBlessingSupport(player);
 		else

@@ -1,19 +1,19 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
-import net.sf.l2j.Config;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.items.ShotType;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.ShotType;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Cubic;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillDrain extends L2Skill
 {
@@ -132,9 +132,6 @@ public class L2SkillDrain extends L2Skill
 	
 	public void useCubicSkill(Cubic activeCubic, WorldObject[] targets)
 	{
-		if (Config.DEBUG)
-			_log.info("L2SkillDrain: useCubicSkill()");
-		
 		for (WorldObject obj : targets)
 		{
 			if (!(obj instanceof Creature))

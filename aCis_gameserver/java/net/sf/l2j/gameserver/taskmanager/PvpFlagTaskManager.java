@@ -5,44 +5,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
 /**
  * Updates and clears PvP flag of {@link Player} after specified time.
- * @author Tryskell, Hasha
  */
 public final class PvpFlagTaskManager implements Runnable
 {
 	private final Map<Player, Long> _players = new ConcurrentHashMap<>();
 	
-	public static final PvpFlagTaskManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
 	protected PvpFlagTaskManager()
 	{
 		// Run task each second.
 		ThreadPool.scheduleAtFixedRate(this, 1000, 1000);
-	}
-	
-	/**
-	 * Adds {@link Player} to the PvpFlagTask.
-	 * @param player : Player to be added and checked.
-	 * @param time : Time in ms, after which the PvP flag is removed.
-	 */
-	public final void add(Player player, long time)
-	{
-		_players.put(player, System.currentTimeMillis() + time);
-	}
-	
-	/**
-	 * Removes {@link Player} from the PvpFlagTask.
-	 * @param player : {@link Player} to be removed.
-	 */
-	public final void remove(Player player)
-	{
-		_players.remove(player);
 	}
 	
 	@Override
@@ -77,8 +52,32 @@ public final class PvpFlagTaskManager implements Runnable
 		}
 	}
 	
+	/**
+	 * Adds {@link Player} to the PvpFlagTask.
+	 * @param player : Player to be added and checked.
+	 * @param time : Time in ms, after which the PvP flag is removed.
+	 */
+	public final void add(Player player, long time)
+	{
+		_players.put(player, System.currentTimeMillis() + time);
+	}
+	
+	/**
+	 * Removes {@link Player} from the PvpFlagTask.
+	 * @param player : {@link Player} to be removed.
+	 */
+	public final void remove(Player player)
+	{
+		_players.remove(player);
+	}
+	
+	public static final PvpFlagTaskManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
 	private static class SingletonHolder
 	{
-		protected static final PvpFlagTaskManager _instance = new PvpFlagTaskManager();
+		protected static final PvpFlagTaskManager INSTANCE = new PvpFlagTaskManager();
 	}
 }

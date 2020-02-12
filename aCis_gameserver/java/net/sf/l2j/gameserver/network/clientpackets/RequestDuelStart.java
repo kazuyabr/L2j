@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.group.CommandChannel;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -11,19 +11,19 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 public final class RequestDuelStart extends L2GameClientPacket
 {
 	private String _player;
-	private int _partyDuel;
+	private boolean _isPartyDuel;
 	
 	@Override
 	protected void readImpl()
 	{
 		_player = readS();
-		_partyDuel = readD();
+		_isPartyDuel = readD() == 1;
 	}
 	
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -55,7 +55,7 @@ public final class RequestDuelStart extends L2GameClientPacket
 		}
 		
 		// Duel is a party duel.
-		if (_partyDuel == 1)
+		if (_isPartyDuel)
 		{
 			// Player must be a party leader, the target can't be of the same party.
 			final Party activeCharParty = activeChar.getParty();
@@ -114,7 +114,7 @@ public final class RequestDuelStart extends L2GameClientPacket
 					member.removeMeFromPartyMatch();
 				
 				activeChar.onTransactionRequest(partyLeader);
-				partyLeader.sendPacket(new ExDuelAskStart(activeChar.getName(), _partyDuel));
+				partyLeader.sendPacket(new ExDuelAskStart(activeChar.getName(), _isPartyDuel));
 				
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PARTY_HAS_BEEN_CHALLENGED_TO_A_DUEL).addCharName(partyLeader));
 				targetChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PARTY_HAS_CHALLENGED_YOUR_PARTY_TO_A_DUEL).addCharName(activeChar));
@@ -132,7 +132,7 @@ public final class RequestDuelStart extends L2GameClientPacket
 				targetChar.removeMeFromPartyMatch();
 				
 				activeChar.onTransactionRequest(targetChar);
-				targetChar.sendPacket(new ExDuelAskStart(activeChar.getName(), _partyDuel));
+				targetChar.sendPacket(new ExDuelAskStart(activeChar.getName(), _isPartyDuel));
 				
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_BEEN_CHALLENGED_TO_A_DUEL).addCharName(targetChar));
 				targetChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_CHALLENGED_YOU_TO_A_DUEL).addCharName(activeChar));

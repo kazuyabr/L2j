@@ -2,21 +2,13 @@ package net.sf.l2j.gameserver.model.item;
 
 import java.util.Arrays;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.CabalType;
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.items.TicketType;
 
 public final class MercenaryTicket
 {
-	public enum TicketType
-	{
-		SWORD,
-		POLE,
-		BOW,
-		CLERIC,
-		WIZARD,
-		TELEPORTER
-	}
-	
 	private final int _itemId;
 	private final TicketType _type;
 	private final boolean _isStationary;

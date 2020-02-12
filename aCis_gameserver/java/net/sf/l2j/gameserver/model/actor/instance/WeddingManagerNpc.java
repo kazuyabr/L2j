@@ -6,20 +6,18 @@ import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.CoupleManager;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.CoupleManager;
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.ConfirmDlg;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.MoveToPawn;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.util.Broadcast;
 
 public class WeddingManagerNpc extends Folk
 {
@@ -36,11 +34,15 @@ public class WeddingManagerNpc extends Folk
 			player.setTarget(this);
 		else
 		{
-			// Calculate the distance between the Player and the L2Npc
+			// Calculate the distance between the Player and the Npc.
 			if (!canInteract(player))
-				player.getAI().setIntention(CtrlIntention.INTERACT, this);
+				player.getAI().setIntention(IntentionType.INTERACT, this);
 			else
 			{
+				// Stop moving if we're already in interact range.
+				if (player.isMoving() || player.isInCombat())
+					player.getAI().setIntention(IntentionType.IDLE);
+				
 				// Rotate the player to face the instance
 				player.sendPacket(new MoveToPawn(player, this, Npc.INTERACTION_DISTANCE));
 				
@@ -131,27 +133,8 @@ public class WeddingManagerNpc extends Folk
 			}
 			
 			// If all checks are successfully passed, teleport the player to the partner
-			player.teleToLocation(partner.getX(), partner.getY(), partner.getZ(), 20);
+			player.teleportTo(partner.getX(), partner.getY(), partner.getZ(), 20);
 		}
-	}
-	
-	/**
-	 * Are both partners wearing formal wear ? If Formal Wear check is disabled, returns True in any case.<BR>
-	 * @param p1 Player
-	 * @param p2 Player
-	 * @return boolean
-	 */
-	private static boolean wearsFormalWear(Player p1, Player p2)
-	{
-		ItemInstance fw1 = p1.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
-		if (fw1 == null || fw1.getItemId() != 6408)
-			return false;
-		
-		ItemInstance fw2 = p2.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
-		if (fw2 == null || fw2.getItemId() != 6408)
-			return false;
-		
-		return true;
 	}
 	
 	private boolean weddingConditions(Player requester, Player partner)
@@ -185,7 +168,7 @@ public class WeddingManagerNpc extends Folk
 		}
 		
 		// Check for Formal Wear
-		if (Config.WEDDING_FORMALWEAR && !wearsFormalWear(requester, partner))
+		if (Config.WEDDING_FORMALWEAR && (!requester.isWearingFormalWear() || !partner.isWearingFormalWear()))
 		{
 			sendHtmlMessage(requester, "data/html/mods/wedding/error_noformal.htm");
 			return false;
@@ -208,8 +191,8 @@ public class WeddingManagerNpc extends Folk
 		partner.setUnderMarryRequest(false);
 		
 		// reduce adenas amount according to configs
-		requester.reduceAdena("Wedding", Config.WEDDING_PRICE, requester.getCurrentFolkNPC(), true);
-		partner.reduceAdena("Wedding", Config.WEDDING_PRICE, requester.getCurrentFolkNPC(), true);
+		requester.reduceAdena("Wedding", Config.WEDDING_PRICE, requester.getCurrentFolk(), true);
+		partner.reduceAdena("Wedding", Config.WEDDING_PRICE, requester.getCurrentFolk(), true);
 		
 		// Messages to the couple
 		requester.sendMessage("Congratulations, you are now married with " + partner.getName() + " !");
@@ -223,7 +206,7 @@ public class WeddingManagerNpc extends Folk
 		requester.doCast(FrequentSkill.LARGE_FIREWORK.getSkill());
 		partner.doCast(FrequentSkill.LARGE_FIREWORK.getSkill());
 		
-		Broadcast.announceToOnlinePlayers("Congratulations to " + requester.getName() + " and " + partner.getName() + "! They have been married.");
+		World.announceToOnlinePlayers("Congratulations to " + requester.getName() + " and " + partner.getName() + "! They have been married.");
 	}
 	
 	private void sendHtmlMessage(Player player, String file)

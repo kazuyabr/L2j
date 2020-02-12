@@ -1,10 +1,11 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillDefault extends L2Skill
 {

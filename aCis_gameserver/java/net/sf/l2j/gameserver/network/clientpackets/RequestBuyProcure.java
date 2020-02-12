@@ -42,6 +42,6 @@ public class RequestBuyProcure extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		_log.info("RequestBuyProcure: normally unused, but infos found for manorId :" + _manorId);
+		LOGGER.warn("RequestBuyProcure: normally unused, but infos found for manorId {}.", _manorId);
 	}
 }

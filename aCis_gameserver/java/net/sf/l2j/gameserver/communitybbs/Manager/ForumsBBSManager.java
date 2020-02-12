@@ -3,76 +3,59 @@ package net.sf.l2j.gameserver.communitybbs.Manager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 
 public class ForumsBBSManager extends BaseBBSManager
 {
-	private final List<Forum> _table;
-	private int _lastid = 1;
+	private static final String LOAD_FORUMS = "SELECT forum_id FROM forums WHERE forum_type=0";
 	
-	public static ForumsBBSManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private final Set<Forum> _forums = ConcurrentHashMap.newKeySet();
+	
+	private int _lastId = 1;
 	
 	protected ForumsBBSManager()
 	{
-		_table = new CopyOnWriteArrayList<>();
-		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(LOAD_FORUMS))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT forum_id FROM forums WHERE forum_type=0");
-			ResultSet result = statement.executeQuery();
-			
-			while (result.next())
-				addForum(new Forum(result.getInt("forum_id"), null));
-			
-			result.close();
-			statement.close();
+			try (ResultSet rs = ps.executeQuery())
+			{
+				while (rs.next())
+					addForum(new Forum(rs.getInt("forum_id"), null));
+			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Data error on Forum (root): " + e.getMessage(), e);
+			LOGGER.error("Couldn't load forums root.", e);
 		}
 	}
 	
 	public void initRoot()
 	{
-		for (Forum f : _table)
-			f.vload();
+		for (Forum forum : _forums)
+			forum.vload();
 		
-		_log.info("Loaded " + _table.size() + " forums. Last forum id used: " + _lastid);
+		LOGGER.info("Loaded {} forums.", _forums.size());
 	}
 	
-	public void addForum(Forum ff)
+	public void addForum(Forum forum)
 	{
-		if (ff == null)
+		if (forum == null)
 			return;
 		
-		_table.add(ff);
+		_forums.add(forum);
 		
-		if (ff.getID() > _lastid)
-			_lastid = ff.getID();
-	}
-	
-	public Forum getForumByName(String Name)
-	{
-		for (Forum f : _table)
-		{
-			if (f.getName().equals(Name))
-				return f;
-		}
-		return null;
+		if (forum.getId() > _lastId)
+			_lastId = forum.getId();
 	}
 	
 	public Forum createNewForum(String name, Forum parent, int type, int perm, int oid)
 	{
-		Forum forum = new Forum(name, parent, type, perm, oid);
+		final Forum forum = new Forum(name, parent, type, perm, oid);
 		forum.insertIntoDb();
 		
 		return forum;
@@ -80,21 +63,26 @@ public class ForumsBBSManager extends BaseBBSManager
 	
 	public int getANewID()
 	{
-		return ++_lastid;
+		return ++_lastId;
+	}
+	
+	public Forum getForumByName(String name)
+	{
+		return _forums.stream().filter(f -> f.getName().equals(name)).findFirst().orElse(null);
 	}
 	
 	public Forum getForumByID(int id)
 	{
-		for (Forum f : _table)
-		{
-			if (f.getID() == id)
-				return f;
-		}
-		return null;
+		return _forums.stream().filter(f -> f.getId() == id).findFirst().orElse(null);
+	}
+	
+	public static ForumsBBSManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final ForumsBBSManager _instance = new ForumsBBSManager();
+		protected static final ForumsBBSManager INSTANCE = new ForumsBBSManager();
 	}
 }

@@ -1,11 +1,10 @@
 package net.sf.l2j.loginserver.network;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.security.interfaces.RSAPrivateKey;
-import java.util.logging.Logger;
 
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.mmocore.MMOClient;
 import net.sf.l2j.commons.mmocore.MMOConnection;
 import net.sf.l2j.commons.mmocore.SendablePacket;
@@ -16,17 +15,13 @@ import net.sf.l2j.loginserver.crypt.LoginCrypt;
 import net.sf.l2j.loginserver.crypt.ScrambledKeyPair;
 import net.sf.l2j.loginserver.network.serverpackets.L2LoginServerPacket;
 import net.sf.l2j.loginserver.network.serverpackets.LoginFail;
-import net.sf.l2j.loginserver.network.serverpackets.LoginFail.LoginFailReason;
 import net.sf.l2j.loginserver.network.serverpackets.PlayFail;
-import net.sf.l2j.loginserver.network.serverpackets.PlayFail.PlayFailReason;
 
 /**
  * Represents a client connected into the LoginServer
  */
 public final class LoginClient extends MMOClient<MMOConnection<LoginClient>>
 {
-	private static Logger _log = Logger.getLogger(LoginClient.class.getName());
-	
 	public static enum LoginClientState
 	{
 		CONNECTED,
@@ -34,20 +29,20 @@ public final class LoginClient extends MMOClient<MMOConnection<LoginClient>>
 		AUTHED_LOGIN
 	}
 	
-	private LoginClientState _state;
+	private static final CLogger LOGGER = new CLogger(LoginClient.class.getName());
 	
 	private final LoginCrypt _loginCrypt;
 	private final ScrambledKeyPair _scrambledPair;
 	private final byte[] _blowfishKey;
+	private final int _sessionId;
+	private final long _connectionStartTime;
 	
+	private LoginClientState _state;
 	private String _account;
 	private int _accessLevel;
 	private int _lastServer;
 	private SessionKey _sessionKey;
-	private final int _sessionId;
 	private boolean _joinedGS;
-	
-	private final long _connectionStartTime;
 	
 	public LoginClient(MMOConnection<LoginClient> con)
 	{
@@ -63,21 +58,30 @@ public final class LoginClient extends MMOClient<MMOConnection<LoginClient>>
 	}
 	
 	@Override
+	public String toString()
+	{
+		final InetAddress address = getConnection().getInetAddress();
+		if (getState() == LoginClientState.AUTHED_LOGIN)
+			return "[" + getAccount() + " (" + (address == null ? "disconnected" : address.getHostAddress()) + ")]";
+		
+		return "[" + (address == null ? "disconnected" : address.getHostAddress()) + "]";
+	}
+	
+	@Override
 	public boolean decrypt(ByteBuffer buf, int size)
 	{
 		try
 		{
 			if (!_loginCrypt.decrypt(buf.array(), buf.position(), size))
 			{
-				_log.warning("Wrong checksum from client: " + toString());
 				super.getConnection().close((SendablePacket<LoginClient>) null);
 				return false;
 			}
 			return true;
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Couldn't decrypt LoginClient packet.", e);
 			super.getConnection().close((SendablePacket<LoginClient>) null);
 			return false;
 		}
@@ -91,14 +95,26 @@ public final class LoginClient extends MMOClient<MMOConnection<LoginClient>>
 		{
 			size = _loginCrypt.encrypt(buf.array(), offset, size);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			e.printStackTrace();
+			LOGGER.error("Couldn't encrypt LoginClient packet.", e);
 			return false;
 		}
 		
 		buf.position(offset + size);
 		return true;
+	}
+	
+	@Override
+	public void onDisconnection()
+	{
+		if (!hasJoinedGS() || (getConnectionStartTime() + LoginController.LOGIN_TIMEOUT) < System.currentTimeMillis())
+			LoginController.getInstance().removeAuthedLoginClient(getAccount());
+	}
+	
+	@Override
+	protected void onForcedDisconnection()
+	{
 	}
 	
 	public LoginClientState getState()
@@ -191,40 +207,18 @@ public final class LoginClient extends MMOClient<MMOConnection<LoginClient>>
 		getConnection().sendPacket(lsp);
 	}
 	
-	public void close(LoginFailReason reason)
+	public void close(LoginFail reason)
 	{
-		getConnection().close(new LoginFail(reason));
+		getConnection().close(reason);
 	}
 	
-	public void close(PlayFailReason reason)
+	public void close(PlayFail reason)
 	{
-		getConnection().close(new PlayFail(reason));
+		getConnection().close(reason);
 	}
 	
 	public void close(L2LoginServerPacket lsp)
 	{
 		getConnection().close(lsp);
-	}
-	
-	@Override
-	public void onDisconnection()
-	{
-		if (!hasJoinedGS() || (getConnectionStartTime() + LoginController.LOGIN_TIMEOUT) < System.currentTimeMillis())
-			LoginController.getInstance().removeAuthedLoginClient(getAccount());
-	}
-	
-	@Override
-	public String toString()
-	{
-		final InetAddress address = getConnection().getInetAddress();
-		if (getState() == LoginClientState.AUTHED_LOGIN)
-			return "[" + getAccount() + " (" + (address == null ? "disconnected" : address.getHostAddress()) + ")]";
-		
-		return "[" + (address == null ? "disconnected" : address.getHostAddress()) + "]";
-	}
-	
-	@Override
-	protected void onForcedDisconnection()
-	{
 	}
 }

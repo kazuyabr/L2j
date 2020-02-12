@@ -7,20 +7,20 @@ import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 import net.sf.l2j.commons.util.ArraysUtil;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.SiegeSide;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeGuard;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.AIType;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.SkillType;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
 
 public class SiegeGuardAI extends AttackableAI
 {
@@ -72,23 +72,23 @@ public class SiegeGuardAI extends AttackableAI
 	 * @param arg1 The second parameter of the Intention
 	 */
 	@Override
-	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
+	synchronized void changeIntention(IntentionType intention, Object arg0, Object arg1)
 	{
 		// Active becomes idle if only a summon is present
-		if (intention == CtrlIntention.IDLE)
+		if (intention == IntentionType.IDLE)
 		{
 			// Check if actor is not dead
 			if (!_actor.isAlikeDead())
 			{
 				// If no players are around, set the Intention to ACTIVE
 				if (!getActiveChar().getKnownType(Player.class).isEmpty())
-					intention = CtrlIntention.ACTIVE;
+					intention = IntentionType.ACTIVE;
 			}
 			
-			if (intention == CtrlIntention.IDLE)
+			if (intention == IntentionType.IDLE)
 			{
 				// Set the Intention of this L2AttackableAI to IDLE
-				super.changeIntention(CtrlIntention.IDLE, null, null);
+				super.changeIntention(IntentionType.IDLE, null, null);
 				
 				// Stop AI task and detach AI from NPC
 				if (_aiTask != null)
@@ -157,13 +157,13 @@ public class SiegeGuardAI extends AttackableAI
 					_actor.setRunning();
 					
 					// Set the AI Intention to ATTACK
-					setIntention(CtrlIntention.ATTACK, hated);
+					setIntention(IntentionType.ATTACK, hated);
 				}
 				return;
 			}
 		}
-		// Order to the L2SiegeGuardInstance to return to its home location because there's no target to attack
-		getActiveChar().returnHome(true);
+		// Order to the SiegeGuard to return to its home location because there's no target to attack
+		getActiveChar().returnHome();
 	}
 	
 	/**
@@ -188,7 +188,7 @@ public class SiegeGuardAI extends AttackableAI
 		 */
 		if (!actor.isInsideZone(ZoneId.SIEGE))
 		{
-			actor.returnHome(true);
+			actor.returnHome();
 			return;
 		}
 		
@@ -205,7 +205,7 @@ public class SiegeGuardAI extends AttackableAI
 			attackTarget = targetReconsider(actor.getTemplate().getClanRange(), false);
 			if (attackTarget == null)
 			{
-				setIntention(CtrlIntention.ACTIVE);
+				setIntention(IntentionType.ACTIVE);
 				actor.setWalking();
 				return;
 			}
@@ -409,7 +409,7 @@ public class SiegeGuardAI extends AttackableAI
 			
 			if (GeoEngine.getInstance().canMoveToTarget(actor.getX(), actor.getY(), actor.getZ(), posX, posY, posZ))
 			{
-				setIntention(CtrlIntention.MOVE_TO, new Location(posX, posY, posZ));
+				setIntention(IntentionType.MOVE_TO, new Location(posX, posY, posZ));
 				return;
 			}
 		}

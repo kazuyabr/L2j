@@ -1,22 +1,21 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
 
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores summon items.<br>
  * TODO Delete it and move it back wherever it belongs.
  */
-public class SummonItemData extends XMLDocument
+public class SummonItemData implements IXmlReader
 {
 	private final Map<Integer, IntIntHolder> _items = new HashMap<>();
 	
@@ -26,31 +25,23 @@ public class SummonItemData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/summonItems.xml");
-		LOG.info("Loaded " + _items.size() + " summon items.");
+		parseFile("./data/xml/summonItems.xml");
+		LOGGER.info("Loaded {} summon items.", _items.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "item", itemNode ->
 		{
-			if (!"item".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			final NamedNodeMap attrs = o.getAttributes();
-			
-			final int itemId = Integer.valueOf(attrs.getNamedItem("id").getNodeValue());
-			final int npcId = Integer.valueOf(attrs.getNamedItem("npcId").getNodeValue());
-			final int summonType = Integer.valueOf(attrs.getNamedItem("summonType").getNodeValue());
-			
+			final NamedNodeMap attrs = itemNode.getAttributes();
+			final int itemId = parseInteger(attrs, "id");
+			final int npcId = parseInteger(attrs, "npcId");
+			final int summonType = parseInteger(attrs, "summonType");
 			_items.put(itemId, new IntIntHolder(npcId, summonType));
-		}
+		}));
 	}
 	
 	public IntIntHolder getSummonItem(int itemId)

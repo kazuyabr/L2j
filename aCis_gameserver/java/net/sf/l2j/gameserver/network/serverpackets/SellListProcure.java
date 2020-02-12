@@ -3,8 +3,8 @@ package net.sf.l2j.gameserver.network.serverpackets;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.manor.CropProcure;
 

@@ -1,21 +1,17 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import java.util.List;
+import java.util.Set;
 
 import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
-/**
- * _clanList can be either War List (_tab == 0) or Attacker List.
- * @author -Wooden-
- */
 public class PledgeReceiveWarList extends L2GameServerPacket
 {
-	private final List<Integer> _clanList;
+	private final Set<Integer> _clanList;
 	private final int _tab;
 	private final int _page;
 	
-	public PledgeReceiveWarList(List<Integer> clanList, int tab, int page)
+	public PledgeReceiveWarList(Set<Integer> clanList, int tab, int page)
 	{
 		_clanList = clanList;
 		_tab = tab;

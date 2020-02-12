@@ -3,15 +3,15 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.data.MapRegionTable;
-import net.sf.l2j.gameserver.data.MapRegionTable.TeleportType;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.entity.ClanHall;
-import net.sf.l2j.gameserver.model.entity.ClanHall.ClanHallFunction;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.ClanHallManager;
+import net.sf.l2j.gameserver.data.xml.MapRegionData;
+import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
+import net.sf.l2j.gameserver.enums.SiegeSide;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.clanhall.ClanHall;
+import net.sf.l2j.gameserver.model.clanhall.ClanHallFunction;
 import net.sf.l2j.gameserver.model.entity.Siege;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
@@ -27,116 +27,10 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		_requestType = readD();
 	}
 	
-	class DeathTask implements Runnable
-	{
-		final Player _player;
-		
-		DeathTask(Player player)
-		{
-			_player = player;
-		}
-		
-		@Override
-		public void run()
-		{
-			final Clan clan = _player.getClan();
-			
-			Location loc = null;
-			
-			// Enforce type.
-			if (_player.isInJail())
-				_requestType = 27;
-			else if (_player.isFestivalParticipant())
-				_requestType = 4;
-			
-			// To clanhall.
-			if (_requestType == 1)
-			{
-				if (clan == null || !clan.hasHideout())
-				{
-					_log.warning(_player.getName() + " called RestartPointPacket - To Clanhall while he doesn't have clan / Clanhall.");
-					return;
-				}
-				
-				loc = MapRegionTable.getInstance().getLocationToTeleport(_player, TeleportType.CLAN_HALL);
-				
-				final ClanHall ch = ClanHallManager.getInstance().getClanHallByOwner(clan);
-				if (ch != null)
-				{
-					final ClanHallFunction function = ch.getFunction(ClanHall.FUNC_RESTORE_EXP);
-					if (function != null)
-						_player.restoreExp(function.getLvl());
-				}
-			}
-			// To castle.
-			else if (_requestType == 2)
-			{
-				final Siege siege = CastleManager.getInstance().getSiege(_player);
-				if (siege != null)
-				{
-					switch (siege.getSide(clan))
-					{
-						case DEFENDER:
-						case OWNER:
-							loc = MapRegionTable.getInstance().getLocationToTeleport(_player, TeleportType.CASTLE);
-							break;
-						
-						case ATTACKER:
-							loc = MapRegionTable.getInstance().getLocationToTeleport(_player, TeleportType.TOWN);
-							break;
-						
-						default:
-							_log.warning(_player.getName() + " called RestartPointPacket - To Castle while he isn't registered to any castle siege.");
-							return;
-					}
-				}
-				else
-				{
-					if (clan == null || !clan.hasCastle())
-						return;
-					
-					loc = MapRegionTable.getInstance().getLocationToTeleport(_player, TeleportType.CASTLE);
-				}
-			}
-			// To siege flag.
-			else if (_requestType == 3)
-				loc = MapRegionTable.getInstance().getLocationToTeleport(_player, TeleportType.SIEGE_FLAG);
-			// Fixed.
-			else if (_requestType == 4)
-			{
-				if (!_player.isGM() && !_player.isFestivalParticipant())
-				{
-					_log.warning(_player.getName() + " called RestartPointPacket - Fixed while he isn't festival participant!");
-					return;
-				}
-				
-				loc = _player.getPosition();
-			}
-			// To jail.
-			else if (_requestType == 27)
-			{
-				if (!_player.isInJail())
-					return;
-				
-				loc = JAIL_LOCATION;
-			}
-			// Nothing has been found, use regular "To town" behavior.
-			else
-				loc = MapRegionTable.getInstance().getLocationToTeleport(_player, TeleportType.TOWN);
-			
-			_player.setIsIn7sDungeon(false);
-			
-			if (_player.isDead())
-				_player.doRevive();
-			
-			_player.teleToLocation(loc, 20);
-		}
-	}
-	
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -147,27 +41,104 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		}
 		
 		if (!player.isDead())
-		{
-			_log.warning("Living player [" + player.getName() + "] called RequestRestartPoint packet.");
 			return;
-		}
 		
 		// Schedule a respawn delay if player is part of a clan registered in an active siege.
 		if (player.getClan() != null)
 		{
-			final Siege siege = CastleManager.getInstance().getSiege(player);
+			final Siege siege = CastleManager.getInstance().getActiveSiege(player);
 			if (siege != null && siege.checkSide(player.getClan(), SiegeSide.ATTACKER))
 			{
-				ThreadPool.schedule(new DeathTask(player), Config.ATTACKERS_RESPAWN_DELAY);
-				
-				if (Config.ATTACKERS_RESPAWN_DELAY > 0)
-					player.sendMessage("You will be teleported in " + Config.ATTACKERS_RESPAWN_DELAY / 1000 + " seconds.");
-				
+				ThreadPool.schedule(() -> portPlayer(player), Config.ATTACKERS_RESPAWN_DELAY);
 				return;
 			}
 		}
 		
-		// Run the task immediately (no need to schedule).
-		new DeathTask(player).run();
+		portPlayer(player);
+	}
+	
+	/**
+	 * Teleport the {@link Player} to the associated {@link Location}, based on _requestType.
+	 * @param player : The player set as parameter.
+	 */
+	private void portPlayer(Player player)
+	{
+		final Clan clan = player.getClan();
+		
+		Location loc = null;
+		
+		// Enforce type.
+		if (player.isInJail())
+			_requestType = 27;
+		else if (player.isFestivalParticipant())
+			_requestType = 4;
+		
+		// To clanhall.
+		if (_requestType == 1)
+		{
+			if (clan == null || !clan.hasClanHall())
+				return;
+			
+			loc = MapRegionData.getInstance().getLocationToTeleport(player, TeleportType.CLAN_HALL);
+			
+			final ClanHall ch = ClanHallManager.getInstance().getClanHallByOwner(clan);
+			if (ch != null)
+			{
+				final ClanHallFunction function = ch.getFunction(ClanHall.FUNC_RESTORE_EXP);
+				if (function != null)
+					player.restoreExp(function.getLvl());
+			}
+		}
+		// To castle.
+		else if (_requestType == 2)
+		{
+			final Siege siege = CastleManager.getInstance().getActiveSiege(player);
+			if (siege != null)
+			{
+				final SiegeSide side = siege.getSide(clan);
+				if (side == SiegeSide.DEFENDER || side == SiegeSide.OWNER)
+					loc = MapRegionData.getInstance().getLocationToTeleport(player, TeleportType.CASTLE);
+				else if (side == SiegeSide.ATTACKER)
+					loc = MapRegionData.getInstance().getLocationToTeleport(player, TeleportType.TOWN);
+				else
+					return;
+			}
+			else
+			{
+				if (clan == null || !clan.hasCastle())
+					return;
+				
+				loc = MapRegionData.getInstance().getLocationToTeleport(player, TeleportType.CASTLE);
+			}
+		}
+		// To siege flag.
+		else if (_requestType == 3)
+			loc = MapRegionData.getInstance().getLocationToTeleport(player, TeleportType.SIEGE_FLAG);
+		// Fixed.
+		else if (_requestType == 4)
+		{
+			if (!player.isGM() && !player.isFestivalParticipant())
+				return;
+			
+			loc = player.getPosition();
+		}
+		// To jail.
+		else if (_requestType == 27)
+		{
+			if (!player.isInJail())
+				return;
+			
+			loc = JAIL_LOCATION;
+		}
+		// Nothing has been found, use regular "To town" behavior.
+		else
+			loc = MapRegionData.getInstance().getLocationToTeleport(player, TeleportType.TOWN);
+		
+		player.setIsIn7sDungeon(false);
+		
+		if (player.isDead())
+			player.doRevive();
+		
+		player.teleportTo(loc, 20);
 	}
 }

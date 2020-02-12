@@ -19,48 +19,48 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.Time;
 
 public class UserCommandHandler
 {
-	private final Map<Integer, IUserCommandHandler> _datatable = new HashMap<>();
-	
-	public static UserCommandHandler getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private final Map<Integer, IUserCommandHandler> _entries = new HashMap<>();
 	
 	protected UserCommandHandler()
 	{
-		registerUserCommandHandler(new ChannelDelete());
-		registerUserCommandHandler(new ChannelLeave());
-		registerUserCommandHandler(new ChannelListUpdate());
-		registerUserCommandHandler(new ClanPenalty());
-		registerUserCommandHandler(new ClanWarsList());
-		registerUserCommandHandler(new DisMount());
-		registerUserCommandHandler(new Escape());
-		registerUserCommandHandler(new Loc());
-		registerUserCommandHandler(new Mount());
-		registerUserCommandHandler(new OlympiadStat());
-		registerUserCommandHandler(new PartyInfo());
-		registerUserCommandHandler(new SiegeStatus());
-		registerUserCommandHandler(new Time());
+		registerHandler(new ChannelDelete());
+		registerHandler(new ChannelLeave());
+		registerHandler(new ChannelListUpdate());
+		registerHandler(new ClanPenalty());
+		registerHandler(new ClanWarsList());
+		registerHandler(new DisMount());
+		registerHandler(new Escape());
+		registerHandler(new Loc());
+		registerHandler(new Mount());
+		registerHandler(new OlympiadStat());
+		registerHandler(new PartyInfo());
+		registerHandler(new SiegeStatus());
+		registerHandler(new Time());
 	}
 	
-	public void registerUserCommandHandler(IUserCommandHandler handler)
+	private void registerHandler(IUserCommandHandler handler)
 	{
 		for (int id : handler.getUserCommandList())
-			_datatable.put(id, handler);
+			_entries.put(id, handler);
 	}
 	
-	public IUserCommandHandler getUserCommandHandler(int userCommand)
+	public IUserCommandHandler getHandler(int userCommand)
 	{
-		return _datatable.get(userCommand);
+		return _entries.get(userCommand);
 	}
 	
 	public int size()
 	{
-		return _datatable.size();
+		return _entries.size();
+	}
+	
+	public static UserCommandHandler getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final UserCommandHandler _instance = new UserCommandHandler();
+		protected static final UserCommandHandler INSTANCE = new UserCommandHandler();
 	}
 }

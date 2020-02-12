@@ -15311,7 +15311,7 @@
 		</drops>
 	</npc>
 	<npc id="25302" name="Ketra's Commander Tayr" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="36"/>
 		<set name="rHand" val="80"/>
@@ -15369,7 +15369,7 @@
 		</minions>
 	</npc>
 	<npc id="25303" name="Tayr's Aide" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="213"/>
@@ -15412,7 +15412,7 @@
 		</drops>
 	</npc>
 	<npc id="25304" name="Tayr's Guard" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="29"/>
 		<set name="rHand" val="79"/>
@@ -15454,7 +15454,7 @@
 		</drops>
 	</npc>
 	<npc id="25305" name="Ketra's Chief Brakki" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="33.5"/>
 		<set name="rHand" val="0"/>
@@ -15516,7 +15516,7 @@
 		</drops>
 	</npc>
 	<npc id="25306" name="Soul of Fire Nastron" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -15590,7 +15590,7 @@
 		</minions>
 	</npc>
 	<npc id="25307" name="Family of Nastron" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
@@ -15634,7 +15634,7 @@
 		</drops>
 	</npc>
 	<npc id="25308" name="Family of Nastron" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
@@ -15819,7 +15819,7 @@
 		</drops>
 	</npc>
 	<npc id="25312" name="Varka's Commander Mos" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="51"/>
 		<set name="rHand" val="2500"/>
@@ -15884,7 +15884,7 @@
 		</minions>
 	</npc>
 	<npc id="25313" name="Mos' Aide" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="41.5"/>
 		<set name="rHand" val="6716"/>
@@ -15927,7 +15927,7 @@
 		</drops>
 	</npc>
 	<npc id="25314" name="Mos' Guard" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="16"/>
 		<set name="height" val="38"/>
 		<set name="rHand" val="142"/>
@@ -15968,7 +15968,7 @@
 		</drops>
 	</npc>
 	<npc id="25315" name="Varka's Chief Horus" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="51"/>
 		<set name="rHand" val="2500"/>
@@ -16038,7 +16038,7 @@
 		</drops>
 	</npc>
 	<npc id="25316" name="Soul of Water Ashutar" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="0"/>
@@ -16100,7 +16100,7 @@
 		</minions>
 	</npc>
 	<npc id="25317" name="Family of Ashutar" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
@@ -16144,7 +16144,7 @@
 		</drops>
 	</npc>
 	<npc id="25318" name="Family of Ashutar" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="20"/>
 		<set name="rHand" val="0"/>
@@ -16187,7 +16187,7 @@
 		</drops>
 	</npc>
 	<npc id="25319" name="Ember" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="48"/>
 		<set name="height" val="73"/>
 		<set name="rHand" val="0"/>
@@ -16263,7 +16263,7 @@
 		</minions>
 	</npc>
 	<npc id="25320" name="Sentinel of Ember" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="45"/>
 		<set name="rHand" val="0"/>
@@ -16309,7 +16309,7 @@
 		</drops>
 	</npc>
 	<npc id="25321" name="Messenger of Ember" title="Raid Fighter">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="42"/>
 		<set name="rHand" val="0"/>
@@ -17293,12 +17293,12 @@
 		</drops>
 	</npc>
 	<npc id="25339" name="Shadow of Halisha" title="Ruler of Sepulcher">
-		<set name="level" val="80"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="6720"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="SepulcherMonster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="2172012"/>
 		<set name="sp" val="523301"/>
 		<set name="hp" val="213848.930921219"/>
@@ -17448,12 +17448,12 @@
 		</drops>
 	</npc>
 	<npc id="25342" name="Shadow of Halisha" title="Ruler of Sepulcher">
-		<set name="level" val="80"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="6720"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="SepulcherMonster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="2172012"/>
 		<set name="sp" val="523301"/>
 		<set name="hp" val="213848.930921219"/>
@@ -17643,12 +17643,12 @@
 		</drops>
 	</npc>
 	<npc id="25346" name="Shadow of Halisha" title="Ruler of Sepulcher">
-		<set name="level" val="80"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="6720"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="SepulcherMonster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="2172012"/>
 		<set name="sp" val="523301"/>
 		<set name="hp" val="213848.930921219"/>
@@ -17795,12 +17795,12 @@
 		</drops>
 	</npc>
 	<npc id="25349" name="Shadow of Halisha" title="Ruler of Sepulcher">
-		<set name="level" val="80"/>
+		<set name="level" val="81"/>
 		<set name="radius" val="23"/>
 		<set name="height" val="60"/>
 		<set name="rHand" val="6720"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="SepulcherMonster"/>
+		<set name="type" val="Monster"/>
 		<set name="exp" val="2172012"/>
 		<set name="sp" val="523301"/>
 		<set name="hp" val="213848.930921219"/>
@@ -26692,7 +26692,7 @@
 		</drops>
 	</npc>
 	<npc id="25527" name="Uruka" title="Raid Boss">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="30"/>
 		<set name="height" val="42.5105"/>
 		<set name="rHand" val="0"/>

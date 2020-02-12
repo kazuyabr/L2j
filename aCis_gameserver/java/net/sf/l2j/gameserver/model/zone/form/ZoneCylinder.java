@@ -1,12 +1,8 @@
 package net.sf.l2j.gameserver.model.zone.form;
 
-import net.sf.l2j.gameserver.model.zone.L2ZoneForm;
+import net.sf.l2j.gameserver.model.zone.ZoneForm;
 
-/**
- * A primitive circular zone
- * @author durgus
- */
-public class ZoneCylinder extends L2ZoneForm
+public class ZoneCylinder extends ZoneForm
 {
 	private final int _x, _y, _z1, _z2, _rad, _radS;
 	
@@ -25,6 +21,7 @@ public class ZoneCylinder extends L2ZoneForm
 	{
 		if ((Math.pow(_x - x, 2) + Math.pow(_y - y, 2)) > _radS || z < _z1 || z > _z2)
 			return false;
+		
 		return true;
 	}
 	
@@ -38,10 +35,13 @@ public class ZoneCylinder extends L2ZoneForm
 		// Any point of the rectangle intersecting the Circle?
 		if ((Math.pow(ax1 - _x, 2) + Math.pow(ay1 - _y, 2)) < _radS)
 			return true;
+		
 		if ((Math.pow(ax1 - _x, 2) + Math.pow(ay2 - _y, 2)) < _radS)
 			return true;
+		
 		if ((Math.pow(ax2 - _x, 2) + Math.pow(ay1 - _y, 2)) < _radS)
 			return true;
+		
 		if ((Math.pow(ax2 - _x, 2) + Math.pow(ay2 - _y, 2)) < _radS)
 			return true;
 		
@@ -50,13 +50,16 @@ public class ZoneCylinder extends L2ZoneForm
 		{
 			if (Math.abs(_y - ay2) < _rad)
 				return true;
+			
 			if (Math.abs(_y - ay1) < _rad)
 				return true;
 		}
+		
 		if (_y > ay1 && _y < ay2)
 		{
 			if (Math.abs(_x - ax2) < _rad)
 				return true;
+			
 			if (Math.abs(_x - ax1) < _rad)
 				return true;
 		}
@@ -70,9 +73,6 @@ public class ZoneCylinder extends L2ZoneForm
 		return (Math.sqrt((Math.pow(_x - x, 2) + Math.pow(_y - y, 2))) - _rad);
 	}
 	
-	/*
-	 * getLowZ() / getHighZ() - These two functions were added to cope with the demand of the new fishing algorithms, wich are now able to correctly place the hook in the water, thanks to getHighZ(). getLowZ() was added, considering potential future modifications.
-	 */
 	@Override
 	public int getLowZ()
 	{
@@ -90,10 +90,12 @@ public class ZoneCylinder extends L2ZoneForm
 	{
 		int count = (int) (2 * Math.PI * _rad / STEP);
 		double angle = 2 * Math.PI / count;
+		
 		for (int i = 0; i < count; i++)
 		{
 			int x = (int) (Math.cos(angle * i) * _rad);
 			int y = (int) (Math.sin(angle * i) * _rad);
+			
 			dropDebugItem(id, _x + x, _y + y, z);
 		}
 	}

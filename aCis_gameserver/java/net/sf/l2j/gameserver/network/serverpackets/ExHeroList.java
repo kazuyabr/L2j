@@ -2,9 +2,10 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import java.util.Collection;
 
-import net.sf.l2j.gameserver.model.entity.Hero;
+import net.sf.l2j.commons.util.StatsSet;
+
+import net.sf.l2j.gameserver.data.manager.HeroManager;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * Format: (ch) d [SdSdSdd]
@@ -16,7 +17,7 @@ public class ExHeroList extends L2GameServerPacket
 	
 	public ExHeroList()
 	{
-		_heroList = Hero.getInstance().getHeroes().values();
+		_heroList = HeroManager.getInstance().getHeroes().values();
 	}
 	
 	@Override
@@ -30,11 +31,11 @@ public class ExHeroList extends L2GameServerPacket
 		{
 			writeS(hero.getString(Olympiad.CHAR_NAME));
 			writeD(hero.getInteger(Olympiad.CLASS_ID));
-			writeS(hero.getString(Hero.CLAN_NAME, ""));
-			writeD(hero.getInteger(Hero.CLAN_CREST, 0));
-			writeS(hero.getString(Hero.ALLY_NAME, ""));
-			writeD(hero.getInteger(Hero.ALLY_CREST, 0));
-			writeD(hero.getInteger(Hero.COUNT));
+			writeS(hero.getString(HeroManager.CLAN_NAME, ""));
+			writeD(hero.getInteger(HeroManager.CLAN_CREST, 0));
+			writeS(hero.getString(HeroManager.ALLY_NAME, ""));
+			writeD(hero.getInteger(HeroManager.ALLY_CREST, 0));
+			writeD(hero.getInteger(HeroManager.COUNT));
 		}
 	}
 }

@@ -1,12 +1,8 @@
 package net.sf.l2j.gameserver.model.zone.form;
 
-import net.sf.l2j.gameserver.model.zone.L2ZoneForm;
+import net.sf.l2j.gameserver.model.zone.ZoneForm;
 
-/**
- * A not so primitive npoly zone
- * @author durgus
- */
-public class ZoneNPoly extends L2ZoneForm
+public class ZoneNPoly extends ZoneForm
 {
 	private final int[] _x;
 	private final int[] _y;
@@ -31,9 +27,7 @@ public class ZoneNPoly extends L2ZoneForm
 		for (int i = 0, j = _x.length - 1; i < _x.length; j = i++)
 		{
 			if ((((_y[i] <= y) && (y < _y[j])) || ((_y[j] <= y) && (y < _y[i]))) && (x < (_x[j] - _x[i]) * (y - _y[i]) / (_y[j] - _y[i]) + _x[i]))
-			{
 				inside = !inside;
-			}
 		}
 		return inside;
 	}
@@ -50,9 +44,6 @@ public class ZoneNPoly extends L2ZoneForm
 		// Or a point of the rectangle inside the polygon
 		if (isInsideZone(ax1, ay1, (_z2 - 1)))
 			return true;
-			
-		// If the first point wasn't inside the rectangle it might still have any line crossing any side
-		// of the rectangle
 		
 		// Check every possible line of the polygon for a collision with any of the rectangles side
 		for (int i = 0; i < _y.length; i++)
@@ -65,10 +56,13 @@ public class ZoneNPoly extends L2ZoneForm
 			// Check if this line intersects any of the four sites of the rectangle
 			if (lineSegmentsIntersect(tX, tY, uX, uY, ax1, ay1, ax1, ay2))
 				return true;
+			
 			if (lineSegmentsIntersect(tX, tY, uX, uY, ax1, ay1, ax2, ay1))
 				return true;
+			
 			if (lineSegmentsIntersect(tX, tY, uX, uY, ax2, ay2, ax1, ay2))
 				return true;
+			
 			if (lineSegmentsIntersect(tX, tY, uX, uY, ax2, ay2, ax2, ay1))
 				return true;
 		}
@@ -91,9 +85,6 @@ public class ZoneNPoly extends L2ZoneForm
 		return Math.sqrt(shortestDist);
 	}
 	
-	/*
-	 * getLowZ() / getHighZ() - These two functions were added to cope with the demand of the new fishing algorithms, wich are now able to correctly place the hook in the water, thanks to getHighZ(). getLowZ() was added, considering potential future modifications.
-	 */
 	@Override
 	public int getLowZ()
 	{
@@ -112,16 +103,20 @@ public class ZoneNPoly extends L2ZoneForm
 		for (int i = 0; i < _x.length; i++)
 		{
 			int nextIndex = i + 1;
+			
 			// ending point to first one
 			if (nextIndex == _x.length)
 				nextIndex = 0;
+			
 			int vx = _x[nextIndex] - _x[i];
 			int vy = _y[nextIndex] - _y[i];
 			float lenght = (float) Math.sqrt(vx * vx + vy * vy);
 			lenght /= STEP;
+			
 			for (int o = 1; o <= lenght; o++)
 			{
 				float k = o / lenght;
+				
 				dropDebugItem(id, (int) (_x[i] + k * vx), (int) (_y[i] + k * vy), z);
 			}
 		}

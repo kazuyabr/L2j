@@ -6,30 +6,22 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.enums.OlympiadType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
-/**
- * @author DS
- */
 public class OlympiadManager
 {
-	private final List<Integer> _nonClassBasedRegisters;
-	private final Map<Integer, List<Integer>> _classBasedRegisters;
+	private final List<Integer> _nonClassBasedRegisters = new CopyOnWriteArrayList<>();
+	private final Map<Integer, List<Integer>> _classBasedRegisters = new ConcurrentHashMap<>();
 	
 	protected OlympiadManager()
 	{
-		_nonClassBasedRegisters = new CopyOnWriteArrayList<>();
-		_classBasedRegisters = new ConcurrentHashMap<>();
-	}
-	
-	public static final OlympiadManager getInstance()
-	{
-		return SingletonHolder._instance;
 	}
 	
 	public final List<Integer> getRegisteredNonClassBased()
@@ -81,7 +73,7 @@ public class OlympiadManager
 		if (_nonClassBasedRegisters.contains(objId))
 		{
 			if (showMessage)
-				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_NO_CLASS_GAMES));
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_FOR_ALL_CLASSES_WAITING_TO_PARTICIPATE_IN_THE_GAME));
 			
 			return true;
 		}
@@ -90,7 +82,7 @@ public class OlympiadManager
 		if (classed != null && classed.contains(objId))
 		{
 			if (showMessage)
-				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_CLASSIFIED_GAMES));
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_TO_PARTICIPATE_IN_THE_GAME_FOR_YOUR_CLASS));
 			
 			return true;
 		}
@@ -105,7 +97,7 @@ public class OlympiadManager
 	
 	private static final boolean isInCompetition(Player player, boolean showMessage)
 	{
-		if (!Olympiad._inCompPeriod)
+		if (!Olympiad.getInstance().isInCompPeriod())
 			return false;
 		
 		for (int i = OlympiadGameManager.getInstance().getNumberOfStadiums(); --i >= 0;)
@@ -125,9 +117,9 @@ public class OlympiadManager
 		return false;
 	}
 	
-	public final boolean registerNoble(Player player, CompetitionType type)
+	public final boolean registerNoble(Player player, OlympiadType type)
 	{
-		if (!Olympiad._inCompPeriod)
+		if (!Olympiad.getInstance().isInCompPeriod())
 		{
 			player.sendPacket(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
 			return false;
@@ -173,43 +165,43 @@ public class OlympiadManager
 		return true;
 	}
 	
-	public final boolean unRegisterNoble(Player noble)
+	public final boolean unRegisterNoble(Player player)
 	{
-		if (!Olympiad._inCompPeriod)
+		if (!Olympiad.getInstance().isInCompPeriod())
 		{
-			noble.sendPacket(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
+			player.sendPacket(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
 			return false;
 		}
 		
-		if (!noble.isNoble())
+		if (!player.isNoble())
 		{
-			noble.sendPacket(SystemMessageId.NOBLESSE_ONLY);
+			player.sendPacket(SystemMessageId.NOBLESSE_ONLY);
 			return false;
 		}
 		
-		if (!isRegistered(noble, false))
+		if (!isRegistered(player, false))
 		{
-			noble.sendPacket(SystemMessageId.YOU_HAVE_NOT_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_A_GAME);
+			player.sendPacket(SystemMessageId.YOU_HAVE_NOT_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_A_GAME);
 			return false;
 		}
 		
-		if (isInCompetition(noble, false))
+		if (isInCompetition(player, false))
 			return false;
 		
-		Integer objId = Integer.valueOf(noble.getObjectId());
-		if (_nonClassBasedRegisters.remove(objId))
+		Integer objectId = Integer.valueOf(player.getObjectId());
+		if (_nonClassBasedRegisters.remove(objectId))
 		{
-			noble.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
+			player.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
 			return true;
 		}
 		
-		final List<Integer> classed = _classBasedRegisters.get(noble.getBaseClass());
-		if (classed != null && classed.remove(objId))
+		final List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
+		if (classed != null && classed.remove(objectId))
 		{
-			_classBasedRegisters.remove(noble.getBaseClass());
-			_classBasedRegisters.put(noble.getBaseClass(), classed);
+			_classBasedRegisters.remove(player.getBaseClass());
+			_classBasedRegisters.put(player.getBaseClass(), classed);
 			
-			noble.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
+			player.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
 			return true;
 		}
 		
@@ -267,20 +259,20 @@ public class OlympiadManager
 		if (isInCompetition(player, true))
 			return false;
 		
-		StatsSet statDat = Olympiad.getNobleStats(player.getObjectId());
+		StatsSet statDat = Olympiad.getInstance().getNobleStats(player.getObjectId());
 		if (statDat == null)
 		{
 			statDat = new StatsSet();
 			statDat.set(Olympiad.CLASS_ID, player.getBaseClass());
 			statDat.set(Olympiad.CHAR_NAME, player.getName());
-			statDat.set(Olympiad.POINTS, Olympiad.DEFAULT_POINTS);
+			statDat.set(Olympiad.POINTS, Config.ALT_OLY_START_POINTS);
 			statDat.set(Olympiad.COMP_DONE, 0);
 			statDat.set(Olympiad.COMP_WON, 0);
 			statDat.set(Olympiad.COMP_LOST, 0);
 			statDat.set(Olympiad.COMP_DRAWN, 0);
 			statDat.set("to_save", true);
 			
-			Olympiad.addNobleStats(player.getObjectId(), statDat);
+			Olympiad.getInstance().addNobleStats(player.getObjectId(), statDat);
 		}
 		
 		final int points = Olympiad.getInstance().getNoblePoints(player.getObjectId());
@@ -296,8 +288,13 @@ public class OlympiadManager
 		return true;
 	}
 	
+	public static final OlympiadManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
 	private static class SingletonHolder
 	{
-		protected static final OlympiadManager _instance = new OlympiadManager();
+		protected static final OlympiadManager INSTANCE = new OlympiadManager();
 	}
 }

@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 public final class StringUtil
 {
@@ -19,21 +20,21 @@ public final class StringUtil
 	public static final String LETTERS = LOWER_CASE_LETTERS + UPPER_CASE_LETTERS;
 	public static final String LETTERS_AND_DIGITS = LETTERS + DIGITS;
 	
-	private static final Logger LOG = Logger.getLogger(StringUtil.class.getName());
+	private static final CLogger LOGGER = new CLogger(StringUtil.class.getName());
 	
 	/**
-	 * Checks each String passed as parameter. If at least one is empty or null, than return false.
+	 * Checks each String passed as parameter. If at least one is empty or null, than return true.
 	 * @param strings : The Strings to test.
-	 * @return false if at least one String is empty or null.
+	 * @return true if at least one String is empty or null.
 	 */
 	public static boolean isEmpty(String... strings)
 	{
 		for (String str : strings)
 		{
 			if (str == null || str.isEmpty())
-				return false;
+				return true;
 		}
-		return true;
+		return false;
 	}
 	
 	/**
@@ -107,7 +108,7 @@ public final class StringUtil
 	 * @param regex : the regex pattern to make test with.
 	 * @return true if matching.
 	 */
-	public static boolean isValidName(String text, String regex)
+	public static boolean isValidString(String text, String regex)
 	{
 		Pattern pattern;
 		try
@@ -125,16 +126,6 @@ public final class StringUtil
 	}
 	
 	/**
-	 * Child of isValidName, with regular pattern for players' name.
-	 * @param text : the text to test.
-	 * @return true if matching.
-	 */
-	public static boolean isValidPlayerName(String text)
-	{
-		return isValidName(text, "^[A-Za-z0-9]{3,16}$");
-	}
-	
-	/**
 	 * Format a given text to fit with logging "title" criterias, and send it.
 	 * @param text : the String to format.
 	 */
@@ -146,7 +137,7 @@ public final class StringUtil
 		
 		StringUtil.append(sb, "=[ ", text, " ]");
 		
-		LOG.info(sb.toString());
+		LOGGER.info(sb.toString());
 	}
 	
 	/**
@@ -170,5 +161,19 @@ public final class StringUtil
 			result += " " + time + "s";
 		
 		return result;
+	}
+	
+	/**
+	 * Format a {@link String} to delete its extension ("castles.xml" > "castles"), if any.
+	 * @param fileName : The String to edit, which is a former file name.
+	 * @return a left-side truncated String to the first "." encountered.
+	 */
+	public static String getNameWithoutExtension(String fileName)
+	{
+		final int pos = fileName.lastIndexOf(".");
+		if (pos > 0)
+			fileName = fileName.substring(0, pos);
+		
+		return fileName;
 	}
 }

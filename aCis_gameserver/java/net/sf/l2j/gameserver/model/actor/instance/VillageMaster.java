@@ -1,26 +1,27 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.data.CharTemplateTable;
-import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
-import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.data.xml.PlayerData;
+import net.sf.l2j.gameserver.data.xml.SkillTreeData;
+import net.sf.l2j.gameserver.enums.actors.ClassId;
+import net.sf.l2j.gameserver.enums.skills.AcquireSkillType;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.player.SubClass;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.base.ClassId;
-import net.sf.l2j.gameserver.model.base.SubClass;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.model.holder.skillnode.ClanSkillNode;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadManager;
 import net.sf.l2j.gameserver.model.pledge.Clan;
-import net.sf.l2j.gameserver.model.pledge.Clan.SubPledge;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
+import net.sf.l2j.gameserver.model.pledge.SubPledge;
 import net.sf.l2j.gameserver.network.FloodProtectors;
 import net.sf.l2j.gameserver.network.FloodProtectors.Action;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -89,7 +90,37 @@ public class VillageMaster extends Folk
 			if (cmdParams.isEmpty() || cmdParams2.isEmpty())
 				return;
 			
-			renameSubPledge(player, Integer.valueOf(cmdParams), cmdParams2);
+			if (!player.isClanLeader())
+			{
+				player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+				return;
+			}
+			
+			final Clan clan = player.getClan();
+			final SubPledge subPledge = player.getClan().getSubPledge(Integer.valueOf(cmdParams));
+			
+			if (subPledge == null)
+			{
+				player.sendMessage("Pledge doesn't exist.");
+				return;
+			}
+			
+			if (!StringUtil.isAlphaNumeric(cmdParams2))
+			{
+				player.sendPacket(SystemMessageId.CLAN_NAME_INVALID);
+				return;
+			}
+			
+			if (cmdParams2.length() < 2 || cmdParams2.length() > 16)
+			{
+				player.sendPacket(SystemMessageId.CLAN_NAME_LENGTH_INCORRECT);
+				return;
+			}
+			
+			subPledge.setName(cmdParams2);
+			clan.updateSubPledgeInDB(subPledge);
+			clan.broadcastToOnlineMembers(new PledgeShowMemberListAll(clan, subPledge.getId()));
+			player.sendMessage("Pledge name have been changed to: " + cmdParams2);
 		}
 		else if (actualCommand.equalsIgnoreCase("create_royal"))
 		{
@@ -128,18 +159,136 @@ public class VillageMaster extends Folk
 		}
 		else if (actualCommand.equalsIgnoreCase("dissolve_clan"))
 		{
-			dissolveClan(player);
+			if (!player.isClanLeader())
+			{
+				player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+				return;
+			}
+			
+			final Clan clan = player.getClan();
+			if (clan.getAllyId() != 0)
+			{
+				player.sendPacket(SystemMessageId.CANNOT_DISPERSE_THE_CLANS_IN_ALLY);
+				return;
+			}
+			
+			if (clan.isAtWar())
+			{
+				player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_WAR);
+				return;
+			}
+			
+			if (clan.hasCastle() || clan.hasClanHall())
+			{
+				player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_OWNING_CLAN_HALL_OR_CASTLE);
+				return;
+			}
+			
+			for (Castle castle : CastleManager.getInstance().getCastles())
+			{
+				if (castle.getSiege().checkSides(clan))
+				{
+					player.sendPacket((castle.getSiege().isInProgress()) ? SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_SIEGE : SystemMessageId.CANNOT_DISSOLVE_CAUSE_CLAN_WILL_PARTICIPATE_IN_CASTLE_SIEGE);
+					return;
+				}
+			}
+			
+			if (clan.getDissolvingExpiryTime() > System.currentTimeMillis())
+			{
+				player.sendPacket(SystemMessageId.DISSOLUTION_IN_PROGRESS);
+				return;
+			}
+			
+			if (Config.ALT_CLAN_DISSOLVE_DAYS > 0)
+			{
+				clan.setDissolvingExpiryTime(System.currentTimeMillis() + Config.ALT_CLAN_DISSOLVE_DAYS * 86400000L);
+				clan.updateClanInDB();
+				
+				ClanTable.getInstance().scheduleRemoveClan(clan);
+			}
+			else
+				ClanTable.getInstance().destroyClan(clan);
+			
+			// The clan leader should take the XP penalty of a full death.
+			player.deathPenalty(false, false, false);
 		}
 		else if (actualCommand.equalsIgnoreCase("change_clan_leader"))
 		{
 			if (cmdParams.isEmpty())
 				return;
 			
-			changeClanLeader(player, cmdParams);
+			if (!player.isClanLeader())
+			{
+				player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+				return;
+			}
+			
+			if (player.getName().equalsIgnoreCase(cmdParams))
+				return;
+			
+			final Clan clan = player.getClan();
+			final ClanMember member = clan.getClanMember(cmdParams);
+			
+			if (member == null)
+			{
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DOES_NOT_EXIST).addString(cmdParams));
+				return;
+			}
+			
+			if (!member.isOnline())
+			{
+				player.sendPacket(SystemMessageId.INVITED_USER_NOT_ONLINE);
+				return;
+			}
+			
+			if (member.getPledgeType() != 0)
+			{
+				player.sendMessage("Selected member cannot be found in main clan.");
+				return;
+			}
+			
+			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+			if (clan.getNewLeaderId() == 0)
+			{
+				clan.setNewLeaderId(member.getObjectId(), true);
+				html.setFile("data/html/scripts/village_master/Clan/9000-07-success.htm");
+			}
+			else
+				html.setFile("data/html/scripts/village_master/Clan/9000-07-in-progress.htm");
+			
+			player.sendPacket(html);
+		}
+		else if (actualCommand.equalsIgnoreCase("cancel_clan_leader_change"))
+		{
+			if (!player.isClanLeader())
+			{
+				player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+				return;
+			}
+			
+			final Clan clan = player.getClan();
+			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+			if (clan.getNewLeaderId() != 0)
+			{
+				clan.setNewLeaderId(0, true);
+				html.setFile("data/html/scripts/village_master/Clan/9000-08-success.htm");
+			}
+			else
+				html.setFile("data/html/scripts/village_master/Clan/9000-08-no.htm");
+			
+			player.sendPacket(html);
 		}
 		else if (actualCommand.equalsIgnoreCase("recover_clan"))
 		{
-			recoverClan(player);
+			if (!player.isClanLeader())
+			{
+				player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+				return;
+			}
+			
+			final Clan clan = player.getClan();
+			clan.setDissolvingExpiryTime(0);
+			clan.updateClanInDB();
 		}
 		else if (actualCommand.equalsIgnoreCase("increase_clan_level"))
 		{
@@ -196,14 +345,14 @@ public class VillageMaster extends Folk
 				
 				case 1: // Add Subclass - Initial
 					// Subclasses may not be added while a summon is active.
-					if (player.getPet() != null)
+					if (player.getSummon() != null)
 					{
 						player.sendPacket(SystemMessageId.CANT_SUBCLASS_WITH_SUMMONED_SERVITOR);
 						return;
 					}
 					
 					// Subclasses may not be added while you are over your weight limit.
-					if (player.getInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
+					if (player.getInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 2)
 					{
 						player.sendPacket(SystemMessageId.NOT_SUBCLASS_WHILE_OVERWEIGHT);
 						return;
@@ -233,14 +382,14 @@ public class VillageMaster extends Folk
 				
 				case 2: // Change Class - Initial
 					// Subclasses may not be changed while a summon is active.
-					if (player.getPet() != null)
+					if (player.getSummon() != null)
 					{
 						player.sendPacket(SystemMessageId.CANT_SUBCLASS_WITH_SUMMONED_SERVITOR);
 						return;
 					}
 					
 					// Subclasses may not be changed while a you are over your weight limit.
-					if (player.getInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
+					if (player.getInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 2)
 					{
 						player.sendPacket(SystemMessageId.NOT_SUBCLASS_WHILE_OVERWEIGHT);
 						return;
@@ -253,13 +402,12 @@ public class VillageMaster extends Folk
 						sb = new StringBuilder(300);
 						
 						if (checkVillageMaster(player.getBaseClass()))
-							StringUtil.append(sb, "<a action=\"bypass -h npc_%objectId%_Subclass 5 0\">", CharTemplateTable.getInstance().getClassNameById(player.getBaseClass()), "</a><br>");
+							StringUtil.append(sb, "<a action=\"bypass -h npc_%objectId%_Subclass 5 0\">", PlayerData.getInstance().getClassNameById(player.getBaseClass()), "</a><br>");
 						
-						for (Iterator<SubClass> subList = player.getSubClasses().values().iterator(); subList.hasNext();)
+						for (SubClass subclass : player.getSubClasses().values())
 						{
-							SubClass subClass = subList.next();
-							if (checkVillageMaster(subClass.getClassDefinition()))
-								StringUtil.append(sb, "<a action=\"bypass -h npc_%objectId%_Subclass 5 ", subClass.getClassIndex(), "\">", subClass.getClassDefinition(), "</a><br>");
+							if (checkVillageMaster(subclass.getClassDefinition()))
+								StringUtil.append(sb, "<a action=\"bypass -h npc_%objectId%_Subclass 5 ", subclass.getClassIndex(), "\">", subclass.getClassDefinition(), "</a><br>");
 						}
 						
 						if (sb.length() > 0)
@@ -273,46 +421,27 @@ public class VillageMaster extends Folk
 					break;
 				
 				case 3: // Change/Cancel Subclass - Initial
-					if (player.getSubClasses() == null || player.getSubClasses().isEmpty())
+					if (player.getSubClasses().isEmpty())
 					{
 						html.setFile("data/html/villagemaster/SubClass_ModifyEmpty.htm");
 						break;
 					}
 					
-					// custom value
-					if (player.getSubClasses().size() > 3)
-					{
-						sb = new StringBuilder(300);
-						int classIndex = 1;
-						
-						for (Iterator<SubClass> subList = player.getSubClasses().values().iterator(); subList.hasNext();)
-						{
-							SubClass subClass = subList.next();
-							StringUtil.append(sb, "Sub-class ", classIndex++, "<br>", "<a action=\"bypass -h npc_%objectId%_Subclass 6 ", subClass.getClassIndex(), "\">", CharTemplateTable.getInstance().getClassNameById(subClass.getClassId()), "</a><br>");
-						}
-						
-						html.setFile("data/html/villagemaster/SubClass_ModifyCustom.htm");
-						html.replace("%list%", sb.toString());
-					}
+					html.setFile("data/html/villagemaster/SubClass_Modify.htm");
+					if (player.getSubClasses().containsKey(1))
+						html.replace("%sub1%", PlayerData.getInstance().getClassNameById(player.getSubClasses().get(1).getClassId()));
 					else
-					{
-						// retail html contain only 3 subclasses
-						html.setFile("data/html/villagemaster/SubClass_Modify.htm");
-						if (player.getSubClasses().containsKey(1))
-							html.replace("%sub1%", CharTemplateTable.getInstance().getClassNameById(player.getSubClasses().get(1).getClassId()));
-						else
-							html.replace("<a action=\"bypass -h npc_%objectId%_Subclass 6 1\">%sub1%</a><br>", "");
-						
-						if (player.getSubClasses().containsKey(2))
-							html.replace("%sub2%", CharTemplateTable.getInstance().getClassNameById(player.getSubClasses().get(2).getClassId()));
-						else
-							html.replace("<a action=\"bypass -h npc_%objectId%_Subclass 6 2\">%sub2%</a><br>", "");
-						
-						if (player.getSubClasses().containsKey(3))
-							html.replace("%sub3%", CharTemplateTable.getInstance().getClassNameById(player.getSubClasses().get(3).getClassId()));
-						else
-							html.replace("<a action=\"bypass -h npc_%objectId%_Subclass 6 3\">%sub3%</a><br>", "");
-					}
+						html.replace("<a action=\"bypass -h npc_%objectId%_Subclass 6 1\">%sub1%</a><br>", "");
+					
+					if (player.getSubClasses().containsKey(2))
+						html.replace("%sub2%", PlayerData.getInstance().getClassNameById(player.getSubClasses().get(2).getClassId()));
+					else
+						html.replace("<a action=\"bypass -h npc_%objectId%_Subclass 6 2\">%sub2%</a><br>", "");
+					
+					if (player.getSubClasses().containsKey(3))
+						html.replace("%sub3%", PlayerData.getInstance().getClassNameById(player.getSubClasses().get(3).getClassId()));
+					else
+						html.replace("<a action=\"bypass -h npc_%objectId%_Subclass 6 3\">%sub3%</a><br>", "");
 					break;
 				
 				case 4: // Add Subclass - Action (Subclass 4 x[x])
@@ -329,28 +458,21 @@ public class VillageMaster extends Folk
 					
 					if (allowAddition)
 					{
-						if (!player.getSubClasses().isEmpty())
+						for (SubClass subclass : player.getSubClasses().values())
 						{
-							for (Iterator<SubClass> subList = player.getSubClasses().values().iterator(); subList.hasNext();)
+							if (subclass.getLevel() < 75)
 							{
-								SubClass subClass = subList.next();
-								
-								if (subClass.getLevel() < 75)
-								{
-									allowAddition = false;
-									break;
-								}
+								allowAddition = false;
+								break;
 							}
 						}
 					}
 					
-					/*
-					 * If quest checking is enabled, verify if the character has completed the Mimir's Elixir (Path to Subclass) and Fate's Whisper (A Grade Weapon) quests by checking for instances of their unique reward items. If they both exist, remove both unique items and continue with adding
-					 * the sub-class.
-					 */
-					if (allowAddition && !Config.ALT_GAME_SUBCLASS_WITHOUT_QUESTS)
+					// Verify if the character has completed the Mimir's Elixir (Path to Subclass) and Fate's Whisper (A Grade Weapon) quests by checking for instances of their unique reward items.
+					if (allowAddition && !Config.SUBCLASS_WITHOUT_QUESTS)
 						allowAddition = checkQuests(player);
 					
+					// If they both exist, remove both unique items and continue with adding the subclass.
 					if (allowAddition && isValidNewSubClass(player, paramOne))
 					{
 						if (!player.addSubClass(paramOne, player.getSubClasses().size() + 1))
@@ -508,10 +630,8 @@ public class VillageMaster extends Folk
 				}
 				
 				// scan for already used subclasses
-				for (Iterator<SubClass> subclasses = player.getSubClasses().values().iterator(); subclasses.hasNext();)
+				for (SubClass subclass : player.getSubClasses().values())
 				{
-					SubClass subclass = subclasses.next();
-					
 					if (subclass.getClassDefinition().equalsOrChildOf(classId))
 					{
 						availSub.remove();
@@ -524,8 +644,11 @@ public class VillageMaster extends Folk
 		return availSubs;
 	}
 	
-	/*
-	 * Check new subclass classId for validity (villagemaster race/type is not contains in previous subclasses, but in allowed subclasses) Base class not added into allowed subclasses.
+	/**
+	 * Check subclass classId for validity (villagemaster race/type is not contains in previous subclasses, but in allowed subclasses). Base class not added into allowed subclasses.
+	 * @param player : The player to check.
+	 * @param classId : The class id to check.
+	 * @return true if the {@link Player} can pick this subclass id.
 	 */
 	private final boolean isValidNewSubClass(Player player, int classId)
 	{
@@ -533,15 +656,13 @@ public class VillageMaster extends Folk
 			return false;
 		
 		final ClassId cid = ClassId.VALUES[classId];
-		for (Iterator<SubClass> subList = player.getSubClasses().values().iterator(); subList.hasNext();)
+		for (SubClass subclass : player.getSubClasses().values())
 		{
-			SubClass sub = subList.next();
-			
-			if (sub.getClassDefinition().equalsOrChildOf(cid))
+			if (subclass.getClassDefinition().equalsOrChildOf(cid))
 				return false;
 		}
 		
-		Set<ClassId> availSubs = ClassId.getAvailableSubclasses(player);
+		final Set<ClassId> availSubs = ClassId.getAvailableSubclasses(player);
 		if (availSubs == null || availSubs.isEmpty())
 			return false;
 		
@@ -568,125 +689,14 @@ public class VillageMaster extends Folk
 		return true;
 	}
 	
-	/*
-	 * Returns true if this classId allowed for master
-	 */
 	public final boolean checkVillageMaster(int classId)
 	{
 		return checkVillageMaster(ClassId.VALUES[classId]);
 	}
 	
-	/*
-	 * Returns true if this PlayerClass is allowed for master
-	 */
 	public final boolean checkVillageMaster(ClassId pclass)
 	{
 		return checkVillageMasterRace(pclass) && checkVillageMasterTeachType(pclass);
-	}
-	
-	private static final void dissolveClan(Player player)
-	{
-		if (!player.isClanLeader())
-		{
-			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
-			return;
-		}
-		
-		final Clan clan = player.getClan();
-		if (clan.getAllyId() != 0)
-		{
-			player.sendPacket(SystemMessageId.CANNOT_DISPERSE_THE_CLANS_IN_ALLY);
-			return;
-		}
-		
-		if (clan.isAtWar())
-		{
-			player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_WAR);
-			return;
-		}
-		
-		if (clan.hasCastle() || clan.hasHideout())
-		{
-			player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_OWNING_CLAN_HALL_OR_CASTLE);
-			return;
-		}
-		
-		for (Castle castle : CastleManager.getInstance().getCastles())
-		{
-			if (castle.getSiege().checkSides(clan))
-			{
-				player.sendPacket((castle.getSiege().isInProgress()) ? SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_SIEGE : SystemMessageId.CANNOT_DISSOLVE_CAUSE_CLAN_WILL_PARTICIPATE_IN_CASTLE_SIEGE);
-				return;
-			}
-		}
-		
-		if (clan.getDissolvingExpiryTime() > System.currentTimeMillis())
-		{
-			player.sendPacket(SystemMessageId.DISSOLUTION_IN_PROGRESS);
-			return;
-		}
-		
-		if (Config.ALT_CLAN_DISSOLVE_DAYS > 0)
-		{
-			clan.setDissolvingExpiryTime(System.currentTimeMillis() + Config.ALT_CLAN_DISSOLVE_DAYS * 86400000L);
-			clan.updateClanInDB();
-			
-			ClanTable.getInstance().scheduleRemoveClan(clan);
-		}
-		else
-			ClanTable.getInstance().destroyClan(clan);
-		
-		// The clan leader should take the XP penalty of a full death.
-		player.deathPenalty(false, false, false);
-	}
-	
-	private static final void recoverClan(Player player)
-	{
-		if (!player.isClanLeader())
-		{
-			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
-			return;
-		}
-		
-		final Clan clan = player.getClan();
-		clan.setDissolvingExpiryTime(0);
-		clan.updateClanInDB();
-	}
-	
-	private static final void changeClanLeader(Player player, String target)
-	{
-		if (!player.isClanLeader())
-		{
-			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
-			return;
-		}
-		
-		if (player.getName().equalsIgnoreCase(target))
-			return;
-		
-		// little exploit fix
-		if (player.isFlying())
-		{
-			player.sendMessage("You must dismount the wyvern to change the clan leader.");
-			return;
-		}
-		
-		final Clan clan = player.getClan();
-		final ClanMember member = clan.getClanMember(target);
-		
-		if (member == null)
-		{
-			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DOES_NOT_EXIST).addString(target));
-			return;
-		}
-		
-		if (!member.isOnline())
-		{
-			player.sendPacket(SystemMessageId.INVITED_USER_NOT_ONLINE);
-			return;
-		}
-		
-		clan.setNewLeader(member);
 	}
 	
 	private static final void createSubPledge(Player player, String clanName, String leaderName, int pledgeType, int minClanLvl)
@@ -782,41 +792,6 @@ public class VillageMaster extends Folk
 		}
 	}
 	
-	private static final void renameSubPledge(Player player, int pledgeType, String pledgeName)
-	{
-		if (!player.isClanLeader())
-		{
-			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
-			return;
-		}
-		
-		final Clan clan = player.getClan();
-		final SubPledge subPledge = player.getClan().getSubPledge(pledgeType);
-		
-		if (subPledge == null)
-		{
-			player.sendMessage("Pledge doesn't exist.");
-			return;
-		}
-		
-		if (!StringUtil.isAlphaNumeric(pledgeName))
-		{
-			player.sendPacket(SystemMessageId.CLAN_NAME_INVALID);
-			return;
-		}
-		
-		if (pledgeName.length() < 2 || pledgeName.length() > 16)
-		{
-			player.sendPacket(SystemMessageId.CLAN_NAME_LENGTH_INCORRECT);
-			return;
-		}
-		
-		subPledge.setName(pledgeName);
-		clan.updateSubPledgeInDB(subPledge.getId());
-		clan.broadcastToOnlineMembers(new PledgeShowMemberListAll(clan, subPledge.getId()));
-		player.sendMessage("Pledge name have been changed to: " + pledgeName);
-	}
-	
 	private static final void assignSubPledgeLeader(Player player, String clanName, String leaderName)
 	{
 		if (!player.isClanLeader())
@@ -870,7 +845,7 @@ public class VillageMaster extends Folk
 		}
 		
 		subPledge.setLeaderId(leaderSubPledge.getObjectId());
-		clan.updateSubPledgeInDB(subPledge.getId());
+		clan.updateSubPledgeInDB(subPledge);
 		
 		final Player leaderPlayer = leaderSubPledge.getPlayerInstance();
 		if (leaderPlayer != null)
@@ -882,51 +857,26 @@ public class VillageMaster extends Folk
 		clan.broadcastToOnlineMembers(new PledgeShowMemberListAll(clan, subPledge.getId()), SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_BEEN_SELECTED_AS_CAPTAIN_OF_S2).addString(leaderName).addString(clanName));
 	}
 	
-	/**
-	 * this displays PledgeSkillList to the player.
-	 * @param player
-	 */
 	public static final void showPledgeSkillList(Player player)
 	{
-		if (player.getClan() == null || !player.isClanLeader())
+		if (!player.isClanLeader())
 		{
 			final NpcHtmlMessage html = new NpcHtmlMessage(0);
-			html.setFile("data/html/villagemaster/NotClanLeader.htm");
+			html.setFile("data/html/scripts/village_master/Clan/9000-09-no.htm");
 			player.sendPacket(html);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		AcquireSkillList asl = new AcquireSkillList(AcquireSkillList.SkillType.Clan);
-		boolean empty = true;
-		
-		for (L2PledgeSkillLearn psl : SkillTreeTable.getInstance().getAvailablePledgeSkills(player))
+		final List<ClanSkillNode> skills = SkillTreeData.getInstance().getClanSkillsFor(player);
+		if (skills.isEmpty())
 		{
-			L2Skill sk = SkillTable.getInstance().getInfo(psl.getId(), psl.getLevel());
-			if (sk == null)
-				continue;
-			
-			asl.addSkill(psl.getId(), psl.getLevel(), psl.getLevel(), psl.getRepCost(), 0);
-			empty = false;
-		}
-		
-		if (empty)
-		{
-			if (player.getClan().getLevel() < 8)
-			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN_S1);
-				sm.addNumber(Math.max(player.getClan().getLevel() + 1, 5));
-				player.sendPacket(sm);
-			}
-			else
-			{
-				final NpcHtmlMessage html = new NpcHtmlMessage(0);
-				html.setFile("data/html/villagemaster/NoMoreSkills.htm");
-				player.sendPacket(html);
-			}
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
+			html.setFile("data/html/scripts/village_master/Clan/9000-09-no.htm");
+			player.sendPacket(html);
 		}
 		else
-			player.sendPacket(asl);
+			player.sendPacket(new AcquireSkillList(AcquireSkillType.CLAN, skills));
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}

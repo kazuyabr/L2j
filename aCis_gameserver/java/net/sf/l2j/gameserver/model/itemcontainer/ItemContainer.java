@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
@@ -18,7 +17,7 @@ import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemLocation;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance.ItemState;
@@ -26,7 +25,9 @@ import net.sf.l2j.gameserver.model.item.kind.Item;
 
 public abstract class ItemContainer
 {
-	protected static final Logger _log = Logger.getLogger(ItemContainer.class.getName());
+	protected static final CLogger LOGGER = new CLogger(ItemContainer.class.getName());
+	
+	private static final String RESTORE_ITEMS = "SELECT object_id, item_id, count, enchant_level, loc, loc_data, custom_type1, custom_type2, mana_left, time FROM items WHERE owner_id=? AND (loc=?)";
 	
 	protected final Set<ItemInstance> _items = new ConcurrentSkipListSet<>();
 	
@@ -178,7 +179,7 @@ public abstract class ItemContainer
 			olditem.setLastChange(ItemState.MODIFIED);
 			
 			// And destroys the item
-			ItemTable.getInstance().destroyItem(process, item, actor, reference);
+			item.destroyMe(process, actor, reference);
 			item.updateDatabase();
 			item = olditem;
 			
@@ -242,16 +243,13 @@ public abstract class ItemContainer
 		// If item hasn't be found in inventory, create new one
 		else
 		{
+			final Item template = ItemTable.getInstance().getTemplate(itemId);
+			if (template == null)
+				return null;
+			
 			for (int i = 0; i < count; i++)
 			{
-				Item template = ItemTable.getInstance().getTemplate(itemId);
-				if (template == null)
-				{
-					_log.log(Level.WARNING, (actor != null ? "[" + actor.getName() + "] " : "") + "Invalid ItemId requested: ", itemId);
-					return null;
-				}
-				
-				item = ItemTable.getInstance().createItem(process, itemId, template.isStackable() ? count : 1, actor, reference);
+				item = ItemInstance.create(itemId, template.isStackable() ? count : 1, actor, reference);
 				item.setOwnerId(getOwnerId());
 				item.setLocation(getBaseLocation());
 				item.setLastChange(ItemState.ADDED);
@@ -318,7 +316,7 @@ public abstract class ItemContainer
 				// Otherwise destroy old item
 				{
 					removeItem(sourceitem);
-					ItemTable.getInstance().destroyItem(process, sourceitem, actor, reference);
+					sourceitem.destroyMe(process, actor, reference);
 				}
 				
 				if (targetitem != null) // If possible, only update counts
@@ -391,7 +389,7 @@ public abstract class ItemContainer
 			if (!removed)
 				return null;
 			
-			ItemTable.getInstance().destroyItem(process, item, actor, reference);
+			item.destroyMe(process, actor, reference);
 			
 			item.updateDatabase();
 			refreshWeight();
@@ -521,37 +519,39 @@ public abstract class ItemContainer
 	 */
 	public void restore()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		final Player owner = (getOwner() == null) ? null : getOwner().getActingPlayer();
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(RESTORE_ITEMS))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT object_id, item_id, count, enchant_level, loc, loc_data, custom_type1, custom_type2, mana_left, time FROM items WHERE owner_id=? AND (loc=?)");
-			statement.setInt(1, getOwnerId());
-			statement.setString(2, getBaseLocation().name());
-			ResultSet inv = statement.executeQuery();
+			ps.setInt(1, getOwnerId());
+			ps.setString(2, getBaseLocation().name());
 			
-			while (inv.next())
+			try (ResultSet rs = ps.executeQuery())
 			{
-				ItemInstance item = ItemInstance.restoreFromDb(getOwnerId(), inv);
-				if (item == null)
-					continue;
-				
-				World.getInstance().addObject(item);
-				
-				Player owner = (getOwner() == null) ? null : getOwner().getActingPlayer();
-				
-				// If stackable item is found in inventory just add to current quantity
-				if (item.isStackable() && getItemByItemId(item.getItemId()) != null)
-					addItem("Restore", item, owner, null);
-				else
-					addItem(item);
+				while (rs.next())
+				{
+					// Restore the item.
+					final ItemInstance item = ItemInstance.restoreFromDb(getOwnerId(), rs);
+					if (item == null)
+						continue;
+					
+					// Add the item to world objects list.
+					World.getInstance().addObject(item);
+					
+					// If stackable item is found in inventory just add to current quantity
+					if (item.isStackable() && getItemByItemId(item.getItemId()) != null)
+						addItem("Restore", item, owner, null);
+					else
+						addItem(item);
+				}
 			}
-			inv.close();
-			statement.close();
-			refreshWeight();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not restore container:", e);
+			LOGGER.error("Couldn't restore container for {}.", e, getOwnerId());
 		}
+		refreshWeight();
 	}
 	
 	public boolean validateCapacity(int slots)

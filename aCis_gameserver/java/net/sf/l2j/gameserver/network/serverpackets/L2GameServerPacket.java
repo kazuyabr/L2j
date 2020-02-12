@@ -1,24 +1,22 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import java.util.logging.Logger;
-
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.mmocore.SendablePacket;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.network.L2GameClient;
+import net.sf.l2j.gameserver.network.GameClient;
 
-/**
- * @author KenM
- */
-public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
+public abstract class L2GameServerPacket extends SendablePacket<GameClient>
 {
-	protected static final Logger _log = Logger.getLogger(L2GameServerPacket.class.getName());
+	protected static final CLogger LOGGER = new CLogger(L2GameServerPacket.class.getName());
+	
+	protected abstract void writeImpl();
 	
 	@Override
 	protected void write()
 	{
 		if (Config.PACKET_HANDLER_DEBUG)
-			_log.info(getType());
+			LOGGER.info(getType());
 		
 		try
 		{
@@ -26,16 +24,13 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: " + getClient().toString() + " - Failed writing: " + getType());
-			t.printStackTrace();
+			LOGGER.error("Failed writing {} for {}. ", t, getType(), getClient().toString());
 		}
 	}
 	
 	public void runImpl()
 	{
 	}
-	
-	protected abstract void writeImpl();
 	
 	public String getType()
 	{

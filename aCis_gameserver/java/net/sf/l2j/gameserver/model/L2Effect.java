@@ -10,23 +10,23 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
+import net.sf.l2j.gameserver.enums.skills.AbnormalEffect;
+import net.sf.l2j.gameserver.enums.skills.L2EffectFlag;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.AbnormalStatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.ExOlympiadSpelledInfo;
 import net.sf.l2j.gameserver.network.serverpackets.PartySpelled;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.skills.AbnormalEffect;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.basefuncs.Func;
 import net.sf.l2j.gameserver.skills.basefuncs.FuncTemplate;
 import net.sf.l2j.gameserver.skills.basefuncs.Lambda;
 import net.sf.l2j.gameserver.skills.effects.EffectTemplate;
-import net.sf.l2j.gameserver.templates.skills.L2EffectFlag;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public abstract class L2Effect
 {
@@ -120,7 +120,7 @@ public abstract class L2Effect
 		
 		if (_skill.getId() > 2277 && _skill.getId() < 2286)
 		{
-			if (_effected instanceof Servitor || (_effected instanceof Player && ((Player) _effected).getPet() != null))
+			if (_effected instanceof Servitor || (_effected instanceof Player && ((Player) _effected).getSummon() != null))
 				temp /= 2;
 		}
 		
@@ -284,7 +284,7 @@ public abstract class L2Effect
 	 */
 	public final void exit()
 	{
-		this.exit(false);
+		exit(false);
 	}
 	
 	public final void exit(boolean preventUpdate)

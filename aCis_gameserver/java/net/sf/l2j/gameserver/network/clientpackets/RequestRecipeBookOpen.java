@@ -1,32 +1,32 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.data.RecipeTable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.network.serverpackets.RecipeBookItemList;
 
 public final class RequestRecipeBookOpen extends L2GameClientPacket
 {
-	private boolean _isDwarvenCraft;
+	private boolean _isDwarven;
 	
 	@Override
 	protected void readImpl()
 	{
-		_isDwarvenCraft = (readD() == 0);
+		_isDwarven = (readD() == 0);
 	}
 	
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		if (activeChar.isCastingNow() || activeChar.isAllSkillsDisabled())
+		if (player.isCastingNow() || player.isAllSkillsDisabled())
 		{
-			activeChar.sendPacket(SystemMessageId.NO_RECIPE_BOOK_WHILE_CASTING);
+			player.sendPacket(SystemMessageId.NO_RECIPE_BOOK_WHILE_CASTING);
 			return;
 		}
 		
-		RecipeTable.getInstance().requestBookOpen(activeChar, _isDwarvenCraft);
+		player.sendPacket(new RecipeBookItemList(player, _isDwarven));
 	}
 }

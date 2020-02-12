@@ -1,9 +1,9 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * @author -Nemesiss-
@@ -27,7 +27,7 @@ public class EffectRemoveTarget extends L2Effect
 		getEffected().setTarget(null);
 		getEffected().abortAttack();
 		getEffected().abortCast();
-		getEffected().getAI().setIntention(CtrlIntention.IDLE, getEffector());
+		getEffected().getAI().setIntention(IntentionType.IDLE, getEffector());
 		return true;
 	}
 	

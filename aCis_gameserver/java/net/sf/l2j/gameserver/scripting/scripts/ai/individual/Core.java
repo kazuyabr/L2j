@@ -4,17 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.scripting.scripts.ai.L2AttackableAIScript;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class Core extends L2AttackableAIScript
 {
@@ -26,7 +29,7 @@ public class Core extends L2AttackableAIScript
 	private static final byte ALIVE = 0; // Core is spawned.
 	private static final byte DEAD = 1; // Core has been killed.
 	
-	private final List<Attackable> _minions = new ArrayList<>();
+	private final List<Monster> _minions = new ArrayList<>();
 	
 	public Core()
 	{
@@ -79,27 +82,27 @@ public class Core extends L2AttackableAIScript
 		npc.broadcastPacket(new PlaySound(1, "BS01_A", npc));
 		
 		// Spawn minions
-		Attackable mob;
+		Monster mob;
 		for (int i = 0; i < 5; i++)
 		{
 			int x = 16800 + i * 360;
-			mob = (Attackable) addSpawn(DEATH_KNIGHT, x, 110000, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
-			mob.setIsRaidMinion(true);
+			mob = (Monster) addSpawn(DEATH_KNIGHT, x, 110000, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
+			mob.setMinion(true);
 			_minions.add(mob);
-			mob = (Attackable) addSpawn(DEATH_KNIGHT, x, 109000, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
-			mob.setIsRaidMinion(true);
+			mob = (Monster) addSpawn(DEATH_KNIGHT, x, 109000, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
+			mob.setMinion(true);
 			_minions.add(mob);
 			int x2 = 16800 + i * 600;
-			mob = (Attackable) addSpawn(DOOM_WRAITH, x2, 109300, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
-			mob.setIsRaidMinion(true);
+			mob = (Monster) addSpawn(DOOM_WRAITH, x2, 109300, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
+			mob.setMinion(true);
 			_minions.add(mob);
 		}
 		
 		for (int i = 0; i < 4; i++)
 		{
 			int x = 16800 + i * 450;
-			mob = (Attackable) addSpawn(SUSCEPTOR, x, 110300, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
-			mob.setIsRaidMinion(true);
+			mob = (Monster) addSpawn(SUSCEPTOR, x, 110300, npc.getZ(), 280 + Rnd.get(40), false, 0, false);
+			mob.setMinion(true);
 			_minions.add(mob);
 		}
 	}
@@ -115,8 +118,8 @@ public class Core extends L2AttackableAIScript
 		}
 		else if (event.equalsIgnoreCase("spawn_minion"))
 		{
-			final Attackable mob = (Attackable) addSpawn(npc.getNpcId(), npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0, false);
-			mob.setIsRaidMinion(true);
+			final Monster mob = (Monster) addSpawn(npc.getNpcId(), npc.getX(), npc.getY(), npc.getZ(), npc.getHeading(), false, 0, false);
+			mob.setMinion(true);
 			_minions.add(mob);
 		}
 		else if (event.equalsIgnoreCase("despawn_minions"))
@@ -133,24 +136,27 @@ public class Core extends L2AttackableAIScript
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		if (npc.isScriptValue(1))
+		if (attacker instanceof Playable)
 		{
-			if (Rnd.get(100) == 0)
-				npc.broadcastNpcSay("Removing intruders.");
+			if (npc.isScriptValue(1))
+			{
+				if (Rnd.get(100) == 0)
+					npc.broadcastNpcSay("Removing intruders.");
+			}
+			else
+			{
+				npc.setScriptValue(1);
+				npc.broadcastNpcSay("A non-permitted target has been discovered.");
+				npc.broadcastNpcSay("Starting intruder removal system.");
+			}
 		}
-		else
-		{
-			npc.setScriptValue(1);
-			npc.broadcastNpcSay("A non-permitted target has been discovered.");
-			npc.broadcastNpcSay("Starting intruder removal system.");
-		}
-		return super.onAttack(npc, attacker, damage, isPet, skill);
+		return super.onAttack(npc, attacker, damage, skill);
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player killer, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
 		if (npc.getNpcId() == CORE)
 		{
@@ -179,6 +185,6 @@ public class Core extends L2AttackableAIScript
 			_minions.remove(npc);
 			startQuestTimer("spawn_minion", 60000, npc, null, false);
 		}
-		return super.onKill(npc, killer, isPet);
+		return super.onKill(npc, killer);
 	}
 }

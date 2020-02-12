@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.serverpackets.ManagePledgePower;
 
@@ -25,7 +25,7 @@ public final class RequestPledgePower extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -40,7 +40,7 @@ public final class RequestPledgePower extends L2GameClientPacket
 				if (_rank == 9)
 					_privs = (_privs & Clan.CP_CL_VIEW_WAREHOUSE) + (_privs & Clan.CP_CH_OPEN_DOOR) + (_privs & Clan.CP_CS_OPEN_DOOR);
 				
-				player.getClan().setRankPrivs(_rank, _privs);
+				player.getClan().setPriviledgesForRank(_rank, _privs);
 			}
 		}
 		else

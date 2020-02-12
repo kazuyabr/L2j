@@ -1,15 +1,11 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import java.util.List;
+import java.util.Set;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.serverpackets.PledgeReceiveWarList;
 
-/**
- * Format: (ch) dd
- * @author -Wooden-
- */
 public final class RequestPledgeWarList extends L2GameClientPacket
 {
 	private int _page;
@@ -25,15 +21,15 @@ public final class RequestPledgeWarList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		final Clan clan = activeChar.getClan();
+		final Clan clan = player.getClan();
 		if (clan == null)
 			return;
 		
-		final List<Integer> list;
+		final Set<Integer> list;
 		if (_tab == 0)
 			list = clan.getWarList();
 		else
@@ -44,6 +40,6 @@ public final class RequestPledgeWarList extends L2GameClientPacket
 			_page = Math.max(0, (_page > list.size() / 13) ? 0 : _page);
 		}
 		
-		activeChar.sendPacket(new PledgeReceiveWarList(list, _tab, _page));
+		player.sendPacket(new PledgeReceiveWarList(list, _tab, _page));
 	}
 }

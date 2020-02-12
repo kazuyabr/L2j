@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
 
@@ -30,7 +30,7 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 		writeD(_clan.getCrestId()); // -> no, it's no longer used (nuocnam) fix by game
 		writeD(_clan.getLevel());
 		writeD(_clan.getCastleId());
-		writeD(_clan.getHideoutId());
+		writeD(_clan.getClanHallId());
 		writeD(_clan.getRank());
 		writeD(_clan.getReputationScore());
 		writeD(0);

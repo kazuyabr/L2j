@@ -1,15 +1,15 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ExUseSharedGroupItem;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -38,7 +38,7 @@ public class ItemSkills implements IItemHandler
 		final IntIntHolder[] skills = item.getEtcItem().getSkills();
 		if (skills == null)
 		{
-			_log.info(item.getName() + " does not have registered any skill for handler.");
+			LOGGER.warn("{} doesn't have any registered skill for handler.", item.getName());
 			return;
 		}
 		
@@ -77,7 +77,7 @@ public class ItemSkills implements IItemHandler
 				playable.doSimultaneousCast(itemSkill);
 				// Summons should be affected by herbs too, self time effect is handled at L2Effect constructor.
 				if (!isPet && item.getItemType() == EtcItemType.HERB && activeChar.hasServitor())
-					activeChar.getPet().doSimultaneousCast(itemSkill);
+					activeChar.getSummon().doSimultaneousCast(itemSkill);
 			}
 			else
 			{
@@ -88,7 +88,7 @@ public class ItemSkills implements IItemHandler
 					return;
 				}
 				
-				playable.getAI().setIntention(CtrlIntention.IDLE);
+				playable.getAI().setIntention(IntentionType.IDLE);
 				if (!playable.useMagic(itemSkill, forceUse, false))
 					return;
 			}

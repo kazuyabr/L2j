@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
+import net.sf.l2j.gameserver.data.manager.CastleManorManager;
 import net.sf.l2j.gameserver.model.manor.SeedProduction;
 
 public final class BuyListSeed extends L2GameServerPacket

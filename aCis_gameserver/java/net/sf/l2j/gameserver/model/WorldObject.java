@@ -3,35 +3,33 @@ package net.sf.l2j.gameserver.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
+import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.math.MathUtil;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.ItemTable;
-import net.sf.l2j.gameserver.data.NpcTable;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.enums.PolyType;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.items.ShotType;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
+import net.sf.l2j.gameserver.model.zone.ZoneType;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.taskmanager.DebugMovementTaskManager;
 
 /**
  * Mother class of all interactive objects in the world (PC, NPC, Item...)
  */
 public abstract class WorldObject
 {
-	public enum PolyType
-	{
-		ITEM,
-		NPC,
-		DEFAULT;
-	}
-	
-	public static final Logger _log = Logger.getLogger(WorldObject.class.getName());
+	public static final CLogger LOGGER = new CLogger(WorldObject.class.getName());
 	
 	private String _name;
 	private int _objectId;
@@ -48,6 +46,18 @@ public abstract class WorldObject
 	public WorldObject(int objectId)
 	{
 		_objectId = objectId;
+	}
+	
+	/**
+	 * @param attacker : The target to make checks on.
+	 * @return true if this {@link WorldObject} is attackable or false if it isn't.
+	 */
+	public abstract boolean isAutoAttackable(Creature attacker);
+	
+	@Override
+	public String toString()
+	{
+		return (getClass().getSimpleName() + ":" + getName() + "[" + getObjectId() + "]");
 	}
 	
 	public void onAction(Player player)
@@ -70,7 +80,7 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Remove a WorldObject from the world.
+	 * Remove this {@link WorldObject} from the world.
 	 */
 	public void decayMe()
 	{
@@ -87,7 +97,7 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Init the position of a WorldObject spawn and add it in the world as a visible object.
+	 * Spawn this {@link WorldObject} and add it in the world as a visible object.
 	 */
 	public final void spawnMe()
 	{
@@ -100,9 +110,57 @@ public abstract class WorldObject
 		onSpawn();
 	}
 	
+	/**
+	 * Initialize the position of this {@link WorldObject} and add it in the world as a visible object.
+	 * @param loc : The location used as reference X/Y/Z.
+	 */
+	public final void spawnMe(Location loc)
+	{
+		spawnMe(loc.getX(), loc.getY(), loc.getZ());
+	}
+	
+	/**
+	 * Initialize the position of this {@link WorldObject} and add it in the world as a visible object.
+	 * @param loc : The location used as reference X/Y/Z.
+	 * @param heading : The heading position to set.
+	 */
+	public final void spawnMe(Location loc, int heading)
+	{
+		spawnMe(loc.getX(), loc.getY(), loc.getZ(), heading);
+	}
+	
+	/**
+	 * Initialize the position of this {@link WorldObject} and add it in the world as a visible object.
+	 * @param loc : The location used as reference X/Y/Z.
+	 */
+	public final void spawnMe(SpawnLocation loc)
+	{
+		spawnMe(loc.getX(), loc.getY(), loc.getZ(), loc.getHeading());
+	}
+	
+	/**
+	 * Initialize the position of this {@link WorldObject} and add it in the world as a visible object.
+	 * @param x : The X position to set.
+	 * @param y : The Y position to set.
+	 * @param z : The Z position to set.
+	 */
 	public final void spawnMe(int x, int y, int z)
 	{
 		_position.set(MathUtil.limit(x, World.WORLD_X_MIN + 100, World.WORLD_X_MAX - 100), MathUtil.limit(y, World.WORLD_Y_MIN + 100, World.WORLD_Y_MAX - 100), z);
+		
+		spawnMe();
+	}
+	
+	/**
+	 * Initialize the position of this {@link WorldObject} and add it in the world as a visible object.
+	 * @param x : The X position to set.
+	 * @param y : The Y position to set.
+	 * @param z : The Z position to set.
+	 * @param heading : The heading position to set.
+	 */
+	public final void spawnMe(int x, int y, int z, int heading)
+	{
+		_position.set(MathUtil.limit(x, World.WORLD_X_MIN + 100, World.WORLD_X_MAX - 100), MathUtil.limit(y, World.WORLD_Y_MIN + 100, World.WORLD_Y_MAX - 100), z, heading);
 		
 		spawnMe();
 	}
@@ -113,14 +171,7 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * @param attacker The target to make checks on.
-	 * @return true or false, depending if the target is attackable or not.
-	 */
-	public abstract boolean isAutoAttackable(Creature attacker);
-	
-	/**
-	 * A WorldObject is visible if <B>_isVisible</B> = true and <B>_worldregion</B> != null.
-	 * @return the visibilty state of the WorldObject.
+	 * @return the visibilty state of this {@link WorldObject}.
 	 */
 	public final boolean isVisible()
 	{
@@ -172,7 +223,7 @@ public abstract class WorldObject
 		
 		if (type == PolyType.NPC)
 		{
-			final NpcTemplate template = NpcTable.getInstance().getTemplate(id);
+			final NpcTemplate template = NpcData.getInstance().getTemplate(id);
 			if (template == null)
 				return false;
 			
@@ -211,24 +262,17 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Sends the Server->Client info packet for the object. Is Overridden in:
-	 * <li>L2BoatInstance</li>
-	 * <li>L2DoorInstance</li>
-	 * <li>Player</li>
-	 * <li>L2StaticObjectInstance</li>
-	 * <li>L2Npc</li>
-	 * <li>L2Summon</li>
-	 * <li>ItemInstance</li>
-	 * @param activeChar
+	 * Sends the Server->Client info packet for this {@link WorldObject}.
+	 * @param player : The packet receiver.
 	 */
-	public void sendInfo(Player activeChar)
+	public void sendInfo(Player player)
 	{
 		
 	}
 	
 	/**
-	 * Check if current object has charged shot.
-	 * @param type of the shot to be checked.
+	 * Check if this {@link WorldObject} has charged shot.
+	 * @param type : The type of the shot to be checked.
 	 * @return true if the object has charged shot.
 	 */
 	public boolean isChargedShot(ShotType type)
@@ -237,9 +281,9 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Charging shot into the current object.
-	 * @param type Type of the shot to be (un)charged.
-	 * @param charged True if we charge, false if we uncharge.
+	 * Charging shot into this {@link WorldObject}.
+	 * @param type : The type of the shot to be (un)charged.
+	 * @param charged : true if we charge, false if we uncharge.
 	 */
 	public void setChargedShot(ShotType type, boolean charged)
 	{
@@ -247,23 +291,17 @@ public abstract class WorldObject
 	
 	/**
 	 * Try to recharge a shot.
-	 * @param physical skill are using Soul shots.
-	 * @param magical skill are using Spirit shots.
+	 * @param physical : The skill is using Soulshots.
+	 * @param magical : The skill is using Spiritshots.
 	 */
 	public void rechargeShots(boolean physical, boolean magical)
 	{
 	}
 	
-	@Override
-	public String toString()
-	{
-		return (getClass().getSimpleName() + ":" + getName() + "[" + getObjectId() + "]");
-	}
-	
 	/**
-	 * Check if the object is in the given zone Id.
-	 * @param zone the zone Id to check
-	 * @return {@code true} if the object is in that zone Id
+	 * Check if this {@link WorldObject} is in the given {@link ZoneId}.
+	 * @param zone : The ZoneId to check.
+	 * @return true if the object is in that ZoneId.
 	 */
 	public boolean isInsideZone(ZoneId zone)
 	{
@@ -271,14 +309,17 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Set the x,y,z position of the WorldObject and if necessary modify its _worldRegion.
-	 * @param x
-	 * @param y
-	 * @param z
+	 * Set the position of this {@link WorldObject} and if necessary modify its _region.
+	 * @param x : The X position to set.
+	 * @param y : The Y position to set.
+	 * @param z : The Z position to set.
 	 */
 	public final void setXYZ(int x, int y, int z)
 	{
 		_position.set(x, y, z);
+		
+		if (Config.DEBUG_MOVEMENT > 0)
+			DebugMovementTaskManager.getInstance().addItem(this, x, y, z);
 		
 		if (!isVisible())
 			return;
@@ -289,10 +330,29 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Set the x,y,z position of the WorldObject and make it invisible. A WorldObject is invisble if <B>_hidden</B>=true or <B>_worldregion</B>==null
-	 * @param x
-	 * @param y
-	 * @param z
+	 * Set the position of this {@link WorldObject} and if necessary modify its _region.
+	 * @param loc : The SpawnLocation used as reference.
+	 */
+	public final void setXYZ(SpawnLocation loc)
+	{
+		_position.set(loc);
+		
+		if (Config.DEBUG_MOVEMENT > 0)
+			DebugMovementTaskManager.getInstance().addItem(this, loc.getX(), loc.getY(), loc.getZ());
+		
+		if (!isVisible())
+			return;
+		
+		final WorldRegion region = World.getInstance().getRegion(_position);
+		if (region != _region)
+			setRegion(region);
+	}
+	
+	/**
+	 * Set the position of this {@link WorldObject} and make it invisible.
+	 * @param x : The X position to set.
+	 * @param y : The Y position to set.
+	 * @param z : The Z position to set.
 	 */
 	public final void setXYZInvisible(int x, int y, int z)
 	{
@@ -321,6 +381,11 @@ public abstract class WorldObject
 		return _position.getZ();
 	}
 	
+	public final int getHeading()
+	{
+		return _position.getHeading();
+	}
+	
 	public final SpawnLocation getPosition()
 	{
 		return _position;
@@ -332,8 +397,8 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Update current and surrounding regions, based on both current region and region setted as parameter.
-	 * @param newRegion : null to remove the object, or the new region.
+	 * Update current and surrounding {@link WorldRegion}s, based on both current region and region setted as parameter.
+	 * @param newRegion : null to remove the {@link WorldObject}, or the new region.
 	 */
 	public void setRegion(WorldRegion newRegion)
 	{
@@ -358,6 +423,10 @@ public abstract class WorldObject
 		{
 			if (!newAreas.contains(region))
 			{
+				// Refresh infos related to zones.
+				for (ZoneType zone : region.getZones())
+					zone.removeKnownObject(this);
+				
 				// Update all objects.
 				for (WorldObject obj : region.getObjects())
 				{
@@ -379,6 +448,10 @@ public abstract class WorldObject
 		{
 			if (!oldAreas.contains(region))
 			{
+				// Refresh infos related to zones.
+				for (ZoneType zone : region.getZones())
+					zone.addKnownObject(this);
+				
 				// Update all objects.
 				for (WorldObject obj : region.getObjects())
 				{
@@ -399,26 +472,26 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Add object to known list.
-	 * @param object : {@link WorldObject} to be added.
+	 * Add a {@link WorldObject} to knownlist.
+	 * @param object : An object to be added.
 	 */
 	public void addKnownObject(WorldObject object)
 	{
 	}
 	
 	/**
-	 * Remove object from known list.
-	 * @param object : {@link WorldObject} to be removed.
+	 * Remove a {@link WorldObject} from knownlist.
+	 * @param object : An object to be removed.
 	 */
 	public void removeKnownObject(WorldObject object)
 	{
 	}
 	
 	/**
-	 * Return the known list of given object type.
-	 * @param <A> : Object type must be instance of {@link WorldObject}.
-	 * @param type : Class specifying object type.
-	 * @return List<A> : Known list of given object type.
+	 * Return the knownlist of this {@link WorldObject} for a given object type.
+	 * @param <A> : The object type must be an instance of WorldObject.
+	 * @param type : The class specifying object type.
+	 * @return List<A> : The knownlist of given object type.
 	 */
 	@SuppressWarnings("unchecked")
 	public final <A> List<A> getKnownType(Class<A> type)
@@ -444,11 +517,11 @@ public abstract class WorldObject
 	}
 	
 	/**
-	 * Return the known list of given object type within specified radius.
-	 * @param <A> : Object type must be instance of {@link WorldObject}.
-	 * @param type : Class specifying object type.
-	 * @param radius : Radius to in which object must be located.
-	 * @return List<A> : Known list of given object type.
+	 * Return the knownlist of this {@link WorldObject} for a given object type within specified radius.
+	 * @param <A> : The object type must be an instance of WorldObject.
+	 * @param type : The class specifying object type.
+	 * @param radius : The radius to check in which object must be located.
+	 * @return List<A> : The knownlist of given object type.
 	 */
 	@SuppressWarnings("unchecked")
 	public final <A> List<A> getKnownTypeInRadius(Class<A> type, int radius)
@@ -471,5 +544,27 @@ public abstract class WorldObject
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Refresh the knownlist for this {@link WorldObject}. Only used by teleport process.
+	 */
+	public final void refreshKnownlist()
+	{
+		final WorldRegion region = _region;
+		if (region == null)
+			return;
+		
+		for (WorldRegion reg : region.getSurroundingRegions())
+		{
+			for (WorldObject obj : reg.getObjects())
+			{
+				if (obj == this)
+					continue;
+				
+				obj.addKnownObject(this);
+				addKnownObject(obj);
+			}
+		}
 	}
 }

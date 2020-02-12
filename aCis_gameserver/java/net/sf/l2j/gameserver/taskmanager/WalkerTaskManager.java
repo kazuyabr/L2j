@@ -20,16 +20,6 @@ public final class WalkerTaskManager implements Runnable
 		ThreadPool.scheduleAtFixedRate(this, 1000, 1000);
 	}
 	
-	/**
-	 * Adds {@link Walker} to the WalkerTaskManager.
-	 * @param walker : Walker to be added.
-	 * @param delay : The delay to add.
-	 */
-	public final void add(Walker walker, int delay)
-	{
-		_walkers.put(walker, System.currentTimeMillis() + delay);
-	}
-	
 	@Override
 	public final void run()
 	{
@@ -56,6 +46,16 @@ public final class WalkerTaskManager implements Runnable
 			// Release it from the map.
 			_walkers.remove(walker);
 		}
+	}
+	
+	/**
+	 * Adds {@link Walker} to the WalkerTaskManager.
+	 * @param walker : Walker to be added.
+	 * @param delay : The delay to add.
+	 */
+	public final void add(Walker walker, int delay)
+	{
+		_walkers.put(walker, System.currentTimeMillis() + delay);
 	}
 	
 	public static final WalkerTaskManager getInstance()

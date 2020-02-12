@@ -1,9 +1,10 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.model.actor.Attackable;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ExShowScreenMessage;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -189,7 +190,7 @@ public class Q114_ResurrectionOfAnOldManager extends Quest
 				final Npc golem = addSpawn(GOLEM, 96977, -110625, -3322, 0, true, 0, true);
 				golem.broadcastNpcSay("You, " + player.getName() + ", you attacked Wendy. Prepare to die!");
 				((Attackable) golem).addDamageHate(player, 0, 999);
-				golem.getAI().setIntention(CtrlIntention.ATTACK, player);
+				golem.getAI().setIntention(IntentionType.ATTACK, player);
 				
 				st.set("golemSpawned", "1");
 				startQuestTimer("golemDespawn", 900000, golem, player, false);
@@ -466,9 +467,11 @@ public class Q114_ResurrectionOfAnOldManager extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerCondition(player, npc, "cond", "10");
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerCondition(player, npc, "cond", "10");
 		if (st == null)
 			return null;
 		

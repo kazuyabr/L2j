@@ -3,29 +3,28 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.data.CharTemplateTable;
-import net.sf.l2j.gameserver.data.PlayerNameTable;
-import net.sf.l2j.gameserver.data.SkillTable;
-import net.sf.l2j.gameserver.data.SkillTreeTable;
+import net.sf.l2j.gameserver.data.sql.PlayerInfoTable;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.data.xml.PlayerData;
+import net.sf.l2j.gameserver.data.xml.ScriptData;
+import net.sf.l2j.gameserver.enums.ShortcutType;
+import net.sf.l2j.gameserver.enums.actors.Sex;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.model.L2ShortCut;
-import net.sf.l2j.gameserver.model.L2SkillLearn;
+import net.sf.l2j.gameserver.model.Shortcut;
 import net.sf.l2j.gameserver.model.World;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.PlayerTemplate;
-import net.sf.l2j.gameserver.model.base.Sex;
+import net.sf.l2j.gameserver.model.holder.ItemTemplateHolder;
+import net.sf.l2j.gameserver.model.holder.skillnode.GeneralSkillNode;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.network.serverpackets.CharCreateFail;
 import net.sf.l2j.gameserver.network.serverpackets.CharCreateOk;
 import net.sf.l2j.gameserver.network.serverpackets.CharSelectInfo;
 import net.sf.l2j.gameserver.scripting.Quest;
-import net.sf.l2j.gameserver.scripting.ScriptManager;
 
 @SuppressWarnings("unused")
 public final class CharacterCreate extends L2GameClientPacket
 {
-	// cSdddddddddddd
 	private String _name;
 	private int _race;
 	private byte _sex;
@@ -61,110 +60,135 @@ public final class CharacterCreate extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		if (!StringUtil.isValidPlayerName(_name))
+		// Invalid race.
+		if (_race > 4 || _race < 0)
 		{
-			sendPacket(new CharCreateFail((_name.length() > 16) ? CharCreateFail.REASON_16_ENG_CHARS : CharCreateFail.REASON_INCORRECT_NAME));
+			sendPacket(CharCreateFail.REASON_CREATION_FAILED);
 			return;
 		}
 		
+		// Invalid face.
 		if (_face > 2 || _face < 0)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(CharCreateFail.REASON_CREATION_FAILED);
 			return;
 		}
 		
+		// Invalid hair style.
 		if (_hairStyle < 0 || (_sex == 0 && _hairStyle > 4) || (_sex != 0 && _hairStyle > 6))
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(CharCreateFail.REASON_CREATION_FAILED);
 			return;
 		}
 		
+		// Invalid hair color.
 		if (_hairColor > 3 || _hairColor < 0)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(CharCreateFail.REASON_CREATION_FAILED);
 			return;
 		}
 		
-		if (PlayerNameTable.getInstance().getCharactersInAcc(getClient().getAccountName()) >= 7)
+		// Invalid name length, or name typo.
+		if (!StringUtil.isValidString(_name, "^[A-Za-z0-9]{3,16}$"))
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_TOO_MANY_CHARACTERS));
+			sendPacket((_name.length() > 16) ? CharCreateFail.REASON_16_ENG_CHARS : CharCreateFail.REASON_INCORRECT_NAME);
 			return;
 		}
 		
-		if (PlayerNameTable.getInstance().getPlayerObjectId(_name) > 0)
+		// Your name is already taken by a NPC.
+		if (NpcData.getInstance().getTemplateByName(_name) != null)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_NAME_ALREADY_EXISTS));
+			sendPacket(CharCreateFail.REASON_INCORRECT_NAME);
 			return;
 		}
 		
-		final PlayerTemplate template = CharTemplateTable.getInstance().getTemplate(_classId);
+		// You already have the maximum amount of characters for this account.
+		if (PlayerInfoTable.getInstance().getCharactersInAcc(getClient().getAccountName()) >= 7)
+		{
+			sendPacket(CharCreateFail.REASON_TOO_MANY_CHARACTERS);
+			return;
+		}
+		
+		// The name already exists.
+		if (PlayerInfoTable.getInstance().getPlayerObjectId(_name) > 0)
+		{
+			sendPacket(CharCreateFail.REASON_NAME_ALREADY_EXISTS);
+			return;
+		}
+		
+		// The class id related to this template is post-newbie.
+		final PlayerTemplate template = PlayerData.getInstance().getTemplate(_classId);
 		if (template == null || template.getClassBaseLevel() > 1)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(CharCreateFail.REASON_CREATION_FAILED);
 			return;
 		}
 		
-		final Player newChar = Player.create(IdFactory.getInstance().getNextId(), template, getClient().getAccountName(), _name, _hairStyle, _hairColor, _face, Sex.values()[_sex]);
-		if (newChar == null)
+		// Create the player Object.
+		final Player player = Player.create(IdFactory.getInstance().getNextId(), template, getClient().getAccountName(), _name, _hairStyle, _hairColor, _face, Sex.values()[_sex]);
+		if (player == null)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(CharCreateFail.REASON_CREATION_FAILED);
 			return;
 		}
 		
-		newChar.setCurrentCp(0);
-		newChar.setCurrentHp(newChar.getMaxHp());
-		newChar.setCurrentMp(newChar.getMaxMp());
+		// Set default values.
+		player.setCurrentCp(0);
+		player.setCurrentHp(player.getMaxHp());
+		player.setCurrentMp(player.getMaxMp());
 		
 		// send acknowledgement
 		sendPacket(CharCreateOk.STATIC_PACKET);
 		
-		World.getInstance().addObject(newChar);
+		World.getInstance().addObject(player);
 		
-		newChar.getPosition().set(template.getSpawn());
-		newChar.setTitle("");
+		player.getPosition().set(template.getRandomSpawn());
+		player.setTitle("");
 		
-		newChar.registerShortCut(new L2ShortCut(0, 0, 3, 2, -1, 1)); // attack shortcut
-		newChar.registerShortCut(new L2ShortCut(3, 0, 3, 5, -1, 1)); // take shortcut
-		newChar.registerShortCut(new L2ShortCut(10, 0, 3, 0, -1, 1)); // sit shortcut
+		// Register shortcuts.
+		player.getShortcutList().addShortcut(new Shortcut(0, 0, ShortcutType.ACTION, 2, -1, 1)); // attack shortcut
+		player.getShortcutList().addShortcut(new Shortcut(3, 0, ShortcutType.ACTION, 5, -1, 1)); // take shortcut
+		player.getShortcutList().addShortcut(new Shortcut(10, 0, ShortcutType.ACTION, 0, -1, 1)); // sit shortcut
 		
-		for (Item ia : template.getItems())
+		// Equip or add items, based on template.
+		for (ItemTemplateHolder holder : template.getItems())
 		{
-			ItemInstance item = newChar.getInventory().addItem("Init", ia.getItemId(), 1, newChar, null);
-			if (item.getItemId() == 5588) // tutorial book shortcut
-				newChar.registerShortCut(new L2ShortCut(11, 0, 1, item.getObjectId(), -1, 1));
+			final ItemInstance item = player.getInventory().addItem("Init", holder.getId(), holder.getValue(), player, null);
 			
-			if (item.isEquipable())
-			{
-				if (newChar.getActiveWeaponItem() == null || !(item.getItem().getType2() != Item.TYPE2_WEAPON))
-					newChar.getInventory().equipItemAndRecord(item);
-			}
+			// Tutorial book shortcut.
+			if (holder.getId() == 5588)
+				player.getShortcutList().addShortcut(new Shortcut(11, 0, ShortcutType.ITEM, item.getObjectId(), -1, 1));
+			
+			if (item.isEquipable() && holder.isEquipped())
+				player.getInventory().equipItemAndRecord(item);
 		}
 		
-		for (L2SkillLearn skill : SkillTreeTable.getInstance().getAvailableSkills(newChar, newChar.getClassId()))
+		// Add skills.
+		for (GeneralSkillNode skill : player.getAvailableAutoGetSkills())
 		{
-			newChar.addSkill(SkillTable.getInstance().getInfo(skill.getId(), skill.getLevel()), true);
 			if (skill.getId() == 1001 || skill.getId() == 1177)
-				newChar.registerShortCut(new L2ShortCut(1, 0, 2, skill.getId(), 1, 1));
+				player.getShortcutList().addShortcut(new Shortcut(1, 0, ShortcutType.SKILL, skill.getId(), 1, 1), false);
 			
 			if (skill.getId() == 1216)
-				newChar.registerShortCut(new L2ShortCut(9, 0, 2, skill.getId(), 1, 1));
+				player.getShortcutList().addShortcut(new Shortcut(9, 0, ShortcutType.SKILL, skill.getId(), 1, 1), false);
 		}
 		
+		// Tutorial runs here.
 		if (!Config.DISABLE_TUTORIAL)
 		{
-			if (newChar.getQuestState("Tutorial") == null)
+			if (player.getQuestState("Tutorial") == null)
 			{
-				Quest q = ScriptManager.getInstance().getQuest("Tutorial");
-				if (q != null)
-					q.newQuestState(newChar).setState(Quest.STATE_STARTED);
+				final Quest quest = ScriptData.getInstance().getQuest("Tutorial");
+				if (quest != null)
+					quest.newQuestState(player).setState(Quest.STATE_STARTED);
 			}
 		}
 		
-		newChar.setOnlineStatus(true, false);
-		newChar.deleteMe();
+		player.setOnlineStatus(true, false);
+		player.deleteMe();
 		
-		final CharSelectInfo cl = new CharSelectInfo(getClient().getAccountName(), getClient().getSessionId().playOkID1);
-		getClient().getConnection().sendPacket(cl);
-		getClient().setCharSelection(cl.getCharInfo());
+		final CharSelectInfo csi = new CharSelectInfo(getClient().getAccountName(), getClient().getSessionId().playOkID1);
+		sendPacket(csi);
+		getClient().setCharSelectSlot(csi.getCharacterSlots());
 	}
 }

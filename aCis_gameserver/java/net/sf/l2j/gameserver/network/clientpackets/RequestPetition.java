@@ -1,9 +1,9 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.manager.PetitionManager;
 import net.sf.l2j.gameserver.data.xml.AdminData;
-import net.sf.l2j.gameserver.instancemanager.PetitionManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -23,7 +23,7 @@ public final class RequestPetition extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
+		final Player activeChar = getClient().getPlayer();
 		if (activeChar == null)
 			return;
 		
@@ -34,7 +34,7 @@ public final class RequestPetition extends L2GameClientPacket
 			return;
 		}
 		
-		if (!PetitionManager.isPetitioningAllowed())
+		if (!Config.PETITIONING_ALLOWED)
 		{
 			activeChar.sendPacket(SystemMessageId.GAME_CLIENT_UNABLE_TO_CONNECT_TO_PETITION_SERVER);
 			return;
@@ -46,7 +46,7 @@ public final class RequestPetition extends L2GameClientPacket
 			return;
 		}
 		
-		if (PetitionManager.getInstance().getPendingPetitionCount() == Config.MAX_PETITIONS_PENDING)
+		if (PetitionManager.getInstance().getPendingPetitions().size() == Config.MAX_PETITIONS_PENDING)
 		{
 			activeChar.sendPacket(SystemMessageId.PETITION_SYSTEM_CURRENT_UNAVAILABLE);
 			return;
@@ -69,6 +69,6 @@ public final class RequestPetition extends L2GameClientPacket
 		
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PETITION_ACCEPTED_RECENT_NO_S1).addNumber(petitionId));
 		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SUBMITTED_YOU_S1_TH_PETITION_S2_LEFT).addNumber(totalPetitions).addNumber(Config.MAX_PETITIONS_PER_PLAYER - totalPetitions));
-		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PETITION_ON_WAITING_LIST).addNumber(PetitionManager.getInstance().getPendingPetitionCount()));
+		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PETITION_ON_WAITING_LIST).addNumber(PetitionManager.getInstance().getPendingPetitions().size()));
 	}
 }

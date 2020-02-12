@@ -1,6 +1,6 @@
 package net.sf.l2j.loginserver.network.loginserverpackets;
 
-import net.sf.l2j.loginserver.GameServerTable;
+import net.sf.l2j.loginserver.GameServerManager;
 import net.sf.l2j.loginserver.network.serverpackets.ServerBasePacket;
 
 public class AuthResponse extends ServerBasePacket
@@ -9,7 +9,7 @@ public class AuthResponse extends ServerBasePacket
 	{
 		writeC(0x02);
 		writeC(serverId);
-		writeS(GameServerTable.getInstance().getServerNames().get(serverId));
+		writeS(GameServerManager.getInstance().getServerNames().get(serverId));
 	}
 	
 	@Override

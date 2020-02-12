@@ -2,9 +2,11 @@ package net.sf.l2j.gameserver.scripting.quests;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.enums.actors.ClassId;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -363,9 +365,11 @@ public class Q417_PathToBecomeAScavenger extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
@@ -391,13 +395,13 @@ public class Q417_PathToBecomeAScavenger extends Quest
 				break;
 			
 			case HONEY_BEAR:
-				if (st.getInt("cond") == 5 && npc.getSpoilerId() == player.getObjectId() && st.dropItemsAlways(HONEY_JAR, 1, 5))
+				if (st.getInt("cond") == 5 && ((Monster) npc).getSpoilerId() == player.getObjectId() && st.dropItemsAlways(HONEY_JAR, 1, 5))
 					st.set("cond", "6");
 				break;
 			
 			case HUNTER_TARANTULA:
 			case PLUNDER_TARANTULA:
-				if (st.getInt("cond") == 7 && npc.getSpoilerId() == player.getObjectId() && st.dropItems(BEAD, 1, 20, (npc.getNpcId() == HUNTER_TARANTULA) ? 333333 : 600000))
+				if (st.getInt("cond") == 7 && ((Monster) npc).getSpoilerId() == player.getObjectId() && st.dropItems(BEAD, 1, 20, (npc.getNpcId() == HUNTER_TARANTULA) ? 333333 : 600000))
 					st.set("cond", "8");
 				break;
 		}

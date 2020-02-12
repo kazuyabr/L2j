@@ -1,15 +1,9 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
+import net.sf.l2j.gameserver.enums.GaugeColor;
+
 public class SetupGauge extends L2GameServerPacket
 {
-	public enum GaugeColor
-	{
-		BLUE,
-		RED,
-		CYAN,
-		GREEN
-	}
-	
 	private final GaugeColor _color;
 	private final int _time;
 	private final int _maxTime;

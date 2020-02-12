@@ -10,10 +10,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.skills.L2EffectFlag;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Playable;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameTask;
@@ -22,9 +25,6 @@ import net.sf.l2j.gameserver.network.serverpackets.AbnormalStatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.ExOlympiadSpelledInfo;
 import net.sf.l2j.gameserver.network.serverpackets.PartySpelled;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.skills.L2EffectFlag;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
 public class CharEffectList
 {
@@ -278,6 +278,7 @@ public class CharEffectList
 					case COMBATPOINTHEAL:
 					case REFLECT:
 					case HEAL_PERCENT:
+					case HEAL_STATIC:
 					case MANAHEAL_PERCENT:
 						buffCount++;
 				}
@@ -697,6 +698,7 @@ public class CharEffectList
 						case BUFF:
 						case REFLECT:
 						case HEAL_PERCENT:
+						case HEAL_STATIC:
 						case MANAHEAL_PERCENT:
 						case COMBATPOINTHEAL:
 							for (L2Effect e : _buffs)
@@ -709,6 +711,7 @@ public class CharEffectList
 									case BUFF:
 									case REFLECT:
 									case HEAL_PERCENT:
+									case HEAL_STATIC:
 									case MANAHEAL_PERCENT:
 									case COMBATPOINTHEAL:
 										e.exit();
@@ -748,7 +751,7 @@ public class CharEffectList
 			if (newEffect.setInUse(true))
 				// Add Funcs of this effect to the Calculator set of the Creature
 				_owner.addStatFuncs(newEffect.getStatFuncs());
-		
+			
 			return;
 		}
 		

@@ -2,13 +2,14 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
-import net.sf.l2j.gameserver.model.WorldObject.PolyType;
+import net.sf.l2j.gameserver.enums.PolyType;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
@@ -65,8 +66,8 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			else
 			{
 				_idTemplate = _npc.getTemplate().getIdTemplate();
-				_rhand = _npc.getRightHandItem();
-				_lhand = _npc.getLeftHandItem();
+				_rhand = _npc.getRightHandItemId();
+				_lhand = _npc.getLeftHandItemId();
 				_collisionHeight = _npc.getCollisionHeight();
 				_collisionRadius = _npc.getCollisionRadius();
 			}
@@ -150,7 +151,7 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			writeD(_allyId);
 			writeD(_allyCrest);
 			
-			writeC(_npc.isFlying() ? 2 : 0);
+			writeC((_npc.isInsideZone(ZoneId.WATER)) ? 1 : (_npc.isFlying()) ? 2 : 0);
 			writeC(0x00);
 			
 			writeF(_collisionRadius);
@@ -262,8 +263,8 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			writeD(_allyId);
 			writeD(_allyCrest);
 			
-			writeC(0x00);
-			writeC(_summon.getTeam());
+			writeC((_summon.isInsideZone(ZoneId.WATER)) ? 1 : (_summon.isFlying()) ? 2 : 0);
+			writeC(_summon.getTeam().getId());
 			
 			writeF(_collisionRadius);
 			writeF(_collisionHeight);
@@ -356,7 +357,7 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			writeD(0x00);
 			writeD(0x00);
 			
-			writeC(0x00);
+			writeC((_pc.isInsideZone(ZoneId.WATER)) ? 1 : (_pc.isFlying()) ? 2 : 0);
 			writeC(0x00);
 			
 			writeF(_collisionRadius);

@@ -3,18 +3,20 @@ package net.sf.l2j.gsregistering;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.Scanner;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.LoginServerThread;
-import net.sf.l2j.loginserver.GameServerTable;
+import net.sf.l2j.loginserver.GameServerManager;
 import net.sf.l2j.loginserver.model.GameServerInfo;
 
 public class GameServerRegister
 {
+	private static final String DELETE_SERVER = "DELETE FROM gameservers WHERE server_id=?";
+	private static final String DELETE_SERVERS = "DELETE FROM gameservers";
+	
 	private static String _choice;
 	
 	public static void main(String[] args)
@@ -43,20 +45,20 @@ public class GameServerRegister
 				if (_choice.equalsIgnoreCase("list"))
 				{
 					System.out.println();
-					for (Map.Entry<Integer, String> entry : GameServerTable.getInstance().getServerNames().entrySet())
-						System.out.println(entry.getKey() + ": " + entry.getValue() + " " + (GameServerTable.getInstance().getRegisteredGameServers().containsKey(entry.getKey()) ? "*" : ""));
+					for (Map.Entry<Integer, String> entry : GameServerManager.getInstance().getServerNames().entrySet())
+						System.out.println(entry.getKey() + ": " + entry.getValue() + " " + (GameServerManager.getInstance().getRegisteredGameServers().containsKey(entry.getKey()) ? "*" : ""));
 				}
 				else if (_choice.equalsIgnoreCase("clean"))
 				{
 					System.out.println();
 					
-					if (GameServerTable.getInstance().getServerNames().isEmpty())
-						System.out.println("No server names available, be sure 'servername.xml' is in the LoginServer directory.");
+					if (GameServerManager.getInstance().getServerNames().isEmpty())
+						System.out.println("No server names available, be sure 'serverNames.xml' is in the LoginServer directory.");
 					else
 					{
 						System.out.println("UNREGISTER a specific server. Here's the current list :");
-						for (GameServerInfo entry : GameServerTable.getInstance().getRegisteredGameServers().values())
-							System.out.println(entry.getId() + ": " + GameServerTable.getInstance().getServerNames().get(entry.getId()));
+						for (GameServerInfo entry : GameServerManager.getInstance().getRegisteredGameServers().values())
+							System.out.println(entry.getId() + ": " + GameServerManager.getInstance().getServerNames().get(entry.getId()));
 						
 						System.out.println();
 						System.out.print("Your choice? ");
@@ -66,22 +68,21 @@ public class GameServerRegister
 						{
 							final int id = Integer.parseInt(_choice);
 							
-							if (!GameServerTable.getInstance().getRegisteredGameServers().containsKey(id))
+							if (!GameServerManager.getInstance().getRegisteredGameServers().containsKey(id))
 								System.out.println("This server id isn't used.");
 							else
 							{
-								try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+								try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+									PreparedStatement ps = con.prepareStatement(DELETE_SERVER))
 								{
-									PreparedStatement statement = con.prepareStatement("DELETE FROM gameservers WHERE server_id=?");
-									statement.setInt(1, id);
-									statement.executeUpdate();
-									statement.close();
+									ps.setInt(1, id);
+									ps.executeUpdate();
 								}
-								catch (SQLException e)
+								catch (Exception e)
 								{
 									System.out.println("SQL error while cleaning registered server: " + e);
 								}
-								GameServerTable.getInstance().getRegisteredGameServers().remove(id);
+								GameServerManager.getInstance().getRegisteredGameServers().remove(id);
 								
 								System.out.println("You successfully dropped gameserver #" + id + ".");
 							}
@@ -101,17 +102,16 @@ public class GameServerRegister
 					
 					if (_choice.equals("y"))
 					{
-						try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+						try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+							PreparedStatement ps = con.prepareStatement(DELETE_SERVERS))
 						{
-							PreparedStatement statement = con.prepareStatement("DELETE FROM gameservers");
-							statement.executeUpdate();
-							statement.close();
+							ps.executeUpdate();
 						}
-						catch (SQLException e)
+						catch (Exception e)
 						{
 							System.out.println("SQL error while cleaning registered servers: " + e);
 						}
-						GameServerTable.getInstance().getRegisteredGameServers().clear();
+						GameServerManager.getInstance().getRegisteredGameServers().clear();
 						
 						System.out.println("You successfully dropped all registered gameservers.");
 					}
@@ -126,22 +126,22 @@ public class GameServerRegister
 					{
 						System.out.println();
 						
-						if (GameServerTable.getInstance().getServerNames().isEmpty())
-							System.out.println("No server names available, be sure 'servername.xml' is in the LoginServer directory.");
+						if (GameServerManager.getInstance().getServerNames().isEmpty())
+							System.out.println("No server names available, be sure 'serverNames.xml' is in the LoginServer directory.");
 						else
 						{
 							final int id = Integer.parseInt(_choice);
 							
-							if (GameServerTable.getInstance().getServerNames().get(id) == null)
+							if (GameServerManager.getInstance().getServerNames().get(id) == null)
 								System.out.println("No name for server id: " + id + ".");
-							else if (GameServerTable.getInstance().getRegisteredGameServers().containsKey(id))
+							else if (GameServerManager.getInstance().getRegisteredGameServers().containsKey(id))
 								System.out.println("This server id is already used.");
 							else
 							{
 								byte[] hexId = LoginServerThread.generateHex(16);
 								
-								GameServerTable.getInstance().getRegisteredGameServers().put(id, new GameServerInfo(id, hexId));
-								GameServerTable.getInstance().registerServerOnDB(hexId, id, "");
+								GameServerManager.getInstance().getRegisteredGameServers().put(id, new GameServerInfo(id, hexId));
+								GameServerManager.getInstance().registerServerOnDB(hexId, id, "");
 								Config.saveHexid(id, new BigInteger(hexId).toString(16), "hexid(server " + id + ").txt");
 								
 								System.out.println("Server registered under 'hexid(server " + id + ").txt'.");

@@ -3,13 +3,10 @@ package net.sf.l2j.loginserver.network.clientpackets;
 import net.sf.l2j.Config;
 import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.network.SessionKey;
-import net.sf.l2j.loginserver.network.serverpackets.LoginFail.LoginFailReason;
-import net.sf.l2j.loginserver.network.serverpackets.PlayFail.PlayFailReason;
+import net.sf.l2j.loginserver.network.serverpackets.LoginFail;
+import net.sf.l2j.loginserver.network.serverpackets.PlayFail;
 import net.sf.l2j.loginserver.network.serverpackets.PlayOk;
 
-/**
- * Fromat is ddc d: first part of session id d: second part of session id c: server ID
- */
 public class RequestServerLogin extends L2LoginClientPacket
 {
 	private int _skey1;
@@ -58,9 +55,9 @@ public class RequestServerLogin extends L2LoginClientPacket
 				getClient().sendPacket(new PlayOk(sk));
 			}
 			else
-				getClient().close(PlayFailReason.REASON_TOO_MANY_PLAYERS);
+				getClient().close(PlayFail.REASON_TOO_MANY_PLAYERS);
 		}
 		else
-			getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
+			getClient().close(LoginFail.REASON_ACCESS_FAILED);
 	}
 }

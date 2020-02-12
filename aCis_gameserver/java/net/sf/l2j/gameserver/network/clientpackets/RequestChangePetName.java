@@ -8,12 +8,15 @@ import java.sql.SQLException;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public final class RequestChangePetName extends L2GameClientPacket
 {
+	private static final String SEARCH_NAME = "SELECT name FROM pets WHERE name=?";
+	
 	private String _name;
 	
 	@Override
@@ -25,36 +28,44 @@ public final class RequestChangePetName extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
+		// No active pet.
+		if (!player.hasPet())
+			return;
+		
+		// Name length integrity check.
 		if (_name.length() < 2 || _name.length() > 8)
 		{
-			activeChar.sendPacket(SystemMessageId.NAMING_PETNAME_UP_TO_8CHARS);
+			player.sendPacket(SystemMessageId.NAMING_PETNAME_UP_TO_8CHARS);
 			return;
 		}
 		
-		if (!StringUtil.isValidName(_name, "^[A-Za-z]{2,8}$"))
-		{
-			activeChar.sendPacket(SystemMessageId.NAMING_PETNAME_CONTAINS_INVALID_CHARS);
-			return;
-		}
-		
-		if (!activeChar.hasPet())
-			return;
-		
-		final Pet pet = (Pet) activeChar.getPet();
-		
+		// Pet is already named.
+		final Pet pet = (Pet) player.getSummon();
 		if (pet.getName() != null)
 		{
-			activeChar.sendPacket(SystemMessageId.NAMING_YOU_CANNOT_SET_NAME_OF_THE_PET);
+			player.sendPacket(SystemMessageId.NAMING_YOU_CANNOT_SET_NAME_OF_THE_PET);
 			return;
 		}
 		
+		// Invalid name pattern.
+		if (!StringUtil.isValidString(_name, "^[A-Za-z0-9]{2,8}$"))
+		{
+			player.sendPacket(SystemMessageId.NAMING_PETNAME_CONTAINS_INVALID_CHARS);
+			return;
+		}
+		
+		// Name is a npc name.
+		if (NpcData.getInstance().getTemplateByName(_name) != null)
+			return;
+		
+		// Name already exists on another pet.
 		if (doesPetNameExist(_name))
 		{
-			activeChar.sendPacket(SystemMessageId.NAMING_ALREADY_IN_USE_BY_ANOTHER_PET);
+			player.sendPacket(SystemMessageId.NAMING_ALREADY_IN_USE_BY_ANOTHER_PET);
 			return;
 		}
 		
@@ -62,22 +73,27 @@ public final class RequestChangePetName extends L2GameClientPacket
 		pet.sendPetInfosToOwner();
 	}
 	
+	/**
+	 * @param name : The name to search.
+	 * @return true if such name already exists on database, false otherwise.
+	 */
 	private static boolean doesPetNameExist(String name)
 	{
 		boolean result = true;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(SEARCH_NAME))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT name FROM pets WHERE name=?");
-			statement.setString(1, name);
+			ps.setString(1, name);
 			
-			ResultSet rset = statement.executeQuery();
-			result = rset.next();
-			rset.close();
-			statement.close();
+			try (ResultSet rs = ps.executeQuery())
+			{
+				result = rs.next();
+			}
 		}
 		catch (SQLException e)
 		{
-			_log.warning("could not check existing petname:" + e.getMessage());
+			LOGGER.error("Couldn't check existing petname.", e);
 		}
 		return result;
 	}

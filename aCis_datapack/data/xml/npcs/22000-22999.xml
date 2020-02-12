@@ -7174,7 +7174,7 @@
 		</drops>
 	</npc>
 	<npc id="22118" name="Spiked Stakato Nurse" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="26"/>
 		<set name="height" val="43.8"/>
 		<set name="rHand" val="0"/>
@@ -7246,7 +7246,7 @@
 		</drops>
 	</npc>
 	<npc id="22119" name="Spiked Stakato Nurse" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="18"/>
 		<set name="height" val="36.4"/>
 		<set name="rHand" val="0"/>
@@ -7305,7 +7305,7 @@
 		</drops>
 	</npc>
 	<npc id="22120" name="Spiked Stakato Baby" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="79"/>
 		<set name="radius" val="16"/>
 		<set name="height" val="29"/>
 		<set name="rHand" val="0"/>
@@ -7373,7 +7373,7 @@
 		</drops>
 	</npc>
 	<npc id="22121" name="Spiked Stakato Shaman" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="24"/>
 		<set name="height" val="43.6"/>
 		<set name="rHand" val="0"/>
@@ -7434,7 +7434,7 @@
 		</drops>
 	</npc>
 	<npc id="22122" name="Monastic Pilgrim" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="27.8"/>
 		<set name="rHand" val="148"/>
@@ -7501,7 +7501,7 @@
 		</drops>
 	</npc>
 	<npc id="22123" name="Monastic Crusader" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="37.5"/>
 		<set name="rHand" val="1303"/>
@@ -7581,7 +7581,7 @@
 		</minions>
 	</npc>
 	<npc id="22124" name="Solina Brother" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="23.4"/>
 		<set name="rHand" val="8212"/>
@@ -7657,7 +7657,7 @@
 		</drops>
 	</npc>
 	<npc id="22125" name="Solina Lay Brother" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="23.4"/>
 		<set name="rHand" val="8212"/>
@@ -7722,7 +7722,7 @@
 		</drops>
 	</npc>
 	<npc id="22126" name="Silent Seeker" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="25.4"/>
 		<set name="rHand" val="8213"/>
@@ -7792,7 +7792,7 @@
 		</drops>
 	</npc>
 	<npc id="22127" name="Silent Brother" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="25.4"/>
 		<set name="rHand" val="8212"/>
@@ -7849,7 +7849,7 @@
 		</drops>
 	</npc>
 	<npc id="22128" name="Monastery Guardian" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="15.6"/>
 		<set name="rHand" val="0"/>
@@ -7915,7 +7915,7 @@
 		</drops>
 	</npc>
 	<npc id="22129" name="Warrior Monk" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8211"/>
@@ -7986,7 +7986,7 @@
 		</drops>
 	</npc>
 	<npc id="22130" name="Divine Advocate" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="30"/>
 		<set name="rHand" val="6717"/>
@@ -8054,7 +8054,7 @@
 		</drops>
 	</npc>
 	<npc id="22131" name="Pilgrim of Light" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="38.5"/>
 		<set name="rHand" val="6718"/>
@@ -8128,7 +8128,7 @@
 		</drops>
 	</npc>
 	<npc id="22132" name="Judge of Light" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="47"/>
 		<set name="rHand" val="8220"/>
@@ -8200,7 +8200,7 @@
 		</drops>
 	</npc>
 	<npc id="22133" name="Guardian of the Grail" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
@@ -8261,7 +8261,7 @@
 		</drops>
 	</npc>
 	<npc id="22134" name="Guardian of the Holy Land" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="34.5"/>
 		<set name="rHand" val="8214"/>
@@ -8332,7 +8332,7 @@
 		</drops>
 	</npc>
 	<npc id="22135" name="Beholder of Light" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="47"/>
 		<set name="rHand" val="8221"/>
@@ -8409,7 +8409,7 @@
 		</minions>
 	</npc>
 	<npc id="22136" name="Gatekeeper Zombie" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="30.5"/>
 		<set name="rHand" val="8217"/>
@@ -8449,7 +8449,7 @@
 		</skills>
 	</npc>
 	<npc id="22137" name="Penance Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="40"/>
 		<set name="height" val="30.5"/>
 		<set name="rHand" val="8217"/>
@@ -8503,7 +8503,7 @@
 		</drops>
 	</npc>
 	<npc id="22138" name="Chapel Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="40"/>
 		<set name="height" val="30.5"/>
 		<set name="rHand" val="8217"/>
@@ -8557,7 +8557,7 @@
 		</drops>
 	</npc>
 	<npc id="22139" name="Old Aristocrat's Soldier" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="8216"/>
@@ -8617,7 +8617,7 @@
 		</drops>
 	</npc>
 	<npc id="22140" name="Zombie Worker" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="24.6"/>
 		<set name="rHand" val="8218"/>
@@ -8692,7 +8692,7 @@
 		</drops>
 	</npc>
 	<npc id="22141" name="Forgotten Victim" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="24.6"/>
 		<set name="rHand" val="8219"/>
@@ -8759,7 +8759,7 @@
 		</drops>
 	</npc>
 	<npc id="22142" name="Triol's Layperson" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8207"/>
@@ -8830,7 +8830,7 @@
 		</drops>
 	</npc>
 	<npc id="22143" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -8902,7 +8902,7 @@
 		</drops>
 	</npc>
 	<npc id="22144" name="Resurrected Temple Knight" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="0"/>
@@ -8971,7 +8971,7 @@
 		</drops>
 	</npc>
 	<npc id="22145" name="Ritual Sacrifice" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -9036,7 +9036,7 @@
 		</drops>
 	</npc>
 	<npc id="22146" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -9091,7 +9091,7 @@
 		</drops>
 	</npc>
 	<npc id="22147" name="Ritual Offering" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="0"/>
@@ -9155,7 +9155,7 @@
 		</drops>
 	</npc>
 	<npc id="22148" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8207"/>
@@ -9208,7 +9208,7 @@
 		</drops>
 	</npc>
 	<npc id="22149" name="Ritual Offering" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="0"/>
@@ -9275,7 +9275,7 @@
 		</drops>
 	</npc>
 	<npc id="22150" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8207"/>
@@ -9332,7 +9332,7 @@
 		</drops>
 	</npc>
 	<npc id="22151" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -9392,7 +9392,7 @@
 		</drops>
 	</npc>
 	<npc id="22152" name="Temple Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="0"/>
@@ -9451,7 +9451,7 @@
 		</drops>
 	</npc>
 	<npc id="22153" name="Temple Guard Captain" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="8218"/>
@@ -9509,7 +9509,7 @@
 		</drops>
 	</npc>
 	<npc id="22154" name="Ritual Sacrifice" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -9567,7 +9567,7 @@
 		</drops>
 	</npc>
 	<npc id="22155" name="Triol's High Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19.1"/>
 		<set name="rHand" val="8206"/>
@@ -9627,7 +9627,7 @@
 		</drops>
 	</npc>
 	<npc id="22156" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -9692,7 +9692,7 @@
 		</drops>
 	</npc>
 	<npc id="22157" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -9748,7 +9748,7 @@
 		</drops>
 	</npc>
 	<npc id="22158" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8207"/>
@@ -9816,7 +9816,7 @@
 		</drops>
 	</npc>
 	<npc id="22159" name="Triol's High Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19.1"/>
 		<set name="rHand" val="8206"/>
@@ -9878,7 +9878,7 @@
 		</drops>
 	</npc>
 	<npc id="22160" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -9941,7 +9941,7 @@
 		</drops>
 	</npc>
 	<npc id="22161" name="Ritual Sacrifice" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -10009,7 +10009,7 @@
 		</drops>
 	</npc>
 	<npc id="22162" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8207"/>
@@ -10068,7 +10068,7 @@
 		</drops>
 	</npc>
 	<npc id="22163" name="Triol's High Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19.1"/>
 		<set name="rHand" val="8206"/>
@@ -10131,7 +10131,7 @@
 		</drops>
 	</npc>
 	<npc id="22164" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8207"/>
@@ -10194,7 +10194,7 @@
 		</drops>
 	</npc>
 	<npc id="22165" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -10257,7 +10257,7 @@
 		</drops>
 	</npc>
 	<npc id="22166" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -10320,7 +10320,7 @@
 		</drops>
 	</npc>
 	<npc id="22167" name="Triol's High Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19.1"/>
 		<set name="rHand" val="8206"/>
@@ -10383,7 +10383,7 @@
 		</drops>
 	</npc>
 	<npc id="22168" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -10441,7 +10441,7 @@
 		</drops>
 	</npc>
 	<npc id="22169" name="Ritual Sacrifice" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -10505,7 +10505,7 @@
 		</drops>
 	</npc>
 	<npc id="22170" name="Triol's Believer" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8207"/>
@@ -10561,7 +10561,7 @@
 		</drops>
 	</npc>
 	<npc id="22171" name="Triol's High Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19.1"/>
 		<set name="rHand" val="8206"/>
@@ -10628,7 +10628,7 @@
 		</drops>
 	</npc>
 	<npc id="22172" name="Ritual Sacrifice" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -10693,7 +10693,7 @@
 		</drops>
 	</npc>
 	<npc id="22173" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -10753,7 +10753,7 @@
 		</drops>
 	</npc>
 	<npc id="22174" name="Triol's Priest" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="7.7"/>
 		<set name="height" val="28.4"/>
 		<set name="rHand" val="8208"/>
@@ -10812,7 +10812,7 @@
 		</drops>
 	</npc>
 	<npc id="22175" name="Andreas' Captain of the Royal Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="8218"/>
@@ -10867,7 +10867,7 @@
 		</minions>
 	</npc>
 	<npc id="22176" name="Andreas' Royal Guards" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="17"/>
 		<set name="height" val="22.3"/>
 		<set name="rHand" val="8207"/>
@@ -10920,7 +10920,7 @@
 		</drops>
 	</npc>
 	<npc id="22188" name="Andreas' Captain of the Royal Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="23.2"/>
 		<set name="rHand" val="8206"/>
@@ -10974,7 +10974,7 @@
 		</minions>
 	</npc>
 	<npc id="22189" name="Andreas' Royal Guards" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="34"/>
 		<set name="rHand" val="8208"/>
@@ -11018,7 +11018,7 @@
 		</drops>
 	</npc>
 	<npc id="22190" name="Ritual Sacrifice" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -11066,7 +11066,7 @@
 		</drops>
 	</npc>
 	<npc id="22191" name="Andreas' Captain of the Royal Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="23.2"/>
 		<set name="rHand" val="8206"/>
@@ -11128,7 +11128,7 @@
 		</drops>
 	</npc>
 	<npc id="22192" name="Andreas' Royal Guards" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="34"/>
 		<set name="rHand" val="8206"/>
@@ -11186,7 +11186,7 @@
 		</drops>
 	</npc>
 	<npc id="22193" name="Andreas' Royal Guards" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="34"/>
 		<set name="rHand" val="8206"/>
@@ -11246,7 +11246,7 @@
 		</drops>
 	</npc>
 	<npc id="22194" name="Penance Guard" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="80"/>
 		<set name="radius" val="40"/>
 		<set name="height" val="22"/>
 		<set name="rHand" val="8217"/>
@@ -11286,7 +11286,7 @@
 		</skills>
 	</npc>
 	<npc id="22195" name="Ritual Sacrifice" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="99"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="0"/>
@@ -11350,7 +11350,7 @@
 		</drops>
 	</npc>
 	<npc id="22196" name="Velociraptor" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="47.2"/>
 		<set name="rHand" val="0"/>
@@ -11408,7 +11408,7 @@
 		</minions>
 	</npc>
 	<npc id="22197" name="Velociraptor" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="47.2"/>
 		<set name="rHand" val="0"/>
@@ -11471,7 +11471,7 @@
 		</drops>
 	</npc>
 	<npc id="22198" name="Velociraptor" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="47.2"/>
 		<set name="rHand" val="0"/>
@@ -11532,7 +11532,7 @@
 		</drops>
 	</npc>
 	<npc id="22199" name="Pterosaur" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="36"/>
 		<set name="height" val="43.7"/>
 		<set name="rHand" val="0"/>
@@ -11594,7 +11594,7 @@
 		</drops>
 	</npc>
 	<npc id="22200" name="Ornithomimus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="37.2"/>
 		<set name="rHand" val="0"/>
@@ -11659,7 +11659,7 @@
 		</minions>
 	</npc>
 	<npc id="22201" name="Ornithomimus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="37.2"/>
 		<set name="rHand" val="0"/>
@@ -11720,7 +11720,7 @@
 		</drops>
 	</npc>
 	<npc id="22202" name="Ornithomimus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="37.2"/>
 		<set name="rHand" val="0"/>
@@ -11777,7 +11777,7 @@
 		</drops>
 	</npc>
 	<npc id="22203" name="Deinonychus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="14.3"/>
 		<set name="rHand" val="0"/>
@@ -11834,7 +11834,7 @@
 		</minions>
 	</npc>
 	<npc id="22204" name="Deinonychus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="14.3"/>
 		<set name="rHand" val="0"/>
@@ -11889,7 +11889,7 @@
 		</drops>
 	</npc>
 	<npc id="22205" name="Deinonychus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="14.3"/>
 		<set name="rHand" val="0"/>
@@ -11942,7 +11942,7 @@
 		</drops>
 	</npc>
 	<npc id="22208" name="Pachycephalosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -11994,7 +11994,7 @@
 		</minions>
 	</npc>
 	<npc id="22209" name="Pachycephalosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -12043,7 +12043,7 @@
 		</drops>
 	</npc>
 	<npc id="22210" name="Pachycephalosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -12094,7 +12094,7 @@
 		</drops>
 	</npc>
 	<npc id="22211" name="Wild Strider" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="32"/>
 		<set name="height" val="44.2"/>
 		<set name="rHand" val="0"/>
@@ -12149,7 +12149,7 @@
 		</minions>
 	</npc>
 	<npc id="22212" name="Wild Strider" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="32"/>
 		<set name="height" val="44.2"/>
 		<set name="rHand" val="0"/>
@@ -12199,7 +12199,7 @@
 		</drops>
 	</npc>
 	<npc id="22213" name="Wild Strider" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="32"/>
 		<set name="height" val="44.2"/>
 		<set name="rHand" val="0"/>
@@ -12247,7 +12247,7 @@
 		</drops>
 	</npc>
 	<npc id="22214" name="Elroki" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="25"/>
 		<set name="height" val="33"/>
 		<set name="rHand" val="0"/>
@@ -12303,7 +12303,7 @@
 		</drops>
 	</npc>
 	<npc id="22215" name="Tyrannosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="60"/>
 		<set name="height" val="89.7"/>
 		<set name="rHand" val="0"/>
@@ -12356,7 +12356,7 @@
 		</drops>
 	</npc>
 	<npc id="22216" name="Tyrannosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="60"/>
 		<set name="height" val="89.7"/>
 		<set name="rHand" val="0"/>
@@ -12409,7 +12409,7 @@
 		</drops>
 	</npc>
 	<npc id="22217" name="Tyrannosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="87"/>
 		<set name="radius" val="60"/>
 		<set name="height" val="89.7"/>
 		<set name="rHand" val="0"/>
@@ -12462,7 +12462,7 @@
 		</drops>
 	</npc>
 	<npc id="22218" name="Velociraptor" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="47.2"/>
 		<set name="rHand" val="0"/>
@@ -12516,7 +12516,7 @@
 		</drops>
 	</npc>
 	<npc id="22219" name="Ornithomimus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="37.2"/>
 		<set name="rHand" val="0"/>
@@ -12572,7 +12572,7 @@
 		</drops>
 	</npc>
 	<npc id="22220" name="Deinonychus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="14.3"/>
 		<set name="rHand" val="0"/>
@@ -12627,7 +12627,7 @@
 		</drops>
 	</npc>
 	<npc id="22221" name="Pachycephalosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -12678,7 +12678,7 @@
 		</drops>
 	</npc>
 	<npc id="22222" name="Wild Strider" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="32"/>
 		<set name="height" val="44.2"/>
 		<set name="rHand" val="0"/>
@@ -12730,7 +12730,7 @@
 		</drops>
 	</npc>
 	<npc id="22223" name="Velociraptor" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="86"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="47.2"/>
 		<set name="rHand" val="0"/>
@@ -12782,7 +12782,7 @@
 		</drops>
 	</npc>
 	<npc id="22224" name="Ornithomimus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="84"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="37.2"/>
 		<set name="rHand" val="0"/>
@@ -12845,7 +12845,7 @@
 		</minions>
 	</npc>
 	<npc id="22225" name="Deinonychus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="83"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="14.3"/>
 		<set name="rHand" val="0"/>
@@ -12903,7 +12903,7 @@
 		</minions>
 	</npc>
 	<npc id="22226" name="Pachycephalosaurus" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -12954,7 +12954,7 @@
 		</drops>
 	</npc>
 	<npc id="22227" name="Wild Strider" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="85"/>
 		<set name="radius" val="32"/>
 		<set name="height" val="44.2"/>
 		<set name="rHand" val="0"/>

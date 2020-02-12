@@ -2,6 +2,7 @@ package net.sf.l2j.gameserver.model.actor.status;
 
 import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.instance.Monster;
 
 public class AttackableStatus extends NpcStatus
 {
@@ -22,25 +23,30 @@ public class AttackableStatus extends NpcStatus
 		if (getActiveChar().isDead())
 			return;
 		
-		if (value > 0)
+		Monster monster = null;
+		if (getActiveChar() instanceof Monster)
 		{
-			if (getActiveChar().isOverhit())
-				getActiveChar().setOverhitValues(attacker, value);
+			monster = (Monster) getActiveChar();
+			if (value > 0)
+			{
+				if (monster.isOverhit())
+					monster.setOverhitValues(attacker, value);
+				else
+					monster.overhitEnabled(false);
+			}
 			else
-				getActiveChar().overhitEnabled(false);
+				monster.overhitEnabled(false);
 		}
-		else
-			getActiveChar().overhitEnabled(false);
 		
 		// Add attackers to npc's attacker list
 		if (attacker != null)
-			getActiveChar().addAttackerToAttackByList(attacker);
+			getActiveChar().addAttacker(attacker);
 		
 		super.reduceHp(value, attacker, awake, isDOT, isHpConsumption);
 		
 		// And the attacker's hit didn't kill the mob, clear the over-hit flag
-		if (!getActiveChar().isDead())
-			getActiveChar().overhitEnabled(false);
+		if (monster != null && !monster.isDead())
+			monster.overhitEnabled(false);
 	}
 	
 	@Override

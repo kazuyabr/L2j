@@ -2,6 +2,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 
@@ -31,5 +32,11 @@ public class EffectPoint extends Npc
 	public void onActionShift(Player player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
+	}
+	
+	@Override
+	public boolean hasRandomAnimation()
+	{
+		return false;
 	}
 }

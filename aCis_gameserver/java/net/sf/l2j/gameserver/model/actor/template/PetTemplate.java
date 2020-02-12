@@ -2,8 +2,9 @@ package net.sf.l2j.gameserver.model.actor.template;
 
 import java.util.Map;
 
+import net.sf.l2j.commons.util.StatsSet;
+
 import net.sf.l2j.gameserver.model.PetDataEntry;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 public final class PetTemplate extends NpcTemplate
 {

@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.EnchantResult;
 
@@ -26,7 +26,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 		if (_amount <= 0)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null || !player.hasPet())
 			return;
 		
@@ -43,7 +43,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 			player.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 		}
 		
-		final Pet pet = (Pet) player.getPet();
+		final Pet pet = (Pet) player.getSummon();
 		
 		pet.transferItem("Transfer", _objectId, _amount, player.getInventory(), player, pet);
 	}

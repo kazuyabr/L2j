@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -31,7 +31,7 @@ public class ToIVortex extends Quest
 			if (st.hasQuestItems(BLUE_STONE))
 			{
 				st.takeItems(BLUE_STONE, 1);
-				player.teleToLocation(114097, 19935, 935, 0);
+				player.teleportTo(114097, 19935, 935, 0);
 			}
 			else
 				htmltext = "no-items.htm";
@@ -41,7 +41,7 @@ public class ToIVortex extends Quest
 			if (st.hasQuestItems(GREEN_STONE))
 			{
 				st.takeItems(GREEN_STONE, 1);
-				player.teleToLocation(110930, 15963, -4378, 0);
+				player.teleportTo(110930, 15963, -4378, 0);
 			}
 			else
 				htmltext = "no-items.htm";
@@ -51,7 +51,7 @@ public class ToIVortex extends Quest
 			if (st.hasQuestItems(RED_STONE))
 			{
 				st.takeItems(RED_STONE, 1);
-				player.teleToLocation(118558, 16659, 5987, 0);
+				player.teleportTo(118558, 16659, 5987, 0);
 			}
 			else
 				htmltext = "no-items.htm";

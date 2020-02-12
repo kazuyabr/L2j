@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.data.PlayerNameTable;
+import net.sf.l2j.gameserver.data.sql.PlayerInfoTable;
 import net.sf.l2j.gameserver.model.World;
 
 /**
@@ -21,7 +21,7 @@ public class FriendStatus extends L2GameServerPacket
 	public FriendStatus(int objId)
 	{
 		_objid = objId;
-		_name = PlayerNameTable.getInstance().getPlayerName(objId);
+		_name = PlayerInfoTable.getInstance().getPlayerName(objId);
 		_online = World.getInstance().getPlayer(objId) != null;
 	}
 	

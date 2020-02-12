@@ -2,7 +2,8 @@ package net.sf.l2j.gameserver.data.manager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.actor.instance.Fence;
@@ -12,7 +13,7 @@ import net.sf.l2j.gameserver.model.actor.instance.Fence;
  */
 public class FenceManager
 {
-	private static final Logger LOG = Logger.getLogger(FenceManager.class.getName());
+	private static final CLogger LOGGER = new CLogger(FenceManager.class.getName());
 	
 	/**
 	 * Description of each fence dimension parameters.
@@ -79,7 +80,7 @@ public class FenceManager
 		
 		if (fsx == null || fsy == null)
 		{
-			LOG.warning("Unknown dimensions for fence, x=" + sizeX + " y=" + sizeY);
+			LOGGER.warn("Unknown dimensions for fence, x={} y={}.", sizeX, sizeY);
 			return null;
 		}
 		

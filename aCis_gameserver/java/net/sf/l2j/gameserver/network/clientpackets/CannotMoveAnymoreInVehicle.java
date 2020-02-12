@@ -1,6 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.StopMoveInVehicle;
 
 public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
@@ -24,13 +24,13 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
 		if (player.isInBoat() && player.getBoat().getObjectId() == _boatId)
 		{
-			player.getVehiclePosition().set(_x, _y, _z, _heading);
+			player.getBoatPosition().set(_x, _y, _z, _heading);
 			player.broadcastPacket(new StopMoveInVehicle(player, _boatId));
 		}
 	}

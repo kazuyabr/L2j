@@ -2,16 +2,13 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import java.util.Map;
 
-import net.sf.l2j.gameserver.instancemanager.RaidBossPointsManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.data.manager.RaidPointManager;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ExGetBossRecord;
 
-/**
- * Format: (ch) d
- * @author -Wooden-
- */
 public class RequestGetBossRecord extends L2GameClientPacket
 {
+	@SuppressWarnings("unused")
 	private int _bossId;
 	
 	@Override
@@ -23,20 +20,14 @@ public class RequestGetBossRecord extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
 		
-		// should be always 0, log it if isn't 0 for future research
-		if (_bossId != 0)
-			_log.info("C5: RequestGetBossRecord: d: " + _bossId + " ActiveChar: " + activeChar);
+		final int points = RaidPointManager.getInstance().getPointsByOwnerId(player.getObjectId());
+		final int ranking = RaidPointManager.getInstance().calculateRanking(player.getObjectId());
+		final Map<Integer, Integer> list = RaidPointManager.getInstance().getList(player);
 		
-		int points = RaidBossPointsManager.getInstance().getPointsByOwnerId(activeChar.getObjectId());
-		int ranking = RaidBossPointsManager.getInstance().calculateRanking(activeChar.getObjectId());
-		
-		Map<Integer, Integer> list = RaidBossPointsManager.getInstance().getList(activeChar);
-		
-		// trigger packet
-		activeChar.sendPacket(new ExGetBossRecord(ranking, points, list));
+		player.sendPacket(new ExGetBossRecord(ranking, points, list));
 	}
 }

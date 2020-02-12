@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.model.actor.stat;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.SealType;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
@@ -28,7 +28,7 @@ public class DoorStat extends CreatureStat
 	{
 		double defense = getActiveChar().getTemplate().getBaseMDef();
 		
-		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+		switch (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE))
 		{
 			case DAWN:
 				defense *= 1.2;
@@ -47,7 +47,7 @@ public class DoorStat extends CreatureStat
 	{
 		double defense = getActiveChar().getTemplate().getBasePDef();
 		
-		switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+		switch (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE))
 		{
 			case DAWN:
 				defense *= 1.2;

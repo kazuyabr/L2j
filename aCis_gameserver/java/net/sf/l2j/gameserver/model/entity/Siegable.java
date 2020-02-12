@@ -3,8 +3,8 @@ package net.sf.l2j.gameserver.model.entity;
 import java.util.Calendar;
 import java.util.List;
 
+import net.sf.l2j.gameserver.enums.SiegeSide;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.entity.Siege.SiegeSide;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
 public interface Siegable

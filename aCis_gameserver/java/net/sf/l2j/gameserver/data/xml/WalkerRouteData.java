@@ -1,23 +1,22 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
 
 import net.sf.l2j.gameserver.model.location.WalkerLocation;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import org.w3c.dom.NamedNodeMap;
 
 /**
  * This class loads and stores routes for Walker NPCs, under a List of {@link WalkerLocation} ; the key being the npcId.
  */
-public class WalkerRouteData extends XMLDocument
+public class WalkerRouteData implements IXmlReader
 {
 	private final Map<Integer, List<WalkerLocation>> _routes = new HashMap<>();
 	
@@ -27,48 +26,24 @@ public class WalkerRouteData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/walkerRoutes.xml");
-		LOG.info("Loaded " + _routes.size() + " Walker routes.");
+		parseFile("./data/xml/walkerRoutes.xml");
+		LOGGER.info("Loaded {} Walker routes.", _routes.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "route", routeNode ->
 		{
-			if (!"route".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			// We enforce the use of LinkedList.
+			final NamedNodeMap attrs = routeNode.getAttributes();
 			final List<WalkerLocation> list = new ArrayList<>();
-			
-			int npcId = Integer.parseInt(o.getAttributes().getNamedItem("npcId").getNodeValue());
-			boolean run = Boolean.parseBoolean(o.getAttributes().getNamedItem("run").getNodeValue());
-			
-			for (Node d = o.getFirstChild(); d != null; d = d.getNextSibling())
-			{
-				if (!"node".equalsIgnoreCase(d.getNodeName()))
-					continue;
-				
-				// Parse and feed content.
-				parseAndFeed(d.getAttributes(), set);
-				
-				// Feed the list with new data.
-				list.add(new WalkerLocation(set, run));
-				
-				// Clear the StatsSet.
-				set.clear();
-			}
+			final int npcId = parseInteger(attrs, "npcId");
+			final boolean run = parseBoolean(attrs, "run");
+			forEach(routeNode, "node", nodeNode -> list.add(new WalkerLocation(parseAttributes(nodeNode), run)));
 			_routes.put(npcId, list);
-		}
+		}));
 	}
 	
 	public void reload()

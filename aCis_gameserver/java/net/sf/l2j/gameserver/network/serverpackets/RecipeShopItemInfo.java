@@ -1,10 +1,7 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 
-/**
- * ddddd
- */
 public class RecipeShopItemInfo extends L2GameServerPacket
 {
 	private final Player _player;

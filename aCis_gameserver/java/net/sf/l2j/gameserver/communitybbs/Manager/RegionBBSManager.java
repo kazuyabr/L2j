@@ -6,13 +6,13 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.cache.HtmCache;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
+import net.sf.l2j.gameserver.data.manager.CastleManager;
+import net.sf.l2j.gameserver.data.manager.ClanHallManager;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.clanhall.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
 public class RegionBBSManager extends BaseBBSManager
@@ -21,25 +21,20 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 	}
 	
-	public static RegionBBSManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
 	@Override
-	public void parseCmd(String command, Player activeChar)
+	public void parseCmd(String command, Player player)
 	{
 		if (command.equals("_bbsloc"))
-			showRegionsList(activeChar);
+			showRegionsList(player);
 		else if (command.startsWith("_bbsloc"))
 		{
-			StringTokenizer st = new StringTokenizer(command, ";");
+			final StringTokenizer st = new StringTokenizer(command, ";");
 			st.nextToken();
 			
-			showRegion(activeChar, Integer.parseInt(st.nextToken()));
+			showRegion(player, Integer.parseInt(st.nextToken()));
 		}
 		else
-			super.parseCmd(command, activeChar);
+			super.parseCmd(command, player);
 	}
 	
 	@Override
@@ -48,7 +43,7 @@ public class RegionBBSManager extends BaseBBSManager
 		return "region/";
 	}
 	
-	private static void showRegionsList(Player activeChar)
+	private static void showRegionsList(Player player)
 	{
 		final String content = HtmCache.getInstance().getHtm(CB_PATH + "region/castlelist.htm");
 		
@@ -59,10 +54,10 @@ public class RegionBBSManager extends BaseBBSManager
 			
 			StringUtil.append(sb, "<table><tr><td width=5></td><td width=160><a action=\"bypass _bbsloc;", castle.getCastleId(), "\">", castle.getName(), "</a></td><td width=160>", ((owner != null) ? "<a action=\"bypass _bbsclan;home;" + owner.getClanId() + "\">" + owner.getName() + "</a>" : "None"), "</td><td width=160>", ((owner != null && owner.getAllyId() > 0) ? owner.getAllyName() : "None"), "</td><td width=120>", ((owner != null) ? castle.getTaxPercent() : "0"), "</td><td width=5></td></tr></table><br1><img src=\"L2UI.Squaregray\" width=605 height=1><br1>");
 		}
-		separateAndSend(content.replace("%castleList%", sb.toString()), activeChar);
+		separateAndSend(content.replace("%castleList%", sb.toString()), player);
 	}
 	
-	private static void showRegion(Player activeChar, int castleId)
+	private static void showRegion(Player player, int castleId)
 	{
 		final Castle castle = CastleManager.getInstance().getCastleById(castleId);
 		final Clan owner = ClanTable.getInstance().getClan(castle.getOwnerId());
@@ -90,11 +85,16 @@ public class RegionBBSManager extends BaseBBSManager
 				StringUtil.append(sb, "<table><tr><td width=5></td><td width=200>", ch.getName(), "</td><td width=200>", ((chOwner != null) ? "<a action=\"bypass _bbsclan;home;" + chOwner.getClanId() + "\">" + chOwner.getName() + "</a>" : "None"), "</td><td width=200>", ((chOwner != null) ? chOwner.getLeaderName() : "None"), "</td><td width=5></td></tr></table><br1><img src=\"L2UI.Squaregray\" width=605 height=1><br1>");
 			}
 		}
-		separateAndSend(content.replace("%hallsList%", sb.toString()), activeChar);
+		separateAndSend(content.replace("%hallsList%", sb.toString()), player);
+	}
+	
+	public static RegionBBSManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final RegionBBSManager _instance = new RegionBBSManager();
+		protected static final RegionBBSManager INSTANCE = new RegionBBSManager();
 	}
 }

@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.skills.funcs;
 
+import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.skills.basefuncs.Func;
 
 public class FuncMoveSpeed extends Func

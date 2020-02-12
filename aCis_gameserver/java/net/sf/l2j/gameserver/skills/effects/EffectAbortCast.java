@@ -1,8 +1,8 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 public class EffectAbortCast extends L2Effect
 {
@@ -20,10 +20,7 @@ public class EffectAbortCast extends L2Effect
 	@Override
 	public boolean onStart()
 	{
-		if (getEffected() == null || getEffected() == getEffector())
-			return false;
-		
-		if (getEffected().isRaid())
+		if (getEffected() == null || getEffected() == getEffector() || getEffected().isRaidRelated())
 			return false;
 		
 		getEffected().breakCast();

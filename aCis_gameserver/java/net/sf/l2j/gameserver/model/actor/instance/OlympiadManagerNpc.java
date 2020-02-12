@@ -5,10 +5,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
+import net.sf.l2j.gameserver.data.manager.HeroManager;
 import net.sf.l2j.gameserver.data.xml.MultisellData;
+import net.sf.l2j.gameserver.enums.OlympiadType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.entity.Hero;
-import net.sf.l2j.gameserver.model.olympiad.CompetitionType;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameTask;
@@ -63,7 +64,7 @@ public class OlympiadManagerNpc extends Folk
 			case 31770:
 			case 31771:
 			case 31772:
-				if (player.isHero() || Hero.getInstance().isInactiveHero(player.getObjectId()))
+				if (player.isHero() || HeroManager.getInstance().isInactiveHero(player.getObjectId()))
 					filename = "hero_main.htm";
 				else
 					filename = "hero_main2.htm";
@@ -77,7 +78,7 @@ public class OlympiadManagerNpc extends Folk
 		if (filename == "hero_main.htm")
 		{
 			String hiddenText = "";
-			if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+			if (HeroManager.getInstance().isInactiveHero(player.getObjectId()))
 				hiddenText = "<a action=\"bypass -h npc_%objectId%_Olympiad 5\">\"I want to be a Hero.\"</a><br>";
 			
 			html.replace("%hero%", hiddenText);
@@ -145,11 +146,11 @@ public class OlympiadManagerNpc extends Folk
 					break;
 				
 				case 4: // register non classed based
-					OlympiadManager.getInstance().registerNoble(player, CompetitionType.NON_CLASSED);
+					OlympiadManager.getInstance().registerNoble(player, OlympiadType.NON_CLASSED);
 					break;
 				
 				case 5: // register classed based
-					OlympiadManager.getInstance().registerNoble(player, CompetitionType.CLASSED);
+					OlympiadManager.getInstance().registerNoble(player, OlympiadType.CLASSED);
 					break;
 				
 				case 6: // request tokens reward
@@ -167,7 +168,6 @@ public class OlympiadManagerNpc extends Folk
 					break;
 				
 				default:
-					_log.warning("Olympiad: Couldnt send packet for request: " + val);
 					break;
 			}
 		}
@@ -243,7 +243,7 @@ public class OlympiadManagerNpc extends Folk
 					break;
 				
 				case 5: // Hero pending state.
-					if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+					if (HeroManager.getInstance().isInactiveHero(player.getObjectId()))
 					{
 						html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "hero_confirm.htm");
 						html.replace("%objectId%", getObjectId());
@@ -252,7 +252,7 @@ public class OlympiadManagerNpc extends Folk
 					break;
 				
 				case 6: // Hero confirm action.
-					if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+					if (HeroManager.getInstance().isInactiveHero(player.getObjectId()))
 					{
 						if (player.isSubClassActive() || player.getLevel() < 76)
 						{
@@ -260,7 +260,7 @@ public class OlympiadManagerNpc extends Folk
 							return;
 						}
 						
-						Hero.getInstance().activateHero(player);
+						HeroManager.getInstance().activateHero(player);
 					}
 					break;
 				
@@ -268,7 +268,7 @@ public class OlympiadManagerNpc extends Folk
 					html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "hero_main.htm");
 					
 					String hiddenText = "";
-					if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+					if (HeroManager.getInstance().isInactiveHero(player.getObjectId()))
 						hiddenText = "<a action=\"bypass -h npc_%objectId%_Olympiad 5\">\"I want to be a Hero.\"</a><br>";
 					
 					html.replace("%hero%", hiddenText);
@@ -277,7 +277,6 @@ public class OlympiadManagerNpc extends Folk
 					break;
 				
 				default:
-					_log.warning("Olympiad: Couldnt send packet for request: " + val);
 					break;
 			}
 		}

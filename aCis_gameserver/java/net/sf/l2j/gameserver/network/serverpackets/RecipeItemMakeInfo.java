@@ -1,12 +1,9 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.data.RecipeTable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.item.RecipeList;
+import net.sf.l2j.gameserver.data.xml.RecipeData;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.item.Recipe;
 
-/**
- * format dddd
- */
 public class RecipeItemMakeInfo extends L2GameServerPacket
 {
 	private final int _id;
@@ -30,13 +27,13 @@ public class RecipeItemMakeInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		RecipeList recipe = RecipeTable.getInstance().getRecipeList(_id);
+		Recipe recipe = RecipeData.getInstance().getRecipeList(_id);
 		if (recipe != null)
 		{
 			writeC(0xD7);
 			
 			writeD(_id);
-			writeD(recipe.isDwarvenRecipe() ? 0 : 1);
+			writeD((recipe.isDwarven()) ? 0 : 1);
 			writeD((int) _activeChar.getCurrentMp());
 			writeD(_activeChar.getMaxMp());
 			writeD(_status);

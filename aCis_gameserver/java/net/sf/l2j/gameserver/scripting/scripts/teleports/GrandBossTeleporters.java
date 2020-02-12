@@ -6,16 +6,16 @@ import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.data.DoorTable;
-import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.data.manager.GrandBossManager;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.data.xml.DoorData;
+import net.sf.l2j.gameserver.data.xml.ScriptData;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.model.zone.type.L2BossZone;
+import net.sf.l2j.gameserver.model.zone.type.BossZone;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
-import net.sf.l2j.gameserver.scripting.ScriptManager;
 import net.sf.l2j.gameserver.scripting.scripts.ai.individual.Antharas;
 import net.sf.l2j.gameserver.scripting.scripts.ai.individual.Baium;
 import net.sf.l2j.gameserver.scripting.scripts.ai.individual.Sailren;
@@ -94,20 +94,20 @@ public class GrandBossTeleporters extends Quest
 				st.takeItems(4295, 1);
 				
 				// allow entry for the player for the next 30 secs.
-				ZoneManager.getInstance().getZoneById(110002, L2BossZone.class).allowPlayerEntry(player, 30);
-				player.teleToLocation(BAIUM_IN, 0);
+				ZoneManager.getInstance().getZoneById(110002, BossZone.class).allowPlayerEntry(player, 30);
+				player.teleportTo(BAIUM_IN, 0);
 			}
 		}
 		else if (event.equalsIgnoreCase("baium_story"))
 			htmltext = "31862-02.htm";
 		else if (event.equalsIgnoreCase("baium_exit"))
-			player.teleToLocation(Rnd.get(BAIUM_OUT), 100);
+			player.teleportTo(Rnd.get(BAIUM_OUT), 100);
 		else if (event.equalsIgnoreCase("31540"))
 		{
 			if (st.hasQuestItems(7267))
 			{
 				st.takeItems(7267, 1);
-				player.teleToLocation(183813, -115157, -3303, 0);
+				player.teleportTo(183813, -115157, -3303, 0);
 				st.set("allowEnter", "1");
 			}
 			else
@@ -170,14 +170,14 @@ public class GrandBossTeleporters extends Quest
 					if (st.hasQuestItems(3865))
 					{
 						st.takeItems(3865, 1);
-						ZoneManager.getInstance().getZoneById(110001, L2BossZone.class).allowPlayerEntry(player, 30);
+						ZoneManager.getInstance().getZoneById(110001, BossZone.class).allowPlayerEntry(player, 30);
 						
-						player.teleToLocation(175300 + Rnd.get(-350, 350), 115180 + Rnd.get(-1000, 1000), -7709, 0);
+						player.teleportTo(175300 + Rnd.get(-350, 350), 115180 + Rnd.get(-1000, 1000), -7709, 0);
 						
 						if (status == Antharas.DORMANT)
 						{
 							GrandBossManager.getInstance().setBossStatus(Antharas.ANTHARAS, Antharas.WAITING);
-							ScriptManager.getInstance().getQuest("Antharas").startQuestTimer("beginning", Config.WAIT_TIME_ANTHARAS, null, null, false);
+							ScriptData.getInstance().getQuest("Antharas").startQuestTimer("beginning", Config.WAIT_TIME_ANTHARAS, null, null, false);
 						}
 					}
 					else
@@ -186,7 +186,7 @@ public class GrandBossTeleporters extends Quest
 				break;
 			
 			case 31859:
-				player.teleToLocation(79800 + Rnd.get(600), 151200 + Rnd.get(1100), -3534, 0);
+				player.teleportTo(79800 + Rnd.get(600), 151200 + Rnd.get(1100), -3534, 0);
 				break;
 			
 			case 31385:
@@ -198,16 +198,16 @@ public class GrandBossTeleporters extends Quest
 					else if (st.getInt("allowEnter") == 1)
 					{
 						st.unset("allowEnter");
-						ZoneManager.getInstance().getZoneById(110010, L2BossZone.class).allowPlayerEntry(player, 30);
+						ZoneManager.getInstance().getZoneById(110010, BossZone.class).allowPlayerEntry(player, 30);
 						
-						player.teleToLocation(204328, -111874, 70, 300);
+						player.teleportTo(204328, -111874, 70, 300);
 						
 						_valakasPlayersCount++;
 						
 						if (status == Valakas.DORMANT)
 						{
 							GrandBossManager.getInstance().setBossStatus(Valakas.VALAKAS, Valakas.WAITING);
-							ScriptManager.getInstance().getQuest("Valakas").startQuestTimer("beginning", Config.WAIT_TIME_VALAKAS, null, null, false);
+							ScriptData.getInstance().getQuest("Valakas").startQuestTimer("beginning", Config.WAIT_TIME_VALAKAS, null, null, false);
 						}
 					}
 					else
@@ -220,15 +220,15 @@ public class GrandBossTeleporters extends Quest
 				break;
 			
 			case 31384:
-				DoorTable.getInstance().getDoor(24210004).openMe();
+				DoorData.getInstance().getDoor(24210004).openMe();
 				break;
 			
 			case 31686:
-				DoorTable.getInstance().getDoor(24210006).openMe();
+				DoorData.getInstance().getDoor(24210006).openMe();
 				break;
 			
 			case 31687:
-				DoorTable.getInstance().getDoor(24210005).openMe();
+				DoorData.getInstance().getDoor(24210005).openMe();
 				break;
 			
 			case 31540:
@@ -245,11 +245,11 @@ public class GrandBossTeleporters extends Quest
 				break;
 			
 			case 31759:
-				player.teleToLocation(150037, -57720, -2976, 250);
+				player.teleportTo(150037, -57720, -2976, 250);
 				break;
 			
 			case 32107:
-				player.teleToLocation(Rnd.get(SAILREN_OUT), 100);
+				player.teleportTo(Rnd.get(SAILREN_OUT), 100);
 				break;
 			
 			case 32109:
@@ -279,7 +279,7 @@ public class GrandBossTeleporters extends Quest
 							// Take item from party leader.
 							st.takeItems(8784, 1);
 							
-							final L2BossZone nest = ZoneManager.getInstance().getZoneById(110015, L2BossZone.class);
+							final BossZone nest = ZoneManager.getInstance().getZoneById(110011, BossZone.class);
 							
 							// Teleport players.
 							for (Player member : party)
@@ -287,11 +287,11 @@ public class GrandBossTeleporters extends Quest
 								if (nest != null)
 								{
 									nest.allowPlayerEntry(member, 30);
-									member.teleToLocation(SAILREN_IN, 100);
+									member.teleportTo(SAILREN_IN, 100);
 								}
 							}
 							GrandBossManager.getInstance().setBossStatus(Sailren.SAILREN, Sailren.FIGHTING);
-							ScriptManager.getInstance().getQuest("Sailren").startQuestTimer("beginning", 60000, null, null, false);
+							ScriptData.getInstance().getQuest("Sailren").startQuestTimer("beginning", 60000, null, null, false);
 						}
 						else if (status == Sailren.DEAD)
 							htmltext = "32109-04.htm";

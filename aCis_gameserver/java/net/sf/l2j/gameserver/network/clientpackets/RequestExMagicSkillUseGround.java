@@ -2,22 +2,21 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.commons.math.MathUtil;
 
-import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.location.Location;
-import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.ValidateLocation;
 
-/**
- * Fromat:(ch) dddddc
- * @author -Wooden-
- */
 public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 {
-	private int _x, _y, _z;
+	private int _x;
+	private int _y;
+	private int _z;
+	
 	private int _skillId;
-	private boolean _ctrlPressed, _shiftPressed;
+	
+	private boolean _ctrlPressed;
+	private boolean _shiftPressed;
 	
 	@Override
 	protected void readImpl()
@@ -25,7 +24,9 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 		_x = readD();
 		_y = readD();
 		_z = readD();
+		
 		_skillId = readD();
+		
 		_ctrlPressed = readD() != 0;
 		_shiftPressed = readC() != 0;
 	}
@@ -34,34 +35,21 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// Get the current player
-		final Player activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
-		
-		// Get the level of the used skill
-		final int level = activeChar.getSkillLevel(_skillId);
-		if (level <= 0)
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
 		
 		// Get the L2Skill template corresponding to the skillID received from the client
-		final L2Skill skill = SkillTable.getInstance().getInfo(_skillId, level);
-		if (skill != null)
-		{
-			activeChar.setCurrentSkillWorldPosition(new Location(_x, _y, _z));
-			
-			// normally magicskilluse packet turns char client side but for these skills, it doesn't (even with correct target)
-			activeChar.setHeading(MathUtil.calculateHeadingFrom(activeChar.getX(), activeChar.getY(), _x, _y));
-			activeChar.broadcastPacket(new ValidateLocation(activeChar));
-			
-			activeChar.useMagic(skill, _ctrlPressed, _shiftPressed);
-		}
-		else
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			_log.warning("No skill found with id: " + _skillId + " and level: " + level);
-		}
+		final L2Skill skill = player.getSkill(_skillId);
+		if (skill == null)
+			return;
+		
+		player.setCurrentSkillWorldPosition(new Location(_x, _y, _z));
+		
+		// normally magicskilluse packet turns char client side but for these skills, it doesn't (even with correct target)
+		player.getPosition().setHeading(MathUtil.calculateHeadingFrom(player.getX(), player.getY(), _x, _y));
+		player.broadcastPacket(new ValidateLocation(player));
+		
+		player.useMagic(skill, _ctrlPressed, _shiftPressed);
 	}
 }

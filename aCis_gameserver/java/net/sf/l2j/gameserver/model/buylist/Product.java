@@ -3,27 +3,31 @@ package net.sf.l2j.gameserver.model.buylist;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import net.sf.l2j.commons.logging.CLogger;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.taskmanager.BuyListTaskManager;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * A datatype entry for {@link NpcBuyList}. It can own a count and a restock delay, the whole system of tasks being controlled by {@link BuyListTaskManager}.
  */
 public class Product
 {
-	private static final Logger LOG = Logger.getLogger(Product.class.getName());
+	private static final CLogger LOGGER = new CLogger(Product.class.getName());
+	
+	private static final String ADD_OR_UPDATE_BUYLIST = "INSERT INTO buylists (buylist_id,item_id,count,next_restock_time) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE count=VALUES(count), next_restock_time=VALUES(next_restock_time)";
+	private static final String DELETE_BUYLIST = "DELETE FROM buylists WHERE buylist_id=? AND item_id=?";
 	
 	private final int _buyListId;
 	private final Item _item;
 	private final int _price;
 	private final long _restockDelay;
 	private final int _maxCount;
+	
 	private AtomicInteger _count = null;
 	
 	public Product(int buyListId, StatsSet set)
@@ -121,19 +125,18 @@ public class Product
 	 */
 	public void save(long nextRestockTime)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("INSERT INTO `buylists`(`buylist_id`, `item_id`, `count`, `next_restock_time`) VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE `count` = ?, `next_restock_time` = ?"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(ADD_OR_UPDATE_BUYLIST))
 		{
 			ps.setInt(1, getBuyListId());
 			ps.setInt(2, getItemId());
 			ps.setInt(3, getCount());
 			ps.setLong(4, nextRestockTime);
-			ps.setInt(5, getCount());
-			ps.setLong(6, nextRestockTime);
 			ps.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			LOG.log(Level.WARNING, "Failed to save product for buylist id:" + getBuyListId() + " and item id:" + getItemId(), e);
+			LOGGER.error("Couldn't save product for buylist id:{} and item id: {}.", e, getBuyListId(), getItemId());
 		}
 	}
 	
@@ -142,7 +145,8 @@ public class Product
 	 */
 	public void delete()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement("DELETE FROM `buylists` WHERE `buylist_id` = ? AND `item_id` = ?"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement ps = con.prepareStatement(DELETE_BUYLIST))
 		{
 			ps.setInt(1, getBuyListId());
 			ps.setInt(2, getItemId());
@@ -150,7 +154,7 @@ public class Product
 		}
 		catch (Exception e)
 		{
-			LOG.log(Level.WARNING, "Failed to save product for buylist id:" + getBuyListId() + " and item id:" + getItemId(), e);
+			LOGGER.error("Couldn't delete product for buylist id:{} and item id: {}.", e, getBuyListId(), getItemId());
 		}
 	}
 }

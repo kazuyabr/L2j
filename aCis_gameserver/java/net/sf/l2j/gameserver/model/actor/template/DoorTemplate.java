@@ -1,26 +1,12 @@
 package net.sf.l2j.gameserver.model.actor.template;
 
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
 
-/**
- * @author Hasha
- */
+import net.sf.l2j.gameserver.enums.DoorType;
+import net.sf.l2j.gameserver.enums.OpenType;
+
 public class DoorTemplate extends CreatureTemplate
 {
-	public enum DoorType
-	{
-		DOOR,
-		WALL
-	}
-	
-	public enum OpenType
-	{
-		CLICK,
-		TIME,
-		SKILL,
-		NPC
-	}
-	
 	private final String _name;
 	private final int _id;
 	private final DoorType _type;

@@ -1,13 +1,13 @@
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectFlag;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectFlag;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 public class EffectRelax extends L2Effect
 {
@@ -28,7 +28,7 @@ public class EffectRelax extends L2Effect
 		if (getEffected() instanceof Player)
 			((Player) getEffected()).sitDown(false);
 		else
-			getEffected().getAI().setIntention(CtrlIntention.REST);
+			getEffected().getAI().setIntention(IntentionType.REST);
 		
 		return super.onStart();
 	}

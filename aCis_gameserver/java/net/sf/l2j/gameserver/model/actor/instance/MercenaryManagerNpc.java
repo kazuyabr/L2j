@@ -3,8 +3,9 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.gameserver.data.manager.BuyListManager;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns;
-import net.sf.l2j.gameserver.instancemanager.SevenSigns.SealType;
+import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
+import net.sf.l2j.gameserver.enums.SealType;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.buylist.NpcBuyList;
 import net.sf.l2j.gameserver.model.pledge.Clan;
@@ -41,7 +42,7 @@ public final class MercenaryManagerNpc extends Folk
 		else if (command.startsWith("hire"))
 		{
 			// Can't buy new mercenaries if seal validation period isn't reached.
-			if (!SevenSigns.getInstance().isSealValidationPeriod())
+			if (!SevenSignsManager.getInstance().isSealValidationPeriod())
 			{
 				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile("data/html/mercmanager/msellerdenial.htm");
@@ -89,7 +90,7 @@ public final class MercenaryManagerNpc extends Folk
 		else if (condition == COND_OWNER)
 		{
 			// Different output depending about who is currently owning the Seal of Strife.
-			switch (SevenSigns.getInstance().getSealOwner(SealType.STRIFE))
+			switch (SevenSignsManager.getInstance().getSealOwner(SealType.STRIFE))
 			{
 				case DAWN:
 					html.setFile("data/html/mercmanager/mseller001_dawn.htm");

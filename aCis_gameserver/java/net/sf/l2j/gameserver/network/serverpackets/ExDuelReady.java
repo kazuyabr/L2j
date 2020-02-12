@@ -1,16 +1,12 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-/**
- * Format: ch d
- * @author KenM
- */
 public class ExDuelReady extends L2GameServerPacket
 {
-	private final int _unk1;
+	private final int _isPartyDuel;
 	
-	public ExDuelReady(int unk1)
+	public ExDuelReady(boolean isPartyDuel)
 	{
-		_unk1 = unk1;
+		_isPartyDuel = isPartyDuel ? 1 : 0;
 	}
 	
 	@Override
@@ -19,6 +15,6 @@ public class ExDuelReady extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x4c);
 		
-		writeD(_unk1);
+		writeD(_isPartyDuel);
 	}
 }

@@ -2,16 +2,16 @@ package net.sf.l2j.gameserver.skills.effects;
 
 import net.sf.l2j.commons.math.MathUtil;
 
+import net.sf.l2j.gameserver.enums.IntentionType;
+import net.sf.l2j.gameserver.enums.skills.FlyType;
+import net.sf.l2j.gameserver.enums.skills.L2EffectType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.FlyToLocation;
-import net.sf.l2j.gameserver.network.serverpackets.FlyToLocation.FlyType;
 import net.sf.l2j.gameserver.network.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.skills.Env;
-import net.sf.l2j.gameserver.templates.skills.L2EffectType;
 
 /**
  * This class handles warp effects, disappear and quickly turn up in a near location. If geodata enabled and an object is between initial and final point, flight is stopped just before colliding with object. Flight course and radius are set as skill properties (flyCourse and flyRadius):
@@ -65,7 +65,7 @@ public class EffectWarp extends L2Effect
 		z = destiny.getZ();
 		
 		// TODO: check if this AI intention is retail-like. This stops player's previous movement
-		_actor.getAI().setIntention(CtrlIntention.IDLE);
+		_actor.getAI().setIntention(IntentionType.IDLE);
 		
 		_actor.broadcastPacket(new FlyToLocation(_actor, x, y, z, FlyType.DUMMY));
 		_actor.abortAttack();

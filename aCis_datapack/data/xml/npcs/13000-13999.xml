@@ -246,7 +246,42 @@
 		</skills>
 	</npc>
 	<npc id="13014" name="Effects For Valakas" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="70"/>
+		<set name="radius" val="0.1"/>
+		<set name="height" val="0.1"/>
+		<set name="rHand" val="0"/>
+		<set name="lHand" val="0"/>
+		<set name="type" val="Folk"/>
+		<set name="exp" val="0"/>
+		<set name="sp" val="0"/>
+		<set name="hp" val="3046.70947"/>
+		<set name="mp" val="1846.8"/>
+		<set name="hpRegen" val="8.5"/>
+		<set name="mpRegen" val="3"/>
+		<set name="pAtk" val="983.0479"/>
+		<set name="pDef" val="361.78814"/>
+		<set name="mAtk" val="671.29428"/>
+		<set name="mDef" val="264.74086"/>
+		<set name="crit" val="4"/>
+		<set name="atkSpd" val="253"/>
+		<set name="str" val="40"/>
+		<set name="int" val="21"/>
+		<set name="dex" val="30"/>
+		<set name="wit" val="20"/>
+		<set name="con" val="43"/>
+		<set name="men" val="10"/>
+		<set name="corpseTime" val="7"/>
+		<set name="walkSpd" val="1"/>
+		<set name="runSpd" val="160"/>
+		<set name="dropHerbGroup" val="0"/>
+		<ai type="DEFAULT" ssCount="0" ssRate="0" spsCount="0" spsRate="0" aggro="0" clan="fire_clan" clanRange="300" canMove="true" seedable="false"/>
+		<skills>
+			<skill id="4045" level="1"/>
+			<skill id="4416" level="2"/>
+		</skills>
+	</npc>
+	<npc id="13015" name="Effects For Valakas" title="">
+		<set name="level" val="70"/>
 		<set name="radius" val="0.1"/>
 		<set name="height" val="0.1"/>
 		<set name="rHand" val="0"/>
@@ -817,7 +852,7 @@
 		</skills>
 	</npc>
 	<npc id="13031" name="Huge Pig" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="18.3"/>
 		<set name="rHand" val="0"/>
@@ -851,7 +886,7 @@
 		</skills>
 	</npc>
 	<npc id="13032" name="Huge Pig" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="18.3"/>
 		<set name="rHand" val="0"/>
@@ -885,7 +920,7 @@
 		</skills>
 	</npc>
 	<npc id="13033" name="Huge Pig" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="18.3"/>
 		<set name="rHand" val="0"/>
@@ -919,7 +954,7 @@
 		</skills>
 	</npc>
 	<npc id="13034" name="Super Huge Pig" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="29"/>
 		<set name="height" val="38.7"/>
 		<set name="rHand" val="0"/>
@@ -953,7 +988,7 @@
 		</skills>
 	</npc>
 	<npc id="13035" name="Golden Pig" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="18.3"/>
 		<set name="rHand" val="0"/>
@@ -987,7 +1022,7 @@
 		</skills>
 	</npc>
 	<npc id="13036" name="Alchemist's Chest" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8.5"/>
 		<set name="height" val="8.5"/>
 		<set name="rHand" val="0"/>

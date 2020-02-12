@@ -1,9 +1,10 @@
 package net.sf.l2j.gameserver.scripting.quests;
 
+import net.sf.l2j.gameserver.enums.actors.ClassId;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.base.ClassId;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
@@ -477,9 +478,11 @@ public class Q229_TestOfWitchcraft extends Quest
 	}
 	
 	@Override
-	public String onAttack(Npc npc, Player attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(Npc npc, Creature attacker, int damage, L2Skill skill)
 	{
-		QuestState st = checkPlayerState(attacker, npc, STATE_STARTED);
+		final Player player = attacker.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		
@@ -512,7 +515,7 @@ public class Q229_TestOfWitchcraft extends Quest
 					npc.setScriptValue(1);
 					npc.broadcastNpcSay("I'll take your lives later!!");
 					
-					startQuestTimer("zeruel_despawn", 1000, npc, attacker, false);
+					startQuestTimer("zeruel_despawn", 1000, npc, player, false);
 				}
 				else if (cond == 9 && _drevanulPrinceZeruel)
 				{
@@ -536,9 +539,11 @@ public class Q229_TestOfWitchcraft extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)
 			return null;
 		

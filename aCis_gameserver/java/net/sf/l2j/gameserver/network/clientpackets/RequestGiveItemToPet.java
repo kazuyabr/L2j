@@ -3,11 +3,11 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import net.sf.l2j.commons.math.MathUtil;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.items.EtcItemType;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
-import net.sf.l2j.gameserver.model.item.type.EtcItemType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.EnchantResult;
 
@@ -29,7 +29,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		if (_amount <= 0)
 			return;
 		
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null || !player.hasPet())
 			return;
 		
@@ -62,7 +62,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 			return;
 		}
 		
-		final Pet pet = (Pet) player.getPet();
+		final Pet pet = (Pet) player.getSummon();
 		if (pet.isDead())
 		{
 			player.sendPacket(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET);

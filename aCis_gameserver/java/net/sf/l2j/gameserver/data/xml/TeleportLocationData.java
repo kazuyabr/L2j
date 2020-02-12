@@ -1,21 +1,20 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
+import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.model.location.TeleportLocation;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores {@link TeleportLocation}s.
  */
-public class TeleportLocationData extends XMLDocument
+public class TeleportLocationData implements IXmlReader
 {
 	private final Map<Integer, TeleportLocation> _teleports = new HashMap<>();
 	
@@ -25,35 +24,20 @@ public class TeleportLocationData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/teleportLocations.xml");
-		LOG.info("Loaded " + _teleports.size() + " teleport locations.");
+		parseFile("./data/xml/teleportLocations.xml");
+		LOGGER.info("Loaded {} teleport locations.", _teleports.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "teleport", teleportNode ->
 		{
-			if (!"teleport".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			// Parse and feed content.
-			parseAndFeed(o.getAttributes(), set);
-			
-			// Feed the map with new data.
+			final StatsSet set = parseAttributes(teleportNode);
 			_teleports.put(set.getInteger("id"), new TeleportLocation(set));
-			
-			// Clear the StatsSet.
-			set.clear();
-		}
+		}));
 	}
 	
 	public void reload()

@@ -106,7 +106,7 @@
 	<teleport id="123" x="38275" y="-48065" z="896" price="150" isNoble="false"/>
 	<teleport id="124" x="52112" y="-53939" z="-3159" price="1200" isNoble="false"/>
 	<teleport id="125" x="70006" y="-49902" z="-3251" price="3000" isNoble="false"/>
-	<teleport id="131" x="43799" y="-47727" z="-798" price="150" isNoble="false"/>
+	<teleport id="131" x="43849" y="-47877" z="-792" price="150" isNoble="false"/>
 	<teleport id="132" x="146331" y="25762" z="-2018" price="8100" isNoble="false"/>
 	<teleport id="134" x="43799" y="-47727" z="-798" price="37000" isNoble="false"/>
 	<teleport id="135" x="147928" y="-55273" z="-2734" price="8100" isNoble="false"/>

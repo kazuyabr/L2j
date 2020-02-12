@@ -1,10 +1,10 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
-import net.sf.l2j.gameserver.instancemanager.SevenSignsFestival;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.model.zone.ZoneId;
-import net.sf.l2j.gameserver.network.L2GameClient;
-import net.sf.l2j.gameserver.network.L2GameClient.GameClientState;
+import net.sf.l2j.gameserver.data.manager.FestivalOfDarknessManager;
+import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.network.GameClient;
+import net.sf.l2j.gameserver.network.GameClient.GameClientState;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.CharSelectInfo;
 import net.sf.l2j.gameserver.network.serverpackets.RestartResponse;
@@ -20,7 +20,7 @@ public final class RequestRestart extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player player = getClient().getActiveChar();
+		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
 		
@@ -44,7 +44,7 @@ public final class RequestRestart extends L2GameClientPacket
 			return;
 		}
 		
-		if (player.isFestivalParticipant() && SevenSignsFestival.getInstance().isFestivalInitialized())
+		if (player.isFestivalParticipant() && FestivalOfDarknessManager.getInstance().isFestivalInitialized())
 		{
 			player.sendPacket(SystemMessageId.NO_RESTART_HERE);
 			sendPacket(RestartResponse.valueOf(false));
@@ -53,7 +53,7 @@ public final class RequestRestart extends L2GameClientPacket
 		
 		player.removeFromBossZone();
 		
-		final L2GameClient client = getClient();
+		final GameClient client = getClient();
 		
 		// detach the client from the char so that the connection isnt closed in the deleteMe
 		player.setClient(null);
@@ -61,7 +61,7 @@ public final class RequestRestart extends L2GameClientPacket
 		// removing player from the world
 		player.deleteMe();
 		
-		client.setActiveChar(null);
+		client.setPlayer(null);
 		client.setState(GameClientState.AUTHED);
 		
 		sendPacket(RestartResponse.valueOf(true));
@@ -69,6 +69,6 @@ public final class RequestRestart extends L2GameClientPacket
 		// send char list
 		final CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		sendPacket(cl);
-		client.setCharSelection(cl.getCharInfo());
+		client.setCharSelectSlot(cl.getCharacterSlots());
 	}
 }

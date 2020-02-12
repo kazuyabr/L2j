@@ -1,24 +1,24 @@
 package net.sf.l2j.gameserver.data.xml;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.sf.l2j.commons.data.xml.XMLDocument;
+import net.sf.l2j.commons.data.xml.IXmlReader;
+import net.sf.l2j.commons.util.StatsSet;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.item.Henna;
-import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * This class loads and stores {@link Henna}s infos. Hennas are called "dye" ingame.
  */
-public class HennaData extends XMLDocument
+public class HennaData implements IXmlReader
 {
 	private final Map<Integer, Henna> _hennas = new HashMap<>();
 	
@@ -28,35 +28,25 @@ public class HennaData extends XMLDocument
 	}
 	
 	@Override
-	protected void load()
+	public void load()
 	{
-		loadDocument("./data/xml/hennas.xml");
-		LOG.info("Loaded " + _hennas.size() + " hennas.");
+		parseFile("./data/xml/hennas.xml");
+		LOGGER.info("Loaded {} hennas.", _hennas.size());
 	}
 	
 	@Override
-	protected void parseDocument(Document doc, File file)
+	public void parseDocument(Document doc, Path path)
 	{
-		// StatsSet used to feed informations. Cleaned on every entry.
-		final StatsSet set = new StatsSet();
-		
-		// First element is never read.
-		final Node n = doc.getFirstChild();
-		
-		for (Node o = n.getFirstChild(); o != null; o = o.getNextSibling())
+		forEach(doc, "list", listNode -> forEach(listNode, "henna", hennaNode ->
 		{
-			if (!"henna".equalsIgnoreCase(o.getNodeName()))
-				continue;
-			
-			// Parse and feed content.
-			parseAndFeed(o.getAttributes(), set);
-			
-			// Feed the map with new data.
+			final StatsSet set = parseAttributes(hennaNode);
 			_hennas.put(set.getInteger("symbolId"), new Henna(set));
-			
-			// Clear the StatsSet.
-			set.clear();
-		}
+		}));
+	}
+	
+	public Collection<Henna> getHennas()
+	{
+		return _hennas.values();
 	}
 	
 	public Henna getHenna(int id)

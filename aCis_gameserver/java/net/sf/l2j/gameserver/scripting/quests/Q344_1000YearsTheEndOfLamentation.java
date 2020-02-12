@@ -5,8 +5,9 @@ import java.util.Map;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -243,9 +244,11 @@ public class Q344_1000YearsTheEndOfLamentation extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		QuestState st = checkPlayerCondition(player, npc, "cond", "1");
+		final Player player = killer.getActingPlayer();
+		
+		final QuestState st = checkPlayerCondition(player, npc, "cond", "1");
 		if (st == null)
 			return null;
 		

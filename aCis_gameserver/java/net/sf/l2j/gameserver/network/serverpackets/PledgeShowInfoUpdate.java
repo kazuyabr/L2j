@@ -19,7 +19,7 @@ public class PledgeShowInfoUpdate extends L2GameServerPacket
 		writeD(_clan.getCrestId());
 		writeD(_clan.getLevel());
 		writeD(_clan.getCastleId());
-		writeD(_clan.getHideoutId());
+		writeD(_clan.getClanHallId());
 		writeD(_clan.getRank());
 		writeD(_clan.getReputationScore());
 		writeD(0);

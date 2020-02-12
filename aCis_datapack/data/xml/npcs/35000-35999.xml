@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <list>
 	<npc id="35010" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="128"/>
@@ -36,7 +36,7 @@
 		</skills>
 	</npc>
 	<npc id="35011" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="93"/>
@@ -71,7 +71,7 @@
 		</skills>
 	</npc>
 	<npc id="35012" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="280"/>
@@ -106,7 +106,7 @@
 		</skills>
 	</npc>
 	<npc id="35013" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="316"/>
@@ -142,7 +142,7 @@
 		</skills>
 	</npc>
 	<npc id="35014" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="179"/>
@@ -178,7 +178,7 @@
 		</skills>
 	</npc>
 	<npc id="35015" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="128"/>
@@ -213,7 +213,7 @@
 		</skills>
 	</npc>
 	<npc id="35016" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="93"/>
@@ -248,7 +248,7 @@
 		</skills>
 	</npc>
 	<npc id="35017" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="280"/>
@@ -283,7 +283,7 @@
 		</skills>
 	</npc>
 	<npc id="35018" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="316"/>
@@ -319,7 +319,7 @@
 		</skills>
 	</npc>
 	<npc id="35019" name="Mercenary" title="">
-		<set name="level" val="67"/>
+		<set name="level" val="50"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="179"/>
@@ -355,7 +355,7 @@
 		</skills>
 	</npc>
 	<npc id="35020" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="150"/>
@@ -390,7 +390,7 @@
 		</skills>
 	</npc>
 	<npc id="35021" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="97"/>
@@ -425,7 +425,7 @@
 		</skills>
 	</npc>
 	<npc id="35022" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="288"/>
@@ -460,7 +460,7 @@
 		</skills>
 	</npc>
 	<npc id="35023" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="325"/>
@@ -496,7 +496,7 @@
 		</skills>
 	</npc>
 	<npc id="35024" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="196"/>
@@ -532,7 +532,7 @@
 		</skills>
 	</npc>
 	<npc id="35025" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="150"/>
@@ -567,7 +567,7 @@
 		</skills>
 	</npc>
 	<npc id="35026" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="97"/>
@@ -602,7 +602,7 @@
 		</skills>
 	</npc>
 	<npc id="35027" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="288"/>
@@ -637,7 +637,7 @@
 		</skills>
 	</npc>
 	<npc id="35028" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="325"/>
@@ -673,7 +673,7 @@
 		</skills>
 	</npc>
 	<npc id="35029" name="Mercenary of Dawn" title="">
-		<set name="level" val="80"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="196"/>
@@ -709,7 +709,7 @@
 		</skills>
 	</npc>
 	<npc id="35030" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="132"/>
@@ -744,7 +744,7 @@
 		</skills>
 	</npc>
 	<npc id="35031" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="301"/>
@@ -779,7 +779,7 @@
 		</skills>
 	</npc>
 	<npc id="35032" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="280"/>
@@ -814,7 +814,7 @@
 		</skills>
 	</npc>
 	<npc id="35033" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="316"/>
@@ -850,7 +850,7 @@
 		</skills>
 	</npc>
 	<npc id="35034" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -886,7 +886,7 @@
 		</skills>
 	</npc>
 	<npc id="35035" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="132"/>
@@ -921,7 +921,7 @@
 		</skills>
 	</npc>
 	<npc id="35036" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="301"/>
@@ -956,7 +956,7 @@
 		</skills>
 	</npc>
 	<npc id="35037" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="280"/>
@@ -991,7 +991,7 @@
 		</skills>
 	</npc>
 	<npc id="35038" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="316"/>
@@ -1027,7 +1027,7 @@
 		</skills>
 	</npc>
 	<npc id="35039" name="Elite Mercenary Guild Member" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -1063,7 +1063,7 @@
 		</skills>
 	</npc>
 	<npc id="35040" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="66"/>
@@ -1098,7 +1098,7 @@
 		</skills>
 	</npc>
 	<npc id="35041" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -1133,7 +1133,7 @@
 		</skills>
 	</npc>
 	<npc id="35042" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="274"/>
@@ -1168,7 +1168,7 @@
 		</skills>
 	</npc>
 	<npc id="35043" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="7"/>
@@ -1204,7 +1204,7 @@
 		</skills>
 	</npc>
 	<npc id="35044" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="154"/>
@@ -1240,7 +1240,7 @@
 		</skills>
 	</npc>
 	<npc id="35045" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="66"/>
@@ -1275,7 +1275,7 @@
 		</skills>
 	</npc>
 	<npc id="35046" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -1310,7 +1310,7 @@
 		</skills>
 	</npc>
 	<npc id="35047" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="274"/>
@@ -1345,7 +1345,7 @@
 		</skills>
 	</npc>
 	<npc id="35048" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="7"/>
@@ -1381,7 +1381,7 @@
 		</skills>
 	</npc>
 	<npc id="35049" name="Greater Recruit" title="">
-		<set name="level" val="72"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="154"/>
@@ -1417,7 +1417,7 @@
 		</skills>
 	</npc>
 	<npc id="35050" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="66"/>
@@ -1452,7 +1452,7 @@
 		</skills>
 	</npc>
 	<npc id="35051" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -1487,7 +1487,7 @@
 		</skills>
 	</npc>
 	<npc id="35052" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -1522,7 +1522,7 @@
 		</skills>
 	</npc>
 	<npc id="35053" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24.5"/>
 		<set name="rHand" val="6"/>
@@ -1558,7 +1558,7 @@
 		</skills>
 	</npc>
 	<npc id="35054" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="99"/>
@@ -1594,7 +1594,7 @@
 		</skills>
 	</npc>
 	<npc id="35055" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="66"/>
@@ -1629,7 +1629,7 @@
 		</skills>
 	</npc>
 	<npc id="35056" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -1664,7 +1664,7 @@
 		</skills>
 	</npc>
 	<npc id="35057" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -1699,7 +1699,7 @@
 		</skills>
 	</npc>
 	<npc id="35058" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24.5"/>
 		<set name="rHand" val="6"/>
@@ -1735,7 +1735,7 @@
 		</skills>
 	</npc>
 	<npc id="35059" name="Recruit" title="">
-		<set name="level" val="64"/>
+		<set name="level" val="45"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="99"/>
@@ -1771,7 +1771,7 @@
 		</skills>
 	</npc>
 	<npc id="35060" name="Nephilim Mercenary" title="">
-		<set name="level" val="85"/>
+		<set name="level" val="75"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="24.5"/>
 		<set name="rHand" val="0"/>
@@ -1806,7 +1806,7 @@
 		</skills>
 	</npc>
 	<npc id="35061" name="Nephilim Mercenary" title="">
-		<set name="level" val="82"/>
+		<set name="level" val="72"/>
 		<set name="radius" val="6.5"/>
 		<set name="height" val="21.957"/>
 		<set name="rHand" val="7"/>
@@ -1911,7 +1911,7 @@
 		</skills>
 	</npc>
 	<npc id="35064" name="Baron Lewin Waldner" title="">
-		<set name="level" val="83"/>
+		<set name="level" val="65"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="79"/>
@@ -1946,7 +1946,7 @@
 		</skills>
 	</npc>
 	<npc id="35065" name="Cronenberg" title="Sir">
-		<set name="level" val="81"/>
+		<set name="level" val="62"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="142"/>
@@ -1981,7 +1981,7 @@
 		</skills>
 	</npc>
 	<npc id="35066" name="Royal Knight" title="Gludio">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -2016,7 +2016,7 @@
 		</skills>
 	</npc>
 	<npc id="35067" name="Court Sorcerer" title="Gludio">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -2052,7 +2052,7 @@
 		</skills>
 	</npc>
 	<npc id="35068" name="Court Sorcerer" title="Gludio">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -2088,7 +2088,7 @@
 		</skills>
 	</npc>
 	<npc id="35069" name="Court Guard" title="Gludio">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -2123,7 +2123,7 @@
 		</skills>
 	</npc>
 	<npc id="35070" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="16"/>
@@ -2158,7 +2158,7 @@
 		</skills>
 	</npc>
 	<npc id="35071" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -2193,7 +2193,7 @@
 		</skills>
 	</npc>
 	<npc id="35072" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -2228,7 +2228,7 @@
 		</skills>
 	</npc>
 	<npc id="35073" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -2263,7 +2263,7 @@
 		</skills>
 	</npc>
 	<npc id="35074" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -2298,7 +2298,7 @@
 		</skills>
 	</npc>
 	<npc id="35075" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -2333,7 +2333,7 @@
 		</skills>
 	</npc>
 	<npc id="35076" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -2368,7 +2368,7 @@
 		</skills>
 	</npc>
 	<npc id="35077" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -2403,7 +2403,7 @@
 		</skills>
 	</npc>
 	<npc id="35078" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -2438,7 +2438,7 @@
 		</skills>
 	</npc>
 	<npc id="35079" name="Royal Knight" title="Gludio">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -2473,7 +2473,7 @@
 		</skills>
 	</npc>
 	<npc id="35080" name="Court Sorcerer" title="Gludio">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -2509,7 +2509,7 @@
 		</skills>
 	</npc>
 	<npc id="35081" name="Court Sorcerer" title="Gludio">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -2545,7 +2545,7 @@
 		</skills>
 	</npc>
 	<npc id="35082" name="Court Guard" title="Gludio">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -2580,7 +2580,7 @@
 		</skills>
 	</npc>
 	<npc id="35083" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="93"/>
@@ -2615,7 +2615,7 @@
 		</skills>
 	</npc>
 	<npc id="35084" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -2650,7 +2650,7 @@
 		</skills>
 	</npc>
 	<npc id="35085" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -2685,7 +2685,7 @@
 		</skills>
 	</npc>
 	<npc id="35086" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -2720,7 +2720,7 @@
 		</skills>
 	</npc>
 	<npc id="35087" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -2755,7 +2755,7 @@
 		</skills>
 	</npc>
 	<npc id="35088" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -2790,7 +2790,7 @@
 		</skills>
 	</npc>
 	<npc id="35089" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -2825,7 +2825,7 @@
 		</skills>
 	</npc>
 	<npc id="35090" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -2860,7 +2860,7 @@
 		</skills>
 	</npc>
 	<npc id="35091" name="Guard" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -2895,7 +2895,7 @@
 		</skills>
 	</npc>
 	<npc id="35092" name="Gatekeeper" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -2930,7 +2930,7 @@
 		</skills>
 	</npc>
 	<npc id="35093" name="Gatekeeper" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -2965,7 +2965,7 @@
 		</skills>
 	</npc>
 	<npc id="35094" name="Gatekeeper" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -3000,7 +3000,7 @@
 		</skills>
 	</npc>
 	<npc id="35095" name="Mass Gatekeeper" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -3035,7 +3035,7 @@
 		</skills>
 	</npc>
 	<npc id="35096" name="Outer Doorman" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -3070,7 +3070,7 @@
 		</skills>
 	</npc>
 	<npc id="35097" name="Inner Doorman" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -3105,7 +3105,7 @@
 		</skills>
 	</npc>
 	<npc id="35098" name="Blacksmith" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -3140,7 +3140,7 @@
 		</skills>
 	</npc>
 	<npc id="35099" name="Warehouse Keeper" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -3175,7 +3175,7 @@
 		</skills>
 	</npc>
 	<npc id="35100" name="Sayres" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -3210,7 +3210,7 @@
 		</skills>
 	</npc>
 	<npc id="35101" name="Grad" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -3245,7 +3245,7 @@
 		</skills>
 	</npc>
 	<npc id="35102" name="Greenspan" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="0"/>
@@ -3280,7 +3280,7 @@
 		</skills>
 	</npc>
 	<npc id="35103" name="Manor Manager" title="Gludio">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -3315,7 +3315,7 @@
 		</skills>
 	</npc>
 	<npc id="35104" name="Tyron" title="Sir">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="74"/>
@@ -3385,7 +3385,7 @@
 		</skills>
 	</npc>
 	<npc id="35106" name="Duke Byron Ashton" title="">
-		<set name="level" val="83"/>
+		<set name="level" val="65"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="79"/>
@@ -3420,7 +3420,7 @@
 		</skills>
 	</npc>
 	<npc id="35107" name="Ivano" title="Sir">
-		<set name="level" val="81"/>
+		<set name="level" val="62"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="142"/>
@@ -3455,7 +3455,7 @@
 		</skills>
 	</npc>
 	<npc id="35108" name="Royal Knight" title="Dion">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -3490,7 +3490,7 @@
 		</skills>
 	</npc>
 	<npc id="35109" name="Court Sorcerer" title="Dion">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -3526,7 +3526,7 @@
 		</skills>
 	</npc>
 	<npc id="35110" name="Court Sorcerer" title="Dion">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -3562,7 +3562,7 @@
 		</skills>
 	</npc>
 	<npc id="35111" name="Court Guard" title="Dion">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -3597,7 +3597,7 @@
 		</skills>
 	</npc>
 	<npc id="35112" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="16"/>
@@ -3632,7 +3632,7 @@
 		</skills>
 	</npc>
 	<npc id="35113" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -3667,7 +3667,7 @@
 		</skills>
 	</npc>
 	<npc id="35114" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -3702,7 +3702,7 @@
 		</skills>
 	</npc>
 	<npc id="35115" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -3737,7 +3737,7 @@
 		</skills>
 	</npc>
 	<npc id="35116" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -3772,7 +3772,7 @@
 		</skills>
 	</npc>
 	<npc id="35117" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -3807,7 +3807,7 @@
 		</skills>
 	</npc>
 	<npc id="35118" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -3842,7 +3842,7 @@
 		</skills>
 	</npc>
 	<npc id="35119" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -3877,7 +3877,7 @@
 		</skills>
 	</npc>
 	<npc id="35120" name="Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -3912,7 +3912,7 @@
 		</skills>
 	</npc>
 	<npc id="35121" name="Royal Knight" title="Dion">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -3947,7 +3947,7 @@
 		</skills>
 	</npc>
 	<npc id="35122" name="Court Sorcerer" title="Dion">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -3983,7 +3983,7 @@
 		</skills>
 	</npc>
 	<npc id="35123" name="Court Sorcerer" title="Dion">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -4019,7 +4019,7 @@
 		</skills>
 	</npc>
 	<npc id="35124" name="Court Guard" title="Dion">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -4054,7 +4054,7 @@
 		</skills>
 	</npc>
 	<npc id="35125" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="93"/>
@@ -4089,7 +4089,7 @@
 		</skills>
 	</npc>
 	<npc id="35126" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -4124,7 +4124,7 @@
 		</skills>
 	</npc>
 	<npc id="35127" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -4159,7 +4159,7 @@
 		</skills>
 	</npc>
 	<npc id="35128" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -4194,7 +4194,7 @@
 		</skills>
 	</npc>
 	<npc id="35129" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -4229,7 +4229,7 @@
 		</skills>
 	</npc>
 	<npc id="35130" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -4264,7 +4264,7 @@
 		</skills>
 	</npc>
 	<npc id="35131" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -4299,7 +4299,7 @@
 		</skills>
 	</npc>
 	<npc id="35132" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -4334,7 +4334,7 @@
 		</skills>
 	</npc>
 	<npc id="35133" name="Court Guard" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -4369,7 +4369,7 @@
 		</skills>
 	</npc>
 	<npc id="35134" name="Gatekeeper" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -4404,7 +4404,7 @@
 		</skills>
 	</npc>
 	<npc id="35135" name="Gatekeeper" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -4439,7 +4439,7 @@
 		</skills>
 	</npc>
 	<npc id="35136" name="Gatekeeper" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -4474,7 +4474,7 @@
 		</skills>
 	</npc>
 	<npc id="35137" name="Mass Gatekeeper" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -4509,7 +4509,7 @@
 		</skills>
 	</npc>
 	<npc id="35138" name="Outer Doorman" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -4544,7 +4544,7 @@
 		</skills>
 	</npc>
 	<npc id="35139" name="Inner Doorman" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -4579,7 +4579,7 @@
 		</skills>
 	</npc>
 	<npc id="35140" name="Blacksmith" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -4614,7 +4614,7 @@
 		</skills>
 	</npc>
 	<npc id="35141" name="Warehouse Keeper" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -4649,7 +4649,7 @@
 		</skills>
 	</npc>
 	<npc id="35142" name="Crosby" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -4684,7 +4684,7 @@
 		</skills>
 	</npc>
 	<npc id="35143" name="Hodler" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -4719,7 +4719,7 @@
 		</skills>
 	</npc>
 	<npc id="35144" name="Mercenary Manager Sanford" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="0"/>
@@ -4754,7 +4754,7 @@
 		</skills>
 	</npc>
 	<npc id="35145" name="Manor Manager" title="Dion">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -4789,7 +4789,7 @@
 		</skills>
 	</npc>
 	<npc id="35146" name="Gibbson" title="Herald">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="74"/>
@@ -4859,7 +4859,7 @@
 		</skills>
 	</npc>
 	<npc id="35148" name="Baron Carmon Esthus" title="">
-		<set name="level" val="83"/>
+		<set name="level" val="65"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="79"/>
@@ -4894,7 +4894,7 @@
 		</skills>
 	</npc>
 	<npc id="35149" name="Ulric" title="Sir">
-		<set name="level" val="81"/>
+		<set name="level" val="62"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="142"/>
@@ -4929,7 +4929,7 @@
 		</skills>
 	</npc>
 	<npc id="35150" name="Royal Knight" title="Giran">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -4964,7 +4964,7 @@
 		</skills>
 	</npc>
 	<npc id="35151" name="Court Sorcerer" title="Giran">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -5000,7 +5000,7 @@
 		</skills>
 	</npc>
 	<npc id="35152" name="Court Sorcerer" title="Giran">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -5036,7 +5036,7 @@
 		</skills>
 	</npc>
 	<npc id="35153" name="Court Guard" title="Giran">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -5071,7 +5071,7 @@
 		</skills>
 	</npc>
 	<npc id="35154" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="16"/>
@@ -5106,7 +5106,7 @@
 		</skills>
 	</npc>
 	<npc id="35155" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -5141,7 +5141,7 @@
 		</skills>
 	</npc>
 	<npc id="35156" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -5176,7 +5176,7 @@
 		</skills>
 	</npc>
 	<npc id="35157" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -5211,7 +5211,7 @@
 		</skills>
 	</npc>
 	<npc id="35158" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -5246,7 +5246,7 @@
 		</skills>
 	</npc>
 	<npc id="35159" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -5281,7 +5281,7 @@
 		</skills>
 	</npc>
 	<npc id="35160" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -5316,7 +5316,7 @@
 		</skills>
 	</npc>
 	<npc id="35161" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -5351,7 +5351,7 @@
 		</skills>
 	</npc>
 	<npc id="35162" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -5386,7 +5386,7 @@
 		</skills>
 	</npc>
 	<npc id="35163" name="Royal Knight" title="Giran">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -5421,7 +5421,7 @@
 		</skills>
 	</npc>
 	<npc id="35164" name="Court Sorcerer" title="Giran">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -5457,7 +5457,7 @@
 		</skills>
 	</npc>
 	<npc id="35165" name="Court Sorcerer" title="Giran">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -5493,7 +5493,7 @@
 		</skills>
 	</npc>
 	<npc id="35166" name="Court Guard" title="Giran">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -5528,7 +5528,7 @@
 		</skills>
 	</npc>
 	<npc id="35167" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="93"/>
@@ -5563,7 +5563,7 @@
 		</skills>
 	</npc>
 	<npc id="35168" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -5598,7 +5598,7 @@
 		</skills>
 	</npc>
 	<npc id="35169" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -5633,7 +5633,7 @@
 		</skills>
 	</npc>
 	<npc id="35170" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -5668,7 +5668,7 @@
 		</skills>
 	</npc>
 	<npc id="35171" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -5703,7 +5703,7 @@
 		</skills>
 	</npc>
 	<npc id="35172" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -5738,7 +5738,7 @@
 		</skills>
 	</npc>
 	<npc id="35173" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -5773,7 +5773,7 @@
 		</skills>
 	</npc>
 	<npc id="35174" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -5808,7 +5808,7 @@
 		</skills>
 	</npc>
 	<npc id="35175" name="Guard" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -5843,7 +5843,7 @@
 		</skills>
 	</npc>
 	<npc id="35176" name="Gatekeeper" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -5878,7 +5878,7 @@
 		</skills>
 	</npc>
 	<npc id="35177" name="Gatekeeper" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -5913,7 +5913,7 @@
 		</skills>
 	</npc>
 	<npc id="35178" name="Gatekeeper" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -5948,7 +5948,7 @@
 		</skills>
 	</npc>
 	<npc id="35179" name="Mass Gatekeeper" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -5983,7 +5983,7 @@
 		</skills>
 	</npc>
 	<npc id="35180" name="Outer Doorman" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -6018,7 +6018,7 @@
 		</skills>
 	</npc>
 	<npc id="35181" name="Inner Doorman" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -6053,7 +6053,7 @@
 		</skills>
 	</npc>
 	<npc id="35182" name="Blacksmith" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="2499"/>
@@ -6088,7 +6088,7 @@
 		</skills>
 	</npc>
 	<npc id="35183" name="Warehouse Keeper" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="276"/>
@@ -6123,7 +6123,7 @@
 		</skills>
 	</npc>
 	<npc id="35184" name="Saul" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -6158,7 +6158,7 @@
 		</skills>
 	</npc>
 	<npc id="35185" name="Bryce" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -6193,7 +6193,7 @@
 		</skills>
 	</npc>
 	<npc id="35186" name="Arvid" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="0"/>
@@ -6228,7 +6228,7 @@
 		</skills>
 	</npc>
 	<npc id="35187" name="Manor Manager" title="Giran">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -6263,7 +6263,7 @@
 		</skills>
 	</npc>
 	<npc id="35188" name="Holmes" title="Sir">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="74"/>
@@ -6333,7 +6333,7 @@
 		</skills>
 	</npc>
 	<npc id="35190" name="Balthus Van Dyke" title="Duke">
-		<set name="level" val="83"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="16"/>
@@ -6368,7 +6368,7 @@
 		</skills>
 	</npc>
 	<npc id="35191" name="Quant" title="Sir">
-		<set name="level" val="81"/>
+		<set name="level" val="62"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="142"/>
@@ -6403,7 +6403,7 @@
 		</skills>
 	</npc>
 	<npc id="35192" name="Royal Knight" title="Oren">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -6438,7 +6438,7 @@
 		</skills>
 	</npc>
 	<npc id="35193" name="Court Sorcerer" title="Oren">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -6474,7 +6474,7 @@
 		</skills>
 	</npc>
 	<npc id="35194" name="Court Sorcerer" title="Oren">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -6510,7 +6510,7 @@
 		</skills>
 	</npc>
 	<npc id="35195" name="Court Guard" title="Oren">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -6545,7 +6545,7 @@
 		</skills>
 	</npc>
 	<npc id="35196" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="16"/>
@@ -6580,7 +6580,7 @@
 		</skills>
 	</npc>
 	<npc id="35197" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -6615,7 +6615,7 @@
 		</skills>
 	</npc>
 	<npc id="35198" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -6650,7 +6650,7 @@
 		</skills>
 	</npc>
 	<npc id="35199" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -6685,7 +6685,7 @@
 		</skills>
 	</npc>
 	<npc id="35200" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -6720,7 +6720,7 @@
 		</skills>
 	</npc>
 	<npc id="35201" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -6755,7 +6755,7 @@
 		</skills>
 	</npc>
 	<npc id="35202" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -6790,7 +6790,7 @@
 		</skills>
 	</npc>
 	<npc id="35203" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -6825,7 +6825,7 @@
 		</skills>
 	</npc>
 	<npc id="35204" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -6860,7 +6860,7 @@
 		</skills>
 	</npc>
 	<npc id="35205" name="Royal Knight" title="Oren">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -6895,7 +6895,7 @@
 		</skills>
 	</npc>
 	<npc id="35206" name="Court Sorcerer" title="Oren">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -6931,7 +6931,7 @@
 		</skills>
 	</npc>
 	<npc id="35207" name="Court Sorcerer" title="Oren">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -6967,7 +6967,7 @@
 		</skills>
 	</npc>
 	<npc id="35208" name="Court Guard" title="Oren">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -7002,7 +7002,7 @@
 		</skills>
 	</npc>
 	<npc id="35209" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="93"/>
@@ -7037,7 +7037,7 @@
 		</skills>
 	</npc>
 	<npc id="35210" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -7072,7 +7072,7 @@
 		</skills>
 	</npc>
 	<npc id="35211" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -7107,7 +7107,7 @@
 		</skills>
 	</npc>
 	<npc id="35212" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -7142,7 +7142,7 @@
 		</skills>
 	</npc>
 	<npc id="35213" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -7177,7 +7177,7 @@
 		</skills>
 	</npc>
 	<npc id="35214" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -7212,7 +7212,7 @@
 		</skills>
 	</npc>
 	<npc id="35215" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -7247,7 +7247,7 @@
 		</skills>
 	</npc>
 	<npc id="35216" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -7282,7 +7282,7 @@
 		</skills>
 	</npc>
 	<npc id="35217" name="Guard" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -7317,7 +7317,7 @@
 		</skills>
 	</npc>
 	<npc id="35218" name="Gatekeeper" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -7352,7 +7352,7 @@
 		</skills>
 	</npc>
 	<npc id="35219" name="Gatekeeper" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -7387,7 +7387,7 @@
 		</skills>
 	</npc>
 	<npc id="35220" name="Gatekeeper" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -7422,7 +7422,7 @@
 		</skills>
 	</npc>
 	<npc id="35221" name="Mass Gatekeeper" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -7457,7 +7457,7 @@
 		</skills>
 	</npc>
 	<npc id="35222" name="Outer Doorman" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -7492,7 +7492,7 @@
 		</skills>
 	</npc>
 	<npc id="35223" name="Inner Doorman" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -7527,7 +7527,7 @@
 		</skills>
 	</npc>
 	<npc id="35224" name="Blacksmith" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -7562,7 +7562,7 @@
 		</skills>
 	</npc>
 	<npc id="35225" name="Warehouse Keeper" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -7597,7 +7597,7 @@
 		</skills>
 	</npc>
 	<npc id="35226" name="Brasseur" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -7632,7 +7632,7 @@
 		</skills>
 	</npc>
 	<npc id="35227" name="Finrod" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="99"/>
 		<set name="radius" val="6"/>
 		<set name="height" val="24.5"/>
 		<set name="rHand" val="0"/>
@@ -7667,7 +7667,7 @@
 		</skills>
 	</npc>
 	<npc id="35228" name="Morrison" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="0"/>
@@ -7702,7 +7702,7 @@
 		</skills>
 	</npc>
 	<npc id="35229" name="Manor Manager" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -7737,7 +7737,7 @@
 		</skills>
 	</npc>
 	<npc id="35230" name="Manor Manager" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="6"/>
 		<set name="height" val="24.5"/>
 		<set name="rHand" val="0"/>
@@ -7772,7 +7772,7 @@
 		</skills>
 	</npc>
 	<npc id="35231" name="Manor Manager" title="Oren">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -7807,7 +7807,7 @@
 		</skills>
 	</npc>
 	<npc id="35232" name="Sherwood" title="Messenger">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="74"/>
@@ -7877,7 +7877,7 @@
 		</skills>
 	</npc>
 	<npc id="35234" name="Amadeo Cadmus" title="King">
-		<set name="level" val="85"/>
+		<set name="level" val="75"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="80"/>
@@ -7912,7 +7912,7 @@
 		</skills>
 	</npc>
 	<npc id="35235" name="Royal Knight" title="Aden">
-		<set name="level" val="81"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -7947,7 +7947,7 @@
 		</skills>
 	</npc>
 	<npc id="35236" name="Court Sorcerer" title="Aden">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="325"/>
@@ -7983,7 +7983,7 @@
 		</skills>
 	</npc>
 	<npc id="35237" name="Court Sorcerer" title="Aden">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="193"/>
@@ -8019,7 +8019,7 @@
 		</skills>
 	</npc>
 	<npc id="35238" name="Court Guard" title="Aden">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="1376"/>
@@ -8054,7 +8054,7 @@
 		</skills>
 	</npc>
 	<npc id="35239" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="300"/>
@@ -8089,7 +8089,7 @@
 		</skills>
 	</npc>
 	<npc id="35240" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="132"/>
@@ -8124,7 +8124,7 @@
 		</skills>
 	</npc>
 	<npc id="35241" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="14"/>
@@ -8159,7 +8159,7 @@
 		</skills>
 	</npc>
 	<npc id="35242" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -8194,7 +8194,7 @@
 		</skills>
 	</npc>
 	<npc id="35243" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -8229,7 +8229,7 @@
 		</skills>
 	</npc>
 	<npc id="35244" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -8264,7 +8264,7 @@
 		</skills>
 	</npc>
 	<npc id="35245" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -8299,7 +8299,7 @@
 		</skills>
 	</npc>
 	<npc id="35246" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -8334,7 +8334,7 @@
 		</skills>
 	</npc>
 	<npc id="35247" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -8369,7 +8369,7 @@
 		</skills>
 	</npc>
 	<npc id="35248" name="Royal Knight" title="Aden">
-		<set name="level" val="81"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -8404,7 +8404,7 @@
 		</skills>
 	</npc>
 	<npc id="35249" name="Court Sorcerer" title="Aden">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -8440,7 +8440,7 @@
 		</skills>
 	</npc>
 	<npc id="35250" name="Court Sorcerer" title="Aden">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -8476,7 +8476,7 @@
 		</skills>
 	</npc>
 	<npc id="35251" name="Court Guard" title="Aden">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="300"/>
@@ -8511,7 +8511,7 @@
 		</skills>
 	</npc>
 	<npc id="35252" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="16"/>
@@ -8546,7 +8546,7 @@
 		</skills>
 	</npc>
 	<npc id="35253" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2"/>
@@ -8581,7 +8581,7 @@
 		</skills>
 	</npc>
 	<npc id="35254" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="285"/>
@@ -8616,7 +8616,7 @@
 		</skills>
 	</npc>
 	<npc id="35255" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -8651,7 +8651,7 @@
 		</skills>
 	</npc>
 	<npc id="35256" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -8686,7 +8686,7 @@
 		</skills>
 	</npc>
 	<npc id="35257" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -8721,7 +8721,7 @@
 		</skills>
 	</npc>
 	<npc id="35258" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -8756,7 +8756,7 @@
 		</skills>
 	</npc>
 	<npc id="35259" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -8791,7 +8791,7 @@
 		</skills>
 	</npc>
 	<npc id="35260" name="Guard" title="Aden">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -8826,7 +8826,7 @@
 		</skills>
 	</npc>
 	<npc id="35261" name="Gatekeeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -8861,7 +8861,7 @@
 		</skills>
 	</npc>
 	<npc id="35262" name="Gatekeeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -8896,7 +8896,7 @@
 		</skills>
 	</npc>
 	<npc id="35263" name="Gatekeeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -8931,7 +8931,7 @@
 		</skills>
 	</npc>
 	<npc id="35264" name="Gatekeeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -8966,7 +8966,7 @@
 		</skills>
 	</npc>
 	<npc id="35265" name="Gatekeeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -9001,7 +9001,7 @@
 		</skills>
 	</npc>
 	<npc id="35266" name="Mass Gatekeeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -9036,7 +9036,7 @@
 		</skills>
 	</npc>
 	<npc id="35267" name="Outer Doorman" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -9071,7 +9071,7 @@
 		</skills>
 	</npc>
 	<npc id="35268" name="Inner Doorman" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -9106,7 +9106,7 @@
 		</skills>
 	</npc>
 	<npc id="35269" name="Hall Doorman" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -9141,7 +9141,7 @@
 		</skills>
 	</npc>
 	<npc id="35270" name="Inner Doorman" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -9176,7 +9176,7 @@
 		</skills>
 	</npc>
 	<npc id="35271" name="Gatekeeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -9211,7 +9211,7 @@
 		</skills>
 	</npc>
 	<npc id="35272" name="Blacksmith" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="99"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -9246,7 +9246,7 @@
 		</skills>
 	</npc>
 	<npc id="35273" name="Warehouse Keeper" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -9281,7 +9281,7 @@
 		</skills>
 	</npc>
 	<npc id="35274" name="Logan" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -9316,7 +9316,7 @@
 		</skills>
 	</npc>
 	<npc id="35275" name="Kruger" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -9351,7 +9351,7 @@
 		</skills>
 	</npc>
 	<npc id="35276" name="Eldon" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="0"/>
@@ -9386,7 +9386,7 @@
 		</skills>
 	</npc>
 	<npc id="35277" name="Manor Manager" title="Aden">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -9421,7 +9421,7 @@
 		</skills>
 	</npc>
 	<npc id="35278" name="Messenger Ruford" title="Messenger">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="135"/>
@@ -9491,7 +9491,7 @@
 		</skills>
 	</npc>
 	<npc id="35280" name="Baron Lionel Hunter" title="">
-		<set name="level" val="83"/>
+		<set name="level" val="65"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="79"/>
@@ -9526,7 +9526,7 @@
 		</skills>
 	</npc>
 	<npc id="35281" name="Schaht" title="Sir">
-		<set name="level" val="81"/>
+		<set name="level" val="62"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="142"/>
@@ -9561,7 +9561,7 @@
 		</skills>
 	</npc>
 	<npc id="35282" name="Royal Knight" title="Innadril">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -9596,7 +9596,7 @@
 		</skills>
 	</npc>
 	<npc id="35283" name="Court Sorcerer" title="Innadril">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -9632,7 +9632,7 @@
 		</skills>
 	</npc>
 	<npc id="35284" name="Court Sorcerer" title="Innadril">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -9668,7 +9668,7 @@
 		</skills>
 	</npc>
 	<npc id="35285" name="Court Guard" title="Innadril">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -9703,7 +9703,7 @@
 		</skills>
 	</npc>
 	<npc id="35286" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="16"/>
@@ -9738,7 +9738,7 @@
 		</skills>
 	</npc>
 	<npc id="35287" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -9773,7 +9773,7 @@
 		</skills>
 	</npc>
 	<npc id="35288" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -9808,7 +9808,7 @@
 		</skills>
 	</npc>
 	<npc id="35289" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -9843,7 +9843,7 @@
 		</skills>
 	</npc>
 	<npc id="35290" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -9878,7 +9878,7 @@
 		</skills>
 	</npc>
 	<npc id="35291" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -9913,7 +9913,7 @@
 		</skills>
 	</npc>
 	<npc id="35292" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -9948,7 +9948,7 @@
 		</skills>
 	</npc>
 	<npc id="35293" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -9983,7 +9983,7 @@
 		</skills>
 	</npc>
 	<npc id="35294" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -10018,7 +10018,7 @@
 		</skills>
 	</npc>
 	<npc id="35295" name="Royal Knight" title="Innadril">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -10053,7 +10053,7 @@
 		</skills>
 	</npc>
 	<npc id="35296" name="Court Sorcerer" title="Innadril">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -10089,7 +10089,7 @@
 		</skills>
 	</npc>
 	<npc id="35297" name="Court Sorcerer" title="Innadril">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -10125,7 +10125,7 @@
 		</skills>
 	</npc>
 	<npc id="35298" name="Court Guard" title="Innadril">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="94"/>
@@ -10160,7 +10160,7 @@
 		</skills>
 	</npc>
 	<npc id="35299" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="93"/>
@@ -10195,7 +10195,7 @@
 		</skills>
 	</npc>
 	<npc id="35300" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2499"/>
@@ -10230,7 +10230,7 @@
 		</skills>
 	</npc>
 	<npc id="35301" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -10265,7 +10265,7 @@
 		</skills>
 	</npc>
 	<npc id="35302" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -10300,7 +10300,7 @@
 		</skills>
 	</npc>
 	<npc id="35303" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -10335,7 +10335,7 @@
 		</skills>
 	</npc>
 	<npc id="35304" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -10370,7 +10370,7 @@
 		</skills>
 	</npc>
 	<npc id="35305" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="16"/>
@@ -10405,7 +10405,7 @@
 		</skills>
 	</npc>
 	<npc id="35306" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="2"/>
@@ -10440,7 +10440,7 @@
 		</skills>
 	</npc>
 	<npc id="35307" name="Guard" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -10475,7 +10475,7 @@
 		</skills>
 	</npc>
 	<npc id="35308" name="Gatekeeper" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -10510,7 +10510,7 @@
 		</skills>
 	</npc>
 	<npc id="35309" name="Gatekeeper" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -10545,7 +10545,7 @@
 		</skills>
 	</npc>
 	<npc id="35310" name="Gatekeeper" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -10580,7 +10580,7 @@
 		</skills>
 	</npc>
 	<npc id="35311" name="Mass Gatekeeper" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -10615,7 +10615,7 @@
 		</skills>
 	</npc>
 	<npc id="35312" name="Outer Doorman" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -10650,7 +10650,7 @@
 		</skills>
 	</npc>
 	<npc id="35313" name="Inner Doorman" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -10685,7 +10685,7 @@
 		</skills>
 	</npc>
 	<npc id="35314" name="Blacksmith" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -10720,7 +10720,7 @@
 		</skills>
 	</npc>
 	<npc id="35315" name="Warehouse Keeper" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -10755,7 +10755,7 @@
 		</skills>
 	</npc>
 	<npc id="35316" name="Neurath" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -10790,7 +10790,7 @@
 		</skills>
 	</npc>
 	<npc id="35317" name="Tate" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -10825,7 +10825,7 @@
 		</skills>
 	</npc>
 	<npc id="35318" name="Solinus" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="0"/>
@@ -10860,7 +10860,7 @@
 		</skills>
 	</npc>
 	<npc id="35319" name="Manor Manager" title="Innadril">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -10895,7 +10895,7 @@
 		</skills>
 	</npc>
 	<npc id="35320" name="Raybell" title="Sir">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="74"/>
@@ -11000,7 +11000,7 @@
 		</skills>
 	</npc>
 	<npc id="35324" name="Heinz" title="Royal Guard Captain">
-		<set name="level" val="81"/>
+		<set name="level" val="62"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="142"/>
@@ -11035,7 +11035,7 @@
 		</skills>
 	</npc>
 	<npc id="35325" name="Duke Mora Ken Abygail" title="">
-		<set name="level" val="83"/>
+		<set name="level" val="65"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -11070,7 +11070,7 @@
 		</skills>
 	</npc>
 	<npc id="35326" name="Royal Knight" title="Goddard">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -11105,7 +11105,7 @@
 		</skills>
 	</npc>
 	<npc id="35327" name="Court Sorcerer" title="Goddard">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -11141,7 +11141,7 @@
 		</skills>
 	</npc>
 	<npc id="35328" name="Court Sorcerer" title="Goddard">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -11177,7 +11177,7 @@
 		</skills>
 	</npc>
 	<npc id="35329" name="Guard" title="Goddard">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -11212,7 +11212,7 @@
 		</skills>
 	</npc>
 	<npc id="35330" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="93"/>
@@ -11247,7 +11247,7 @@
 		</skills>
 	</npc>
 	<npc id="35331" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="2499"/>
@@ -11282,7 +11282,7 @@
 		</skills>
 	</npc>
 	<npc id="35332" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -11317,7 +11317,7 @@
 		</skills>
 	</npc>
 	<npc id="35333" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -11352,7 +11352,7 @@
 		</skills>
 	</npc>
 	<npc id="35334" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -11387,7 +11387,7 @@
 		</skills>
 	</npc>
 	<npc id="35335" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -11422,7 +11422,7 @@
 		</skills>
 	</npc>
 	<npc id="35336" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="16"/>
@@ -11457,7 +11457,7 @@
 		</skills>
 	</npc>
 	<npc id="35337" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="2"/>
@@ -11492,7 +11492,7 @@
 		</skills>
 	</npc>
 	<npc id="35338" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -11527,7 +11527,7 @@
 		</skills>
 	</npc>
 	<npc id="35339" name="Royal Knight" title="Goddard">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -11562,7 +11562,7 @@
 		</skills>
 	</npc>
 	<npc id="35340" name="Court Sorcerer" title="Goddard">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -11598,7 +11598,7 @@
 		</skills>
 	</npc>
 	<npc id="35341" name="Court Sorcerer" title="Goddard">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -11634,7 +11634,7 @@
 		</skills>
 	</npc>
 	<npc id="35342" name="Guard" title="Goddard">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -11669,7 +11669,7 @@
 		</skills>
 	</npc>
 	<npc id="35343" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="93"/>
@@ -11704,7 +11704,7 @@
 		</skills>
 	</npc>
 	<npc id="35344" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="2499"/>
@@ -11739,7 +11739,7 @@
 		</skills>
 	</npc>
 	<npc id="35345" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -11774,7 +11774,7 @@
 		</skills>
 	</npc>
 	<npc id="35346" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -11809,7 +11809,7 @@
 		</skills>
 	</npc>
 	<npc id="35347" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -11844,7 +11844,7 @@
 		</skills>
 	</npc>
 	<npc id="35348" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -11879,7 +11879,7 @@
 		</skills>
 	</npc>
 	<npc id="35349" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="16"/>
@@ -11914,7 +11914,7 @@
 		</skills>
 	</npc>
 	<npc id="35350" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2"/>
@@ -11949,7 +11949,7 @@
 		</skills>
 	</npc>
 	<npc id="35351" name="Bodyguard" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="14"/>
@@ -11984,7 +11984,7 @@
 		</skills>
 	</npc>
 	<npc id="35352" name="Gatekeeper" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12019,7 +12019,7 @@
 		</skills>
 	</npc>
 	<npc id="35353" name="Gatekeeper" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12054,7 +12054,7 @@
 		</skills>
 	</npc>
 	<npc id="35354" name="Gatekeeper" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12089,7 +12089,7 @@
 		</skills>
 	</npc>
 	<npc id="35355" name="Mass Gatekeeper" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12124,7 +12124,7 @@
 		</skills>
 	</npc>
 	<npc id="35356" name="Outer Doorman" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12159,7 +12159,7 @@
 		</skills>
 	</npc>
 	<npc id="35357" name="Inner Doorman" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12194,7 +12194,7 @@
 		</skills>
 	</npc>
 	<npc id="35358" name="Inner Doorman" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12229,7 +12229,7 @@
 		</skills>
 	</npc>
 	<npc id="35359" name="Gatekeeper" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12264,7 +12264,7 @@
 		</skills>
 	</npc>
 	<npc id="35360" name="Gatekeeper" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -12299,7 +12299,7 @@
 		</skills>
 	</npc>
 	<npc id="35361" name="Blacksmith" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -12334,7 +12334,7 @@
 		</skills>
 	</npc>
 	<npc id="35362" name="Warehouse Keeper" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -12369,7 +12369,7 @@
 		</skills>
 	</npc>
 	<npc id="35363" name="Alfred" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -12404,7 +12404,7 @@
 		</skills>
 	</npc>
 	<npc id="35364" name="Hadley" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -12439,7 +12439,7 @@
 		</skills>
 	</npc>
 	<npc id="35365" name="Rowell" title="Manager of Mercenary">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -12474,7 +12474,7 @@
 		</skills>
 	</npc>
 	<npc id="35366" name="Manor Manager" title="Goddard">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -12509,7 +12509,7 @@
 		</skills>
 	</npc>
 	<npc id="35367" name="Daven" title="Messenger">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="74"/>
@@ -12544,7 +12544,7 @@
 		</skills>
 	</npc>
 	<npc id="35368" name="Bloody Lord Nurka" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="72"/>
@@ -12579,7 +12579,7 @@
 		</skills>
 	</npc>
 	<npc id="35369" name="Partisan Healer" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="40"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="16"/>
 		<set name="rHand" val="7"/>
@@ -12614,7 +12614,7 @@
 		</skills>
 	</npc>
 	<npc id="35370" name="Partisan Court Guard" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="40"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="69"/>
@@ -12649,7 +12649,7 @@
 		</skills>
 	</npc>
 	<npc id="35371" name="Partisan Court Guard" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="40"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -12684,7 +12684,7 @@
 		</skills>
 	</npc>
 	<npc id="35372" name="Partisan Soldier" title="">
-		<set name="level" val="68"/>
+		<set name="level" val="35"/>
 		<set name="radius" val="13.5"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -12719,7 +12719,7 @@
 		</skills>
 	</npc>
 	<npc id="35373" name="Partisan Sorcerer" title="">
-		<set name="level" val="68"/>
+		<set name="level" val="35"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="16"/>
 		<set name="rHand" val="7"/>
@@ -12754,7 +12754,7 @@
 		</skills>
 	</npc>
 	<npc id="35374" name="Partisan Archer" title="">
-		<set name="level" val="68"/>
+		<set name="level" val="35"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -12789,7 +12789,7 @@
 		</skills>
 	</npc>
 	<npc id="35375" name="Bloody Lord Nurka" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="55"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="72"/>
@@ -12824,7 +12824,7 @@
 		</skills>
 	</npc>
 	<npc id="35376" name="Partisan Healer" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="40"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="16"/>
 		<set name="rHand" val="7"/>
@@ -12859,7 +12859,7 @@
 		</skills>
 	</npc>
 	<npc id="35377" name="Partisan Court Guard" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="40"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="69"/>
@@ -12894,7 +12894,7 @@
 		</skills>
 	</npc>
 	<npc id="35378" name="Partisan Court Guard" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="40"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -12929,7 +12929,7 @@
 		</skills>
 	</npc>
 	<npc id="35379" name="Partisan Soldier" title="">
-		<set name="level" val="68"/>
+		<set name="level" val="35"/>
 		<set name="radius" val="13.5"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -12964,7 +12964,7 @@
 		</skills>
 	</npc>
 	<npc id="35380" name="Partisan Sorcerer" title="">
-		<set name="level" val="68"/>
+		<set name="level" val="35"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="16"/>
 		<set name="rHand" val="0"/>
@@ -12999,7 +12999,7 @@
 		</skills>
 	</npc>
 	<npc id="35381" name="Partisan Archer" title="">
-		<set name="level" val="68"/>
+		<set name="level" val="35"/>
 		<set name="radius" val="14"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="0"/>
@@ -13944,7 +13944,7 @@
 		</skills>
 	</npc>
 	<npc id="35408" name="Dietrich" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="67"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="0"/>
@@ -13985,7 +13985,7 @@
 		</skills>
 	</npc>
 	<npc id="35409" name="Mikhail" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="67"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="0"/>
@@ -14026,7 +14026,7 @@
 		</skills>
 	</npc>
 	<npc id="35410" name="Gustav" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="21"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="0"/>
@@ -14067,7 +14067,7 @@
 		</skills>
 	</npc>
 	<npc id="35411" name="Doom Servant" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="65"/>
 		<set name="radius" val="30"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -14109,7 +14109,7 @@
 		</skills>
 	</npc>
 	<npc id="35412" name="Doom Guard" title="">
-		<set name="level" val="74"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="30"/>
 		<set name="height" val="40"/>
 		<set name="rHand" val="0"/>
@@ -14151,7 +14151,7 @@
 		</skills>
 	</npc>
 	<npc id="35413" name="Doom Archer" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="67"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="286"/>
@@ -14193,7 +14193,7 @@
 		</skills>
 	</npc>
 	<npc id="35414" name="Doom Trooper" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="301"/>
@@ -14235,7 +14235,7 @@
 		</skills>
 	</npc>
 	<npc id="35415" name="Doom Warrior" title="">
-		<set name="level" val="77"/>
+		<set name="level" val="69"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="71"/>
@@ -14277,7 +14277,7 @@
 		</skills>
 	</npc>
 	<npc id="35416" name="Doom Knight" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="45"/>
 		<set name="rHand" val="1472"/>
@@ -14319,7 +14319,7 @@
 		</skills>
 	</npc>
 	<npc id="35417" name="Doorman of Hell" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -14354,7 +14354,7 @@
 		</skills>
 	</npc>
 	<npc id="35418" name="Doorman of Hell" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -14389,7 +14389,7 @@
 		</skills>
 	</npc>
 	<npc id="35419" name="Hephaeston" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22"/>
 		<set name="rHand" val="0"/>
@@ -14424,7 +14424,7 @@
 		</skills>
 	</npc>
 	<npc id="35420" name="Loken" title="Messenger">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22"/>
 		<set name="rHand" val="74"/>
@@ -14459,7 +14459,7 @@
 		</skills>
 	</npc>
 	<npc id="35421" name="Biggerstaff" title="Steward">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="21"/>
 		<set name="rHand" val="0"/>
@@ -14494,7 +14494,7 @@
 		</skills>
 	</npc>
 	<npc id="35422" name="Flag of Winner" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="100"/>
 		<set name="height" val="72"/>
 		<set name="rHand" val="0"/>
@@ -14529,7 +14529,7 @@
 		</skills>
 	</npc>
 	<npc id="35423" name="Red Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="75"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -14564,7 +14564,7 @@
 		</skills>
 	</npc>
 	<npc id="35424" name="Yellow Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="75"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -14599,7 +14599,7 @@
 		</skills>
 	</npc>
 	<npc id="35425" name="Green Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="75"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -14634,7 +14634,7 @@
 		</skills>
 	</npc>
 	<npc id="35426" name="Blue Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="75"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -14669,7 +14669,7 @@
 		</skills>
 	</npc>
 	<npc id="35427" name="Purple Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="75"/>
 		<set name="height" val="55"/>
 		<set name="rHand" val="0"/>
@@ -14704,7 +14704,7 @@
 		</skills>
 	</npc>
 	<npc id="35428" name="Oel Mahum Berserker" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="38"/>
 		<set name="rHand" val="0"/>
@@ -14738,7 +14738,7 @@
 		</skills>
 	</npc>
 	<npc id="35429" name="Oel Mahum Scout" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="38"/>
 		<set name="rHand" val="0"/>
@@ -14772,7 +14772,7 @@
 		</skills>
 	</npc>
 	<npc id="35430" name="Oel Mahum Leader" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="34"/>
 		<set name="rHand" val="0"/>
@@ -14806,7 +14806,7 @@
 		</skills>
 	</npc>
 	<npc id="35431" name="Oel Mahum Cleric" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="15"/>
 		<set name="height" val="34"/>
 		<set name="rHand" val="0"/>
@@ -14840,7 +14840,7 @@
 		</skills>
 	</npc>
 	<npc id="35432" name="Oel Mahum Thief" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="0"/>
@@ -14874,7 +14874,7 @@
 		</skills>
 	</npc>
 	<npc id="35433" name="Inner Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="0"/>
@@ -14909,7 +14909,7 @@
 		</skills>
 	</npc>
 	<npc id="35434" name="Inner Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="0"/>
@@ -14944,7 +14944,7 @@
 		</skills>
 	</npc>
 	<npc id="35435" name="Outer Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="0"/>
@@ -14979,7 +14979,7 @@
 		</skills>
 	</npc>
 	<npc id="35436" name="Outer Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="0"/>
@@ -15014,7 +15014,7 @@
 		</skills>
 	</npc>
 	<npc id="35437" name="Messenger" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="0"/>
@@ -15049,7 +15049,7 @@
 		</skills>
 	</npc>
 	<npc id="35438" name="Chamberlain" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="20"/>
 		<set name="height" val="37"/>
 		<set name="rHand" val="0"/>
@@ -16169,7 +16169,7 @@
 		</skills>
 	</npc>
 	<npc id="35470" name="Astair van Halter" title="King">
-		<set name="level" val="85"/>
+		<set name="level" val="93"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -16204,7 +16204,7 @@
 		</skills>
 	</npc>
 	<npc id="35471" name="Royal Knight" title="Rune">
-		<set name="level" val="81"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -16239,7 +16239,7 @@
 		</skills>
 	</npc>
 	<npc id="35472" name="Court Sorcerer" title="Rune">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -16275,7 +16275,7 @@
 		</skills>
 	</npc>
 	<npc id="35473" name="Court Sorcerer" title="Rune">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -16311,7 +16311,7 @@
 		</skills>
 	</npc>
 	<npc id="35474" name="Court Guard" title="Rune">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="94"/>
@@ -16346,7 +16346,7 @@
 		</skills>
 	</npc>
 	<npc id="35475" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="93"/>
@@ -16381,7 +16381,7 @@
 		</skills>
 	</npc>
 	<npc id="35476" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="2499"/>
@@ -16416,7 +16416,7 @@
 		</skills>
 	</npc>
 	<npc id="35477" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -16451,7 +16451,7 @@
 		</skills>
 	</npc>
 	<npc id="35478" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -16486,7 +16486,7 @@
 		</skills>
 	</npc>
 	<npc id="35479" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -16521,7 +16521,7 @@
 		</skills>
 	</npc>
 	<npc id="35480" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -16556,7 +16556,7 @@
 		</skills>
 	</npc>
 	<npc id="35481" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="16"/>
@@ -16591,7 +16591,7 @@
 		</skills>
 	</npc>
 	<npc id="35482" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="2"/>
@@ -16626,7 +16626,7 @@
 		</skills>
 	</npc>
 	<npc id="35483" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -16661,7 +16661,7 @@
 		</skills>
 	</npc>
 	<npc id="35484" name="Royal Knight" title="Rune">
-		<set name="level" val="81"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -16696,7 +16696,7 @@
 		</skills>
 	</npc>
 	<npc id="35485" name="Court Sorcerer" title="Rune">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -16732,7 +16732,7 @@
 		</skills>
 	</npc>
 	<npc id="35486" name="Court Sorcerer" title="Rune">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -16768,7 +16768,7 @@
 		</skills>
 	</npc>
 	<npc id="35487" name="Court Guard" title="Rune">
-		<set name="level" val="79"/>
+		<set name="level" val="68"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="94"/>
@@ -16803,7 +16803,7 @@
 		</skills>
 	</npc>
 	<npc id="35488" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="93"/>
@@ -16838,7 +16838,7 @@
 		</skills>
 	</npc>
 	<npc id="35489" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="2499"/>
@@ -16873,7 +16873,7 @@
 		</skills>
 	</npc>
 	<npc id="35490" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -16908,7 +16908,7 @@
 		</skills>
 	</npc>
 	<npc id="35491" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -16943,7 +16943,7 @@
 		</skills>
 	</npc>
 	<npc id="35492" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -16978,7 +16978,7 @@
 		</skills>
 	</npc>
 	<npc id="35493" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -17013,7 +17013,7 @@
 		</skills>
 	</npc>
 	<npc id="35494" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="16"/>
@@ -17048,7 +17048,7 @@
 		</skills>
 	</npc>
 	<npc id="35495" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2"/>
@@ -17083,7 +17083,7 @@
 		</skills>
 	</npc>
 	<npc id="35496" name="Guard" title="Rune">
-		<set name="level" val="78"/>
+		<set name="level" val="66"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="14"/>
@@ -17118,7 +17118,7 @@
 		</skills>
 	</npc>
 	<npc id="35497" name="Gatekeeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17153,7 +17153,7 @@
 		</skills>
 	</npc>
 	<npc id="35498" name="Gatekeeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17188,7 +17188,7 @@
 		</skills>
 	</npc>
 	<npc id="35499" name="Gatekeeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17223,7 +17223,7 @@
 		</skills>
 	</npc>
 	<npc id="35500" name="Gatekeeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17258,7 +17258,7 @@
 		</skills>
 	</npc>
 	<npc id="35501" name="Gatekeeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17293,7 +17293,7 @@
 		</skills>
 	</npc>
 	<npc id="35502" name="Group Gatekeeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17328,7 +17328,7 @@
 		</skills>
 	</npc>
 	<npc id="35503" name="Outer Doorman" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17363,7 +17363,7 @@
 		</skills>
 	</npc>
 	<npc id="35504" name="Inner Doorman" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17398,7 +17398,7 @@
 		</skills>
 	</npc>
 	<npc id="35505" name="Inner Doorman" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17433,7 +17433,7 @@
 		</skills>
 	</npc>
 	<npc id="35506" name="Dungeon Gatekeeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17468,7 +17468,7 @@
 		</skills>
 	</npc>
 	<npc id="35507" name="Blacksmith" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -17503,7 +17503,7 @@
 		</skills>
 	</npc>
 	<npc id="35508" name="Warehouse Keeper" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -17538,7 +17538,7 @@
 		</skills>
 	</npc>
 	<npc id="35509" name="Frederick" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -17573,7 +17573,7 @@
 		</skills>
 	</npc>
 	<npc id="35510" name="Titus" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -17608,7 +17608,7 @@
 		</skills>
 	</npc>
 	<npc id="35511" name="Gompus" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -17643,7 +17643,7 @@
 		</skills>
 	</npc>
 	<npc id="35512" name="Manor Manager" title="Rune">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -17678,7 +17678,7 @@
 		</skills>
 	</npc>
 	<npc id="35513" name="Sherman" title="Messenger">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17783,7 +17783,7 @@
 		</skills>
 	</npc>
 	<npc id="35516" name="Verus" title="Royal Guard Captain">
-		<set name="level" val="81"/>
+		<set name="level" val="62"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -17818,7 +17818,7 @@
 		</skills>
 	</npc>
 	<npc id="35517" name="Swain Ken Orwen" title="Count">
-		<set name="level" val="83"/>
+		<set name="level" val="65"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="0"/>
@@ -17853,7 +17853,7 @@
 		</skills>
 	</npc>
 	<npc id="35518" name="Royal Knight" title="Schuttgart">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -17888,7 +17888,7 @@
 		</skills>
 	</npc>
 	<npc id="35519" name="Court Sorcerer" title="Schuttgart">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -17924,7 +17924,7 @@
 		</skills>
 	</npc>
 	<npc id="35520" name="Court Sorcerer" title="Schuttgart">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -17960,7 +17960,7 @@
 		</skills>
 	</npc>
 	<npc id="35521" name="Court Guard" title="Schuttgart">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="94"/>
@@ -17995,7 +17995,7 @@
 		</skills>
 	</npc>
 	<npc id="35522" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="93"/>
@@ -18030,7 +18030,7 @@
 		</skills>
 	</npc>
 	<npc id="35523" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="2499"/>
@@ -18065,7 +18065,7 @@
 		</skills>
 	</npc>
 	<npc id="35524" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -18100,7 +18100,7 @@
 		</skills>
 	</npc>
 	<npc id="35525" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -18135,7 +18135,7 @@
 		</skills>
 	</npc>
 	<npc id="35526" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -18170,7 +18170,7 @@
 		</skills>
 	</npc>
 	<npc id="35527" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -18205,7 +18205,7 @@
 		</skills>
 	</npc>
 	<npc id="35528" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="16"/>
@@ -18240,7 +18240,7 @@
 		</skills>
 	</npc>
 	<npc id="35529" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="2"/>
@@ -18275,7 +18275,7 @@
 		</skills>
 	</npc>
 	<npc id="35530" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="14"/>
@@ -18310,7 +18310,7 @@
 		</skills>
 	</npc>
 	<npc id="35531" name="Royal Knight" title="Schuttgart">
-		<set name="level" val="79"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="76"/>
@@ -18345,7 +18345,7 @@
 		</skills>
 	</npc>
 	<npc id="35532" name="Court Sorcerer" title="Schuttgart">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="325"/>
@@ -18381,7 +18381,7 @@
 		</skills>
 	</npc>
 	<npc id="35533" name="Court Sorcerer" title="Schuttgart">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
 		<set name="rHand" val="193"/>
@@ -18417,7 +18417,7 @@
 		</skills>
 	</npc>
 	<npc id="35534" name="Court Guard" title="Schuttgart">
-		<set name="level" val="77"/>
+		<set name="level" val="58"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="94"/>
@@ -18452,7 +18452,7 @@
 		</skills>
 	</npc>
 	<npc id="35535" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="93"/>
@@ -18487,7 +18487,7 @@
 		</skills>
 	</npc>
 	<npc id="35536" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="19"/>
 		<set name="rHand" val="2499"/>
@@ -18522,7 +18522,7 @@
 		</skills>
 	</npc>
 	<npc id="35537" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="276"/>
@@ -18557,7 +18557,7 @@
 		</skills>
 	</npc>
 	<npc id="35538" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="16"/>
@@ -18592,7 +18592,7 @@
 		</skills>
 	</npc>
 	<npc id="35539" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="2"/>
@@ -18627,7 +18627,7 @@
 		</skills>
 	</npc>
 	<npc id="35540" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="25"/>
 		<set name="rHand" val="14"/>
@@ -18662,7 +18662,7 @@
 		</skills>
 	</npc>
 	<npc id="35541" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="27"/>
 		<set name="rHand" val="16"/>
@@ -18697,7 +18697,7 @@
 		</skills>
 	</npc>
 	<npc id="35542" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="2"/>
@@ -18732,7 +18732,7 @@
 		</skills>
 	</npc>
 	<npc id="35543" name="Guard" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="14"/>
@@ -18767,7 +18767,7 @@
 		</skills>
 	</npc>
 	<npc id="35544" name="Gatekeeper" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -18802,7 +18802,7 @@
 		</skills>
 	</npc>
 	<npc id="35545" name="Gatekeeper" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -18837,7 +18837,7 @@
 		</skills>
 	</npc>
 	<npc id="35546" name="Gatekeeper" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -18872,7 +18872,7 @@
 		</skills>
 	</npc>
 	<npc id="35547" name="Group Gatekeeper" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -18907,7 +18907,7 @@
 		</skills>
 	</npc>
 	<npc id="35548" name="Outer Doorman" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -18942,7 +18942,7 @@
 		</skills>
 	</npc>
 	<npc id="35549" name="Inner Doorman" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="14"/>
@@ -18977,7 +18977,7 @@
 		</skills>
 	</npc>
 	<npc id="35550" name="Inner Doorman" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -19012,7 +19012,7 @@
 		</skills>
 	</npc>
 	<npc id="35551" name="Doorman" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -19047,7 +19047,7 @@
 		</skills>
 	</npc>
 	<npc id="35552" name="Doorman" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -19082,7 +19082,7 @@
 		</skills>
 	</npc>
 	<npc id="35553" name="Blacksmith" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="7"/>
 		<set name="height" val="16.5"/>
 		<set name="rHand" val="0"/>
@@ -19117,7 +19117,7 @@
 		</skills>
 	</npc>
 	<npc id="35554" name="Warehouse Keeper" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="17"/>
 		<set name="rHand" val="0"/>
@@ -19152,7 +19152,7 @@
 		</skills>
 	</npc>
 	<npc id="35555" name="August" title="Chamberlain">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -19187,7 +19187,7 @@
 		</skills>
 	</npc>
 	<npc id="35556" name="Gallic" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -19222,7 +19222,7 @@
 		</skills>
 	</npc>
 	<npc id="35557" name="Kendrew" title="Mercenary Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -19257,7 +19257,7 @@
 		</skills>
 	</npc>
 	<npc id="35558" name="Manor Manager" title="Schuttgart">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="9.5"/>
 		<set name="height" val="22.5"/>
 		<set name="rHand" val="0"/>
@@ -19292,7 +19292,7 @@
 		</skills>
 	</npc>
 	<npc id="35559" name="Daguerre" title="Messenger">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="74"/>
@@ -20749,7 +20749,7 @@
 		</skills>
 	</npc>
 	<npc id="35601" name="Doorman" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="5"/>
 		<set name="height" val="10.5"/>
 		<set name="rHand" val="0"/>
@@ -20784,7 +20784,7 @@
 		</skills>
 	</npc>
 	<npc id="35602" name="Doorman" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="5"/>
 		<set name="height" val="10.5"/>
 		<set name="rHand" val="0"/>
@@ -20924,7 +20924,7 @@
 		</skills>
 	</npc>
 	<npc id="35606" name="Victor's Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="63.5"/>
 		<set name="height" val="97.5"/>
 		<set name="rHand" val="0"/>
@@ -20959,7 +20959,7 @@
 		</skills>
 	</npc>
 	<npc id="35607" name="Red Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="51.8"/>
 		<set name="height" val="108.25"/>
 		<set name="rHand" val="0"/>
@@ -20994,7 +20994,7 @@
 		</skills>
 	</npc>
 	<npc id="35608" name="Yellow Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="51.8"/>
 		<set name="height" val="108.25"/>
 		<set name="rHand" val="0"/>
@@ -21029,7 +21029,7 @@
 		</skills>
 	</npc>
 	<npc id="35609" name="Green Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="51.8"/>
 		<set name="height" val="108.25"/>
 		<set name="rHand" val="0"/>
@@ -21064,7 +21064,7 @@
 		</skills>
 	</npc>
 	<npc id="35610" name="Blue Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="51.8"/>
 		<set name="height" val="108.25"/>
 		<set name="rHand" val="0"/>
@@ -21099,7 +21099,7 @@
 		</skills>
 	</npc>
 	<npc id="35611" name="Purple Flag" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="56"/>
 		<set name="radius" val="51.8"/>
 		<set name="height" val="108.25"/>
 		<set name="rHand" val="0"/>
@@ -21134,7 +21134,7 @@
 		</skills>
 	</npc>
 	<npc id="35612" name="Group Gatekeeper" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="26"/>
 		<set name="rHand" val="0"/>
@@ -21169,7 +21169,7 @@
 		</skills>
 	</npc>
 	<npc id="35613" name="Group Gatekeeper" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="26"/>
 		<set name="rHand" val="0"/>
@@ -21204,7 +21204,7 @@
 		</skills>
 	</npc>
 	<npc id="35614" name="Group Gatekeeper" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="26"/>
 		<set name="rHand" val="0"/>
@@ -21239,7 +21239,7 @@
 		</skills>
 	</npc>
 	<npc id="35615" name="Group Gatekeeper" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="26"/>
 		<set name="rHand" val="0"/>
@@ -21274,7 +21274,7 @@
 		</skills>
 	</npc>
 	<npc id="35616" name="Group Gatekeeper" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="26"/>
 		<set name="rHand" val="0"/>
@@ -21309,7 +21309,7 @@
 		</skills>
 	</npc>
 	<npc id="35617" name="Group Gatekeeper" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="26"/>
 		<set name="rHand" val="0"/>
@@ -21344,7 +21344,7 @@
 		</skills>
 	</npc>
 	<npc id="35618" name="Frenzied Cougar" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="34"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="0"/>
@@ -21378,7 +21378,7 @@
 		</skills>
 	</npc>
 	<npc id="35619" name="Frenzied Buffalo" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="60"/>
 		<set name="radius" val="22"/>
 		<set name="height" val="31"/>
 		<set name="rHand" val="0"/>
@@ -21412,7 +21412,7 @@
 		</skills>
 	</npc>
 	<npc id="35620" name="Frenzied Kookaburra" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="33"/>
 		<set name="rHand" val="0"/>
@@ -21446,7 +21446,7 @@
 		</skills>
 	</npc>
 	<npc id="35621" name="Frenzied Buffalo Baby" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="12"/>
 		<set name="height" val="15"/>
 		<set name="rHand" val="0"/>
@@ -21480,7 +21480,7 @@
 		</skills>
 	</npc>
 	<npc id="35622" name="Frenzied Baby Cougar" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="11"/>
 		<set name="height" val="15.7"/>
 		<set name="rHand" val="0"/>
@@ -21514,7 +21514,7 @@
 		</skills>
 	</npc>
 	<npc id="35623" name="Inner Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="32"/>
 		<set name="rHand" val="0"/>
@@ -21549,7 +21549,7 @@
 		</skills>
 	</npc>
 	<npc id="35624" name="Inner Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="32"/>
 		<set name="rHand" val="0"/>
@@ -21584,7 +21584,7 @@
 		</skills>
 	</npc>
 	<npc id="35625" name="Outer Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="32"/>
 		<set name="rHand" val="0"/>
@@ -21619,7 +21619,7 @@
 		</skills>
 	</npc>
 	<npc id="35626" name="Outer Doorman" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="32"/>
 		<set name="rHand" val="0"/>
@@ -21654,7 +21654,7 @@
 		</skills>
 	</npc>
 	<npc id="35627" name="Messenger" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="32"/>
 		<set name="rHand" val="0"/>
@@ -21689,7 +21689,7 @@
 		</skills>
 	</npc>
 	<npc id="35628" name="Quigby" title="Farm Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="13"/>
 		<set name="height" val="32"/>
 		<set name="rHand" val="0"/>
@@ -21724,7 +21724,7 @@
 		</skills>
 	</npc>
 	<npc id="35629" name="Lidia von Hellmann" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="73"/>
 		<set name="radius" val="10"/>
 		<set name="height" val="25.4"/>
 		<set name="rHand" val="8209"/>
@@ -21768,7 +21768,7 @@
 		</skills>
 	</npc>
 	<npc id="35630" name="Alfred von Hellmann" title="">
-		<set name="level" val="77"/>
+		<set name="level" val="72"/>
 		<set name="radius" val="19"/>
 		<set name="height" val="35"/>
 		<set name="rHand" val="8209"/>
@@ -21812,7 +21812,7 @@
 		</skills>
 	</npc>
 	<npc id="35631" name="Giselle von Hellmann" title="">
-		<set name="level" val="77"/>
+		<set name="level" val="72"/>
 		<set name="radius" val="5.5"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="8209"/>
@@ -21856,7 +21856,7 @@
 		</skills>
 	</npc>
 	<npc id="35632" name="Vampire Adept" title="">
-		<set name="level" val="73"/>
+		<set name="level" val="72"/>
 		<set name="radius" val="6"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="99"/>
@@ -21898,7 +21898,7 @@
 		</skills>
 	</npc>
 	<npc id="35633" name="Vampire Soldier" title="">
-		<set name="level" val="74"/>
+		<set name="level" val="71"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="234"/>
@@ -21940,7 +21940,7 @@
 		</skills>
 	</npc>
 	<npc id="35634" name="Vampire Caster" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="72"/>
 		<set name="radius" val="6"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="946"/>
@@ -21984,7 +21984,7 @@
 		</skills>
 	</npc>
 	<npc id="35635" name="Vampire Magister" title="">
-		<set name="level" val="76"/>
+		<set name="level" val="73"/>
 		<set name="radius" val="5.5"/>
 		<set name="height" val="28"/>
 		<set name="rHand" val="99"/>
@@ -22026,7 +22026,7 @@
 		</skills>
 	</npc>
 	<npc id="35636" name="Vampire Warlord" title="">
-		<set name="level" val="77"/>
+		<set name="level" val="73"/>
 		<set name="radius" val="9"/>
 		<set name="height" val="31.5"/>
 		<set name="rHand" val="6723"/>
@@ -22069,7 +22069,7 @@
 		</skills>
 	</npc>
 	<npc id="35637" name="Vampire Leader" title="">
-		<set name="level" val="78"/>
+		<set name="level" val="73"/>
 		<set name="radius" val="7.5"/>
 		<set name="height" val="25.8"/>
 		<set name="rHand" val="946"/>
@@ -22111,7 +22111,7 @@
 		</skills>
 	</npc>
 	<npc id="35638" name="Valens" title="Wyvern Manager">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -22146,7 +22146,7 @@
 		</skills>
 	</npc>
 	<npc id="35639" name="Jacquard" title="Messenger">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="74"/>
@@ -22181,7 +22181,7 @@
 		</skills>
 	</npc>
 	<npc id="35640" name="Bandello" title="Steward">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -22216,7 +22216,7 @@
 		</skills>
 	</npc>
 	<npc id="35641" name="Fortress Guard" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -22251,7 +22251,7 @@
 		</skills>
 	</npc>
 	<npc id="35642" name="Fortress Guard" title="">
-		<set name="level" val="75"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23.5"/>
 		<set name="rHand" val="0"/>
@@ -22286,7 +22286,7 @@
 		</skills>
 	</npc>
 	<npc id="35643" name="Gate" title="">
-		<set name="level" val="56"/>
+		<set name="level" val="70"/>
 		<set name="radius" val="184"/>
 		<set name="height" val="24"/>
 		<set name="rHand" val="0"/>
@@ -22391,7 +22391,7 @@
 		</skills>
 	</npc>
 	<npc id="35646" name="Vampire Caster" title="">
-		<set name="level" val="70"/>
+		<set name="level" val="72"/>
 		<set name="radius" val="6"/>
 		<set name="height" val="21.5"/>
 		<set name="rHand" val="946"/>

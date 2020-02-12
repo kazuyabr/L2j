@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.CameraMode;
 import net.sf.l2j.gameserver.network.serverpackets.ExShowScreenMessage;
 import net.sf.l2j.gameserver.network.serverpackets.NormalCamera;
@@ -62,7 +62,7 @@ public class AdminCamera implements IAdminCommandHandler
 				activeChar.broadcastUserInfo();
 				
 				// Teleport back the player to beginning point
-				activeChar.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ(), 0);
+				activeChar.teleportTo(activeChar.getX(), activeChar.getY(), activeChar.getZ(), 0);
 			}
 		}
 		return true;

@@ -4,9 +4,9 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.commons.lang.StringUtil;
 
-import net.sf.l2j.gameserver.cache.HtmCache;
+import net.sf.l2j.gameserver.data.cache.HtmCache;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -17,97 +17,93 @@ public class ClanBBSManager extends BaseBBSManager
 	{
 	}
 	
-	public static ClanBBSManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
 	@Override
-	public void parseCmd(String command, Player activeChar)
+	public void parseCmd(String command, Player player)
 	{
 		if (command.equalsIgnoreCase("_bbsclan"))
 		{
-			if (activeChar.getClan() == null)
-				sendClanList(activeChar, 1);
+			if (player.getClan() == null)
+				sendClanList(player, 1);
 			else
-				sendClanDetails(activeChar, activeChar.getClan().getClanId());
+				sendClanDetails(player, player.getClan().getClanId());
 		}
 		else if (command.startsWith("_bbsclan"))
 		{
-			StringTokenizer st = new StringTokenizer(command, ";");
+			final StringTokenizer st = new StringTokenizer(command, ";");
 			st.nextToken();
 			
 			final String clanCommand = st.nextToken();
 			if (clanCommand.equalsIgnoreCase("clan"))
-				sendClanList(activeChar, Integer.parseInt(st.nextToken()));
+				sendClanList(player, Integer.parseInt(st.nextToken()));
 			else if (clanCommand.equalsIgnoreCase("home"))
-				sendClanDetails(activeChar, Integer.parseInt(st.nextToken()));
+				sendClanDetails(player, Integer.parseInt(st.nextToken()));
 			else if (clanCommand.equalsIgnoreCase("mail"))
-				sendClanMail(activeChar, Integer.parseInt(st.nextToken()));
+				sendClanMail(player, Integer.parseInt(st.nextToken()));
 			else if (clanCommand.equalsIgnoreCase("management"))
-				sendClanManagement(activeChar, Integer.parseInt(st.nextToken()));
+				sendClanManagement(player, Integer.parseInt(st.nextToken()));
 			else if (clanCommand.equalsIgnoreCase("notice"))
 			{
 				if (st.hasMoreTokens())
 				{
 					final String noticeCommand = st.nextToken();
-					if (!noticeCommand.isEmpty() && activeChar.getClan() != null)
-						activeChar.getClan().setNoticeEnabledAndStore(Boolean.parseBoolean(noticeCommand));
+					if (!noticeCommand.isEmpty() && player.getClan() != null)
+						player.getClan().setNoticeEnabledAndStore(Boolean.parseBoolean(noticeCommand));
 				}
-				sendClanNotice(activeChar, activeChar.getClanId());
+				sendClanNotice(player, player.getClanId());
 			}
 		}
 		else
-			super.parseCmd(command, activeChar);
+			super.parseCmd(command, player);
 	}
 	
 	@Override
-	public void parseWrite(String ar1, String ar2, String ar3, String ar4, String ar5, Player activeChar)
+	public void parseWrite(String ar1, String ar2, String ar3, String ar4, String ar5, Player player)
 	{
 		if (ar1.equalsIgnoreCase("intro"))
 		{
-			if (Integer.valueOf(ar2) != activeChar.getClanId())
+			if (Integer.valueOf(ar2) != player.getClanId())
 				return;
 			
-			final Clan clan = ClanTable.getInstance().getClan(activeChar.getClanId());
+			final Clan clan = ClanTable.getInstance().getClan(player.getClanId());
 			if (clan == null)
 				return;
 			
 			clan.setIntroduction(ar3, true);
-			sendClanManagement(activeChar, Integer.valueOf(ar2));
+			sendClanManagement(player, Integer.valueOf(ar2));
 		}
 		else if (ar1.equals("notice"))
 		{
-			activeChar.getClan().setNoticeAndStore(ar4);
-			sendClanNotice(activeChar, activeChar.getClanId());
+			final Clan clan = player.getClan();
+			if (clan != null)
+			{
+				clan.setNoticeAndStore(ar4);
+				sendClanNotice(player, player.getClanId());
+			}
 		}
 		else if (ar1.equalsIgnoreCase("mail"))
 		{
-			if (Integer.valueOf(ar2) != activeChar.getClanId())
+			if (Integer.valueOf(ar2) != player.getClanId())
 				return;
 			
-			final Clan clan = ClanTable.getInstance().getClan(activeChar.getClanId());
+			final Clan clan = ClanTable.getInstance().getClan(player.getClanId());
 			if (clan == null)
 				return;
 			
 			// Retrieve clans members, and store them under a String.
-			final StringBuffer membersList = new StringBuffer();
+			final StringBuilder members = new StringBuilder();
 			
-			for (ClanMember player : clan.getMembers())
+			for (ClanMember member : clan.getMembers())
 			{
-				if (player != null)
-				{
-					if (membersList.length() > 0)
-						membersList.append(";");
-					
-					membersList.append(player.getName());
-				}
+				if (members.length() > 0)
+					members.append(";");
+				
+				members.append(member.getName());
 			}
-			MailBBSManager.getInstance().sendLetter(membersList.toString(), ar4, ar5, activeChar);
-			sendClanDetails(activeChar, activeChar.getClanId());
+			MailBBSManager.getInstance().sendMail(members.toString(), ar4, ar5, player);
+			sendClanDetails(player, player.getClanId());
 		}
 		else
-			super.parseWrite(ar1, ar2, ar3, ar4, ar5, activeChar);
+			super.parseWrite(ar1, ar2, ar3, ar4, ar5, player);
 	}
 	
 	@Override
@@ -116,54 +112,54 @@ public class ClanBBSManager extends BaseBBSManager
 		return "clan/";
 	}
 	
-	private static void sendClanMail(Player activeChar, int clanId)
+	private static void sendClanMail(Player player, int clanId)
 	{
 		final Clan clan = ClanTable.getInstance().getClan(clanId);
 		if (clan == null)
 			return;
 		
-		if (activeChar.getClanId() != clanId || !activeChar.isClanLeader())
+		if (player.getClanId() != clanId || !player.isClanLeader())
 		{
-			activeChar.sendPacket(SystemMessageId.ONLY_THE_CLAN_LEADER_IS_ENABLED);
-			sendClanList(activeChar, 1);
+			player.sendPacket(SystemMessageId.ONLY_THE_CLAN_LEADER_IS_ENABLED);
+			sendClanList(player, 1);
 			return;
 		}
 		
 		String content = HtmCache.getInstance().getHtm(CB_PATH + "clan/clanhome-mail.htm");
 		content = content.replaceAll("%clanid%", Integer.toString(clanId));
 		content = content.replaceAll("%clanName%", clan.getName());
-		separateAndSend(content, activeChar);
+		separateAndSend(content, player);
 	}
 	
-	private static void sendClanManagement(Player activeChar, int clanId)
+	private static void sendClanManagement(Player player, int clanId)
 	{
 		final Clan clan = ClanTable.getInstance().getClan(clanId);
 		if (clan == null)
 			return;
 		
-		if (activeChar.getClanId() != clanId || !activeChar.isClanLeader())
+		if (player.getClanId() != clanId || !player.isClanLeader())
 		{
-			activeChar.sendPacket(SystemMessageId.ONLY_THE_CLAN_LEADER_IS_ENABLED);
-			sendClanList(activeChar, 1);
+			player.sendPacket(SystemMessageId.ONLY_THE_CLAN_LEADER_IS_ENABLED);
+			sendClanList(player, 1);
 			return;
 		}
 		
 		String content = HtmCache.getInstance().getHtm(CB_PATH + "clan/clanhome-management.htm");
 		content = content.replaceAll("%clanid%", Integer.toString(clan.getClanId()));
-		send1001(content, activeChar);
-		send1002(activeChar, clan.getIntroduction(), "", "");
+		send1001(content, player);
+		send1002(player, clan.getIntroduction(), "", "");
 	}
 	
-	private static void sendClanNotice(Player activeChar, int clanId)
+	private static void sendClanNotice(Player player, int clanId)
 	{
 		final Clan clan = ClanTable.getInstance().getClan(clanId);
-		if (clan == null || activeChar.getClanId() != clanId)
+		if (clan == null || player.getClanId() != clanId)
 			return;
 		
 		if (clan.getLevel() < 2)
 		{
-			activeChar.sendPacket(SystemMessageId.NO_CB_IN_MY_CLAN);
-			sendClanList(activeChar, 1);
+			player.sendPacket(SystemMessageId.NO_CB_IN_MY_CLAN);
+			sendClanList(player, 1);
 			return;
 		}
 		
@@ -171,20 +167,20 @@ public class ClanBBSManager extends BaseBBSManager
 		content = content.replaceAll("%clanid%", Integer.toString(clan.getClanId()));
 		content = content.replace("%enabled%", "[" + String.valueOf(clan.isNoticeEnabled()) + "]");
 		content = content.replace("%flag%", String.valueOf(!clan.isNoticeEnabled()));
-		send1001(content, activeChar);
-		send1002(activeChar, clan.getNotice(), "", "");
+		send1001(content, player);
+		send1002(player, clan.getNotice(), "", "");
 	}
 	
-	private static void sendClanList(Player activeChar, int index)
+	private static void sendClanList(Player player, int index)
 	{
 		String content = HtmCache.getInstance().getHtm(CB_PATH + "clan/clanlist.htm");
 		
 		// Player got a clan, show the associated header.
 		final StringBuilder sb = new StringBuilder();
 		
-		final Clan playerClan = activeChar.getClan();
-		if (playerClan != null)
-			StringUtil.append(sb, "<table width=610 bgcolor=A7A19A><tr><td width=5></td><td width=605><a action=\"bypass _bbsclan;home;", playerClan.getClanId(), "\">[GO TO MY CLAN]</a></td></tr></table>");
+		final Clan clan = player.getClan();
+		if (clan != null)
+			StringUtil.append(sb, "<table width=610 bgcolor=A7A19A><tr><td width=5></td><td width=605><a action=\"bypass _bbsclan;home;", clan.getClanId(), "\">[GO TO MY CLAN]</a></td></tr></table>");
 		
 		content = content.replace("%homebar%", sb.toString());
 		
@@ -212,11 +208,11 @@ public class ClanBBSManager extends BaseBBSManager
 			StringUtil.append(sb, "<td><button action=\"_bbsclan;clan;", index - 1, "\" back=\"l2ui_ch3.prev1_down\" fore=\"l2ui_ch3.prev1\" width=16 height=16 ></td>");
 		
 		i = 0;
-		int nbp = ClanTable.getInstance().getClans().size() / 8;
-		if (nbp * 8 != ClanTable.getInstance().getClans().size())
-			nbp++;
+		int pageNumber = ClanTable.getInstance().getClans().size() / 8;
+		if (pageNumber * 8 != ClanTable.getInstance().getClans().size())
+			pageNumber++;
 		
-		for (i = 1; i <= nbp; i++)
+		for (i = 1; i <= pageNumber; i++)
 		{
 			if (i == index)
 				StringUtil.append(sb, "<td> ", i, " </td>");
@@ -224,7 +220,7 @@ public class ClanBBSManager extends BaseBBSManager
 				StringUtil.append(sb, "<td><a action=\"bypass _bbsclan;clan;", i, "\"> ", i, " </a></td>");
 		}
 		
-		if (index == nbp)
+		if (index == pageNumber)
 			sb.append("<td><button action=\"\" back=\"l2ui_ch3.next1_down\" fore=\"l2ui_ch3.next1\" width=16 height=16></td>");
 		else
 			StringUtil.append(sb, "<td><button action=\"bypass _bbsclan;clan;", index + 1, "\" back=\"l2ui_ch3.next1_down\" fore=\"l2ui_ch3.next1\" width=16 height=16 ></td>");
@@ -232,10 +228,10 @@ public class ClanBBSManager extends BaseBBSManager
 		sb.append("</tr></table>");
 		
 		content = content.replace("%clanlist%", sb.toString());
-		separateAndSend(content, activeChar);
+		separateAndSend(content, player);
 	}
 	
-	private static void sendClanDetails(Player activeChar, int clanId)
+	private static void sendClanDetails(Player player, int clanId)
 	{
 		final Clan clan = ClanTable.getInstance().getClan(clanId);
 		if (clan == null)
@@ -243,16 +239,16 @@ public class ClanBBSManager extends BaseBBSManager
 		
 		if (clan.getLevel() < 2)
 		{
-			activeChar.sendPacket(SystemMessageId.NO_CB_IN_MY_CLAN);
-			sendClanList(activeChar, 1);
+			player.sendPacket(SystemMessageId.NO_CB_IN_MY_CLAN);
+			sendClanList(player, 1);
 			return;
 		}
 		
 		// Load different HTM following player case, 3 possibilites : randomer, member, clan leader.
 		String content;
-		if (activeChar.getClanId() != clanId)
+		if (player.getClanId() != clanId)
 			content = HtmCache.getInstance().getHtm(CB_PATH + "clan/clanhome.htm");
-		else if (activeChar.isClanLeader())
+		else if (player.isClanLeader())
 			content = HtmCache.getInstance().getHtm(CB_PATH + "clan/clanhome-leader.htm");
 		else
 			content = HtmCache.getInstance().getHtm(CB_PATH + "clan/clanhome-member.htm");
@@ -264,11 +260,16 @@ public class ClanBBSManager extends BaseBBSManager
 		content = content.replace("%clanMembers%", Integer.toString(clan.getMembersCount()));
 		content = content.replaceAll("%clanLeader%", clan.getLeaderName());
 		content = content.replace("%allyName%", (clan.getAllyId() > 0) ? clan.getAllyName() : "");
-		separateAndSend(content, activeChar);
+		separateAndSend(content, player);
+	}
+	
+	public static ClanBBSManager getInstance()
+	{
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final ClanBBSManager _instance = new ClanBBSManager();
+		protected static final ClanBBSManager INSTANCE = new ClanBBSManager();
 	}
 }

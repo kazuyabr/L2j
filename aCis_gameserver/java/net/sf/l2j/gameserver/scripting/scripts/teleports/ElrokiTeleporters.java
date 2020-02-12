@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.scripting.scripts.teleports;
 
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 public class ElrokiTeleporters extends Quest
@@ -22,10 +22,10 @@ public class ElrokiTeleporters extends Quest
 			if (player.isInCombat())
 				return "32111-no.htm";
 			
-			player.teleToLocation(4990, -1879, -3178, 0);
+			player.teleportTo(4990, -1879, -3178, 0);
 		}
 		else
-			player.teleToLocation(7557, -5513, -3221, 0);
+			player.teleportTo(7557, -5513, -3221, 0);
 		
 		return null;
 	}

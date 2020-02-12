@@ -22442,7 +22442,7 @@
 		</skills>
 		<teachTo classes="25;29;30"/>
 	</npc>
-	<npc id="30862" name="Oltran" title="Grand Master">
+	<npc id="30862" name="Oltlin" title="Grand Master">
 		<set name="level" val="70"/>
 		<set name="radius" val="8"/>
 		<set name="height" val="23"/>
@@ -27123,7 +27123,7 @@
 		<set name="height" val="21.3"/>
 		<set name="rHand" val="0"/>
 		<set name="lHand" val="0"/>
-		<set name="type" val="RaceManagerNpc"/>
+		<set name="type" val="DerbyTrackManagerNpc"/>
 		<set name="exp" val="0"/>
 		<set name="sp" val="0"/>
 		<set name="hp" val="2444.46819"/>

@@ -1,11 +1,8 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
 
-/**
- * @author -Wooden-
- */
 public final class PledgeShowMemberListUpdate extends L2GameServerPacket
 {
 	private final int _pledgeType;
@@ -29,19 +26,19 @@ public final class PledgeShowMemberListUpdate extends L2GameServerPacket
 		_isOnline = (player.isOnline()) ? player.getObjectId() : 0;
 	}
 	
-	public PledgeShowMemberListUpdate(ClanMember player)
+	public PledgeShowMemberListUpdate(ClanMember member)
 	{
-		_name = player.getName();
-		_level = player.getLevel();
-		_classId = player.getClassId();
-		_isOnline = (player.isOnline()) ? player.getObjectId() : 0;
-		_pledgeType = player.getPledgeType();
-		_hasSponsor = (player.getSponsor() != 0 || player.getApprentice() != 0) ? 1 : 0;
+		_name = member.getName();
+		_level = member.getLevel();
+		_classId = member.getClassId();
+		_isOnline = (member.isOnline()) ? member.getObjectId() : 0;
+		_pledgeType = member.getPledgeType();
+		_hasSponsor = (member.getSponsor() != 0 || member.getApprentice() != 0) ? 1 : 0;
 		
 		if (_isOnline != 0)
 		{
-			_race = player.getPlayerInstance().getRace().ordinal();
-			_sex = player.getPlayerInstance().getAppearance().getSex().ordinal();
+			_race = member.getPlayerInstance().getRace().ordinal();
+			_sex = member.getPlayerInstance().getAppearance().getSex().ordinal();
 		}
 		else
 		{

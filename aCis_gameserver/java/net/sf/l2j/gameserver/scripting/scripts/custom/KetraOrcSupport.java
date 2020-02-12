@@ -10,7 +10,7 @@ import net.sf.l2j.gameserver.model.actor.Attackable;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Playable;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.itemcontainer.PcInventory;
@@ -286,17 +286,20 @@ public class KetraOrcSupport extends Quest
 	}
 	
 	@Override
-	public String onKill(Npc npc, Player player, boolean isPet)
+	public String onKill(Npc npc, Creature killer)
 	{
-		final Party party = player.getParty();
-		if (party != null)
+		final Player player = killer.getActingPlayer();
+		if (player != null)
 		{
-			for (Player partyMember : party.getMembers())
-				testKetraDemote(partyMember);
+			final Party party = player.getParty();
+			if (party != null)
+			{
+				for (Player partyMember : party.getMembers())
+					testKetraDemote(partyMember);
+			}
+			else
+				testKetraDemote(player);
 		}
-		else
-			testKetraDemote(player);
-		
 		return null;
 	}
 	
@@ -338,7 +341,7 @@ public class KetraOrcSupport extends Quest
 								final WorldObject oldTarget = npc.getTarget();
 								
 								// Curse the heretic or his pet.
-								npc.setTarget((isPet && player.getPet() != null) ? caster.getPet() : caster);
+								npc.setTarget((isPet && player.getSummon() != null) ? caster.getSummon() : caster);
 								npc.doCast(FrequentSkill.VARKA_KETRA_PETRIFICATION.getSkill());
 								
 								// Revert to old target && drop the loop.

@@ -3,18 +3,15 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
-import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 
-/**
- * @author earendil
- */
 public class BalanceLife implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
@@ -25,7 +22,7 @@ public class BalanceLife implements ISkillHandler
 	@Override
 	public void useSkill(Creature activeChar, L2Skill skill, WorldObject[] targets)
 	{
-		final ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(L2SkillType.BUFF);
+		final ISkillHandler handler = SkillHandler.getInstance().getHandler(L2SkillType.BUFF);
 		if (handler != null)
 			handler.useSkill(activeChar, skill, targets);
 		

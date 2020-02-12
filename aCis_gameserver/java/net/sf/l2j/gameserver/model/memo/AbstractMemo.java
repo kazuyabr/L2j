@@ -2,7 +2,7 @@ package net.sf.l2j.gameserver.model.memo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.commons.util.StatsSet;
 
 /**
  * A {@link StatsSet} which overrides methods to prevent doing useless database operations if there is no changes since last edit (it uses an AtomicBoolean to keep edition tracking).<br>

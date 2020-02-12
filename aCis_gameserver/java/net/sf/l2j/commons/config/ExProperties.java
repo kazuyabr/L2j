@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * @author G1ta0
- */
+import net.sf.l2j.commons.logging.CLogger;
+
+import net.sf.l2j.gameserver.model.holder.IntIntHolder;
+
 public class ExProperties extends Properties
 {
+	private static final CLogger LOGGER = new CLogger(ExProperties.class.getName());
+	
 	private static final long serialVersionUID = 1L;
 	
 	public static final String defaultDelimiter = "[\\s,;]+";
@@ -174,5 +177,42 @@ public class ExProperties extends Properties
 		}
 		
 		return val;
+	}
+	
+	/**
+	 * @param key : the hashtable key.
+	 * @param defaultValue : a default value.
+	 * @return an {@link IntIntHolder} array consisting of parsed items.
+	 */
+	public final IntIntHolder[] parseIntIntList(String key, String defaultValue)
+	{
+		final String[] propertySplit = getProperty(key, defaultValue).split(";");
+		if (propertySplit.length == 0)
+			return null;
+		
+		int i = 0;
+		final IntIntHolder[] result = new IntIntHolder[propertySplit.length];
+		for (String value : propertySplit)
+		{
+			final String[] valueSplit = value.split("-");
+			if (valueSplit.length != 2)
+			{
+				LOGGER.warn("Error parsing entry '{}', it should be itemId-itemNumber.", key);
+				return null;
+			}
+			
+			try
+			{
+				result[i] = new IntIntHolder(Integer.parseInt(valueSplit[0]), Integer.parseInt(valueSplit[1]));
+			}
+			catch (Exception e)
+			{
+				LOGGER.error("Error parsing entry '{}', one of the value isn't a number.", e, key);
+				return null;
+			}
+			
+			i++;
+		}
+		return result;
 	}
 }

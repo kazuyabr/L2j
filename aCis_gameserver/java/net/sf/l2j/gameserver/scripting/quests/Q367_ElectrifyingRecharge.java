@@ -4,7 +4,7 @@ import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Npc;
-import net.sf.l2j.gameserver.model.actor.instance.Player;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
@@ -24,7 +24,7 @@ public class Q367_ElectrifyingRecharge extends Quest
 	private static final int TITAN_LAMP_5 = 5880;
 	
 	// Reward
-	private static final int REWARD[] =
+	private static final int REWARDS[] =
 	{
 		4553,
 		4554,
@@ -136,7 +136,7 @@ public class Q367_ElectrifyingRecharge extends Quest
 				{
 					htmltext = "30673-06.htm";
 					st.takeItems(5879, 1);
-					st.rewardItems(REWARD[Rnd.get(REWARD.length)], 1);
+					st.rewardItems(Rnd.get(REWARDS), 1);
 					st.playSound(QuestState.SOUND_FINISH);
 				}
 				break;
