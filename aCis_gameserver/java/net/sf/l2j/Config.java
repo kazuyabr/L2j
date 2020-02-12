@@ -1121,7 +1121,7 @@ public final class Config
 		REQUEST_ID = server.getProperty("RequestServerID", 0);
 		ACCEPT_ALTERNATE_ID = server.getProperty("AcceptAlternateID", true);
 		
-		DATABASE_URL = server.getProperty("URL", "jdbc:mysql://localhost/acis?serverTimezone=UTC");
+		DATABASE_URL = server.getProperty("URL", "jdbc:mariadb://localhost/acis");
 		DATABASE_LOGIN = server.getProperty("Login", "root");
 		DATABASE_PASSWORD = server.getProperty("Password", "");
 		DATABASE_MAX_CONNECTIONS = server.getProperty("MaximumDbConnections", 10);
@@ -1266,10 +1266,10 @@ public final class Config
 		
 		SHOW_LICENCE = server.getProperty("ShowLicence", true);
 		
-		DATABASE_URL = server.getProperty("URL", "jdbc:mysql://localhost/acis?serverTimezone=UTC");
+		DATABASE_URL = server.getProperty("URL", "jdbc:mariadb://localhost/acis");
 		DATABASE_LOGIN = server.getProperty("Login", "root");
 		DATABASE_PASSWORD = server.getProperty("Password", "");
-		DATABASE_MAX_CONNECTIONS = server.getProperty("MaximumDbConnections", 10);
+		DATABASE_MAX_CONNECTIONS = server.getProperty("MaximumDbConnections", 5);
 		
 		AUTO_CREATE_ACCOUNTS = server.getProperty("AutoCreateAccounts", true);
 		

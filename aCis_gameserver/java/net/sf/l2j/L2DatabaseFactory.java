@@ -1,6 +1,6 @@
 package net.sf.l2j;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ public class L2DatabaseFactory
 {
 	protected static Logger _log = Logger.getLogger(L2DatabaseFactory.class.getName());
 	
-	private ComboPooledDataSource _source;
+	private HikariDataSource _source;
 	
 	public static L2DatabaseFactory getInstance()
 	{
@@ -22,25 +22,16 @@ public class L2DatabaseFactory
 	{
 		try
 		{
-			_source = new ComboPooledDataSource();
-			
-			_source.setAutoCommitOnClose(true);
-			_source.setInitialPoolSize(10);
-			_source.setMinPoolSize(10);
-			_source.setMaxPoolSize(Math.max(10, Config.DATABASE_MAX_CONNECTIONS));
-			_source.setAcquireRetryAttempts(0); // try to obtain connections indefinitely (0 = never quit)
-			_source.setAcquireRetryDelay(500); // 500 miliseconds wait before try to acquire connection again
-			_source.setCheckoutTimeout(0); // 0 = wait indefinitely for new connection
-			_source.setAcquireIncrement(5); // if pool is exhausted, get 5 more connections at a time
-			_source.setTestConnectionOnCheckin(false);
-			_source.setIdleConnectionTestPeriod(3600); // test idle connection every 60 sec
-			_source.setMaxIdleTime(0); // idle connections never expire
-			_source.setMaxStatementsPerConnection(100);
-			_source.setBreakAfterAcquireFailure(false); // never fail if any way possible
-			_source.setDriverClass("com.mysql.cj.jdbc.Driver");
+			_source = new HikariDataSource();
+			_source.setDriverClassName("org.mariadb.jdbc.Driver");
 			_source.setJdbcUrl(Config.DATABASE_URL);
-			_source.setUser(Config.DATABASE_LOGIN);
+			_source.setUsername(Config.DATABASE_LOGIN);
 			_source.setPassword(Config.DATABASE_PASSWORD);
+			_source.setMaximumPoolSize(Math.max(10, Config.DATABASE_MAX_CONNECTIONS));
+			_source.setIdleTimeout(0);
+			
+			// A maximum life time of 15 minutes
+			_source.setMaxLifetime(900000);
 			
 			/* Test the connection */
 			_source.getConnection().close();
