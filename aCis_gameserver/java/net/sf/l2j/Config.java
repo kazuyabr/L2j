@@ -17,6 +17,7 @@ import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.math.MathUtil;
 
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
+import net.sf.l2j.gameserver.network.serverpackets.FirstKey;
 
 /**
  * This class contains global server configuration.<br>
@@ -605,6 +606,17 @@ public final class Config
 	public static boolean SERVER_NEWS;
 	public static int ZONE_TOWN;
 	public static boolean DISABLE_TUTORIAL;
+	
+	/** Game guard */
+	public static boolean ALLOW_GUARD_SYSTEM;
+	public static boolean PROTECT_KICK_WITH_EMPTY_HWID;
+	public static boolean PROTECT_KICK_WITH_LASTERROR_HWID;
+	public static int GET_CLIENT_HWID;
+	public static int PROTECT_WINDOWS_COUNT;
+	public static byte[] GUARD_CLIENT_CRYPT_KEY;
+	public static byte[] GUARD_CLIENT_CRYPT;
+	public static byte[] GUARD_SERVER_CRYPT_KEY;
+	public static byte[] GUARD_SERVER_CRYPT;
 	
 	// --------------------------------------------------
 	// Those "hidden" settings haven't configs to avoid admins to fuck their server
@@ -1243,6 +1255,30 @@ public final class Config
 		ZONE_TOWN = server.getProperty("ZoneTown", 0);
 		SERVER_NEWS = server.getProperty("ShowServerNews", false);
 		DISABLE_TUTORIAL = server.getProperty("DisableTutorial", false);
+		
+		ALLOW_GUARD_SYSTEM = server.getProperty("AllowGuardSystem", true);
+		PROTECT_KICK_WITH_LASTERROR_HWID = server.getProperty("KickWithLastErrorHWID", false);
+		PROTECT_KICK_WITH_EMPTY_HWID = server.getProperty("KickWithEmptyHWID", false);
+		GET_CLIENT_HWID = server.getProperty("UseClientHWID", 2);
+		PROTECT_WINDOWS_COUNT = server.getProperty("WindowsCount", 0);
+		
+		String key_client = "GOGX2_RB(]Slnjt15~EgyqTv%[$YR]!1E~ayK?$9[R%%m4{zoMF$D?f:zvS2q&>~";
+		String key_server = "b*qR43<9J1pD>Q4Uns6FsKao~VbU0H]y`A0ytTveiWn)SuSYsM?m*eblL!pwza!t";
+		byte[] keyS = key_server.getBytes();
+		byte[] tmpS = new byte[32];
+		
+		byte[] keyC = key_client.getBytes();
+		byte[] tmpC = new byte[32];
+		
+		System.arraycopy(keyC, 0, tmpC, 0, 32);
+		GUARD_CLIENT_CRYPT_KEY = FirstKey.expandKey(tmpC, 32);
+		System.arraycopy(keyC, 32, tmpC, 0, 32);
+		GUARD_CLIENT_CRYPT = FirstKey.expandKey(tmpC, 32);
+		
+		System.arraycopy(keyS, 0, tmpS, 0, 32);
+		GUARD_SERVER_CRYPT_KEY = FirstKey.expandKey(tmpS, 32);
+		System.arraycopy(keyS, 32, tmpS, 0, 32);
+		GUARD_SERVER_CRYPT = FirstKey.expandKey(tmpS, 32);
 	}
 	
 	/**

@@ -86,7 +86,6 @@ public class Olympiad
 	protected Olympiad()
 	{
 		load();
-		
 		if (_period == OlympiadState.COMPETITION)
 			init();
 	}

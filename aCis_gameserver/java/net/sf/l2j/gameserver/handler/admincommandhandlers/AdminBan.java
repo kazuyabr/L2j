@@ -39,6 +39,7 @@ public class AdminBan implements IAdminCommandHandler
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_ban", // returns ban commands
+		"admin_hwidban",
 		"admin_ban_acc",
 		"admin_ban_char",
 		"admin_ban_chat",
@@ -99,6 +100,34 @@ public class AdminBan implements IAdminCommandHandler
 		{
 			activeChar.sendMessage("Available ban commands: //ban_acc, //ban_char, //ban_chat");
 			return false;
+		}
+		if (command.startsWith("admin_hwidban"))
+		{
+			if (targetPlayer == null)
+			{
+				activeChar.sendMessage("Usage: //admin_hwidban target player is banned)");
+				return false;
+			}
+			
+			String hwid = targetPlayer.getHwid();
+			if (hwid != null)
+			{
+				updateDatabase(targetPlayer);					
+				targetPlayer.setAccountAccesslevel(-100);					
+				
+				String hwidz = targetPlayer.getHwid();
+				
+				if (targetPlayer.isOnline())
+				{
+					if (hwidz.equals(hwid))
+					{
+						targetPlayer.setHwidBlock(true);
+						targetPlayer.BanHwid();					
+					}
+				}
+				
+				activeChar.sendMessage(new StringBuilder().append("HWID : ").append(hwid).append(" Banned").toString());
+			}
 		}
 		else if (command.startsWith("admin_ban_acc"))
 		{
@@ -368,5 +397,23 @@ public class AdminBan implements IAdminCommandHandler
 			}
 		}
 		return true;
+	}
+	
+	public static void updateDatabase(Player player)
+	{
+		if (player == null)
+			return;
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement stmt = con.prepareStatement("REPLACE INTO banned_hwid (char_name, hwid) VALUES (?,?)"))
+		{
+			stmt.setString(1, player.getName());
+			stmt.setString(2, player.getHwid());
+			stmt.execute();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace(); 			
+		}
 	}
 }

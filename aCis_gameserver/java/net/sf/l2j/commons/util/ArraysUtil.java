@@ -111,4 +111,25 @@ public class ArraysUtil
 		}
 		return result;
 	}
+	
+	public static boolean verifyChecksum(byte[] raw, int offset, int size)
+	{
+		if (((size & 3) == 0) && (size > 4))
+		{
+			long chksum = 0L;
+			int count = size - 4;
+			
+			for (int i1 = offset; i1 < count; i1 += 4)
+				chksum ^= bytesToInt(raw, i1);
+			
+			long check = bytesToInt(raw, count);
+			return check == chksum;
+		}
+		return false;
+	}
+
+	public static int bytesToInt(byte[] array, int offset)
+	{
+		return (array[offset++] & 255) | ((array[offset++] & 255) << 8) | ((array[offset++] & 255) << 16) | ((array[offset++] & 255) << 24);
+	}
 }

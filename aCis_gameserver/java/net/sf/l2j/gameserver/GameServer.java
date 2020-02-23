@@ -15,6 +15,7 @@ import net.sf.l2j.commons.util.SysUtil;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameguard.GameGuard;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
 import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.data.SkillTable;
@@ -131,7 +132,7 @@ public class GameServer
 		{
 			LogManager.getLogManager().readConfiguration(is);
 		}
-		
+	
 		StringUtil.printSection("aCis");
 		
 		// Initialize config
@@ -140,6 +141,9 @@ public class GameServer
 		// Factories
 		L2DatabaseFactory.getInstance();
 		ThreadPool.init();
+		
+		StringUtil.printSection("GameGuard");
+		GameGuard.getInstance();
 		
 		StringUtil.printSection("IdFactory");
 		IdFactory.getInstance();
@@ -275,7 +279,7 @@ public class GameServer
 		LOGGER.info("Loaded {} item handlers.", ItemHandler.getInstance().size());
 		LOGGER.info("Loaded {} skill handlers.", SkillHandler.getInstance().size());
 		LOGGER.info("Loaded {} user command handlers.", UserCommandHandler.getInstance().size());
-		
+
 		StringUtil.printSection("System");
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 		ForumsBBSManager.getInstance();

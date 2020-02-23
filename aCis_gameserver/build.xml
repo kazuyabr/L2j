@@ -6,11 +6,11 @@
 	<property name="build" location="build" />
 	<property name="build.classes" location="${build}/classes" />
 	<property name="build.dist" location="${build}/dist" />
-	<property name="build.dist.login" location="${build.dist}/login" />
-	<property name="build.dist.game" location="${build.dist}/gameserver" />
+	<property name="build.dist.auth" location="${build.dist}/auth" />
+	<property name="build.dist.game" location="${build.dist}/game" />
 
 	<target name="dist" depends="jar">
-		<copy todir="${build.dist.login}/libs">
+		<copy todir="${build.dist.auth}/libs">
 			<fileset dir="${src}/../lib">
 				<include name="HikariCP-3.4.2.jar" />
 				<include name="mariadb-java-client-2.5.3.jar" />
@@ -23,7 +23,7 @@
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		<copy todir="${build.dist.login}">
+		<copy todir="${build.dist.auth}">
 			<fileset dir="dist">
 				<include name="startAccountManager.*" />
 				<include name="startSQLAccountManager.*" />
@@ -40,13 +40,13 @@
 			</fileset>
 		</copy>
 		<fixcrlf srcdir="${build.dist.game}" eol="lf" eof="remove" includes="**/*.sh" />
-		<fixcrlf srcdir="${build.dist.login}" eol="lf" eof="remove" includes="**/*.sh" />
+		<fixcrlf srcdir="${build.dist.auth}" eol="lf" eof="remove" includes="**/*.sh" />
 		<fixcrlf srcdir="${build.dist.game}" eol="crlf" eof="remove" includes="**/*.bat" />
-		<fixcrlf srcdir="${build.dist.login}" eol="crlf" eof="remove" includes="**/*.bat" />
+		<fixcrlf srcdir="${build.dist.auth}" eol="crlf" eof="remove" includes="**/*.bat" />
 		<mkdir dir="${build.dist.game}/log" />
-		<mkdir dir="${build.dist.login}/log" />
+		<mkdir dir="${build.dist.auth}/log" />
 		<mkdir dir="${build.dist.game}/config" />
-		<mkdir dir="${build.dist.login}/config" />
+		<mkdir dir="${build.dist.auth}/config" />
 		<copy todir="${build.dist.game}/config">
 			<fileset dir="config">
 				<include name="*.properties" />
@@ -54,7 +54,7 @@
 				<exclude name="loginserver.properties" />
 			</fileset>
 		</copy>
-		<copy todir="${build.dist.login}/config">
+		<copy todir="${build.dist.auth}/config">
 			<fileset dir="config">
 				<include name="banned_ips.properties" />
 				<include name="logging.properties" />
@@ -73,7 +73,7 @@
 			</manifest>
 		</jar>
 
-		<copy todir="${build.dist.login}/libs">
+		<copy todir="${build.dist.auth}/libs">
 			<fileset dir="${build}">
 				<include name="l2jserver.jar" />
 			</fileset>
@@ -94,7 +94,7 @@
 		<mkdir dir="${build}" />
 		<mkdir dir="${build.classes}" />
 		<mkdir dir="${build.dist}" />
-		<mkdir dir="${build.dist.login}" />
+		<mkdir dir="${build.dist.auth}" />
 		<mkdir dir="${build.dist.game}" />
 	</target>
 

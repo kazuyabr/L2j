@@ -9,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameguard.hwid.HWIDManager;
 import net.sf.l2j.gameserver.enums.OlympiadType;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -191,6 +192,8 @@ public class OlympiadManager
 		Integer objectId = Integer.valueOf(player.getObjectId());
 		if (_nonClassBasedRegisters.remove(objectId))
 		{
+			HWIDManager.getInstance().removePlayer(player.getName());
+		
 			player.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
 			return true;
 		}
@@ -198,6 +201,8 @@ public class OlympiadManager
 		final List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
 		if (classed != null && classed.remove(objectId))
 		{
+			HWIDManager.getInstance().removePlayer(player.getName());
+			
 			_classBasedRegisters.remove(player.getBaseClass());
 			_classBasedRegisters.put(player.getBaseClass(), classed);
 			
@@ -284,7 +289,6 @@ public class OlympiadManager
 			player.sendPacket(message);
 			return false;
 		}
-		
 		return true;
 	}
 	

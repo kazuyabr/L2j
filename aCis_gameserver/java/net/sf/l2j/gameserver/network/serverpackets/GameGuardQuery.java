@@ -1,8 +1,5 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
-/**
- * @author zabbix Lets drink to code!
- */
 public class GameGuardQuery extends L2GameServerPacket
 {
 	public GameGuardQuery()

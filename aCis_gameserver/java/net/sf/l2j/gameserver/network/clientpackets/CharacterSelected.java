@@ -1,5 +1,6 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
+import net.sf.l2j.gameguard.GameGuard;
 import net.sf.l2j.gameserver.model.CharSelectSlot;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.FloodProtectors;
@@ -61,6 +62,9 @@ public class CharacterSelected extends L2GameClientPacket
 					cha.setOnlineStatus(true, true);
 					
 					sendPacket(SSQInfo.sendSky());
+					
+				if (!GameGuard.getInstance().checkPlayerWithHWID(getClient(), cha.getObjectId(), cha.getName()))
+					return;
 					
 					client.setState(GameClientState.ENTERING);
 					

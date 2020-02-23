@@ -2,8 +2,8 @@
 <project name="aCis_datapack" default="build" basedir=".">
 
 	<property name="build" location="build" />
-	<property name="build.game" location="${build}/gameserver" />
-	<property name="build.login" location="${build}/login" />
+	<property name="build.game" location="${build}/game" />
+	<property name="build.auth" location="${build}/auth" />
 	<property name="build.sql" location="${build}/sql" />
 	<property name="build.tools" location="${build}/tools" />
 
@@ -35,7 +35,7 @@
 				<exclude name="*backup.sql" />
 			</fileset>
 		</sync>
-		<sync todir="${build.login}">
+		<sync todir="${build.auth}">
 			<fileset dir="${build.game}/data">
 				<include name="serverNames.xml" />
 			</fileset>
@@ -45,7 +45,7 @@
 	<target name="init" description="Create the output directories. Do nothing if dirs were already created">
 		<mkdir dir="${build}" />
 		<mkdir dir="${build.game}" />
-		<mkdir dir="${build.login}" />
+		<mkdir dir="${build.auth}" />
 	</target>
 
 </project>

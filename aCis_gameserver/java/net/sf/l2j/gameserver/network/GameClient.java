@@ -18,6 +18,7 @@ import net.sf.l2j.commons.mmocore.ReceivablePacket;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameguard.GameGuard;
 import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.data.sql.PlayerInfoTable;
@@ -77,6 +78,9 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 	private final ClientStats _stats;
 	private final long _connectionStartTime;
 	
+	private String _login;
+	private String _hwid;
+	
 	public GameClientState _state;
 	private String _accountName;
 	private SessionKey _sessionId;
@@ -93,6 +97,9 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 	public GameClient(MMOConnection<GameClient> con)
 	{
 		super(con);
+		
+		_login = "";
+		_hwid = "";
 		
 		_state = GameClientState.CONNECTED;
 		_connectionStartTime = System.currentTimeMillis();
@@ -164,14 +171,14 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 			{
 				case CONNECTED:
 					return "[IP: " + (address == null ? "disconnected" : address.getHostAddress()) + "]";
-				
+					
 				case AUTHED:
 					return "[Account: " + getAccountName() + " - IP: " + (address == null ? "disconnected" : address.getHostAddress()) + "]";
-				
+					
 				case ENTERING:
 				case IN_GAME:
 					return "[Character: " + (getPlayer() == null ? "disconnected" : getPlayer().getName()) + " - Account: " + getAccountName() + " - IP: " + (address == null ? "disconnected" : address.getHostAddress()) + "]";
-				
+					
 				default:
 					throw new IllegalStateException("Missing state on switch");
 			}
@@ -209,6 +216,8 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 				{
 					setDetached(true);
 					fast = !getPlayer().isInCombat() && !getPlayer().isLocked();
+				
+					GameGuard.getInstance().doDisconection(this);
 				}
 				cleanMe(fast);
 			});
@@ -228,6 +237,10 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 	{
 		byte[] key = BlowFishKeygen.getRandomKey();
 		_crypt.setKey(key);
+		
+		if (Config.ALLOW_GUARD_SYSTEM)
+			key = GameGuard.getInstance().getKey(key);
+		
 		return key;
 	}
 	
@@ -317,6 +330,26 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 	public void setDetached(boolean b)
 	{
 		_isDetached = b;
+	}
+	
+	public final String getHwid()
+	{
+		return _hwid;
+	}
+	
+	public void setHwid(String hwid)
+	{
+		_hwid = hwid;
+	}
+	
+	public final String getLogin()
+	{
+		return _login;
+	}
+	
+	public void setLogin(String name)
+	{
+		_login = name;
 	}
 	
 	/**

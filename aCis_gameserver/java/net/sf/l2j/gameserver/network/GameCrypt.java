@@ -1,72 +1,54 @@
 package net.sf.l2j.gameserver.network;
 
-/**
- * @author KenM
- */
+import net.sf.l2j.Config;
+import net.sf.l2j.gameguard.crypt.L2Client;
+import net.sf.l2j.gameguard.crypt.L2Server;
+import net.sf.l2j.gameguard.crypt.VMPC;
+import net.sf.l2j.gameserver.network.serverpackets.ProtectionCrypt;
+
 public class GameCrypt
 {
-	private final byte[] _inKey = new byte[16];
-	private final byte[] _outKey = new byte[16];
+	private ProtectionCrypt _client;
+	private ProtectionCrypt _server;
 	private boolean _isEnabled;
-	
+	private boolean _isProtected;
+
+	public void setProtected(boolean state)
+	{
+		_isProtected = state;
+	}
+
 	public void setKey(byte[] key)
 	{
-		System.arraycopy(key, 0, _inKey, 0, 16);
-		System.arraycopy(key, 0, _outKey, 0, 16);
+		if (_isProtected)
+		{
+			_client = new VMPC();
+			_client.setup(key, Config.GUARD_CLIENT_CRYPT);
+			_server = new L2Server();
+			_server.setup(key, null);
+			_server = new VMPC();
+			_server.setup(key, Config.GUARD_SERVER_CRYPT);
+		}
+		else
+		{
+			_client = new L2Client();
+			_client.setup(key, null);
+			_server = new L2Server();
+			_server.setup(key, null);
+		}
 	}
 	
 	public void decrypt(byte[] raw, final int offset, final int size)
 	{
-		if (!_isEnabled)
-			return;
-		
-		int temp = 0;
-		for (int i = 0; i < size; i++)
-		{
-			int temp2 = raw[offset + i] & 0xFF;
-			raw[offset + i] = (byte) (temp2 ^ _inKey[i & 15] ^ temp);
-			temp = temp2;
-		}
-		
-		int old = _inKey[8] & 0xff;
-		old |= _inKey[9] << 8 & 0xff00;
-		old |= _inKey[10] << 0x10 & 0xff0000;
-		old |= _inKey[11] << 0x18 & 0xff000000;
-		
-		old += size;
-		
-		_inKey[8] = (byte) (old & 0xff);
-		_inKey[9] = (byte) (old >> 0x08 & 0xff);
-		_inKey[10] = (byte) (old >> 0x10 & 0xff);
-		_inKey[11] = (byte) (old >> 0x18 & 0xff);
+		if (_isEnabled)
+			_client.crypt(raw, offset, size);
 	}
 	
 	public void encrypt(byte[] raw, final int offset, final int size)
 	{
-		if (!_isEnabled)
-		{
+		if (_isEnabled)
+			_server.crypt(raw, offset, size);
+		else
 			_isEnabled = true;
-			return;
-		}
-		
-		int temp = 0;
-		for (int i = 0; i < size; i++)
-		{
-			int temp2 = raw[offset + i] & 0xFF;
-			temp = temp2 ^ _outKey[i & 15] ^ temp;
-			raw[offset + i] = (byte) temp;
-		}
-		
-		int old = _outKey[8] & 0xff;
-		old |= _outKey[9] << 8 & 0xff00;
-		old |= _outKey[10] << 0x10 & 0xff0000;
-		old |= _outKey[11] << 0x18 & 0xff000000;
-		
-		old += size;
-		
-		_outKey[8] = (byte) (old & 0xff);
-		_outKey[9] = (byte) (old >> 0x08 & 0xff);
-		_outKey[10] = (byte) (old >> 0x10 & 0xff);
-		_outKey[11] = (byte) (old >> 0x18 & 0xff);
 	}
 }

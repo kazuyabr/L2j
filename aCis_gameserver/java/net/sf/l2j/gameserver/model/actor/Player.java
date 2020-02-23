@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.model.actor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -183,6 +184,7 @@ import net.sf.l2j.gameserver.network.serverpackets.LeaveWorld;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.MoveToPawn;
 import net.sf.l2j.gameserver.network.serverpackets.MyTargetSelected;
+import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.ObservationMode;
 import net.sf.l2j.gameserver.network.serverpackets.ObservationReturn;
 import net.sf.l2j.gameserver.network.serverpackets.PartySmallWindowUpdate;
@@ -286,6 +288,8 @@ public final class Player extends Playable
 	
 	private GameClient _client;
 	private final Map<Integer, String> _chars = new HashMap<>();
+	private String _hwid;
+	private boolean _HwidBlock;
 	
 	private String _accountName;
 	private long _deleteTimer;
@@ -2610,6 +2614,53 @@ public final class Player extends Playable
 		return _accountName;
 	}
 	
+	public String getHwid()
+	{
+		if (getClient() == null)
+			return _hwid;
+		
+		_hwid = getClient().getHwid();
+		return _hwid;
+	}
+	
+	public boolean isHwidBlocked()
+	{
+		return _HwidBlock;
+	}
+	
+	public void setHwidBlock(boolean hwid)
+	{
+		_HwidBlock = hwid;
+	}
+	
+	public void BanHwid()
+	{
+		String name = "Indisponivel";
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("SELECT char_name FROM banned_hwid WHERE hwid=?"))
+		{
+			statement.setString(1, getHwid());
+			
+			try (ResultSet rset = statement.executeQuery())
+			{
+				while (rset.next())
+				{
+					name = rset.getString("char_name");
+					
+					final NpcHtmlMessage html = new NpcHtmlMessage(0);
+					html.setFile("data/html/hwid.htm");
+					html.replace("%name%", name); 
+					sendPacket(html);
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			LOGGER.warn("Ban_Hwid: " + e.getMessage(), e);
+		}
+		logout(true);
+	}
+	
 	public Map<Integer, String> getAccountChars()
 	{
 		return _chars;
@@ -3011,11 +3062,11 @@ public final class Player extends Playable
 				case PACKAGE_SELL:
 					sendPacket(new PrivateStoreListSell(this, temp));
 					break;
-				
+					
 				case BUY:
 					sendPacket(new PrivateStoreListBuy(this, temp));
 					break;
-				
+					
 				case MANUFACTURE:
 					sendPacket(new RecipeShopSellList(this, temp));
 					break;
@@ -3305,7 +3356,7 @@ public final class Player extends Playable
 		{
 			if (oldTarget.equals(newTarget))
 				return; // no target change
-				
+			
 			// Remove the Player from the _statusListener of the old target if it was a Creature
 			if (oldTarget instanceof Creature)
 				((Creature) oldTarget).removeStatusListener(this);
@@ -3395,7 +3446,7 @@ public final class Player extends Playable
 		final ItemInstance armor = getInventory().getPaperdollItem((type == ArmorType.SHIELD) ? Inventory.PAPERDOLL_LHAND : Inventory.PAPERDOLL_CHEST);
 		if (armor == null)
 			return type == ArmorType.NONE; // Return true if not equipped and the check was based on NONE ArmorType.
-			
+		
 		// Test if the equipped item is an armor, then finally compare both ArmorType.
 		return armor.getItemType() instanceof ArmorType && armor.getItemType() == type;
 	}
@@ -3560,7 +3611,7 @@ public final class Player extends Playable
 		for (Creature character : getKnownType(Creature.class))
 			if (character.getFusionSkill() != null && character.getFusionSkill().getTarget() == this)
 				character.abortCast();
-			
+		
 		// calculate death penalty buff
 		calculateDeathPenaltyBuffLevel(killer);
 		
@@ -3631,7 +3682,7 @@ public final class Player extends Playable
 					}
 					else
 						itemDropPercent = dropItem; // Item in inventory
-						
+					
 					// NOTE: Each time an item is dropped, the chance of another item being dropped gets lesser (dropCount * 2)
 					if (Rnd.get(100) < itemDropPercent)
 					{
@@ -6041,7 +6092,7 @@ public final class Player extends Playable
 			case TARGET_AURA_UNDEAD:
 				target = this;
 				break;
-			
+				
 			default: // Get the first target of the list
 				target = skill.getFirstOfTargetList(this);
 				break;
@@ -6647,7 +6698,7 @@ public final class Player extends Playable
 				if (isFlying())
 					removeSkill(FrequentSkill.WYVERN_BREATH.getSkill().getId(), false);
 				break;
-			
+				
 			case 2: // Flying Wyvern
 				addSkill(FrequentSkill.WYVERN_BREATH.getSkill(), false);
 				break;
@@ -7351,7 +7402,7 @@ public final class Player extends Playable
 		else
 			for (L2Skill skill : SkillTable.getNobleSkills())
 				removeSkill(skill.getId(), false);
-			
+		
 		_isNoble = val;
 		
 		sendSkillList();
@@ -7636,7 +7687,7 @@ public final class Player extends Playable
 			for (Creature character : getKnownType(Creature.class))
 				if (character.getFusionSkill() != null && character.getFusionSkill().getTarget() == this)
 					character.abortCast();
-				
+			
 			store();
 			_reuseTimeStamps.clear();
 			
@@ -8141,7 +8192,7 @@ public final class Player extends Playable
 			for (Creature character : getKnownType(Creature.class))
 				if (character.getFusionSkill() != null && character.getFusionSkill().getTarget() == this)
 					character.abortCast();
-				
+			
 			// Stop signets & toggles effects.
 			for (L2Effect effect : getAllEffects())
 			{
@@ -9085,11 +9136,11 @@ public final class Player extends Playable
 			case PACKAGE_SELL:
 				player.sendPacket(new PrivateStoreMsgSell(this));
 				break;
-			
+				
 			case BUY:
 				player.sendPacket(new PrivateStoreMsgBuy(this));
 				break;
-			
+				
 			case MANUFACTURE:
 				player.sendPacket(new RecipeShopMsg(this));
 				break;
