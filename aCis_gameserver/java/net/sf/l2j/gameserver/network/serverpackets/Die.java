@@ -6,6 +6,7 @@ import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.entity.Siege;
+import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 
 public class Die extends L2GameServerPacket
@@ -13,6 +14,7 @@ public class Die extends L2GameServerPacket
 	private final Creature _activeChar;
 	private final int _charObjId;
 	private final boolean _fake;
+	private boolean _inEvent;
 	
 	private boolean _sweepable;
 	private boolean _allowFixedRes;
@@ -30,6 +32,8 @@ public class Die extends L2GameServerPacket
 			_allowFixedRes = player.getAccessLevel().allowFixedRes();
 			_clan = player.getClan();
 			
+			Event event = player.getEvent();
+			_inEvent = event != null && event.isStarted();
 		}
 		else if (cha instanceof Monster)
 			_sweepable = ((Monster) cha).isSpoiled();
@@ -38,14 +42,14 @@ public class Die extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		if (_fake)
+		if (_fake || _inEvent)
 			return;
 		
 		writeC(0x06);
 		writeD(_charObjId);
 		writeD(0x01); // to nearest village
 		
-		if (_clan != null)
+		if (_clan != null && _inEvent)
 		{
 			SiegeSide side = null;
 			

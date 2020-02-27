@@ -4,6 +4,7 @@ import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 
@@ -23,6 +24,13 @@ public class Escape implements IUserCommandHandler
 			return false;
 		}
 		
+		final Event event = activeChar.getEvent();
+		if (event != null && event.isStarted())
+		{
+			activeChar.sendMessage("You may not use an escape in events.");
+			return false;
+		}
+		 
 		activeChar.stopMove(null);
 		
 		// Official timer 5 minutes, for GM 1 second

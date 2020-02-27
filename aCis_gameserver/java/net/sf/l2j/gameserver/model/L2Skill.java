@@ -1632,7 +1632,13 @@ public abstract class L2Skill implements IChanceSkillTrigger
 					{
 						if ((obj.getAllyId() == 0 || obj.getAllyId() != player.getAllyId()) && (obj.getClan() == null || obj.getClanId() != player.getClanId()))
 							continue;
-						
+
+						if (obj.getTeam().getId() > 0)
+						{
+							if (player.getTeam() != obj.getTeam())
+								continue;
+						}
+
 						if (player.isInDuel())
 						{
 							if (player.getDuelId() != obj.getDuelId())
@@ -1737,7 +1743,13 @@ public abstract class L2Skill implements IChanceSkillTrigger
 							final Player obj = member.getPlayerInstance();
 							if (obj == null || obj == player)
 								continue;
-							
+
+							if (obj	.getTeam().getId() > 0)
+							{
+								if (player.getTeam() != obj.getTeam())
+									continue;
+							}
+
 							if (player.isInDuel())
 							{
 								if (player.getDuelId() != obj.getDuelId())
@@ -2054,6 +2066,12 @@ public abstract class L2Skill implements IChanceSkillTrigger
 				
 				// Same commandchannel
 				if (player.getParty().getCommandChannel() != null && player.getParty().getCommandChannel() == targetPlayer.getParty().getCommandChannel())
+					return false;
+			}
+
+			if (player.getTeam().getId() > 0)
+			{
+				if (player.getTeam() == targetPlayer.getTeam())
 					return false;
 			}
 			

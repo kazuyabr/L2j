@@ -12,6 +12,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameguard.hwid.HWIDManager;
 import net.sf.l2j.gameserver.enums.OlympiadType;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -131,7 +132,14 @@ public class OlympiadManager
 			player.sendPacket(SystemMessageId.GAME_REQUEST_CANNOT_BE_MADE);
 			return false;
 		}
-		
+
+		final Event event = player.getEvent();
+		if (event != null && event.isStarted())
+		{
+			player.sendMessage("Event Participants cannot register to the Grand Olympiad Games.");
+			return false;
+		}
+ 		
 		switch (type)
 		{
 			case CLASSED:

@@ -17,6 +17,7 @@ import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.math.MathUtil;
 
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
+import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.FirstKey;
 
 /**
@@ -117,6 +118,25 @@ public final class Config
 	// --------------------------------------------------
 	// Events settings
 	// --------------------------------------------------
+	
+	/** TvTEvent */
+	public static boolean TVT_ENABLE;
+	public static boolean DUAL_BOX;
+	public static boolean REWARD_DIE;
+	public static int MIN_PARTICIOANTS;
+	public static int MAX_PARTICIOANTS;
+	public static int TVT_NPC_ID;
+	public static int PLAYER_RESPAWN_DELAY;
+	public static String[] TVT_SCHEDULER_TIMES;
+	public static int TVT_PARTICIPATION_TIME;
+	public static int TVT_RUNNING_TIME;
+	public static byte MIN_LEVEL;
+	public static byte MAX_LEVEL;
+	public static Location TVT_BLUE_SPAWN_LOCATION;
+	public static Location TVT_RED_SPAWN_LOCATION;
+	public static Location TVT_NPC_LOCATION;
+	public static IntIntHolder[] TVT_REWARDS;
+	public static String[] TVT_DOOR_LIST;
 	
 	/** Olympiad */
 	public static int ALT_OLY_START_TIME;
@@ -750,6 +770,24 @@ public final class Config
 	private static final void loadEvents()
 	{
 		final ExProperties events = initProperties(EVENTS_FILE);
+		TVT_ENABLE = events.getProperty("TvTEventEnable", false);
+		TVT_SCHEDULER_TIMES = events.getProperty("TvTSchedulerTime", "20:00").split(",");
+		TVT_PARTICIPATION_TIME = events.getProperty("TvTParticipationTime", 10);
+		TVT_RUNNING_TIME = events.getProperty("TvTRunningTime", 15);
+		MIN_PARTICIOANTS = events.getProperty("TvTMinParticipants", 6);
+		MAX_PARTICIOANTS = events.getProperty("TvTMaxParticipants", 40);
+		MIN_LEVEL = (byte) events.getProperty("TvTEventMinLevel", 60);
+		MAX_LEVEL = (byte) events.getProperty("TvTEventMaxLevel", 78);
+		PLAYER_RESPAWN_DELAY = events.getProperty("TvTPlayerRespawnDelay", 20);
+		DUAL_BOX = events.getProperty("TvTAllowDualBoxing", false);
+		REWARD_DIE = events.getProperty("TvTGiveRewardsOnTie", false);
+		TVT_BLUE_SPAWN_LOCATION = events.parseLocation("TvTBlueTeamLocation", "48476,46061,-3411");
+		TVT_RED_SPAWN_LOCATION = events.parseLocation("TvTRedTeamLocation", "150480,47444,-3411");
+		TVT_NPC_LOCATION = events.parseLocation("TvTRegisterLocation", "151808,46864,-3408");
+		TVT_REWARDS = events.parseIntIntList("TvTEventRewardList", "1-268");
+		TVT_NPC_ID = events.getProperty("TvTNpcManager", 18);
+		TVT_DOOR_LIST = events.getProperty("TvTArenaDoors", "24190002;24190003").split(";");
+		
 		ALT_OLY_START_TIME = events.getProperty("AltOlyStartTime", 18);
 		ALT_OLY_MIN = events.getProperty("AltOlyMin", 0);
 		ALT_OLY_CPERIOD = events.getProperty("AltOlyCPeriod", 21600000);

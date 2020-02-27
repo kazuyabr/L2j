@@ -175,7 +175,13 @@ public class DimensionalRiftManager implements IXmlReader
 			showHtmlFile(player, "data/html/seven_signs/rift/NoParty.htm", npc);
 			return;
 		}
-		
+
+        if (player.getEvent() != null)
+        {
+            player.sendMessage("Somebody among the party members has registered to participate in an event.");
+            return;
+        }
+
 		// Player isn't the party leader.
 		if (!party.isLeader(player))
 		{

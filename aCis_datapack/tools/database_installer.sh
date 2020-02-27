@@ -78,6 +78,7 @@ $MYL < ../sql/gameservers.sql &> /dev/null
 $MYG < ../sql/auction_bid.sql &> /dev/null
 $MYG < ../sql/augmentations.sql &> /dev/null
 $MYG < ../sql/bookmarks.sql &> /dev/null
+$MYG < ../sql/banned_hwid.sql &> /dev/null
 $MYG < ../sql/buffer_schemes.sql &> /dev/null
 $MYG < ../sql/buylists.sql &> /dev/null
 $MYG < ../sql/castle.sql &> /dev/null
@@ -113,6 +114,7 @@ $MYG < ../sql/games.sql &> /dev/null
 $MYG < ../sql/grandboss_data.sql &> /dev/null
 $MYG < ../sql/grandboss_list.sql &> /dev/null
 $MYG < ../sql/heroes_diary.sql &> /dev/null
+$MYG < ../sql/hwid_info.sql &> /dev/null
 $MYG < ../sql/heroes.sql &> /dev/null
 $MYG < ../sql/items.sql &> /dev/null
 $MYG < ../sql/items_on_ground.sql &> /dev/null

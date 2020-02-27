@@ -85,6 +85,7 @@ import net.sf.l2j.gameserver.model.boat.BoatGludinRune;
 import net.sf.l2j.gameserver.model.boat.BoatInnadrilTour;
 import net.sf.l2j.gameserver.model.boat.BoatRunePrimeval;
 import net.sf.l2j.gameserver.model.boat.BoatTalkingGludin;
+import net.sf.l2j.gameserver.model.entity.events.TvTEvent;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoomList;
@@ -266,6 +267,9 @@ public class GameServer
 		StringUtil.printSection("Events");
 		DerbyTrackManager.getInstance();
 		LotteryManager.getInstance();
+		
+		if (Config.TVT_ENABLE)
+			TvTEvent.getInstance();
 		
 		if (Config.ALLOW_WEDDING)
 			CoupleManager.getInstance();

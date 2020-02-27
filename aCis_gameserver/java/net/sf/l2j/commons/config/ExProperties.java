@@ -9,6 +9,7 @@ import java.util.Properties;
 import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
+import net.sf.l2j.gameserver.model.location.Location;
 
 public class ExProperties extends Properties
 {
@@ -214,5 +215,45 @@ public class ExProperties extends Properties
 			i++;
 		}
 		return result;
+	}
+
+	/**
+	 * x,y,z
+	 * @param line
+	 * @param defaultValue 
+	 * @return an array consisting of parsed items.
+	 */
+	public final Location parseLocation(String line, String defaultValue)
+	{
+		final String[] propertySplit = getProperty(line, defaultValue).split(",");
+		if (propertySplit.length < 3)
+			return null;
+		
+		int i = 0;
+		final int[] result = new int[propertySplit.length];
+		for (String value : propertySplit)
+		{
+			try
+			{
+				result[i] = Integer.parseInt(value);
+			}
+			catch (NumberFormatException e)
+			{
+				LOGGER.warn("Config: Error parsing coordinate -> \"" + value + "\"");
+				return null;
+			}
+			
+			i++;
+		}
+		
+		if (result.length < 3)
+		{
+			LOGGER.warn("Config: Error parsing location -> size: \"" + result.length + "\"");
+			return null;
+		}
+		
+		final Location loc = new Location(result[0], result[1], result[2]);
+		
+		return loc;
 	}
 }

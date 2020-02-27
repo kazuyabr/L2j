@@ -50,6 +50,7 @@ import net.sf.l2j.gameserver.model.actor.instance.Walker;
 import net.sf.l2j.gameserver.model.actor.stat.CreatureStat;
 import net.sf.l2j.gameserver.model.actor.status.CreatureStatus;
 import net.sf.l2j.gameserver.model.actor.template.CreatureTemplate;
+import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.holder.SkillUseHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
@@ -360,7 +361,13 @@ public abstract class Creature extends WorldObject
 	{
 		// default implementation
 	}
-	
+
+	public Event getEvent()
+	{
+		// Overridden in Player
+		return null;
+	}
+ 	
 	/**
 	 * <B><U> Overridden in </U> :</B><BR>
 	 * <BR>
@@ -1489,6 +1496,10 @@ public abstract class Creature extends WorldObject
 		if (hasAI())
 			getAI().notifyEvent(AiEventType.DEAD, null);
 		
+		final Event event = getEvent();
+		if (event != null && event.isStarted())
+			event.onDie(this);
+		
 		return true;
 	}
 	
@@ -1519,6 +1530,10 @@ public abstract class Creature extends WorldObject
 		
 		// Start broadcast status
 		broadcastPacket(new Revive(this));
+
+		final Event event = getEvent();
+		if (event != null && event.isStarted())
+			event.onRevive(this);
 	}
 	
 	/**

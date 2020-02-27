@@ -14,6 +14,7 @@ import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.ChristmasTree;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
+import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.spawn.L2Spawn;
@@ -44,7 +45,14 @@ public class SummonItems implements IItemHandler
 		
 		if (player.isAllSkillsDisabled() || player.isCastingNow())
 			return;
-		
+
+		final Event event = player.getEvent();
+		if (event != null && event.isStarted())
+		{
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			return;
+		}
+		 
 		final IntIntHolder sitem = SummonItemData.getInstance().getSummonItem(item.getItemId());
 		
 		if ((player.getSummon() != null || player.isMounted()) && sitem.getValue() > 0)

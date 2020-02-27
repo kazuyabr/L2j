@@ -1,9 +1,11 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.enums.LootRule;
+import net.sf.l2j.gameserver.enums.TeamType;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.player.BlockList;
+import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.AskJoinParty;
@@ -58,7 +60,19 @@ public final class RequestJoinParty extends L2GameClientPacket
 			requestor.sendMessage("The player you tried to invite is in offline mode.");
 			return;
 		}
-		
+
+		final Event targetEvent = target.getEvent();
+		final Event requestorEvent = requestor.getEvent();
+
+		if (targetEvent != null && targetEvent.isStarted() && target.getTeam() == TeamType.NONE || target.getTeam().getId() > 0 && target.getTeam() != requestor.getTeam())
+			return;
+ 		
+		if (requestorEvent != null && requestorEvent.isStarted() && requestor.getTeam() == TeamType.NONE || requestor.getTeam().getId() > 0 && requestor.getTeam() != target.getTeam())
+		{
+			requestor.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			return;
+		}
+ 		
 		if (target.isInJail() || requestor.isInJail())
 		{
 			requestor.sendMessage("The player you tried to invite is currently jailed.");

@@ -10,6 +10,7 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanPenalty;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanWarsList;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.DisMount;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Escape;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.EventCommands;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Loc;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Mount;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.OlympiadStat;
@@ -30,6 +31,7 @@ public class UserCommandHandler
 		registerHandler(new ClanWarsList());
 		registerHandler(new DisMount());
 		registerHandler(new Escape());
+		registerHandler(new EventCommands());
 		registerHandler(new Loc());
 		registerHandler(new Mount());
 		registerHandler(new OlympiadStat());

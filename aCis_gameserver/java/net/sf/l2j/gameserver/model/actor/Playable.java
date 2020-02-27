@@ -13,6 +13,7 @@ import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.stat.PlayableStat;
 import net.sf.l2j.gameserver.model.actor.status.PlayableStatus;
 import net.sf.l2j.gameserver.model.actor.template.CreatureTemplate;
+import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.Revive;
@@ -132,6 +133,10 @@ public abstract class Playable extends Creature
 		
 		// Notify Creature AI
 		getAI().notifyEvent(AiEventType.DEAD);
+
+		final Event event = getEvent();
+		if (event != null && event.isStarted())
+			event.onDie(this);
 		
 		// Notify Quest of L2Playable's death
 		final Player actingPlayer = getActingPlayer();
@@ -168,6 +173,10 @@ public abstract class Playable extends Creature
 		
 		// Start broadcast status
 		broadcastPacket(new Revive(this));
+		
+		final Event event = getEvent();
+		if (event != null && event.isStarted())
+			event.onRevive(this);
 	}
 	
 	public boolean checkIfPvP(Playable target)
