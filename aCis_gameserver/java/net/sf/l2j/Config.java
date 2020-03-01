@@ -118,20 +118,20 @@ public final class Config
 	// --------------------------------------------------
 	// Events settings
 	// --------------------------------------------------
-	
+
 	/** TvTEvent */
 	public static boolean TVT_ENABLE;
-	public static boolean DUAL_BOX;
-	public static boolean REWARD_DIE;
-	public static int MIN_PARTICIOANTS;
-	public static int MAX_PARTICIOANTS;
+	public static boolean TVT_DUAL_BOX;
+	public static boolean TVT_REWARD_DIE;
+	public static int TVT_MIN_PARTICIOANTS;
+	public static int TVT_MAX_PARTICIOANTS;
 	public static int TVT_NPC_ID;
-	public static int PLAYER_RESPAWN_DELAY;
+	public static int TVT_PLAYER_RESPAWN_DELAY;
 	public static String[] TVT_SCHEDULER_TIMES;
 	public static int TVT_PARTICIPATION_TIME;
 	public static int TVT_RUNNING_TIME;
-	public static byte MIN_LEVEL;
-	public static byte MAX_LEVEL;
+	public static byte TVT_MIN_LEVEL;
+	public static byte TVT_MAX_LEVEL;
 	public static Location TVT_BLUE_SPAWN_LOCATION;
 	public static Location TVT_RED_SPAWN_LOCATION;
 	public static Location TVT_NPC_LOCATION;
@@ -774,13 +774,13 @@ public final class Config
 		TVT_SCHEDULER_TIMES = events.getProperty("TvTSchedulerTime", "20:00").split(",");
 		TVT_PARTICIPATION_TIME = events.getProperty("TvTParticipationTime", 10);
 		TVT_RUNNING_TIME = events.getProperty("TvTRunningTime", 15);
-		MIN_PARTICIOANTS = events.getProperty("TvTMinParticipants", 6);
-		MAX_PARTICIOANTS = events.getProperty("TvTMaxParticipants", 40);
-		MIN_LEVEL = (byte) events.getProperty("TvTEventMinLevel", 60);
-		MAX_LEVEL = (byte) events.getProperty("TvTEventMaxLevel", 78);
-		PLAYER_RESPAWN_DELAY = events.getProperty("TvTPlayerRespawnDelay", 20);
-		DUAL_BOX = events.getProperty("TvTAllowDualBoxing", false);
-		REWARD_DIE = events.getProperty("TvTGiveRewardsOnTie", false);
+		TVT_MIN_PARTICIOANTS = events.getProperty("TvTMinParticipants", 6);
+		TVT_MAX_PARTICIOANTS = events.getProperty("TvTMaxParticipants", 40);
+		TVT_MIN_LEVEL = (byte) events.getProperty("TvTEventMinLevel", 60);
+		TVT_MAX_LEVEL = (byte) events.getProperty("TvTEventMaxLevel", 78);
+		TVT_PLAYER_RESPAWN_DELAY = events.getProperty("TvTPlayerRespawnDelay", 20);
+		TVT_DUAL_BOX = events.getProperty("TvTAllowDualBoxing", false);
+		TVT_REWARD_DIE = events.getProperty("TvTGiveRewardsOnTie", false);
 		TVT_BLUE_SPAWN_LOCATION = events.parseLocation("TvTBlueTeamLocation", "48476,46061,-3411");
 		TVT_RED_SPAWN_LOCATION = events.parseLocation("TvTRedTeamLocation", "150480,47444,-3411");
 		TVT_NPC_LOCATION = events.parseLocation("TvTRegisterLocation", "151808,46864,-3408");

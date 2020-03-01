@@ -26,10 +26,10 @@ public abstract class Event implements Runnable
 	
 	public abstract boolean isRegistered(Player player);
 	public abstract void autoRegister(Player player);
-	public abstract void onDie(Creature player);
+	public abstract void onDie(Creature killer);
 	public abstract void onKill(Player player, Player target);
-	public abstract void onRevive(Creature player);
-
+	public abstract void onRevive(Creature killer);
+	
 	public int _blueTeamKills;
 	public int _redTeamKills;
 

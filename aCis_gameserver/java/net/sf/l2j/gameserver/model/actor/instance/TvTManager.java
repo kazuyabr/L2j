@@ -54,10 +54,10 @@ public class TvTManager extends Folk
 				npcHtmlMessage.setHtml(htmContent);
 				npcHtmlMessage.replace("%objectId%", String.valueOf(getObjectId()));
 				npcHtmlMessage.replace("%registeredcount%", String.valueOf(TvTEvent.getInstance().getRegistered().size()));
-				npcHtmlMessage.replace("%minimumplayers%", String.valueOf(Config.MIN_PARTICIOANTS));
-				npcHtmlMessage.replace("%maximumplayers%", String.valueOf(Config.MAX_PARTICIOANTS));
-				npcHtmlMessage.replace("%minimumlevel%", String.valueOf(Config.MIN_LEVEL));
-				npcHtmlMessage.replace("%maximumlevel%", String.valueOf(Config.MAX_LEVEL));
+				npcHtmlMessage.replace("%minimumplayers%", String.valueOf(Config.TVT_MIN_PARTICIOANTS));
+				npcHtmlMessage.replace("%maximumplayers%", String.valueOf(Config.TVT_MAX_PARTICIOANTS));
+				npcHtmlMessage.replace("%minimumlevel%", String.valueOf(Config.TVT_MIN_LEVEL));
+				npcHtmlMessage.replace("%maximumlevel%", String.valueOf(Config.TVT_MAX_LEVEL));
 				player.sendPacket(npcHtmlMessage);
 			}
 		}

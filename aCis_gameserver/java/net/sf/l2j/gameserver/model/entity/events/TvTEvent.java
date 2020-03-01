@@ -104,7 +104,25 @@ public final class TvTEvent extends Event
 			}
 			
 			if (_tick == 0)
-				prepareTeams();
+			{
+				if ((_registered.size() >= Config.TVT_MIN_PARTICIOANTS) && (_state != EventState.AWAITING))
+					prepareTeams();
+				else
+				{
+					if (_state == EventState.AWAITING)
+						World.announceToOnlinePlayers("TvT Event: Event was cancelled.", true);
+					else
+						World.announceToOnlinePlayers("TvT Event: Event was cancelled due to lack of participation.", true);
+					
+					_registered.clear();
+					
+					if (_npc != null)
+					{
+						if (_npc.isVisible())
+							_npc.deleteMe();
+					}
+				}
+			}
 			
 			_tick--;
 		}
@@ -152,8 +170,8 @@ public final class TvTEvent extends Event
 		_npc.broadcastPacket(new MagicSkillUse(_npc, _npc, 1034, 1, 1, 1));
 		_npc.broadcastNpcSay("Hello adventurers come and have fun with me and win prizes.");
 		
-		World.announceToOnlinePlayers("TvT Event: Recruiting levels: " + Config.MIN_LEVEL + " to " + Config.MAX_LEVEL + ".", true);
-		World.announceToOnlinePlayers("TvT Event: Max players in team: "+ Config.MAX_PARTICIOANTS +".", true);
+		World.announceToOnlinePlayers("TvT Event: Recruiting levels: " + Config.TVT_MIN_LEVEL + " to " + Config.TVT_MAX_LEVEL + ".", true);
+		World.announceToOnlinePlayers("TvT Event: Max players in team: "+ Config.TVT_MAX_PARTICIOANTS +".", true);
 		World.announceToOnlinePlayers("TvT Event: Commands /register /unregister.", true);
 		
 		for (Player player : World.getInstance().getPlayers())
@@ -167,9 +185,10 @@ public final class TvTEvent extends Event
 	
 	private void prepareTeams()
 	{
-		if ((_registered.size() >= Config.MIN_PARTICIOANTS) && (_state != EventState.AWAITING))
+		Player player;
+		while (_registered.size() > 0)
 		{
-			Player player = _registered.get(Rnd.get(_registered.size()));
+			player = _registered.get(Rnd.get(_registered.size()));
 			
 			// First create 2 event teams
 			if (_blueTeam.size() > _redTeam.size())
@@ -242,32 +261,17 @@ public final class TvTEvent extends Event
 			player.setOriginalCoordinates(playerCoordinates);
 			
 			_registered.remove(player);
-			
-			_state = EventState.PROCESSING;
-			_tick = Config.TVT_RUNNING_TIME * 60;
-			
-			// Port teams
-			for (Player blue : _blueTeam)
-				blue.teleToLocation(Config.TVT_BLUE_SPAWN_LOCATION);
-			
-			for (Player red : _redTeam)
-				red.teleToLocation(Config.TVT_RED_SPAWN_LOCATION);
 		}
-		else
-		{
-			if (_state == EventState.AWAITING)
-				World.announceToOnlinePlayers("TvT Event: Event was cancelled.", true);
-			else
-				World.announceToOnlinePlayers("TvT Event: Event was cancelled due to lack of participation.", true);
-			
-			_registered.clear();
-			
-			if (_npc != null)
-			{
-				if (_npc.isVisible())
-					_npc.deleteMe();
-			}
-		}
+		
+		_state = EventState.PROCESSING;
+		_tick = Config.TVT_RUNNING_TIME * 60;
+		
+		// Port teams
+		for (Player blue : _blueTeam)
+			blue.teleToLocation(Config.TVT_BLUE_SPAWN_LOCATION);
+		
+		for (Player red : _redTeam)
+			red.teleToLocation(Config.TVT_RED_SPAWN_LOCATION);
 	}
 	
 	public void eventRemovals()
@@ -276,7 +280,7 @@ public final class TvTEvent extends Event
 		for (Player blue : _blueTeam)
 		{
 			// Give rewards
-			if (_state != EventState.AWAITING && (_blueTeamKills > _redTeamKills || _blueTeamKills == _redTeamKills && Config.REWARD_DIE))
+			if (_state != EventState.AWAITING && (_blueTeamKills > _redTeamKills || _blueTeamKills == _redTeamKills && Config.TVT_REWARD_DIE))
 			{
 				for (IntIntHolder reward : Config.TVT_REWARDS)
 					blue.addItem("TvTReward", reward.getId(), reward.getValue(), null, true);
@@ -293,7 +297,7 @@ public final class TvTEvent extends Event
 		for (Player red : _redTeam)
 		{
 			// Give rewards
-			if (_state != EventState.AWAITING && (_blueTeamKills < _redTeamKills || _blueTeamKills == _redTeamKills && Config.REWARD_DIE))
+			if (_state != EventState.AWAITING && (_blueTeamKills < _redTeamKills || _blueTeamKills == _redTeamKills && Config.TVT_REWARD_DIE))
 			{
 				for (IntIntHolder reward : Config.TVT_REWARDS)
 					red.addItem("TvTReward", reward.getId(), reward.getValue(), null, true);
@@ -370,13 +374,13 @@ public final class TvTEvent extends Event
 			return;
 		}
 		
-		if ((player.getLevel() < Config.MIN_LEVEL) || (player.getLevel() > Config.MAX_LEVEL))
+		if ((player.getLevel() < Config.TVT_MIN_LEVEL) || (player.getLevel() > Config.TVT_MAX_LEVEL))
 		{
 			player.sendMessage("You have not reached the appropriate level to join the event.");
 			return;
 		}
 		
-		if (_registered.size() == Config.MAX_PARTICIOANTS)
+		if (_registered.size() == Config.TVT_MAX_PARTICIOANTS)
 		{
 			player.sendMessage("There is no more room for you to register to the event.");
 			return;
@@ -394,7 +398,7 @@ public final class TvTEvent extends Event
 			}
 			
 			// Check if dual boxing is not allowed
-			if (!Config.DUAL_BOX)
+			if (!Config.TVT_DUAL_BOX)
 			{
 				if ((registered.getClient() == null) || (player.getClient() == null))
 					continue;
@@ -482,8 +486,8 @@ public final class TvTEvent extends Event
 		{
 			final Player player = ((Player) killer);
 			
-			ThreadPool.schedule(() -> respawnCharacter(player), Config.PLAYER_RESPAWN_DELAY * 1000);
-			killer.sendPacket(new ExShowScreenMessage("You will be revived in " + Config.PLAYER_RESPAWN_DELAY + " second(s).", 5000));
+			ThreadPool.schedule(() -> respawnCharacter(player), Config.TVT_PLAYER_RESPAWN_DELAY * 1000);
+			killer.sendPacket(new ExShowScreenMessage("You will be revived in " + Config.TVT_PLAYER_RESPAWN_DELAY + " second(s).", 5000));
 		}
 	}
 	

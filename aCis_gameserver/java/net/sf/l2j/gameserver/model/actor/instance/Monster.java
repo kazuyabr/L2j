@@ -12,6 +12,7 @@ import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.manager.CursedWeaponManager;
+import net.sf.l2j.gameserver.data.xml.DropsData;
 import net.sf.l2j.gameserver.data.xml.HerbDropData;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Attackable;
@@ -602,10 +603,10 @@ public class Monster extends Attackable
 			sp = 0;
 		
 		return new int[]
-		{
-			(int) xp,
-			(int) sp
-		};
+			{
+				(int) xp,
+				(int) sp
+			};
 	}
 	
 	public long calculateOverhitExp(long normalExp)
@@ -616,7 +617,7 @@ public class Monster extends Attackable
 		// Over-hit damage percentages are limited to 25% max
 		if (overhitPercentage > 25)
 			overhitPercentage = 25;
-			
+		
 		// Get the overhit exp bonus according to the above over-hit damage percentage
 		// (1/1 basis - 13% of over-hit damage, 13% of extra exp is given, and so on...)
 		double overhitExp = ((overhitPercentage / 100) * normalExp);
@@ -853,7 +854,7 @@ public class Monster extends Attackable
 		if (isChampion())
 			if (drop.getItemId() == 57 || (drop.getItemId() >= 6360 && drop.getItemId() <= 6362))
 				itemCount *= Config.CHAMPION_ADENAS_REWARDS;
-			
+		
 		if (itemCount > 0)
 			return new IntIntHolder(drop.getItemId(), itemCount);
 		
@@ -871,7 +872,7 @@ public class Monster extends Attackable
 	{
 		if (categoryDrops == null)
 			return null;
-			
+		
 		// Get default drop chance for the category (that's the sum of chances for all items in the category)
 		// keep track of the base category chance as it'll be used later, if an item is drop from the category.
 		// for everything else, use the total "categoryDropChance"
@@ -902,7 +903,7 @@ public class Monster extends Attackable
 			DropData drop = categoryDrops.dropOne(isRaidBoss());
 			if (drop == null)
 				return null;
-				
+			
 			// Now decide the quantity to drop based on the rates and penalties. To get this value
 			// simply divide the modified categoryDropChance by the base category chance. This
 			// results in a chance that will dictate the drops amounts: for each amount over 100
@@ -953,7 +954,7 @@ public class Monster extends Attackable
 			if (isChampion())
 				if (drop.getItemId() == 57 || (drop.getItemId() >= 6360 && drop.getItemId() <= 6362))
 					itemCount *= Config.CHAMPION_ADENAS_REWARDS;
-				
+			
 			if (itemCount > 0)
 				return new IntIntHolder(drop.getItemId(), itemCount);
 		}
@@ -974,7 +975,7 @@ public class Monster extends Attackable
 			for (Creature atkChar : getAttackByList())
 				if (atkChar.getLevel() > highestLevel)
 					highestLevel = atkChar.getLevel();
-				
+			
 			// According to official data (Prima), deep blue mobs are 9 or more levels below players
 			if (highestLevel - 9 >= getLevel())
 				return ((highestLevel - (getLevel() + 8)) * 9);
@@ -1162,6 +1163,20 @@ public class Monster extends Attackable
 				final IntIntHolder item = new IntIntHolder(Config.CHAMPION_REWARD_ID, Math.max(1, Rnd.get(1, Config.CHAMPION_REWARD_QTY)));
 				if (Config.AUTO_LOOT)
 					player.addItem("ChampionLoot", item.getId(), item.getValue(), this, true);
+				else
+					dropItem(player, item);
+			}
+		}
+		
+		// Drops custom
+		for (DropCategory cat : DropsData.getInstance().getDroplist(1))
+		{
+			final IntIntHolder item = calculateCategorizedRewardItem(cat, levelModifier);
+			if (item != null)
+			{
+				// Check if the autoLoot mode is active
+				if (Config.AUTO_LOOT)
+					player.doAutoLoot(this, item);
 				else
 					dropItem(player, item);
 			}

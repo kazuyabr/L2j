@@ -55,6 +55,7 @@ import net.sf.l2j.gameserver.data.xml.AnnouncementData;
 import net.sf.l2j.gameserver.data.xml.ArmorSetData;
 import net.sf.l2j.gameserver.data.xml.AugmentationData;
 import net.sf.l2j.gameserver.data.xml.DoorData;
+import net.sf.l2j.gameserver.data.xml.DropsData;
 import net.sf.l2j.gameserver.data.xml.FishData;
 import net.sf.l2j.gameserver.data.xml.HennaData;
 import net.sf.l2j.gameserver.data.xml.HerbDropData;
@@ -233,6 +234,7 @@ public class GameServer
 		StringUtil.printSection("NPCs");
 		BufferManager.getInstance();
 		HerbDropData.getInstance();
+		DropsData.getInstance();
 		NpcData.getInstance();
 		WalkerRouteData.getInstance();
 		DoorData.getInstance().spawn();
