@@ -38,7 +38,7 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_player.getZ());
 		writeD((_player.getBoat() == null) ? 0 : _player.getBoat().getObjectId());
 		writeD(_player.getObjectId());
-		writeS(_player.getName());
+		writeS(_player.isAio() ? "[AIO]-" : _player.getName());
 		writeD(_player.getRace().ordinal());
 		writeD(_player.getAppearance().getSex().ordinal());
 		writeD((_player.getClassIndex() == 0) ? _player.getClassId().getId() : _player.getBaseClass());
@@ -118,7 +118,7 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_player.getAppearance().getHairColor());
 		writeD(_player.getAppearance().getFace());
 		
-		String name = (canSeeInvis) ? "Invisible" : _player.getTitle();
+		String name = (canSeeInvis) ? "Invisible" : _player.isAio() ? Config.AIO_TITLE : _player.getTitle();
 		 		
 		final Event event = _player.getEvent();
 		if (event != null && event.isStarted())
@@ -161,7 +161,7 @@ public class CharInfo extends L2GameServerPacket
 		writeC((_player.isFishing()) ? 1 : 0);
 		writeLoc(_player.getFishingStance().getLoc());
 		
-		int Namecolor = (_player.getAppearance().getNameColor());
+		int Namecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.getAppearance().getNameColor());
 		if (event != null && event.isStarted())
 			Namecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getNameColor());
 		
@@ -171,7 +171,7 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_player.getPledgeClass());
 		writeD(_player.getPledgeType());
 		
-		int Titlecolor = (_player.getAppearance().getTitleColor());
+		int Titlecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.getAppearance().getTitleColor());
 		if (event != null && event.isStarted())
 			Titlecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getTitleColor());
 		

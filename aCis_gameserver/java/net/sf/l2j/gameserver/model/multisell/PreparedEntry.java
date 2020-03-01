@@ -44,7 +44,7 @@ public class PreparedEntry extends Entry
 		// now add the adena, if any.
 		adenaAmount += _taxAmount; // do not forget tax
 		if (adenaAmount > 0)
-			_ingredients.add(new Ingredient(57, adenaAmount, false, false));
+			_ingredients.add(new Ingredient(57, adenaAmount, 0, false, false));
 		
 		// now copy products
 		_products = new ArrayList<>(template.getProducts().size());

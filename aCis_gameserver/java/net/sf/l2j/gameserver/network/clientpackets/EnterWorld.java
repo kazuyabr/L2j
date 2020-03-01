@@ -3,6 +3,9 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map.Entry;
 
 import net.sf.l2j.Config;
@@ -328,6 +331,37 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (Config.TVT_ENABLE)
 			TvTEvent.getInstance().autoRegister(player);
+
+		if (player.getMemos().getLong("aioTime", 0) > 0)	
+		{
+			long now = Calendar.getInstance().getTimeInMillis();
+			long endDay = player.getMemos().getLong("aioTime");
+			
+			if (now > endDay)
+				player.setAio(false);
+			else
+			{
+				player.setAio(true);
+				player.sendMessage("Your Aio privileges end in " + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("aioTime", 0))) + ".");
+			}
+		}
+		
+		if (player.getMemos().getLong("vipTime", 0) > 0)	
+		{
+			long now = Calendar.getInstance().getTimeInMillis();
+			long endDay = player.getMemos().getLong("vipTime");
+			
+			if (now > endDay)
+				player.setVip(false);
+			else
+			{
+				player.setVip(true);
+				player.sendMessage("Your Vip privileges end in " + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("vipTime", 0))) + ".");
+			}
+		}
+
+		if (player.isVip() && Config.ANNOUNCE_VIP_ENTER)
+			World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", player.getName()).replace("%clan%", player.getClan().getName()) : Config.ANNOUNCE_VIP_ENTER_BY_PLAYER_MSG.replace("%player%", player.getName()), true);
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}

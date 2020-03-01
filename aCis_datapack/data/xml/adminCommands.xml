@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <list>
+	<!-- AIO -->
+	<aCar name="admin_setaio" accessLevel="7" />
+	<aCar name="admin_removeaio" accessLevel="7" />
+	
 	<!-- ADMIN -->
 	<aCar name="admin_admin" accessLevel="7"/>
 	<aCar name="admin_admin1" accessLevel="7"/>
@@ -232,6 +236,7 @@
 	<!-- OLYMPIADS -->
 	<aCar name="admin_endoly" accessLevel="7"/>
 	<aCar name="admin_sethero" accessLevel="7"/>
+	<aCar name="admin_removehero" accessLevel="7"/>
 	<aCar name="admin_setnoble" accessLevel="7"/>
 	
 	<!-- PETITION -->
@@ -334,4 +339,8 @@
 	<!-- ZONE -->
 	<aCar name="admin_zone_check" accessLevel="7"/>
 	<aCar name="admin_zone_visual" accessLevel="7"/>
+	
+	<!-- VIP -->
+	<aCar name="admin_setvip" accessLevel="7" />
+	<aCar name="admin_removevip" accessLevel="7" />
 </list>

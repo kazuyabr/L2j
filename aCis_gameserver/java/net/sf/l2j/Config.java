@@ -376,6 +376,32 @@ public final class Config
 	public static boolean DEEPBLUE_DROP_RULES;
 	public static boolean ALT_GAME_DELEVEL;
 	public static int DEATH_PENALTY_CHANCE;
+
+	/** Aio */
+	public static String AIO_TITLE;
+	public static int AIO_COLOR;
+	public static IntIntHolder[] LIST_AIO_ITEMS;
+	public static IntIntHolder[] LIST_AIO_SKILLS;
+	
+	/** Hero */
+	public static double HERO_RATE_XP;
+	public static double HERO_RATE_SP;
+	public static double HERO_ADENA_RATES;
+	public static double HERO_SPOIL_RATES;
+	public static double HERO_DROP_RATES;
+	
+	/** Vip */
+	public static int VIP_COLOR;
+	public static IntIntHolder[] LIST_VIP_SKILLS;
+	public static IntIntHolder[] LIST_VIP_ITEMS;
+	public static double VIP_RATE_XP;
+	public static double VIP_RATE_SP;
+	public static double VIP_ADENA_RATES;
+	public static double VIP_SPOIL_RATES;
+	public static double VIP_DROP_RATES;
+	public static boolean ANNOUNCE_VIP_ENTER;
+	public static String ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG;
+	public static String ANNOUNCE_VIP_ENTER_BY_PLAYER_MSG;
 	
 	/** Inventory & WH */
 	public static int INVENTORY_MAXIMUM_NO_DWARF;
@@ -1039,6 +1065,29 @@ public final class Config
 		DEEPBLUE_DROP_RULES = players.getProperty("UseDeepBlueDropRules", true);
 		ALT_GAME_DELEVEL = players.getProperty("Delevel", true);
 		DEATH_PENALTY_CHANCE = players.getProperty("DeathPenaltyChance", 20);
+
+		AIO_TITLE = players.getProperty("AioTitle", "Aio");
+		AIO_COLOR = Integer.decode("0x" + players.getProperty("AioColor", "606060"));
+		LIST_AIO_ITEMS = players.parseIntIntList("AioItems", "1-268");
+		LIST_AIO_SKILLS = players.parseIntIntList("AioSkills", "1-268");
+		
+		HERO_RATE_XP = players.getProperty("HeroXpRates", 1.5);
+		HERO_RATE_SP = players.getProperty("HeroSpRates", 1.5);
+		HERO_ADENA_RATES = players.getProperty("HeroAdenaDrop", 1.5);
+		HERO_SPOIL_RATES = players.getProperty("HeroSpoilRates", 1.5);
+		HERO_DROP_RATES = players.getProperty("HeroDrop", 1.5);
+		
+		VIP_COLOR = Integer.decode("0x" + players.getProperty("VipColor", "FFFF00"));
+		LIST_VIP_SKILLS = players.parseIntIntList("VipSkill", "0-0");
+		LIST_VIP_ITEMS = players.parseIntIntList("VipItems", "0-0");
+		VIP_RATE_XP = players.getProperty("VipXpRates", 1.5);
+		VIP_RATE_SP = players.getProperty("VipSpRates", 1.5);
+		VIP_ADENA_RATES = players.getProperty("VipAdenaDrop", 1.5);
+		VIP_SPOIL_RATES = players.getProperty("VipSpoilRates", 1.5);
+		VIP_DROP_RATES = players.getProperty("VipDrop", 1.5);
+		ANNOUNCE_VIP_ENTER = players.getProperty("AnnounceVipLogin",false);
+		ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG = players.getProperty("AnnounceVipLoginByClanMemberMsg", "The Vip %player% of the clan %clan% is now online.");
+		ANNOUNCE_VIP_ENTER_BY_PLAYER_MSG = players.getProperty("AnnounceVipLoginByPlayerMsg", "The Vip %player% is now online.");	
 		
 		INVENTORY_MAXIMUM_NO_DWARF = players.getProperty("MaximumSlotsForNoDwarf", 80);
 		INVENTORY_MAXIMUM_DWARF = players.getProperty("MaximumSlotsForDwarf", 100);

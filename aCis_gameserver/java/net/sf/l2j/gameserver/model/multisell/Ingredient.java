@@ -23,13 +23,14 @@ public class Ingredient
 	
 	public Ingredient(StatsSet set)
 	{
-		this(set.getInteger("id"), set.getInteger("count"), set.getBool("isTaxIngredient", false), set.getBool("maintainIngredient", false));
+		this(set.getInteger("id"), set.getInteger("count"), set.getInteger("enchantmentLevel", 0), set.getBool("isTaxIngredient", false), set.getBool("maintainIngredient", false));
 	}
 	
-	public Ingredient(int itemId, int itemCount, boolean isTaxIngredient, boolean maintainIngredient)
+	public Ingredient(int itemId, int itemCount, int enchantmentLevel, boolean isTaxIngredient, boolean maintainIngredient)
 	{
 		_itemId = itemId;
 		_itemCount = itemCount;
+		 _enchantmentLevel = enchantmentLevel;
 		_isTaxIngredient = isTaxIngredient;
 		_maintainIngredient = maintainIngredient;
 		
@@ -42,7 +43,7 @@ public class Ingredient
 	 */
 	public Ingredient getCopy()
 	{
-		return new Ingredient(_itemId, _itemCount, _isTaxIngredient, _maintainIngredient);
+		return new Ingredient(_itemId, _itemCount, _enchantmentLevel, _isTaxIngredient, _maintainIngredient);
 	}
 	
 	public final int getItemId()

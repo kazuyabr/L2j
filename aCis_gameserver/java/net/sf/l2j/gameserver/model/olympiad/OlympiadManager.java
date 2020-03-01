@@ -126,7 +126,13 @@ public class OlympiadManager
 			player.sendPacket(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
 			return false;
 		}
-		
+
+		if (player.isAio())
+		{
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			return false;
+		}
+
 		if (Olympiad.getInstance().getMillisToCompEnd() < 600000)
 		{
 			player.sendPacket(SystemMessageId.GAME_REQUEST_CANNOT_BE_MADE);

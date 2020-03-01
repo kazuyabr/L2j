@@ -243,6 +243,7 @@ import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
 import net.sf.l2j.gameserver.taskmanager.ItemsOnGroundTaskManager;
 import net.sf.l2j.gameserver.taskmanager.PvpFlagTaskManager;
 import net.sf.l2j.gameserver.taskmanager.ShadowItemTaskManager;
+import net.sf.l2j.gameserver.taskmanager.PremiumTaskManager;
 import net.sf.l2j.gameserver.taskmanager.WaterTaskManager;
 
 /**
@@ -382,8 +383,10 @@ public final class Player extends Playable
 	
 	private PreparedListContainer _currentMultiSell;
 	
+	private boolean _isAio;
 	private boolean _isNoble;
 	private boolean _isHero;
+	private boolean _isVip;
 	
 	private Folk _currentFolk;
 	
@@ -6087,6 +6090,15 @@ public final class Player extends Playable
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE).addSkillName(skill));
 			return false;
 		}
+
+		if (isAio())
+		{
+			if (!isInsideZone(ZoneId.TOWN) ? true : Config.LIST_AIO_SKILLS.equals(skill.getId()))
+			{
+				sendPacket(ActionFailed.STATIC_PACKET);
+				return false;
+			}
+		}
 		
 		// Players wearing Formal Wear cannot use skills.
 		if (isWearingFormalWear())
@@ -7308,6 +7320,78 @@ public final class Player extends Playable
 	{
 		return _blockList;
 	}
+
+	public boolean isAio()
+	{
+		return _isAio;
+	}
+	
+	public void setAio(boolean aio)
+	{
+		if (aio)
+		{
+			for (IntIntHolder skills : Config.LIST_AIO_SKILLS)
+				addSkill(skills.getSkill(), false);
+			
+			getStat().addExp(getStat().getExpForLevel(81));
+		}
+		else
+		{
+			PremiumTaskManager.getInstance().remove(this);
+			getMemos().set("aioTime", 0);
+			
+			for (IntIntHolder skills : Config.LIST_AIO_SKILLS)
+			{
+				if (skills.getId() > 0)
+					removeSkill(skills.getId(), false);
+			}
+			
+			for (IntIntHolder item : Config.LIST_AIO_ITEMS)
+			{
+				if (item.getId() > 0)
+					destroyItemByItemId("Destroy", item.getId(), item.getValue(), this, true);
+			}
+			broadcastPacket(new SocialAction(this, 13));
+		}
+		
+		_isAio = aio;
+		
+		broadcastUserInfo();
+		sendSkillList();
+	}
+	
+	public boolean isVip()
+	{
+		return _isVip;
+	}
+	
+	public void setVip(boolean vip)
+	{
+		if (vip)
+		{
+			for (IntIntHolder skill : Config.LIST_VIP_SKILLS)
+			{
+				if (skill != null)
+					addSkill(skill.getSkill(), false);
+			}
+		}
+		else
+		{
+			for (IntIntHolder skill : Config.LIST_VIP_SKILLS)
+			{
+				if (skill != null)
+					removeSkill(skill.getId(), false);
+			}
+			
+			PremiumTaskManager.getInstance().remove(this);
+			getMemos().set("vipTime", 0);
+		}
+		
+		_isVip = vip;
+		
+		broadcastUserInfo();
+		sendSkillList();
+	}
 	
 	public boolean isHero()
 	{
@@ -7325,6 +7409,9 @@ public final class Player extends Playable
 		{
 			for (L2Skill skill : SkillTable.getHeroSkills())
 				removeSkill(skill.getId(), false);
+			
+			PremiumTaskManager.getInstance().remove(this);
+			getMemos().set("heroTime", 0);
 		}
 		_isHero = hero;
 		
@@ -7556,12 +7643,13 @@ public final class Player extends Playable
 	
 	public void sendSkillList()
 	{
+		final boolean isAio = isAio();
 		final boolean isWearingFormalWear = isWearingFormalWear();
 		final boolean isClanDisabled = getClan() != null && getClan().getReputationScore() < 0;
 		
 		final SkillList sl = new SkillList();
 		for (L2Skill skill : getSkills().values())
-			sl.addSkill(skill.getId(), skill.getLevel(), skill.isPassive(), isWearingFormalWear || (skill.isClanSkill() && isClanDisabled));
+			sl.addSkill(skill.getId(), skill.getLevel(), skill.isPassive(), isWearingFormalWear || (skill.isClanSkill() && isClanDisabled) || isAio && !isInsideZone(ZoneId.TOWN) ? true : Config.LIST_AIO_SKILLS.equals(skill.getId()));
 		
 		sendPacket(sl);
 	}
@@ -7864,6 +7952,10 @@ public final class Player extends Playable
 		
 		// Add to the GameTimeTask to keep inform about activity time.
 		GameTimeTaskManager.getInstance().add(this);
+
+		// Add PremiumTask for players vip and aio
+		if (isAio() && isVip())
+			PremiumTaskManager.getInstance().add(this);
 		
 		// Teleport player if the Seven Signs period isn't the good one, or if the player isn't in a cabal.
 		if (isIn7sDungeon() && !isGM())
@@ -8254,6 +8346,7 @@ public final class Player extends Playable
 			PvpFlagTaskManager.getInstance().remove(this);
 			GameTimeTaskManager.getInstance().remove(this);
 			ShadowItemTaskManager.getInstance().remove(this);
+			PremiumTaskManager.getInstance().remove(this);
 			
 			final Event event = getEvent();
 			if (event != null)

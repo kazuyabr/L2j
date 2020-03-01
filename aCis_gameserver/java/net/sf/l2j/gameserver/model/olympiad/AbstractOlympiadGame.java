@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.sf.l2j.commons.logging.CLogger;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.xml.MapRegionData;
 import net.sf.l2j.gameserver.enums.IntentionType;
@@ -304,6 +305,16 @@ public abstract class AbstractOlympiadGame
 			for (L2Skill skill : SkillTable.getHeroSkills())
 				player.removeSkill(skill.getId(), false);
 		}
+
+		// Remove Vip Skills
+		if (player.isVip())
+		{
+			for (IntIntHolder skill : Config.LIST_VIP_SKILLS)
+			{
+				if (skill != null)
+					player.removeSkill(skill.getId(), false);
+			}
+		}
 		
 		// Heal Player fully
 		healPlayer(player);
@@ -448,6 +459,16 @@ public abstract class AbstractOlympiadGame
 		{
 			for (L2Skill skill : SkillTable.getHeroSkills())
 				player.addSkill(skill, false);
+		}
+
+		// Add Vip Skills
+		if (player.isVip())
+		{
+			for (IntIntHolder skill : Config.LIST_VIP_SKILLS)
+			{
+				if (skill != null)
+					player.addSkill(skill.getSkill(), false);
+			}
 		}
 		player.sendSkillList();
 	}

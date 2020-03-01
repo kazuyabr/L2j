@@ -36,7 +36,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_player.getZ());
 		writeD(_player.getHeading());
 		writeD(_player.getObjectId());
-		writeS((_player.getPolyTemplate() != null) ? _player.getPolyTemplate().getName() : _player.getName());
+		writeS((_player.getPolyTemplate() != null) ? _player.getPolyTemplate().getName() : _player.isAio() ? "[AIO]-" : _player.getName());
 		writeD(_player.getRace().ordinal());
 		writeD(_player.getAppearance().getSex().ordinal());
 		writeD((_player.getClassIndex() == 0) ? _player.getClassId().getId() : _player.getBaseClass());
@@ -172,7 +172,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_player.getAppearance().getFace());
 		writeD((_player.isGM()) ? 1 : 0);
 		
-		String name = ((_player.getPolyType() != PolyType.DEFAULT) ? "Morphed" : _player.getTitle());
+		String name = ((_player.getPolyType() != PolyType.DEFAULT) ? "Morphed" : _player.isAio() ? Config.AIO_TITLE : _player.getTitle());
 		 		
 		final Event event = _player.getEvent();
 		if (event != null && event.isStarted())
@@ -215,7 +215,7 @@ public class UserInfo extends L2GameServerPacket
 		writeC((_player.isFishing()) ? 1 : 0);
 		writeLoc(_player.getFishingStance().getLoc());
 		
-		int Namecolor = (_player.getAppearance().getNameColor());
+		int Namecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.getAppearance().getNameColor());
 		if (event != null && event.isStarted())
 			Namecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getNameColor());
 		
@@ -225,7 +225,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_player.getPledgeClass());
 		writeD(_player.getPledgeType());
 
-		int Titlecolor = (_player.getAppearance().getTitleColor());
+		int Titlecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.getAppearance().getTitleColor());
 		if (event != null && event.isStarted())
 			Titlecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getTitleColor());
 		

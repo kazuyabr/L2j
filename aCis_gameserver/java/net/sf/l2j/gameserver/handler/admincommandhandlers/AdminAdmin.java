@@ -14,6 +14,7 @@ import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.data.xml.AdminData;
 import net.sf.l2j.gameserver.data.xml.AnnouncementData;
 import net.sf.l2j.gameserver.data.xml.DoorData;
+import net.sf.l2j.gameserver.data.xml.DropsData;
 import net.sf.l2j.gameserver.data.xml.MultisellData;
 import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.data.xml.TeleportLocationData;
@@ -192,6 +193,11 @@ public class AdminAdmin implements IAdminCommandHandler
 						DoorData.getInstance().reload();
 						activeChar.sendMessage("Doors instance has been reloaded.");
 					}
+					else if (type.startsWith("drops"))
+					{
+						DropsData.getInstance().reload();
+						activeChar.sendMessage("DropData has been reloaded.");
+					}
 					else if (type.startsWith("htm"))
 					{
 						HtmCache.getInstance().reload();
@@ -235,7 +241,7 @@ public class AdminAdmin implements IAdminCommandHandler
 					else
 					{
 						activeChar.sendMessage("Usage : //reload <admin|announcement|config|crest|cw>");
-						activeChar.sendMessage("Usage : //reload <door|htm|item|multisell|npc>");
+						activeChar.sendMessage("Usage : //reload <door|drops|htm|item|multisell|npc>");
 						activeChar.sendMessage("Usage : //reload <npcwalker|skill|teleport|zone>");
 					}
 				}
@@ -244,7 +250,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			catch (Exception e)
 			{
 				activeChar.sendMessage("Usage : //reload <admin|announcement|config|crest|cw>");
-				activeChar.sendMessage("Usage : //reload <door|htm|item|multisell|npc>");
+				activeChar.sendMessage("Usage : //reload <door|drops|htm|item|multisell|npc>");
 				activeChar.sendMessage("Usage : //reload <npcwalker|skill|teleport|zone>");
 			}
 		}
