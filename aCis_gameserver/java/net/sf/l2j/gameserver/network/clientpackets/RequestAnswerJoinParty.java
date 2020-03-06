@@ -27,6 +27,12 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 		final Player requestor = player.getActiveRequester();
 		if (requestor == null)
 			return;
+
+		if (requestor.isOfflineMode())
+		{
+			player.sendMessage("Requestor is in Offline mode.");
+			return;
+		}
 		
 		requestor.sendPacket(new JoinParty(_response));
 		

@@ -40,13 +40,16 @@ import net.sf.l2j.gameserver.data.manager.HeroManager;
 import net.sf.l2j.gameserver.data.manager.LotteryManager;
 import net.sf.l2j.gameserver.data.manager.MovieMakerManager;
 import net.sf.l2j.gameserver.data.manager.PetitionManager;
+import net.sf.l2j.gameserver.data.manager.RaidBossInfoManager;
 import net.sf.l2j.gameserver.data.manager.RaidBossManager;
 import net.sf.l2j.gameserver.data.manager.RaidPointManager;
 import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
 import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.data.sql.AuctionTable;
 import net.sf.l2j.gameserver.data.sql.AutoSpawnTable;
 import net.sf.l2j.gameserver.data.sql.BookmarkTable;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.data.sql.OfflineTradersTable;
 import net.sf.l2j.gameserver.data.sql.PlayerInfoTable;
 import net.sf.l2j.gameserver.data.sql.ServerMemoTable;
 import net.sf.l2j.gameserver.data.sql.SpawnTable;
@@ -54,6 +57,7 @@ import net.sf.l2j.gameserver.data.xml.AdminData;
 import net.sf.l2j.gameserver.data.xml.AnnouncementData;
 import net.sf.l2j.gameserver.data.xml.ArmorSetData;
 import net.sf.l2j.gameserver.data.xml.AugmentationData;
+import net.sf.l2j.gameserver.data.xml.DonateData;
 import net.sf.l2j.gameserver.data.xml.DoorData;
 import net.sf.l2j.gameserver.data.xml.DropsData;
 import net.sf.l2j.gameserver.data.xml.FishData;
@@ -244,6 +248,12 @@ public class GameServer
 		GrandBossManager.getInstance();
 		DayNightManager.getInstance().notifyChangeMode();
 		DimensionalRiftManager.getInstance();
+		AuctionTable.getInstance();
+		RaidBossInfoManager.getInstance();
+		DonateData.getInstance();
+
+		if ((Config.OFFLINE_TRADE_ENABLE || Config.OFFLINE_CRAFT_ENABLE) && Config.RESTORE_OFFLINERS)
+			OfflineTradersTable.getInstance();
 		
 		StringUtil.printSection("Olympiads & Heroes");
 		OlympiadGameManager.getInstance();

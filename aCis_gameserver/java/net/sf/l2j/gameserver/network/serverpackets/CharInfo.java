@@ -161,7 +161,7 @@ public class CharInfo extends L2GameServerPacket
 		writeC((_player.isFishing()) ? 1 : 0);
 		writeLoc(_player.getFishingStance().getLoc());
 		
-		int Namecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.getAppearance().getNameColor());
+		int Namecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.isOfflineMode() ? Config.OFFLINE_NAME_COLOR : _player.getAppearance().getNameColor());
 		if (event != null && event.isStarted())
 			Namecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getNameColor());
 		
@@ -171,7 +171,7 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_player.getPledgeClass());
 		writeD(_player.getPledgeType());
 		
-		int Titlecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.getAppearance().getTitleColor());
+		int Titlecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.isOfflineMode() ? Config.OFFLINE_NAME_COLOR : _player.getAppearance().getTitleColor());
 		if (event != null && event.isStarted())
 			Titlecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getTitleColor());
 		

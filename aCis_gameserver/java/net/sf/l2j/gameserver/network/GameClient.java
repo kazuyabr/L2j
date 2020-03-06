@@ -21,6 +21,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameguard.GameGuard;
 import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.data.sql.OfflineTradersTable;
 import net.sf.l2j.gameserver.data.sql.PlayerInfoTable;
 import net.sf.l2j.gameserver.model.CharSelectSlot;
 import net.sf.l2j.gameserver.model.World;
@@ -216,7 +217,13 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 				{
 					setDetached(true);
 					fast = !getPlayer().isInCombat() && !getPlayer().isLocked();
-				
+					
+					if (OfflineTradersTable.getInstance().offlineMode(getPlayer()))
+					{
+						getPlayer().setOfflineMode(true);
+						return;
+					}
+					
 					GameGuard.getInstance().doDisconection(this);
 				}
 				cleanMe(fast);
@@ -613,6 +620,9 @@ public final class GameClient extends MMOClient<MMOConnection<GameClient>> imple
 	
 	public void close(L2GameServerPacket gsp)
 	{
+		if (getConnection() == null)
+			return;
+					
 		getConnection().close(gsp);
 	}
 	

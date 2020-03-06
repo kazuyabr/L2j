@@ -725,6 +725,19 @@ public class AdminEditChar implements IAdminCommandHandler
 		}
 		else
 			activeChar.setTarget(player);
+
+		final GameClient client = activeChar.getClient();
+		if (client == null)
+		{
+			activeChar.sendMessage("Client is null.");
+			return;
+		}
+		
+		if (client.isDetached())
+		{
+			activeChar.sendMessage("Client is detached.");
+			return;
+		}
 		
 		gatherCharacterInfo(activeChar, player, "charinfo.htm");
 	}

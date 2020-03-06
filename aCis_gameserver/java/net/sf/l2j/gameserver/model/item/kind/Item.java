@@ -83,6 +83,7 @@ public abstract class Item
 	
 	private final int _itemId;
 	private final String _name;
+	private final String _icon;
 	protected int _type1; // needed for item list (inventory)
 	protected int _type2; // different lists for armor, weapon, etc
 	private final int _weight;
@@ -122,6 +123,7 @@ public abstract class Item
 	{
 		_itemId = set.getInteger("item_id");
 		_name = set.getString("name");
+		_icon = set.getString("icon", "icon.noimage");
 		_weight = set.getInteger("weight", 0);
 		_materialType = set.getEnum("material", MaterialType.class, MaterialType.STEEL);
 		_duration = set.getInteger("duration", -1);
@@ -312,7 +314,15 @@ public abstract class Item
 	{
 		return _name;
 	}
-	
+
+	/**
+	 * @return String the icon of the item
+	 */
+	public String getIcon()
+	{
+		return _icon;
+	}
+
 	/**
 	 * @return int the part of the body used with the item.
 	 */

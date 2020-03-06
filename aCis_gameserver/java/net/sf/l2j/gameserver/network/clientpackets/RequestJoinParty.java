@@ -78,6 +78,12 @@ public final class RequestJoinParty extends L2GameClientPacket
 			requestor.sendMessage("The player you tried to invite is currently jailed.");
 			return;
 		}
+
+		if (target.isOfflineMode())
+		{
+			requestor.sendMessage("Player is in Offline mode.");
+			return;
+		}
 		
 		if (target.isInOlympiadMode() || requestor.isInOlympiadMode())
 			return;

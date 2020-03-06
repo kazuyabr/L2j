@@ -656,4 +656,117 @@
 	<teleport id="10035" x="146705" y="25840" z="-2000" price="17000" isNoble="false"/>
 	<teleport id="10036" x="164564" y="-48145" z="-3536" price="11000" isNoble="false"/>
 	<teleport id="10037" x="144880" y="-113468" z="-2560" price="14000" isNoble="false"/>
+	
+	<teleport id="10038" x="178127" y="-84435" z="-7216" price="14000" isNoble="false"/> <!-- Dino -->
+	<teleport id="10039" x="-84318" y="244579" z="-3730" price="14000" isNoble="false"/> <!-- Talking Island Village -->
+	<teleport id="10040" x="47509" y="51131" z="-2996" price="14000" isNoble="false"/> <!-- Elven village -->
+	<teleport id="10041" x="9780" y="15669" z="-4569" price="14000" isNoble="false"/> <!-- Dark Elven village -->	
+	<teleport id="10042" x="-44805" y="-112286" z="-234" price="14000" isNoble="false"/> <!-- Orc Village -->
+	<teleport id="10043" x="115149" y="-178181" z="-906" price="14000" isNoble="false"/> <!-- Dwarven Village -->
+	<teleport id="10044" x="-80835" y="149871" z="-3044" price="14000" isNoble="false"/> <!-- Town of Gludin -->
+	<teleport id="10045" x="-12764" y="122707" z="-3117" price="14000" isNoble="false"/> <!-- Town of Gludio -->
+	<teleport id="10046" x="15685" y="142979" z="-2706" price="14000" isNoble="false"/> <!-- Town of Dion -->
+	<teleport id="10047" x="83469" y="147972" z="-3405" price="14000" isNoble="false"/> <!-- Town of Giran -->
+	<teleport id="10048" x="82956" y="53162" z="-1495" price="14000" isNoble="false"/> <!-- Town of Oren -->
+	<teleport id="10049" x="147450" y="26741" z="-2204" price="14000" isNoble="false"/> <!-- Town Of Aden -->
+	<teleport id="10050" x="111115" y="219017" z="-3547" price="14000" isNoble="false"/> <!-- Town of Heine -->
+	<teleport id="10051" x="45843" y="-47929" z="-823" price="14000" isNoble="false"/> <!-- Town of Rune -->
+	<teleport id="10052" x="147928" y="-55273" z="-2734" price="63000" isNoble="false"/> <!-- Town Of Goddard -->
+	<teleport id="10053" x="87386" y="-143246" z="-1293" price="14000" isNoble="false"/> <!-- Town of Schuttgart -->
+	<teleport id="10054" x="85332" y="16186" z="-3673" price="14000" isNoble="false"/> <!-- Ivory Tower -->	
+	<teleport id="10055" x="117110" y="76883" z="-2695" price="14000" isNoble="false"/> <!-- Hunters Village -->
+	<teleport id="10056" x="17838" y="170274" z="-3508" price="14000" isNoble="false"/> <!-- Floran Village -->
+	<teleport id="10057" x="-112870" y="234992" z="-3693" price="14000" isNoble="false"/> <!-- Elven Ruins -->	
+	<teleport id="10058" x="16071" y="114180" z="-3581" price="14000" isNoble="false"/> <!-- Cruma Tower -->
+	<teleport id="10059" x="174528" y="52683" z="-4369" price="14000" isNoble="false"/> <!-- The Giant's Cave -->
+	<teleport id="10060" x="-47080" y="59675" z="-3335" price="14000" isNoble="false"/> <!-- School of Dark Arts  -->	
+	<teleport id="10061" x="-52847" y="190933" z="-3535" price="14000" isNoble="false"/> <!-- Forgotten Temple -->
+	<teleport id="10062" x="-9223" y="176528" z="-4205" price="14000" isNoble="false"/> <!-- The Ant Nest -->
+	<teleport id="10063" x="29205" y="74948" z="-3775" price="14000" isNoble="false"/> <!-- Elven Fortress -->
+	<teleport id="10064" x="42006" y="208234" z="-3756" price="14000" isNoble="false"/> <!-- Devil's Isle -->
+	<teleport id="10065" x="84543" y="235022" z="-3756" price="14000" isNoble="false"/> <!-- Garden of Eva -->
+	<teleport id="10066" x="131311" y="114430" z="-3718" price="14000" isNoble="false"/> <!-- Dragon Valley Caves -->
+	<teleport id="10067" x="186699" y="-75915" z="-2824" price="14000" isNoble="false"/> <!-- Imperial Tomb -->
+	<teleport id="10068" x="170193" y="-116256" z="-2084" price="14000" isNoble="false"/> <!-- Forge of The Gods -->
+	<teleport id="10069" x="123743" y="-75032" z="-2902" price="14000" isNoble="false"/> <!-- Monastery of Silence -->
+	<teleport id="10070" x="144706" y="-173223" z="-1520" price="14000" isNoble="false"/> <!-- Abandoned Coal Mines -->
+	<teleport id="10071" x="179039" y="-184080" z="-319" price="63000" isNoble="false"/> <!-- Mithril Mines -->
+	<teleport id="10072" x="9954" y="-112487" z="-2470" price="14000" isNoble="false"/> <!-- Cave of Trials -->
+	<teleport id="10073" x="89880" y="-44515" z="-2135" price="14000" isNoble="false"/> <!-- Stakato Nest -->	
+	<teleport id="10074" x="105918" y="109759" z="-3207" price="14000" isNoble="false"/> <!-- Hardin Private's Academy -->
+	<teleport id="10075" x="-14656" y="43018" z="-3574" price="14000" isNoble="false"/> <!-- Swamplamp -->
+	<teleport id="10076" x="-61228" y="75006" z="-3357" price="14000" isNoble="false"/> <!-- Spider Nest -->
+	<teleport id="10077" x="-56235" y="106668" z="-3773" price="14000" isNoble="false"/> <!-- Ruins of Agony -->	
+	<teleport id="10078" x="-20057" y="137618" z="-3897" price="14000" isNoble="false"/> <!-- Ruins of Despair -->	
+	<teleport id="10079" x="-46636" y="140693" z="-2949" price="14000" isNoble="false"/> <!-- Abandoned Camp -->
+	<teleport id="10080" x="-20893" y="186060" z="-4108" price="63000" isNoble="false"/> <!-- Wastland -->
+	<teleport id="10081" x="-53240" y="211729" z="-2761" price="14000" isNoble="false"/> <!-- Langk Lizardmen Dwellings -->
+	<teleport id="10082" x="-6629" y="202274" z="-3680" price="14000" isNoble="false"/> <!-- Ol Mahun Checkpoint -->	
+	<teleport id="10083" x="28929" y="179829" z="-3622" price="14000" isNoble="false"/> <!-- Beehive -->
+	<teleport id="10084" x="51055" y="141959" z="-2869" price="14000" isNoble="false"/> <!-- Execution Grounds -->
+	<teleport id="10085" x="53372" y="163795" z="-2609" price="63000" isNoble="false"/> <!-- Tanor Canyon -->
+	<teleport id="10086" x="91776" y="209903" z="-3610" price="14000" isNoble="false"/> <!-- Field of Whispers -->
+	<teleport id="10087" x="87347" y="188986" z="-3476" price="14000" isNoble="false"/> <!-- Field of Silence -->	
+	<teleport id="10088" x="119359" y="180436" z="-3443" price="14000" isNoble="false"/> <!-- Alligator Island -->
+	<teleport id="10089" x="71404" y="118000" z="-3674" price="14000" isNoble="false"/> <!-- Death Pass -->
+	<teleport id="10090" x="53614" y="83532" z="-3536" price="14000" isNoble="false"/> <!-- Iris Lake -->
+	<teleport id="10091" x="61990" y="29467" z="-3733" price="14000" isNoble="false"/> <!-- Sea of Spores -->	
+	<teleport id="10092" x="125044" y="61505" z="-4046" price="14000" isNoble="false"/> <!-- Enchanted Valley -->	
+	<teleport id="10093" x="166433" y="20314" z="-3331" price="14000" isNoble="false"/> <!-- Cemetery -->
+	<teleport id="10094" x="185395" y="20359" z="-3270" price="63000" isNoble="false"/> <!-- Forbidden Gateway -->	
+	<teleport id="10095" x="145835" y="-10995" z="-4424" price="14000" isNoble="false"/> <!-- Blazing Swamp -->
+	<teleport id="10096" x="122233" y="-3941" z="-3311" price="14000" isNoble="false"/> <!-- Acient Battleground -->	
+	<teleport id="10097" x="176735" y="-50850" z="-3395" price="14000" isNoble="false"/> <!-- Wall of Agros -->
+	<teleport id="10098" x="148539" y="-80669" z="-5620" price="14000" isNoble="false"/> <!-- Ketra Orc Outpost -->
+	<teleport id="10099" x="125740" y="-40864" z="-3736" price="63000" isNoble="false"/> <!-- Varka Silenos Outpost -->
+	<teleport id="100100" x="144625" y="-101291" z="-3384" price="14000" isNoble="false"/> <!-- Hot Springs -->
+	<teleport id="100101" x="112913" y="-109921" z="-858" price="14000" isNoble="false"/> <!-- Ice Merchant Cabin -->		
+	<teleport id="100102" x="99998" y="-60176" z="-2803" price="14000" isNoble="false"/> <!-- Devil Pass -->
+	<teleport id="100103" x="80823" y="-51868" z="-2312" price="63000" isNoble="false"/> <!-- Swamp of Screams -->	
+	<teleport id="100104" x="67999" y="-72077" z="-3743" price="14000" isNoble="false"/> <!-- Valley of Saints -->
+	<teleport id="100105" x="102713" y="-125519" z="-2848" price="14000" isNoble="false"/> <!-- The Ice Queen's Castle -->		
+	<teleport id="100106" x="113901" y="-154132" z="-1489" price="14000" isNoble="false"/> <!-- Plunderous Plain -->
+	<teleport id="100107" x="72818" y="-111541" z="-1726" price="14000" isNoble="false"/> <!-- Caron's Dungeon -->
+	<teleport id="100108" x="22795" y="-125925" z="-840" price="63000" isNoble="false"/> <!-- Valley of The Lods -->
+	<teleport id="100109" x="57059" y="-82976" z="-2847" price="14000" isNoble="false"/> <!-- Beast Farm -->
+	<teleport id="100110" x="57670" y="-41672" z="-3144" price="14000" isNoble="false"/> <!-- Cursed Village -->		
+	<teleport id="100111" x="58000" y="-30767" z="380" price="14000" isNoble="false"/> <!-- Fortress of The Dead -->
+	<teleport id="100112" x="88275" y="-125690" z="-3815" price="63000" isNoble="false"/> <!-- Pavel Ruins -->	
+	<teleport id="100113" x="76860" y="-125169" z="-3414" price="14000" isNoble="false"/> <!-- Den of Evil -->
+	<teleport id="100114" x="43352" y="144026" z="-5379" price="14000" isNoble="false"/> <!-- Heretic's -->	
+	<teleport id="100115" x="46652" y="170310" z="-4979" price="14000" isNoble="false"/> <!-- Branded -->
+	<teleport id="100116" x="77977" y="78438" z="-5123" price="14000" isNoble="false"/> <!-- Apostate -->
+	<teleport id="100117" x="140723" y="79740" z="-5427" price="63000" isNoble="false"/> <!-- Witch -->
+	<teleport id="100118" x="-19095" y="13595" z="-4899" price="14000" isNoble="false"/> <!-- Dark Omen's -->
+	<teleport id="100119" x="114290" y="84593" z="-6539" price="14000" isNoble="false"/> <!-- Forbidden Path -->		
+	<teleport id="100120" x="-41515" y="210101" z="-5085" price="14000" isNoble="false"/> <!-- Sacrifice's -->
+	<teleport id="100121" x="45200" y="123593" z="-5411" price="14000" isNoble="false"/> <!-- Pilgrim's -->
+	<teleport id="100122" x="111620" y="174099" z="-5437" price="14000" isNoble="false"/> <!-- Worshipper -->
+	<teleport id="100123" x="-21383" y="77433" z="-5171" price="14000" isNoble="false"/> <!-- Patriot's -->
+	<teleport id="100124" x="-51897" y="79175" z="-4739" price="14000" isNoble="false"/> <!-- Ascetic's -->
+	<teleport id="100125" x="118612" y="132866" z="-4829" price="14000" isNoble="false"/> <!-- Martyr's -->
+	<teleport id="100126" x="83446" y="209066" z="-5436" price="14000" isNoble="false"/> <!-- Saint's -->
+	<teleport id="100127" x="172692" y="-17516" z="-4899" price="14000" isNoble="false"/> <!-- Disciple's -->
+	<teleport id="100128" x="115168" y="16022" z="-5100" price="14000" isNoble="false"/> <!-- ToI Entrance -->
+	<teleport id="100129" x="114649" y="18587" z="-3609" price="14000" isNoble="false"/> <!-- ToI 2nd Floor -->
+	<teleport id="100130" x="117918" y="16039" z="-2127" price="14000" isNoble="false"/> <!-- ToI 3rd Floor -->
+	<teleport id="100131" x="114622" y="12946" z="-645" price="14000" isNoble="false"/> <!-- ToI 4th Floor -->
+	<teleport id="100132" x="112209" y="16078" z="928" price="14000" isNoble="false"/>  <!-- ToI 5th Floor -->
+	<teleport id="100133" x="112376" y="16099" z="1947" price="14000" isNoble="false"/> <!-- ToI 6th Floor -->
+	<teleport id="100134" x="114448" y="16175" z="2994" price="14000" isNoble="false"/> <!-- ToI 7th Floor -->
+	<teleport id="100135" x="111063" y="16118" z="3967" price="14000" isNoble="false"/> <!-- ToI 8th Floor -->
+	<teleport id="100136" x="117147" y="18415" z="4977" price="14000" isNoble="false"/> <!-- ToI 9th Floor -->
+	<teleport id="100137" x="118374" y="15973" z="5987" price="14000" isNoble="false"/> <!-- ToI 10th Floor -->
+	<teleport id="100138" x="112209" y="16078" z="7028" price="14000" isNoble="false"/> <!-- ToI 11th Floor -->
+	<teleport id="100139" x="114809" y="18711" z="7996" price="14000" isNoble="false"/> <!-- ToI 12th Floor -->
+	<teleport id="100140" x="115178" y="16989" z="9007" price="14000" isNoble="false"/> <!-- ToI 13th Floor -->
+	<teleport id="100141" x="112714" y="14111" z="10077" price="14000" isNoble="false"/> <!-- ToI 14th Floor -->
+	<teleport id="100142" x="147484" y="46731" z="-3405" price="14000" isNoble="false"/> <!-- Colliseum -->
+	<teleport id="100143" x="73876" y="142660" z="-3773" price="14000" isNoble="false"/> <!-- Giran's Arena -->
+	<teleport id="100144" x="-86995" y="142400" z="-3638" price="14000" isNoble="false"/> <!-- Gludin's Arena -->
+	<teleport id="100145" x="12312" y="182657" z="3563" price="14000" isNoble="false"/> <!-- Monster Race Track -->
+	<teleport id="100146" x="47115" y="187108" z="-3480" price="14000" isNoble="false"/> <!-- Giran Harbor -->
+	<teleport id="100147" x="-89197" y="149918" z="-3581" price="14000" isNoble="false"/> <!-- Gludin Harbor -->
+	<teleport id="100148" x="38914" y="-39010" z="-3609" price="14000" isNoble="false"/> <!-- Rune Harbor -->
+	<teleport id="100149" x="-96811" y="258201" z="-3607" price="14000" isNoble="false"/> <!-- Talking Island Harbor -->
 </list>

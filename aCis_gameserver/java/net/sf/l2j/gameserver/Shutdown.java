@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.data.manager.HeroManager;
 import net.sf.l2j.gameserver.data.manager.RaidBossManager;
 import net.sf.l2j.gameserver.data.manager.SevenSignsManager;
 import net.sf.l2j.gameserver.data.manager.ZoneManager;
+import net.sf.l2j.gameserver.data.sql.OfflineTradersTable;
 import net.sf.l2j.gameserver.data.sql.ServerMemoTable;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Player;
@@ -138,6 +139,10 @@ public class Shutdown extends Thread
 			// Schemes save.
 			BufferManager.getInstance().saveSchemes();
 			LOGGER.info("BufferTable data has been saved.");
+			
+			// Save Offline players
+			if ((Config.OFFLINE_TRADE_ENABLE || Config.OFFLINE_CRAFT_ENABLE) && Config.RESTORE_OFFLINERS)
+				OfflineTradersTable.getInstance().storeOffliners();
 			
 			// Couples save.
 			if (Config.ALLOW_WEDDING)

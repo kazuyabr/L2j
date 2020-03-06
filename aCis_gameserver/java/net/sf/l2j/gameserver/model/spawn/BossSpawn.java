@@ -9,7 +9,9 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.data.manager.RaidBossInfoManager;
 import net.sf.l2j.gameserver.enums.BossStatus;
 import net.sf.l2j.gameserver.model.actor.Npc;
 
@@ -139,6 +141,9 @@ public class BossSpawn
 		
 		// Refresh the database for this particular boss entry.
 		updateOnDb();
+
+		if (Config.LIST_RAID_BOSS_IDS.contains(_spawn.getNpcId()))
+			RaidBossInfoManager.getInstance().updateRaidBossInfo(_spawn.getNpcId(), respawnTime);
 		
 		LOGGER.info("Raid boss: {} - {} ({}h).", _spawn.getNpc().getName(), new SimpleDateFormat("dd-MM-yyyy HH:mm").format(respawnTime), respawnDelay);
 	}
@@ -167,6 +172,9 @@ public class BossSpawn
 		
 		// Refresh the database for this particular boss entry.
 		updateOnDb();
+
+		if (Config.LIST_RAID_BOSS_IDS.contains(npc.getNpcId()))
+			RaidBossInfoManager.getInstance().updateRaidBossInfo(npc.getNpcId(), 0);
 		
 		LOGGER.info("{} raid boss has spawned.", npc.getName());
 	}

@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!-- S-Grade Armors -->
+
+<list>
+
+  <!-- Draconic Leather Helmet -->
+  <item id="1">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6382" count="1"/>
+  </item>
+
+  <!-- Imperial Crusader Helmet -->
+  <item id="2">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6378" count="1"/>
+  </item>
+
+  <!-- Major Arcana Helmet -->
+  <item id="3">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6386" count="1"/>
+  </item>
+
+  <!-- Titanium  Helmet -->
+  <item id="4">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9218" count="1"/>
+  </item>
+  
+  <!-- Draconic Leather Armor -->
+  <item id="5">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6379" count="1"/>
+  </item>
+
+  <!-- Titanium  Leather Armor -->
+  <item id="6">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9219" count="1"/>
+  </item>
+  
+  <!-- Imperial Crusader Breastplate -->
+  <item id="7">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6373" count="1"/>
+	<production id="6374" count="1"/>
+  </item>
+
+  <!-- Titanium  Heavy Armor -->
+  <item id="8">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9222" count="1"/>
+  </item>
+  
+  <!-- Major Arcana Armor -->
+  <item id="9">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6383" count="1"/>
+  </item>
+
+  <!-- Titanium  Robe Armor -->
+  <item id="10">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9225" count="1"/>
+  </item>
+  
+  <!-- Draconic Leather Gloves -->
+  <item id="11">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6380" count="1"/>
+  </item>
+
+  <!-- Titanium Leather Gloves -->
+  <item id="12">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9220" count="1"/>
+  </item>
+  
+  <!-- Imperial Crusader Gauntlets -->
+  <item id="13">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6375" count="1"/>
+  </item>
+
+  <!-- Titanium Heavy Gloves -->
+  <item id="14">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9223" count="1"/>
+  </item>
+  
+  <!-- Major Arcana Gloves -->
+  <item id="15">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6384" count="1"/>
+  </item>
+  
+  <!-- Titanium Robe Gloves -->
+  <item id="16">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9226" count="1"/>
+  </item>
+  
+  <!-- Draconic Leather Boots -->
+  <item id="17">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6381" count="1"/>
+  </item>
+
+  <!-- Titanium Leather Boots -->
+  <item id="18">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9221" count="1"/>
+  </item>
+  
+  <!-- Imperial Crusader Boots -->
+  <item id="19">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6376" count="1"/>
+  </item>
+
+  <!-- Titanium Heavy Boots -->
+  <item id="20">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9224" count="1"/>
+  </item>
+  
+  <!-- Major Arcana Boots -->
+  <item id="21">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6385" count="1"/>
+  </item>
+
+  <!-- Titanium Robe Boots -->
+  <item id="22">
+    <ingredient id="5556" count="500"/>
+	<ingredient id="5557" count="500"/>
+    <production id="9227" count="1"/>
+  </item>
+  
+  <!-- Imperial Crusader Shield -->
+  <item id="23">
+    <ingredient id="5556" count="100"/>
+	<ingredient id="5557" count="100"/>
+    <production id="6377" count="1"/>
+  </item>
+  
+  <!-- Titanium Shield -->
+  <item id="24">
+    <ingredient id="5556" count="600"/>
+	<ingredient id="5557" count="600"/>
+    <production id="9228" count="1"/>
+  </item>
+  
+</list>

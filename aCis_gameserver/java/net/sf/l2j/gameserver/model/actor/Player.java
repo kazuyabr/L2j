@@ -82,6 +82,7 @@ import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEditChar;
+import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.AccessLevel;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -282,6 +283,8 @@ public final class Player extends Playable
 	
 	private static final String DELETE_RECIPEBOOK = "DELETE FROM character_recipebook WHERE charId=?";
 	private static final String SAVE_RECIPEBOOK = "INSERT INTO character_recipebook (charId, recipeId) values(?,?)";
+
+	public static final String ADD_ITEM = "INSERT INTO items (owner_id,item_id,count,loc,loc_data,enchant_level,object_id,custom_type1,custom_type2,mana_left,time) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public static final int REQUEST_TIMEOUT = 15;
 	
@@ -318,6 +321,7 @@ public final class Player extends Playable
 	private byte _pvpFlag;
 	private byte _siegeState;
 	private int _curWeightPenalty;
+	private String _className = "";
 	
 	private int _lastCompassZone; // the last compass zone update send to the client
 	
@@ -374,6 +378,9 @@ public final class Player extends Playable
 	private final List<PcFreight> _depositedFreight = new ArrayList<>();
 	
 	private StoreType _storeType = StoreType.NONE;
+
+	private boolean isOfflineShop;
+	private long _offlineShopStart;
 	
 	private TradeList _activeTradeList;
 	private ItemContainer _activeWarehouse;
@@ -764,6 +771,16 @@ public final class Player extends Playable
 	public boolean isInStoreMode()
 	{
 		return _storeType != StoreType.NONE;
+	}
+
+	public long getOfflineStartTime()
+	{
+		return _offlineShopStart;
+	}
+	
+	public void setOfflineStartTime(long time)
+	{
+		_offlineShopStart = time;
 	}
 	
 	public boolean isCrafting()
@@ -1578,6 +1595,77 @@ public final class Player extends Playable
 		{
 			_subclassLock.unlock();
 		}
+	}
+
+	public String setClassName(int Id)
+	{
+		switch (Id)
+		{
+			case 88:
+				return "Duelist";
+			case 89:
+				return "Dreadnought";
+			case 90:
+				return "Phoenix Knight";
+			case 91:
+				return "Hell Knight";
+			case 92:
+				return "Sagittarius";
+			case 93:
+				return "Adventurer";
+			case 94:
+				return "Archmage";
+			case 95:
+				return "Soultaker";
+			case 96:
+				return "Arcana Lord";
+			case 97:
+				return "Cardinal";
+			case 98:
+				return "Hierophant";
+			case 99:
+				return "Eva Templar";
+			case 100:
+				return "Sword Muse";
+			case 101:
+				return "Wind Rider";
+			case 102:
+				return "Moonlight Sentinel";
+			case 103:
+				return "Mystic Muse";
+			case 104:
+				return "Elemental Master";
+			case 105:
+				return "Eva Saint";
+			case 106:
+				return "Shillien Templar";
+			case 107:
+				return "Spectral Dancer";
+			case 108:
+				return "Ghost Hunter";
+			case 109:
+				return "Ghost Sentinel";
+			case 110:
+				return "Storm Screamer";
+			case 111:
+				return "Spectral Master";
+			case 112:
+				return "Shillen Saint";
+			case 113:
+				return "Titan";
+			case 114:
+				return "Grand Khauatari";
+			case 115:
+				return "Dominator";
+			case 116:
+				return "Doomcryer";
+			case 117:
+				return "Fortune Seeker";
+			case 118:
+				return "Maestro";
+		}
+		
+		return _className;
 	}
 	
 	/**
@@ -2616,6 +2704,14 @@ public final class Player extends Playable
 	}
 	
 	public String getAccountName()
+	{
+		if (getClient() == null)
+			return getAccountNamePlayer();
+		
+		return _accountName;
+	}
+
+	public String getAccountNamePlayer()
 	{
 		return _accountName;
 	}
@@ -4198,7 +4294,39 @@ public final class Player extends Playable
 	 */
 	public void setStoreType(StoreType type)
 	{
+		if (Config.OFFLINE_DISCONNECT_FINISHED && type == StoreType.NONE && isOfflineMode())
+			deleteMe();
+		
 		_storeType = type;
+	}
+
+	public boolean isOfflineMode()
+	{
+		return isOfflineShop;	
+	}
+	
+	public void setOfflineMode(boolean off)
+	{
+		isOfflineShop = off;
+		
+		if (getClan() != null)
+			getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
+		
+		if (getParty() != null)
+			getParty().removePartyMember(this, MessageType.DISCONNECTED);
+		
+		OlympiadManager.getInstance().unRegisterNoble(this);
+		
+		if (getSummon() != null)
+		{
+			getSummon().doRevive();
+			getSummon().unSummon(this);
+		}
+		
+		if (getOfflineStartTime() == 0)
+			setOfflineStartTime(System.currentTimeMillis());
+		
+		broadcastUserInfo();
 	}
 	
 	/**
@@ -9218,6 +9346,10 @@ public final class Player extends Playable
 			Player friend = World.getInstance().getPlayer(id);
 			if (friend != null)
 			{
+				// Do not notify offline characters
+				if (!friend.isOnline() || friend.isOfflineMode())
+					continue;
+				
 				friend.sendPacket(new FriendList(friend));
 				
 				if (login)
@@ -9460,5 +9592,32 @@ public final class Player extends Playable
 	{
 		final ItemInstance formal = getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 		return formal != null && formal.getItem().getBodyPart() == Item.SLOT_ALLDRESS;
+	}
+
+	public static void addItemToOffline(int owner_id, int item_id, int count)
+	{
+		final Item item = ItemTable.getInstance().getTemplate(item_id);
+		int objectId = IdFactory.getInstance().getNextId();
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement(ADD_ITEM))
+		{
+			if (count > 1 && !item.isStackable())
+				return;
+			
+			statement.setInt(1, owner_id);
+			statement.setInt(2, item.getItemId());
+			statement.setInt(3, count);
+			statement.setString(4, "INVENTORY");
+			statement.setInt(5, 0);
+			statement.setInt(6, 0);
+			statement.setInt(7, objectId);
+			statement.setInt(8, 0);
+			statement.setInt(9, 0);
+			statement.setInt(10, -1);
+			statement.setLong(11, 0);
+			statement.executeUpdate();
+		}
+		catch (Exception e){}
 	}
 }

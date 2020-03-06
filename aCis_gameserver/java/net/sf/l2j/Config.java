@@ -277,6 +277,13 @@ public final class Config
 	// --------------------------------------------------
 	// NPCs / Monsters
 	// --------------------------------------------------
+
+	/** Raid info*/
+	public static int RAID_BOSS_INFO_PAGE_LIMIT;
+	public static int RAID_BOSS_DROP_PAGE_LIMIT;
+	public static String RAID_BOSS_DATE_FORMAT;
+	public static String RAID_BOSS_IDS;
+	public static List<Integer> LIST_RAID_BOSS_IDS;
 	
 	/** Champion Mod */
 	public static int CHAMPION_FREQUENCY;
@@ -483,6 +490,16 @@ public final class Config
 	public static int DWARF_RECIPE_LIMIT;
 	public static int COMMON_RECIPE_LIMIT;
 	public static boolean ALT_BLACKSMITH_USE_RECIPES;
+
+	/** Offline Trade*/
+	public static boolean OFFLINE_TRADE_ENABLE;
+	public static boolean OFFLINE_CRAFT_ENABLE;
+	public static boolean OFFLINE_MODE_IN_PEACE_ZONE;
+	public static boolean OFFLINE_MODE_NO_DAMAGE;
+	public static boolean RESTORE_OFFLINERS;
+	public static boolean OFFLINE_DISCONNECT_FINISHED;
+	public static int OFFLINE_MAX_DAYS;
+	public static int OFFLINE_NAME_COLOR;
 	
 	/** Skills & Classes **/
 	public static boolean AUTO_LEARN_SKILLS;
@@ -969,6 +986,18 @@ public final class Config
 	private static final void loadNpcs()
 	{
 		final ExProperties npcs = initProperties(NPCS_FILE);
+
+		RAID_BOSS_INFO_PAGE_LIMIT = npcs.getProperty("RaidBossInfoPageLimit", 15);
+		RAID_BOSS_DROP_PAGE_LIMIT = npcs.getProperty("RaidBossDropPageLimit", 15);
+		RAID_BOSS_DATE_FORMAT = npcs.getProperty("RaidBossDateFormat", "MMM dd, HH:mm");
+		RAID_BOSS_IDS = npcs.getProperty("RaidBossIds", "0,0");
+		LIST_RAID_BOSS_IDS = new ArrayList<>();
+		for (String val : RAID_BOSS_IDS.split(","))
+		{
+			int npcId = Integer.parseInt(val);
+			LIST_RAID_BOSS_IDS.add(npcId);
+		}
+		
 		CHAMPION_FREQUENCY = npcs.getProperty("ChampionFrequency", 0);
 		CHAMP_MIN_LVL = npcs.getProperty("ChampionMinLevel", 20);
 		CHAMP_MAX_LVL = npcs.getProperty("ChampionMaxLevel", 70);
@@ -1173,6 +1202,15 @@ public final class Config
 		DWARF_RECIPE_LIMIT = players.getProperty("DwarfRecipeLimit", 50);
 		COMMON_RECIPE_LIMIT = players.getProperty("CommonRecipeLimit", 50);
 		ALT_BLACKSMITH_USE_RECIPES = players.getProperty("AltBlacksmithUseRecipes", true);
+
+		OFFLINE_TRADE_ENABLE = players.getProperty("OfflineTradeEnable", false);
+		OFFLINE_CRAFT_ENABLE = players.getProperty("OfflineCraftEnable", false);
+		OFFLINE_MODE_IN_PEACE_ZONE = players.getProperty("OfflineModeInPeaceZone", false);
+		OFFLINE_MODE_NO_DAMAGE = players.getProperty("OfflineModeNoDamage", false);
+		OFFLINE_NAME_COLOR = Integer.decode("0x" + players.getProperty("OfflineNameColor", "808080"));
+		RESTORE_OFFLINERS = players.getProperty("RestoreOffliners", false);
+		OFFLINE_MAX_DAYS = players.getProperty("OfflineMaxDays", 10);
+		OFFLINE_DISCONNECT_FINISHED = players.getProperty("OfflineDisconnectFinished", true);
 		
 		AUTO_LEARN_SKILLS = players.getProperty("AutoLearnSkills", false);
 		MAGIC_FAILURES = players.getProperty("MagicFailures", true);
