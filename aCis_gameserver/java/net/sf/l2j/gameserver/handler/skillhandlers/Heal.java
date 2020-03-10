@@ -1,5 +1,6 @@
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.enums.items.ShotType;
 import net.sf.l2j.gameserver.enums.skills.L2SkillType;
 import net.sf.l2j.gameserver.enums.skills.Stats;
@@ -108,6 +109,12 @@ public class Heal implements ISkillHandler
 				default:
 					hp = power;
 					hp *= target.calcStat(Stats.HEAL_EFFECTIVNESS, 100, null, null) / 100;
+
+					if (Config.PROTECTION_HEAL)
+					{
+						if (activeChar instanceof Player && ((Player) activeChar).getPvpFlag() != 0 || activeChar instanceof Player && ((Player) activeChar).getKarma() != 0)
+							hp *= Config.PROTECTION_HEAL_PVP;
+					}
 			}
 			
 			// If you have full HP and you get HP buff, u will receive 0HP restored message

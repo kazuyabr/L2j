@@ -11,10 +11,12 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanWarsList;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.DisMount;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Escape;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.EventCommands;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.GoldCoin;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Loc;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Mount;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.OlympiadStat;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.PartyInfo;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.Report;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.SiegeStatus;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Time;
 
@@ -32,10 +34,12 @@ public class UserCommandHandler
 		registerHandler(new DisMount());
 		registerHandler(new Escape());
 		registerHandler(new EventCommands());
+		registerHandler(new GoldCoin());
 		registerHandler(new Loc());
 		registerHandler(new Mount());
 		registerHandler(new OlympiadStat());
 		registerHandler(new PartyInfo());
+		registerHandler(new Report());
 		registerHandler(new SiegeStatus());
 		registerHandler(new Time());
 	}

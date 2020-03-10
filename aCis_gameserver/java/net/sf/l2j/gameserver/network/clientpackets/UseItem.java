@@ -38,36 +38,38 @@ public final class UseItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getPlayer();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
+
+		player.updateLastAction();
 		
-		if (activeChar.isInStoreMode())
+		if (player.isInStoreMode())
 		{
-			activeChar.sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
+			player.sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
 			return;
 		}
 		
-		if (activeChar.getActiveTradeList() != null)
+		if (player.getActiveTradeList() != null)
 		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_PICKUP_OR_USE_ITEM_WHILE_TRADING);
+			player.sendPacket(SystemMessageId.CANNOT_PICKUP_OR_USE_ITEM_WHILE_TRADING);
 			return;
 		}
 		
-		final ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
+		final ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
 		if (item == null)
 			return;
 		
 		if (item.getItem().getType2() == Item.TYPE2_QUEST)
 		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_USE_QUEST_ITEMS);
+			player.sendPacket(SystemMessageId.CANNOT_USE_QUEST_ITEMS);
 			return;
 		}
 		
-		if (activeChar.isAlikeDead() || activeChar.isStunned() || activeChar.isSleeping() || activeChar.isParalyzed() || activeChar.isAfraid())
+		if (player.isAlikeDead() || player.isStunned() || player.isSleeping() || player.isParalyzed() || player.isAfraid())
 			return;
 		
-		if (!Config.KARMA_PLAYER_CAN_TELEPORT && activeChar.getKarma() > 0)
+		if (!Config.KARMA_PLAYER_CAN_TELEPORT && player.getKarma() > 0)
 		{
 			final IntIntHolder[] sHolders = item.getItem().getSkills();
 			if (sHolders != null)
@@ -81,9 +83,9 @@ public final class UseItem extends L2GameClientPacket
 			}
 		}
 		
-		if (activeChar.isFishing() && item.getItem().getDefaultAction() != ActionType.fishingshot)
+		if (player.isFishing() && item.getItem().getDefaultAction() != ActionType.fishingshot)
 		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
+			player.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
 			return;
 		}
 		
@@ -93,68 +95,68 @@ public final class UseItem extends L2GameClientPacket
 		if (item.isPetItem())
 		{
 			// If no pet, cancels the use
-			if (!activeChar.hasPet())
+			if (!player.hasPet())
 			{
-				activeChar.sendPacket(SystemMessageId.CANNOT_EQUIP_PET_ITEM);
+				player.sendPacket(SystemMessageId.CANNOT_EQUIP_PET_ITEM);
 				return;
 			}
 			
-			final Pet pet = ((Pet) activeChar.getSummon());
+			final Pet pet = ((Pet) player.getSummon());
 			
 			if (!pet.canWear(item.getItem()))
 			{
-				activeChar.sendPacket(SystemMessageId.PET_CANNOT_USE_ITEM);
+				player.sendPacket(SystemMessageId.PET_CANNOT_USE_ITEM);
 				return;
 			}
 			
 			if (pet.isDead())
 			{
-				activeChar.sendPacket(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET);
+				player.sendPacket(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET);
 				return;
 			}
 			
 			if (!pet.getInventory().validateCapacity(item))
 			{
-				activeChar.sendPacket(SystemMessageId.YOUR_PET_CANNOT_CARRY_ANY_MORE_ITEMS);
+				player.sendPacket(SystemMessageId.YOUR_PET_CANNOT_CARRY_ANY_MORE_ITEMS);
 				return;
 			}
 			
 			if (!pet.getInventory().validateWeight(item, 1))
 			{
-				activeChar.sendPacket(SystemMessageId.UNABLE_TO_PLACE_ITEM_YOUR_PET_IS_TOO_ENCUMBERED);
+				player.sendPacket(SystemMessageId.UNABLE_TO_PLACE_ITEM_YOUR_PET_IS_TOO_ENCUMBERED);
 				return;
 			}
 			
-			activeChar.transferItem("Transfer", _objectId, 1, pet.getInventory(), pet);
+			player.transferItem("Transfer", _objectId, 1, pet.getInventory(), pet);
 			
 			// Equip it, removing first the previous item.
 			if (item.isEquipped())
 			{
 				pet.getInventory().unEquipItemInSlot(item.getLocationSlot());
-				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PET_TOOK_OFF_S1).addItemName(item));
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PET_TOOK_OFF_S1).addItemName(item));
 			}
 			else
 			{
 				pet.getInventory().equipPetItem(item);
-				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PET_PUT_ON_S1).addItemName(item));
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PET_PUT_ON_S1).addItemName(item));
 			}
 			
-			activeChar.sendPacket(new PetItemList(pet));
+			player.sendPacket(new PetItemList(pet));
 			pet.updateAndBroadcastStatus(1);
 			return;
 		}
 		
 		if (!item.isEquipped())
 		{
-			if (!item.getItem().checkCondition(activeChar, activeChar, true))
+			if (!item.getItem().checkCondition(player, player, true))
 				return;
 		}
 		
 		if (item.isEquipable())
 		{
-			if (activeChar.isCastingNow() || activeChar.isCastingSimultaneouslyNow())
+			if (player.isCastingNow() || player.isCastingSimultaneouslyNow())
 			{
-				activeChar.sendPacket(SystemMessageId.CANNOT_USE_ITEM_WHILE_USING_MAGIC);
+				player.sendPacket(SystemMessageId.CANNOT_USE_ITEM_WHILE_USING_MAGIC);
 				return;
 			}
 			
@@ -164,60 +166,60 @@ public final class UseItem extends L2GameClientPacket
 				case Item.SLOT_L_HAND:
 				case Item.SLOT_R_HAND:
 				{
-					if (activeChar.isMounted())
+					if (player.isMounted())
 					{
-						activeChar.sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+						player.sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 						return;
 					}
 					
 					// Don't allow weapon/shield equipment if a cursed weapon is equipped
-					if (activeChar.isCursedWeaponEquipped())
+					if (player.isCursedWeaponEquipped())
 						return;
 					
 					break;
 				}
 			}
 			
-			if (activeChar.isCursedWeaponEquipped() && item.getItemId() == 6408) // Don't allow to put formal wear
+			if (player.isCursedWeaponEquipped() && item.getItemId() == 6408) // Don't allow to put formal wear
 				return;
 			
-			if (activeChar.isAttackingNow())
+			if (player.isAttackingNow())
 				ThreadPool.schedule(() ->
 				{
-					final ItemInstance itemToTest = activeChar.getInventory().getItemByObjectId(_objectId);
+					final ItemInstance itemToTest = player.getInventory().getItemByObjectId(_objectId);
 					if (itemToTest == null)
 						return;
 					
-					activeChar.useEquippableItem(itemToTest, false);
-				}, activeChar.getAttackEndTime() - System.currentTimeMillis());
+					player.useEquippableItem(itemToTest, false);
+				}, player.getAttackEndTime() - System.currentTimeMillis());
 			else
-				activeChar.useEquippableItem(item, true);
+				player.useEquippableItem(item, true);
 		}
 		else
 		{
-			if (activeChar.isCastingNow() && !(item.isPotion() || item.isElixir()))
+			if (player.isCastingNow() && !(item.isPotion() || item.isElixir()))
 				return;
 			
-			if (activeChar.getAttackType() == WeaponType.FISHINGROD && item.getItem().getItemType() == EtcItemType.LURE)
+			if (player.getAttackType() == WeaponType.FISHINGROD && item.getItem().getItemType() == EtcItemType.LURE)
 			{
-				activeChar.getInventory().setPaperdollItem(Inventory.PAPERDOLL_LHAND, item);
-				activeChar.broadcastUserInfo();
+				player.getInventory().setPaperdollItem(Inventory.PAPERDOLL_LHAND, item);
+				player.broadcastUserInfo();
 				
-				sendPacket(new ItemList(activeChar, false));
+				sendPacket(new ItemList(player, false));
 				return;
 			}
 			
 			final IItemHandler handler = ItemHandler.getInstance().getHandler(item.getEtcItem());
 			if (handler != null)
-				handler.useItem(activeChar, item, _ctrlPressed);
+				handler.useItem(player, item, _ctrlPressed);
 			
 			for (Quest quest : item.getQuestEvents())
 			{
-				QuestState state = activeChar.getQuestState(quest.getName());
+				QuestState state = player.getQuestState(quest.getName());
 				if (state == null || !state.isStarted())
 					continue;
 				
-				quest.notifyItemUse(item, activeChar, activeChar.getTarget());
+				quest.notifyItemUse(item, player, player.getTarget());
 			}
 		}
 	}

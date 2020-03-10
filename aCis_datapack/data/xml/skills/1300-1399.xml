@@ -62,7 +62,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="magic_critical_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="magic_critical_up">
 				<mul order="0x30" stat="mCritRate" val="#mCrit"/>
 			</effect>
 		</for>
@@ -98,7 +98,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="shield_defence_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="shield_defence_up">
 				<mul order="0x30" stat="sDef" val="#sDef"/>
 			</effect>
 		</for>
@@ -221,7 +221,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="critical_prob_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="critical_prob_up">
 				<basemul order="0x30" stat="rCrit" val="#rCrit" />
 			</effect>
 		</for>
@@ -256,7 +256,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="hit_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="hit_up">
 				<add order="0x40" stat="accCombat" val="#accCombat" />
 			</effect>
 		</for>
@@ -288,7 +288,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="vampiric_attack">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="vampiric_attack">
 				<add order="0x40" stat="absorbDam" val="#absorbDam" /> <!-- absorb HP from damage inflicted on enemies -->
 			</effect>
 		</for>
@@ -1066,7 +1066,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="aggroPoints" val="662"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="3" stackType="md_up_attr">
+			<effect name="Buff" time="3600" val="0" stackOrder="3" stackType="md_up_attr">
 				<addMul order="0x40" stat="waterRes" val="20" />
 				<addMul order="0x40" stat="fireRes" val="20" />
 				<addMul order="0x40" stat="windRes" val="20" />
@@ -1086,7 +1086,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="aggroPoints" val="666"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="3" stackType="resist_holy_unholy">
+			<effect name="Buff" time="3600" val="0" stackOrder="3" stackType="resist_holy_unholy">
 				<addMul order="0x40" stat="darkRes" val="30" />
 				<addMul order="0x40" stat="holyRes" val="30" />
 			</effect>
@@ -1104,7 +1104,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="aggroPoints" val="662"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="3" stackType="resist_debuff_dispel">
+			<effect name="Buff" time="3600" val="0" stackOrder="3" stackType="resist_debuff_dispel">
 				<addMul order="0x40" stat="cancelVuln" val="30" />
 				<addMul order="0x40" stat="debuffVuln" val="20" />
 			</effect>
@@ -1125,7 +1125,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="aggroPoints" val="669"/>
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="multi_buff">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="multi_buff">
 				<mul order="0x30" stat="mAtk" val="1.2"/>
 				<mul order="0x30" stat="mDef" val="1.2"/>
 				<mul order="0x30" stat="mAtkSpd" val="1.2"/>
@@ -1151,7 +1151,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="aggroPoints" val="669"/>
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="multi_buff">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="multi_buff">
 				<mul order="0x30" stat="pAtk" val="1.10"/>
 				<mul order="0x30" stat="pDef" val="1.20"/>
 				<add order="0x40" stat="accCombat" val="4"/>
@@ -1178,7 +1178,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="aggroPoints" val="669"/>
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="multi_buff">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="multi_buff">
 				<add order="0x40" stat="absorbDam" val="5"/>
 				<add order="0x40" stat="accCombat" val="4"/>
 				<add order="0x40" stat="rEvas" val="4"/>
@@ -1289,7 +1289,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="aggroPoints" val="666"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="3" stackType="resist_debuff_dispel">
+			<effect name="Buff" time="3600" val="0" stackOrder="3" stackType="resist_debuff_dispel">
 				<addMul order="0x40" stat="cancelVuln" val="30" />
 				<addMul order="0x40" stat="debuffVuln" val="20" />
 			</effect>
@@ -1311,7 +1311,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="aggroPoints" val="669"/>
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="2" stackType="multi_buff">
+			<effect name="Buff" time="3600" val="0" stackOrder="2" stackType="multi_buff">
 				<mul order="0x30" stat="pAtk" val="1.1"/>
 				<mul order="0x30" stat="pDef" val="1.2"/>
 				<basemul order="0x30" stat="rCrit" val="0.2"/>
@@ -1339,7 +1339,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="aggroPoints" val="666"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="3" stackType="critical_dmg_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="3" stackType="critical_dmg_up">
 				<mul order="0x30" stat="cAtk" val="1.35"/>
 			</effect>
 		</for>
@@ -1356,7 +1356,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="aggroPoints" val="666"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="3" stackType="ma_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="3" stackType="ma_up">
 				<mul order="0x30" stat="mAtk" val="1.75"/>
 			</effect>
 		</for>
@@ -1772,7 +1772,7 @@
 		<set name="castRange" val="400"/>
 		<set name="effectRange" val="900"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
 				<mul order="0x30" stat="pAtk" val="#pAtk"/>
 			</effect>
 		</for>
@@ -1794,7 +1794,7 @@
 		<set name="castRange" val="400"/>
 		<set name="effectRange" val="900"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
 				<mul order="0x30" stat="pDef" val="#rate"/>
 			</effect>
 		</for>
@@ -1815,7 +1815,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="isMagic" val="true"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
 				<mul order="0x30" stat="pAtk" val="#pAtk"/>
 			</effect>
 		</for>
@@ -1836,7 +1836,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="isMagic" val="true"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="pa_pd_up">
 				<mul order="0x30" stat="pDef" val="#pDef"/>
 			</effect>
 		</for>
@@ -1855,7 +1855,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="isMagic" val="true"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="armor_holy">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="armor_holy">
 				<addMul order="0x40" stat="holyRes" val="#holyRes" />
 			</effect>
 		</for>
@@ -1874,7 +1874,7 @@
 		<set name="effectRange" val="900"/>
 		<set name="isMagic" val="true"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="armor_unholy">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="armor_unholy">
 				<addMul order="0x40" stat="darkRes" val="#darkRes" />
 			</effect>
 		</for>

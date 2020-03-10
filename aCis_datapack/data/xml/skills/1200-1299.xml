@@ -57,7 +57,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="speed_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="speed_up">
 				<add order="0x40" stat="runSpd" val="#runSpd"/>
 			</effect>
 		</for>
@@ -654,7 +654,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="dmg_shield">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="dmg_shield">
 				<add order="0x40" stat="reflectDam" val="#reflectDam" />
 			</effect>
 		</for>
@@ -946,7 +946,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="critical_dmg_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="critical_dmg_up">
 				<mul order="0x30" stat="cAtk" val="#cAtk"/>
 			</effect>
 		</for>
@@ -982,7 +982,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="shield_prob_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="shield_prob_up">
 				<mul order="0x30" stat="rShld" val="#rShld"/>
 			</effect>
 		</for>
@@ -1165,7 +1165,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="hit_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="hit_up">
 				<add order="0x40" stat="accCombat" val="#accCombat"/>
 			</effect>
 		</for>
@@ -1200,7 +1200,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="shield_prob_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="shield_prob_up">
 				<mul order="0x30" stat="rShld" val="#rShld"/>
 			</effect>
 		</for>
@@ -1235,7 +1235,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="attack_time_down">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="attack_time_down">
 				<mul order="0x30" stat="pAtkSpd" val="#pAtkSpd"/>
 			</effect>
 		</for>
@@ -1270,7 +1270,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="avoid_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="avoid_up">
 				<add order="0x40" stat="rEvas" val="#rEvas"/>
 			</effect>
 		</for>
@@ -1305,7 +1305,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="critical_dmg_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="critical_dmg_up">
 				<mul order="0x30" stat="cAtk" val="#cAtk"/>
 			</effect>
 		</for>
@@ -1454,7 +1454,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="resist_shock">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="resist_shock">
 				<addMul order="0x40" stat="stunVuln" val="#vuln" />
 			</effect>
 		</for>
@@ -1489,7 +1489,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="avoid_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="avoid_up">
 				<add order="0x40" stat="rEvas" val="#rEvas"/>
 			</effect>
 		</for>
@@ -1531,7 +1531,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="berserker">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="berserker">
 				<mul order="0x30" stat="mAtk" val="#mAtk"/>
 				<mul order="0x30" stat="pAtk" val="#pAtk"/>
 				<mul order="0x30" stat="mDef" val="#mDef"/>
@@ -2052,7 +2052,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="speed_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="speed_up">
 				<add order="0x40" stat="runSpd" val="#runSpd"/>
 			</effect>
 		</for>
@@ -2101,7 +2101,7 @@
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<enchant2 name="mpInitialConsume" val="#ench2mpInitialConsume"/>
 		<for>
-			<effect name="Buff" time="1200" val="0" stackOrder="#stackOrder" stackType="dmg_shield">
+			<effect name="Buff" time="3600" val="0" stackOrder="#stackOrder" stackType="dmg_shield">
 				<add order="0x40" stat="reflectDam" val="#power"/>
 			</effect>
 		</for>

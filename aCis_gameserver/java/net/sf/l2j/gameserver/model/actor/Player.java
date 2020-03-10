@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -48,6 +49,10 @@ import net.sf.l2j.gameserver.data.xml.AdminData;
 import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
 import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.data.xml.PlayerData;
+import net.sf.l2j.gameserver.data.xml.PvPData;
+import net.sf.l2j.gameserver.data.xml.PvPData.ColorSystem;
+import net.sf.l2j.gameserver.data.xml.PvPData.RewardSystem;
+import net.sf.l2j.gameserver.data.xml.PvPData.SpreeKills;
 import net.sf.l2j.gameserver.data.xml.RecipeData;
 import net.sf.l2j.gameserver.data.xml.ScriptData;
 import net.sf.l2j.gameserver.enums.AiEventType;
@@ -56,6 +61,7 @@ import net.sf.l2j.gameserver.enums.GaugeColor;
 import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.enums.LootRule;
 import net.sf.l2j.gameserver.enums.MessageType;
+import net.sf.l2j.gameserver.enums.PcCafeType;
 import net.sf.l2j.gameserver.enums.PolyType;
 import net.sf.l2j.gameserver.enums.PunishmentType;
 import net.sf.l2j.gameserver.enums.ScriptEventType;
@@ -174,6 +180,7 @@ import net.sf.l2j.gameserver.network.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.ExAutoSoulShot;
 import net.sf.l2j.gameserver.network.serverpackets.ExDuelUpdateUserInfo;
 import net.sf.l2j.gameserver.network.serverpackets.ExOlympiadMode;
+import net.sf.l2j.gameserver.network.serverpackets.ExPCCafePointInfo;
 import net.sf.l2j.gameserver.network.serverpackets.ExSetCompassZoneCode;
 import net.sf.l2j.gameserver.network.serverpackets.ExStorageMaxCount;
 import net.sf.l2j.gameserver.network.serverpackets.FriendList;
@@ -191,6 +198,7 @@ import net.sf.l2j.gameserver.network.serverpackets.ObservationMode;
 import net.sf.l2j.gameserver.network.serverpackets.ObservationReturn;
 import net.sf.l2j.gameserver.network.serverpackets.PartySmallWindowUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.PetInventoryUpdate;
+import net.sf.l2j.gameserver.network.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.network.serverpackets.PledgeShowMemberListDelete;
 import net.sf.l2j.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.PrivateStoreListBuy;
@@ -304,6 +312,7 @@ public final class Player extends Playable
 	private long _onlineBeginTime;
 	private long _lastAccess;
 	private long _uptime;
+	private long _lastAction;
 	
 	protected int _baseClass;
 	protected int _activeClass;
@@ -321,7 +330,8 @@ public final class Player extends Playable
 	private byte _pvpFlag;
 	private byte _siegeState;
 	private int _curWeightPenalty;
-	private String _className = "";
+	private int _spreeKills;
+	private String _className;
 	
 	private int _lastCompassZone; // the last compass zone update send to the client
 	
@@ -3653,6 +3663,8 @@ public final class Player extends Playable
 		// Kill the Player
 		if (!super.doDie(killer))
 			return false;
+
+		_spreeKills = 0; 
 		
 		if (isMounted())
 			stopFeed();
@@ -3842,6 +3854,9 @@ public final class Player extends Playable
 		final Player targetPlayer = target.getActingPlayer();
 		if (targetPlayer == null || targetPlayer == this)
 			return;
+
+		if (Config.ENABLE_FARM_PVP)
+			checkAntiFarm();
 		
 		// Don't rank up the CW if it was a summon.
 		if (isCursedWeaponEquipped() && target instanceof Player)
@@ -3883,6 +3898,46 @@ public final class Player extends Playable
 			{
 				// Add PvP point to attacker.
 				setPvpKills(getPvpKills() + 1);
+
+				if (!Config.ANNOUNCE_PVP_MSG.isEmpty())
+					World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(Config.ANNOUNCE_PVP_MSG.replace("$killer", getName()).replace("$target", targetPlayer.getName())).addZoneName(targetPlayer.getPosition()));
+				
+				// pvp reward
+				for (RewardSystem kills : PvPData.getInstance().getReward())
+				{
+					for (IntIntHolder reward : kills.getReward())
+					{
+						if (reward.getId() > 0)
+							addItem("Reward", reward.getId(), reward.getValue(), null, true);
+					}
+				}
+				
+				pvpColor();
+				
+				if (Config.ENABLE_SPREEKILLS)
+				{
+					_spreeKills += 1;
+					
+					for (SpreeKills kills : PvPData.getInstance().getSpreeKills())
+					{
+						if (kills.getKills() == _spreeKills)
+						{
+							if (!kills.getMsg().isEmpty())
+								World.announceToOnlinePlayers(getName() + " scored " + kills.getMsg(), true);
+							
+							if (!kills.getSound().isEmpty())
+								sendPacket(new PlaySound(kills.getType(), kills.getSound()));
+							
+							for (IntIntHolder reward : kills.getReward())
+							{
+								if (reward.getId() > 0)
+									addItem("Reward", reward.getId(), reward.getValue(), null, true);
+							}
+							
+							break;
+						}
+					}
+				}
 				
 				// Send UserInfo packet to attacker with its Karma and PK Counter
 				sendPacket(new UserInfo(this));
@@ -3894,6 +3949,19 @@ public final class Player extends Playable
 			// PK Points are increased only if you kill a player.
 			if (target instanceof Player)
 				setPkKills(getPkKills() + 1);
+
+			if (!Config.ANNOUNCE_PVP_MSG.isEmpty())
+				World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(Config.ANNOUNCE_PK_MSG.replace("$killer", getName()).replace("$target", targetPlayer.getName())).addZoneName(targetPlayer.getPosition()));
+			
+			// pk reward
+			for (RewardSystem kills : PvPData.getInstance().getReward())
+			{
+				for (IntIntHolder reward : kills.getReward())
+				{
+					if (reward.getId() > 0)
+						addItem("Reward", reward.getId(), reward.getValue(), null, true);
+				}
+			}
 			
 			// Calculate new karma.
 			setKarma(getKarma() + Formulas.calculateKarmaGain(getPkKills(), target instanceof Summon));
@@ -4786,6 +4854,12 @@ public final class Player extends Playable
 				sendPacket(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
 				return false;
 			}
+
+			if (Config.ALLOW_WYVERN_RESTRITION_CITY && isInsideZone(ZoneId.TOWN))
+			{
+				sendMessage("Desculpe mais você não pode usar montaria dentro da Cidade.");
+				return false;
+			}
 			
 			if (isInCombat()) // A strider cannot be ridden while in battle
 			{
@@ -5011,7 +5085,17 @@ public final class Player extends Playable
 	{
 		return System.currentTimeMillis() - _uptime;
 	}
+
+	public boolean isAFK()
+	{
+		return _lastAction < System.currentTimeMillis();
+	}
 	
+	public void updateLastAction()
+	{
+		_lastAction = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(Config.PCB_AFK_TIMER);
+	}
+
 	/**
 	 * Return True if the Player is invulnerable.
 	 */
@@ -7481,7 +7565,6 @@ public final class Player extends Playable
 			}
 			broadcastPacket(new SocialAction(this, 13));
 		}
-		
 		_isAio = aio;
 		
 		broadcastUserInfo();
@@ -7514,7 +7597,6 @@ public final class Player extends Playable
 			PremiumTaskManager.getInstance().remove(this);
 			getMemos().set("vipTime", 0);
 		}
-		
 		_isVip = vip;
 		
 		broadcastUserInfo();
@@ -7543,6 +7625,7 @@ public final class Player extends Playable
 		}
 		_isHero = hero;
 		
+		broadcastUserInfo();
 		sendSkillList();
 	}
 	
@@ -7796,7 +7879,7 @@ public final class Player extends Playable
 		
 		try
 		{
-			if (_subClasses.size() == 3 || classIndex == 0 || _subClasses.containsKey(classIndex))
+			if (_subClasses.size() == Config.ALLOWED_SUBCLASS  || classIndex == 0 || _subClasses.containsKey(classIndex))
 				return false;
 			
 			final SubClass subclass = new SubClass(classId, classIndex);
@@ -8118,6 +8201,7 @@ public final class Player extends Playable
 		
 		revalidateZone(true);
 		notifyFriends(true);
+		pvpColor();
 	}
 	
 	public long getLastAccess()
@@ -9594,6 +9678,66 @@ public final class Player extends Playable
 		return formal != null && formal.getItem().getBodyPart() == Item.SLOT_ALLDRESS;
 	}
 
+	public int getPcCafePoints()
+	{
+		return getMemos().getInteger("cafe_points", 0);
+	}
+	
+	public void increasePcCafePoints(int count)
+	{
+		increasePcCafePoints(count, false);
+	}
+	
+	public void increasePcCafePoints(int count, boolean doubleAmount)
+	{
+		count = doubleAmount ? count * 2 : count;
+		final int newAmount = Math.min(getMemos().getInteger("cafe_points", 0) + count, 200000);
+		getMemos().set("cafe_points", newAmount);
+		sendPacket(SystemMessage.getSystemMessage(doubleAmount ? SystemMessageId.ACQUIRED_S1_PCPOINT_DOUBLE : SystemMessageId.ACQUIRED_S1_PCPOINT).addNumber(count));
+		sendPacket(new ExPCCafePointInfo(newAmount, count, doubleAmount ? PcCafeType.DOUBLE_ADD : PcCafeType.ADD));
+	}
+	
+	public void decreasePcCafePoints(int count)
+	{
+		final int newAmount = Math.max(getMemos().getInteger("cafe_points", 0) - count, 0);
+		getMemos().set("cafe_points", newAmount);
+		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT).addNumber(count));
+		sendPacket(new ExPCCafePointInfo(newAmount, -count, PcCafeType.CONSUME));
+	}
+
+	private void pvpColor()
+	{
+		for (ColorSystem pvpColor : PvPData.getInstance().getColor())
+		{
+			if (getPvpKills() >= pvpColor.getPvpAmount())
+			{
+				getAppearance().setNameColor(pvpColor.getNameColor());
+				getAppearance().setTitleColor(pvpColor.getTitleColor());
+				broadcastUserInfo();
+			}
+		}
+	}
+
+	public boolean checkAntiFarm()
+	{
+		for (Player target : World.getInstance().getPlayers())
+		{
+			if (getClient() != null && target.getClient() != null)
+			{
+				String ip1 = getClient().getConnection().getInetAddress().getHostAddress();
+				String ip2 = target.getClient().getConnection().getInetAddress().getHostAddress();
+				
+				if (ip1.equals(ip2))
+				{
+					LOGGER.warn("PvP Protection: " + getName() + " e " + target.getName() + ". mesmo IP.");
+					sendMessage(target.getName() + " é do seu mesmo IP, não sera contado o PvP. Isso poderar levar BAN!");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	public static void addItemToOffline(int owner_id, int item_id, int count)
 	{
 		final Item item = ItemTable.getInstance().getTemplate(item_id);

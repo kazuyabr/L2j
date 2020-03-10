@@ -1,6 +1,7 @@
 package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.ClassMaster;
 import net.sf.l2j.gameserver.scripting.QuestState;
 
 public class RequestTutorialQuestionMark extends L2GameClientPacket
@@ -19,6 +20,8 @@ public class RequestTutorialQuestionMark extends L2GameClientPacket
 		final Player player = getClient().getPlayer();
 		if (player == null)
 			return;
+		
+		ClassMaster.onTutorialQuestionMark(player, _number);
 		
 		QuestState qs = player.getQuestState("Tutorial");
 		if (qs != null)

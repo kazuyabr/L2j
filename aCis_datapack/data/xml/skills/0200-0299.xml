@@ -817,7 +817,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="song_of_earth" >
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="song_of_earth" >
 				<mul order="0x30" stat="pDef" val="1.25"/>
 			</effect>
 		</for>
@@ -847,7 +847,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="song_of_life">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="song_of_life">
 				<mul order="0x30" stat="regHp" val="1.2"/>
 			</effect>
 		</for>
@@ -877,7 +877,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="song_of_water">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="song_of_water">
 				<add order="0x40" stat="rEvas" val="3"/>
 			</effect>
 		</for>
@@ -907,7 +907,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="song_of_warding">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="song_of_warding">
 				<mul order="0x30" stat="mDef" val="1.3"/>
 			</effect>
 		</for>
@@ -934,7 +934,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" count="1" val="0" stackOrder="1" stackType="song_of_wind">
+			<effect name="Buff" time="3600" count="1" val="0" stackOrder="1" stackType="song_of_wind">
 				<add order="0x40" stat="runSpd" val="20"/>
 			</effect>
 		</for>
@@ -964,7 +964,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="song_of_hunter" >
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="song_of_hunter" >
 				<basemul order="0x30" stat="rCrit" val="1" />
 			</effect>
 		</for>
@@ -994,7 +994,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="song_of_invocation">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="song_of_invocation">
 				<addMul order="0x40" stat="darkRes" val="20" />
 			</effect>
 		</for>
@@ -1025,7 +1025,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="dance_of_warrior">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="dance_of_warrior">
 				<mul order="0x30" stat="pAtk" val="1.12"/>
 			</effect>
 		</for>
@@ -1056,7 +1056,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="dance_of_inspiration">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="dance_of_inspiration">
 				<add order="0x40" stat="accCombat" val="4"/>
 			</effect>
 		</for>
@@ -1087,7 +1087,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="dance_of_mystic">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="dance_of_mystic">
 				<mul order="0x30" stat="mAtk" val="1.2"/>
 			</effect>
 		</for>
@@ -1118,7 +1118,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="dance_of_fire">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="dance_of_fire">
 				<mul order="0x30" stat="cAtk" val="1.35"/>
 			</effect>
 		</for>
@@ -1149,7 +1149,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="dance_of_fury">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="dance_of_fury">
 				<mul order="0x30" stat="pAtkSpd" val="1.15"/>
 			</effect>
 		</for>
@@ -1180,7 +1180,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="dance_of_concentration">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="dance_of_concentration">
 				<mul order="0x30" stat="mAtkSpd" val="1.3"/>
 				<sub order="0x40" stat="cancel" val="30"/>
 			</effect>
@@ -1214,7 +1214,7 @@
 		<enchant2 name="aggroPoints" val="655"/>
 		<enchant2 name="mpConsume" val="#ench2MpConsume"/>
 		<for>
-			<effect name="Buff" time="120" val="0" stackOrder="1" stackType="dance_of_light">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="dance_of_light">
 				<add order="0x40" stat="holyPower" val="20" />
 			</effect>
 		</for>

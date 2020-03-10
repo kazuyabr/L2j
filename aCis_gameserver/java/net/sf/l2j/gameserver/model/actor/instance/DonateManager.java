@@ -80,7 +80,7 @@ public class DonateManager extends Folk
 					player.destroyItemByItemId("", price.getId(), price.getValue(), player, true);
 					AdminPremium.doAio(player, service.getDuration());
 					
-					GMAUDIT_LOG.info(player.getName() + " buy "+ service.getDuration() +" AIO days. Your ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " buy "+ service.getDuration() +" AIO days. Your ID [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("clanLevel"))		
 				{		
@@ -103,7 +103,7 @@ public class DonateManager extends Folk
 						player.getClan().changeLevel(8);
 						player.sendMessage("Congratulations "+ player.getName() +" you just bought Level 8 for your clan.");
 						
-						GMAUDIT_LOG.info(player.getName() + " bought Level 8 for the clan "+ player.getClan().getName() +". Your ID [" + player.getObjectId() + "]");
+						GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " bought Level 8 for the clan "+ player.getClan().getName() +". Your ID [" + player.getObjectId() + "]");
 					}
 					else        
 						player.sendMessage("Sorry but only the clan leader "+ player.getClan().getName() +" can use this service.");  
@@ -125,7 +125,7 @@ public class DonateManager extends Folk
 						
 						player.sendMessage("Congratulations "+ player.getName() +" you just bought all the skills for your clan.");
 						
-						GMAUDIT_LOG.info(player.getName() + " bought all clan skills, for the clan "+ player.getClan().getName() +". Your ID [" + player.getObjectId() + "]");
+						GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " bought all clan skills, for the clan "+ player.getClan().getName() +". Your ID [" + player.getObjectId() + "]");
 					}
 					else        
 						player.sendMessage("Sorry but only the clan leader "+ player.getClan().getName() +" can use this service.");  
@@ -145,7 +145,7 @@ public class DonateManager extends Folk
 						player.getClan().updateClanInDB();
 						player.sendMessage("Congratulations "+ player.getName() +" you just bought 100000 reputation for your clan.");
 						
-						GMAUDIT_LOG.info(player.getName() + " bought 100000 reputation, for the clan "+ player.getClan().getName() +". Your ID [" + player.getObjectId() + "]");
+						GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " bought 100000 reputation, for the clan "+ player.getClan().getName() +". Your ID [" + player.getObjectId() + "]");
 					}
 					else        
 						player.sendMessage("Sorry but only the clan leader "+ player.getClan().getName() +" pode usar esse serviço."); 
@@ -191,7 +191,7 @@ public class DonateManager extends Folk
 					player.sendMessage("Your new clan name is " + newClanName);
 					
 					ThreadPool.schedule(() -> player.logout(false), 1000);
-					GMAUDIT_LOG.info(player.getName() + " changed the name of the clan "+ player.getClan().getName() +" for "+ newClanName +". Your ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " changed the name of the clan "+ player.getClan().getName() +" for "+ newClanName +". Your ID [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("hero"))		
 				{		
@@ -209,7 +209,7 @@ public class DonateManager extends Folk
 					player.destroyItemByItemId("", price.getId(), price.getValue(), player, true);
 					AdminPremium.doHero(player, service.getDuration());
 					
-					GMAUDIT_LOG.info(player.getName() + " bought "+ service.getDuration() +" Hero days. Your ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " bought "+ service.getDuration() +" Hero days. Your ID [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("classe"))		
 				{	
@@ -505,7 +505,7 @@ public class DonateManager extends Folk
 					
 					player.destroyItemByItemId("", price.getId(), price.getValue(), player, true);
 					
-					GMAUDIT_LOG.info(player.getName() + " mudou sua classe para "+ classes +". Seu ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " mudou sua classe para "+ classes +". Seu ID [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("name"))		
 				{
@@ -539,7 +539,7 @@ public class DonateManager extends Folk
 					player.broadcastUserInfo();
 					player.store();
 					
-					GMAUDIT_LOG.info(player.getName() + " used the name change service your ID is  [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " used the name change service your ID is  [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("nobles"))		
 				{				
@@ -554,7 +554,7 @@ public class DonateManager extends Folk
 					player.sendMessage("Congratulations "+ player.getName() +" you just bought Nobles.");
 					player.broadcastUserInfo();
 					
-					GMAUDIT_LOG.info(player.getName() + " bought nobles. Your ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " bought nobles. Your ID [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("level"))		
 				{			
@@ -568,7 +568,7 @@ public class DonateManager extends Folk
 					player.getStat().addLevel((byte) 81);
 					player.sendMessage("Congratulations "+ player.getName() +" you just bought level 81.");
 					
-					GMAUDIT_LOG.info(player.getName() + " purchased level 81. Your ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " purchased level 81. Your ID [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("vip"))		
 				{		
@@ -581,7 +581,7 @@ public class DonateManager extends Folk
 					player.destroyItemByItemId("", price.getId(), price.getValue(), null, true);
 					AdminPremium.doVip(player, service.getDuration());
 					
-					GMAUDIT_LOG.info(player.getName() + " bought "+ service.getDuration() +" VIP days. Your ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " bought "+ service.getDuration() +" VIP days. Your ID [" + player.getObjectId() + "]");
 				}
 				else if (currentCommand.startsWith("gender"))		
 				{			
@@ -594,7 +594,7 @@ public class DonateManager extends Folk
 					player.decayMe();
 					player.spawnMe();
 					ThreadPool.schedule(() -> player.logout(false), 3000);
-					GMAUDIT_LOG.info(player.getName() + " bought nobles. Your ID [" + player.getObjectId() + "]");
+					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " bought nobles. Your ID [" + player.getObjectId() + "]");
 				}
 			}
 		}

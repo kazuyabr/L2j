@@ -254,7 +254,7 @@
 		<set name="isMagic" val="true"/>
 		<set name="operateType" val="OP_ACTIVE"/>
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="multi_buff">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="multi_buff">
 				<add order="0x40" stat="regMp" val="1.5">
 					<using kind="HEAVY,LIGHT" />
 				</add>
@@ -284,7 +284,7 @@
 		<set name="operateType" val="OP_ACTIVE"/>
 		<set name="aggroPoints" val="669" />
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="2" stackType="multi_buff">
+			<effect name="Buff" time="3600" val="0" stackOrder="2" stackType="multi_buff">
 				<mul order="0x30" stat="pAtk" val="1.1"/>
 				<mul order="0x30" stat="pDef" val="1.2"/>
 				<mul order="0x30" stat="rCrit" val="1.2"/>
@@ -312,7 +312,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="aggroPoints" val="666" />
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="2" stackType="resist_debuff_dispel">
+			<effect name="Buff" time="3600" val="0" stackOrder="2" stackType="resist_debuff_dispel">
 				<addMul order="0x40" stat="cancelVuln" val="30" />
 				<addMul order="0x40" stat="debuffVuln" val="20" />
 			</effect>
@@ -332,7 +332,7 @@
 		<set name="isMagic" val="true"/>
 		<set name="operateType" val="OP_ACTIVE"/>
 		<for>
-			<effect name="Buff" time="300" val="0" stackOrder="1" stackType="cp_up">
+			<effect name="Buff" time="3600" val="0" stackOrder="1" stackType="cp_up">
 				<add order="0x40" stat="maxCp" val="800" />
 			</effect>
 		</for>

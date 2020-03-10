@@ -1,6 +1,8 @@
 package net.sf.l2j.gameserver.handler.chathandlers;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.xml.MapRegionData;
+import net.sf.l2j.gameserver.enums.actors.RestrictionType;
 import net.sf.l2j.gameserver.handler.IChatHandler;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Player;
@@ -21,7 +23,19 @@ public class ChatShout implements IChatHandler
 	{
 		if (!FloodProtectors.performAction(activeChar.getClient(), Action.GLOBAL_CHAT))
 			return;
+
+		if (Config.TRADE_RESTRICTION_TYPE == RestrictionType.PVP && activeChar.getPvpKills() < Config.TRADE_RESTRICTION_VALUE)
+		{
+			activeChar.sendMessage("You can only use chat with " + Config.TRADE_RESTRICTION_VALUE + " (PVP).");
+			return;
+		}
 		
+		if (Config.TRADE_RESTRICTION_TYPE == RestrictionType.LEVEL && activeChar.getLevel() < Config.TRADE_RESTRICTION_VALUE)
+		{
+			activeChar.sendMessage("You can only use chat at the level " + Config.TRADE_RESTRICTION_VALUE + ".");
+			return;
+		}
+			
 		final CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 		final int region = MapRegionData.getInstance().getMapRegion(activeChar.getX(), activeChar.getY());
 		

@@ -24,6 +24,8 @@ import net.sf.l2j.gameserver.data.sql.ClanTable;
 import net.sf.l2j.gameserver.data.xml.MultisellData;
 import net.sf.l2j.gameserver.data.xml.NewbieBuffData;
 import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.data.xml.PolymorphData;
+import net.sf.l2j.gameserver.data.xml.PolymorphData.Polymorph;
 import net.sf.l2j.gameserver.data.xml.ScriptData;
 import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.enums.ScriptEventType;
@@ -80,6 +82,7 @@ public class Npc extends Creature
 	private static final int SOCIAL_INTERVAL = 12000;
 	
 	private L2Spawn _spawn;
+	private Polymorph _fakePc;
 	
 	volatile boolean _isDecayed = false;
 	
@@ -132,6 +135,8 @@ public class Npc extends Creature
 		// initialize the "current" collisions
 		_currentCollisionHeight = template.getCollisionHeight();
 		_currentCollisionRadius = template.getCollisionRadius();
+
+		_fakePc = PolymorphData.getInstance().getFakePc(template.getNpcId());
 		
 		// Set the name of the Creature
 		setName(template.getName());
@@ -828,6 +833,11 @@ public class Npc extends Creature
 	public void setCastle(Castle castle)
 	{
 		_castle = castle;
+	}
+
+	public Polymorph getFakePc()
+	{
+		return _fakePc;
 	}
 	
 	/**

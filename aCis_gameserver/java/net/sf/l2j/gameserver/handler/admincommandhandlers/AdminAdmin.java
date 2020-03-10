@@ -13,10 +13,14 @@ import net.sf.l2j.gameserver.data.manager.CursedWeaponManager;
 import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.data.xml.AdminData;
 import net.sf.l2j.gameserver.data.xml.AnnouncementData;
+import net.sf.l2j.gameserver.data.xml.DonateData;
 import net.sf.l2j.gameserver.data.xml.DoorData;
 import net.sf.l2j.gameserver.data.xml.DropsData;
+import net.sf.l2j.gameserver.data.xml.EnchantData;
 import net.sf.l2j.gameserver.data.xml.MultisellData;
 import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.data.xml.PolymorphData;
+import net.sf.l2j.gameserver.data.xml.PvPData;
 import net.sf.l2j.gameserver.data.xml.TeleportLocationData;
 import net.sf.l2j.gameserver.data.xml.WalkerRouteData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
@@ -188,6 +192,11 @@ public class AdminAdmin implements IAdminCommandHandler
 						CursedWeaponManager.getInstance().reload();
 						activeChar.sendMessage("Cursed weapons have been reloaded.");
 					}
+					else if (type.startsWith("donate"))
+					{
+						DonateData.getInstance().reload();
+						activeChar.sendMessage("Donate service has been reloaded.");
+					}
 					else if (type.startsWith("door"))
 					{
 						DoorData.getInstance().reload();
@@ -198,10 +207,20 @@ public class AdminAdmin implements IAdminCommandHandler
 						DropsData.getInstance().reload();
 						activeChar.sendMessage("DropData has been reloaded.");
 					}
+					else if (type.startsWith("enchant"))
+					{
+						EnchantData.getInstance().reload();
+						activeChar.sendMessage("Enchant data has been reloaded.");
+					}
 					else if (type.startsWith("htm"))
 					{
 						HtmCache.getInstance().reload();
 						activeChar.sendMessage("The HTM cache has been reloaded.");
+					}
+					else if (type.startsWith("poly"))
+					{
+						PolymorphData.getInstance().reload();
+						activeChar.sendMessage("Polymorph templates have been reloaded.");
 					}
 					else if (type.startsWith("item"))
 					{
@@ -228,6 +247,11 @@ public class AdminAdmin implements IAdminCommandHandler
 						SkillTable.getInstance().reload();
 						activeChar.sendMessage("Skills' XMLs have been reloaded.");
 					}
+					else if (type.startsWith("pvpdata"))
+					{
+						PvPData.getInstance().reload();
+						activeChar.sendMessage("PvP system XMLs have been reloaded.");
+					}
 					else if (type.startsWith("teleport"))
 					{
 						TeleportLocationData.getInstance().reload();
@@ -241,8 +265,8 @@ public class AdminAdmin implements IAdminCommandHandler
 					else
 					{
 						activeChar.sendMessage("Usage : //reload <admin|announcement|config|crest|cw>");
-						activeChar.sendMessage("Usage : //reload <door|drops|htm|item|multisell|npc>");
-						activeChar.sendMessage("Usage : //reload <npcwalker|skill|teleport|zone>");
+						activeChar.sendMessage("Usage : //reload <donate|door|drops|enchant|poly|htm|item|multisell|npc>");
+						activeChar.sendMessage("Usage : //reload <npcwalker|skill|pvpdata|teleport|zone>");
 					}
 				}
 				while (st.hasMoreTokens());
@@ -250,8 +274,8 @@ public class AdminAdmin implements IAdminCommandHandler
 			catch (Exception e)
 			{
 				activeChar.sendMessage("Usage : //reload <admin|announcement|config|crest|cw>");
-				activeChar.sendMessage("Usage : //reload <door|drops|htm|item|multisell|npc>");
-				activeChar.sendMessage("Usage : //reload <npcwalker|skill|teleport|zone>");
+				activeChar.sendMessage("Usage : //reload <donate|door|drops|enchant|poly|htm|item|multisell|npc>");
+				activeChar.sendMessage("Usage : //reload <npcwalker|skill|pvpdata|teleport|zone>");
 			}
 		}
 		return true;

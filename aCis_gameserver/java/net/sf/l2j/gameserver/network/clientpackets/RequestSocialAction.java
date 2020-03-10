@@ -23,22 +23,24 @@ public class RequestSocialAction extends L2GameClientPacket
 		if (!FloodProtectors.performAction(getClient(), Action.SOCIAL))
 			return;
 		
-		final Player activeChar = getClient().getPlayer();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
+
+		player.updateLastAction();
 		
-		if (activeChar.isFishing())
+		if (player.isFishing())
 		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
+			player.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
 			return;
 		}
 		
 		if (_actionId < 2 || _actionId > 13)
 			return;
 		
-		if (activeChar.isInStoreMode() || activeChar.getActiveRequester() != null || activeChar.isAlikeDead() || activeChar.getAI().getDesire().getIntention() != IntentionType.IDLE)
+		if (player.isInStoreMode() || player.getActiveRequester() != null || player.isAlikeDead() || player.getAI().getDesire().getIntention() != IntentionType.IDLE)
 			return;
 		
-		activeChar.broadcastPacket(new SocialAction(activeChar, _actionId));
+		player.broadcastPacket(new SocialAction(player, _actionId));
 	}
 }

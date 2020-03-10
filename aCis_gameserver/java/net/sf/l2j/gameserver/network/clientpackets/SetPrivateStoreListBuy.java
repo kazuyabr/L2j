@@ -2,6 +2,7 @@ package net.sf.l2j.gameserver.network.clientpackets;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.enums.ZoneId;
+import net.sf.l2j.gameserver.enums.actors.RestrictionType;
 import net.sf.l2j.gameserver.enums.actors.StoreType;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.tradelist.TradeList;
@@ -53,6 +54,24 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 			player.setStoreType(StoreType.NONE);
 			player.broadcastUserInfo();
 			player.sendPacket(new PrivateStoreManageListBuy(player));
+			return;
+		}
+
+		if (Config.STORE_RESTRICTION_TYPE == RestrictionType.PVP && player.getPvpKills() < Config.MIN_PVP_TO_USE_STORE)
+		{
+			player.sendMessage("You must have at least " + Config.MIN_PVP_TO_USE_STORE + " (PVP) to open a private store.");
+			return;
+		}
+		
+		if (Config.STORE_RESTRICTION_TYPE == RestrictionType.PK && player.getPkKills() < Config.MIN_PK_TO_USE_STORE)
+		{
+			player.sendMessage("You must have at least " + Config.MIN_PK_TO_USE_STORE + " (PK) to open a private store.");
+			return;
+		}
+		
+		if (Config.STORE_RESTRICTION_TYPE == RestrictionType.LEVEL && player.getLevel() < Config.MIN_LEVEL_TO_USE_STORE)
+		{
+			player.sendMessage("You must have at least " + Config.MIN_LEVEL_TO_USE_STORE + " (LEVEL) to open a private store.");
 			return;
 		}
 		

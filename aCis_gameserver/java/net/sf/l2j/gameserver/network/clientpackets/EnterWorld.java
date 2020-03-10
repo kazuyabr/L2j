@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.communitybbs.Manager.MailBBSManager;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
 import net.sf.l2j.gameserver.data.manager.CastleManager;
 import net.sf.l2j.gameserver.data.manager.ClanHallManager;
@@ -23,6 +24,7 @@ import net.sf.l2j.gameserver.data.xml.AnnouncementData;
 import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
 import net.sf.l2j.gameserver.data.xml.ScriptData;
 import net.sf.l2j.gameserver.enums.CabalType;
+import net.sf.l2j.gameserver.enums.PcCafeType;
 import net.sf.l2j.gameserver.enums.SealType;
 import net.sf.l2j.gameserver.enums.SiegeSide;
 import net.sf.l2j.gameserver.enums.ZoneId;
@@ -30,6 +32,7 @@ import net.sf.l2j.gameserver.enums.actors.ClassRace;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.ClassMaster;
 import net.sf.l2j.gameserver.model.clanhall.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Siege;
@@ -44,6 +47,7 @@ import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.Die;
 import net.sf.l2j.gameserver.network.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.ExMailArrived;
+import net.sf.l2j.gameserver.network.serverpackets.ExPCCafePointInfo;
 import net.sf.l2j.gameserver.network.serverpackets.ExStorageMaxCount;
 import net.sf.l2j.gameserver.network.serverpackets.FriendList;
 import net.sf.l2j.gameserver.network.serverpackets.HennaInfo;
@@ -93,6 +97,9 @@ public class EnterWorld extends L2GameClientPacket
 			
 			if (Config.GM_STARTUP_INVISIBLE && AdminData.getInstance().hasAccess("admin_hide", player.getAccessLevel()))
 				player.getAppearance().setInvisible();
+
+			if (Config.GM_STARTUP_SPEED && AdminData.getInstance().hasAccess("admin_gmspeed", player.getAccessLevel()))
+				player.doCast(SkillTable.getInstance().getInfo(7029, 4));
 			
 			if (Config.GM_STARTUP_SILENCE && AdminData.getInstance().hasAccess("admin_silence", player.getAccessLevel()))
 				player.setInRefusalMode(true);
@@ -345,6 +352,20 @@ public class EnterWorld extends L2GameClientPacket
 				player.sendMessage("Your Aio privileges end in " + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("aioTime", 0))) + ".");
 			}
 		}
+
+		if (player.getMemos().getLong("heroTime", 0) > 0)
+		{
+			long now = Calendar.getInstance().getTimeInMillis();
+			long endDay = player.getMemos().getLong("heroTime");
+			
+			if (now > endDay)
+				player.setHero(false);
+			else
+			{
+				player.setHero(true);
+				player.sendMessage("Your Hero privileges end in" + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("heroTime", 0))) + ".");
+			}
+		}
 		
 		if (player.getMemos().getLong("vipTime", 0) > 0)	
 		{
@@ -360,8 +381,72 @@ public class EnterWorld extends L2GameClientPacket
 			}
 		}
 
-		if (player.isVip() && Config.ANNOUNCE_VIP_ENTER)
+		if (player.isVip() && !Config.ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG.isEmpty())
 			World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", player.getName()).replace("%clan%", player.getClan().getName()) : Config.ANNOUNCE_VIP_ENTER_BY_PLAYER_MSG.replace("%player%", player.getName()), true);
+
+		if (Config.PCB_INTERVAL > 0)
+			player.sendPacket(new ExPCCafePointInfo(player.getPcCafePoints(), 0, PcCafeType.NORMAL));
+
+		if (!Config.ANNOUNCE_TOP_PVP_ENTER_BY_CLAN_MEMBER_MSG.isEmpty() && player.getPvpKills() > 0)
+		{
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT char_name, pvpkills FROM characters WHERE accesslevel=0 ORDER BY pvpkills DESC LIMIT 1"))
+			{ 
+				try (ResultSet rset = ps.executeQuery()) 
+				{ 
+					while (rset.next())
+					{
+						int pvpkills = rset.getInt("pvpkills");
+						String name = rset.getString("char_name"); 
+						if (player.getName().equals(name)) 
+							World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_TOP_PVP_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", name).replace("%pvpkills%", String.valueOf(pvpkills)).replace("%clan%", player.getClan().getName()) : Config.ANNOUNCE_TOP_PVP_ENTER_BY_PLAYER_MSG.replace("%player%", name).replace("%pvpkills%", String.valueOf(pvpkills)), true);
+					} 
+				}
+			} 
+			catch (Exception e)
+			{
+				LOGGER.error("Couldn't announce top pvp.", e);
+			}      
+		}
+		
+		if (!Config.ANNOUNCE_TOP_PK_ENTER_BY_CLAN_MEMBER_MSG.isEmpty() && player.getPkKills() > 0)
+		{
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT char_name, pkkills FROM characters WHERE accesslevel=0 ORDER BY pkkills DESC LIMIT 1"))
+			{ 
+				try (ResultSet rset = ps.executeQuery()) 
+				{ 
+					while (rset.next())
+					{
+						int pkkills = rset.getInt("pkkills");
+						String name = rset.getString("char_name"); 
+						if (player.getName().equals(name))
+							World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_TOP_PK_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", name).replace("%pkkills%", String.valueOf(pkkills)).replace("%clan%", player.getClan().getName()) : Config.ANNOUNCE_TOP_PK_ENTER_BY_PLAYER_MSG.replace("%player%", name).replace("%pkkills%", String.valueOf(pkkills)), true);
+					} 
+				}
+			} 
+			catch (Exception e)
+			{
+				LOGGER.error("Couldn't announce top pk.", e);
+			}    
+		}     
+		
+		if (!Config.ANNOUNCE_LORDS_ENTER_BY_CLAN_MEMBER_MSG.isEmpty())
+		{
+			if (player.getClan() != null)
+			{
+				if (player.getClan().getLeaderName().equals(player.getName()))
+				{
+					if (CastleManager.getInstance().getCastleByOwner(player.getClan()) != null)
+						World.announceToOnlinePlayers(Config.ANNOUNCE_LORDS_ENTER_BY_CLAN_MEMBER_MSG.replace("%lord%", player.getName()).replace("%clan%", player.getClan().getName()).replace("%castle%", CastleManager.getInstance().getCastleByOwner(player.getClan()).getName()), true);
+				}
+			}
+		}
+
+		if (player.getActiveClass() == player.getBaseClass() && player.isHero() && !Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.isEmpty())
+			World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", player.getName()).replace("%clan%", player.getClan().getName()).replace("%classe%", player.setClassName(player.getBaseClass())) : Config.ANNOUNCE_HERO_ENTER_BY_PLAYER_MSG.replace("%player%", player.getName()).replace("%classe%", player.setClassName(player.getBaseClass())), true);
+		
+		ClassMaster.showQuestionMark(player);
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}

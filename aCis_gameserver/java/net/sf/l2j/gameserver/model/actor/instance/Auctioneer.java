@@ -8,6 +8,8 @@ import java.util.StringTokenizer;
 import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.commons.math.MathUtil;
 
+import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.data.manager.ClanHallManager;
 import net.sf.l2j.gameserver.data.xml.MapRegionData;
 import net.sf.l2j.gameserver.model.actor.Player;
@@ -220,6 +222,7 @@ public final class Auctioneer extends Folk
 					final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 					html.setFile("data/html/auction/AgitBidderList.htm");
 					html.replace("%AGIT_LIST%", sb.toString());
+					html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 					html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + ((isSeller) ? "_selectedItems" : ("_bidding " + auctionId)));
 					html.replace("%objectId%", getObjectId());
 					player.sendPacket(html);
@@ -253,6 +256,7 @@ public final class Auctioneer extends Folk
 					html.replace("%AGIT_BID%", bid);
 					html.replace("%AGIT_BID_REMAIN%", (int) (bid * 0.9));
 					html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_selectedItems");
+					html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 					html.replace("%objectId%", getObjectId());
 					player.sendPacket(html);
 				}
@@ -281,6 +285,7 @@ public final class Auctioneer extends Folk
 				html.setFile("data/html/auction/AgitSaleCancel.htm");
 				html.replace("%AGIT_DEPOSIT%", ch.getLease());
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_selectedItems");
+				html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 				html.replace("%objectId%", getObjectId());
 				player.sendPacket(html);
 				return;
@@ -307,6 +312,7 @@ public final class Auctioneer extends Folk
 				html.replace("%AGIT_DEPOSIT%", ch.getLease());
 				html.replace("%AGIT_PLEDGE_ADENA%", clan.getWarehouse().getAdena());
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_selectedItems");
+				html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 				html.replace("%objectId%", getObjectId());
 				player.sendPacket(html);
 				return;
@@ -332,6 +338,7 @@ public final class Auctioneer extends Folk
 				html.replace("%AGIT_AUCTION_END%", new SimpleDateFormat("dd-MM-yyyy HH:mm").format(auction.getEndDate()));
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_selectedItems");
 				html.replace("npc_%objectId%_bid1", "npc_" + getObjectId() + "_bid1 " + ch.getId());
+				html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 				player.sendPacket(html);
 				return;
 			}
@@ -374,6 +381,7 @@ public final class Auctioneer extends Folk
 						html.replace("%AGIT_AUCTION_MIN%", bid);
 						html.replace("%AGIT_AUCTION_DESC%", ch.getDesc());
 						html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_sale2");
+						html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 						html.replace("%objectId%", getObjectId());
 						player.sendPacket(html);
 					}
@@ -411,6 +419,7 @@ public final class Auctioneer extends Folk
 					html.setFile("data/html/auction/AgitSale2.htm");
 					html.replace("%AGIT_LAST_PRICE%", ch.getLease());
 					html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_sale");
+					html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 					html.replace("%objectId%", getObjectId());
 					player.sendPacket(html);
 					return;
@@ -509,6 +518,7 @@ public final class Auctioneer extends Folk
 			html.replace("%AGIT_AUCTION_DESC%", ch.getDesc());
 			html.replace("%objectId%", getObjectId());
 			html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_start");
+			html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 			
 			final Seller seller = auction.getSeller();
 			if (seller == null)
@@ -558,6 +568,7 @@ public final class Auctioneer extends Folk
 				html.replace("%AGIT_AUCTION_BIDCOUNT%", auction.getBidders().size());
 				html.replace("%AGIT_AUCTION_DESC%", ch.getDesc());
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_start");
+				html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 				html.replace("%id%", ch.getId());
 				html.replace("%objectId%", getObjectId());
 			}
@@ -571,6 +582,7 @@ public final class Auctioneer extends Folk
 				html.replace("%AGIT_LEASE%", ch.getLease());
 				html.replace("%AGIT_LOCATION%", ch.getLocation());
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_start");
+				html.replace("%item%", ItemTable.getInstance().getTemplate(Config.ITEM_ID_BUY_CLAN_HALL).getName());
 				html.replace("%objectId%", getObjectId());
 			}
 			player.sendPacket(html);

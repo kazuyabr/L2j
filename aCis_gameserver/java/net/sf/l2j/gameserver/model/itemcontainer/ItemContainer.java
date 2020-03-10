@@ -452,7 +452,7 @@ public abstract class ItemContainer
 	{
 		for (ItemInstance item : _items)
 		{
-			if (item.getItemId() == 57)
+			if (item.getItemId() == Config.ITEM_ID_BUY_CLAN_HALL)
 				return item.getCount();
 		}
 		return 0;

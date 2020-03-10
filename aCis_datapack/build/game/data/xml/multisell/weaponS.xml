@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!-- S-Grade Weapons -->
+
+<list>
+  <!-- Heaven's Divider -->
+  <item id="1">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6364" count="1"/>
+  </item>
+
+  <!-- Heaven's Divider -->
+  <item id="2">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6365" count="1"/>
+  </item>
+
+  <!-- Heaven's Divider -->
+  <item id="3">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6366" count="1"/>
+  </item>
+
+  <!-- Forgotten Blade -->
+  <item id="4">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6367" count="1"/>
+  </item>
+
+  <!-- Forgotten Blade -->
+  <item id="5">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6368" count="1"/>
+  </item>
+
+  <!-- Forgotten Blade -->
+  <item id="6">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6369" count="1"/>
+  </item>
+
+  <!-- Arcana Mace -->
+  <item id="7">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6370" count="1"/>
+  </item>
+
+  <!-- Arcana Mace -->
+  <item id="8">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6371" count="1"/>
+  </item>
+
+  <!-- Arcana Mace -->
+  <item id="9">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6372" count="1"/>
+  </item>
+
+  <!-- Basalt Battlehammer -->
+  <item id="10">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6579" count="1"/>
+  </item>
+
+  <!-- Dual Sword -->
+  <item id="11">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="6580" count="1"/>
+  </item>
+
+  <!-- Draconic Bow-->
+  <item id="12">
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
+    <production id="7575" count="1"/>
+  </item>
+</list>

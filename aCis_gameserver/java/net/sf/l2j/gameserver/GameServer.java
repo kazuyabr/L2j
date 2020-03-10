@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.data.manager.BufferManager;
 import net.sf.l2j.gameserver.data.manager.BuyListManager;
 import net.sf.l2j.gameserver.data.manager.CastleManager;
 import net.sf.l2j.gameserver.data.manager.CastleManorManager;
+import net.sf.l2j.gameserver.data.manager.CharacterKillingManager;
 import net.sf.l2j.gameserver.data.manager.ClanHallManager;
 import net.sf.l2j.gameserver.data.manager.CoupleManager;
 import net.sf.l2j.gameserver.data.manager.CursedWeaponManager;
@@ -60,6 +61,7 @@ import net.sf.l2j.gameserver.data.xml.AugmentationData;
 import net.sf.l2j.gameserver.data.xml.DonateData;
 import net.sf.l2j.gameserver.data.xml.DoorData;
 import net.sf.l2j.gameserver.data.xml.DropsData;
+import net.sf.l2j.gameserver.data.xml.EnchantData;
 import net.sf.l2j.gameserver.data.xml.FishData;
 import net.sf.l2j.gameserver.data.xml.HennaData;
 import net.sf.l2j.gameserver.data.xml.HerbDropData;
@@ -68,6 +70,8 @@ import net.sf.l2j.gameserver.data.xml.MultisellData;
 import net.sf.l2j.gameserver.data.xml.NewbieBuffData;
 import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.data.xml.PlayerData;
+import net.sf.l2j.gameserver.data.xml.PolymorphData;
+import net.sf.l2j.gameserver.data.xml.PvPData;
 import net.sf.l2j.gameserver.data.xml.RecipeData;
 import net.sf.l2j.gameserver.data.xml.ScriptData;
 import net.sf.l2j.gameserver.data.xml.SkillTreeData;
@@ -102,6 +106,7 @@ import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
 import net.sf.l2j.gameserver.taskmanager.ItemsOnGroundTaskManager;
 import net.sf.l2j.gameserver.taskmanager.MovementTaskManager;
+import net.sf.l2j.gameserver.taskmanager.PcCafeTaskManager;
 import net.sf.l2j.gameserver.taskmanager.PvpFlagTaskManager;
 import net.sf.l2j.gameserver.taskmanager.RandomAnimationTaskManager;
 import net.sf.l2j.gameserver.taskmanager.ShadowItemTaskManager;
@@ -177,6 +182,7 @@ public class GameServer
 		SoulCrystalData.getInstance();
 		AugmentationData.getInstance();
 		CursedWeaponManager.getInstance();
+		EnchantData.getInstance();
 		
 		StringUtil.printSection("Admins");
 		AdminData.getInstance();
@@ -193,6 +199,7 @@ public class GameServer
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
 		RaidPointManager.getInstance();
+		PvPData.getInstance();
 		
 		StringUtil.printSection("Community server");
 		if (Config.ENABLE_COMMUNITY_BOARD) // Forums has to be loaded before clan data
@@ -224,6 +231,7 @@ public class GameServer
 		RandomAnimationTaskManager.getInstance();
 		ShadowItemTaskManager.getInstance();
 		WaterTaskManager.getInstance();
+		PcCafeTaskManager.getInstance();
 		
 		StringUtil.printSection("Auto Spawns");
 		AutoSpawnTable.getInstance();
@@ -251,7 +259,8 @@ public class GameServer
 		AuctionTable.getInstance();
 		RaidBossInfoManager.getInstance();
 		DonateData.getInstance();
-
+		PolymorphData.getInstance();
+		
 		if ((Config.OFFLINE_TRADE_ENABLE || Config.OFFLINE_CRAFT_ENABLE) && Config.RESTORE_OFFLINERS)
 			OfflineTradersTable.getInstance();
 		
@@ -282,7 +291,10 @@ public class GameServer
 		
 		if (Config.TVT_ENABLE)
 			TvTEvent.getInstance();
-		
+
+		if (Config.CKM_ENABLED)
+			CharacterKillingManager.getInstance().init();
+
 		if (Config.ALLOW_WEDDING)
 			CoupleManager.getInstance();
 		

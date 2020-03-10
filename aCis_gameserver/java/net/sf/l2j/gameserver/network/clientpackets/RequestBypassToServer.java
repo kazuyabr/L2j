@@ -18,6 +18,7 @@ import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadManager;
 import net.sf.l2j.gameserver.network.FloodProtectors;
 import net.sf.l2j.gameserver.network.FloodProtectors.Action;
+import net.sf.l2j.gameserver.network.GameClient;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -192,6 +193,50 @@ public final class RequestBypassToServer extends L2GameClientPacket
  			
 			final int arenaId = Integer.parseInt(_command.substring(12).trim());
 			player.enterOlympiadObserverMode(arenaId);
+		}
+		else if (_command.startsWith("send_report"))
+		{
+			StringTokenizer st = new StringTokenizer(_command);
+			st.nextToken();
+			
+			String msg = "";
+			String type = st.nextToken();
+			
+			final GameClient info = player.getClient().getConnection().getClient();
+			
+			try
+			{
+				while (st.hasMoreTokens())
+					msg = msg + st.nextToken() + " ";
+				
+				if (msg.equals(""))
+				{
+					player.sendMessage("The message box cannot be empty.");
+					return;
+				}
+				
+				switch (type)
+				{
+					case "Armaduras":
+						break;
+					case "Boss":
+						break;
+					case "Skills":
+						break;
+					case "Quests":
+						break;
+					case "Other":
+						break;		
+				}
+				
+				GMAUDIT_LOG.info("Bug Report Info: " + info + "\r\nBug Type: " + type + "\r\nMessage: " + msg);
+				player.sendMessage("Report sent. Gms will check it out soon, thanks.");
+				AdminData.getInstance().broadcastMessageToGMs("Report Manager: "+ player.getName() + " submitted a bug report.");
+			}
+			catch (Exception e)
+			{
+				player.sendMessage("Something went wrong, try again.");
+			}
 		}
 	}
 }

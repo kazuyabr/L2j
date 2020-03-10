@@ -365,7 +365,7 @@ public class VillageMaster extends Folk
 					}
 					
 					// Avoid giving player an option to add a new sub class, if they have three already.
-					if (player.getSubClasses().size() >= 3)
+					if (player.getSubClasses().size() >= Config.ALLOWED_SUBCLASS)
 					{
 						html.setFile("data/html/villagemaster/SubClass_Fail.htm");
 						break;
@@ -456,7 +456,7 @@ public class VillageMaster extends Folk
 					
 					boolean allowAddition = true;
 					
-					if (player.getSubClasses().size() >= 3)
+					if (player.getSubClasses().size() >= Config.ALLOWED_SUBCLASS)
 						allowAddition = false;
 					
 					if (player.getLevel() < 75)
@@ -702,6 +702,9 @@ public class VillageMaster extends Folk
 	
 	public final boolean checkVillageMaster(ClassId pclass)
 	{
+		if (Config.ALT_GAME_SUBCLASS_EVERYWHERE)
+			return true;
+		
 		return checkVillageMasterRace(pclass) && checkVillageMasterTeachType(pclass);
 	}
 	

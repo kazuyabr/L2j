@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<list>
+	<item id="9209" type="EtcItem" name="Donate Coin">
+		<set name="icon" val="icon.etc_coins_gold_i00" />
+		<set name="material" val="STEEL" />
+		<set name="is_stackable" val="true" />
+		<set name="price" val="1000000000" />
+	</item>
+	<item id="9210" type="EtcItem" name="Box Kundun">
+		<set name="icon" val="icon.etc_treasure_box_i08" />
+		<set name="default_action" val="capsule" />
+		<set name="material" val="PAPER" />
+		<set name="weight" val="1" />
+		<set name="is_stackable" val="true" />
+		<set name="handler" val="ItemSkills" />
+		<set name="item_skill" val="7065-1" />
+	</item>
+</list>

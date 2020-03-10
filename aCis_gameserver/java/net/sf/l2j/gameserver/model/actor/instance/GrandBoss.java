@@ -2,8 +2,10 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.commons.random.Rnd;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.manager.HeroManager;
 import net.sf.l2j.gameserver.data.manager.RaidPointManager;
+import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
@@ -60,6 +62,9 @@ public final class GrandBoss extends Monster
 				if (player.isNoble())
 					HeroManager.getInstance().setRBkilled(player.getObjectId(), getNpcId());
 			}
+			
+			if (!Config.BOSS_DEFEATED_BY_CLAN_MEMBER_MSG.isEmpty() && !Config.BOSS_DEFEATED_BY_PLAYER_MSG.isEmpty())
+				World.announceToOnlinePlayers(player.getClan() != null ? Config.BOSS_DEFEATED_BY_CLAN_MEMBER_MSG.replace("%raidboss%", getName()).replace("%player%", killer.getName()).replace("%clan%", player.getClan().getName()) : Config.BOSS_DEFEATED_BY_PLAYER_MSG.replace("%raidboss%", getName()).replace("%player%", killer.getName()), true);
 		}
 		
 		return true;

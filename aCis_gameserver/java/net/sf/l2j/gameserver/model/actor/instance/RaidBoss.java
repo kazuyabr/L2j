@@ -9,6 +9,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.manager.HeroManager;
 import net.sf.l2j.gameserver.data.manager.RaidBossManager;
 import net.sf.l2j.gameserver.data.manager.RaidPointManager;
+import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.ai.type.AttackableAI;
@@ -113,6 +114,12 @@ public class RaidBoss extends Monster
 				{
 					for (Player member : party.getMembers())
 					{
+						if (Config.RAIDBOSS_NOBLES > 0 && getNpcId() == Config.RAIDBOSS_NOBLES && !member.isNoble() && member.isInsideRadius(getX(), getY(), getZ(), 1000, false, false))
+						{
+							member.setNoble(true, true);
+							member.getInventory().addItem("Nobles Circlets", 7694, 1, member, null);
+						}
+						
 						RaidPointManager.getInstance().addPoints(member, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
 						if (member.isNoble())
 							HeroManager.getInstance().setRBkilled(member.getObjectId(), getNpcId());
@@ -120,10 +127,19 @@ public class RaidBoss extends Monster
 				}
 				else
 				{
+					if (Config.RAIDBOSS_NOBLES > 0 && getNpcId() == Config.RAIDBOSS_NOBLES && !player.isNoble())
+					{
+						player.setNoble(true, true);
+						player.getInventory().addItem("Nobles Circlets", 7694, 1, player, null);
+					}
+					
 					RaidPointManager.getInstance().addPoints(player, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
-					if (player.isNoble())
+						if (player.isNoble())
 						HeroManager.getInstance().setRBkilled(player.getObjectId(), getNpcId());
 				}
+				
+				if (!Config.BOSS_DEFEATED_BY_CLAN_MEMBER_MSG.isEmpty() && !Config.BOSS_DEFEATED_BY_PLAYER_MSG.isEmpty())
+					World.announceToOnlinePlayers(player.getClan() != null ? Config.BOSS_DEFEATED_BY_CLAN_MEMBER_MSG.replace("%raidboss%", getName()).replace("%player%", killer.getName()).replace("%clan%", player.getClan().getName()) : Config.BOSS_DEFEATED_BY_PLAYER_MSG.replace("%raidboss%", getName()).replace("%player%", killer.getName()), true);
 			}
 		}
 		

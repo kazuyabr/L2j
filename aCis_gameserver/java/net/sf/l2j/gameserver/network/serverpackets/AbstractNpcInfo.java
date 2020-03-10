@@ -1,7 +1,10 @@
 package net.sf.l2j.gameserver.network.serverpackets;
 
+import java.text.DecimalFormat;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.sql.ClanTable;
+import net.sf.l2j.gameserver.data.xml.PolymorphData.Polymorph;
 import net.sf.l2j.gameserver.enums.PolyType;
 import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.actor.Creature;
@@ -97,68 +100,196 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 		@Override
 		protected void writeImpl()
 		{
-			writeC(0x16);
-			
-			writeD(_npc.getObjectId());
-			writeD(_idTemplate + 1000000);
-			writeD(_isAttackable ? 1 : 0);
-			
-			writeD(_x);
-			writeD(_y);
-			writeD(_z);
-			writeD(_heading);
-			
-			writeD(0x00);
-			
-			writeD(_mAtkSpd);
-			writeD(_pAtkSpd);
-			writeD(_runSpd);
-			writeD(_walkSpd);
-			writeD(_runSpd);
-			writeD(_walkSpd);
-			writeD(_runSpd);
-			writeD(_walkSpd);
-			writeD(_runSpd);
-			writeD(_walkSpd);
-			
-			writeF(_npc.getStat().getMovementSpeedMultiplier());
-			writeF(_npc.getStat().getAttackSpeedMultiplier());
-			
-			writeF(_collisionRadius);
-			writeF(_collisionHeight);
-			
-			writeD(_rhand);
-			writeD(_chest);
-			writeD(_lhand);
-			
-			writeC(1); // name above char
-			writeC(_npc.isRunning() ? 1 : 0);
-			writeC(_npc.isInCombat() ? 1 : 0);
-			writeC(_npc.isAlikeDead() ? 1 : 0);
-			writeC(_isSummoned ? 2 : 0);
-			
-			writeS(_name);
-			writeS(_title);
-			
-			writeD(0x00);
-			writeD(0x00);
-			writeD(0x00);
-			
-			writeD(_npc.getAbnormalEffect());
-			
-			writeD(_clanId);
-			writeD(_clanCrest);
-			writeD(_allyId);
-			writeD(_allyCrest);
-			
-			writeC((_npc.isInsideZone(ZoneId.WATER)) ? 1 : (_npc.isFlying()) ? 2 : 0);
-			writeC(0x00);
-			
-			writeF(_collisionRadius);
-			writeF(_collisionHeight);
-			
-			writeD(_enchantEffect);
-			writeD(_npc.isFlying() ? 1 : 0);
+			Polymorph fpc = _npc.getFakePc();
+			if (fpc != null)
+			{
+				writeC(0x03);
+				writeD(_x);
+				writeD(_y);
+				writeD(_z);
+				writeD(_heading);
+				writeD(_npc.getObjectId());
+				writeS(fpc.getName());
+				writeD(fpc.getRace());
+				writeD(fpc.getSex());
+				writeD(fpc.getClassId());
+				
+				writeD(0x00);
+				writeD(0x00);
+				writeD(fpc.getRightHand());
+				writeD(fpc.getLeftHand());
+				writeD(fpc.getGloves());
+				writeD(fpc.getChest());
+				writeD(fpc.getLegs());
+				writeD(fpc.getFeet());
+				writeD(fpc.getHero());
+				writeD(fpc.getRightHand());
+				writeD(fpc.getHair());
+				writeD(fpc.getHair2());
+				
+				write('H', 0, 24);
+				
+				writeD(0x00);
+				writeD(0x00);
+				
+				writeD(_mAtkSpd);
+				writeD(_pAtkSpd);
+				
+				writeD(0x00);
+				writeD(0x00);
+				
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeF(_npc.getStat().getMovementSpeedMultiplier());
+				writeF(_npc.getStat().getAttackSpeedMultiplier());
+				
+				writeF(fpc.getRadius());
+				writeF(fpc.getHeight());
+				
+				writeD(fpc.getHairStyle());
+				writeD(fpc.getHairColor());
+				writeD(fpc.getFace());
+				
+				if (_npc instanceof Monster)
+					writeS(fpc.getTitle() + " - HP " + new DecimalFormat("#.##").format(100.0 * _npc.getCurrentHp() / _npc.getMaxHp()) + "%"); // visible title
+				else
+					writeS(fpc.getTitle());
+				
+				writeD(fpc.getClanId());
+				writeD(fpc.getClanCrest());
+				writeD(fpc.getAllyId());
+				writeD(fpc.getAllyCrest());
+				
+				writeD(0x00);
+				writeC(0x01);
+				
+				writeC(_npc.isRunning() ? 1 : 0);
+				writeC(_npc.isInCombat() ? 1 : 0);
+				writeC(_npc.isAlikeDead() ? 1 : 0);
+				
+				write('C', 0, 3);
+				
+				writeH(0x00); // cubic count
+				
+				writeC(0x00);
+				writeD(0x00);
+				writeC(0x00);
+				writeH(0x00);
+				
+				writeD(fpc.getClassId());
+				writeD(0x00);
+				writeD(0x00);
+				writeC(fpc.getEnchant());
+				writeC(0x00);
+				
+				writeD(0x00);
+				
+				writeC(0x00);
+				writeC(fpc.getHero());
+				
+				writeC(0x00);
+				write('D', 0, 3);
+				
+				writeD(fpc.getNameColor());
+				writeD(_heading);
+				writeD(0x00);
+				writeD(0x00);
+				writeD(fpc.getTitleColor());
+				writeD(0x00);
+			}
+			else
+			{
+				writeC(0x16);
+				
+				writeD(_npc.getObjectId());
+				writeD(_idTemplate + 1000000);
+				writeD(_isAttackable ? 1 : 0);
+				
+				writeD(_x);
+				writeD(_y);
+				writeD(_z);
+				writeD(_heading);
+				
+				writeD(0x00);
+				
+				writeD(_mAtkSpd);
+				writeD(_pAtkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				
+				writeF(_npc.getStat().getMovementSpeedMultiplier());
+				writeF(_npc.getStat().getAttackSpeedMultiplier());
+				
+				writeF(_collisionRadius);
+				writeF(_collisionHeight);
+				
+				writeD(_rhand);
+				writeD(_chest);
+				writeD(_lhand);
+				
+				writeC(1); // name above char
+				writeC(_npc.isRunning() ? 1 : 0);
+				writeC(_npc.isInCombat() ? 1 : 0);
+				writeC(_npc.isAlikeDead() ? 1 : 0);
+				writeC(_isSummoned ? 2 : 0);
+				
+				writeS(_name);
+				writeS(_title);
+				
+				writeD(0x00);
+				writeD(0x00);
+				writeD(0x00);
+				
+				writeD(_npc.getAbnormalEffect());
+				
+				writeD(_clanId);
+				writeD(_clanCrest);
+				writeD(_allyId);
+				writeD(_allyCrest);
+				
+				writeC((_npc.isInsideZone(ZoneId.WATER)) ? 1 : (_npc.isFlying()) ? 2 : 0);
+				writeC(0x00);
+				
+				writeF(_collisionRadius);
+				writeF(_collisionHeight);
+				
+				writeD(_enchantEffect);
+				writeD(_npc.isFlying() ? 1 : 0);
+			}
+		}
+		
+		private void write(char type, int value, int times)
+		{
+			for (int i = 0; i < times; i++)
+			{
+				switch (type)
+				{
+					case 'C':
+						writeC(value);
+						break;
+					case 'D':
+						writeD(value);
+						break;
+					case 'F':
+						writeF(value);
+						break;
+					case 'H':
+						writeH(value);
+						break;
+				}
+			}
 		}
 	}
 	
@@ -180,7 +311,7 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			_summonAnimation = val;
 			if (_summon.isShowSummonAnimation())
 				_summonAnimation = 2; // override for spawn
-				
+			
 			_isAttackable = _summon.isAutoAttackable(attacker);
 			_rhand = _summon.getWeapon();
 			_lhand = 0;

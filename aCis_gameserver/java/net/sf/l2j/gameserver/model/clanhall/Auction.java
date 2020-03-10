@@ -11,6 +11,7 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.lang.StringUtil;
 import net.sf.l2j.commons.logging.CLogger;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.pledge.Clan;
@@ -274,7 +275,7 @@ public class Auction
 		final int limit = Integer.MAX_VALUE - clan.getWarehouse().getAdena();
 		quantity = Math.min(quantity, limit);
 		
-		clan.getWarehouse().addItem("Outbidded", 57, quantity, null, null);
+		clan.getWarehouse().addItem("Outbidded", Config.ITEM_ID_BUY_CLAN_HALL, quantity, null, null);
 	}
 	
 	/**
@@ -296,7 +297,7 @@ public class Auction
 			return false;
 		}
 		
-		clan.getWarehouse().destroyItemByItemId("Buy", 57, quantity, bidder, bidder);
+		clan.getWarehouse().destroyItemByItemId("Buy", Config.ITEM_ID_BUY_CLAN_HALL, quantity, bidder, bidder);
 		return true;
 	}
 	

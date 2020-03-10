@@ -51,39 +51,41 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final Player activeChar = getClient().getPlayer();
-		if (activeChar == null)
+		final Player player = getClient().getPlayer();
+		if (player == null)
 			return;
+
+		player.updateLastAction();
 		
-		if (activeChar.isOutOfControl())
+		if (player.isOutOfControl())
 		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		if (activeChar.getActiveEnchantItem() != null)
+		if (player.getActiveEnchantItem() != null)
 		{
-			activeChar.setActiveEnchantItem(null);
-			activeChar.sendPacket(EnchantResult.CANCELLED);
-			activeChar.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
+			player.setActiveEnchantItem(null);
+			player.sendPacket(EnchantResult.CANCELLED);
+			player.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 		}
 		
 		if (_targetX == _originX && _targetY == _originY && _targetZ == _originZ)
 		{
-			activeChar.sendPacket(new StopMove(activeChar));
+			player.sendPacket(new StopMove(player));
 			return;
 		}
 		
 		// Correcting targetZ from floor level to head level
-		_targetZ += activeChar.getCollisionHeight();
+		_targetZ += player.getCollisionHeight();
 		
-		if (activeChar.getTeleMode() > 0)
+		if (player.getTeleMode() > 0)
 		{
-			if (activeChar.getTeleMode() == 1)
-				activeChar.setTeleMode(0);
+			if (player.getTeleMode() == 1)
+				player.setTeleMode(0);
 			
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			activeChar.teleportTo(_targetX, _targetY, _targetZ, 0);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			player.teleportTo(_targetX, _targetY, _targetZ, 0);
 			return;
 		}
 		
@@ -92,9 +94,9 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		
 		if ((dx * dx + dy * dy) > 98010000) // 9900*9900
 		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		activeChar.getAI().setIntention(IntentionType.MOVE_TO, new Location(_targetX, _targetY, _targetZ));
+		player.getAI().setIntention(IntentionType.MOVE_TO, new Location(_targetX, _targetY, _targetZ));
 	}
 }

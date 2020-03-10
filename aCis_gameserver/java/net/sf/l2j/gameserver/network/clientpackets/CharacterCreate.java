@@ -3,28 +3,37 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import net.sf.l2j.commons.lang.StringUtil;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.sql.PlayerInfoTable;
 import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.data.xml.PlayerData;
 import net.sf.l2j.gameserver.data.xml.ScriptData;
 import net.sf.l2j.gameserver.enums.ShortcutType;
 import net.sf.l2j.gameserver.enums.actors.Sex;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminPremium;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.Shortcut;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.player.Experience;
 import net.sf.l2j.gameserver.model.actor.template.PlayerTemplate;
 import net.sf.l2j.gameserver.model.holder.ItemTemplateHolder;
 import net.sf.l2j.gameserver.model.holder.skillnode.GeneralSkillNode;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
+import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.network.serverpackets.CharCreateFail;
 import net.sf.l2j.gameserver.network.serverpackets.CharCreateOk;
 import net.sf.l2j.gameserver.network.serverpackets.CharSelectInfo;
+import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.scripting.Quest;
 
 @SuppressWarnings("unused")
 public final class CharacterCreate extends L2GameClientPacket
 {
+	private static final String ACTIVED = "<font color=00FF00>ON</font>";
+	private static final String DESATIVED = "<font color=FF0000>OFF</font>";
+	
 	private String _name;
 	private int _race;
 	private byte _sex;
@@ -142,8 +151,52 @@ public final class CharacterCreate extends L2GameClientPacket
 		
 		World.getInstance().addObject(player);
 		
+		// Start Spawn location
 		player.getPosition().set(template.getRandomSpawn());
-		player.setTitle("");
+
+		// Start Title
+		player.setTitle(template.getTitle());
+
+		// Start Lvl and Sp
+		player.getStat().addExp(Experience.LEVEL[template.getLevel()]);
+		player.getStat().addSp(template.getSp());
+
+		// Start buffs
+		for (int buffId : template.getBuffIds())
+		{
+			if (template.isBuffIds())
+				SkillTable.getInstance().getInfo(buffId, SkillTable.getInstance().getMaxLevel(buffId)).getEffects(player, player);
+		}
+
+		// Add vip
+		if (template.getVip() > 0)
+			AdminPremium.doVip(player, template.getVip());
+
+		// show info
+		if (template.isShow())
+		{	
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
+			final StringBuilder sbItems = new StringBuilder();
+			
+			html.setFile("data/html/newchar.htm");
+			html.replace("%name%", player.getName());
+			html.replace("%vip%", player.getTemplate().getVip());
+			html.replace("%level%", player.getTemplate().getLevel());
+			html.replace("%sp%", player.getTemplate().getSp());
+			html.replace("%buff%", player.getTemplate().isBuffIds() ? ACTIVED : DESATIVED);
+			
+			for (ItemTemplateHolder holder : player.getTemplate().getItems())
+			{
+				final Item item = ItemTable.getInstance().getTemplate(holder.getId());
+				sbItems.append("<table width=280 bgcolor=000000><tr>");
+				sbItems.append("<td width=44 height=41 align=center><table bgcolor=FFFFFF cellpadding=6 cellspacing=\"-5\"><tr><td><button width=32 height=32 back=" + item.getIcon() + " fore=" + item.getIcon() + "></td></tr></table></td>");
+				sbItems.append("<td width=236>" + item.getName() + "<br1>Item Amount : <font color=LEVEL>" + holder.getValue() + "</font> Enchant Lvl : <font color=LEVEL>" + holder.getEnchant() + "</font></td>");
+				sbItems.append("</tr></table><img src=L2UI.SquareGray width=280 height=1>");
+			}
+			
+			html.replace("%items%", sbItems.toString());
+			getClient().sendPacket(html);
+		}
 		
 		// Register shortcuts.
 		player.getShortcutList().addShortcut(new Shortcut(0, 0, ShortcutType.ACTION, 2, -1, 1)); // attack shortcut
@@ -159,8 +212,11 @@ public final class CharacterCreate extends L2GameClientPacket
 			if (holder.getId() == 5588)
 				player.getShortcutList().addShortcut(new Shortcut(11, 0, ShortcutType.ITEM, item.getObjectId(), -1, 1));
 			
-			if (item.isEquipable() && holder.isEquipped())
+			if (item.isEquipable() && holder.isEquipped() && holder.getEnchant() > 0)
+			{
 				player.getInventory().equipItemAndRecord(item);
+				item.setEnchantLevel(holder.getEnchant());
+			}	
 		}
 		
 		// Add skills.

@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.ControlTower;
 import net.sf.l2j.gameserver.model.actor.instance.FlameTower;
+import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.location.TowerSpawnLocation;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.model.pledge.ClanMember;
@@ -166,6 +167,34 @@ public class Siege implements Siegable
 		{
 			Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
 			World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_S1_VICTORIOUS_OVER_S2_S_SIEGE).addString(clan.getName()).addString(getCastle().getName()));
+			
+			final List<String> playerIps = new ArrayList<>();
+			for (Player player : World.getInstance().getPlayers())
+			{
+				final String pIp = player.getClient().getConnection().getInetAddress().getHostAddress();
+				
+				if (!playerIps.contains(pIp))
+				{
+					playerIps.add(pIp);
+					
+					if (player.isClanLeader())
+					{
+						for (IntIntHolder reward : Config.LEADER_REWARD_WINNER_SIEGE_CLAN)
+						{
+							if (reward.getId() > 0)
+								player.addItem("", reward.getId(), reward.getValue(), player, true);  
+						}
+					}
+					else
+					{
+						for (IntIntHolder reward : Config.REWARD_WINNER_SIEGE_CLAN) 
+						{
+							if (reward.getId() > 0)
+								player.addItem("", reward.getId(), reward.getValue(), player, true);     
+						}
+					}
+				}
+			}
 			
 			// An initial clan was holding the castle and is different of current owner.
 			if (_formerOwner != null && clan != _formerOwner)

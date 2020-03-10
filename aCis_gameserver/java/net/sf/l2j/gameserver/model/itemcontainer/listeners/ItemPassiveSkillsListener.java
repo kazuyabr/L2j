@@ -1,5 +1,6 @@
 package net.sf.l2j.gameserver.model.itemcontainer.listeners;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Playable;
 import net.sf.l2j.gameserver.model.actor.Player;
@@ -109,7 +110,7 @@ public class ItemPassiveSkillsListener implements OnEquipListener
 				final L2Skill enchant4Skill = ((Weapon) it).getEnchant4Skill();
 				if (enchant4Skill != null)
 				{
-					player.removeSkill(enchant4Skill.getId(), false, enchant4Skill.isPassive() || enchant4Skill.isToggle());
+					player.removeSkill(enchant4Skill.getId(), false, enchant4Skill.isPassive() || enchant4Skill.isActive()  && Config.DELETE_AUGM_CHANGE_WEAPON || enchant4Skill.isToggle());
 					update = true;
 				}
 			}

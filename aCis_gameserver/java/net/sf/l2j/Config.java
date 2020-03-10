@@ -16,6 +16,7 @@ import net.sf.l2j.commons.config.ExProperties;
 import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.math.MathUtil;
 
+import net.sf.l2j.gameserver.enums.actors.RestrictionType;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.network.serverpackets.FirstKey;
@@ -54,6 +55,7 @@ public final class Config
 	public static int ALT_CLAN_MEMBERS_FOR_WAR;
 	public static int ALT_CLAN_WAR_PENALTY_WHEN_ENDED;
 	public static boolean ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH;
+	public static int ITEM_ID_BUY_CLAN_HALL;
 	
 	/** Manor */
 	public static int ALT_MANOR_REFRESH_TIME;
@@ -119,6 +121,17 @@ public final class Config
 	// Events settings
 	// --------------------------------------------------
 
+	/** Character Killing Monument settings */
+	public static boolean CKM_ENABLED;
+	public static long CKM_CYCLE_LENGTH;
+	public static String CKM_PVP_NPC_TITLE;
+	public static int CKM_PVP_NPC_TITLE_COLOR;
+	public static int CKM_PVP_NPC_NAME_COLOR;
+	public static String CKM_PK_NPC_TITLE;
+	public static int CKM_PK_NPC_TITLE_COLOR;
+	public static int CKM_PK_NPC_NAME_COLOR;
+	public static IntIntHolder[] MONUMENT_EVENT_REWARDS;
+	
 	/** TvTEvent */
 	public static boolean TVT_ENABLE;
 	public static boolean TVT_DUAL_BOX;
@@ -137,6 +150,14 @@ public final class Config
 	public static Location TVT_NPC_LOCATION;
 	public static IntIntHolder[] TVT_REWARDS;
 	public static String[] TVT_DOOR_LIST;
+
+	/** Pc bang points*/
+	public static int PCB_INTERVAL;
+	public static int PCB_MIN_LEVEL;
+	public static int PCB_POINT_MIN;
+	public static int PCB_POINT_MAX;
+	public static int PCB_CHANCE_DUAL_POINT;
+	public static int PCB_AFK_TIMER;
 	
 	/** Olympiad */
 	public static int ALT_OLY_START_TIME;
@@ -312,6 +333,7 @@ public final class Config
 	public static boolean SHOW_NPC_LVL;
 	public static boolean SHOW_NPC_CREST;
 	public static boolean SHOW_SUMMON_CREST;
+	public static boolean ALTERNATE_CLASS_MASTER;
 	
 	/** Wyvern Manager */
 	public static boolean WYVERN_ALLOW_UPGRADER;
@@ -325,6 +347,7 @@ public final class Config
 	public static int RAID_MINION_RESPAWN_TIMER;
 	
 	public static boolean RAID_DISABLE_CURSE;
+	public static boolean ENTER_ZONE_BOSS;
 	
 	/** Grand Boss */
 	public static int SPAWN_INTERVAL_AQ;
@@ -383,7 +406,12 @@ public final class Config
 	public static boolean DEEPBLUE_DROP_RULES;
 	public static boolean ALT_GAME_DELEVEL;
 	public static int DEATH_PENALTY_CHANCE;
-
+	public static int CANCEL_SECONDS;
+	public static int RAIDBOSS_NOBLES;
+	public static boolean ENABLE_SPREEKILLS;
+	public static int BANKING_SYSTEM_ADENA;
+	public static IntIntHolder[] BANKING_SYSTEM_GOLDCOIN;
+	
 	/** Aio */
 	public static String AIO_TITLE;
 	public static int AIO_COLOR;
@@ -406,7 +434,6 @@ public final class Config
 	public static double VIP_ADENA_RATES;
 	public static double VIP_SPOIL_RATES;
 	public static double VIP_DROP_RATES;
-	public static boolean ANNOUNCE_VIP_ENTER;
 	public static String ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG;
 	public static String ANNOUNCE_VIP_ENTER_BY_PLAYER_MSG;
 	
@@ -424,18 +451,8 @@ public final class Config
 	public static boolean ALT_GAME_FREIGHTS;
 	public static int ALT_GAME_FREIGHT_PRICE;
 	
-	/** Enchant */
-	public static double ENCHANT_CHANCE_WEAPON_MAGIC;
-	public static double ENCHANT_CHANCE_WEAPON_MAGIC_15PLUS;
-	public static double ENCHANT_CHANCE_WEAPON_NONMAGIC;
-	public static double ENCHANT_CHANCE_WEAPON_NONMAGIC_15PLUS;
-	public static double ENCHANT_CHANCE_ARMOR;
-	public static int ENCHANT_MAX_WEAPON;
-	public static int ENCHANT_MAX_ARMOR;
-	public static int ENCHANT_SAFE_MAX;
-	public static int ENCHANT_SAFE_MAX_FULL;
-	
 	/** Augmentations */
+	public static boolean DELETE_AUGM_CHANGE_WEAPON;
 	public static int AUGMENTATION_NG_SKILL_CHANCE;
 	public static int AUGMENTATION_NG_GLOW_CHANCE;
 	public static int AUGMENTATION_MID_SKILL_CHANCE;
@@ -477,6 +494,7 @@ public final class Config
 	public static boolean GM_HERO_AURA;
 	public static boolean GM_STARTUP_INVULNERABLE;
 	public static boolean GM_STARTUP_INVISIBLE;
+	public static boolean GM_STARTUP_SPEED;
 	public static boolean GM_STARTUP_SILENCE;
 	public static boolean GM_STARTUP_AUTO_LIST;
 	
@@ -510,10 +528,29 @@ public final class Config
 	public static boolean ES_SP_BOOK_NEEDED;
 	public static boolean DIVINE_SP_BOOK_NEEDED;
 	public static boolean SUBCLASS_WITHOUT_QUESTS;
+	public static int ALLOWED_SUBCLASS;
+	public static boolean ALT_GAME_SUBCLASS_EVERYWHERE;	
 	
 	/** Buffs */
 	public static boolean STORE_SKILL_COOLTIME;
 	public static int MAX_BUFFS_AMOUNT;
+	
+	/** Messages */
+	public static String ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG;
+	public static String ANNOUNCE_HERO_ENTER_BY_PLAYER_MSG;
+	
+	public static String ANNOUNCE_LORDS_ENTER_BY_CLAN_MEMBER_MSG;
+	
+	public static String ANNOUNCE_PK_MSG;
+	public static String ANNOUNCE_PVP_MSG;
+	
+	public static String ANNOUNCE_TOP_PVP_ENTER_BY_CLAN_MEMBER_MSG;
+	public static String ANNOUNCE_TOP_PVP_ENTER_BY_PLAYER_MSG;
+	public static String ANNOUNCE_TOP_PK_ENTER_BY_CLAN_MEMBER_MSG;
+	public static String ANNOUNCE_TOP_PK_ENTER_BY_PLAYER_MSG;
+	
+	public static String BOSS_DEFEATED_BY_CLAN_MEMBER_MSG;
+	public static String BOSS_DEFEATED_BY_PLAYER_MSG;
 	
 	// --------------------------------------------------
 	// Sieges
@@ -524,6 +561,8 @@ public final class Config
 	public static int MAX_ATTACKERS_NUMBER;
 	public static int MAX_DEFENDERS_NUMBER;
 	public static int ATTACKERS_RESPAWN_DELAY;
+	public static IntIntHolder[] REWARD_WINNER_SIEGE_CLAN;
+	public static IntIntHolder[] LEADER_REWARD_WINNER_SIEGE_CLAN;
 	
 	// --------------------------------------------------
 	// Server
@@ -669,6 +708,19 @@ public final class Config
 	public static boolean SERVER_NEWS;
 	public static int ZONE_TOWN;
 	public static boolean DISABLE_TUTORIAL;
+	public static boolean ALLOW_WYVERN_RESTRITION_CITY;
+	public static RestrictionType STORE_RESTRICTION_TYPE;
+	public static RestrictionType SHOUT_RESTRICTION_TYPE;
+	public static RestrictionType TRADE_RESTRICTION_TYPE;
+	public static int MIN_PVP_TO_USE_STORE;
+	public static int MIN_PK_TO_USE_STORE;
+	public static int MIN_LEVEL_TO_USE_STORE;
+	public static int SHOUT_RESTRICTION_VALUE;
+	public static int TRADE_RESTRICTION_VALUE;
+	public static String[] LIST_FORBIDDEN_NAMES;
+	public static boolean PROTECTION_HEAL;
+	public static double PROTECTION_HEAL_PVP;
+	public static boolean ENABLE_FARM_PVP;
 	
 	/** Game guard */
 	public static boolean ALLOW_GUARD_SYSTEM;
@@ -746,6 +798,7 @@ public final class Config
 		ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED = clans.getProperty("DaysBeforeAcceptNewClanWhenDismissed", 1);
 		ALT_CREATE_ALLY_DAYS_WHEN_DISSOLVED = clans.getProperty("DaysBeforeCreateNewAllyWhenDissolved", 10);
 		ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH = clans.getProperty("AltMembersCanWithdrawFromClanWH", false);
+		ITEM_ID_BUY_CLAN_HALL = clans.getProperty("ItemIDBuyClanHall", 57);
 		
 		ALT_MANOR_REFRESH_TIME = clans.getProperty("AltManorRefreshTime", 20);
 		ALT_MANOR_REFRESH_MIN = clans.getProperty("AltManorRefreshMin", 0);
@@ -813,6 +866,16 @@ public final class Config
 	private static final void loadEvents()
 	{
 		final ExProperties events = initProperties(EVENTS_FILE);
+		CKM_ENABLED = events.getProperty("CKMEnabled", false);
+		CKM_CYCLE_LENGTH = events.getProperty("CKMCycleLength", 86400000);
+		CKM_PVP_NPC_TITLE = events.getProperty("CKMPvPNpcTitle", "%kills% PvPs in the last 24h");
+		CKM_PVP_NPC_TITLE_COLOR = Integer.decode("0x" + events.getProperty("CKMPvPNpcTitleColor", "00CCFF"));
+		CKM_PVP_NPC_NAME_COLOR = Integer.decode("0x"+ events.getProperty("CKMPvPNpcNameColor", "FFFFFF"));
+		CKM_PK_NPC_TITLE = events.getProperty("CKMPKNpcTitle", "%kills% PKs in the last 24h");
+		CKM_PK_NPC_TITLE_COLOR = Integer.decode("0x" + events.getProperty("CKMPKNpcTitleColor", "00CCFF"));
+		CKM_PK_NPC_NAME_COLOR = Integer.decode("0x" + events.getProperty("CKMPKNpcNameColor", "FFFFFF"));
+		MONUMENT_EVENT_REWARDS = events.parseIntIntList("CKMReward", "1-268");
+		
 		TVT_ENABLE = events.getProperty("TvTEventEnable", false);
 		TVT_SCHEDULER_TIMES = events.getProperty("TvTSchedulerTime", "20:00").split(",");
 		TVT_PARTICIPATION_TIME = events.getProperty("TvTParticipationTime", 10);
@@ -830,6 +893,13 @@ public final class Config
 		TVT_REWARDS = events.parseIntIntList("TvTEventRewardList", "1-268");
 		TVT_NPC_ID = events.getProperty("TvTNpcManager", 18);
 		TVT_DOOR_LIST = events.getProperty("TvTArenaDoors", "24190002;24190003").split(";");
+
+		PCB_INTERVAL = events.getProperty("PcBangPointTime", 0);
+		PCB_MIN_LEVEL = events.getProperty("PcBangPointMinLevel", 20);
+		PCB_POINT_MIN = events.getProperty("PcBangPointMinCount", 1);
+		PCB_POINT_MAX = events.getProperty("PcBangPointMaxCount", 5);
+		PCB_CHANCE_DUAL_POINT = events.getProperty("PcBangPointDualChance", 100);
+		PCB_AFK_TIMER = events.getProperty("PcBangTimerAFK", 1);
 		
 		ALT_OLY_START_TIME = events.getProperty("AltOlyStartTime", 18);
 		ALT_OLY_MIN = events.getProperty("AltOlyMin", 0);
@@ -1024,6 +1094,7 @@ public final class Config
 		SHOW_NPC_LVL = npcs.getProperty("ShowNpcLevel", false);
 		SHOW_NPC_CREST = npcs.getProperty("ShowNpcCrest", false);
 		SHOW_SUMMON_CREST = npcs.getProperty("ShowSummonCrest", false);
+		ALTERNATE_CLASS_MASTER = npcs.getProperty("AlternateClassMaster", false);
 		
 		WYVERN_ALLOW_UPGRADER = npcs.getProperty("AllowWyvernUpgrader", true);
 		WYVERN_REQUIRED_LEVEL = npcs.getProperty("RequiredStriderLevel", 55);
@@ -1035,6 +1106,7 @@ public final class Config
 		RAID_MINION_RESPAWN_TIMER = npcs.getProperty("RaidMinionRespawnTime", 300000);
 		
 		RAID_DISABLE_CURSE = npcs.getProperty("DisableRaidCurse", false);
+		ENTER_ZONE_BOSS = npcs.getProperty("DirectTeleportToBossRoom", false);
 		
 		SPAWN_INTERVAL_AQ = npcs.getProperty("AntQueenSpawnInterval", 36);
 		RANDOM_SPAWN_TIME_AQ = npcs.getProperty("AntQueenRandomSpawn", 17);
@@ -1094,7 +1166,12 @@ public final class Config
 		DEEPBLUE_DROP_RULES = players.getProperty("UseDeepBlueDropRules", true);
 		ALT_GAME_DELEVEL = players.getProperty("Delevel", true);
 		DEATH_PENALTY_CHANCE = players.getProperty("DeathPenaltyChance", 20);
-
+		CANCEL_SECONDS = players.getProperty("CancelSeconds", 5);
+		RAIDBOSS_NOBLES = players.getProperty("RaidBossId", 0);
+		ENABLE_SPREEKILLS = players.getProperty("EnableSpreeKills", false);
+		BANKING_SYSTEM_GOLDCOIN = players.parseIntIntList("BankingGoldCoin", "9209-1");
+		BANKING_SYSTEM_ADENA = players.getProperty("BankingAdenaCount", 500000000);
+		
 		AIO_TITLE = players.getProperty("AioTitle", "Aio");
 		AIO_COLOR = Integer.decode("0x" + players.getProperty("AioColor", "606060"));
 		LIST_AIO_ITEMS = players.parseIntIntList("AioItems", "1-268");
@@ -1114,7 +1191,6 @@ public final class Config
 		VIP_ADENA_RATES = players.getProperty("VipAdenaDrop", 1.5);
 		VIP_SPOIL_RATES = players.getProperty("VipSpoilRates", 1.5);
 		VIP_DROP_RATES = players.getProperty("VipDrop", 1.5);
-		ANNOUNCE_VIP_ENTER = players.getProperty("AnnounceVipLogin",false);
 		ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG = players.getProperty("AnnounceVipLoginByClanMemberMsg", "The Vip %player% of the clan %clan% is now online.");
 		ANNOUNCE_VIP_ENTER_BY_PLAYER_MSG = players.getProperty("AnnounceVipLoginByPlayerMsg", "The Vip %player% is now online.");	
 		
@@ -1131,16 +1207,7 @@ public final class Config
 		ALT_GAME_FREIGHTS = players.getProperty("AltGameFreights", false);
 		ALT_GAME_FREIGHT_PRICE = players.getProperty("AltGameFreightPrice", 1000);
 		
-		ENCHANT_CHANCE_WEAPON_MAGIC = players.getProperty("EnchantChanceMagicWeapon", 0.4);
-		ENCHANT_CHANCE_WEAPON_MAGIC_15PLUS = players.getProperty("EnchantChanceMagicWeapon15Plus", 0.2);
-		ENCHANT_CHANCE_WEAPON_NONMAGIC = players.getProperty("EnchantChanceNonMagicWeapon", 0.7);
-		ENCHANT_CHANCE_WEAPON_NONMAGIC_15PLUS = players.getProperty("EnchantChanceNonMagicWeapon15Plus", 0.35);
-		ENCHANT_CHANCE_ARMOR = players.getProperty("EnchantChanceArmor", 0.66);
-		ENCHANT_MAX_WEAPON = players.getProperty("EnchantMaxWeapon", 0);
-		ENCHANT_MAX_ARMOR = players.getProperty("EnchantMaxArmor", 0);
-		ENCHANT_SAFE_MAX = players.getProperty("EnchantSafeMax", 3);
-		ENCHANT_SAFE_MAX_FULL = players.getProperty("EnchantSafeMaxFull", 4);
-		
+		DELETE_AUGM_CHANGE_WEAPON = players.getProperty("DeleteAugmentation", false);
 		AUGMENTATION_NG_SKILL_CHANCE = players.getProperty("AugmentationNGSkillChance", 15);
 		AUGMENTATION_NG_GLOW_CHANCE = players.getProperty("AugmentationNGGlowChance", 0);
 		AUGMENTATION_MID_SKILL_CHANCE = players.getProperty("AugmentationMidSkillChance", 30);
@@ -1190,6 +1257,7 @@ public final class Config
 		DEFAULT_ACCESS_LEVEL = players.getProperty("DefaultAccessLevel", 0);
 		GM_HERO_AURA = players.getProperty("GMHeroAura", false);
 		GM_STARTUP_INVULNERABLE = players.getProperty("GMStartupInvulnerable", true);
+		GM_STARTUP_SPEED = players.getProperty("GMStartupSpeed", true);
 		GM_STARTUP_INVISIBLE = players.getProperty("GMStartupInvisible", true);
 		GM_STARTUP_SILENCE = players.getProperty("GMStartupSilence", true);
 		GM_STARTUP_AUTO_LIST = players.getProperty("GMStartupAutoList", true);
@@ -1209,7 +1277,7 @@ public final class Config
 		OFFLINE_MODE_NO_DAMAGE = players.getProperty("OfflineModeNoDamage", false);
 		OFFLINE_NAME_COLOR = Integer.decode("0x" + players.getProperty("OfflineNameColor", "808080"));
 		RESTORE_OFFLINERS = players.getProperty("RestoreOffliners", false);
-		OFFLINE_MAX_DAYS = players.getProperty("OfflineMaxDays", 10);
+		OFFLINE_MAX_DAYS = players.getProperty("OfflineMaxDays", 1);
 		OFFLINE_DISCONNECT_FINISHED = players.getProperty("OfflineDisconnectFinished", true);
 		
 		AUTO_LEARN_SKILLS = players.getProperty("AutoLearnSkills", false);
@@ -1220,9 +1288,27 @@ public final class Config
 		ES_SP_BOOK_NEEDED = players.getProperty("EnchantSkillSpBookNeeded", true);
 		DIVINE_SP_BOOK_NEEDED = players.getProperty("DivineInspirationSpBookNeeded", true);
 		SUBCLASS_WITHOUT_QUESTS = players.getProperty("SubClassWithoutQuests", false);
+		ALLOWED_SUBCLASS = players.getProperty("AllowedSubclass", 3);
+		ALT_GAME_SUBCLASS_EVERYWHERE = players.getProperty("AltSubclassEverywhere", false);
 		
 		MAX_BUFFS_AMOUNT = players.getProperty("MaxBuffsAmount", 20);
 		STORE_SKILL_COOLTIME = players.getProperty("StoreSkillCooltime", true);
+
+		ANNOUNCE_LORDS_ENTER_BY_CLAN_MEMBER_MSG = players.getProperty("AnnounceLordsLoginByClanMemberMsg", "The Lord %player% leader of %castle% of the clan %clan% is now online.");
+		
+		ANNOUNCE_PVP_MSG = players.getProperty("AnnouncePvpMsg", "$killer has defeated $target");
+		ANNOUNCE_PK_MSG = players.getProperty("AnnouncePkMsg", "$killer has slaughtered $target");
+		
+		ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG = players.getProperty("AnnounceHeroLoginByClanMemberMsg", "The Hero %player% from %classe% and of the clan %clan% is now online.");
+		ANNOUNCE_HERO_ENTER_BY_PLAYER_MSG = players.getProperty("AnnounceHeroLoginByPlayerMsg", "The Hero %player% from %classe% is now online.");
+		
+		ANNOUNCE_TOP_PVP_ENTER_BY_CLAN_MEMBER_MSG = players.getProperty("AnnounceTopPvPLoginByClanMemberMsg", "The Hero %player% from %classe% and of the clan %clan% is now online.");
+		ANNOUNCE_TOP_PVP_ENTER_BY_PLAYER_MSG = players.getProperty("AnnounceTopPvPLoginByPlayerMsg", "The Hero %player% from %classe% is now online.");
+		ANNOUNCE_TOP_PK_ENTER_BY_CLAN_MEMBER_MSG = players.getProperty("AnnounceTopPkLoginByClanMemberMsg", "The Hero %player% from %classe% and of the clan %clan% is now online.");
+		ANNOUNCE_TOP_PK_ENTER_BY_PLAYER_MSG = players.getProperty("AnnounceTopPkLoginByPlayerMsg", "The Hero %player% from %classe% is now online.");
+		
+		BOSS_DEFEATED_BY_CLAN_MEMBER_MSG = players.getProperty("BossDefeatedByClanMemberMsg", "Raid Boss %raidboss% has been defeated by %player% of clan %clan%.");
+		BOSS_DEFEATED_BY_PLAYER_MSG = players.getProperty("BossDefeatedByPlayerMsg", "Raid Boss %raidboss% has been defeated by %player%.");
 	}
 	
 	/**
@@ -1237,6 +1323,8 @@ public final class Config
 		MAX_ATTACKERS_NUMBER = sieges.getProperty("AttackerMaxClans", 10);
 		MAX_DEFENDERS_NUMBER = sieges.getProperty("DefenderMaxClans", 10);
 		ATTACKERS_RESPAWN_DELAY = sieges.getProperty("AttackerRespawn", 10000);
+		REWARD_WINNER_SIEGE_CLAN = sieges.parseIntIntList("MembersRewardsID", "57-100");
+		LEADER_REWARD_WINNER_SIEGE_CLAN = sieges.parseIntIntList("LeaderRewardsID", "57-400");
 	}
 	
 	/**
@@ -1380,6 +1468,23 @@ public final class Config
 		ZONE_TOWN = server.getProperty("ZoneTown", 0);
 		SERVER_NEWS = server.getProperty("ShowServerNews", false);
 		DISABLE_TUTORIAL = server.getProperty("DisableTutorial", false);
+		
+		ALLOW_WYVERN_RESTRITION_CITY = server.getProperty("MountRequest", false);
+		SHOUT_RESTRICTION_TYPE = RestrictionType.valueOf(server.getProperty("ShoutRestrictionType", "NONE"));
+		TRADE_RESTRICTION_TYPE = RestrictionType.valueOf(server.getProperty("TradeRestrictionType", "NONE"));
+		STORE_RESTRICTION_TYPE = RestrictionType.valueOf(server.getProperty("StoreRestrictionType", "NONE"));
+		MIN_PVP_TO_USE_STORE = server.getProperty("PvPToUseStore", 0);
+		MIN_PK_TO_USE_STORE = server.getProperty("PkToUseStore", 0);
+		MIN_LEVEL_TO_USE_STORE = server.getProperty("LevelToUseStore", 0);
+		SHOUT_RESTRICTION_VALUE = server.getProperty("ShoutRestrictionValue", 0);
+		TRADE_RESTRICTION_VALUE = server.getProperty("TradeRestrictionValue", 0);
+		
+		LIST_FORBIDDEN_NAMES = server.getProperty("RestrictedNames", "fuck,dildo,admin").split(";");
+		
+		PROTECTION_HEAL = server.getProperty("HealProtection", false);
+		PROTECTION_HEAL_PVP = server.getProperty("HealCurrent", 1.);
+		
+		ENABLE_FARM_PVP = server.getProperty("PvPProtect", false);
 		
 		ALLOW_GUARD_SYSTEM = server.getProperty("AllowGuardSystem", true);
 		PROTECT_KICK_WITH_LASTERROR_HWID = server.getProperty("KickWithLastErrorHWID", false);

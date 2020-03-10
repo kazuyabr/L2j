@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
 import net.sf.l2j.gameserver.enums.ZoneId;
@@ -85,7 +86,7 @@ public class BossZone extends ZoneType
 			player.setInsideZone(ZoneId.NO_SUMMON_FRIEND, true);
 			
 			// Skip other checks for GM or if no invade time is set.
-			if (player.isGM() || _invadeTime == 0)
+			if (player.isGM() || _invadeTime == 0 || Config.ENTER_ZONE_BOSS)
 				return;
 			
 			// Get player object id.

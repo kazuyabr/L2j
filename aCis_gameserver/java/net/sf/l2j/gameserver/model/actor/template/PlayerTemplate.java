@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.model.actor.template;
 import java.util.List;
 
 import net.sf.l2j.commons.random.Rnd;
+import net.sf.l2j.commons.util.ArraysUtil;
 import net.sf.l2j.commons.util.StatsSet;
 
 import net.sf.l2j.gameserver.data.ItemTable;
@@ -44,6 +45,18 @@ public class PlayerTemplate extends CreatureTemplate
 	private final List<GeneralSkillNode> _skills;
 	
 	private final Weapon _fists;
+
+	private final boolean _isbuffs;
+	private final boolean _isShow;
+	
+	private final String _title;
+	
+	private final int[] _buffs;
+	
+	private final byte _level;
+	private final int _sp;
+	
+	private final int _vip;
 	
 	public PlayerTemplate(StatsSet set)
 	{
@@ -68,6 +81,17 @@ public class PlayerTemplate extends CreatureTemplate
 		
 		_items = set.getList("items");
 		_skills = set.getList("skills");
+
+		_isbuffs = set.getBool("isbuffs", false);
+		_isShow = set.getBool("isShow", false);
+		
+		_buffs = set.getIntegerArray("buffs", ArraysUtil.EMPTY_INT_ARRAY);
+		
+		_level = set.getByte("level", (byte) 1);
+		_sp = set.getInteger("sp", 1);
+		_title = set.getString("title", null);
+		
+		_vip = set.getInteger("daysVip", 1);
 		
 		_fists = (Weapon) ItemTable.getInstance().getTemplate(set.getInteger("fists"));
 	}
@@ -142,7 +166,41 @@ public class PlayerTemplate extends CreatureTemplate
 	{
 		return _cpTable[level - 1];
 	}
+
+	public final String getTitle()
+	{
+		return _title;
+	}
 	
+	public final byte getLevel()
+	{
+		return _level;
+	}
+
+	public final int getSp()
+	{
+		return _sp;
+	}
+
+	public final int getVip()
+	{
+		return _vip;
+	}
+	public final int[] getBuffIds()
+	{
+		return _buffs;
+	}
+ 	
+	public final boolean isBuffIds()
+ 	{
+		return _isbuffs;
+ 	}
+
+	public final boolean isShow()
+ 	{
+		return _isShow;
+ 	}
+
 	/**
 	 * @return the {@link List} of {@link ItemTemplateHolder}s holding the starter equipment informations for this {@link PlayerTemplate}.
 	 */
