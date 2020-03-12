@@ -187,6 +187,7 @@ public final class Config
 	public static int ALT_OLY_DIVIDER_CLASSED;
 	public static int ALT_OLY_DIVIDER_NON_CLASSED;
 	public static boolean ALT_OLY_ANNOUNCE_GAMES;
+	public static boolean ALT_OLY_ANT_BOOT;
 	
 	/** SevenSigns Festival */
 	public static boolean ALT_GAME_CASTLE_DAWN;
@@ -928,6 +929,7 @@ public final class Config
 		ALT_OLY_DIVIDER_CLASSED = events.getProperty("AltOlyDividerClassed", 3);
 		ALT_OLY_DIVIDER_NON_CLASSED = events.getProperty("AltOlyDividerNonClassed", 5);
 		ALT_OLY_ANNOUNCE_GAMES = events.getProperty("AltOlyAnnounceGames", true);
+		ALT_OLY_ANT_BOOT = events.getProperty("AltOlyAntBoot", false);
 		
 		ALT_GAME_CASTLE_DAWN = events.getProperty("AltCastleForDawn", true);
 		ALT_GAME_CASTLE_DUSK = events.getProperty("AltCastleForDusk", true);

@@ -370,6 +370,7 @@
     <set name="weight" val="120" />
     <set name="price" val="1800000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2006-1" />
   </item>
@@ -381,6 +382,7 @@
     <set name="weight" val="120" />
     <set name="price" val="240000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2007-1" />
   </item>
@@ -392,6 +394,7 @@
     <set name="weight" val="120" />
     <set name="price" val="240000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="732" type="EtcItem" name="Crystal Scroll: Enchant Armor (Grade A)">
@@ -402,6 +405,7 @@
     <set name="weight" val="120" />
     <set name="price" val="240000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="733" type="EtcItem" name="Endeavor Potion">

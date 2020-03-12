@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
 import net.sf.l2j.gameserver.model.group.Party;
+import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.GameClient;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -790,6 +791,10 @@ public class AdminEditChar implements IAdminCommandHandler
 		html.replace("%account%", player.getAccountName());
 		html.replace("%ip%", (player.getClient().isDetached()) ? "Disconnected" : player.getClient().getConnection().getInetAddress().getHostAddress());
 		html.replace("%ai%", player.getAI().getDesire().getIntention().name());
+		html.replace("%match%", Olympiad.getInstance().getCompetitionDone(player.getObjectId()));
+		html.replace("%wins%", Olympiad.getInstance().getCompetitionWon(player.getObjectId()));
+		html.replace("%default%", Olympiad.getInstance().getCompetitionLost(player.getObjectId()));
+		html.replace("%points%", Olympiad.getInstance().getNoblePoints(player.getObjectId()));
 		activeChar.sendPacket(html);
 	}
 	

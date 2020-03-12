@@ -629,6 +629,7 @@
     <set name="weight" val="120" />
     <set name="price" val="500000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2015-1" />
   </item>
@@ -640,6 +641,7 @@
     <set name="weight" val="120" />
     <set name="price" val="80000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2016-1" />
   </item>
@@ -650,6 +652,7 @@
     <set name="weight" val="120" />
     <set name="price" val="80000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="950" type="EtcItem" name="Crystal Scroll: Enchant Armor (Grade B)">
@@ -659,6 +662,7 @@
     <set name="weight" val="120" />
     <set name="price" val="80000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="951" type="EtcItem" name="Scroll: Enchant Weapon (Grade C)">
@@ -669,6 +673,7 @@
     <set name="weight" val="120" />
     <set name="price" val="110000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2017-1" />
   </item>
@@ -680,6 +685,7 @@
     <set name="weight" val="120" />
     <set name="price" val="15000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2018-1" />
   </item>
@@ -690,6 +696,7 @@
     <set name="weight" val="120" />
     <set name="price" val="15000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="954" type="EtcItem" name="Crystal Scroll: Enchant Armor (Grade C)">
@@ -699,6 +706,7 @@
     <set name="weight" val="120" />
     <set name="price" val="15000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="955" type="EtcItem" name="Scroll: Enchant Weapon (Grade D)">
@@ -709,6 +717,7 @@
     <set name="weight" val="120" />
     <set name="price" val="50000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2019-1" />
   </item>
@@ -720,6 +729,7 @@
     <set name="weight" val="120" />
     <set name="price" val="6000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2020-1" />
   </item>
@@ -730,6 +740,7 @@
     <set name="weight" val="120" />
     <set name="price" val="6000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="958" type="EtcItem" name="Crystal Scroll: Enchant Armor (Grade D)">
@@ -739,6 +750,7 @@
     <set name="weight" val="120" />
     <set name="price" val="6000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="959" type="EtcItem" name="Scroll: Enchant Weapon (Grade S)">
@@ -749,6 +761,7 @@
     <set name="weight" val="120" />
     <set name="price" val="5000000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2021-1" />
   </item>
@@ -760,6 +773,7 @@
     <set name="weight" val="120" />
     <set name="price" val="500000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
     <set name="item_skill" val="2022-1" />
   </item>
@@ -770,6 +784,7 @@
     <set name="weight" val="120" />
     <set name="price" val="500000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="962" type="EtcItem" name="Crystal Scroll: Enchant Armor (Grade S)">
@@ -779,6 +794,7 @@
     <set name="weight" val="120" />
     <set name="price" val="500000" />
     <set name="is_oly_restricted" val="true" />
+    <set name="is_stackable" val="true" />
     <set name="handler" val="EnchantScrolls" />
   </item>
   <item id="963" type="EtcItem" name="Orcish Arrowhead">

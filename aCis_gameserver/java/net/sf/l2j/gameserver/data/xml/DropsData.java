@@ -78,6 +78,11 @@ public class DropsData implements IXmlReader
 		}));
 	}
 
+	public boolean isDrops(int itemId)
+	{
+		return _drops.containsKey(itemId);
+	}
+	
 	public List<DropCategory> getDroplist(int dropId)
 	{
 		return _drops.get(dropId);

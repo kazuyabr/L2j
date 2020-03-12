@@ -291,7 +291,7 @@ public final class Player extends Playable
 	
 	private static final String DELETE_RECIPEBOOK = "DELETE FROM character_recipebook WHERE charId=?";
 	private static final String SAVE_RECIPEBOOK = "INSERT INTO character_recipebook (charId, recipeId) values(?,?)";
-
+	
 	public static final String ADD_ITEM = "INSERT INTO items (owner_id,item_id,count,loc,loc_data,enchant_level,object_id,custom_type1,custom_type2,mana_left,time) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public static final int REQUEST_TIMEOUT = 15;
@@ -388,7 +388,7 @@ public final class Player extends Playable
 	private final List<PcFreight> _depositedFreight = new ArrayList<>();
 	
 	private StoreType _storeType = StoreType.NONE;
-
+	
 	private boolean isOfflineShop;
 	private long _offlineShopStart;
 	
@@ -782,7 +782,7 @@ public final class Player extends Playable
 	{
 		return _storeType != StoreType.NONE;
 	}
-
+	
 	public long getOfflineStartTime()
 	{
 		return _offlineShopStart;
@@ -1606,7 +1606,7 @@ public final class Player extends Playable
 			_subclassLock.unlock();
 		}
 	}
-
+	
 	public String setClassName(int Id)
 	{
 		switch (Id)
@@ -2720,7 +2720,7 @@ public final class Player extends Playable
 		
 		return _accountName;
 	}
-
+	
 	public String getAccountNamePlayer()
 	{
 		return _accountName;
@@ -3663,7 +3663,7 @@ public final class Player extends Playable
 		// Kill the Player
 		if (!super.doDie(killer))
 			return false;
-
+		
 		_spreeKills = 0; 
 		
 		if (isMounted())
@@ -3854,9 +3854,9 @@ public final class Player extends Playable
 		final Player targetPlayer = target.getActingPlayer();
 		if (targetPlayer == null || targetPlayer == this)
 			return;
-
-		if (Config.ENABLE_FARM_PVP)
-			checkAntiFarm();
+		
+		if (!Config.ENABLE_FARM_PVP && checkAntiFarm(targetPlayer))
+			return;
 		
 		// Don't rank up the CW if it was a summon.
 		if (isCursedWeaponEquipped() && target instanceof Player)
@@ -3868,7 +3868,7 @@ public final class Player extends Playable
 		// If in duel and you kill (only can kill l2summon), do nothing
 		if (isInDuel() && targetPlayer.isInDuel())
 			return;
-
+		
 		final Event event = targetPlayer.getEvent();
 		if (event != null && event.isStarted())
 			return;
@@ -3898,7 +3898,7 @@ public final class Player extends Playable
 			{
 				// Add PvP point to attacker.
 				setPvpKills(getPvpKills() + 1);
-
+				
 				if (!Config.ANNOUNCE_PVP_MSG.isEmpty())
 					World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(Config.ANNOUNCE_PVP_MSG.replace("$killer", getName()).replace("$target", targetPlayer.getName())).addZoneName(targetPlayer.getPosition()));
 				
@@ -3949,7 +3949,7 @@ public final class Player extends Playable
 			// PK Points are increased only if you kill a player.
 			if (target instanceof Player)
 				setPkKills(getPkKills() + 1);
-
+			
 			if (!Config.ANNOUNCE_PVP_MSG.isEmpty())
 				World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(Config.ANNOUNCE_PK_MSG.replace("$killer", getName()).replace("$target", targetPlayer.getName())).addZoneName(targetPlayer.getPosition()));
 			
@@ -4367,7 +4367,7 @@ public final class Player extends Playable
 		
 		_storeType = type;
 	}
-
+	
 	public boolean isOfflineMode()
 	{
 		return isOfflineShop;	
@@ -4718,7 +4718,7 @@ public final class Player extends Playable
 	}
 	
 	/**
-	 * Disarm the player's weapon and shield.
+	 * Disarm the player's weapon, armor and shield.
 	 * @return true if successful, false otherwise.
 	 */
 	public boolean disarmWeapons()
@@ -4732,6 +4732,32 @@ public final class Player extends Playable
 		if (wpn != null)
 		{
 			ItemInstance[] unequipped = getInventory().unEquipItemInBodySlotAndRecord(wpn);
+			InventoryUpdate iu = new InventoryUpdate();
+			for (ItemInstance itm : unequipped)
+				iu.addModifiedItem(itm);
+			sendPacket(iu);
+			
+			abortAttack();
+			broadcastUserInfo();
+			
+			// this can be 0 if the user pressed the right mousebutton twice very fast
+			if (unequipped.length > 0)
+			{
+				SystemMessage sm;
+				if (unequipped[0].getEnchantLevel() > 0)
+					sm = SystemMessage.getSystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED).addNumber(unequipped[0].getEnchantLevel()).addItemName(unequipped[0]);
+				else
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED).addItemName(unequipped[0]);
+				
+				sendPacket(sm);
+			}
+		}
+		
+		// Unequip the armor
+		ItemInstance armor = getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
+		if (armor != null)
+		{
+			ItemInstance[] unequipped = getInventory().unEquipItemInBodySlotAndRecord(armor);
 			InventoryUpdate iu = new InventoryUpdate();
 			for (ItemInstance itm : unequipped)
 				iu.addModifiedItem(itm);
@@ -4854,7 +4880,7 @@ public final class Player extends Playable
 				sendPacket(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
 				return false;
 			}
-
+			
 			if (Config.ALLOW_WYVERN_RESTRITION_CITY && isInsideZone(ZoneId.TOWN))
 			{
 				sendMessage("Desculpe mais você não pode usar montaria dentro da Cidade.");
@@ -5085,7 +5111,7 @@ public final class Player extends Playable
 	{
 		return System.currentTimeMillis() - _uptime;
 	}
-
+	
 	public boolean isAFK()
 	{
 		return _lastAction < System.currentTimeMillis();
@@ -5095,7 +5121,7 @@ public final class Player extends Playable
 	{
 		_lastAction = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(Config.PCB_AFK_TIMER);
 	}
-
+	
 	/**
 	 * Return True if the Player is invulnerable.
 	 */
@@ -6302,7 +6328,7 @@ public final class Player extends Playable
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE).addSkillName(skill));
 			return false;
 		}
-
+		
 		if (isAio())
 		{
 			if (!isInsideZone(ZoneId.TOWN) ? true : Config.LIST_AIO_SKILLS.equals(skill.getId()))
@@ -7532,7 +7558,7 @@ public final class Player extends Playable
 	{
 		return _blockList;
 	}
-
+	
 	public boolean isAio()
 	{
 		return _isAio;
@@ -7929,6 +7955,8 @@ public final class Player extends Playable
 		if (!_subclassLock.tryLock())
 			return false;
 		
+		disarmWeapons();
+		
 		try
 		{
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -8055,6 +8083,8 @@ public final class Player extends Playable
 					character.abortCast();
 			
 			store();
+			disarmWeapons();
+			
 			_reuseTimeStamps.clear();
 			
 			// clear charges
@@ -8163,7 +8193,7 @@ public final class Player extends Playable
 		
 		// Add to the GameTimeTask to keep inform about activity time.
 		GameTimeTaskManager.getInstance().add(this);
-
+		
 		// Add PremiumTask for players vip and aio
 		if (isAio() && isVip())
 			PremiumTaskManager.getInstance().add(this);
@@ -9677,7 +9707,7 @@ public final class Player extends Playable
 		final ItemInstance formal = getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 		return formal != null && formal.getItem().getBodyPart() == Item.SLOT_ALLDRESS;
 	}
-
+	
 	public int getPcCafePoints()
 	{
 		return getMemos().getInteger("cafe_points", 0);
@@ -9704,7 +9734,7 @@ public final class Player extends Playable
 		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.USING_S1_PCPOINT).addNumber(count));
 		sendPacket(new ExPCCafePointInfo(newAmount, -count, PcCafeType.CONSUME));
 	}
-
+	
 	private void pvpColor()
 	{
 		for (ColorSystem pvpColor : PvPData.getInstance().getColor())
@@ -9717,25 +9747,21 @@ public final class Player extends Playable
 			}
 		}
 	}
-
-	public boolean checkAntiFarm()
+	
+	public boolean checkAntiFarm(final Player target)
 	{
-		for (Player target : World.getInstance().getPlayers())
+		if (getClient() != null && target.getClient() != null)
 		{
-			if (getClient() != null && target.getClient() != null)
+			String ip1 = getClient().getHwid();
+			String ip2 = target.getClient().getHwid();
+			
+			if (ip1.equals(ip2))
 			{
-				String ip1 = getClient().getConnection().getInetAddress().getHostAddress();
-				String ip2 = target.getClient().getConnection().getInetAddress().getHostAddress();
-				
-				if (ip1.equals(ip2))
-				{
-					LOGGER.warn("PvP Protection: " + getName() + " e " + target.getName() + ". mesmo IP.");
-					sendMessage(target.getName() + " é do seu mesmo IP, não sera contado o PvP. Isso poderar levar BAN!");
-					return false;
-				}
+				sendMessage("ATTENTION: " + target.getName() + " is from your same HWID!");
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	public static void addItemToOffline(int owner_id, int item_id, int count)

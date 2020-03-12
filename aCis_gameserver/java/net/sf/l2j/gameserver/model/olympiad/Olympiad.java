@@ -305,7 +305,7 @@ public class Olympiad
 		return _nobles.size();
 	}
 	
-	protected StatsSet getNobleStats(int playerId)
+	public StatsSet getNobleStats(int playerId)
 	{
 		return _nobles.get(playerId);
 	}

@@ -102,7 +102,7 @@ public class Cancel implements ISkillHandler
 				}
 
 				if (cancelledBuffs.size() > 0)
-					ThreadPool.schedule(new CancelTaskManager((Player) target, cancelledBuffs), Config.CANCEL_SECONDS * 1000);
+					ThreadPool.schedule(new CancelTaskManager((Player)target, cancelledBuffs), Config.CANCEL_SECONDS * 1000);
 				
 				// Remove 1 to the stack of buffs to remove.
 				count--;
@@ -124,9 +124,6 @@ public class Cancel implements ISkillHandler
 			
 			skill.getEffectsSelf(activeChar);
 		}
-		
-		if (!cancelledBuffs.isEmpty())
-			cancelledBuffs.clear();
 		
 		activeChar.setChargedShot(activeChar.isChargedShot(ShotType.BLESSED_SPIRITSHOT) ? ShotType.BLESSED_SPIRITSHOT : ShotType.SPIRITSHOT, skill.isStaticReuse());
 	}

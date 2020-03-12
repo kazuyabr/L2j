@@ -11800,7 +11800,13 @@ public final class SystemMessageId
 	 * ID: 2154<br>
 	 * Message: $s1 wishes to summon you from $s2. Do you accept?
 	 */
-	public static final SystemMessageId S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPTT;
+	public static final SystemMessageId S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_EVENT;
+
+	/**
+	 * ID: 2155<br>
+	 * Message: $s1 wishes to summon you from $s2. Do you accept?
+	 */
+	public static final SystemMessageId S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_RECALL;
 	
 	/**
 	 * Array containing all SystemMessageIds<br>
@@ -13770,7 +13776,8 @@ public final class SystemMessageId
 		S1_CANNOT_PARTICIPATE_IN_OLYMPIAD_DURING_TELEPORT = new SystemMessageId(2029);
 		CURRENTLY_LOGGING_IN = new SystemMessageId(2030);
 		PLEASE_WAIT_A_MOMENT = new SystemMessageId(2031);
-		S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPTT = new SystemMessageId(2154);
+		S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_EVENT = new SystemMessageId(2154);
+		S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_RECALL = new SystemMessageId(2155);
 		
 		buildFastLookupTable();
 	}

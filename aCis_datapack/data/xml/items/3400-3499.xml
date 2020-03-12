@@ -590,7 +590,7 @@
   <item id="3470" type="EtcItem" name="Gold Bar">
     <set name="icon" val="icon.etc_lump_yellow_i00" />
     <set name="material" val="PAPER" />
-    <set name="price" val="10000" />
+    <set name="price" val="1000000000" />
     <set name="is_stackable" val="true" />
   </item>
   <item id="3471" type="Weapon" name="Cybellin's Dagger">

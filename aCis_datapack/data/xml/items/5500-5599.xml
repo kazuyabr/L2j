@@ -437,14 +437,14 @@
     <set name="icon" val="icon.etc_deco_star_i00" />
     <set name="etcitem_type" val="material" />
     <set name="material" val="LIQUID" />
-    <set name="price" val="1" />
+    <set name="price" val="10" />
     <set name="is_stackable" val="true" />
   </item>
   <item id="5557" type="EtcItem" name="Bead Ornament">
     <set name="icon" val="icon.etc_deco_bead_i00" />
     <set name="etcitem_type" val="material" />
     <set name="material" val="LIQUID" />
-    <set name="price" val="1" />
+    <set name="price" val="10" />
     <set name="is_stackable" val="true" />
   </item>
   <item id="5558" type="EtcItem" name="Fir Tree Branch">

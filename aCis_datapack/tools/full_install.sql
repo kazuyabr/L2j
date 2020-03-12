@@ -14,6 +14,8 @@ DROP TABLE IF EXISTS castle_manor_production;
 DROP TABLE IF EXISTS castle_trapupgrade;
 DROP TABLE IF EXISTS character_friends;
 DROP TABLE IF EXISTS character_hennas;
+DROP TABLE IF EXISTS character_kills_info;
+DROP TABLE IF EXISTS character_kills_snapshot;
 DROP TABLE IF EXISTS character_macroses;
 DROP TABLE IF EXISTS character_mail;
 DROP TABLE IF EXISTS character_memo;

@@ -139,7 +139,7 @@ public class PcPolymorph extends Npc
 					int weaponObjId = charInfo.getPaperdollObjectId(Inventory.PAPERDOLL_RHAND);
 					if (weaponObjId > 0)
 					{
-						try (PreparedStatement statementAugment = con.prepareStatement("SELECT attributes FROM augmentations WHERE item_oid = ?"))
+						try (PreparedStatement statementAugment = con.prepareStatement("SELECT attributes FROM augmentations WHERE item_id = ?"))
 						{
 							statementAugment.setInt(1, weaponObjId);
 							try (ResultSet rsAugment = statementAugment.executeQuery())

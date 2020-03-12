@@ -27,8 +27,8 @@
 
   <!-- Titanium  Helmet -->
   <item id="4">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9218" count="1"/>
   </item>
   
@@ -41,8 +41,8 @@
 
   <!-- Titanium  Leather Armor -->
   <item id="6">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9219" count="1"/>
   </item>
   
@@ -56,8 +56,8 @@
 
   <!-- Titanium  Heavy Armor -->
   <item id="8">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9222" count="1"/>
   </item>
   
@@ -70,8 +70,8 @@
 
   <!-- Titanium  Robe Armor -->
   <item id="10">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9225" count="1"/>
   </item>
   
@@ -84,8 +84,8 @@
 
   <!-- Titanium Leather Gloves -->
   <item id="12">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9220" count="1"/>
   </item>
   
@@ -98,8 +98,8 @@
 
   <!-- Titanium Heavy Gloves -->
   <item id="14">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9223" count="1"/>
   </item>
   
@@ -112,8 +112,8 @@
   
   <!-- Titanium Robe Gloves -->
   <item id="16">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9226" count="1"/>
   </item>
   
@@ -126,8 +126,8 @@
 
   <!-- Titanium Leather Boots -->
   <item id="18">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9221" count="1"/>
   </item>
   
@@ -140,8 +140,8 @@
 
   <!-- Titanium Heavy Boots -->
   <item id="20">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9224" count="1"/>
   </item>
   
@@ -154,8 +154,8 @@
 
   <!-- Titanium Robe Boots -->
   <item id="22">
-    <ingredient id="5556" count="500"/>
-	<ingredient id="5557" count="500"/>
+    <ingredient id="5556" count="1000"/>
+	<ingredient id="5557" count="1000"/>
     <production id="9227" count="1"/>
   </item>
   

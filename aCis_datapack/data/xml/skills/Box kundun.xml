@@ -2,7 +2,7 @@
 <list>
 	<skill id="7065" levels="1" name="Box Kundun">
 		<table name="#extractableItems">
-			5556,300,11;5557,300,11;1538,5,5;3936,3,5;6577,1,1;6578,1,1
+		5556,600,1;5556,300,5;5556,150,10;5556,80,15;5557,600,1;5557,300,5;5557,150,10;5557,80,15;57,10000000,26;1538,1,5;3936,3,5;6577,1,1;6578,1,1
 		</table>
 		<set name="capsuled_items_skill" val="#extractableItems" />
 		<set name="target" val="TARGET_SELF" />

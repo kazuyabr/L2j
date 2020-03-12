@@ -98,6 +98,14 @@ public class ItemTable
 		for (EtcItem item : _etcItems.values())
 			_allTemplates[item.getItemId()] = item;
 	}
+
+	/**
+	 * @return the list of all {@link Item} templates.
+	 */
+	public Item[] getTemplates()
+	{
+		return _allTemplates;
+	}
 	
 	/**
 	 * @param id : int designating the item

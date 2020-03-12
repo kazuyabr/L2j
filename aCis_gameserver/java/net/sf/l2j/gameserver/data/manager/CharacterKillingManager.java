@@ -44,7 +44,7 @@ public final class CharacterKillingManager
 	private List<PcPolymorph> pvpMorphListeners = new CopyOnWriteArrayList<>();
 	private List<PcPolymorph> pkMorphListeners = new CopyOnWriteArrayList<>();
 	
-	public synchronized void init()
+	public CharacterKillingManager()
 	{	
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement("SELECT cycle, cycle_start, winner_pvpkills, winner_pvpkills_count, winner_pkkills, winner_pkkills_count FROM character_kills_info ORDER BY cycle_start DESC LIMIT 1"))

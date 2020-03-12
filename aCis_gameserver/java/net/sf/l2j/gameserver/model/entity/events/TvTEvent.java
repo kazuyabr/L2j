@@ -338,7 +338,7 @@ public final class TvTEvent extends Event
 		if (_state != EventState.REGISTRATION)
 			return;
 		else if (_state == EventState.REGISTRATION)
-			player.sendPacket(new ConfirmDlg(SystemMessageId.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPTT.getId()).addString("TvT Event").addTime(15000));
+			player.sendPacket(new ConfirmDlg(SystemMessageId.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_EVENT.getId()).addString("TvT Event").addTime(15000));
 	}
 	
 	@Override

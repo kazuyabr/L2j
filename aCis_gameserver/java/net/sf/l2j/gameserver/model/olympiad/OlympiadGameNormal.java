@@ -458,6 +458,12 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	}
 	
 	@Override
+	protected boolean checkDualbox()
+	{	 
+		return !Config.ALT_OLY_ANT_BOOT && _playerOne.getPlayer().checkAntiFarm(_playerTwo.getPlayer());
+	}
+	
+	@Override
 	public final void resetDamage()
 	{
 		_damageP1 = 0;

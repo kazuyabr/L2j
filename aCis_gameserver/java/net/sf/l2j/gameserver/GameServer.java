@@ -293,7 +293,7 @@ public class GameServer
 			TvTEvent.getInstance();
 
 		if (Config.CKM_ENABLED)
-			CharacterKillingManager.getInstance().init();
+			CharacterKillingManager.getInstance();
 
 		if (Config.ALLOW_WEDDING)
 			CoupleManager.getInstance();

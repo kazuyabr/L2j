@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<list>
-	<drops id="1"><!-- 1 = true, 0 = false -->
-		<item id="5556" category="1" min="10"  max="20"  chance="7000000" /><!-- Star Ornament -->
-		<item id="5557" category="2" min="10"  max="20"  chance="8000000" /><!-- Bead Ornament -->
-	</drops>
-</list>

@@ -181,6 +181,10 @@
 	<aCar name="admin_gmchat" accessLevel="7"/>
 	<aCar name="admin_gmchat_menu" accessLevel="7"/>
 
+	<!-- HERO -->
+	<aCar name="admin_sethero" accessLevel="7"/>
+	<aCar name="admin_removehero" accessLevel="7"/>
+	
 	<!-- HEAL -->
 	<aCar name="admin_heal" accessLevel="7"/>
 
@@ -234,9 +238,9 @@
 	<aCar name="admin_broadmovie" accessLevel="7"/>
 	
 	<!-- OLYMPIADS -->
+	<aCar name="admin_addolypoints" accessLevel="7"/>
+	<aCar name="admin_removeolypoints" accessLevel="7"/>
 	<aCar name="admin_endoly" accessLevel="7"/>
-	<aCar name="admin_sethero" accessLevel="7"/>
-	<aCar name="admin_removehero" accessLevel="7"/>
 	<aCar name="admin_setnoble" accessLevel="7"/>
 	
 	<!-- PETITION -->
@@ -269,6 +273,9 @@
 	<!-- RIDE -->
 	<aCar name="admin_ride" accessLevel="7"/>
 	<aCar name="admin_unride" accessLevel="7"/>
+	
+	<!-- SEARCH -->
+	<aCar name="admin_search" accessLevel="7"/>
 
 	<!-- SHOP -->
 	<aCar name="admin_buy" accessLevel="7"/>
@@ -331,6 +338,7 @@
 	<aCar name="admin_goto" accessLevel="7"/>
 	<aCar name="admin_teleportto" accessLevel="7"/>
 	<aCar name="admin_recall" accessLevel="7"/>
+	<aCar name="admin_recallall" accessLevel="7"/>
 	<aCar name="admin_recall_party" accessLevel="7"/>
 	<aCar name="admin_recall_clan" accessLevel="7"/>
 	<aCar name="admin_move_to" accessLevel="7"/>

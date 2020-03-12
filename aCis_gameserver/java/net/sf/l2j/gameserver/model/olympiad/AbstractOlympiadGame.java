@@ -173,7 +173,12 @@ public abstract class AbstractOlympiadGame
 	 * @return the array of {@link IntIntHolder} rewards.
 	 */
 	protected abstract IntIntHolder[] getReward();
-	
+
+	/**
+	 * @return the array of {@link IntIntHolder} check Dual box.
+	 */
+	protected abstract boolean checkDualbox();
+	 
 	public final boolean isAborted()
 	{
 		return _aborted;

@@ -50,6 +50,7 @@
 		<copy todir="${build.dist.game}/config">
 			<fileset dir="config">
 				<include name="*.properties" />
+				<include name="*.txt" />
 				<exclude name="banned_ips.properties" />
 				<exclude name="loginserver.properties" />
 			</fileset>
