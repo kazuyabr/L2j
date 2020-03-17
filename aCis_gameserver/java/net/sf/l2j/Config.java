@@ -414,7 +414,6 @@ public final class Config
 	public static IntIntHolder[] BANKING_SYSTEM_GOLDCOIN;
 	
 	/** Aio */
-	public static String AIO_TITLE;
 	public static int AIO_COLOR;
 	public static IntIntHolder[] LIST_AIO_ITEMS;
 	public static IntIntHolder[] LIST_AIO_SKILLS;
@@ -1174,7 +1173,6 @@ public final class Config
 		BANKING_SYSTEM_GOLDCOIN = players.parseIntIntList("BankingGoldCoin", "9209-1");
 		BANKING_SYSTEM_ADENA = players.getProperty("BankingAdenaCount", 500000000);
 		
-		AIO_TITLE = players.getProperty("AioTitle", "Aio");
 		AIO_COLOR = Integer.decode("0x" + players.getProperty("AioColor", "606060"));
 		LIST_AIO_ITEMS = players.parseIntIntList("AioItems", "1-268");
 		LIST_AIO_SKILLS = players.parseIntIntList("AioSkills", "1-268");

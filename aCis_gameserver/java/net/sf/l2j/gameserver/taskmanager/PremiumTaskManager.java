@@ -60,6 +60,16 @@ public final class PremiumTaskManager implements Runnable
 				}
 			}
 			
+			// PREVIEW
+			if (player.isPreview())
+			{
+				if (player.getMemos().getLong("previewEndTime") < System.currentTimeMillis())
+				{
+					player.setPreview(false);
+					remove(player);
+				}
+			}
+			
 			// VIP
 			if (player.isVip())
 			{

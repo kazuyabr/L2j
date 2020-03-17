@@ -133,6 +133,7 @@ import net.sf.l2j.gameserver.model.craft.ManufactureList;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Duel.DuelState;
 import net.sf.l2j.gameserver.model.entity.events.Event;
+import net.sf.l2j.gameserver.model.entity.events.TvTEvent;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.group.CommandChannel;
 import net.sf.l2j.gameserver.model.group.Party;
@@ -403,6 +404,7 @@ public final class Player extends Playable
 	private boolean _isAio;
 	private boolean _isNoble;
 	private boolean _isHero;
+	private boolean _isPreview;
 	private boolean _isVip;
 	
 	private Folk _currentFolk;
@@ -2899,6 +2901,12 @@ public final class Player extends Playable
 	@Override
 	public void onAction(Player player)
 	{	
+		if (!TvTEvent.getInstance().canTarget(this, player))
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		// Set the target of the player
 		if (player.getTarget() != this)
 			player.setTarget(this);
@@ -2941,17 +2949,14 @@ public final class Player extends Playable
 	@Override
 	public void onActionShift(Player player)
 	{
-		if (player.isGM())
-			AdminEditChar.showCharacterInfo(player, this);
-		
-		// Check if attacker is in event
-		if (player.getEvent() != null && player.getEvent() == getEvent())
+		if (!TvTEvent.getInstance().canTarget(this, player))
 		{
-			if (player.getTeam().getId() > 0 && player.getTeam() == getTeam())
-				return;
-			
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
+		
+		if (player.isGM())
+			AdminEditChar.showCharacterInfo(player, this);
 		
 		super.onActionShift(player);
 	}
@@ -5880,6 +5885,11 @@ public final class Player extends Playable
 	{
 		return _isOnline;
 	}
+
+	public long getOnlineTime()
+	{
+		return _onlineTime;
+	}
 	
 	/**
 	 * @return an int interpretation of online status.
@@ -6236,6 +6246,7 @@ public final class Player extends Playable
 			{
 				if (cha.getTeam().getId() > 0 && cha.getTeam() == getTeam())
 					return false;
+				
 				return true;
 			}
 			
@@ -7380,6 +7391,7 @@ public final class Player extends Playable
 		setTarget(null);
 		setIsInvul(true);
 		getAppearance().setInvisible();
+		setPreview(true);
 		setIsParalyzed(true);
 		startParalyze();
 		
@@ -7421,6 +7433,7 @@ public final class Player extends Playable
 		
 		setTarget(null);
 		getAppearance().setVisible();
+		setPreview(false);
 		setIsInvul(false);
 		setIsParalyzed(false);
 		stopParalyze();
@@ -7595,6 +7608,47 @@ public final class Player extends Playable
 		
 		broadcastUserInfo();
 		sendSkillList();
+	}
+
+	public boolean isPreview()
+	{
+		return _isPreview;
+	}
+	
+	public void setPreview(boolean preview)
+	{
+		if (preview)
+		{
+			setIsInvul(true);
+			getAppearance().setInvisible();
+			setIsParalyzed(true);
+			startParalyze();
+		}
+		else
+		{
+			getAppearance().setVisible();
+			setIsInvul(false);
+			setIsParalyzed(false);
+			stopParalyze();
+			
+			PremiumTaskManager.getInstance().remove(this);
+			getMemos().set("previewEndTime", 0);
+		}
+		_isPreview = preview;
+
+		broadcastUserInfo();
+	}
+
+	public void doPreview(int time)
+	{
+		setPreview(true);
+		PremiumTaskManager.getInstance().add(this);
+		
+		long remainingTime = getMemos().getLong("previewEndTime", 0);
+		if (remainingTime > 0)
+			getMemos().set("previewEndTime", remainingTime + TimeUnit.DAYS.toMillis(time));
+		else
+			getMemos().set("previewEndTime", System.currentTimeMillis() + TimeUnit.HOURS.toMillis(time));
 	}
 	
 	public boolean isVip()
@@ -8195,7 +8249,7 @@ public final class Player extends Playable
 		GameTimeTaskManager.getInstance().add(this);
 		
 		// Add PremiumTask for players vip and aio
-		if (isAio() && isVip())
+		if (isAio() && isVip() && isHero() && isPreview())
 			PremiumTaskManager.getInstance().add(this);
 		
 		// Teleport player if the Seven Signs period isn't the good one, or if the player isn't in a cabal.

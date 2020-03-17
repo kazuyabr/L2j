@@ -261,7 +261,7 @@ public class Cubic
 		Event event = _owner.getEvent();
 		if (event != null && event.isStarted())
 		{
-			Player target = ownerTarget.getActingPlayer();
+			final Player target = ownerTarget.getActingPlayer();
 			if (target != null && target.getEvent() == event && (_owner.getTeam().getId() == 0 || _owner.getTeam() != target.getTeam()))
 			{
 				_target = (Creature)ownerTarget;

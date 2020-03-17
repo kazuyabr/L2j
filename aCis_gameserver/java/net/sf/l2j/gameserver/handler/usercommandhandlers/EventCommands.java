@@ -12,7 +12,7 @@ public class EventCommands implements IUserCommandHandler
 {
 	private static final int[] COMMAND_IDS =
 	{
-		114, 115
+		117, 118
 	};
 	
 	@Override

@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.handler;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.l2j.gameserver.handler.usercommandhandlers.BuffVip;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelDelete;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelLeave;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelListUpdate;
@@ -26,6 +27,7 @@ public class UserCommandHandler
 	
 	protected UserCommandHandler()
 	{
+		registerHandler(new BuffVip());
 		registerHandler(new ChannelDelete());
 		registerHandler(new ChannelLeave());
 		registerHandler(new ChannelListUpdate());

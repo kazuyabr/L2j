@@ -268,10 +268,16 @@ public final class TvTEvent extends Event
 		
 		// Port teams
 		for (Player blue : _blueTeam)
+		{
+			blue.getTemplate().getBuffIds();
 			blue.teleToLocation(Config.TVT_BLUE_SPAWN_LOCATION);
+		}
 		
 		for (Player red : _redTeam)
+		{
+			red.getTemplate().getBuffIds();
 			red.teleToLocation(Config.TVT_RED_SPAWN_LOCATION);
+		}
 	}
 	
 	public void eventRemovals()
@@ -509,10 +515,6 @@ public final class TvTEvent extends Event
 	@Override
 	public void onKill(Player player, Player target)
 	{
-		if (player == null || target == null)
-			return;
-		
-		// Increase kills only if victim belonged to enemy team
 		if (player.getTeam() == TeamType.BLUE && target.getTeam() == TeamType.RED)
 			_blueTeamKills++;
 		else if (player.getTeam() == TeamType.RED && target.getTeam() == TeamType.BLUE)
@@ -523,12 +525,20 @@ public final class TvTEvent extends Event
 	}
 	
 	@Override
+	public boolean canTarget(Player player, Player target)
+	{
+		if (player.getTeam() == TeamType.BLUE && target.getTeam() == TeamType.BLUE)
+			return false;
+
+		if (player.getTeam() == TeamType.RED && target.getTeam() == TeamType.RED)
+			return false;
+		
+		return true;
+	}
+	
+	@Override
 	public void onRevive(Creature killer)
 	{
-		if (killer == null)
-			return;
-		
-		// Heal Player fully
 		killer.setCurrentHpMp(killer.getMaxHp(), killer.getMaxMp());
 		killer.setCurrentCp(killer.getMaxCp());	
 	}

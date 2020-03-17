@@ -97,7 +97,7 @@ public class EnterWorld extends L2GameClientPacket
 			
 			if (Config.GM_STARTUP_INVISIBLE && AdminData.getInstance().hasAccess("admin_hide", player.getAccessLevel()))
 				player.getAppearance().setInvisible();
-
+			
 			if (Config.GM_STARTUP_SPEED && AdminData.getInstance().hasAccess("admin_gmspeed", player.getAccessLevel()))
 				player.doCast(SkillTable.getInstance().getInfo(7029, 4));
 			
@@ -338,7 +338,7 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (Config.TVT_ENABLE)
 			TvTEvent.getInstance().autoRegister(player);
-
+		
 		if (player.getMemos().getLong("aioTime", 0) > 0)	
 		{
 			long now = Calendar.getInstance().getTimeInMillis();
@@ -352,7 +352,7 @@ public class EnterWorld extends L2GameClientPacket
 				player.sendMessage("Your Aio privileges end in " + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("aioTime", 0))) + ".");
 			}
 		}
-
+		
 		if (player.getMemos().getLong("heroTime", 0) > 0)
 		{
 			long now = Calendar.getInstance().getTimeInMillis();
@@ -365,6 +365,27 @@ public class EnterWorld extends L2GameClientPacket
 				player.setHero(true);
 				player.sendMessage("Your Hero privileges end in" + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("heroTime", 0))) + ".");
 			}
+		}
+		
+		if (player.getOnlineTime() == 0 && player.getTemplate().isShow())
+		{
+			player.setPreview(true);
+			
+			final NpcHtmlMessage html = new NpcHtmlMessage(0);
+			html.setFile("data/html/preview/previewme.htm");
+			html.replace("%name%", player.getName());
+			sendPacket(html);
+		}
+		
+		if (player.getMemos().getLong("previewEndTime", 0) > 0)	
+		{
+			long now = Calendar.getInstance().getTimeInMillis();
+			long endDay = player.getMemos().getLong("previewEndTime");
+			
+			if (now > endDay)
+				player.setPreview(false);
+			else
+				player.setPreview(true);
 		}
 		
 		if (player.getMemos().getLong("vipTime", 0) > 0)	
@@ -380,13 +401,13 @@ public class EnterWorld extends L2GameClientPacket
 				player.sendMessage("Your Vip privileges end in " + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("vipTime", 0))) + ".");
 			}
 		}
-
+		
 		if (player.isVip() && !Config.ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG.isEmpty())
 			World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_VIP_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", player.getName()).replace("%clan%", player.getClan().getName()) : Config.ANNOUNCE_VIP_ENTER_BY_PLAYER_MSG.replace("%player%", player.getName()), true);
-
+		
 		if (Config.PCB_INTERVAL > 0)
 			player.sendPacket(new ExPCCafePointInfo(player.getPcCafePoints(), 0, PcCafeType.NORMAL));
-
+		
 		if (!Config.ANNOUNCE_TOP_PVP_ENTER_BY_CLAN_MEMBER_MSG.isEmpty() && player.getPvpKills() > 0)
 		{
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
@@ -442,7 +463,7 @@ public class EnterWorld extends L2GameClientPacket
 				}
 			}
 		}
-
+		
 		if (player.getActiveClass() == player.getBaseClass() && player.isHero() && !Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.isEmpty())
 			World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", player.getName()).replace("%clan%", player.getClan().getName()).replace("%classe%", player.setClassName(player.getBaseClass())) : Config.ANNOUNCE_HERO_ENTER_BY_PLAYER_MSG.replace("%player%", player.getName()).replace("%classe%", player.setClassName(player.getBaseClass())), true);
 		

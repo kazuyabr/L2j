@@ -11,6 +11,7 @@ import net.sf.l2j.commons.math.MathUtil;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.manager.BufferManager;
+import net.sf.l2j.gameserver.data.xml.PlayerData;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
@@ -175,6 +176,11 @@ public class SchemeBuffer extends Folk
 				player.sendMessage("This scheme name is invalid.");
 			}
 			showGiveBuffsWindow(player);
+		}
+		else if (currentCommand.startsWith("auto"))
+		{
+			for (int buffId : PlayerData.getInstance().getTemplate(player.getClassId()).getBuffIds())
+				SkillTable.getInstance().getInfo(buffId, SkillTable.getInstance().getMaxLevel(buffId)).getEffects(player, player);
 		}
 		
 		super.onBypassFeedback(player, command);

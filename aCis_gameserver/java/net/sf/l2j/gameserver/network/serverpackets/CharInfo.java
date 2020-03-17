@@ -38,7 +38,7 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_player.getZ());
 		writeD((_player.getBoat() == null) ? 0 : _player.getBoat().getObjectId());
 		writeD(_player.getObjectId());
-		writeS(_player.isAio() ? "[AIO]-" : _player.getName());
+		writeS(_player.isAio() ? "[AIO]-" +_player.getName() : _player.getName());
 		writeD(_player.getRace().ordinal());
 		writeD(_player.getAppearance().getSex().ordinal());
 		writeD((_player.getClassIndex() == 0) ? _player.getClassId().getId() : _player.getBaseClass());
@@ -118,8 +118,11 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_player.getAppearance().getHairColor());
 		writeD(_player.getAppearance().getFace());
 		
-		String name = (canSeeInvis) ? "Invisible" : _player.isAio() ? Config.AIO_TITLE : _player.getTitle();
-		 		
+		String name = (canSeeInvis) ? "Invisible" : _player.getTitle();
+		 
+		if (_player.isAio())
+			name = (_player.getClan() != null ? "AIO Clan: " + _player.getClan().getName() : _player.getTitle());	
+		
 		final Event event = _player.getEvent();
 		if (event != null && event.isStarted())
 			name = ((_player.getTeam() == TeamType.BLUE) ? "Kills: " + _player.getEvent().getBlueKills() : (_player.getTeam() == TeamType.RED) ? "Kills: " + _player.getEvent().getRedKills() : _player.getTitle());

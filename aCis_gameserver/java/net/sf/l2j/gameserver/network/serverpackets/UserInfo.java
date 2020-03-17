@@ -36,7 +36,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_player.getZ());
 		writeD(_player.getHeading());
 		writeD(_player.getObjectId());
-		writeS((_player.getPolyTemplate() != null) ? _player.getPolyTemplate().getName() : _player.isAio() ? "[AIO]-" : _player.getName());
+		writeS((_player.getPolyTemplate() != null) ? _player.getPolyTemplate().getName() : _player.isAio() ? "[AIO]-" +_player.getName() : _player.getName());
 		writeD(_player.getRace().ordinal());
 		writeD(_player.getAppearance().getSex().ordinal());
 		writeD((_player.getClassIndex() == 0) ? _player.getClassId().getId() : _player.getBaseClass());
@@ -172,8 +172,11 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_player.getAppearance().getFace());
 		writeD((_player.isGM()) ? 1 : 0);
 		
-		String name = ((_player.getPolyType() != PolyType.DEFAULT) ? "Morphed" : _player.isAio() ? Config.AIO_TITLE : _player.getTitle());
-		 		
+		String name = ((_player.getPolyType() != PolyType.DEFAULT) ? "Morphed" : _player.getTitle());
+
+		if (_player.isAio())
+			name = (_player.getClan() != null ? "AIO Clan: " + _player.getClan().getName() : _player.getTitle());	
+		
 		final Event event = _player.getEvent();
 		if (event != null && event.isStarted())
 			name = ((_player.getTeam() == TeamType.BLUE) ? "Kills: " + _player.getEvent().getBlueKills() : (_player.getTeam() == TeamType.RED) ? "Kills: " + _player.getEvent().getRedKills() : _player.getTitle());

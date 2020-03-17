@@ -238,5 +238,40 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				player.sendMessage("Something went wrong, try again.");
 			}
 		}
+		else if (_command.startsWith("farmzone1"))
+		{
+			player.enterObserverMode(149918, -112541, -2080);
+			player.doPreview(90);
+			
+			NpcHtmlMessage html = new NpcHtmlMessage(1);
+			html.setFile("data/html/preview/previewme.htm");
+			html.replace("%name%", player.getName());
+			player.sendPacket(html);
+		}
+		else if (_command.startsWith("farmzone2"))
+		{
+			player.enterObserverMode(181387, -78694, -2732);
+			player.doPreview(90);
+			
+			NpcHtmlMessage html = new NpcHtmlMessage(1);
+			html.setFile("data/html/preview/previewme.htm");
+			html.replace("%name%", player.getName());
+			player.sendPacket(html);
+		}
+		else if (_command.startsWith("pvpzone"))
+		{
+			player.enterObserverMode(10468, -24569, -3645);
+			player.doPreview(90);
+			
+			NpcHtmlMessage html = new NpcHtmlMessage(1);
+			html.setFile("data/html/preview/previewme.htm");
+			html.replace("%name%", player.getName());
+			player.sendPacket(html);
+		}
+		else if (_command.startsWith("teleport"))
+		{
+			player.leaveObserverMode();
+			player.teleToLocation(player.getTemplate().getRandomSpawn());
+		}
 	}
 }
