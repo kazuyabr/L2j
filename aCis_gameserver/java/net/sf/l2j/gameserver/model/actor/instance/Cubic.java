@@ -81,38 +81,38 @@ public class Cubic
 			case STORM_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4049, level));
 				break;
-			
+				
 			case VAMPIRIC_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4050, level));
 				break;
-			
+				
 			case LIFE_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4051, level));
 				doAction();
 				break;
-			
+				
 			case VIPER_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4052, level));
 				break;
-			
+				
 			case POLTERGEIST_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4053, level));
 				_skills.add(SkillTable.getInstance().getInfo(4054, level));
 				_skills.add(SkillTable.getInstance().getInfo(4055, level));
 				break;
-			
+				
 			case BINDING_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4164, level));
 				break;
-			
+				
 			case AQUA_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4165, level));
 				break;
-			
+				
 			case SPARK_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(4166, level));
 				break;
-			
+				
 			case ATTRACT_CUBIC:
 				_skills.add(SkillTable.getInstance().getInfo(5115, level));
 				_skills.add(SkillTable.getInstance().getInfo(5116, level));
@@ -140,7 +140,7 @@ public class Cubic
 			case ATTRACT_CUBIC:
 				_actionTask = ThreadPool.scheduleAtFixedRate(new Action(_activationchance), 0, _activationtime);
 				break;
-			
+				
 			case LIFE_CUBIC:
 				_actionTask = ThreadPool.scheduleAtFixedRate(new Heal(), 0, _activationtime);
 				break;
@@ -231,7 +231,7 @@ public class Cubic
 				if (_target == PlayerA || _target == PlayerB)
 					if (_target == ownerTarget)
 						return;
-					
+				
 				if (partyEnemy != null)
 				{
 					if (partyEnemy.containsPlayer(ownerTarget))
@@ -256,22 +256,25 @@ public class Cubic
 			_target = null;
 			return;
 		}
-
+		
 		// Events
 		Event event = _owner.getEvent();
 		if (event != null && event.isStarted())
 		{
-			final Player target = ownerTarget.getActingPlayer();
-			if (target != null && target.getEvent() == event && (_owner.getTeam().getId() == 0 || _owner.getTeam() != target.getTeam()))
+			if (ownerTarget instanceof Playable)
 			{
-				_target = (Creature)ownerTarget;
-				// Dead target
-				if (_target.isDead())
-					_target = null;
+				final Player target = ownerTarget.getActingPlayer();
+				if (target != null && target.getEvent() == event && (_owner.getTeam().getId() == 0 || _owner.getTeam() != target.getTeam()))
+				{
+					_target = (Creature)ownerTarget;
+					// Dead target
+					if (_target.isDead())
+						_target = null;
+				}
 			}
 			return;
 		}
-
+		
 		// Olympiad targeting
 		if (_owner.isInOlympiadMode())
 		{
@@ -560,7 +563,7 @@ public class Cubic
 							skill.getEffects(activeCubic, target, null);
 					}
 					break;
-				
+					
 				case CANCEL_DEBUFF:
 					final L2Effect[] effects = target.getAllEffects();
 					if (effects == null || effects.length == 0)
@@ -581,7 +584,7 @@ public class Cubic
 						}
 					}
 					break;
-				
+					
 				case AGGDAMAGE:
 					if (Formulas.calcCubicSkillSuccess(activeCubic, target, skill, shld, bss))
 					{
@@ -626,7 +629,7 @@ public class Cubic
 		if (_owner.isInDuel())
 			if (!DuelManager.getInstance().getDuel(_owner.getDuelId()).isPartyDuel())
 				party = null;
-			
+		
 		if (party != null && !_owner.isInOlympiadMode())
 		{
 			// Get all Party Members in a spheric area near the Creature

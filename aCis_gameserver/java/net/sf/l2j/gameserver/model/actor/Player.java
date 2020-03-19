@@ -133,7 +133,6 @@ import net.sf.l2j.gameserver.model.craft.ManufactureList;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Duel.DuelState;
 import net.sf.l2j.gameserver.model.entity.events.Event;
-import net.sf.l2j.gameserver.model.entity.events.TvTEvent;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.group.CommandChannel;
 import net.sf.l2j.gameserver.model.group.Party;
@@ -2901,12 +2900,6 @@ public final class Player extends Playable
 	@Override
 	public void onAction(Player player)
 	{	
-		if (!TvTEvent.getInstance().canTarget(this, player))
-		{
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
 		// Set the target of the player
 		if (player.getTarget() != this)
 			player.setTarget(this);
@@ -2949,12 +2942,6 @@ public final class Player extends Playable
 	@Override
 	public void onActionShift(Player player)
 	{
-		if (!TvTEvent.getInstance().canTarget(this, player))
-		{
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
 		if (player.isGM())
 			AdminEditChar.showCharacterInfo(player, this);
 		

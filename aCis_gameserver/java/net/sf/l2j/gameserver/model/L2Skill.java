@@ -1633,7 +1633,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 						if ((obj.getAllyId() == 0 || obj.getAllyId() != player.getAllyId()) && (obj.getClan() == null || obj.getClanId() != player.getClanId()))
 							continue;
 
-						if (obj.getTeam().getId() > 0)
+						if (player.getTeam().getId() > 0)
 						{
 							if (player.getTeam() != obj.getTeam())
 								continue;
@@ -1689,7 +1689,13 @@ public abstract class L2Skill implements IChanceSkillTrigger
 						
 						if ((obj.getAllyId() == 0 || obj.getAllyId() != player.getAllyId()) && (obj.getClan() == null || obj.getClanId() != player.getClanId()))
 							continue;
-						
+
+						if (player.getTeam().getId() > 0)
+						{
+							if (player.getTeam() != obj.getTeam())
+								continue;
+						}
+
 						if (player.isInDuel())
 						{
 							if (player.getDuelId() != obj.getDuelId())
@@ -1744,7 +1750,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 							if (obj == null || obj == player)
 								continue;
 
-							if (obj	.getTeam().getId() > 0)
+							if (player.getTeam().getId() > 0)
 							{
 								if (player.getTeam() != obj.getTeam())
 									continue;
@@ -1985,7 +1991,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 					final Summon targetSummon = (Summon) target;
 					final Player summonOwner = targetSummon.getActingPlayer();
 					
-					if (activeChar instanceof Player && activeChar.getSummon() != targetSummon && !targetSummon.isDead() && (summonOwner.getPvpFlag() != 0 || summonOwner.getKarma() > 0) || (summonOwner.isInsideZone(ZoneId.PVP) && activeChar.isInsideZone(ZoneId.PVP)) || (summonOwner.isInDuel() && ((Player) activeChar).isInDuel() && summonOwner.getDuelId() == ((Player) activeChar).getDuelId()))
+					if (activeChar instanceof Player && activeChar.getSummon() != targetSummon && !targetSummon.isDead() && (summonOwner.getPvpFlag() != 0 || summonOwner.getKarma() > 0) || (summonOwner.isInsideZone(ZoneId.PVP) && activeChar.isInsideZone(ZoneId.PVP)) || (summonOwner.isInDuel() && ((Player) activeChar).isInDuel() && summonOwner.getDuelId() == ((Player) activeChar).getDuelId()) || (summonOwner.getTeam().getId() > 0 && ((Player) activeChar).getTeam().getId() > 0 && summonOwner.getTeam() == ((Player) activeChar).getTeam()))
 						return new Creature[]
 						{
 							targetSummon

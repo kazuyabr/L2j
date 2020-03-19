@@ -28,7 +28,6 @@ public abstract class Event implements Runnable
 	public abstract void autoRegister(Player player);
 	public abstract void onDie(Creature killer);
 	public abstract void onKill(Player player, Player target);
-	public abstract boolean canTarget(Player player, Player target);
 	public abstract void onRevive(Creature killer);
 	
 	public int _blueTeamKills;

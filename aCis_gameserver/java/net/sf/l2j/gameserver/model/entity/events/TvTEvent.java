@@ -9,9 +9,10 @@ import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.ItemTable;
+import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.xml.DoorData;
-import net.sf.l2j.gameserver.data.xml.MapRegionData;
 import net.sf.l2j.gameserver.data.xml.NpcData;
+import net.sf.l2j.gameserver.data.xml.PlayerData;
 import net.sf.l2j.gameserver.enums.MessageType;
 import net.sf.l2j.gameserver.enums.TeamType;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
@@ -186,7 +187,7 @@ public final class TvTEvent extends Event
 	private void prepareTeams()
 	{
 		Player player;
-		while (_registered.size() > 0)
+		if (_registered.size() > 0)
 		{
 			player = _registered.get(Rnd.get(_registered.size()));
 			
@@ -269,13 +270,13 @@ public final class TvTEvent extends Event
 		// Port teams
 		for (Player blue : _blueTeam)
 		{
-			blue.getTemplate().getBuffIds();
+			doBuff(blue);
 			blue.teleToLocation(Config.TVT_BLUE_SPAWN_LOCATION);
 		}
 		
 		for (Player red : _redTeam)
 		{
-			red.getTemplate().getBuffIds();
+			doBuff(red);
 			red.teleToLocation(Config.TVT_RED_SPAWN_LOCATION);
 		}
 	}
@@ -507,8 +508,6 @@ public final class TvTEvent extends Event
 				player.teleToLocation(Config.TVT_BLUE_SPAWN_LOCATION);
 			else if (player.getTeam() == TeamType.RED)
 				player.teleToLocation(Config.TVT_RED_SPAWN_LOCATION);
-			else
-				player.teleportTo(MapRegionData.TeleportType.TOWN);
 		}
 	}
 	
@@ -525,22 +524,22 @@ public final class TvTEvent extends Event
 	}
 	
 	@Override
-	public boolean canTarget(Player player, Player target)
-	{
-		if (player.getTeam() == TeamType.BLUE && target.getTeam() == TeamType.BLUE)
-			return false;
-
-		if (player.getTeam() == TeamType.RED && target.getTeam() == TeamType.RED)
-			return false;
-		
-		return true;
-	}
-	
-	@Override
 	public void onRevive(Creature killer)
 	{
-		killer.setCurrentHpMp(killer.getMaxHp(), killer.getMaxMp());
-		killer.setCurrentCp(killer.getMaxCp());	
+		if (killer instanceof Player)
+		{
+			final Player player = ((Player) killer);
+			
+			doBuff(player);
+			player.setCurrentHpMp(player.getMaxHp(), player.getMaxMp());
+			player.setCurrentCp(player.getMaxCp());	
+		}
+	}
+	
+	public static void doBuff(Player player)
+	{
+		for (int buffId : PlayerData.getInstance().getTemplate(player.getClassId()).getBuffIds())
+			SkillTable.getInstance().getInfo(buffId, SkillTable.getInstance().getMaxLevel(buffId)).getEffects(player, player);
 	}
 	
 	public static final TvTEvent getInstance()
