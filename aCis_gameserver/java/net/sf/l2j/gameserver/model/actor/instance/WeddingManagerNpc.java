@@ -13,7 +13,6 @@ import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
-import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.ConfirmDlg;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
@@ -118,13 +117,6 @@ public class WeddingManagerNpc extends Folk
 			{
 				player.sendMessage("Your partner is not online.");
 				return;
-			}
-			
-			final Event event = partner.getEvent();
-			if (event != null && event.isStarted())
-			{
-				player.sendMessage("Due to the current partner's status, the teleportation failed.");
- 				return;
 			}
 			
 			// Simple checks to avoid exploits

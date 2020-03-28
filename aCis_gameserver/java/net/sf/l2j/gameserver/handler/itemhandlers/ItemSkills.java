@@ -8,7 +8,6 @@ import net.sf.l2j.gameserver.model.actor.Playable;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
-import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -29,13 +28,6 @@ public class ItemSkills implements IItemHandler
 		final boolean isPet = playable instanceof Pet;
 		final Player activeChar = playable.getActingPlayer();
 
-		final Event event = activeChar.getEvent();
-		if (event != null && event.isStarted())
-		{
-			activeChar.sendMessage("You cannot use this item in events.");
-			return;
-		}
- 		
 		// Pets can only use tradable items.
 		if (isPet && !item.isTradable())
 		{

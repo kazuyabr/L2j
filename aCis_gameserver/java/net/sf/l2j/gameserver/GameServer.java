@@ -94,7 +94,7 @@ import net.sf.l2j.gameserver.model.boat.BoatGludinRune;
 import net.sf.l2j.gameserver.model.boat.BoatInnadrilTour;
 import net.sf.l2j.gameserver.model.boat.BoatRunePrimeval;
 import net.sf.l2j.gameserver.model.boat.BoatTalkingGludin;
-import net.sf.l2j.gameserver.model.entity.events.TvTEvent;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadGameManager;
 import net.sf.l2j.gameserver.model.partymatching.PartyMatchRoomList;
@@ -143,7 +143,7 @@ public class GameServer
 		{
 			LogManager.getLogManager().readConfiguration(is);
 		}
-	
+		
 		StringUtil.printSection("aCis");
 		
 		// Initialize config
@@ -289,12 +289,11 @@ public class GameServer
 		DerbyTrackManager.getInstance();
 		LotteryManager.getInstance();
 		
-		if (Config.TVT_ENABLE)
-			TvTEvent.getInstance();
-
+		EventManager.getInstance();
+		
 		if (Config.CKM_ENABLED)
 			CharacterKillingManager.getInstance();
-
+		
 		if (Config.ALLOW_WEDDING)
 			CoupleManager.getInstance();
 		
@@ -307,7 +306,7 @@ public class GameServer
 		LOGGER.info("Loaded {} item handlers.", ItemHandler.getInstance().size());
 		LOGGER.info("Loaded {} skill handlers.", SkillHandler.getInstance().size());
 		LOGGER.info("Loaded {} user command handlers.", UserCommandHandler.getInstance().size());
-
+		
 		StringUtil.printSection("System");
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 		ForumsBBSManager.getInstance();

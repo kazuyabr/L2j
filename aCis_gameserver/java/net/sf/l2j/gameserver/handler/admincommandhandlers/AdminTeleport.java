@@ -12,7 +12,7 @@ import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Player;
-import net.sf.l2j.gameserver.model.entity.events.Event;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -95,9 +95,8 @@ public class AdminTeleport implements IAdminCommandHandler
 		else if (command.startsWith("admin_recallall"))
 		{
 			for (Player player : World.getInstance().getPlayers())
-			{ 
-				final Event event = player.getEvent();
-				if (event != null && event.isStarted() || !activeChar.checkSummonTargetStatus(player) || (player.isInsideZone(ZoneId.BOSS) && !player.isGM()))
+			{
+				if ((EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isInEvent(player)) || !activeChar.checkSummonTargetStatus(player) || (player.isInsideZone(ZoneId.BOSS) && !player.isGM()))
 					continue;
 				
 				if (!MathUtil.checkIfInRange(0, activeChar, player, false))

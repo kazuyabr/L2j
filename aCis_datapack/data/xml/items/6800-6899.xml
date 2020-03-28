@@ -353,6 +353,11 @@
     <set name="is_dropable" val="false" />
     <set name="is_sellable" val="false" />
     <set name="item_skill" val="3632-1" />
+    <for>
+		<mul order="0x10" stat="pAtkSpd" val="1.12" />
+		<mul order="0x10" stat="mAtkSpd" val="1.12" />
+		<add order="0x40" stat="maxHp" val="890"/>
+	</for>	
     <cond msgId="1518">
       <and>
         <player castle="-1" />
@@ -370,6 +375,11 @@
     <set name="is_dropable" val="false" />
     <set name="is_sellable" val="false" />
     <set name="is_depositable" val="false" />
+    <for>
+		<mul order="0x10" stat="pAtkSpd" val="1.12" />
+		<mul order="0x10" stat="mAtkSpd" val="1.12" />
+		<add order="0x40" stat="maxHp" val="890"/>
+	</for>	
     <cond msgId="1518">
       <player isHero="true" />
     </cond>

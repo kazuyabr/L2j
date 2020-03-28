@@ -13,7 +13,10 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.data.manager.RaidBossInfoManager;
 import net.sf.l2j.gameserver.enums.BossStatus;
+import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Npc;
+import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * A data holder keeping informations related to the {@link L2Spawn} of a RaidBoss.
@@ -175,6 +178,9 @@ public class BossSpawn
 
 		if (Config.LIST_RAID_BOSS_IDS.contains(npc.getNpcId()))
 			RaidBossInfoManager.getInstance().updateRaidBossInfo(npc.getNpcId(), 0);
+		
+		if (!Config.ANNOUNCE_BOSS_SPAWN_MSG.isEmpty())
+			World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(Config.ANNOUNCE_BOSS_SPAWN_MSG.replace("%boss%", npc.getName())).addZoneName(npc.getPosition()));
 		
 		LOGGER.info("{} raid boss has spawned.", npc.getName());
 	}

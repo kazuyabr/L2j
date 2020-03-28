@@ -19,6 +19,7 @@ import net.sf.l2j.gameserver.data.xml.DonateData.Donate;
 import net.sf.l2j.gameserver.data.ItemTable;
 import net.sf.l2j.gameserver.data.xml.NpcData;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.player.Experience;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadManager;
@@ -49,11 +50,6 @@ public class DonateManager extends Folk
 		{
 			player.sendMessage("Sorry "+ player.getName() + " you cannot use my services registered with Olympiad.");
 			return;
-		}
-		else if (player.getEvent() != null && player.getEvent().isStarted())
-		{
-			player.sendMessage("Sorry "+ player.getName() + " you cannot use my services registered in Event.");
-			return;	
 		}
 		
 		for (Donate service : DonateData.getInstance().getDonate())
@@ -565,7 +561,7 @@ public class DonateManager extends Folk
 					}
 					
 					player.destroyItemByItemId("", price.getId(), price.getValue(), player, true);
-					player.getStat().addLevel((byte) 81);
+					player.getStat().addExp(Experience.LEVEL[81]);
 					player.sendMessage("Congratulations "+ player.getName() +" you just bought level 81.");
 					
 					GMAUDIT_LOG.info("Donate Manager: "+ player.getName() + " purchased level 81. Your ID [" + player.getObjectId() + "]");

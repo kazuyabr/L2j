@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map.Entry;
 
+import net.sf.l2j.commons.concurrent.ThreadPool;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.communitybbs.Manager.MailBBSManager;
@@ -36,7 +38,7 @@ import net.sf.l2j.gameserver.model.actor.instance.ClassMaster;
 import net.sf.l2j.gameserver.model.clanhall.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Siege;
-import net.sf.l2j.gameserver.model.entity.events.TvTEvent;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.pledge.Clan;
@@ -336,9 +338,6 @@ public class EnterWorld extends L2GameClientPacket
 		if (!player.isGM() && (!player.isInSiege() || player.getSiegeState() < 2) && player.isInsideZone(ZoneId.SIEGE))
 			player.teleportTo(TeleportType.TOWN);
 		
-		if (Config.TVT_ENABLE)
-			TvTEvent.getInstance().autoRegister(player);
-		
 		if (player.getMemos().getLong("aioTime", 0) > 0)	
 		{
 			long now = Calendar.getInstance().getTimeInMillis();
@@ -374,6 +373,18 @@ public class EnterWorld extends L2GameClientPacket
 			final NpcHtmlMessage html = new NpcHtmlMessage(0);
 			html.setFile("data/html/preview/previewme.htm");
 			html.replace("%name%", player.getName());
+			
+			html.replace("%exp%", Config.RATE_XP);
+			html.replace("%sp%", Config.RATE_SP);
+			html.replace("%adena%", Config.RATE_DROP_ADENA);
+			html.replace("%spoil%", Config.RATE_DROP_SPOIL);
+			html.replace("%drop%", Config.RATE_DROP_ITEMS);
+			
+			html.replace("%vipExp%", Config.VIP_RATE_XP);
+			html.replace("%vipSp%", Config.VIP_RATE_SP);
+			html.replace("%vipAdena%", Config.VIP_ADENA_RATES);
+			html.replace("%vipSpoil%", Config.VIP_SPOIL_RATES);
+			html.replace("%vipDrop%", Config.VIP_DROP_RATES);
 			sendPacket(html);
 		}
 		
@@ -466,10 +477,25 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (player.getActiveClass() == player.getBaseClass() && player.isHero() && !Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.isEmpty())
 			World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", player.getName()).replace("%clan%", player.getClan().getName()).replace("%classe%", player.setClassName(player.getBaseClass())) : Config.ANNOUNCE_HERO_ENTER_BY_PLAYER_MSG.replace("%player%", player.getName()).replace("%classe%", player.setClassName(player.getBaseClass())), true);
+
+		if (EventManager.getInstance().getActiveEvent() != null)
+			EventManager.getInstance().getActiveEvent().autoRegister(player);
 		
 		ClassMaster.showQuestionMark(player);
 		
+		if (Config.ANNOUNCE_ONLINE_PLAYERS_DELAY > 0)
+			ThreadPool.schedule(() -> announceRecord(player), Config.ANNOUNCE_ONLINE_PLAYERS_DELAY * 1000 * 60);
+		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
+	}
+	
+	public void announceRecord(Player player)
+	{
+		int NumberofPlayers = World.getInstance().getPlayers().size();
+		if (NumberofPlayers == 1)
+			player.sendPacket((SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(Config.ANNOUNCE_PLAYERS_ONLINE.replace("%online%", String.valueOf(NumberofPlayers)))));
+		else
+			player.sendPacket((SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(Config.ANNOUNCE_PLAYERS_ONLINE.replace("%online%", String.valueOf(NumberofPlayers)))));
 	}
 	
 	@Override

@@ -1,9 +1,49 @@
 <html><body>Warehouse Keeper Frost:<br>
 Only fools and donkeys carry unnecessarily heavy loads. Now, why don't you entrust your items to our safe and inexpensive Iron Gate. I, Frost, swear in the name of the Iron Gate to guard your property with my life, so go ahead and give it to me.<br>
-<a action="bypass -h npc_%objectId%_DepositP">Deposit Item (Private Warehouse)</a><br>
-<a action="bypass -h npc_%objectId%_WithdrawP">Withdraw Item (Private Warehouse)</a><br><br>
-<a action="bypass -h npc_%objectId%_DepositC" msg="1039">Deposit Item (Clan Warehouse)</a><br>
-<a action="bypass -h npc_%objectId%_WithdrawC">Withdraw Item (Clan Warehouse)</a><br><br>
-<a action="bypass -h npc_%objectId%_DepositF" msg="1040">Deposit item (Another character Warehouse)</a><br> 
-<a action="bypass -h npc_%objectId%_WithdrawF">Withdraw item (Another character Warehouse)</a><br><br>
+<center>
+<table width=200>
+	<tr>
+		<td align=right>
+			<img src="L2UI_CH3.menuicon1_over" width=32 height=32>
+		</td>
+		<td align=center>
+			<button value="Deposit Item (Private)" action="bypass -h npc_%objectId%_DepositP" width=134 height=17 back="L2UI_ch3.Btn1_normalDisable" fore="L2UI_ch3.Btn1_normalDisable">
+			<button value="Withdraw Item (Private)" action="bypass -h npc_%objectId%_WithdrawP" width=134 height=17 back="L2UI_ch3.Btn1_normalDisable" fore="L2UI_ch3.Btn1_normalDisable">
+		</td>
+		<td align=left>
+			<img src="L2UI_CH3.menuicon1_over" width=32 height=32>
+		</td>
+	</tr>
+	<tr>
+		<td height=10></td>
+	</tr>
+	<tr>
+		<td align=right>
+			<img src="L2UI_CH3.mainwndtabicon4_down" width=32 height=32>
+		</td>
+		<td align=center>
+			<button value="Deposit Item (Clan)" action="bypass -h npc_%objectId%_DepositC" width=134 height=17 back="L2UI_ch3.Btn1_normalDisable" fore="L2UI_ch3.Btn1_normalDisable">
+			<button value="Withdraw Item (Clan)" action="bypass -h npc_%objectId%_WithdrawC" width=134 height=17 back="L2UI_ch3.Btn1_normalDisable" fore="L2UI_ch3.Btn1_normalDisable">
+		</td>
+		<td align=left>
+			<img src="L2UI_CH3.mainwndtabicon4_down" width=32 height=32>
+		</td>
+	</tr>
+	<tr>
+		<td height=10></td>
+	</tr>
+	<tr>
+		<td align=right>
+			<img src="L2UI_CH3.mainwndtabicon1_down" width=32 height=32>
+		</td>
+		<td align=center>
+			<button value="Deposit Item (Characters)" action="bypass -h npc_%objectId%_DepositF" width=134 height=17 back="L2UI_ch3.Btn1_normalDisable" fore="L2UI_ch3.Btn1_normalDisable">
+			<button value="Withdraw Item (Characters)" action="bypass -h npc_%objectId%_WithdrawF" width=134 height=17 back="L2UI_ch3.Btn1_normalDisable" fore="L2UI_ch3.Btn1_normalDisable">
+		</td>
+		<td align=left>
+			<img src="L2UI_CH3.mainwndtabicon1_down" width=32 height=32>
+		</td>
+	</tr>
+</table>
+</center>
 </body></html>

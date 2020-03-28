@@ -1633,12 +1633,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 						if ((obj.getAllyId() == 0 || obj.getAllyId() != player.getAllyId()) && (obj.getClan() == null || obj.getClanId() != player.getClanId()))
 							continue;
 
-						if (player.getTeam().getId() > 0)
-						{
-							if (player.getTeam() != obj.getTeam())
-								continue;
-						}
-
 						if (player.isInDuel())
 						{
 							if (player.getDuelId() != obj.getDuelId())
@@ -1689,12 +1683,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 						
 						if ((obj.getAllyId() == 0 || obj.getAllyId() != player.getAllyId()) && (obj.getClan() == null || obj.getClanId() != player.getClanId()))
 							continue;
-
-						if (player.getTeam().getId() > 0)
-						{
-							if (player.getTeam() != obj.getTeam())
-								continue;
-						}
 
 						if (player.isInDuel())
 						{
@@ -1749,12 +1737,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 							final Player obj = member.getPlayerInstance();
 							if (obj == null || obj == player)
 								continue;
-
-							if (player.getTeam().getId() > 0)
-							{
-								if (player.getTeam() != obj.getTeam())
-									continue;
-							}
 
 							if (player.isInDuel())
 							{
@@ -1991,7 +1973,7 @@ public abstract class L2Skill implements IChanceSkillTrigger
 					final Summon targetSummon = (Summon) target;
 					final Player summonOwner = targetSummon.getActingPlayer();
 					
-					if (activeChar instanceof Player && activeChar.getSummon() != targetSummon && !targetSummon.isDead() && (summonOwner.getPvpFlag() != 0 || summonOwner.getKarma() > 0) || (summonOwner.isInsideZone(ZoneId.PVP) && activeChar.isInsideZone(ZoneId.PVP)) || (summonOwner.isInDuel() && ((Player) activeChar).isInDuel() && summonOwner.getDuelId() == ((Player) activeChar).getDuelId()) || (summonOwner.getTeam().getId() > 0 && ((Player) activeChar).getTeam().getId() > 0 && summonOwner.getTeam() == ((Player) activeChar).getTeam()))
+					if (activeChar instanceof Player && activeChar.getSummon() != targetSummon && !targetSummon.isDead() && (summonOwner.getPvpFlag() != 0 || summonOwner.getKarma() > 0) || (summonOwner.isInsideZone(ZoneId.PVP) && activeChar.isInsideZone(ZoneId.PVP)) || (summonOwner.isInDuel() && ((Player) activeChar).isInDuel() && summonOwner.getDuelId() == ((Player) activeChar).getDuelId()))
 						return new Creature[]
 						{
 							targetSummon
@@ -2075,12 +2057,6 @@ public abstract class L2Skill implements IChanceSkillTrigger
 					return false;
 			}
 
-			if (player.getTeam().getId() > 0)
-			{
-				if (player.getTeam() == targetPlayer.getTeam())
-					return false;
-			}
-			
 			if (!sourceInArena && !(targetPlayer.isInsideZone(ZoneId.PVP) && !targetPlayer.isInsideZone(ZoneId.SIEGE)))
 			{
 				if (player.getAllyId() != 0 && player.getAllyId() == targetPlayer.getAllyId())

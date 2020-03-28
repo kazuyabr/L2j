@@ -50,7 +50,7 @@ import net.sf.l2j.gameserver.model.actor.instance.Walker;
 import net.sf.l2j.gameserver.model.actor.stat.CreatureStat;
 import net.sf.l2j.gameserver.model.actor.status.CreatureStatus;
 import net.sf.l2j.gameserver.model.actor.template.CreatureTemplate;
-import net.sf.l2j.gameserver.model.entity.events.Event;
+import net.sf.l2j.gameserver.model.entity.engine.EventListener;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.model.holder.SkillUseHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
@@ -361,12 +361,6 @@ public abstract class Creature extends WorldObject
 	{
 		// default implementation
 	}
-
-	public Event getEvent()
-	{
-		// Overridden in Player
-		return null;
-	}
  	
 	/**
 	 * <B><U> Overridden in </U> :</B><BR>
@@ -378,6 +372,11 @@ public abstract class Creature extends WorldObject
 	public void sendMessage(String text)
 	{
 		// default implementation
+	}
+
+	public boolean isVip()
+	{
+		return true;
 	}
 	
 	/**
@@ -533,6 +532,13 @@ public abstract class Creature extends WorldObject
 		}
 		
 		final Player player = getActingPlayer();
+
+		if (player != null && target instanceof Player && !EventListener.canAttack(player, (Player)target))
+		{
+			getAI().setIntention(IntentionType.ACTIVE);
+			sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		
 		if (player != null && player.isInObserverMode())
 		{
@@ -1126,6 +1132,17 @@ public abstract class Creature extends WorldObject
 			}
 			return;
 		}
+
+		if (skill.isSkillTypeOffensive() && getActingPlayer() != null && target instanceof Player && target != this && !EventListener.canAttack(getActingPlayer(), (Player)target))
+		{
+			if (simultaneously)
+				setIsCastingSimultaneouslyNow(false);
+			else
+				setIsCastingNow(false);
+			sendPacket(ActionFailed.STATIC_PACKET);
+			getAI().setIntention(IntentionType.ACTIVE);
+			return;
+		}
 		
 		// Get the casting time of the skill (base)
 		int hitTime = skill.getHitTime();
@@ -1485,7 +1502,9 @@ public abstract class Creature extends WorldObject
 		
 		// Stop Regeneration task, and removes all current effects
 		getStatus().stopHpMpRegeneration();
-		stopAllEffectsExceptThoseThatLastThroughDeath();
+		
+		if (isVip() && Config.LEAVE_BUFFS_ON_DIE_VIP)
+			stopAllEffectsExceptThoseThatLastThroughDeath();
 		
 		calculateRewards(killer);
 		
@@ -1496,13 +1515,9 @@ public abstract class Creature extends WorldObject
 		if (hasAI())
 			getAI().notifyEvent(AiEventType.DEAD, null);
 		
-		final Event event = getEvent();
-		if (event != null && event.isStarted())
-			event.onDie(this);
-		
 		return true;
 	}
-	
+
 	public void deleteMe()
 	{
 		if (hasAI())
@@ -1530,10 +1545,6 @@ public abstract class Creature extends WorldObject
 		
 		// Start broadcast status
 		broadcastPacket(new Revive(this));
-
-		final Event event = getEvent();
-		if (event != null && event.isStarted())
-			event.onRevive(this);
 	}
 	
 	/**
@@ -1776,7 +1787,7 @@ public abstract class Creature extends WorldObject
 	{
 		_isParalyzed = value;
 	}
-	
+
 	/**
 	 * Overriden in {@link Player}.
 	 * @return the {@link Summon} of this {@link Creature}.

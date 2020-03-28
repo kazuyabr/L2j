@@ -6,7 +6,6 @@ import net.sf.l2j.gameserver.enums.TeamType;
 import net.sf.l2j.gameserver.enums.skills.AbnormalEffect;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 
 public class CharInfo extends L2GameServerPacket
@@ -123,10 +122,6 @@ public class CharInfo extends L2GameServerPacket
 		if (_player.isAio())
 			name = (_player.getClan() != null ? "AIO Clan: " + _player.getClan().getName() : _player.getTitle());	
 		
-		final Event event = _player.getEvent();
-		if (event != null && event.isStarted())
-			name = ((_player.getTeam() == TeamType.BLUE) ? "Kills: " + _player.getEvent().getBlueKills() : (_player.getTeam() == TeamType.RED) ? "Kills: " + _player.getEvent().getRedKills() : _player.getTitle());
-		
 		writeS(name);
 		
 		writeD(_player.getClanId());
@@ -163,23 +158,11 @@ public class CharInfo extends L2GameServerPacket
 		writeC((_player.isHero() || (_player.isGM() && Config.GM_HERO_AURA)) ? 1 : 0);
 		writeC((_player.isFishing()) ? 1 : 0);
 		writeLoc(_player.getFishingStance().getLoc());
-		
-		int Namecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.isOfflineMode() ? Config.OFFLINE_NAME_COLOR : _player.getAppearance().getNameColor());
-		if (event != null && event.isStarted())
-			Namecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getNameColor());
-		
-		writeD(Namecolor);
-		
+		writeD(_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.isOfflineMode() ? Config.OFFLINE_NAME_COLOR : _player.getAppearance().getNameColor());
 		writeD(_player.getHeading());
 		writeD(_player.getPledgeClass());
 		writeD(_player.getPledgeType());
-		
-		int Titlecolor = (_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.isOfflineMode() ? Config.OFFLINE_NAME_COLOR : _player.getAppearance().getTitleColor());
-		if (event != null && event.isStarted())
-			Titlecolor = (_player.getTeam() == TeamType.BLUE ? Integer.decode("0xDF0101") : _player.getTeam() == TeamType.RED ? Integer.decode("0x0000FF") : _player.getAppearance().getTitleColor());
-		
-		writeD(Titlecolor);
-		
+		writeD(_player.isVip() ? Config.VIP_COLOR : _player.isAio() ? Config.AIO_COLOR : _player.isOfflineMode() ? Config.OFFLINE_NAME_COLOR : _player.getAppearance().getTitleColor());
 		writeD(CursedWeaponManager.getInstance().getCurrentStage(_player.getCursedWeaponEquippedId()));
 	}
 }

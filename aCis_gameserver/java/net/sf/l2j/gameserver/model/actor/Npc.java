@@ -48,6 +48,8 @@ import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.AIType;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.Race;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.SkillType;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.model.entity.engine.EventListener;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.model.item.DropCategory;
 import net.sf.l2j.gameserver.model.item.DropData;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
@@ -255,6 +257,8 @@ public class Npc extends Creature
 					scripts = getTemplate().getEventQuests(ScriptEventType.ON_FIRST_TALK);
 					if (scripts != null && scripts.size() == 1)
 						scripts.get(0).notifyFirstTalk(this, player);
+					else if (EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isEventNpc(this))
+						EventListener.onInterract(player, this);
 					else
 						showChatWindow(player);
 				}

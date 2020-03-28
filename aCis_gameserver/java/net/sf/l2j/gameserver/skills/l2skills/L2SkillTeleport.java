@@ -11,7 +11,6 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
-import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.location.Location;
 
 public class L2SkillTeleport extends L2Skill
@@ -56,10 +55,9 @@ public class L2SkillTeleport extends L2Skill
 			if (target instanceof Player)
 			{
 				Player targetChar = (Player) target;
-				Event event = targetChar.getEvent();
 				
 				// Check invalid states.
-				if (event != null && event.isStarted() && targetChar.isFestivalParticipant() || targetChar.isInJail() || targetChar.isInDuel())
+				if (targetChar.isFestivalParticipant() || targetChar.isInJail() || targetChar.isInDuel())
 					continue;
 				
 				if (targetChar != activeChar)

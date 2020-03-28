@@ -14,6 +14,7 @@ import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeFlag;
+import net.sf.l2j.gameserver.model.entity.engine.EventListener;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -90,6 +91,9 @@ public class Heal implements ISkillHandler
 				continue;
 			
 			if (target instanceof Door || target instanceof SiegeFlag)
+				continue;
+			
+			if (activeChar instanceof Player && target instanceof Player && !EventListener.canHeal((Player)activeChar, (Player)target))
 				continue;
 			
 			// Player holding a cursed weapon can't be healed and can't heal

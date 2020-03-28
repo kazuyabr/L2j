@@ -6,6 +6,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 
 public class GetPlayer implements ISkillHandler
 {
@@ -24,6 +25,9 @@ public class GetPlayer implements ISkillHandler
 		{
 			final Player victim = target.getActingPlayer();
 			if (victim == null || victim.isAlikeDead())
+				continue;
+			
+			if ((EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isInEvent(victim)))
 				continue;
 			
 			victim.instantTeleportTo(activeChar.getPosition(), 0);

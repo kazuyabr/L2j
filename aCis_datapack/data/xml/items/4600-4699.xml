@@ -347,7 +347,7 @@
     <set name="item_skill" val="2096-1" />
   </item>
   <item id="4640" type="EtcItem" name="Green Soul Crystal">
-    <set name="icon" val="icon.etc_soul_stone_i02" />
+    <set name="icon" val="icon.etc_crystal_green_i00" />
     <set name="default_action" val="skill_reduce" />
     <set name="etcitem_type" val="scroll" />
     <set name="material" val="CRYSTAL" />

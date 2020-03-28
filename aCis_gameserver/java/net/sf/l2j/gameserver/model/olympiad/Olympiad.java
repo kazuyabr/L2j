@@ -128,7 +128,7 @@ public class Olympiad
 				else
 					scheduleWeeklyChange();
 				break;
-			
+				
 			case VALIDATION:
 				if (_validationEnd > Calendar.getInstance().getTimeInMillis())
 				{
@@ -424,8 +424,43 @@ public class Olympiad
 		currentTime.set(Calendar.SECOND, 0);
 		_olympiadEnd = currentTime.getTimeInMillis();
 		
-		Calendar nextChange = Calendar.getInstance();
-		_nextWeeklyChange = nextChange.getTimeInMillis() + Config.ALT_OLY_WPERIOD;
+		final Calendar nextChange = Calendar.getInstance();
+		switch (Config.ALT_OLY_PERIOD)
+		{
+			case DAY:
+			{
+				currentTime.add(Calendar.DAY_OF_MONTH, Config.ALT_OLY_PERIOD_MULTIPLIER);
+				currentTime.add(Calendar.DAY_OF_MONTH, -1); // last day is for validation
+				
+				if (Config.ALT_OLY_PERIOD_MULTIPLIER >= 14)
+					_nextWeeklyChange = nextChange.getTimeInMillis() + Config.ALT_OLY_WPERIOD;
+				else if (Config.ALT_OLY_PERIOD_MULTIPLIER >= 7)
+					_nextWeeklyChange = nextChange.getTimeInMillis() + (Config.ALT_OLY_WPERIOD / 2);
+			}
+			break;
+			
+			case WEEK:
+			{
+				currentTime.add(Calendar.WEEK_OF_MONTH, Config.ALT_OLY_PERIOD_MULTIPLIER);
+				currentTime.add(Calendar.DAY_OF_MONTH, -1); // last day is for validation
+				
+				if (Config.ALT_OLY_PERIOD_MULTIPLIER > 1)
+					_nextWeeklyChange = nextChange.getTimeInMillis() + Config.ALT_OLY_WPERIOD;
+				else
+					_nextWeeklyChange = nextChange.getTimeInMillis() + (Config.ALT_OLY_WPERIOD / 2);
+			}
+			break;
+			
+			case MONTH:
+			{
+				currentTime.add(Calendar.MONTH, Config.ALT_OLY_PERIOD_MULTIPLIER);
+				currentTime.add(Calendar.DAY_OF_MONTH, -1); // last day is for validation
+				
+				_nextWeeklyChange = nextChange.getTimeInMillis() + Config.ALT_OLY_WPERIOD;
+			}
+			break;
+		}
+		
 		scheduleWeeklyChange();
 	}
 	

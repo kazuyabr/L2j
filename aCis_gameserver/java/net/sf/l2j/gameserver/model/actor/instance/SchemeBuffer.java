@@ -33,12 +33,6 @@ public class SchemeBuffer extends Folk
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String currentCommand = st.nextToken();
 
-        if (player.getEvent() != null)
-        {
-        	player.sendMessage("Cheater wait for the event to buff you.");
-            return;
-        }
-        
 		if (currentCommand.startsWith("menu"))
 		{
 			final NpcHtmlMessage html = new NpcHtmlMessage(0);

@@ -8,7 +8,6 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.gameserver.enums.PunishmentType;
 import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.actor.Player;
-import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadManager;
 import net.sf.l2j.gameserver.network.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -131,10 +130,6 @@ public class Punishment
 				if (OlympiadManager.getInstance().isRegisteredInComp(_owner))
 					OlympiadManager.getInstance().removeDisconnectedCompetitor(_owner);
 
-				final Event event = _owner.getEvent();
-				if (event != null)
-					event.removePlayer(_owner);
- 				
 				// Open a Html message to inform the player
 				final NpcHtmlMessage html = new NpcHtmlMessage(0);
 				html.setFile("data/html/jail_in.htm");

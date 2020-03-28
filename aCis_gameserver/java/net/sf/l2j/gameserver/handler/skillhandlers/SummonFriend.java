@@ -8,6 +8,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ConfirmDlg;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -30,6 +31,9 @@ public class SummonFriend implements ISkillHandler
 		// Check player status.
 		if (!player.checkSummonerStatus())
 			return;
+
+		if ((EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isInEvent(player)))
+			return;
 		
 		for (WorldObject obj : targets)
 		{
@@ -44,6 +48,9 @@ public class SummonFriend implements ISkillHandler
 			
 			// Check target status.
 			if (!player.checkSummonTargetStatus(target))
+				continue;
+
+			if ((EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isInEvent(target)))
 				continue;
 			
 			// Check target distance.

@@ -4,7 +4,7 @@ import net.sf.l2j.gameserver.data.SkillTable;
 import net.sf.l2j.gameserver.data.xml.PlayerData;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.actor.Player;
-import net.sf.l2j.gameserver.model.entity.events.Event;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 
 /**
  * @author Williams
@@ -20,8 +20,7 @@ public class BuffVip implements IUserCommandHandler
 	@Override
 	public boolean useUserCommand(int id, Player player)
 	{
-		final Event event = player.getEvent();
-		if (event != null && event.isStarted())
+		if ((EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isInEvent(player)))
 		{
 			player.sendMessage("You cannot use this command in Event.");
 			return false;

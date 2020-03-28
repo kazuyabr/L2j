@@ -132,7 +132,8 @@ import net.sf.l2j.gameserver.model.actor.template.PlayerTemplate;
 import net.sf.l2j.gameserver.model.craft.ManufactureList;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Duel.DuelState;
-import net.sf.l2j.gameserver.model.entity.events.Event;
+import net.sf.l2j.gameserver.model.entity.engine.EventListener;
+import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.group.CommandChannel;
 import net.sf.l2j.gameserver.model.group.Party;
@@ -376,7 +377,6 @@ public final class Player extends Playable
 	private boolean _isSitting;
 	
 	private final Location _savedLocation = new Location(0, 0, 0);
-	private Location _originalCoordinates;
 	
 	private int _recomHave;
 	private int _recomLeft;
@@ -484,7 +484,6 @@ public final class Player extends Playable
 	private final BlockList _blockList = new BlockList(this);
 	
 	private TeamType _team = TeamType.NONE;
-	private Event _event;
 	
 	private int _alliedVarkaKetra; // lvl of alliance with ketra orcs or varka silenos, used in quests and aggro checks [-5,-1] varka, 0 neutral, [1,5] ketra
 	
@@ -1052,6 +1051,9 @@ public final class Player extends Playable
 	public void updatePvPFlag(int value)
 	{
 		if (getPvpFlag() == value)
+			return;
+		
+		if (value != 0 && EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isInEvent(this))	 
 			return;
 		
 		setPvpFlag(value);
@@ -3670,52 +3672,43 @@ public final class Player extends Playable
 		if (killer != null)
 		{
 			Player pk = killer.getActingPlayer();
-			if (pk != null)
-			{
-				Event event = pk.getEvent();
-				if (event != null && event.isStarted())
-					event.onKill(pk, this);
-			}
 			
-			Event event = getEvent();
-			if (event != null && event.isStarted())
-				event.onDie(this);
+			if (pk != null)
+				EventListener.onKill(pk, this);
+			
+			// Clear resurrect xp calculation
+			setExpBeforeDeath(0);
+			
+			if (isCursedWeaponEquipped())
+				CursedWeaponManager.getInstance().drop(_cursedWeaponEquippedId, killer);
 			else
 			{
-				// Clear resurrect xp calculation
-				setExpBeforeDeath(0);
-				
-				if (isCursedWeaponEquipped())
-					CursedWeaponManager.getInstance().drop(_cursedWeaponEquippedId, killer);
-				else
+				if (pk == null || !pk.isCursedWeaponEquipped())
 				{
-					if (pk == null || !pk.isCursedWeaponEquipped())
+					onDieDropItem(killer); // Check if any item should be dropped
+					
+					// if the area isn't an arena
+					if (!isInArena())
 					{
-						onDieDropItem(killer); // Check if any item should be dropped
-						
-						// if the area isn't an arena
-						if (!isInArena())
+						// if both victim and attacker got clans & aren't academicians
+						if (pk != null && pk.getClan() != null && getClan() != null && !isAcademyMember() && !pk.isAcademyMember())
 						{
-							// if both victim and attacker got clans & aren't academicians
-							if (pk != null && pk.getClan() != null && getClan() != null && !isAcademyMember() && !pk.isAcademyMember())
+							// if clans got mutual war, then use the reputation calcul
+							if (_clan.isAtWarWith(pk.getClanId()) && pk.getClan().isAtWarWith(_clan.getClanId()))
 							{
-								// if clans got mutual war, then use the reputation calcul
-								if (_clan.isAtWarWith(pk.getClanId()) && pk.getClan().isAtWarWith(_clan.getClanId()))
-								{
-									// when your reputation score is 0 or below, the other clan cannot acquire any reputation points
-									if (getClan().getReputationScore() > 0)
-										pk.getClan().addReputationScore(1);
-									// when the opposing sides reputation score is 0 or below, your clans reputation score doesn't decrease
-									if (pk.getClan().getReputationScore() > 0)
-										_clan.takeReputationScore(1);
-								}
+								// when your reputation score is 0 or below, the other clan cannot acquire any reputation points
+								if (getClan().getReputationScore() > 0)
+									pk.getClan().addReputationScore(1);
+								// when the opposing sides reputation score is 0 or below, your clans reputation score doesn't decrease
+								if (pk.getClan().getReputationScore() > 0)
+									_clan.takeReputationScore(1);
 							}
 						}
-						
-						// Reduce player's xp and karma.
-						if (Config.ALT_GAME_DELEVEL && (!hasSkill(L2Skill.SKILL_LUCKY) || getStat().getLevel() > 9))
-							deathPenalty(pk != null && getClan() != null && pk.getClan() != null && (getClan().isAtWarWith(pk.getClanId()) || pk.getClan().isAtWarWith(getClanId())), pk != null, killer instanceof SiegeGuard);
 					}
+					
+					// Reduce player's xp and karma.
+					if (Config.ALT_GAME_DELEVEL && (!hasSkill(L2Skill.SKILL_LUCKY) || getStat().getLevel() > 9))
+						deathPenalty(pk != null && getClan() != null && pk.getClan() != null && (getClan().isAtWarWith(pk.getClanId()) || pk.getClan().isAtWarWith(getClanId())), pk != null, killer instanceof SiegeGuard);
 				}
 			}
 		}
@@ -3861,10 +3854,6 @@ public final class Player extends Playable
 		if (isInDuel() && targetPlayer.isInDuel())
 			return;
 		
-		final Event event = targetPlayer.getEvent();
-		if (event != null && event.isStarted())
-			return;
-		
 		// If in pvp zone, do nothing.
 		if (isInsideZone(ZoneId.PVP) && targetPlayer.isInsideZone(ZoneId.PVP))
 		{
@@ -3938,6 +3927,9 @@ public final class Player extends Playable
 		// Otherwise, killer is considered as a PKer.
 		else if (targetPlayer.getKarma() == 0 && targetPlayer.getPvpFlag() == 0)
 		{
+			if (EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isInEvent(this))
+				return;
+			
 			// PK Points are increased only if you kill a player.
 			if (target instanceof Player)
 				setPkKills(getPkKills() + 1);
@@ -3981,10 +3973,6 @@ public final class Player extends Playable
 			return;
 		
 		if (isInDuel() && player.getDuelId() == getDuelId())
-			return;
-		
-		final Event event = player.getEvent();
-		if (event != null && event.isStarted())
 			return;
 		
 		if ((!isInsideZone(ZoneId.PVP) || !target.isInsideZone(ZoneId.PVP)) && player.getKarma() == 0)
@@ -4900,12 +4888,6 @@ public final class Player extends Playable
 			if (isCursedWeaponEquipped()) // You can't mount, dismount, break and drop items while weilding a cursed weapon
 			{
 				sendPacket(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
-				return false;
-			}
-			
-			if (getEvent() != null)
-			{
-				sendMessage("Cannot mount while in event.");
 				return false;
 			}
 			
@@ -5872,7 +5854,7 @@ public final class Player extends Playable
 	{
 		return _isOnline;
 	}
-
+	
 	public long getOnlineTime()
 	{
 		return _onlineTime;
@@ -6206,6 +6188,9 @@ public final class Player extends Playable
 		if (attacker instanceof Monster)
 			return true;
 		
+		if (attacker instanceof Player && EventListener.isAutoAttackable((Player)attacker, this))
+			return true;
+		
 		// Check if the attacker is not in the same party
 		if (_party != null && _party.containsPlayer(attacker))
 			return false;
@@ -6226,15 +6211,6 @@ public final class Player extends Playable
 					return true;
 				
 				return false;
-			}
-			
-			// Check if attacker is in event
-			if (cha.getEvent() != null && cha.getEvent() == getEvent())
-			{
-				if (cha.getTeam().getId() > 0 && cha.getTeam() == getTeam())
-					return false;
-				
-				return true;
 			}
 			
 			// is AutoAttackable if both players are in the same duel and the duel is still going on
@@ -6874,6 +6850,14 @@ public final class Player extends Playable
 		if (!(target instanceof Playable))
 			return true;
 		
+		//Restrict hit team player
+		if (target instanceof Player && !EventListener.canAttack(this, (Player)target))
+			return false;
+		
+		// Hit Enemy without CTRL check
+		if (target instanceof Player && EventListener.canAttack(this, (Player)target))
+			return true;
+		
 		if (skill.isDebuff() || skill.isOffensive())
 		{
 			final Player targetPlayer = target.getActingPlayer();
@@ -7483,16 +7467,6 @@ public final class Player extends Playable
 		return !_isInOlympiadMode && !_savedLocation.equals(Location.DUMMY_LOC);
 	}
 	
-	public Location getOriginalCoordinates()
-	{
-		return _originalCoordinates;
-	}
-	
-	public void setOriginalCoordinates(Location originalCoordinates)
-	{
-		_originalCoordinates = originalCoordinates;
-	}
-	
 	public int getTeleMode()
 	{
 		return _teleMode;
@@ -7596,7 +7570,7 @@ public final class Player extends Playable
 		broadcastUserInfo();
 		sendSkillList();
 	}
-
+	
 	public boolean isPreview()
 	{
 		return _isPreview;
@@ -7607,25 +7581,21 @@ public final class Player extends Playable
 		if (preview)
 		{
 			setIsInvul(true);
-			getAppearance().setInvisible();
 			setIsParalyzed(true);
-			startParalyze();
 		}
 		else
 		{
-			getAppearance().setVisible();
 			setIsInvul(false);
 			setIsParalyzed(false);
-			stopParalyze();
 			
 			PremiumTaskManager.getInstance().remove(this);
 			getMemos().set("previewEndTime", 0);
 		}
 		_isPreview = preview;
-
+		
 		broadcastUserInfo();
 	}
-
+	
 	public void doPreview(int time)
 	{
 		setPreview(true);
@@ -7638,6 +7608,7 @@ public final class Player extends Playable
 			getMemos().set("previewEndTime", System.currentTimeMillis() + TimeUnit.HOURS.toMillis(time));
 	}
 	
+	@Override
 	public boolean isVip()
 	{
 		return _isVip;
@@ -7857,17 +7828,6 @@ public final class Player extends Playable
 	public boolean isAcademyMember()
 	{
 		return _lvlJoinedAcademy > 0;
-	}
-	
-	@Override
-	public Event getEvent()
-	{
-		return _event;
-	}
-	
-	public void setEvent(Event event)
-	{
-		_event = event;
 	}
 	
 	public void setTeam(TeamType team)
@@ -8630,10 +8590,6 @@ public final class Player extends Playable
 			GameTimeTaskManager.getInstance().remove(this);
 			ShadowItemTaskManager.getInstance().remove(this);
 			PremiumTaskManager.getInstance().remove(this);
-			
-			final Event event = getEvent();
-			if (event != null)
-				event.removePlayer(this);
 			
 			// Cancel the cast of eventual fusion skill users on this target.
 			for (Creature character : getKnownType(Creature.class))

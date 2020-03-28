@@ -9,6 +9,7 @@ import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Door;
 import net.sf.l2j.gameserver.model.actor.instance.SiegeFlag;
+import net.sf.l2j.gameserver.model.entity.engine.EventListener;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
@@ -59,6 +60,9 @@ public class HealPercent implements ISkillHandler
 			
 			// Doors and flags can't be healed in any way
 			if (target instanceof Door || target instanceof SiegeFlag)
+				continue;
+			
+			if (activeChar instanceof Player && target instanceof Player && !EventListener.canHeal((Player)activeChar, (Player)target))
 				continue;
 			
 			targetPlayer = target instanceof Player;

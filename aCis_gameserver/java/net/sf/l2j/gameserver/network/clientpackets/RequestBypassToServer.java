@@ -14,7 +14,6 @@ import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.OlympiadManagerNpc;
-import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadManager;
 import net.sf.l2j.gameserver.network.FloodProtectors;
 import net.sf.l2j.gameserver.network.FloodProtectors.Action;
@@ -184,13 +183,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				return;
 			}
 
-			final Event event = player.getEvent();
-			if (event != null && event.isStarted())
-			{
-				player.sendMessage("You can not observe games while registered for an event!");
-				return;
-			}
- 			
 			final int arenaId = Integer.parseInt(_command.substring(12).trim());
 			player.enterOlympiadObserverMode(arenaId);
 		}

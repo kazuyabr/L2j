@@ -12,6 +12,7 @@ import net.sf.l2j.gameserver.handler.ItemHandler;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Pet;
+import net.sf.l2j.gameserver.model.entity.engine.EventListener;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
@@ -67,6 +68,9 @@ public final class UseItem extends L2GameClientPacket
 		}
 		
 		if (player.isAlikeDead() || player.isStunned() || player.isSleeping() || player.isParalyzed() || player.isAfraid())
+			return;
+
+		if (!EventListener.canUseItem(player, item.getItemId()))
 			return;
 		
 		if (!Config.KARMA_PLAYER_CAN_TELEPORT && player.getKarma() > 0)

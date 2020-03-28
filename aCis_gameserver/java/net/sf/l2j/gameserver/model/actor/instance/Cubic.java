@@ -23,7 +23,6 @@ import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Playable;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.Summon;
-import net.sf.l2j.gameserver.model.entity.events.Event;
 import net.sf.l2j.gameserver.model.group.Party;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
@@ -254,24 +253,6 @@ public class Cubic
 			}
 			
 			_target = null;
-			return;
-		}
-		
-		// Events
-		Event event = _owner.getEvent();
-		if (event != null && event.isStarted())
-		{
-			if (ownerTarget instanceof Playable)
-			{
-				final Player target = ownerTarget.getActingPlayer();
-				if (target != null && target.getEvent() == event && (_owner.getTeam().getId() == 0 || _owner.getTeam() != target.getTeam()))
-				{
-					_target = (Creature)ownerTarget;
-					// Dead target
-					if (_target.isDead())
-						_target = null;
-				}
-			}
 			return;
 		}
 		

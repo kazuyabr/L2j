@@ -16,6 +16,7 @@ import net.sf.l2j.commons.config.ExProperties;
 import net.sf.l2j.commons.logging.CLogger;
 import net.sf.l2j.commons.math.MathUtil;
 
+import net.sf.l2j.gameserver.enums.OlympiadPeriod;
 import net.sf.l2j.gameserver.enums.actors.RestrictionType;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.location.Location;
@@ -131,26 +132,64 @@ public final class Config
 	public static int CKM_PK_NPC_TITLE_COLOR;
 	public static int CKM_PK_NPC_NAME_COLOR;
 	public static IntIntHolder[] MONUMENT_EVENT_REWARDS;
-	
-	/** TvTEvent */
-	public static boolean TVT_ENABLE;
-	public static boolean TVT_DUAL_BOX;
-	public static boolean TVT_REWARD_DIE;
-	public static int TVT_MIN_PARTICIOANTS;
-	public static int TVT_MAX_PARTICIOANTS;
-	public static int TVT_NPC_ID;
-	public static int TVT_PLAYER_RESPAWN_DELAY;
-	public static String[] TVT_SCHEDULER_TIMES;
-	public static int TVT_PARTICIPATION_TIME;
-	public static int TVT_RUNNING_TIME;
-	public static byte TVT_MIN_LEVEL;
-	public static byte TVT_MAX_LEVEL;
-	public static Location TVT_BLUE_SPAWN_LOCATION;
-	public static Location TVT_RED_SPAWN_LOCATION;
-	public static Location TVT_NPC_LOCATION;
-	public static IntIntHolder[] TVT_REWARDS;
-	public static String[] TVT_DOOR_LIST;
 
+	/** Event Engine settings */
+	public static boolean ENABLE_EVENT_ENGINE;
+	public static int TIME_BETWEEN_EVENTS;
+	public static int EVENT_REGISTRATION_TIME;
+	public static String[] DOOR_LIST;
+	public static int NPC_REGISTER;
+	public static Location NPC_REGISTER_LOC;
+	public static byte MIN_LEVEL;
+	public static byte MAX_LEVEL;
+	public static boolean DUAL_BOX;
+	
+	/** Deathmatch event settings */
+	public static boolean ALLOW_DM_EVENT;
+	public static int DM_MIN_PLAYERS;
+	public static IntIntHolder[] DM_ON_KILL_REWARDS;
+	public static IntIntHolder[] DM_WINNER_REWARDS;
+	public static int DM_RUNNING_TIME;
+	public static List<Location> DM_RESPAWN_SPOTS = new ArrayList<>();
+	
+	/** TvT event settings */
+	public static boolean ALLOW_TVT_EVENT;
+	public static int TVT_MIN_PLAYERS;
+	public static IntIntHolder[] TVT_WINNER_REWARDS;
+	public static IntIntHolder[] TVT_DRAW_REWARDS;
+	public static int TVT_RUNNING_TIME;
+	public static String TVT_TEAM_1_NAME;
+	public static int TVT_TEAM_1_COLOR;
+	public static Location TVT_TEAM_1_LOCATION;
+	public static String TVT_TEAM_2_NAME;
+	public static int TVT_TEAM_2_COLOR;
+	public static Location TVT_TEAM_2_LOCATION;
+	
+	/** CTF event settings */
+	public static boolean ALLOW_CTF_EVENT;
+	public static int CTF_MIN_PLAYERS;
+	public static IntIntHolder[] CTF_ON_SCORE_REWARDS;
+	public static IntIntHolder[] CTF_WINNER_REWARDS;
+	public static IntIntHolder[] CTF_DRAW_REWARDS;
+	public static int CTF_RUNNING_TIME;
+	public static String CTF_TEAM_1_NAME;
+	public static int CTF_TEAM_1_COLOR;
+	public static Location CTF_TEAM_1_LOCATION;
+	public static Location CTF_TEAM_1_FLAG_LOCATION;
+	public static String CTF_TEAM_2_NAME;
+	public static int CTF_TEAM_2_COLOR;
+	public static Location CTF_TEAM_2_LOCATION;
+	public static Location CTF_TEAM_2_FLAG_LOCATION;
+
+	/** Simon event settings */
+	public static boolean ALLOW_SIMON_EVENT;
+	public static int SIMON_MIN_PLAYERS;
+	public static IntIntHolder[] SIMON_WINNER_REWARDS;
+	public static int SIMON_ROUND_TIME;
+	public static List<Location> SIMON_PLAYER_RESPAWN_SPOTS;
+	public static Location SIMON_NPC_RESPAWN_SPOTS;
+	public static List<String> SIMON_WORDS;
+	
 	/** Pc bang points*/
 	public static int PCB_INTERVAL;
 	public static int PCB_MIN_LEVEL;
@@ -188,6 +227,8 @@ public final class Config
 	public static int ALT_OLY_DIVIDER_NON_CLASSED;
 	public static boolean ALT_OLY_ANNOUNCE_GAMES;
 	public static boolean ALT_OLY_ANT_BOOT;
+	public static OlympiadPeriod ALT_OLY_PERIOD;
+	public static int ALT_OLY_PERIOD_MULTIPLIER;
 	
 	/** SevenSigns Festival */
 	public static boolean ALT_GAME_CASTLE_DAWN;
@@ -426,6 +467,7 @@ public final class Config
 	public static double HERO_DROP_RATES;
 	
 	/** Vip */
+	public static boolean LEAVE_BUFFS_ON_DIE_VIP;
 	public static int VIP_COLOR;
 	public static IntIntHolder[] LIST_VIP_SKILLS;
 	public static IntIntHolder[] LIST_VIP_ITEMS;
@@ -549,8 +591,12 @@ public final class Config
 	public static String ANNOUNCE_TOP_PK_ENTER_BY_CLAN_MEMBER_MSG;
 	public static String ANNOUNCE_TOP_PK_ENTER_BY_PLAYER_MSG;
 	
+	public static String ANNOUNCE_BOSS_SPAWN_MSG;
 	public static String BOSS_DEFEATED_BY_CLAN_MEMBER_MSG;
 	public static String BOSS_DEFEATED_BY_PLAYER_MSG;
+	
+	public static int ANNOUNCE_ONLINE_PLAYERS_DELAY;
+	public static String ANNOUNCE_PLAYERS_ONLINE;
 	
 	// --------------------------------------------------
 	// Sieges
@@ -875,25 +921,84 @@ public final class Config
 		CKM_PK_NPC_TITLE_COLOR = Integer.decode("0x" + events.getProperty("CKMPKNpcTitleColor", "00CCFF"));
 		CKM_PK_NPC_NAME_COLOR = Integer.decode("0x" + events.getProperty("CKMPKNpcNameColor", "FFFFFF"));
 		MONUMENT_EVENT_REWARDS = events.parseIntIntList("CKMReward", "1-268");
-		
-		TVT_ENABLE = events.getProperty("TvTEventEnable", false);
-		TVT_SCHEDULER_TIMES = events.getProperty("TvTSchedulerTime", "20:00").split(",");
-		TVT_PARTICIPATION_TIME = events.getProperty("TvTParticipationTime", 10);
-		TVT_RUNNING_TIME = events.getProperty("TvTRunningTime", 15);
-		TVT_MIN_PARTICIOANTS = events.getProperty("TvTMinParticipants", 6);
-		TVT_MAX_PARTICIOANTS = events.getProperty("TvTMaxParticipants", 40);
-		TVT_MIN_LEVEL = (byte) events.getProperty("TvTEventMinLevel", 60);
-		TVT_MAX_LEVEL = (byte) events.getProperty("TvTEventMaxLevel", 78);
-		TVT_PLAYER_RESPAWN_DELAY = events.getProperty("TvTPlayerRespawnDelay", 20);
-		TVT_DUAL_BOX = events.getProperty("TvTAllowDualBoxing", false);
-		TVT_REWARD_DIE = events.getProperty("TvTGiveRewardsOnTie", false);
-		TVT_BLUE_SPAWN_LOCATION = events.parseLocation("TvTBlueTeamLocation", "48476,46061,-3411");
-		TVT_RED_SPAWN_LOCATION = events.parseLocation("TvTRedTeamLocation", "150480,47444,-3411");
-		TVT_NPC_LOCATION = events.parseLocation("TvTRegisterLocation", "151808,46864,-3408");
-		TVT_REWARDS = events.parseIntIntList("TvTEventRewardList", "1-268");
-		TVT_NPC_ID = events.getProperty("TvTNpcManager", 18);
-		TVT_DOOR_LIST = events.getProperty("TvTArenaDoors", "24190002;24190003").split(";");
 
+		ENABLE_EVENT_ENGINE = events.getProperty("Enableevents", false);
+		TIME_BETWEEN_EVENTS = events.getProperty("TimeBetweenEvents", 60);
+		EVENT_REGISTRATION_TIME = events.getProperty("EventRegistrationTime", 10);
+		DOOR_LIST = events.getProperty("ListDoors", "24190002;24190003").split(";");
+		NPC_REGISTER = events.getProperty("NpcRegisterId", 50018);
+		NPC_REGISTER_LOC = events.parseLocation("NpcRegisterLoc", "151808,46864,-3408");
+		MIN_LEVEL = (byte) events.getProperty("MinLevel", 40);
+		MAX_LEVEL = (byte) events.getProperty("MaxLevel", 80);
+		DUAL_BOX = events.getProperty("AllowDualBoxing", false);
+		
+		ALLOW_CTF_EVENT = events.getProperty("AllowCTFEvent", false);
+		CTF_MIN_PLAYERS = events.getProperty("CTFMinPlayers", 2);
+		
+		CTF_ON_SCORE_REWARDS = events.parseIntIntList("CTFOnScoreRewards", "57,1");
+		CTF_WINNER_REWARDS = events.parseIntIntList("CTFWinnerRewards", "57,1");
+		CTF_DRAW_REWARDS = events.parseIntIntList("CTFDrawRewards", "57,1");
+		
+		CTF_RUNNING_TIME = events.getProperty("CTFRunningTime", 10);
+		CTF_TEAM_1_NAME = events.getProperty("CTFTeam1Name", "Orange");
+		CTF_TEAM_1_COLOR = Integer.decode("0x" + events.getProperty("CTFTeam1Color", "4499FF"));
+		CTF_TEAM_1_LOCATION = events.parseLocation("CTFTeam1Location", "0,0,0");
+		CTF_TEAM_1_FLAG_LOCATION = events.parseLocation("CTFTeam1FlagLocation", "0,0,0");
+		CTF_TEAM_2_NAME = events.getProperty("CTFTeam2Name", "Green");
+		CTF_TEAM_2_COLOR = Integer.decode("0x" + events.getProperty("CTFTeam2Color", "00FF00"));
+		CTF_TEAM_2_LOCATION = events.parseLocation("CTFTeam2Location", "0,0,0");
+		CTF_TEAM_2_FLAG_LOCATION = events.parseLocation("CTFTeam2FlagLocation", "0,0,0");
+		
+		ALLOW_DM_EVENT = events.getProperty("AllowDMEvent", false);
+		DM_MIN_PLAYERS = events.getProperty("DMMinPlayers", 2);
+		
+		DM_ON_KILL_REWARDS = events.parseIntIntList("DMOnKillRewards", "57,1");
+		DM_WINNER_REWARDS = events.parseIntIntList("DMWinnerRewards", "57,1");
+		
+		DM_RUNNING_TIME = events.getProperty("DMRunningTime", 10);
+		String dm_resp_spots = events.getProperty("DMRespawnSpots", "0,0,0;0,0,0");
+		String[] dm_resp_spots_split = dm_resp_spots.split(";");
+		for (String s : dm_resp_spots_split)
+		{
+			String[] ss = s.split(",");
+			DM_RESPAWN_SPOTS.add(new Location(Integer.parseInt(ss[0]), Integer.parseInt(ss[1]), Integer.parseInt(ss[2])));
+		}
+		
+		ALLOW_TVT_EVENT = events.getProperty("AllowTvTEvent", false);
+		TVT_MIN_PLAYERS = events.getProperty("TvTMinPlayers", 2);
+
+		TVT_WINNER_REWARDS = events.parseIntIntList("TvTWinnerRewards", "57,1");
+		TVT_DRAW_REWARDS = events.parseIntIntList("TvTDrawRewards", "57,1");
+		
+		TVT_RUNNING_TIME = events.getProperty("TvTRunningTime", 10);
+		TVT_TEAM_1_NAME = events.getProperty("TvTTeam1Name", "Orange");
+		TVT_TEAM_1_COLOR = Integer.decode("0x" + events.getProperty("TvTTeam1Color", "4499FF"));
+		TVT_TEAM_1_LOCATION = events.parseLocation("TvTTeam1Location", "0,0,0");
+		TVT_TEAM_2_NAME = events.getProperty("TvTTeam2Name", "Green");
+		TVT_TEAM_2_COLOR = Integer.decode("0x" + events.getProperty("TvTTeam2Color", "00FF00"));
+		TVT_TEAM_2_LOCATION = events.parseLocation("TvTTeam2Location", "0,0,0");
+		
+		ALLOW_SIMON_EVENT = events.getProperty("AllowSimonSaysEvent", false);
+		SIMON_MIN_PLAYERS = events.getProperty("SimonMinPlayers", 2);
+		
+		SIMON_WINNER_REWARDS = events.parseIntIntList("SimonWinnerRewards", "57-1");
+		SIMON_ROUND_TIME = events.getProperty("SimonRoundTime", 30);
+
+		SIMON_PLAYER_RESPAWN_SPOTS = new ArrayList<>();
+		String[] simon_player_respawn_splots_split = events.getProperty("SimonPlayerRespawnSpots", "0,0,0;0,0,0").split(";");
+		for (String s : simon_player_respawn_splots_split)
+		{
+			String[] ss = s.split(",");
+			SIMON_PLAYER_RESPAWN_SPOTS.add(new Location(Integer.parseInt(ss[0]), Integer.parseInt(ss[1]), Integer.parseInt(ss[2])));
+		}
+
+		String[] simon_npc_respawn_splots_split = events.getProperty("SimonNpcRespawnSpots", "0,0,0").split(",");
+		SIMON_NPC_RESPAWN_SPOTS = new Location(Integer.parseInt(simon_npc_respawn_splots_split[0]), Integer.parseInt(simon_npc_respawn_splots_split[1]), Integer.parseInt(simon_npc_respawn_splots_split[2]));
+
+		SIMON_WORDS = new ArrayList<>();
+		for(String word : events.getProperty("SimonWordsToSay", "word1;word2").split(";"))
+			SIMON_WORDS.add(word);
+		
 		PCB_INTERVAL = events.getProperty("PcBangPointTime", 0);
 		PCB_MIN_LEVEL = events.getProperty("PcBangPointMinLevel", 20);
 		PCB_POINT_MIN = events.getProperty("PcBangPointMinCount", 1);
@@ -929,6 +1034,8 @@ public final class Config
 		ALT_OLY_DIVIDER_NON_CLASSED = events.getProperty("AltOlyDividerNonClassed", 5);
 		ALT_OLY_ANNOUNCE_GAMES = events.getProperty("AltOlyAnnounceGames", true);
 		ALT_OLY_ANT_BOOT = events.getProperty("AltOlyAntBoot", false);
+		ALT_OLY_PERIOD = OlympiadPeriod.valueOf(events.getProperty("AltOlyPeriod", "MONTH"));
+		ALT_OLY_PERIOD_MULTIPLIER = events.getProperty("AltOlyPeriodMultiplier", 1);
 		
 		ALT_GAME_CASTLE_DAWN = events.getProperty("AltCastleForDawn", true);
 		ALT_GAME_CASTLE_DUSK = events.getProperty("AltCastleForDusk", true);
@@ -1183,6 +1290,7 @@ public final class Config
 		HERO_SPOIL_RATES = players.getProperty("HeroSpoilRates", 1.5);
 		HERO_DROP_RATES = players.getProperty("HeroDrop", 1.5);
 		
+		LEAVE_BUFFS_ON_DIE_VIP = players.getProperty("LeaveBuffsOnDieVip", false);
 		VIP_COLOR = Integer.decode("0x" + players.getProperty("VipColor", "FFFF00"));
 		LIST_VIP_SKILLS = players.parseIntIntList("VipSkill", "0-0");
 		LIST_VIP_ITEMS = players.parseIntIntList("VipItems", "0-0");
@@ -1307,8 +1415,12 @@ public final class Config
 		ANNOUNCE_TOP_PK_ENTER_BY_CLAN_MEMBER_MSG = players.getProperty("AnnounceTopPkLoginByClanMemberMsg", "The Hero %player% from %classe% and of the clan %clan% is now online.");
 		ANNOUNCE_TOP_PK_ENTER_BY_PLAYER_MSG = players.getProperty("AnnounceTopPkLoginByPlayerMsg", "The Hero %player% from %classe% is now online.");
 		
+		ANNOUNCE_BOSS_SPAWN_MSG = players.getProperty("BossSpawned", "Boss %boss% has spawned. In ");
 		BOSS_DEFEATED_BY_CLAN_MEMBER_MSG = players.getProperty("BossDefeatedByClanMemberMsg", "Raid Boss %raidboss% has been defeated by %player% of clan %clan%.");
 		BOSS_DEFEATED_BY_PLAYER_MSG = players.getProperty("BossDefeatedByPlayerMsg", "Raid Boss %raidboss% has been defeated by %player%.");
+	
+		ANNOUNCE_ONLINE_PLAYERS_DELAY = players.getProperty("AnnounceOnlinePlayersDelay", 60);
+		ANNOUNCE_PLAYERS_ONLINE = players.getProperty("AnnounceOnlinePlayersMsg", "L2j-One: %online% player is online.");
 	}
 	
 	/**
