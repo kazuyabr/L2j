@@ -9,7 +9,6 @@ import net.sf.l2j.gameserver.handler.ChatHandler;
 import net.sf.l2j.gameserver.handler.IChatHandler;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.engine.EventListener;
-import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 
 public final class Say2 extends L2GameClientPacket
@@ -162,13 +161,6 @@ public final class Say2 extends L2GameClientPacket
 		}
 		
 		_text = _text.replaceAll("\\\\n", "");
-
-		boolean disguised = EventManager.getInstance().getActiveEvent() != null && EventManager.getInstance().getActiveEvent().isDisguisedEvent() && EventManager.getInstance().getActiveEvent().isInEvent(player);
-		if (disguised)
-		{
-			player.sendMessage("You cannot talk in this event.");
-			return;
-		}
 
 		// For simon says event
 		if(!EventListener.onSay(player, _text))

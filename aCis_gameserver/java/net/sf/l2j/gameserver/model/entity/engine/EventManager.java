@@ -8,6 +8,7 @@ import net.sf.l2j.commons.concurrent.ThreadPool;
 import net.sf.l2j.commons.logging.CLogger;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.enums.actors.ClassId;
 import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.engine.events.CaptureTheFlag;
@@ -35,10 +36,13 @@ public final class EventManager
 	{
 		if (Config.ALLOW_DM_EVENT)
 			registerEvent(new DeathMatch());
+		
 		if (Config.ALLOW_TVT_EVENT)
 			registerEvent(new TeamVsTeam());
+		
 		if (Config.ALLOW_CTF_EVENT)
 			registerEvent(new CaptureTheFlag());
+		
 		if (Config.ALLOW_SIMON_EVENT)
 			registerEvent(new SimonSays());
 		
@@ -102,6 +106,7 @@ public final class EventManager
 			player.sendMessage("You cannot register now.");
 			return;
 		}
+		
 		if (_activeEvent.isInEvent(player))
 		{
 			player.sendMessage("You are already registered to the event.");
@@ -143,7 +148,13 @@ public final class EventManager
 			player.sendMessage("You have not reached the appropriate level to join the event.");
 			return;
 		}
-
+		
+		if (player.getClassId() == ClassId.BISHOP || player.getClassId() == ClassId.CARDINAL || player.getClassId() == ClassId.SHILLIEN_ELDER || player.getClassId() == ClassId.SHILLIEN_SAINT || player.getClassId() == ClassId.ELVEN_ELDER || player.getClassId() == ClassId.EVAS_SAINT || player.getClassId() == ClassId.PROPHET || player.getClassId() == ClassId.HIEROPHANT)
+		{
+			player.sendMessage("Your class are not allowed on event.");
+			return;
+		}
+		
 		for (Player registered : _activeEvent.getPlayers())
 		{
 			if (registered == null)
@@ -211,15 +222,13 @@ public final class EventManager
 	
 	public static void announce(String from, String msg, List<Player> to)
 	{
-		CreatureSay cs = new CreatureSay(0, Say2.CRITICAL_ANNOUNCE, from, from + ": " + msg);
 		for (Player player : to)
-			player.sendPacket(cs);
+			player.sendPacket(new CreatureSay(0, Say2.CRITICAL_ANNOUNCE, from, from + ": " + msg));
 	}
 	
 	public static void announce(String from, String msg)
 	{
-		CreatureSay cs = new CreatureSay(0, Say2.CRITICAL_ANNOUNCE, from, from + ": " + msg);
-		World.toAllOnlinePlayers(cs);
+		World.toAllOnlinePlayers(new CreatureSay(0, Say2.CRITICAL_ANNOUNCE, from, from + ": " + msg));
 	}
 	
 	public static EventManager getInstance()

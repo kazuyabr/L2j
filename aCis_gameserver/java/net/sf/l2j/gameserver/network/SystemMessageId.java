@@ -11807,6 +11807,12 @@ public final class SystemMessageId
 	 * Message: $s1 wishes to summon you from $s2. Do you accept?
 	 */
 	public static final SystemMessageId S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_RECALL;
+
+	/**
+	 * ID: 2156<br>
+	 * Message: $s1 wishes to summon you from $s2. Do you accept?
+	 */
+	public static final SystemMessageId S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_ZONE;
 	
 	/**
 	 * Array containing all SystemMessageIds<br>
@@ -13778,6 +13784,7 @@ public final class SystemMessageId
 		PLEASE_WAIT_A_MOMENT = new SystemMessageId(2031);
 		S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_EVENT = new SystemMessageId(2154);
 		S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_RECALL = new SystemMessageId(2155);
+		S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_ZONE = new SystemMessageId(2156);
 		
 		buildFastLookupTable();
 	}

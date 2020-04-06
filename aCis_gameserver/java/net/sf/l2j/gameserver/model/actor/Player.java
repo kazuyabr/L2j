@@ -305,6 +305,10 @@ public final class Player extends Playable
 	private String _hwid;
 	private boolean _HwidBlock;
 	
+	private long _lastHopVote;
+	private long _lastTopVote;
+	private long _lastNetVote;
+	
 	private String _accountName;
 	private long _deleteTimer;
 	
@@ -9710,11 +9714,6 @@ public final class Player extends Playable
 		return getMemos().getInteger("cafe_points", 0);
 	}
 	
-	public void increasePcCafePoints(int count)
-	{
-		increasePcCafePoints(count, false);
-	}
-	
 	public void increasePcCafePoints(int count, boolean doubleAmount)
 	{
 		count = doubleAmount ? count * 2 : count;
@@ -9786,5 +9785,74 @@ public final class Player extends Playable
 			statement.executeUpdate();
 		}
 		catch (Exception e){}
+	}
+	
+	public long getLastHopVote()
+	{
+		return _lastHopVote;
+	}
+	
+	public long getLastTopVote()
+	{
+		return _lastTopVote;
+	}
+	
+	public long getLastNetVote()
+	{
+		return _lastNetVote;
+	}
+	
+	public void setLastHopVote(long val)
+	{
+		_lastHopVote = val;
+	}
+	
+	public void setLastTopVote(long val)
+	{
+		_lastTopVote = val;
+	}
+	
+	public void setLastNetVote(long val)
+	{
+		_lastNetVote = val;
+	}
+
+	public boolean eligibleToVoteHop()
+	{
+		return (getLastHopVote() + 43200000) < System.currentTimeMillis();
+	}
+	
+	public boolean eligibleToVoteTop()
+	{
+		return (getLastTopVote() + 43200000) < System.currentTimeMillis();
+	}
+	
+	public boolean eligibleToVoteNet()
+	{
+		return (getLastNetVote() + 43200000) < System.currentTimeMillis();
+	}
+	
+	public String getVoteCountdownHop()
+	{
+		long youCanVote = getLastHopVote() - (System.currentTimeMillis() - 43200000);
+		return convertLongToCountdown(youCanVote);
+	}
+	
+	public String getVoteCountdownTop()
+	{
+		long youCanVote = getLastTopVote() - (System.currentTimeMillis() - 43200000);
+		return convertLongToCountdown(youCanVote);
+	}
+	
+	public String getVoteCountdownNet()
+	{
+		long youCanVote = getLastNetVote() - (System.currentTimeMillis() - 43200000);
+		return convertLongToCountdown(youCanVote);
+	}
+
+	public static String convertLongToCountdown(long youCanVote)
+	{
+		String formattedCountdown = String.format("%d hours, %d mins, %d secs", TimeUnit.MILLISECONDS.toHours(youCanVote), TimeUnit.MILLISECONDS.toMinutes(youCanVote) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(youCanVote)), TimeUnit.MILLISECONDS.toSeconds(youCanVote) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(youCanVote)));
+		return formattedCountdown;
 	}
 }

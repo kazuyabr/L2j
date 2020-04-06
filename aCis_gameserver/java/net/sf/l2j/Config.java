@@ -143,7 +143,7 @@ public final class Config
 	public static byte MIN_LEVEL;
 	public static byte MAX_LEVEL;
 	public static boolean DUAL_BOX;
-	
+
 	/** Deathmatch event settings */
 	public static boolean ALLOW_DM_EVENT;
 	public static int DM_MIN_PLAYERS;
@@ -285,6 +285,14 @@ public final class Config
 	public static int ALT_FISH_CHAMPIONSHIP_REWARD_3;
 	public static int ALT_FISH_CHAMPIONSHIP_REWARD_4;
 	public static int ALT_FISH_CHAMPIONSHIP_REWARD_5;
+	
+	/** Vote System */
+	public static String WEB_SERVE;
+	public static String VOTE_NETWORK_NAME;
+	public static String VOTE_TOPZONE_APIKEY;
+	public static int VOTE_TOPZONE_SERVERID;
+	public static String VOTE_HOPZONE_APIKEY;
+	public static IntIntHolder[] VOTE_REWARD;
 	
 	// --------------------------------------------------
 	// GeoEngine
@@ -1086,6 +1094,13 @@ public final class Config
 		ALT_FISH_CHAMPIONSHIP_REWARD_3 = events.getProperty("AltFishChampionshipReward3", 300000);
 		ALT_FISH_CHAMPIONSHIP_REWARD_4 = events.getProperty("AltFishChampionshipReward4", 200000);
 		ALT_FISH_CHAMPIONSHIP_REWARD_5 = events.getProperty("AltFishChampionshipReward5", 100000);
+		
+		WEB_SERVE = events.getProperty("WebSite", "");
+		VOTE_NETWORK_NAME = events.getProperty("VoteNetworkName", "");
+		VOTE_TOPZONE_APIKEY = events.getProperty("VoteTopzoneApiKey", "");
+		VOTE_TOPZONE_SERVERID = events.getProperty("VoteTopzoneServerId", 0);
+		VOTE_HOPZONE_APIKEY = events.getProperty("VoteHopzoneApiKey", "");
+		VOTE_REWARD = events.parseIntIntList("VoteReward", "9210-10");
 	}
 	
 	/**

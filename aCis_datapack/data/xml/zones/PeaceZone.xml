@@ -831,12 +831,6 @@
 		<node x="-112720" y="-248199" />
 		<node x="-116354" y="-248217" />
 	</zone>
-	<zone shape="NPoly" minZ="-4792" maxZ="208"><!-- primeval_peace2 -->
-		<node x="4850" y="-4736" />
-		<node x="7294" y="-4712" />
-		<node x="8529" y="-820" />
-		<node x="3615" y="-737" />
-	</zone>
 	<zone shape="NPoly" minZ="-6964" maxZ="-6064"><!-- space_of_dimension_peace1 -->
 		<node x="-115441" y="-182134" />
 		<node x="-114106" y="-182134" />

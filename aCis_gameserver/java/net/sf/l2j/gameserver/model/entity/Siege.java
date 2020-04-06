@@ -169,7 +169,7 @@ public class Siege implements Siegable
 			World.toAllOnlinePlayers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_S1_VICTORIOUS_OVER_S2_S_SIEGE).addString(clan.getName()).addString(getCastle().getName()));
 			
 			final List<String> playerIps = new ArrayList<>();
-			for (Player player : World.getInstance().getPlayers())
+			for (Player player : clan.getOnlineMembers())
 			{
 				final String pIp = player.getClient().getConnection().getInetAddress().getHostAddress();
 				

@@ -50,6 +50,11 @@
 	<aCar name="admin_camera" accessLevel="7"/>
 	<aCar name="admin_cameramode" accessLevel="7"/>
 	
+	<!-- CLAN -->
+	<aCar name="admin_watchclan" accessLevel="7"/>
+	<aCar name="admin_stopwatch" accessLevel="7"/>
+	<aCar name="admin_clanfull" accessLevel="7"/>
+	
 	<!-- CLANHALL -->
 	<aCar name="admin_ch" accessLevel="7"/>
 

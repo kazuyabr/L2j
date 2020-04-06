@@ -111,6 +111,7 @@ import net.sf.l2j.gameserver.taskmanager.PvpFlagTaskManager;
 import net.sf.l2j.gameserver.taskmanager.RandomAnimationTaskManager;
 import net.sf.l2j.gameserver.taskmanager.ShadowItemTaskManager;
 import net.sf.l2j.gameserver.taskmanager.WaterTaskManager;
+import net.sf.l2j.gameserver.taskmanager.ZoneTaskManager;
 import net.sf.l2j.util.DeadLockDetector;
 import net.sf.l2j.util.IPv4Filter;
 
@@ -232,6 +233,7 @@ public class GameServer
 		ShadowItemTaskManager.getInstance();
 		WaterTaskManager.getInstance();
 		PcCafeTaskManager.getInstance();
+		ZoneTaskManager.getInstance();
 		
 		StringUtil.printSection("Auto Spawns");
 		AutoSpawnTable.getInstance();

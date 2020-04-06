@@ -2,12 +2,13 @@ package net.sf.l2j.gameserver.network.serverpackets;
 
 import net.sf.l2j.gameserver.data.manager.CastleManager;
 import net.sf.l2j.gameserver.enums.SiegeSide;
+import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.model.entity.Siege;
-import net.sf.l2j.gameserver.model.entity.engine.EventListener;
 import net.sf.l2j.gameserver.model.pledge.Clan;
+import net.sf.l2j.gameserver.model.zone.type.MultiZone;
 
 public class Die extends L2GameServerPacket
 {
@@ -45,7 +46,7 @@ public class Die extends L2GameServerPacket
 		writeC(0x06);
 		writeD(_charObjId);
 		
-		writeD(!EventListener.allowDiePacket((Player)_activeChar) ? 0x00 : 0x01); // to nearest village
+		writeD(_activeChar.isInsideZone(ZoneId.MULTI) && MultiZone.isRevive() ? 0x00 : 0x01); // to nearest village
 		
 		if (_clan != null)
 		{

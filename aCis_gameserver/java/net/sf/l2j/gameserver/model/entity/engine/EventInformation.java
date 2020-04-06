@@ -1,8 +1,7 @@
 package net.sf.l2j.gameserver.model.entity.engine;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.network.serverpackets.ExShowScreenMessage;
 import net.sf.l2j.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
@@ -15,13 +14,12 @@ public class EventInformation implements Runnable
 {
 	private AbstractEvent _event;
 	private String _msg;
-	private Map<String, Integer> _replacements;
+	private Map<String, Integer> _replacements = new HashMap<>();
 	
 	public EventInformation(AbstractEvent event, String msg)
 	{
 		_event = event;
 		_msg = msg;
-		_replacements = new ConcurrentHashMap<>();
 	}
 	
 	public void setReplacements(Map<String, Integer> val)

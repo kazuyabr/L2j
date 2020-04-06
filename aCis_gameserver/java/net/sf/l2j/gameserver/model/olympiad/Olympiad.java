@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.actor.instance.OlympiadManagerNpc;
 import net.sf.l2j.gameserver.model.zone.type.OlympiadStadiumZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.clientpackets.Say2;
+import net.sf.l2j.gameserver.network.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.network.serverpackets.NpcSay;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 
@@ -462,6 +463,24 @@ public class Olympiad
 		}
 		
 		scheduleWeeklyChange();
+	}
+	
+	public void setOlympiadEnd(Player player)
+	{
+		long milliToEnd;
+		if (_period == OlympiadState.COMPETITION)
+			milliToEnd = getMillisToOlympiadEnd();
+		else
+			milliToEnd = getMillisToValidationEnd();
+		
+		double numSecs = milliToEnd / 1000 % 60;
+		double countDown = (milliToEnd / 1000 - numSecs) / 60;
+		int numMins = (int) Math.floor(countDown % 60);
+		countDown = (countDown - numMins) / 60;
+		int numHours = (int) Math.floor(countDown % 24);
+		int numDays = (int) Math.floor((countDown - numHours) / 24);
+		
+		player.sendPacket(new CreatureSay(0, Say2.TRADE, "Olympiad Manager ", "Olympiad period ends in " + numDays + " days, " + numHours + " hours and " + numMins + " mins."));
 	}
 	
 	public boolean isInCompPeriod()

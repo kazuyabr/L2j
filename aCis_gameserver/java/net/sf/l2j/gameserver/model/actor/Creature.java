@@ -13,6 +13,7 @@ import net.sf.l2j.commons.random.Rnd;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.data.SkillTable.FrequentSkill;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.data.xml.MapRegionData;
 import net.sf.l2j.gameserver.data.xml.MapRegionData.TeleportType;
 import net.sf.l2j.gameserver.enums.AiEventType;
@@ -60,6 +61,7 @@ import net.sf.l2j.gameserver.model.item.kind.Weapon;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
 import net.sf.l2j.gameserver.model.location.Location;
 import net.sf.l2j.gameserver.model.location.SpawnLocation;
+import net.sf.l2j.gameserver.model.zone.type.MultiZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
@@ -1139,6 +1141,7 @@ public abstract class Creature extends WorldObject
 				setIsCastingSimultaneouslyNow(false);
 			else
 				setIsCastingNow(false);
+			
 			sendPacket(ActionFailed.STATIC_PACKET);
 			getAI().setIntention(IntentionType.ACTIVE);
 			return;
@@ -1514,6 +1517,10 @@ public abstract class Creature extends WorldObject
 		// Notify Creature AI
 		if (hasAI())
 			getAI().notifyEvent(AiEventType.DEAD, null);
+
+		final MultiZone zone = ZoneManager.getInstance().getZone(this, MultiZone.class);
+		if (zone != null)
+			zone.onDie(this);
 		
 		return true;
 	}
@@ -1545,6 +1552,10 @@ public abstract class Creature extends WorldObject
 		
 		// Start broadcast status
 		broadcastPacket(new Revive(this));
+
+		final MultiZone zone = ZoneManager.getInstance().getZone(this, MultiZone.class);
+		if (zone != null)
+			zone.onRevive(this);
 	}
 	
 	/**

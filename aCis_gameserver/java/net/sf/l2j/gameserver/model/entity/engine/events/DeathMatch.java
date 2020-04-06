@@ -107,10 +107,4 @@ public class DeathMatch extends AbstractEvent
 	{
 		return false;
 	}
-	
-	@Override
-	public boolean isDisguisedEvent()
-	{
-		return true;
-	}
 }

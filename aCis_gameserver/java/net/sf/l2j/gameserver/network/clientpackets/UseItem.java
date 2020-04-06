@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.network.clientpackets;
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.enums.items.ActionType;
 import net.sf.l2j.gameserver.enums.items.EtcItemType;
 import net.sf.l2j.gameserver.enums.items.WeaponType;
@@ -17,6 +18,7 @@ import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.item.instance.ItemInstance;
 import net.sf.l2j.gameserver.model.item.kind.Item;
 import net.sf.l2j.gameserver.model.itemcontainer.Inventory;
+import net.sf.l2j.gameserver.model.zone.type.MultiZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ItemList;
 import net.sf.l2j.gameserver.network.serverpackets.PetItemList;
@@ -72,6 +74,14 @@ public final class UseItem extends L2GameClientPacket
 
 		if (!EventListener.canUseItem(player, item.getItemId()))
 			return;
+
+		final MultiZone zone = ZoneManager.getInstance().getZone(player, MultiZone.class);
+		if (zone != null)
+		{
+			zone.isRestrictedItem(item.getItemId());
+			player.sendMessage(item.getName() + " cannot be used inside "+ zone.getName() +" zone.");
+			return;
+		}
 		
 		if (!Config.KARMA_PLAYER_CAN_TELEPORT && player.getKarma() > 0)
 		{

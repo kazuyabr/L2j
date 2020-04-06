@@ -14,6 +14,9 @@ import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.actor.instance.OlympiadManagerNpc;
+import net.sf.l2j.gameserver.model.entity.engine.vote.VoteHopzone;
+import net.sf.l2j.gameserver.model.entity.engine.vote.VoteNetwork;
+import net.sf.l2j.gameserver.model.entity.engine.vote.VoteTopzone;
 import net.sf.l2j.gameserver.model.olympiad.OlympiadManager;
 import net.sf.l2j.gameserver.network.FloodProtectors;
 import net.sf.l2j.gameserver.network.FloodProtectors.Action;
@@ -182,7 +185,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				player.sendPacket(SystemMessageId.WHILE_YOU_ARE_ON_THE_WAITING_LIST_YOU_ARE_NOT_ALLOWED_TO_WATCH_THE_GAME);
 				return;
 			}
-
+			
 			final int arenaId = Integer.parseInt(_command.substring(12).trim());
 			player.enterOlympiadObserverMode(arenaId);
 		}
@@ -264,6 +267,67 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		{
 			player.leaveObserverMode();
 			player.teleToLocation(player.getTemplate().getRandomSpawn());
+		}
+		else if (_command.startsWith("vote "))
+		{
+			String voteSiteName = _command.substring(5);
+			switch(voteSiteName)
+			{
+				case "hopzone":
+					new Thread(() -> {
+						if (player.eligibleToVoteHop())
+						{
+							VoteHopzone voteHop = new VoteHopzone();
+							if (voteHop.hasVoted(player))
+							{
+								voteHop.updateDB(player, "HopZone");
+								voteHop.setVoted(player);
+								voteHop.reward(player);
+							}
+							else
+								player.sendMessage("You haven't voted yet.");
+						}
+						else
+							GMAUDIT_LOG.info(player.getName() + " tried to send a bypass with adrenalin/phx");
+					}).start();
+					break;
+				case "topzone":
+					new Thread(() -> {
+						if (player.eligibleToVoteTop())
+						{
+							VoteTopzone voteTop = new VoteTopzone();
+							if (voteTop.hasVoted(player))
+							{
+								voteTop.updateDB(player, "TopZone");
+								voteTop.setVoted(player);
+								voteTop.reward(player);
+							}
+							else
+								player.sendMessage("You haven't voted yet.");
+						}
+						else
+							GMAUDIT_LOG.info(player.getName() + " tried to send a bypass with adrenalin/phx");
+					}).start();
+					break;
+				case "network":
+					new Thread(() -> {
+						if (player.eligibleToVoteNet())
+						{
+							VoteNetwork voteNet = new VoteNetwork();
+							if (voteNet.hasVoted(player))
+							{
+								voteNet.updateDB(player, "NetWork");
+								voteNet.setVoted(player);
+								voteNet.reward(player);
+							}
+							else
+								player.sendMessage("You haven't voted yet.");
+						}
+						else
+							GMAUDIT_LOG.info(player.getName() + " tried to send a bypass with adrenalin/phx");
+					}).start();
+					break;
+			}
 		}
 	}
 }

@@ -245,7 +245,7 @@ public abstract class AbstractEvent implements Runnable
 				break;
 			
 			temp.remove(topTeam);
-			announce(i+". Team: "+topTeam.getName()+" Score: "+score, true);
+			announce(i +". Team: " + topTeam.getName() + " Score: "+ score, true);
 			topTeam = null;
 			score = 0;
 		}
@@ -463,7 +463,7 @@ public abstract class AbstractEvent implements Runnable
 	
 	protected void begin()
 	{
-		if(!getStartingMsg().equals(""))
+		if (!getStartingMsg().equals(""))
 		{
 			for (Player player : _players)
 			{
@@ -471,7 +471,7 @@ public abstract class AbstractEvent implements Runnable
 				player.sendPacket(new CreatureSay(player.getObjectId(), 1, "Simon Event", getStartingMsg()));
 			}
 			
-			System.out.println(getStartingMsg());
+			LOGGER.info(getStartingMsg());
 		}
 		
 		unparalizePlayers();
@@ -639,11 +639,6 @@ public abstract class AbstractEvent implements Runnable
 	public boolean allowDiePacket(Player player)
 	{
 		return true;
-	}
-	
-	public boolean isDisguisedEvent()
-	{
-		return false;
 	}
 	
 	public EventTeam getTeam(Player player)

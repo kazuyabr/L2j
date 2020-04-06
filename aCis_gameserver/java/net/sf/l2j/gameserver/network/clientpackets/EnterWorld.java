@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.model.clanhall.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.entity.engine.EventManager;
+import net.sf.l2j.gameserver.model.entity.engine.vote.VoteBase;
 import net.sf.l2j.gameserver.model.holder.IntIntHolder;
 import net.sf.l2j.gameserver.model.olympiad.Olympiad;
 import net.sf.l2j.gameserver.model.pledge.Clan;
@@ -68,6 +69,7 @@ import net.sf.l2j.gameserver.network.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.scripting.Quest;
 import net.sf.l2j.gameserver.scripting.QuestState;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
+import net.sf.l2j.gameserver.taskmanager.ZoneTaskManager;
 
 public class EnterWorld extends L2GameClientPacket
 {
@@ -362,7 +364,7 @@ public class EnterWorld extends L2GameClientPacket
 			else
 			{
 				player.setHero(true);
-				player.sendMessage("Your Hero privileges end in" + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("heroTime", 0))) + ".");
+				player.sendMessage("Your Hero privileges end in " + new SimpleDateFormat("MMM dd, yyyy HH:mm").format(new Date(player.getMemos().getLong("heroTime", 0))) + ".");
 			}
 		}
 		
@@ -477,7 +479,7 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (player.getActiveClass() == player.getBaseClass() && player.isHero() && !Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.isEmpty())
 			World.announceToOnlinePlayers(player.getClan() != null ? Config.ANNOUNCE_HERO_ENTER_BY_CLAN_MEMBER_MSG.replace("%player%", player.getName()).replace("%clan%", player.getClan().getName()).replace("%classe%", player.setClassName(player.getBaseClass())) : Config.ANNOUNCE_HERO_ENTER_BY_PLAYER_MSG.replace("%player%", player.getName()).replace("%classe%", player.setClassName(player.getBaseClass())), true);
-
+		
 		if (EventManager.getInstance().getActiveEvent() != null)
 			EventManager.getInstance().getActiveEvent().autoRegister(player);
 		
@@ -485,6 +487,55 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (Config.ANNOUNCE_ONLINE_PLAYERS_DELAY > 0)
 			ThreadPool.schedule(() -> announceRecord(player), Config.ANNOUNCE_ONLINE_PLAYERS_DELAY * 1000 * 60);
+		
+		if (player.isGM() || player.isVip())
+			Olympiad.getInstance().setOlympiadEnd(player);
+		
+		// Retrieve VoteSystem info.
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement vtsm = con.prepareStatement("SELECT HopZone, TopZone, NetWork FROM VoteSystem WHERE IP_Address=?"))
+		{
+			vtsm.setString(1, VoteBase.getPlayerStaticIp(player));
+			
+			try (ResultSet votetimes = vtsm.executeQuery())
+			{
+				if (!votetimes.isBeforeFirst())
+				{
+					try (Connection conn = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement crt = conn.prepareStatement("INSERT INTO VoteSystem (Account,Char_name,IP_Address,HopZone,TopZone,NetWork) VALUES (?,?,?,?,?,?)"))
+					{
+						crt.setString(1, player.getAccountName());
+						crt.setString(2, player.getName());
+						crt.setString(3, VoteBase.getPlayerStaticIp(player));
+						crt.setInt(4, 0);
+						crt.setInt(5, 0);
+						crt.setInt(6, 0);
+						crt.execute();
+						LOGGER.info("Created IP/API VoteSystem for player: " + player.getName());	
+					}
+				}
+				else
+				{
+					while (votetimes.next())
+					{
+						LOGGER.info("Restored IP/API VoteSystem for player: " + player.getName());
+						player.setLastHopVote(votetimes.getLong("HopZone"));
+						player.setLastTopVote(votetimes.getLong("TopZone"));
+						player.setLastNetVote(votetimes.getLong("NetWork"));
+					}
+				}
+				votetimes.close();
+				
+			}
+			vtsm.close();
+		}
+		catch (Exception e)
+		{
+			LOGGER.error("Couldn't load VoteSystem for player {}.", e, player.getName());
+		}
+		
+		if (player.getOnlineTime() == 1 || player.isInsideZone(ZoneId.MULTI))
+			ZoneTaskManager.getInstance().onEnter(player);
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}

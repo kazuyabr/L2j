@@ -5,6 +5,7 @@ import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.entity.engine.EventManager;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.taskmanager.ZoneTaskManager;
 
 /**
  * @author Dezmond_snz Format: cddd
@@ -42,6 +43,8 @@ public final class DlgAnswer extends L2GameClientPacket
 			player.activateGate(_answer, 0);
 		else if (_answer == 1 && _messageId == SystemMessageId.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_EVENT.getId())
 			EventManager.getInstance().registerPlayer(player);
+		else if (_answer == 1 && _messageId == SystemMessageId.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_ZONE.getId())
+			player.teleportTo(ZoneTaskManager.getInstance().getCurrentZone().getRandomLoc(), 25);
 		else if (_messageId == SystemMessageId.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT_RECALL.getId())
 		{   
 			if (_answer == 1) 

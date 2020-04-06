@@ -1,6 +1,7 @@
 package net.sf.l2j.gameserver.model.actor;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.enums.AiEventType;
 import net.sf.l2j.gameserver.enums.IntentionType;
 import net.sf.l2j.gameserver.enums.ZoneId;
@@ -13,6 +14,7 @@ import net.sf.l2j.gameserver.model.WorldObject;
 import net.sf.l2j.gameserver.model.actor.stat.PlayableStat;
 import net.sf.l2j.gameserver.model.actor.status.PlayableStatus;
 import net.sf.l2j.gameserver.model.actor.template.CreatureTemplate;
+import net.sf.l2j.gameserver.model.zone.type.MultiZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.Revive;
@@ -133,6 +135,10 @@ public abstract class Playable extends Creature
 		// Notify Creature AI
 		getAI().notifyEvent(AiEventType.DEAD);
 
+		final MultiZone zone = ZoneManager.getInstance().getZone(this, MultiZone.class);
+		if (zone != null)
+			zone.onDie(this);
+		
 		// Notify Quest of L2Playable's death
 		final Player actingPlayer = getActingPlayer();
 		for (QuestState qs : actingPlayer.getNotifyQuestOfDeath())
@@ -168,6 +174,10 @@ public abstract class Playable extends Creature
 		
 		// Start broadcast status
 		broadcastPacket(new Revive(this));
+		
+		final MultiZone zone = ZoneManager.getInstance().getZone(this, MultiZone.class);
+		if (zone != null)
+			zone.onRevive(this);
 	}
 	
 	public boolean checkIfPvP(Playable target)

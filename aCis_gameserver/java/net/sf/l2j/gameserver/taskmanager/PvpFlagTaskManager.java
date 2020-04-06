@@ -5,7 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.concurrent.ThreadPool;
 
+import net.sf.l2j.gameserver.data.manager.ZoneManager;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.zone.type.MultiZone;
 
 /**
  * Updates and clears PvP flag of {@link Player} after specified time.
@@ -36,6 +38,13 @@ public final class PvpFlagTaskManager implements Runnable
 			// Get time left and check.
 			final Player player = entry.getKey();
 			final long timeLeft = entry.getValue();
+			
+			final MultiZone zone = ZoneManager.getInstance().getZone(player, MultiZone.class);
+			if (zone != null && zone.isFlag())
+			{
+				_players.remove(player);
+				continue;
+			}
 			
 			// Time is running out, clear PvP flag and remove from list.
 			if (currentTime > timeLeft)

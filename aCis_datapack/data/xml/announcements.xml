@@ -8,4 +8,6 @@
 @param Integer limit - limit of announces (used only if auto=true, 0 = unlimited) 
 --> 
 <list>
+	<announcement message="Ola Aventureiros desculpem mais o serve tera alguns restart pois estamos trabalhando." critical="true" auto="true" delay="300" initial_delay="1" limit="0"/>
+	<announcement message="Qual quer duvida nos procure via FaceBook. Att : Staff One" critical="true" auto="true" delay="300" initial_delay="1" limit="0"/>
 </list>

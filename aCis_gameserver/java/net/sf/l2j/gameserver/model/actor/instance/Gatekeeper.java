@@ -13,6 +13,7 @@ import net.sf.l2j.gameserver.model.location.TeleportLocation;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
+import net.sf.l2j.gameserver.taskmanager.ZoneTaskManager;
 
 /**
  * An instance type extending {@link Folk}, used for teleporters.<br>
@@ -136,6 +137,8 @@ public final class Gatekeeper extends Folk
 			}
 			showChatWindow(player, val);
 		}
+		else if (command.startsWith("pvp"))
+			player.teleportTo(ZoneTaskManager.getInstance().getCurrentZone().getRandomLoc(), 25);
 		else
 			super.onBypassFeedback(player, command);
 	}

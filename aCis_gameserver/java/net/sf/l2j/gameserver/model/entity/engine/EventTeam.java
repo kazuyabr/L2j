@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.model.entity.engine;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sf.l2j.gameserver.enums.MessageType;
 import net.sf.l2j.gameserver.model.actor.Player;
@@ -28,7 +28,7 @@ public class EventTeam
 		_name = name;
 		_color = color;
 		_location = location;
-		_players = new CopyOnWriteArrayList<>();
+		_players = new ArrayList<>();
 	}
 	
 	public void clear()
