@@ -9,6 +9,7 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBan;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBookmark;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminBuffs;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCamera;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminClan;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminClanHall;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCreateItem;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCursedWeapons;
@@ -61,6 +62,7 @@ public class AdminCommandHandler
 		registerHandler(new AdminBookmark());
 		registerHandler(new AdminBuffs());
 		registerHandler(new AdminCamera());
+		registerHandler(new AdminClan());
 		registerHandler(new AdminClanHall());
 		registerHandler(new AdminCreateItem());
 		registerHandler(new AdminCursedWeapons());

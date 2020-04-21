@@ -542,8 +542,8 @@ public final class Player extends Playable
 	private Player _summonTargetRequest;
 	private L2Skill _summonSkillRequest;
 	
-	private Door _requestedGate;
-	
+	private Door _requestedGate;	
+
 	/**
 	 * Constructor of Player (use Creature constructor).
 	 * <ul>

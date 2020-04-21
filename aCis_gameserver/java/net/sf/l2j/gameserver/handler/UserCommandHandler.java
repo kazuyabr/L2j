@@ -20,6 +20,7 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.PartyInfo;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Report;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.SiegeStatus;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Time;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.Vote;
 
 public class UserCommandHandler
 {
@@ -44,6 +45,7 @@ public class UserCommandHandler
 		registerHandler(new Report());
 		registerHandler(new SiegeStatus());
 		registerHandler(new Time());
+		registerHandler(new Vote());
 	}
 	
 	private void registerHandler(IUserCommandHandler handler)

@@ -329,5 +329,15 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					break;
 			}
 		}
+		else if (_command.startsWith("droplist"))
+		{
+			StringTokenizer st = new StringTokenizer(_command, " ");
+			st.nextToken();
+			
+			int npcId = Integer.parseInt(st.nextToken());
+			int page = st.hasMoreTokens() ? Integer.parseInt(st.nextToken()) : 1;
+
+			Npc.sendNpcDrop(player, npcId, page);
+		}
 	}
 }

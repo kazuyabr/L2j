@@ -53,9 +53,9 @@
 		<set name="effectRange" val="1000" />
 	</skill>
 	<skill id="5004" levels="1" name="Dimensional Shock">
-		<set name="element" val="6" /> <!-- Dark -->
+		<set name="element" val="5" /> <!-- Dark -->
+		<set name="elementPower" val="180" />
 		<set name="flyRadius" val="300" />
-		<set name="isMagic" val="true" />
 		<set name="flyType" val="THROW_UP" />
 		<set name="hitTime" val="5800" />
 		<set name="ignoreResists" val="true" />
@@ -67,8 +67,8 @@
 		<set name="skillType" val="PDAM" />
 		<set name="target" val="TARGET_AURA" />
 		<for>
-			<effect name="ThrowUp" noicon="1" val="0" stackOrder="1" stackType="fly_away" />
-			<effect name="Stun" time="2" val="0" effectPower="100" effectType="STUN" />
+			<effect name="ThrowUp" noicon="1" val="0" abnormalLvl="1" abnormalType="fly_away" />
+			<effect name="Stun" abnormalTime="2" val="0" effectPower="100" effectType="STUN" />
 		</for>
 	</skill>
 	<skill id="5005" levels="1" name="Frintezza's Ghost Summoning">
@@ -267,7 +267,7 @@
 		<set name="skillType" val="HEAL_PERCENT" />
 		<set name="target" val="TARGET_SELF" />
 		<for>
-			<effect name="Grow" time="7200" val="0" stackOrder="1" stackType="big_body">
+			<effect name="Buff" time="7200" val="0" stackOrder="1">
 				<mul order="0x30" stat="runSpd" val="1.22" />
 			</effect>
 		</for>

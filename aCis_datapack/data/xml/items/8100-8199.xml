@@ -1653,6 +1653,7 @@
     <set name="material" val="GOLD" />
     <set name="weight" val="3" />
     <set name="is_stackable" val="true" />
+    <set name="handler" val="ItemSkills" />
     <set name="item_skill" val="2234-1" />
   </item>
   <item id="8193" type="EtcItem" name="Fisherman's Potion - Green">

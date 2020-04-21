@@ -8,7 +8,7 @@
 		<set name="crystal_count" val="268" />
 		<set name="material" val="BONE" />
 		<set name="weight" val="550" />
-		<set name="price" val="537000" />
+		<set name="price" val="5370000" />
 		<for>
 			<add order="0x10" stat="pDef" val="83" />
 			<enchant order="0x0C" stat="pDef" val="0" />
@@ -38,7 +38,7 @@
 		<set name="crystal_count" val="179" />
 		<set name="material" val="LEATHER" />
 		<set name="weight" val="540" />
-		<set name="price" val="358000" />
+		<set name="price" val="3580000" />
 		<for>
 			<add order="0x10" stat="pDef" val="61" />
 			<enchant order="0x0C" stat="pDef" val="0" />
@@ -53,7 +53,7 @@
 		<set name="crystal_count" val="179" />
 		<set name="material" val="LEATHER" />
 		<set name="weight" val="1110" />
-		<set name="price" val="350000" />
+		<set name="price" val="3580000" />
 		<for>
 			<add order="0x10" stat="pDef" val="61" />
 			<enchant order="0x0C" stat="pDef" val="0" />
@@ -68,7 +68,7 @@
 		<set name="crystal_count" val="870" />
 		<set name="material" val="LEATHER" />
 		<set name="weight" val="4950" />
-		<set name="price" val="174000" />
+		<set name="price" val="17400000" />
 		<for>
 			<add order="0x10" stat="pDef" val="337" />
 			<enchant order="0x0C" stat="pDef" val="0" />
@@ -96,7 +96,7 @@
 		<set name="crystal_count" val="179" />
 		<set name="material" val="LEATHER" />
 		<set name="weight" val="1110" />
-		<set name="price" val="350000" />
+		<set name="price" val="3580000" />
 		<for>
 			<add order="0x10" stat="pDef" val="70" />
 			<enchant order="0x0C" stat="pDef" val="0" />
@@ -111,7 +111,7 @@
 		<set name="crystal_count" val="870" />
 		<set name="material" val="LEATHER" />
 		<set name="weight" val="4950" />
-		<set name="price" val="1740000" />
+		<set name="price" val="17400000" />
 		<for>
 			<add order="0x10" stat="pDef" val="270" />
 			<add order="0x40" stat="maxMp" val="962" />
@@ -142,7 +142,7 @@
 		<set name="crystal_count" val="179" />
 		<set name="material" val="LEATHER" />
 		<set name="weight" val="1110" />
-		<set name="price" val="358000" />
+		<set name="price" val="3580000" />
 		<for>
 			<add order="0x10" stat="pDef" val="61" />
 			<enchant order="0x0C" stat="pDef" val="0" />

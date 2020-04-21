@@ -105,7 +105,7 @@ public class Npc extends Creature
 	
 	private Castle _castle;
 
-	protected static final int PAGE_LIMIT = 7;
+	protected static final int PAGE_LIMIT = Config.RAID_BOSS_DROP_PAGE_LIMIT;
 	protected static final Map<Integer, Integer> LAST_PAGE = new ConcurrentHashMap<>();
 	protected static final String[][] MESSAGE =
 	{
@@ -266,7 +266,7 @@ public class Npc extends Creature
 		}
 	}
 
-	public void sendNpcDrop(Player player, int npcId, int page)
+	public static void sendNpcDrop(Player player, int npcId, int page)
 	{
 		final NpcTemplate template = NpcData.getInstance().getTemplate(npcId);
 		if (template == null)
@@ -288,6 +288,22 @@ public class Npc extends Creature
 		boolean hasMore = false;
 		
 		final StringBuilder sb = new StringBuilder();
+		sb.append("<html>");
+		sb.append("<center>");
+		sb.append("<body>");
+		sb.append("<table width=\"256\">");
+		sb.append("<tr><td width=\"256\" align=\"center\">%name%</td></tr>");
+		sb.append("</table>");
+		sb.append("<br>");
+		sb.append("<table width=\"256\">");
+		sb.append("<tr><td width=\"256\" align=\"left\">" + MESSAGE[1][Rnd.get(MESSAGE.length)].replace("%boss%", template.getName()) + "</td></tr>");
+		sb.append("</table>");
+		sb.append("<br>");
+		sb.append("<table width=\"224\" bgcolor=\"000000\">");
+		sb.append("<tr><td width=\"224\" align=\"center\">Npc Drops</td></tr>");
+		sb.append("</table>");
+		sb.append("<br>");
+		
 		for (DropCategory cat : list) 
 		{
 			if (shown == PAGE_LIMIT)
@@ -349,38 +365,30 @@ public class Npc extends Creature
 				shown++;
 			} 
 		} 
-
+		
 		// Build page footer.
 		sb.append("<br><img src=\"L2UI.SquareGray\" width=277 height=1><table width=\"100%\" bgcolor=000000><tr>");
 		
 		if (page > 1)
-			StringUtil.append(sb, "<td align=left width=70><a action=\"bypass -h npc_%objectId%_RaidBossDrop "+ npcId + " ", (page - 1), "\">Previous</a></td>");
+			StringUtil.append(sb, "<td align=left width=70><a action=\"bypass droplist "+ npcId + " ", (page - 1), "\">Previous</a></td>");
 		else
 			StringUtil.append(sb, "<td align=left width=70>Previous</td>");
 		
 		StringUtil.append(sb, "<td align=center width=100>Page ", page, "</td>");
 		
 		if (page < shown)
-			StringUtil.append(sb, "<td align=right width=70>" + (hasMore ? "<a action=\"bypass -h npc_%objectId%_RaidBossDrop " + npcId + " " + (page + 1) + "\">Next</a>" : "") + "</td>");
+			StringUtil.append(sb, "<td align=right width=70>" + (hasMore ? "<a action=\"bypass droplist " + npcId + " " + (page + 1) + "\">Next</a>" : "") + "</td>");
 		else
 			StringUtil.append(sb, "<td align=right width=70>Next</td>");
-		
+
 		sb.append("</tr></table><img src=\"L2UI.SquareGray\" width=277 height=1>");
-		sb.append("<br>");
-		sb.append("<center>");
-		sb.append("<table width=\"160\" cellspacing=\"2\">");
-		sb.append("<tr>");
-		sb.append("<td width=\"160\" align=\"center\"><a action=\"bypass -h npc_%objectId%_RaidBossInfo " + LAST_PAGE.get(player.getObjectId()) + "\">Raid Info</a></td>");
-		sb.append("</tr>");
-		sb.append("</table>");
 		sb.append("</center>");
-		
-		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-		html.setFile("data/html/droplist.htm");
-		html.replace("%list%", sb.toString());
-		html.replace("%msg%", MESSAGE[1][Rnd.get(MESSAGE.length)].replace("%boss%", template.getName()));
-		html.replace("%name%", getName());
-		html.replace("%objectId%", getObjectId());
+		sb.append("</body>");
+		sb.append("</html>");
+
+		final NpcHtmlMessage html = new NpcHtmlMessage(200);
+		html.setHtml(sb.toString());
+		html.replace("%name%", template.getName());
 		player.sendPacket(html);
 	}
 	

@@ -541,24 +541,26 @@
 		</cond>
 	</skill>
 	<skill id="2234" levels="1" name="Soul Breaking Arrow">
+		<set name="power" val="0" />
 		<set name="target" val="TARGET_ONE" />
-		<set name="trait" val="SHOCK" />
 		<set name="skillType" val="PDAM" />
+		<set name="operateType" val="OP_ACTIVE" />
+	<!--	<set name="weaponsAllowed" val="65568" />	--> <!-- Bow/Crossbow -->
+		<set name="weaponsAllowed" val="BOW" /> <!-- Bow -->
+		<set name="itemConsumeId" val="8192" /> <!-- Soul Breaking Arrow -->
+		<set name="itemConsumeCount" val="0" />
 		<set name="castRange" val="900" />
 		<set name="effectRange" val="1400" />
-		<set name="power" val="2320" />
-		<set name="magicLvl" val="85" />
-		<set name="ignoreResists" val="true" />
-		<set name="operateType" val="OP_ACTIVE" />
-		<set name="hitTime" val="500" />
-		<set name="reuseDelay" val="30000" />
+		<set name="hitTime" val="2000" />
+		<set name="coolTime" val="1000" />
+		<set name="reuseDelay" val="60000" />
 		<set name="staticHitTime" val="true" />
+		<set name="staticReuse" val="true" />
 		<cond msgId="113" addName="1">
-			<using kind="BOW" />
+			<and>
+				<target npcId="29045" /> <!-- Frintezza -->
+			</and>
 		</cond>
-		<for>
-			<effect name="Stun" time="9" val="0" effectPower="50" effectType="STUN" stackOrder="1" stackType="stun" />
-		</for>
 	</skill>
 	<skill id="2235" levels="1" name="Anteroom Door Key">
 		<set name="target" val="TARGET_UNLOCKABLE" />
@@ -1200,12 +1202,25 @@
 		</cond>
 	</skill>
 	<skill id="2276" levels="1" name="Dewdrop of Destruction">
-		<set name="target" val="TARGET_NONE" />
-		<set name="skillType" val="NOTDONE" />
-		<set name="operateType" val="OP_ACTIVE" />
-		<set name="hitTime" val="2000" />
-		<set name="staticHitTime" val="true" />
-	</skill>
+		<set name="power" val="999999999" />
+        <set name="target" val="TARGET_ONE"/>
+        <set name="skillType" val="PDAM"/>
+        <set name="operateType" val="OP_ACTIVE"/>
+        <set name="itemConsumeId" val="8556"/> <!-- Dewdrop of Destruction -->
+        <set name="itemConsumeCount" val="0"/>
+        <set name="castRange" val="900"/>
+        <set name="effectRange" val="1400"/>
+        <set name="hitTime" val="2000"/>
+        <set name="coolTime" val="1000"/>
+        <set name="reuseDelay" val="3000"/>
+        <set name="staticHitTime" val="true"/>
+        <set name="staticReuse" val="true"/>
+        <cond msgId="113" addName="1">
+            <and>
+                <target npcId="29048,29049"/> <!-- Evil Spirit -->
+            </and>
+        </cond>
+    </skill>
 	<skill id="2277" levels="6" name="Event Gift Box">
 		<table name="#extractableItems">
 			1539,10,8592,1,50;1539,10,8592,1,50

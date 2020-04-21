@@ -138,7 +138,7 @@ public final class Gatekeeper extends Folk
 			showChatWindow(player, val);
 		}
 		else if (command.startsWith("pvp"))
-			player.teleportTo(ZoneTaskManager.getInstance().getCurrentZone().getRandomLoc(), 25);
+			player.teleportTo(ZoneTaskManager.getInstance().getCurrentZone().getLoc(), 25);
 		else
 			super.onBypassFeedback(player, command);
 	}

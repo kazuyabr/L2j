@@ -54,4 +54,17 @@
 	<armorset name="Titanium Set Heavy" chest="9222" legs="0" head="9218" gloves="9223" feet="9224" skillId="7066" shield="9228" shieldSkillId="3554" enchant6Skill="3623" />
 	<armorset name="Titanium Set Light" chest="9219" legs="0" head="9218" gloves="9220" feet="9221" skillId="7067" shield="0" shieldSkillId="0" enchant6Skill="3624" />
 	<armorset name="Titanium Set Robe" chest="9225" legs="0" head="9218" gloves="9226" feet="9227" skillId="7068" shield="0" shieldSkillId="0" enchant6Skill="3625" />
+	<armorset name="Dynasty Heavy Set" chest="9301" legs="9307" head="9300" gloves="9306" feet="9308" skillId="7077" shield="9331" shieldSkillId="3554" enchant6Skill="3623" />
+	<armorset name="Dynasty Heavy Set" chest="9302" legs="9307" head="9300" gloves="9306" feet="9308" skillId="7077" shield="9331" shieldSkillId="3554" enchant6Skill="3623" />
+	<armorset name="Dynasty Heavy Set" chest="9303" legs="9307" head="9300" gloves="9306" feet="9308" skillId="7077" shield="9331" shieldSkillId="3554" enchant6Skill="3623" />
+	<armorset name="Dynasty Heavy Set" chest="9304" legs="9307" head="9300" gloves="9306" feet="9308" skillId="7077" shield="9331" shieldSkillId="3554" enchant6Skill="3623" />
+	<armorset name="Dynasty Heavy Set" chest="9305" legs="9307" head="9300" gloves="9306" feet="9308" skillId="7077" shield="9331" shieldSkillId="3554" enchant6Skill="3623" />
+	<armorset name="Dynasty Light Set" chest="9309" legs="9312" head="9300" gloves="9313" feet="9314" skillId="7078" shield="0" shieldSkillId="0" enchant6Skill="3624" />
+	<armorset name="Dynasty Light Set" chest="9310" legs="9312" head="9300" gloves="9313" feet="9314" skillId="7078" shield="0" shieldSkillId="0" enchant6Skill="3624" />
+	<armorset name="Dynasty Light Set" chest="9311" legs="9312" head="9300" gloves="9313" feet="9314" skillId="7078" shield="0" shieldSkillId="0" enchant6Skill="3624" />
+	<armorset name="Dynasty Robe Set" chest="9315" legs="9320" head="9300" gloves="9321" feet="9322" skillId="7079" shield="0" shieldSkillId="0" enchant6Skill="3624" />
+	<armorset name="Dynasty Robe Set" chest="9316" legs="9320" head="9300" gloves="9321" feet="9322" skillId="7079" shield="0" shieldSkillId="0" enchant6Skill="3624" />
+	<armorset name="Dynasty Robe Set" chest="9317" legs="9320" head="9300" gloves="9321" feet="9322" skillId="7079" shield="0" shieldSkillId="0" enchant6Skill="3624" />
+	<armorset name="Dynasty Robe Set" chest="9318" legs="9320" head="9300" gloves="9321" feet="9322" skillId="7079" shield="0" shieldSkillId="0" enchant6Skill="3624" />
+	<armorset name="Dynasty Robe Set" chest="9319" legs="9320" head="9300" gloves="9321" feet="9322" skillId="7079" shield="0" shieldSkillId="0" enchant6Skill="3624" />
 </list>

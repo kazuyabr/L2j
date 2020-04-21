@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<list>
+	<skill id="7077" levels="1" name="Dynasty Heavy Armor Set">
+		<set name="target" val="TARGET_SELF"/>
+		<set name="skillType" val="BUFF"/>
+		<set name="operateType" val="OP_PASSIVE"/>
+		<for>
+			<mul order="0x30" stat="pDef" val="1.32"/> <!-- P Def. +32% -->
+			<add order="0x40" stat="maxHp" val="1780"/> <!-- Maximum HP +1780 -->
+			<addMul order="0x40" stat="sleepVuln" val="70" /> <!-- Sleep Probability -70% -->
+			<addMul order="0x40" stat="rootVuln" val="70" /> <!-- Hold Probability -70% -->
+			<sub order="0x40" stat="DEX" val="1"/> <!-- DEX -1 -->
+			<add order="0x40" stat="STR" val="6"/> <!-- STR +3 -->
+		</for>
+	</skill>
+	<skill id="7078" levels="1" name="Dynasty Light Armor Set">
+		 <set name="target" val="TARGET_SELF"/>
+		 <set name="skillType" val="BUFF"/>
+		 <set name="operateType" val="OP_PASSIVE"/>
+		 <for>
+			<mul order="0x30" stat="pAtkSpd" val="1.16"/> <!-- Attack Speed +16% -->
+			<mul order="0x30" stat="pAtk" val="1.16"/> <!-- P. Atk +16% -->
+			<add order="0x40" stat="maxMp" val="1156"/> <!-- Maximum MP +1156 -->
+			<add order="0x40" stat="maxLoad" val="5759"/> <!-- Weight Limit +5759 -->
+			<add order="0x40" stat="DEX" val="4"/> <!-- DEX +2 -->
+			<add order="0x40" stat="STR" val="4"/> <!-- STR +2 -->
+			<sub order="0x40" stat="CON" val="1"/> <!-- CON -1 -->
+		</for>
+	</skill>
+	<skill id="7079" levels="1" name="Dynasty Robe Armor Set">
+		 <set name="target" val="TARGET_SELF"/>
+		 <set name="skillType" val="BUFF"/>
+		 <set name="operateType" val="OP_PASSIVE"/>
+		 <for>
+			<mul order="0x30" stat="mAtk" val="1.36"/> <!-- M. Atk +36% -->
+			<add order="0x40" stat="runSpd" val="12"/> <!-- Movement Speed +12 -->
+			<sub order="0x40" stat="cancel" val="60"/> <!-- Casting Cancel Probability -60% -->
+			<add order="0x40" stat="maxLoad" val="5759"/> <!-- Weight Limit +5759 -->
+			<add order="0x40" stat="WIT" val="4"/> <!-- WIT +4 -->
+			<add order="0x40" stat="INT" val="4"/> <!-- INT +4 -->
+			<sub order="0x40" stat="MEN" val="1"/> <!-- MEN -1 -->
+			<addMul order="0x40" stat="stunVuln" val="50" /> <!-- Stun resistance +50% -->
+		</for>
+	</skill>
+</list>

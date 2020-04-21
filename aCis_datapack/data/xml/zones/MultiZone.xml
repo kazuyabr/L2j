@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+	<zone id="1" shape="NPoly" minZ="-9999" maxZ="9999">
+		<stat name="name" val="Primeval Isle" />
+		<stat name="time" val="0" /><!-- time in minutes -->
+		<stat name="isNoStore" val="false" />
+		<stat name="isNoSummonFriend" val="false" />
+		<stat name="isFlag" val="false" />
+		<stat name="isRevive" val="false" />
+		<stat name="isHeal" val="true" />
+		<stat name="reviveDelay" val="0" />
+		<stat name="restrictedItems" val="6594" />
+		<stat name="reviveLocations" val="9592,-21992,-3680;9032,-23528,-3712;11512,-24760,-3640" />
+		<node x="0" y="-32770" />
+		<node x="0" y="0" />
+		<node x="32765" y="0" />
+		<node x="32765" y="-32770" />
+	</zone>
+</list>
