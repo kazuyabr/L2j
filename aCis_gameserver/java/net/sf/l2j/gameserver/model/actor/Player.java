@@ -4867,7 +4867,7 @@ public final class Player extends Playable
 			
 			if (Config.ALLOW_WYVERN_RESTRITION_CITY && isInsideZone(ZoneId.TOWN))
 			{
-				sendMessage("Desculpe mais você não pode usar montaria dentro da Cidade.");
+				sendMessage("Sorry but you can't use a mount inside the City.");
 				return false;
 			}
 			
