@@ -125,7 +125,7 @@ public class ClanMember
 	
 	public boolean isOnline()
 	{
-		return _player != null  && _player.isOfflineMode() && _player.getClient() != null && !_player.getClient().isDetached();
+		return _player != null  && _player.getClient() != null && !_player.getClient().isDetached();
 	}
 	
 	public int getClassId()

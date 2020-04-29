@@ -22,7 +22,8 @@ public enum ZoneId
 	NO_RESTART(17),
 	SCRIPT(18),
 	BOSS(19),
-	MULTI(20);
+	MULTI(20),
+	FARM(21);
 	
 	private final int _id;
 	

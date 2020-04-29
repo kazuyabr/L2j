@@ -393,7 +393,7 @@ public final class Player extends Playable
 	
 	private StoreType _storeType = StoreType.NONE;
 	
-	private boolean isOfflineShop;
+	private boolean _isOfflineShop;
 	private long _offlineShopStart;
 	
 	private TradeList _activeTradeList;
@@ -4354,12 +4354,12 @@ public final class Player extends Playable
 	
 	public boolean isOfflineMode()
 	{
-		return isOfflineShop;	
+		return _isOfflineShop;	
 	}
 	
 	public void setOfflineMode(boolean off)
 	{
-		isOfflineShop = off;
+		_isOfflineShop = off;
 		
 		if (getClan() != null)
 			getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);

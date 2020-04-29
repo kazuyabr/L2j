@@ -73,7 +73,7 @@ public final class ZoneTaskManager implements Runnable
 		_timer = getCurrentZone().getTime() * 60;
 		
 		World.announceToOnlinePlayers("New Random Zone: " + getCurrentZone().getName() + ". Duration: " + getCurrentZone().getTime() + " min(s).", true);
-		World.getInstance().getPlayers().stream().filter(player -> player.isInsideZone(ZoneId.MULTI) && getCurrentZone().isActive()).forEach(player -> player.teleportTo(getCurrentZone().getRandomLoc(), 25));
+		World.getInstance().getPlayers().stream().filter(player -> player.isInsideZone(ZoneId.MULTI) && getCurrentZone().isActive()).forEach(player -> player.teleportTo(getCurrentZone().getLoc(), 25));
 		
 		for (Player player : World.getInstance().getPlayers())
 			onEnter(player);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+	<zone shape="Cuboid" minZ="-3850" maxZ="-350"><!-- giran_pvp_battle -->
+		<stat name="name" val="Giran Arena" />
+		<node x="72493" y="142263" />
+		<node x="73493" y="143261" />
+		<spawn x="73890" y="142656" z="-3778" />
+	</zone>
+</list>
